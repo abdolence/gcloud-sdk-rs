@@ -23,6 +23,7 @@ pub struct ResponseMetadata {
     #[prost(string, tag = "1")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// The user information.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserInfo {
@@ -85,7 +86,8 @@ pub struct MergeFieldsOptions {
 pub enum UpdateType {
     /// Defaults to full replace behavior, ie. FULL_REPLACE.
     Unspecified = 0,
-    /// Fully replace all the fields. Any field masks will be ignored.
+    /// Fully replace all the fields (including previously linked raw document).
+    /// Any field masks will be ignored.
     Replace = 1,
     /// Merge the fields into the existing entities.
     Merge = 2,
@@ -95,6 +97,10 @@ pub enum UpdateType {
     ReplacePropertiesByNames = 4,
     /// Delete the properties by names.
     DeletePropertiesByNames = 5,
+    /// For each of the property, replaces the property if the it exists, otherwise
+    /// inserts a new property. And for the rest of the fields, merge them based on
+    /// update mask and merge fields options.
+    MergeAndReplaceOrInsertPropertiesByNames = 6,
 }
 impl UpdateType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -115,6 +121,9 @@ impl UpdateType {
             UpdateType::DeletePropertiesByNames => {
                 "UPDATE_TYPE_DELETE_PROPERTIES_BY_NAMES"
             }
+            UpdateType::MergeAndReplaceOrInsertPropertiesByNames => {
+                "UPDATE_TYPE_MERGE_AND_REPLACE_OR_INSERT_PROPERTIES_BY_NAMES"
+            }
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -131,6 +140,9 @@ impl UpdateType {
             }
             "UPDATE_TYPE_DELETE_PROPERTIES_BY_NAMES" => {
                 Some(Self::DeletePropertiesByNames)
+            }
+            "UPDATE_TYPE_MERGE_AND_REPLACE_OR_INSERT_PROPERTIES_BY_NAMES" => {
+                Some(Self::MergeAndReplaceOrInsertPropertiesByNames)
             }
             _ => None,
         }
@@ -214,6 +226,45 @@ impl AccessControlMode {
         }
     }
 }
+/// The default role of the document creator.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DocumentCreatorDefaultRole {
+    /// Unspecified, will be default to document admin role.
+    Unspecified = 0,
+    /// Document Admin, same as contentwarehouse.googleapis.com/documentAdmin.
+    DocumentAdmin = 1,
+    /// Document Editor, same as contentwarehouse.googleapis.com/documentEditor.
+    DocumentEditor = 2,
+    /// Document Viewer, same as contentwarehouse.googleapis.com/documentViewer.
+    DocumentViewer = 3,
+}
+impl DocumentCreatorDefaultRole {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            DocumentCreatorDefaultRole::Unspecified => {
+                "DOCUMENT_CREATOR_DEFAULT_ROLE_UNSPECIFIED"
+            }
+            DocumentCreatorDefaultRole::DocumentAdmin => "DOCUMENT_ADMIN",
+            DocumentCreatorDefaultRole::DocumentEditor => "DOCUMENT_EDITOR",
+            DocumentCreatorDefaultRole::DocumentViewer => "DOCUMENT_VIEWER",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DOCUMENT_CREATOR_DEFAULT_ROLE_UNSPECIFIED" => Some(Self::Unspecified),
+            "DOCUMENT_ADMIN" => Some(Self::DocumentAdmin),
+            "DOCUMENT_EDITOR" => Some(Self::DocumentEditor),
+            "DOCUMENT_VIEWER" => Some(Self::DocumentViewer),
+            _ => None,
+        }
+    }
+}
 /// Defines the structure for content warehouse document proto.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -228,16 +279,14 @@ pub struct Document {
     /// The reference ID set by customers. Must be unique per project and location.
     #[prost(string, tag = "11")]
     pub reference_id: ::prost::alloc::string::String,
-    /// Required. Display name of the document given by the user. This name will be displayed
-    /// in the UI.
-    /// Customer can populate this field with the name of the document. This
-    /// differs from the 'title' field as 'title' is optional and stores the top
-    /// heading in the document.
+    /// Required. Display name of the document given by the user. This name will be
+    /// displayed in the UI. Customer can populate this field with the name of the
+    /// document. This differs from the 'title' field as 'title' is optional and
+    /// stores the top heading in the document.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Title that describes the document.
-    /// This is usually present in the top section of the document, and is a
-    /// mandatory field for the question-answering feature.
+    /// This can be the top heading or text that describes the document.
     #[prost(string, tag = "18")]
     pub title: ::prost::alloc::string::String,
     /// Uri to display the document, for example, in the UI.
@@ -249,6 +298,7 @@ pub struct Document {
     #[prost(string, tag = "3")]
     pub document_schema_name: ::prost::alloc::string::String,
     /// A path linked to structured content file.
+    #[deprecated]
     #[prost(string, tag = "16")]
     pub structured_content_uri: ::prost::alloc::string::String,
     /// List of values that are user supplied metadata.
@@ -267,17 +317,32 @@ pub struct Document {
     #[prost(enumeration = "RawDocumentFileType", tag = "10")]
     pub raw_document_file_type: i32,
     /// If true, makes the document visible to asynchronous policies and rules.
+    #[deprecated]
     #[prost(bool, tag = "12")]
     pub async_enabled: bool,
+    /// Indicates the category (image, audio, video etc.) of the original content.
+    #[prost(enumeration = "ContentCategory", tag = "20")]
+    pub content_category: i32,
     /// If true, text extraction will not be performed.
+    #[deprecated]
     #[prost(bool, tag = "19")]
     pub text_extraction_disabled: bool,
+    /// If true, text extraction will be performed.
+    #[prost(bool, tag = "21")]
+    pub text_extraction_enabled: bool,
     /// The user who creates the document.
     #[prost(string, tag = "13")]
     pub creator: ::prost::alloc::string::String,
     /// The user who lastly updates the document.
     #[prost(string, tag = "14")]
     pub updater: ::prost::alloc::string::String,
+    /// Output only. If linked to a Collection with RetentionPolicy, the date when
+    /// the document becomes mutable.
+    #[prost(message, optional, tag = "22")]
+    pub disposition_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Indicates if the document has a legal hold on it.
+    #[prost(bool, tag = "23")]
+    pub legal_hold: bool,
     #[prost(oneof = "document::StructuredContent", tags = "15, 4")]
     pub structured_content: ::core::option::Option<document::StructuredContent>,
     /// Raw document file.
@@ -337,12 +402,19 @@ pub struct DocumentReference {
     /// Output only. The time when the document is deleted.
     #[prost(message, optional, tag = "7")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Document is a folder with retention policy.
+    #[prost(bool, tag = "8")]
+    pub document_is_retention_folder: bool,
+    /// Document is a folder with legal hold.
+    #[prost(bool, tag = "9")]
+    pub document_is_legal_hold_folder: bool,
 }
 /// Property of a document.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Property {
-    /// Required. Must match the name of a PropertyDefinition in the DocumentSchema.
+    /// Required. Must match the name of a PropertyDefinition in the
+    /// DocumentSchema.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Type of the property.
@@ -545,6 +617,8 @@ pub enum RawDocumentFileType {
     Pptx = 4,
     /// UTF-8 encoded text format
     Text = 5,
+    /// TIFF or TIF image file format
+    Tiff = 6,
 }
 impl RawDocumentFileType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -559,6 +633,7 @@ impl RawDocumentFileType {
             RawDocumentFileType::Xlsx => "RAW_DOCUMENT_FILE_TYPE_XLSX",
             RawDocumentFileType::Pptx => "RAW_DOCUMENT_FILE_TYPE_PPTX",
             RawDocumentFileType::Text => "RAW_DOCUMENT_FILE_TYPE_TEXT",
+            RawDocumentFileType::Tiff => "RAW_DOCUMENT_FILE_TYPE_TIFF",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -570,6 +645,45 @@ impl RawDocumentFileType {
             "RAW_DOCUMENT_FILE_TYPE_XLSX" => Some(Self::Xlsx),
             "RAW_DOCUMENT_FILE_TYPE_PPTX" => Some(Self::Pptx),
             "RAW_DOCUMENT_FILE_TYPE_TEXT" => Some(Self::Text),
+            "RAW_DOCUMENT_FILE_TYPE_TIFF" => Some(Self::Tiff),
+            _ => None,
+        }
+    }
+}
+/// When a raw document or structured content is supplied, this stores the
+/// content category.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ContentCategory {
+    /// No category is specified.
+    Unspecified = 0,
+    /// Content is of image type.
+    Image = 1,
+    /// Content is of audio type.
+    Audio = 2,
+    /// Content is of video type.
+    Video = 3,
+}
+impl ContentCategory {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ContentCategory::Unspecified => "CONTENT_CATEGORY_UNSPECIFIED",
+            ContentCategory::Image => "CONTENT_CATEGORY_IMAGE",
+            ContentCategory::Audio => "CONTENT_CATEGORY_AUDIO",
+            ContentCategory::Video => "CONTENT_CATEGORY_VIDEO",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CONTENT_CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+            "CONTENT_CATEGORY_IMAGE" => Some(Self::Image),
+            "CONTENT_CATEGORY_AUDIO" => Some(Self::Audio),
+            "CONTENT_CATEGORY_VIDEO" => Some(Self::Video),
             _ => None,
         }
     }
@@ -590,8 +704,8 @@ pub struct ListLinkedTargetsResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLinkedTargetsRequest {
-    /// Required. The name of the document, for which all target links are returned.
-    /// Format:
+    /// Required. The name of the document, for which all target links are
+    /// returned. Format:
     /// projects/{project_number}/locations/{location}/documents/{target_document_id}.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -616,8 +730,8 @@ pub struct ListLinkedSourcesResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLinkedSourcesRequest {
-    /// Required. The name of the document, for which all source links are returned.
-    /// Format:
+    /// Required. The name of the document, for which all source links are
+    /// returned. Format:
     /// projects/{project_number}/locations/{location}/documents/{source_document_id}.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -728,7 +842,8 @@ pub struct CreateDocumentLinkRequest {
     /// projects/{project_number}/locations/{location}/documents/{source_document_id}.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Document links associated with the source documents (source_document_id).
+    /// Required. Document links associated with the source documents
+    /// (source_document_id).
     #[prost(message, optional, tag = "2")]
     pub document_link: ::core::option::Option<DocumentLink>,
     /// The meta information collected about the document creator, used to enforce
@@ -968,7 +1083,7 @@ pub struct DocumentSchema {
     /// The name is ignored when creating a document schema.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. Name of the schema given by the user. Must be unique per customer.
+    /// Required. Name of the schema given by the user. Must be unique per project.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Document details.
@@ -1012,6 +1127,9 @@ pub struct PropertyDefinition {
     #[prost(bool, tag = "4")]
     pub is_searchable: bool,
     /// Whether the property is user supplied metadata.
+    /// This out-of-the box placeholder setting can be used to tag derived
+    /// properties. Its value and interpretation logic should be implemented by API
+    /// user.
     #[prost(bool, tag = "5")]
     pub is_metadata: bool,
     /// Whether the property is mandatory.
@@ -1019,6 +1137,12 @@ pub struct PropertyDefinition {
     /// If 'true' then user must populate the value for this property.
     #[prost(bool, tag = "14")]
     pub is_required: bool,
+    /// The retrieval importance of the property during search.
+    #[prost(enumeration = "property_definition::RetrievalImportance", tag = "18")]
+    pub retrieval_importance: i32,
+    /// The mapping information between this property to another schema source.
+    #[prost(message, repeated, tag = "19")]
+    pub schema_sources: ::prost::alloc::vec::Vec<property_definition::SchemaSource>,
     /// Type of the property.
     #[prost(
         oneof = "property_definition::ValueTypeOptions",
@@ -1030,6 +1154,76 @@ pub struct PropertyDefinition {
 }
 /// Nested message and enum types in `PropertyDefinition`.
 pub mod property_definition {
+    /// The schema source information.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SchemaSource {
+        /// The schema name in the source.
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// The Doc AI processor type name.
+        #[prost(string, tag = "2")]
+        pub processor_type: ::prost::alloc::string::String,
+    }
+    /// Stores the retrieval importance.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RetrievalImportance {
+        /// No importance specified. Default medium importance.
+        Unspecified = 0,
+        /// Highest importance.
+        Highest = 1,
+        /// Higher importance.
+        Higher = 2,
+        /// High importance.
+        High = 3,
+        /// Medium importance.
+        Medium = 4,
+        /// Low importance (negative).
+        Low = 5,
+        /// Lowest importance (negative).
+        Lowest = 6,
+    }
+    impl RetrievalImportance {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RetrievalImportance::Unspecified => "RETRIEVAL_IMPORTANCE_UNSPECIFIED",
+                RetrievalImportance::Highest => "HIGHEST",
+                RetrievalImportance::Higher => "HIGHER",
+                RetrievalImportance::High => "HIGH",
+                RetrievalImportance::Medium => "MEDIUM",
+                RetrievalImportance::Low => "LOW",
+                RetrievalImportance::Lowest => "LOWEST",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RETRIEVAL_IMPORTANCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "HIGHEST" => Some(Self::Highest),
+                "HIGHER" => Some(Self::Higher),
+                "HIGH" => Some(Self::High),
+                "MEDIUM" => Some(Self::Medium),
+                "LOW" => Some(Self::Low),
+                "LOWEST" => Some(Self::Lowest),
+                _ => None,
+            }
+        }
+    }
     /// Type of the property.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1297,8 +1491,11 @@ pub mod document_schema_service_client {
         }
         /// Updates a Document Schema. Returns INVALID_ARGUMENT if the name of the
         /// Document Schema is non-empty and does not equal the existing name.
-        /// Supports only appending new properties and updating existing properties
-        /// will result into INVALID_ARGUMENT.
+        /// Supports only appending new properties, adding new ENUM possible values,
+        /// and updating the
+        /// [EnumTypeOptions.validation_check_disabled][google.cloud.contentwarehouse.v1.EnumTypeOptions.validation_check_disabled]
+        /// flag for ENUM possible values. Updating existing properties will result
+        /// into INVALID_ARGUMENT.
         pub async fn update_document_schema(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDocumentSchemaRequest>,
@@ -1356,7 +1553,8 @@ pub mod document_schema_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Deletes a document schema. Returns NOT_FOUND if the document schema does
-        /// not exist.
+        /// not exist. Returns BAD_REQUEST if the document schema has documents
+        /// depending on it.
         pub async fn delete_document_schema(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDocumentSchemaRequest>,
@@ -1422,15 +1620,57 @@ pub mod document_schema_service_client {
 pub struct DocumentQuery {
     /// The query string that matches against the full text of the document and
     /// the searchable properties.
+    ///
+    /// The query partially supports [Google AIP style
+    /// syntax](<https://google.aip.dev/160>). Specifically, the query supports
+    /// literals, logical operators, negation operators, comparison operators, and
+    /// functions.
+    ///
+    /// Literals: A bare literal value (examples: "42", "Hugo") is a value to be
+    /// matched against. It searches over the full text of the document and the
+    /// searchable properties.
+    ///
+    /// Logical operators: "AND", "and", "OR", and "or" are binary logical
+    /// operators (example: "engineer OR developer").
+    ///
+    /// Negation operators: "NOT" and "!" are negation operators (example: "NOT
+    /// software").
+    ///
+    /// Comparison operators: support the binary comparison operators =, !=, <, >,
+    /// <= and >= for string, numeric, enum, boolean. Also support like operator
+    /// `~~` for string. It provides semantic search functionality by parsing,
+    /// stemming and doing synonyms expansion against the input query.
+    ///
+    /// To specify a property in the query, the left hand side expression in the
+    /// comparison must be the property ID including the parent. The right hand
+    /// side must be literals. For example:
+    /// "\"projects/123/locations/us\".property_a < 1" matches results whose
+    /// "property_a" is less than 1 in project 123 and us location.
+    /// The literals and comparison expression can be connected in a single query
+    /// (example: "software engineer \"projects/123/locations/us\".salary > 100").
+    ///
+    /// Functions: supported functions are `LOWER(\[property_name\])` to perform a
+    /// case insensitive match and `EMPTY(\[property_name\])` to filter on the
+    /// existence of a key.
+    ///
+    /// Support nested expressions connected using parenthesis and logical
+    /// operators. The default logical operators is `AND` if there is no operators
+    /// between expressions.
+    ///
+    /// The query can be used with other filters e.g. `time_filters` and
+    /// `folder_name_filter`. They are connected with `AND` operator under the
+    /// hood.
+    ///
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "1")]
     pub query: ::prost::alloc::string::String,
     /// Experimental, do not use.
     /// If the query is a natural language question. False by default. If true,
     /// then the question-answering feature will be used instead of search, and
-    /// `result_count` in [SearchDocumentsRequest][google.cloud.contentwarehouse.v1.SearchDocumentsRequest] must be set. In addition, all
-    /// other input fields related to search (pagination, histograms, etc.) will be
-    /// ignored.
+    /// `result_count` in
+    /// [SearchDocumentsRequest][google.cloud.contentwarehouse.v1.SearchDocumentsRequest]
+    /// must be set. In addition, all other input fields related to search
+    /// (pagination, histograms, etc.) will be ignored.
     #[prost(bool, tag = "12")]
     pub is_nl_query: bool,
     /// This filter specifies a structured syntax to match against the
@@ -1460,7 +1700,8 @@ pub struct DocumentQuery {
     #[prost(message, repeated, tag = "5")]
     pub time_filters: ::prost::alloc::vec::Vec<TimeFilter>,
     /// This filter specifies the exact document schema
-    /// [Document.document_schema_name][google.cloud.contentwarehouse.v1.Document.document_schema_name] of the documents to search against.
+    /// [Document.document_schema_name][google.cloud.contentwarehouse.v1.Document.document_schema_name]
+    /// of the documents to search against.
     ///
     /// If a value isn't specified, documents within the search results are
     /// associated with any schema. If multiple values are specified, documents
@@ -1471,8 +1712,8 @@ pub struct DocumentQuery {
     #[prost(string, repeated, tag = "6")]
     pub document_schema_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// This filter specifies a structured syntax to match against the
-    /// [PropertyDefinition.is_filterable][google.cloud.contentwarehouse.v1.PropertyDefinition.is_filterable] marked as `true`. The relationship
-    /// between the PropertyFilters is OR.
+    /// [PropertyDefinition.is_filterable][google.cloud.contentwarehouse.v1.PropertyDefinition.is_filterable]
+    /// marked as `true`. The relationship between the PropertyFilters is OR.
     #[prost(message, repeated, tag = "7")]
     pub property_filter: ::prost::alloc::vec::Vec<PropertyFilter>,
     /// This filter specifies the types of files to return: ALL, FOLDER, or FILE.
@@ -1488,6 +1729,11 @@ pub struct DocumentQuery {
     /// projects/{project_number}/locations/{location}/documents/{document_id}.
     #[prost(string, tag = "9")]
     pub folder_name_filter: ::prost::alloc::string::String,
+    /// Search the documents in the list.
+    /// Format:
+    /// projects/{project_number}/locations/{location}/documents/{document_id}.
+    #[prost(string, repeated, tag = "14")]
+    pub document_name_filter: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// For custom synonyms.
     /// Customers provide the synonyms based on context. One customer can provide
     /// multiple set of synonyms based on different context. The search query will
@@ -1507,6 +1753,13 @@ pub struct DocumentQuery {
     pub document_creator_filter: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
+    /// To support the custom weighting across document schemas, customers need to
+    /// provide the properties to be used to boost the ranking in the search
+    /// request. For a search query with CustomWeightsMetadata specified, only the
+    /// RetrievalImportance for the properties in the CustomWeightsMetadata will
+    /// be honored.
+    #[prost(message, optional, tag = "13")]
+    pub custom_weights_metadata: ::core::option::Option<CustomWeightsMetadata>,
 }
 /// Filter on create timestamp or update timestamp of documents.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1542,6 +1795,8 @@ pub mod time_filter {
         CreateTime = 1,
         /// Latest document update time.
         UpdateTime = 2,
+        /// Time when document becomes mutable again.
+        DispositionTime = 3,
     }
     impl TimeField {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1553,6 +1808,7 @@ pub mod time_filter {
                 TimeField::Unspecified => "TIME_FIELD_UNSPECIFIED",
                 TimeField::CreateTime => "CREATE_TIME",
                 TimeField::UpdateTime => "UPDATE_TIME",
+                TimeField::DispositionTime => "DISPOSITION_TIME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1561,6 +1817,7 @@ pub mod time_filter {
                 "TIME_FIELD_UNSPECIFIED" => Some(Self::Unspecified),
                 "CREATE_TIME" => Some(Self::CreateTime),
                 "UPDATE_TIME" => Some(Self::UpdateTime),
+                "DISPOSITION_TIME" => Some(Self::DispositionTime),
                 _ => None,
             }
         }
@@ -1569,7 +1826,8 @@ pub mod time_filter {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PropertyFilter {
-    /// The Document schema name [Document.document_schema_name][google.cloud.contentwarehouse.v1.Document.document_schema_name].
+    /// The Document schema name
+    /// [Document.document_schema_name][google.cloud.contentwarehouse.v1.Document.document_schema_name].
     /// Format:
     /// projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
     #[prost(string, tag = "1")]
@@ -1601,10 +1859,11 @@ pub struct PropertyFilter {
     /// be < 6000 bytes in length.
     ///
     /// Only properties that are marked filterable are allowed
-    /// ([PropertyDefinition.is_filterable][google.cloud.contentwarehouse.v1.PropertyDefinition.is_filterable]). Property names do not need to be
-    /// prefixed by the document schema id (as is the case with histograms),
-    /// however property names will need to be prefixed by its parent hierarchy, if
-    /// any.  For example: top_property_name.sub_property_name.
+    /// ([PropertyDefinition.is_filterable][google.cloud.contentwarehouse.v1.PropertyDefinition.is_filterable]).
+    /// Property names do not need to be prefixed by the document schema id (as is
+    /// the case with histograms), however property names will need to be prefixed
+    /// by its parent hierarchy, if any.  For example:
+    /// top_property_name.sub_property_name.
     ///
     /// Sample Query:
     /// `(LOWER(driving_license)="class \"a\"" OR EMPTY(driving_license)) AND
@@ -1650,6 +1909,8 @@ pub mod file_type_filter {
         Folder = 2,
         /// Returns only non-folder documents.
         Document = 3,
+        /// Returns only root folders
+        RootFolder = 4,
     }
     impl FileType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1662,6 +1923,7 @@ pub mod file_type_filter {
                 FileType::All => "ALL",
                 FileType::Folder => "FOLDER",
                 FileType::Document => "DOCUMENT",
+                FileType::RootFolder => "ROOT_FOLDER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1671,10 +1933,31 @@ pub mod file_type_filter {
                 "ALL" => Some(Self::All),
                 "FOLDER" => Some(Self::Folder),
                 "DOCUMENT" => Some(Self::Document),
+                "ROOT_FOLDER" => Some(Self::RootFolder),
                 _ => None,
             }
         }
     }
+}
+/// To support the custom weighting across document schemas.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomWeightsMetadata {
+    /// List of schema and property name. Allows a maximum of 10 schemas to be
+    /// specified for relevance boosting.
+    #[prost(message, repeated, tag = "1")]
+    pub weighted_schema_properties: ::prost::alloc::vec::Vec<WeightedSchemaProperty>,
+}
+/// Specifies the schema property name.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WeightedSchemaProperty {
+    /// The document schema name.
+    #[prost(string, tag = "1")]
+    pub document_schema_name: ::prost::alloc::string::String,
+    /// The property definition names in the schema.
+    #[prost(string, repeated, tag = "2")]
+    pub property_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The histogram request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1683,7 +1966,9 @@ pub struct HistogramQuery {
     /// An expression specifies a histogram request against matching documents for
     /// searches.
     ///
-    /// See [SearchDocumentsRequest.histogram_queries][google.cloud.contentwarehouse.v1.SearchDocumentsRequest.histogram_queries] for details about syntax.
+    /// See
+    /// [SearchDocumentsRequest.histogram_queries][google.cloud.contentwarehouse.v1.SearchDocumentsRequest.histogram_queries]
+    /// for details about syntax.
     #[prost(string, tag = "1")]
     pub histogram_query: ::prost::alloc::string::String,
     /// Controls if the histogram query requires the return of a precise count.
@@ -1692,11 +1977,10 @@ pub struct HistogramQuery {
     /// Defaults to true.
     #[prost(bool, tag = "2")]
     pub require_precise_result_size: bool,
-    /// Optional. Filter the result of histogram query by the property names. It only works
-    /// with histogram query count('FilterableProperties').
-    /// It is an optional. It will perform histogram on all the property names for
-    /// all the document schemas. Setting this field will have a better
-    /// performance.
+    /// Optional. Filter the result of histogram query by the property names. It
+    /// only works with histogram query count('FilterableProperties'). It is an
+    /// optional. It will perform histogram on all the property names for all the
+    /// document schemas. Setting this field will have a better performance.
     #[prost(message, optional, tag = "3")]
     pub filters: ::core::option::Option<HistogramQueryPropertyNameFilter>,
 }
@@ -1704,9 +1988,9 @@ pub struct HistogramQuery {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HistogramQueryPropertyNameFilter {
     /// This filter specifies the exact document schema(s)
-    /// [Document.document_schema_name][google.cloud.contentwarehouse.v1.Document.document_schema_name] to run histogram query against.
-    /// It is optional. It will perform histogram for property names for all the
-    /// document schemas if it is not set.
+    /// [Document.document_schema_name][google.cloud.contentwarehouse.v1.Document.document_schema_name]
+    /// to run histogram query against. It is optional. It will perform histogram
+    /// for property names for all the document schemas if it is not set.
     ///
     /// At most 10 document schema names are allowed.
     /// Format:
@@ -1777,7 +2061,9 @@ pub mod histogram_query_property_name_filter {
         }
     }
 }
-/// Histogram result that matches [HistogramQuery][google.cloud.contentwarehouse.v1.HistogramQuery] specified in searches.
+/// Histogram result that matches
+/// [HistogramQuery][google.cloud.contentwarehouse.v1.HistogramQuery] specified
+/// in searches.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HistogramQueryResult {
@@ -1822,18 +2108,23 @@ pub struct CreateDocumentRequest {
     /// control for the service.
     #[prost(message, optional, tag = "3")]
     pub request_metadata: ::core::option::Option<RequestMetadata>,
-    /// Default document policy during creation. Conditions defined in the policy
-    /// will be ignored.
+    /// Default document policy during creation.
+    /// This refers to an Identity and Access (IAM) policy, which specifies access
+    /// controls for the Document.
+    /// Conditions defined in the policy will be ignored.
     #[prost(message, optional, tag = "4")]
     pub policy: ::core::option::Option<super::super::super::iam::v1::Policy>,
-    /// Request Option for processing Cloud AI Document in CW Document.
+    /// Request Option for processing Cloud AI Document in Document Warehouse.
+    /// This field offers limited support for mapping entities from Cloud AI
+    /// Document to Warehouse Document. Please consult with product team before
+    /// using this field and other available options.
     #[prost(message, optional, tag = "5")]
     pub cloud_ai_document_option: ::core::option::Option<CloudAiDocumentOption>,
     /// Field mask for creating Document fields. If mask path is empty,
     /// it means all fields are masked.
     /// For the `FieldMask` definition,
     /// see
-    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.>
     #[prost(message, optional, tag = "6")]
     pub create_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -1870,7 +2161,10 @@ pub struct UpdateDocumentRequest {
     /// control for the service.
     #[prost(message, optional, tag = "3")]
     pub request_metadata: ::core::option::Option<RequestMetadata>,
-    /// Request Option for processing Cloud AI Document in CW Document.
+    /// Request Option for processing Cloud AI Document in Document Warehouse.
+    /// This field offers limited support for mapping entities from Cloud AI
+    /// Document to Warehouse Document. Please consult with product team before
+    /// using this field and other available options.
     #[prost(message, optional, tag = "5")]
     pub cloud_ai_document_option: ::core::option::Option<CloudAiDocumentOption>,
     /// Options for the update operation.
@@ -1910,7 +2204,9 @@ pub struct SearchDocumentsRequest {
     pub document_query: ::core::option::Option<DocumentQuery>,
     /// An integer that specifies the current offset (that is, starting result
     /// location, amongst the documents deemed by the API as relevant) in search
-    /// results. This field is only considered if [page_token][google.cloud.contentwarehouse.v1.SearchDocumentsRequest.page_token] is unset.
+    /// results. This field is only considered if
+    /// [page_token][google.cloud.contentwarehouse.v1.SearchDocumentsRequest.page_token]
+    /// is unset.
     ///
     /// The maximum allowed value is 5000. Otherwise an error is thrown.
     ///
@@ -1926,8 +2222,9 @@ pub struct SearchDocumentsRequest {
     #[prost(int32, tag = "6")]
     pub page_size: i32,
     /// The token specifying the current offset within search results.
-    /// See [SearchDocumentsResponse.next_page_token][google.cloud.contentwarehouse.v1.SearchDocumentsResponse.next_page_token] for an explanation of how
-    /// to obtain the next set of query results.
+    /// See
+    /// [SearchDocumentsResponse.next_page_token][google.cloud.contentwarehouse.v1.SearchDocumentsResponse.next_page_token]
+    /// for an explanation of how to obtain the next set of query results.
     #[prost(string, tag = "7")]
     pub page_token: ::prost::alloc::string::String,
     /// The criteria determining how search results are sorted. For non-empty
@@ -1942,6 +2239,9 @@ pub struct SearchDocumentsRequest {
     /// * `"upload_date"`: By upload date ascending.
     /// * `"update_date desc"`: By last updated date descending.
     /// * `"update_date"`: By last updated date ascending.
+    /// * `"retrieval_importance desc"`: By retrieval importance of properties
+    ///    descending. This feature is still under development, please do not use
+    ///    unless otherwise instructed to do so.
     #[prost(string, tag = "8")]
     pub order_by: ::prost::alloc::string::String,
     /// An expression specifying a histogram request against matching
@@ -1957,7 +2257,7 @@ pub struct SearchDocumentsRequest {
     ///
     /// * Histogram facet (aka filterable properties): Facet names with format
     /// &lt;schema id&gt;.&lt;facet&gt;. Facets will have the
-    /// format of: [a-zA-Z][a-zA-Z0-9_:/-.]. If the facet is a child
+    /// format of: `[a-zA-Z][a-zA-Z0-9_:/-.]`. If the facet is a child
     /// facet, then the parent hierarchy needs to be specified separated by
     /// dots in the prefix after the schema id. Thus, the format for a multi-
     /// level facet is: &lt;schema id&gt;.&lt;parent facet name&gt;.
@@ -1976,20 +2276,91 @@ pub struct SearchDocumentsRequest {
     ///    count('abc123.MORTGAGE_TYPE')
     #[prost(message, repeated, tag = "9")]
     pub histogram_queries: ::prost::alloc::vec::Vec<HistogramQuery>,
-    /// Optional. Controls if the search document request requires the return of a total size
-    /// of matched documents. See [SearchDocumentsResponse.total_size][google.cloud.contentwarehouse.v1.SearchDocumentsResponse.total_size].
+    /// Controls if the search document request requires the return of a total size
+    /// of matched documents. See
+    /// [SearchDocumentsResponse.total_size][google.cloud.contentwarehouse.v1.SearchDocumentsResponse.total_size].
     ///
-    /// Enabling this flag may adversely impact performance.
+    /// Enabling this flag may adversely impact performance. Hint: If this is
+    /// used with pagination, set this flag on the initial query but set this
+    /// to false on subsequent page calls (keep the total count locally).
     ///
     /// Defaults to false.
     #[prost(bool, tag = "10")]
     pub require_total_size: bool,
+    /// Controls if the search document request requires the return of a total size
+    /// of matched documents. See
+    /// [SearchDocumentsResponse.total_size][google.cloud.contentwarehouse.v1.SearchDocumentsResponse.total_size].
+    #[prost(enumeration = "search_documents_request::TotalResultSize", tag = "12")]
+    pub total_result_size: i32,
     /// Experimental, do not use.
     /// The limit on the number of documents returned for the question-answering
     /// feature. To enable the question-answering feature, set
     /// \[DocumentQuery\].[is_nl_query][] to true.
     #[prost(int32, tag = "11")]
     pub qa_size_limit: i32,
+}
+/// Nested message and enum types in `SearchDocumentsRequest`.
+pub mod search_documents_request {
+    /// The total number of matching documents.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TotalResultSize {
+        /// Total number calculation will be skipped.
+        Unspecified = 0,
+        /// Estimate total number. The total result size will be accurated up to
+        /// 10,000. This option will add cost and latency to your request.
+        EstimatedSize = 1,
+        /// It may adversely impact performance. The limit is 1000,000.
+        ActualSize = 2,
+    }
+    impl TotalResultSize {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                TotalResultSize::Unspecified => "TOTAL_RESULT_SIZE_UNSPECIFIED",
+                TotalResultSize::EstimatedSize => "ESTIMATED_SIZE",
+                TotalResultSize::ActualSize => "ACTUAL_SIZE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TOTAL_RESULT_SIZE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ESTIMATED_SIZE" => Some(Self::EstimatedSize),
+                "ACTUAL_SIZE" => Some(Self::ActualSize),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message for DocumentService.LockDocument.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LockDocumentRequest {
+    /// Required. The name of the document to lock.
+    /// Format:
+    /// projects/{project_number}/locations/{location}/documents/{document}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The collection the document connects to.
+    #[prost(string, tag = "2")]
+    pub collection_id: ::prost::alloc::string::String,
+    /// The user information who locks the document.
+    #[prost(message, optional, tag = "3")]
+    pub locking_user: ::core::option::Option<UserInfo>,
 }
 /// Request message for DocumentService.FetchAcl
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1998,6 +2369,8 @@ pub struct FetchAclRequest {
     /// Required. REQUIRED: The resource for which the policy is being requested.
     /// Format for document:
     /// projects/{project_number}/locations/{location}/documents/{document_id}.
+    /// Format for collection:
+    /// projects/{project_number}/locations/{location}/collections/{collection_id}.
     /// Format for project: projects/{project_number}.
     #[prost(string, tag = "1")]
     pub resource: ::prost::alloc::string::String,
@@ -2017,11 +2390,30 @@ pub struct SetAclRequest {
     /// Required. REQUIRED: The resource for which the policy is being requested.
     /// Format for document:
     /// projects/{project_number}/locations/{location}/documents/{document_id}.
+    /// Format for collection:
+    /// projects/{project_number}/locations/{location}/collections/{collection_id}.
     /// Format for project: projects/{project_number}.
     #[prost(string, tag = "1")]
     pub resource: ::prost::alloc::string::String,
-    /// Required. REQUIRED: The complete policy to be applied to the `resource`. The size of
-    /// the policy is limited to a few 10s of KB.
+    /// Required. REQUIRED: The complete policy to be applied to the `resource`.
+    /// The size of the policy is limited to a few 10s of KB. This refers to an
+    /// Identity and Access (IAM) policy, which specifies access controls for the
+    /// Document.
+    ///
+    /// You can set ACL with condition for projects only.
+    ///
+    /// Supported operators are: `=`, `!=`, `<`, `<=`, `>`, and `>=` where
+    /// the left of the operator is `DocumentSchemaId` or property name and the
+    /// right of the operator is a number or a quoted string. You must escape
+    /// backslash (\\) and quote (\") characters.
+    ///
+    /// Boolean expressions (AND/OR) are supported up to 3 levels of nesting (for
+    /// example, "((A AND B AND C) OR D) AND E"), a maximum of 10 comparisons are
+    /// allowed in the expression. The expression must be < 6000 bytes in length.
+    ///
+    /// Sample condition:
+    ///      `"DocumentSchemaId = \"some schema id\" OR SchemaId.floatPropertyName
+    ///      >= 10"`
     #[prost(message, optional, tag = "2")]
     pub policy: ::core::option::Option<super::super::super::iam::v1::Policy>,
     /// The meta information collected about the end user, used to enforce access
@@ -2080,6 +2472,7 @@ pub struct Rule {
 }
 /// Nested message and enum types in `Rule`.
 pub mod rule {
+    /// The trigger types for actions.
     #[derive(
         Clone,
         Copy,
@@ -2093,11 +2486,16 @@ pub mod rule {
     )]
     #[repr(i32)]
     pub enum TriggerType {
+        /// Trigger for unknown action.
         Unknown = 0,
         /// Trigger for create document action.
         OnCreate = 1,
         /// Trigger for update document action.
         OnUpdate = 4,
+        /// Trigger for create link action.
+        OnCreateLink = 7,
+        /// Trigger for delete link action.
+        OnDeleteLink = 8,
     }
     impl TriggerType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2109,6 +2507,8 @@ pub mod rule {
                 TriggerType::Unknown => "UNKNOWN",
                 TriggerType::OnCreate => "ON_CREATE",
                 TriggerType::OnUpdate => "ON_UPDATE",
+                TriggerType::OnCreateLink => "ON_CREATE_LINK",
+                TriggerType::OnDeleteLink => "ON_DELETE_LINK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2117,6 +2517,8 @@ pub mod rule {
                 "UNKNOWN" => Some(Self::Unknown),
                 "ON_CREATE" => Some(Self::OnCreate),
                 "ON_UPDATE" => Some(Self::OnUpdate),
+                "ON_CREATE_LINK" => Some(Self::OnCreateLink),
+                "ON_DELETE_LINK" => Some(Self::OnDeleteLink),
                 _ => None,
             }
         }
@@ -2190,6 +2592,7 @@ pub mod access_control_action {
     )]
     #[repr(i32)]
     pub enum OperationType {
+        /// The unknown operation type.
         Unknown = 0,
         /// Adds newly given policy bindings in the existing bindings list.
         AddPolicyBinding = 1,
@@ -2387,6 +2790,7 @@ pub mod action_output {
     )]
     #[repr(i32)]
     pub enum State {
+        /// The unknown state.
         Unknown = 0,
         /// State indicating action executed successfully.
         ActionSucceeded = 1,
@@ -2441,6 +2845,11 @@ pub struct CreateDocumentResponse {
     /// id.
     #[prost(message, optional, tag = "3")]
     pub metadata: ::core::option::Option<ResponseMetadata>,
+    /// post-processing LROs
+    #[prost(message, repeated, tag = "4")]
+    pub long_running_operations: ::prost::alloc::vec::Vec<
+        super::super::super::longrunning::Operation,
+    >,
 }
 /// Response message for DocumentService.UpdateDocument.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2492,7 +2901,8 @@ pub mod qa_result {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchDocumentsResponse {
-    /// The document entities that match the specified [SearchDocumentsRequest][google.cloud.contentwarehouse.v1.SearchDocumentsRequest].
+    /// The document entities that match the specified
+    /// [SearchDocumentsRequest][google.cloud.contentwarehouse.v1.SearchDocumentsRequest].
     #[prost(message, repeated, tag = "1")]
     pub matching_documents: ::prost::alloc::vec::Vec<
         search_documents_response::MatchingDocument,
@@ -2502,8 +2912,13 @@ pub struct SearchDocumentsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// The total number of matched documents which is available only if the client
-    /// set [SearchDocumentsRequest.require_total_size][google.cloud.contentwarehouse.v1.SearchDocumentsRequest.require_total_size] to `true`. Otherwise, the
-    /// value will be `-1`.
+    /// set
+    /// [SearchDocumentsRequest.require_total_size][google.cloud.contentwarehouse.v1.SearchDocumentsRequest.require_total_size]
+    /// to `true` or set
+    /// [SearchDocumentsRequest.total_result_size][google.cloud.contentwarehouse.v1.SearchDocumentsRequest.total_result_size]
+    /// to `ESTIMATED_SIZE` or `ACTUAL_SIZE`. Otherwise, the value will be `-1`.
+    /// Typically a UI would handle this condition by displaying &quot;of
+    /// many&quot;, for example: &quot;Displaying 10 of many&quot;.
     #[prost(int32, tag = "3")]
     pub total_size: i32,
     /// Additional information for the API invocation, such as the request tracking
@@ -2514,14 +2929,20 @@ pub struct SearchDocumentsResponse {
     /// [SearchDocumentsRequest.histogram_queries][google.cloud.contentwarehouse.v1.SearchDocumentsRequest.histogram_queries].
     #[prost(message, repeated, tag = "6")]
     pub histogram_query_results: ::prost::alloc::vec::Vec<HistogramQueryResult>,
+    /// Experimental.
+    /// Question answer from the query against the document.
+    #[prost(string, tag = "7")]
+    pub question_answer: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `SearchDocumentsResponse`.
 pub mod search_documents_response {
-    /// Document entry with metadata inside [SearchDocumentsResponse][google.cloud.contentwarehouse.v1.SearchDocumentsResponse]
+    /// Document entry with metadata inside
+    /// [SearchDocumentsResponse][google.cloud.contentwarehouse.v1.SearchDocumentsResponse]
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MatchingDocument {
-        /// Document that matches the specified [SearchDocumentsRequest][google.cloud.contentwarehouse.v1.SearchDocumentsRequest].
+        /// Document that matches the specified
+        /// [SearchDocumentsRequest][google.cloud.contentwarehouse.v1.SearchDocumentsRequest].
         /// This document only contains indexed metadata information.
         #[prost(message, optional, tag = "1")]
         pub document: ::core::option::Option<super::Document>,
@@ -2533,13 +2954,18 @@ pub mod search_documents_response {
         /// If the question-answering feature is enabled, this field will instead
         /// contain a snippet that answers the user's natural-language query. No HTML
         /// bold tags will be present, and highlights in the answer snippet can be
-        /// found in [QAResult.highlights][google.cloud.contentwarehouse.v1.QAResult.highlights].
+        /// found in
+        /// [QAResult.highlights][google.cloud.contentwarehouse.v1.QAResult.highlights].
         #[prost(string, tag = "2")]
         pub search_text_snippet: ::prost::alloc::string::String,
         /// Experimental.
         /// Additional result info if the question-answering feature is enabled.
         #[prost(message, optional, tag = "3")]
         pub qa_result: ::core::option::Option<super::QaResult>,
+        /// Return the 1-based page indices where those pages have one or more
+        /// matched tokens.
+        #[prost(int64, repeated, tag = "4")]
+        pub matched_token_page_indices: ::prost::alloc::vec::Vec<i64>,
     }
 }
 /// Response message for DocumentService.FetchAcl.
@@ -2771,7 +3197,8 @@ pub mod document_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Searches for documents using provided [SearchDocumentsRequest][google.cloud.contentwarehouse.v1.SearchDocumentsRequest].
+        /// Searches for documents using provided
+        /// [SearchDocumentsRequest][google.cloud.contentwarehouse.v1.SearchDocumentsRequest].
         /// This call only returns documents that the caller has permission to search
         /// against.
         pub async fn search_documents(
@@ -2800,6 +3227,34 @@ pub mod document_service_client {
                     GrpcMethod::new(
                         "google.cloud.contentwarehouse.v1.DocumentService",
                         "SearchDocuments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lock the document so the document cannot be updated by other users.
+        pub async fn lock_document(
+            &mut self,
+            request: impl tonic::IntoRequest<super::LockDocumentRequest>,
+        ) -> std::result::Result<tonic::Response<super::Document>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contentwarehouse.v1.DocumentService/LockDocument",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.DocumentService",
+                        "LockDocument",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -2862,6 +3317,454 @@ pub mod document_service_client {
                     GrpcMethod::new(
                         "google.cloud.contentwarehouse.v1.DocumentService",
                         "SetAcl",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Response message of RunPipeline method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunPipelineResponse {}
+/// Metadata message of RunPipeline method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunPipelineMetadata {
+    /// Number of files that were processed by the pipeline.
+    #[prost(int32, tag = "1")]
+    pub total_file_count: i32,
+    /// Number of files that have failed at some point in the pipeline.
+    #[prost(int32, tag = "2")]
+    pub failed_file_count: i32,
+    /// User unique identification and groups information.
+    #[prost(message, optional, tag = "3")]
+    pub user_info: ::core::option::Option<UserInfo>,
+    /// The list of response details of each document.
+    #[prost(message, repeated, tag = "5")]
+    pub individual_document_statuses: ::prost::alloc::vec::Vec<
+        run_pipeline_metadata::IndividualDocumentStatus,
+    >,
+    /// The pipeline metadata.
+    #[prost(oneof = "run_pipeline_metadata::PipelineMetadata", tags = "4, 6, 7")]
+    pub pipeline_metadata: ::core::option::Option<
+        run_pipeline_metadata::PipelineMetadata,
+    >,
+}
+/// Nested message and enum types in `RunPipelineMetadata`.
+pub mod run_pipeline_metadata {
+    /// The metadata message for GcsIngest pipeline.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GcsIngestPipelineMetadata {
+        /// The input Cloud Storage folder in this pipeline.
+        /// Format: `gs://<bucket-name>/<folder-name>`.
+        #[prost(string, tag = "1")]
+        pub input_path: ::prost::alloc::string::String,
+    }
+    /// The metadata message for Export-to-CDW pipeline.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ExportToCdwPipelineMetadata {
+        /// The input list of all the resource names of the documents to be exported.
+        #[prost(string, repeated, tag = "1")]
+        pub documents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// The output CDW dataset resource name.
+        #[prost(string, tag = "2")]
+        pub doc_ai_dataset: ::prost::alloc::string::String,
+        /// The output Cloud Storage folder in this pipeline.
+        #[prost(string, tag = "3")]
+        pub output_path: ::prost::alloc::string::String,
+    }
+    /// The metadata message for Process-with-DocAi pipeline.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ProcessWithDocAiPipelineMetadata {
+        /// The input list of all the resource names of the documents to be
+        /// processed.
+        #[prost(string, repeated, tag = "1")]
+        pub documents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// The DocAI processor to process the documents with.
+        #[prost(message, optional, tag = "2")]
+        pub processor_info: ::core::option::Option<super::ProcessorInfo>,
+    }
+    /// The status of processing a document.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct IndividualDocumentStatus {
+        /// Document identifier of an existing document.
+        #[prost(string, tag = "1")]
+        pub document_id: ::prost::alloc::string::String,
+        /// The status processing the document.
+        #[prost(message, optional, tag = "2")]
+        pub status: ::core::option::Option<super::super::super::super::rpc::Status>,
+    }
+    /// The pipeline metadata.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum PipelineMetadata {
+        /// The pipeline metadata for GcsIngest pipeline.
+        #[prost(message, tag = "4")]
+        GcsIngestPipelineMetadata(GcsIngestPipelineMetadata),
+        /// The pipeline metadata for Export-to-CDW pipeline.
+        #[prost(message, tag = "6")]
+        ExportToCdwPipelineMetadata(ExportToCdwPipelineMetadata),
+        /// The pipeline metadata for Process-with-DocAi pipeline.
+        #[prost(message, tag = "7")]
+        ProcessWithDocAiPipelineMetadata(ProcessWithDocAiPipelineMetadata),
+    }
+}
+/// The DocAI processor information.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProcessorInfo {
+    /// The processor resource name.
+    /// Format is `projects/{project}/locations/{location}/processors/{processor}`,
+    /// or
+    /// `projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}`
+    #[prost(string, tag = "1")]
+    pub processor_name: ::prost::alloc::string::String,
+    /// The processor will process the documents with this document type.
+    #[prost(string, tag = "2")]
+    pub document_type: ::prost::alloc::string::String,
+    /// The Document schema resource name. All documents processed by this
+    /// processor will use this schema.
+    /// Format:
+    /// projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
+    #[prost(string, tag = "3")]
+    pub schema_name: ::prost::alloc::string::String,
+}
+/// The ingestion pipeline config.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IngestPipelineConfig {
+    /// The document level acl policy config.
+    /// This refers to an Identity and Access (IAM) policy, which specifies access
+    /// controls for all documents ingested by the pipeline. The
+    /// [role][google.iam.v1.Binding.role] and
+    /// [members][google.iam.v1.Binding.role] under the policy needs to be
+    /// specified.
+    ///
+    /// The following roles are supported for document level acl control:
+    /// * roles/contentwarehouse.documentAdmin
+    /// * roles/contentwarehouse.documentEditor
+    /// * roles/contentwarehouse.documentViewer
+    ///
+    /// The following members are supported for document level acl control:
+    /// * user:user-email@example.com
+    /// * group:group-email@example.com
+    /// Note that for documents searched with LLM, only single level user or group
+    /// acl check is supported.
+    #[prost(message, optional, tag = "1")]
+    pub document_acl_policy: ::core::option::Option<
+        super::super::super::iam::v1::Policy,
+    >,
+    /// The document text extraction enabled flag.
+    /// If the flag is set to true, DWH will perform text extraction on the raw
+    /// document.
+    #[prost(bool, tag = "2")]
+    pub enable_document_text_extraction: bool,
+    /// Optional. The name of the folder to which all ingested documents will be
+    /// linked during ingestion process. Format is
+    /// `projects/{project}/locations/{location}/documents/{folder_id}`
+    #[prost(string, tag = "3")]
+    pub folder: ::prost::alloc::string::String,
+    /// The Cloud Function resource name. The Cloud Function needs to live inside
+    /// consumer project and is accessible to Document AI Warehouse P4SA.
+    /// Only Cloud Functions V2 is supported. Cloud function execution should
+    /// complete within 5 minutes or this file ingestion may fail due to timeout.
+    /// Format: `<https://{region}-{project_id}.cloudfunctions.net/{cloud_function}`>
+    /// The following keys are available the request json payload.
+    /// * display_name
+    /// * properties
+    /// * plain_text
+    /// * reference_id
+    /// * document_schema_name
+    /// * raw_document_path
+    /// * raw_document_file_type
+    ///
+    /// The following keys from the cloud function json response payload will be
+    /// ingested to the Document AI Warehouse as part of Document proto content
+    /// and/or related information. The original values will be overridden if any
+    /// key is present in the response.
+    /// * display_name
+    /// * properties
+    /// * plain_text
+    /// * document_acl_policy
+    /// * folder
+    #[prost(string, tag = "4")]
+    pub cloud_function: ::prost::alloc::string::String,
+}
+/// The configuration of the Cloud Storage Ingestion pipeline.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GcsIngestPipeline {
+    /// The input Cloud Storage folder. All files under this folder will be
+    /// imported to Document Warehouse.
+    /// Format: `gs://<bucket-name>/<folder-name>`.
+    #[prost(string, tag = "1")]
+    pub input_path: ::prost::alloc::string::String,
+    /// The Document Warehouse schema resource name. All documents processed by
+    /// this pipeline will use this schema.
+    /// Format:
+    /// projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
+    #[prost(string, tag = "2")]
+    pub schema_name: ::prost::alloc::string::String,
+    /// The Doc AI processor type name. Only used when the format of ingested
+    /// files is Doc AI Document proto format.
+    #[prost(string, tag = "3")]
+    pub processor_type: ::prost::alloc::string::String,
+    /// The flag whether to skip ingested documents.
+    /// If it is set to true, documents in Cloud Storage contains key "status" with
+    /// value "status=ingested" in custom metadata will be skipped to ingest.
+    #[prost(bool, tag = "4")]
+    pub skip_ingested_documents: bool,
+    /// Optional. The config for the Cloud Storage Ingestion pipeline.
+    /// It provides additional customization options to run the pipeline and can be
+    /// skipped if it is not applicable.
+    #[prost(message, optional, tag = "5")]
+    pub pipeline_config: ::core::option::Option<IngestPipelineConfig>,
+}
+/// The configuration of the Cloud Storage Ingestion with DocAI Processors
+/// pipeline.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GcsIngestWithDocAiProcessorsPipeline {
+    /// The input Cloud Storage folder. All files under this folder will be
+    /// imported to Document Warehouse.
+    /// Format: `gs://<bucket-name>/<folder-name>`.
+    #[prost(string, tag = "1")]
+    pub input_path: ::prost::alloc::string::String,
+    /// The split and classify processor information.
+    /// The split and classify result will be used to find a matched extract
+    /// processor.
+    #[prost(message, optional, tag = "2")]
+    pub split_classify_processor_info: ::core::option::Option<ProcessorInfo>,
+    /// The extract processors information.
+    /// One matched extract processor will be used to process documents based on
+    /// the classify processor result. If no classify processor is specified, the
+    /// first extract processor will be used.
+    #[prost(message, repeated, tag = "3")]
+    pub extract_processor_infos: ::prost::alloc::vec::Vec<ProcessorInfo>,
+    /// The Cloud Storage folder path used to store the raw results from
+    /// processors.
+    /// Format: `gs://<bucket-name>/<folder-name>`.
+    #[prost(string, tag = "4")]
+    pub processor_results_folder_path: ::prost::alloc::string::String,
+    /// The flag whether to skip ingested documents.
+    /// If it is set to true, documents in Cloud Storage contains key "status" with
+    /// value "status=ingested" in custom metadata will be skipped to ingest.
+    #[prost(bool, tag = "5")]
+    pub skip_ingested_documents: bool,
+    /// Optional. The config for the Cloud Storage Ingestion with DocAI Processors
+    /// pipeline. It provides additional customization options to run the pipeline
+    /// and can be skipped if it is not applicable.
+    #[prost(message, optional, tag = "6")]
+    pub pipeline_config: ::core::option::Option<IngestPipelineConfig>,
+}
+/// The configuration of exporting documents from the Document Warehouse to CDW
+/// pipeline.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportToCdwPipeline {
+    /// The list of all the resource names of the documents to be processed.
+    /// Format:
+    /// projects/{project_number}/locations/{location}/documents/{document_id}.
+    #[prost(string, repeated, tag = "1")]
+    pub documents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The Cloud Storage folder path used to store the exported documents before
+    /// being sent to CDW.
+    /// Format: `gs://<bucket-name>/<folder-name>`.
+    #[prost(string, tag = "2")]
+    pub export_folder_path: ::prost::alloc::string::String,
+    /// Optional. The CDW dataset resource name. This field is optional. If not
+    /// set, the documents will be exported to Cloud Storage only. Format:
+    /// projects/{project}/locations/{location}/processors/{processor}/dataset
+    #[prost(string, tag = "3")]
+    pub doc_ai_dataset: ::prost::alloc::string::String,
+    /// Ratio of training dataset split. When importing into Document AI Workbench,
+    /// documents will be automatically split into training and test split category
+    /// with the specified ratio. This field is required if doc_ai_dataset is set.
+    #[prost(float, tag = "4")]
+    pub training_split_ratio: f32,
+}
+/// The configuration of processing documents in Document Warehouse with DocAi
+/// processors pipeline.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProcessWithDocAiPipeline {
+    /// The list of all the resource names of the documents to be processed.
+    /// Format:
+    /// projects/{project_number}/locations/{location}/documents/{document_id}.
+    #[prost(string, repeated, tag = "1")]
+    pub documents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The Cloud Storage folder path used to store the exported documents before
+    /// being sent to CDW.
+    /// Format: `gs://<bucket-name>/<folder-name>`.
+    #[prost(string, tag = "2")]
+    pub export_folder_path: ::prost::alloc::string::String,
+    /// The CDW processor information.
+    #[prost(message, optional, tag = "3")]
+    pub processor_info: ::core::option::Option<ProcessorInfo>,
+    /// The Cloud Storage folder path used to store the raw results from
+    /// processors.
+    /// Format: `gs://<bucket-name>/<folder-name>`.
+    #[prost(string, tag = "4")]
+    pub processor_results_folder_path: ::prost::alloc::string::String,
+}
+/// Request message for DocumentService.RunPipeline.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunPipelineRequest {
+    /// Required. The resource name which owns the resources of the pipeline.
+    /// Format: projects/{project_number}/locations/{location}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The meta information collected about the end user, used to enforce access
+    /// control for the service.
+    #[prost(message, optional, tag = "6")]
+    pub request_metadata: ::core::option::Option<RequestMetadata>,
+    /// The predefined pipelines.
+    #[prost(oneof = "run_pipeline_request::Pipeline", tags = "2, 3, 4, 5")]
+    pub pipeline: ::core::option::Option<run_pipeline_request::Pipeline>,
+}
+/// Nested message and enum types in `RunPipelineRequest`.
+pub mod run_pipeline_request {
+    /// The predefined pipelines.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Pipeline {
+        /// Cloud Storage ingestion pipeline.
+        #[prost(message, tag = "2")]
+        GcsIngestPipeline(super::GcsIngestPipeline),
+        /// Use DocAI processors to process documents in Cloud Storage and ingest
+        /// them to Document Warehouse.
+        #[prost(message, tag = "3")]
+        GcsIngestWithDocAiProcessorsPipeline(
+            super::GcsIngestWithDocAiProcessorsPipeline,
+        ),
+        /// Export docuemnts from Document Warehouse to CDW for training purpose.
+        #[prost(message, tag = "4")]
+        ExportCdwPipeline(super::ExportToCdwPipeline),
+        /// Use a DocAI processor to process documents in Document Warehouse, and
+        /// re-ingest the updated results into Document Warehouse.
+        #[prost(message, tag = "5")]
+        ProcessWithDocAiPipeline(super::ProcessWithDocAiPipeline),
+    }
+}
+/// Generated client implementations.
+pub mod pipeline_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// This service lets you manage pipelines.
+    #[derive(Debug, Clone)]
+    pub struct PipelineServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl PipelineServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> PipelineServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> PipelineServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            PipelineServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Run a predefined pipeline.
+        pub async fn run_pipeline(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RunPipelineRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contentwarehouse.v1.PipelineService/RunPipeline",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contentwarehouse.v1.PipelineService",
+                        "RunPipeline",
                     ),
                 );
             self.inner.unary(req, path, codec).await

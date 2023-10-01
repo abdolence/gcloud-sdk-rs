@@ -49,6 +49,11 @@ pub struct AuditLog {
     /// one AuthorizationInfo element for each {resource, permission} tuple.
     #[prost(message, repeated, tag = "9")]
     pub authorization_info: ::prost::alloc::vec::Vec<AuthorizationInfo>,
+    /// Indicates the policy violations for this request. If the request
+    /// is denied by the policy, violation information will be logged
+    /// here.
+    #[prost(message, optional, tag = "25")]
+    pub policy_violation_info: ::core::option::Option<PolicyViolationInfo>,
     /// Metadata about the operation.
     #[prost(message, optional, tag = "4")]
     pub request_metadata: ::core::option::Option<RequestMetadata>,
@@ -87,8 +92,8 @@ pub struct AuthenticationInfo {
     /// of third party principal) making the request. For third party identity
     /// callers, the `principal_subject` field is populated instead of this field.
     /// For privacy reasons, the principal email address is sometimes redacted.
-    /// For more information, see
-    /// <https://cloud.google.com/logging/docs/audit#user-id.>
+    /// For more information, see [Caller identities in audit
+    /// logs](<https://cloud.google.com/logging/docs/audit#user-id>).
     #[prost(string, tag = "1")]
     pub principal_email: ::prost::alloc::string::String,
     /// The authority selector specified by the requestor, if any.
@@ -157,14 +162,16 @@ pub struct AuthorizationInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestMetadata {
     /// The IP address of the caller.
-    /// For caller from internet, this will be public IPv4 or IPv6 address.
-    /// For caller from a Compute Engine VM with external IP address, this
-    /// will be the VM's external IP address. For caller from a Compute
-    /// Engine VM without external IP address, if the VM is in the same
-    /// organization (or project) as the accessed resource, `caller_ip` will
-    /// be the VM's internal IPv4 address, otherwise the `caller_ip` will be
-    /// redacted to "gce-internal-ip".
-    /// See <https://cloud.google.com/compute/docs/vpc/> for more information.
+    /// For a caller from the internet, this will be the public IPv4 or IPv6
+    /// address. For calls made from inside Google's internal production network
+    /// from one GCP service to another, `caller_ip` will be redacted to "private".
+    /// For a caller from a Compute Engine VM with a external IP address,
+    /// `caller_ip` will be the VM's external IP address. For a caller from a
+    /// Compute Engine VM without a external IP address, if the VM is in the same
+    /// organization (or project) as the accessed resource, `caller_ip` will be the
+    /// VM's internal IPv4 address, otherwise `caller_ip` will be redacted to
+    /// "gce-internal-ip". See <https://cloud.google.com/compute/docs/vpc/> for more
+    /// information.
     #[prost(string, tag = "1")]
     pub caller_ip: ::prost::alloc::string::String,
     /// The user agent of the caller.
@@ -287,15 +294,126 @@ pub mod service_account_delegation_info {
         ThirdPartyPrincipal(ThirdPartyPrincipal),
     }
 }
+/// Information related to policy violations for this request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PolicyViolationInfo {
+    /// Indicates the orgpolicy violations for this resource.
+    #[prost(message, optional, tag = "1")]
+    pub org_policy_violation_info: ::core::option::Option<OrgPolicyViolationInfo>,
+}
+/// Represents OrgPolicy Violation information.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OrgPolicyViolationInfo {
+    /// Optional. Resource payload that is currently in scope and is subjected to orgpolicy
+    /// conditions. This payload may be the subset of the actual Resource that may
+    /// come in the request. This payload should not contain any core content.
+    #[prost(message, optional, tag = "1")]
+    pub payload: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Resource type that the orgpolicy is checked against.
+    /// Example: compute.googleapis.com/Instance, store.googleapis.com/bucket
+    #[prost(string, tag = "2")]
+    pub resource_type: ::prost::alloc::string::String,
+    /// Optional. Tags referenced on the resource at the time of evaluation. These also
+    /// include the federated tags, if they are supplied in the CheckOrgPolicy
+    /// or CheckCustomConstraints Requests.
+    ///
+    /// Optional field as of now. These tags are the Cloud tags that are
+    /// available on the resource during the policy evaluation and will
+    /// be available as part of the OrgPolicy check response for logging purposes.
+    #[prost(map = "string, string", tag = "3")]
+    pub resource_tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Policy violations
+    #[prost(message, repeated, tag = "4")]
+    pub violation_info: ::prost::alloc::vec::Vec<ViolationInfo>,
+}
+/// Provides information about the Policy violation info for this request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ViolationInfo {
+    /// Optional. Constraint name
+    #[prost(string, tag = "1")]
+    pub constraint: ::prost::alloc::string::String,
+    /// Optional. Error message that policy is indicating.
+    #[prost(string, tag = "2")]
+    pub error_message: ::prost::alloc::string::String,
+    /// Optional. Value that is being checked for the policy.
+    /// This could be in encrypted form (if pii sensitive).
+    /// This field will only be emitted in LIST_POLICY types
+    #[prost(string, tag = "3")]
+    pub checked_value: ::prost::alloc::string::String,
+    /// Optional. Indicates the type of the policy.
+    #[prost(enumeration = "violation_info::PolicyType", tag = "4")]
+    pub policy_type: i32,
+}
+/// Nested message and enum types in `ViolationInfo`.
+pub mod violation_info {
+    /// Policy Type enum
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PolicyType {
+        /// Default value. This value should not be used.
+        Unspecified = 0,
+        /// Indicates boolean policy constraint
+        BooleanConstraint = 1,
+        /// Indicates list policy constraint
+        ListConstraint = 2,
+        /// Indicates custom policy constraint
+        CustomConstraint = 3,
+    }
+    impl PolicyType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                PolicyType::Unspecified => "POLICY_TYPE_UNSPECIFIED",
+                PolicyType::BooleanConstraint => "BOOLEAN_CONSTRAINT",
+                PolicyType::ListConstraint => "LIST_CONSTRAINT",
+                PolicyType::CustomConstraint => "CUSTOM_CONSTRAINT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "POLICY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BOOLEAN_CONSTRAINT" => Some(Self::BooleanConstraint),
+                "LIST_CONSTRAINT" => Some(Self::ListConstraint),
+                "CUSTOM_CONSTRAINT" => Some(Self::CustomConstraint),
+                _ => None,
+            }
+        }
+    }
+}
 /// Audit log format for BigQuery cloud audit logs metadata.
 ///
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryAuditMetadata {
+    /// First party (Google) application specific metadata.
+    #[prost(message, optional, tag = "24")]
+    pub first_party_app_metadata: ::core::option::Option<
+        big_query_audit_metadata::FirstPartyAppMetadata,
+    >,
     /// BigQuery event information.
     #[prost(
         oneof = "big_query_audit_metadata::Event",
-        tags = "1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 19, 16, 17, 18"
+        tags = "1, 2, 23, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 19, 16, 17, 18, 20, 21, 22, 25"
     )]
     pub event: ::core::option::Option<big_query_audit_metadata::Event>,
 }
@@ -371,6 +489,61 @@ pub mod big_query_audit_metadata {
         /// Job metadata.
         #[prost(message, optional, tag = "3")]
         pub job: ::core::option::Option<Job>,
+    }
+    /// Job deletion event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct JobDeletion {
+        /// Job URI.
+        ///
+        /// Format: `projects/<project_id>/jobs/<job_id>`.
+        #[prost(string, tag = "1")]
+        pub job_name: ::prost::alloc::string::String,
+        /// Describes how the job was deleted.
+        #[prost(enumeration = "job_deletion::Reason", tag = "2")]
+        pub reason: i32,
+    }
+    /// Nested message and enum types in `JobDeletion`.
+    pub mod job_deletion {
+        /// Describes how the job was deleted.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Reason {
+            /// Unknown.
+            Unspecified = 0,
+            /// Job was deleted using the jobs.delete API.
+            JobDeleteRequest = 1,
+        }
+        impl Reason {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Reason::Unspecified => "REASON_UNSPECIFIED",
+                    Reason::JobDeleteRequest => "JOB_DELETE_REQUEST",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "JOB_DELETE_REQUEST" => Some(Self::JobDeleteRequest),
+                    _ => None,
+                }
+            }
+        }
     }
     /// Dataset creation event.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1237,41 +1410,11 @@ pub mod big_query_audit_metadata {
             }
         }
     }
-    /// BigQuery dataset.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Dataset {
-        /// Dataset URI.
-        ///
-        /// Format: `projects/<project_id>/datasets/<dataset_id>`.
-        #[prost(string, tag = "1")]
-        pub dataset_name: ::prost::alloc::string::String,
-        /// Dataset creation time.
-        #[prost(message, optional, tag = "3")]
-        pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-        /// Dataset metadata last update time.
-        #[prost(message, optional, tag = "4")]
-        pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-        /// The access control list for the dataset.
-        #[prost(message, optional, tag = "5")]
-        pub acl: ::core::option::Option<BigQueryAcl>,
-        /// Default expiration time for tables in the dataset.
-        #[prost(message, optional, tag = "6")]
-        pub default_table_expire_duration: ::core::option::Option<
-            ::prost_types::Duration,
-        >,
-        /// User-provided metadata for the dataset.
-        #[prost(message, optional, tag = "7")]
-        pub dataset_info: ::core::option::Option<EntityInfo>,
-        /// Default encryption for tables in the dataset.
-        #[prost(message, optional, tag = "8")]
-        pub default_encryption: ::core::option::Option<EncryptionInfo>,
-    }
     /// Table deletion event.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableDeletion {
-        /// Describes how the table was deleted.
+        /// Describes how table was deleted.
         #[prost(enumeration = "table_deletion::Reason", tag = "1")]
         pub reason: i32,
         /// The URI of the job that deleted a table.
@@ -1395,31 +1538,6 @@ pub mod big_query_audit_metadata {
             }
         }
     }
-    /// Trained BigQuery ML model.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Model {
-        /// Model URI.
-        ///
-        /// Format: `projects/<project_id>/datasets/<dataset_id>/models/<model_id>`.
-        #[prost(string, tag = "1")]
-        pub model_name: ::prost::alloc::string::String,
-        /// User-provided metadata for the model.
-        #[prost(message, optional, tag = "2")]
-        pub model_info: ::core::option::Option<EntityInfo>,
-        /// Model expiration time.
-        #[prost(message, optional, tag = "5")]
-        pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
-        /// Model creation time.
-        #[prost(message, optional, tag = "6")]
-        pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-        /// Model last update time.
-        #[prost(message, optional, tag = "7")]
-        pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-        /// Model encryption information. Set when non-default encryption is used.
-        #[prost(message, optional, tag = "8")]
-        pub encryption: ::core::option::Option<EncryptionInfo>,
-    }
     /// Routine deletion event.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1478,6 +1596,110 @@ pub mod big_query_audit_metadata {
                     "REASON_UNSPECIFIED" => Some(Self::Unspecified),
                     "QUERY" => Some(Self::Query),
                     "ROUTINE_DELETE_REQUEST" => Some(Self::RoutineDeleteRequest),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Row access policy creation event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RowAccessPolicyCreation {
+        /// The row access policy created by this event.
+        #[prost(message, optional, tag = "1")]
+        pub row_access_policy: ::core::option::Option<RowAccessPolicy>,
+        /// The URI of the job that created this row access policy.
+        ///
+        /// Format: `projects/<project_id>/jobs/<job_id>`.
+        #[prost(string, tag = "2")]
+        pub job_name: ::prost::alloc::string::String,
+    }
+    /// Row access policy change event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RowAccessPolicyChange {
+        /// The row access policy that was changed by this event.
+        #[prost(message, optional, tag = "1")]
+        pub row_access_policy: ::core::option::Option<RowAccessPolicy>,
+        /// The URI of the job that created this row access policy.
+        ///
+        /// Format: `projects/<project_id>/jobs/<job_id>`.
+        #[prost(string, tag = "2")]
+        pub job_name: ::prost::alloc::string::String,
+    }
+    /// Row access policy deletion event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RowAccessPolicyDeletion {
+        /// The row access policies that were deleted. At present, only populated
+        /// when a single policy is dropped.
+        #[prost(message, repeated, tag = "1")]
+        pub row_access_policies: ::prost::alloc::vec::Vec<RowAccessPolicy>,
+        /// The job that deleted these row access policies.
+        ///
+        /// Format: `projects/<project_id>/jobs/<job_id>`.
+        #[prost(string, tag = "2")]
+        pub job_name: ::prost::alloc::string::String,
+        /// This field is set to true when a DROP ALL command has been executed, thus
+        /// removing all row access policies on the table.
+        #[prost(bool, tag = "3")]
+        pub all_row_access_policies_dropped: bool,
+    }
+    /// Unlink linked dataset from its source dataset event
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UnlinkDataset {
+        /// The linked dataset URI which is unlinked from its source.
+        ///
+        /// Format: `projects/<project_id>/datasets/<dataset_id>`.
+        #[prost(string, tag = "1")]
+        pub linked_dataset: ::prost::alloc::string::String,
+        /// The source dataset URI from which the linked dataset is unlinked.
+        ///
+        /// Format: `projects/<project_id>/datasets/<dataset_id>`.
+        #[prost(string, tag = "2")]
+        pub source_dataset: ::prost::alloc::string::String,
+        /// Reason for unlinking linked dataset
+        #[prost(enumeration = "unlink_dataset::Reason", tag = "3")]
+        pub reason: i32,
+    }
+    /// Nested message and enum types in `UnlinkDataset`.
+    pub mod unlink_dataset {
+        /// Describes how the unlinking operation occurred.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Reason {
+            /// Unknown.
+            Unspecified = 0,
+            /// Linked dataset unlinked via API
+            UnlinkApi = 1,
+        }
+        impl Reason {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Reason::Unspecified => "REASON_UNSPECIFIED",
+                    Reason::UnlinkApi => "UNLINK_API",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "UNLINK_API" => Some(Self::UnlinkApi),
                     _ => None,
                 }
             }
@@ -1817,10 +2039,17 @@ pub mod big_query_audit_metadata {
         #[prost(int64, tag = "10")]
         pub total_slot_ms: i64,
         /// Reservation usage attributed from each tier of a reservation hierarchy.
+        /// This field reported misleading information and will no longer be
+        /// populated. Aggregate usage of all jobs submitted to a reservation
+        /// should provide a more reliable indicator of reservation imbalance.
+        #[deprecated]
         #[prost(message, repeated, tag = "11")]
         pub reservation_usage: ::prost::alloc::vec::Vec<
             job_stats::ReservationResourceUsage,
         >,
+        /// Reservation name or "unreserved" for on-demand resource usage.
+        #[prost(string, tag = "14")]
+        pub reservation: ::prost::alloc::string::String,
         /// Parent job name. Only present for child jobs.
         #[prost(string, tag = "12")]
         pub parent_job_name: ::prost::alloc::string::String,
@@ -1916,6 +2145,9 @@ pub mod big_query_audit_metadata {
         /// Format: `projects/<project_id>/datasets/<dataset_id>/tables/<table_id>`.
         #[prost(string, tag = "1")]
         pub table_name: ::prost::alloc::string::String,
+        /// User-provided metadata for the table.
+        #[prost(message, optional, tag = "10")]
+        pub table_info: ::core::option::Option<EntityInfo>,
         /// A JSON representation of the table's schema. Entire field is truncated
         /// if exceeds 40K.
         #[prost(string, tag = "3")]
@@ -1941,9 +2173,31 @@ pub mod big_query_audit_metadata {
         /// Table encryption information. Set when non-default encryption is used.
         #[prost(message, optional, tag = "9")]
         pub encryption: ::core::option::Option<EncryptionInfo>,
-        /// User-provided metadata for the table.
-        #[prost(message, optional, tag = "10")]
-        pub table_info: ::core::option::Option<EntityInfo>,
+    }
+    /// Trained BigQuery ML model.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Model {
+        /// Model URI.
+        ///
+        /// Format: `projects/<project_id>/datasets/<dataset_id>/models/<model_id>`.
+        #[prost(string, tag = "1")]
+        pub model_name: ::prost::alloc::string::String,
+        /// User-provided metadata for the model.
+        #[prost(message, optional, tag = "2")]
+        pub model_info: ::core::option::Option<EntityInfo>,
+        /// Model expiration time.
+        #[prost(message, optional, tag = "5")]
+        pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Model creation time.
+        #[prost(message, optional, tag = "6")]
+        pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Model last update time.
+        #[prost(message, optional, tag = "7")]
+        pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Model encryption information. Set when non-default encryption is used.
+        #[prost(message, optional, tag = "8")]
+        pub encryption: ::core::option::Option<EncryptionInfo>,
     }
     /// User Defined Function (UDF) or Stored Procedure.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1990,6 +2244,39 @@ pub mod big_query_audit_metadata {
         #[prost(bool, tag = "2")]
         pub query_truncated: bool,
     }
+    /// BigQuery dataset.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Dataset {
+        /// Dataset URI.
+        ///
+        /// Format: `projects/<project_id>/datasets/<dataset_id>`.
+        #[prost(string, tag = "1")]
+        pub dataset_name: ::prost::alloc::string::String,
+        /// User-provided metadata for the dataset.
+        #[prost(message, optional, tag = "7")]
+        pub dataset_info: ::core::option::Option<EntityInfo>,
+        /// Dataset creation time.
+        #[prost(message, optional, tag = "3")]
+        pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Dataset metadata last update time.
+        #[prost(message, optional, tag = "4")]
+        pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// The access control list for the dataset.
+        #[prost(message, optional, tag = "5")]
+        pub acl: ::core::option::Option<BigQueryAcl>,
+        /// Default expiration time for tables in the dataset.
+        #[prost(message, optional, tag = "6")]
+        pub default_table_expire_duration: ::core::option::Option<
+            ::prost_types::Duration,
+        >,
+        /// Default encryption for tables in the dataset.
+        #[prost(message, optional, tag = "8")]
+        pub default_encryption: ::core::option::Option<EncryptionInfo>,
+        /// Default collation for the dataset.
+        #[prost(string, tag = "9")]
+        pub default_collation: ::prost::alloc::string::String,
+    }
     /// An access control list.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2013,6 +2300,86 @@ pub mod big_query_audit_metadata {
         /// `projects/<project_id>/locations/<location>/keyRings/<key_ring_name>/cryptoKeys/<key_name>`
         #[prost(string, tag = "1")]
         pub kms_key_name: ::prost::alloc::string::String,
+    }
+    /// BigQuery row access policy.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RowAccessPolicy {
+        /// Row access policy URI.
+        ///
+        /// Format:
+        /// `projects/<project_id>/datasets/<dataset_id>/tables/<table_id>/rowAccessPolicies/<row_access_policy_id>`
+        #[prost(string, tag = "1")]
+        pub row_access_policy_name: ::prost::alloc::string::String,
+    }
+    /// First party (Google) application specific request metadata.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FirstPartyAppMetadata {
+        #[prost(oneof = "first_party_app_metadata::Metadata", tags = "1")]
+        pub metadata: ::core::option::Option<first_party_app_metadata::Metadata>,
+    }
+    /// Nested message and enum types in `FirstPartyAppMetadata`.
+    pub mod first_party_app_metadata {
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Metadata {
+            /// Google Sheets metadata.
+            #[prost(message, tag = "1")]
+            SheetsMetadata(super::SheetsMetadata),
+        }
+    }
+    /// Google Sheets specific request metadata.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SheetsMetadata {
+        /// The ID of the spreadsheet from which the request is sent.
+        #[prost(string, tag = "1")]
+        pub doc_id: ::prost::alloc::string::String,
+    }
+    /// Describes whether a job should create a destination table if it doesn't
+    /// exist.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CreateDisposition {
+        /// Unknown.
+        Unspecified = 0,
+        /// This job should never create tables.
+        CreateNever = 1,
+        /// This job should create a table if it doesn't already exist.
+        CreateIfNeeded = 2,
+    }
+    impl CreateDisposition {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                CreateDisposition::Unspecified => "CREATE_DISPOSITION_UNSPECIFIED",
+                CreateDisposition::CreateNever => "CREATE_NEVER",
+                CreateDisposition::CreateIfNeeded => "CREATE_IF_NEEDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CREATE_DISPOSITION_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATE_NEVER" => Some(Self::CreateNever),
+                "CREATE_IF_NEEDED" => Some(Self::CreateIfNeeded),
+                _ => None,
+            }
+        }
     }
     /// Describes whether a job should overwrite or append the existing destination
     /// table if it already exists.
@@ -2111,50 +2478,6 @@ pub mod big_query_audit_metadata {
             }
         }
     }
-    /// Describes whether a job should create a destination table if it doesn't
-    /// exist.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum CreateDisposition {
-        /// Unknown.
-        Unspecified = 0,
-        /// This job should never create tables.
-        CreateNever = 1,
-        /// This job should create a table if it doesn't already exist.
-        CreateIfNeeded = 2,
-    }
-    impl CreateDisposition {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                CreateDisposition::Unspecified => "CREATE_DISPOSITION_UNSPECIFIED",
-                CreateDisposition::CreateNever => "CREATE_NEVER",
-                CreateDisposition::CreateIfNeeded => "CREATE_IF_NEEDED",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "CREATE_DISPOSITION_UNSPECIFIED" => Some(Self::Unspecified),
-                "CREATE_NEVER" => Some(Self::CreateNever),
-                "CREATE_IF_NEEDED" => Some(Self::CreateIfNeeded),
-                _ => None,
-            }
-        }
-    }
     /// State of a job.
     #[derive(
         Clone,
@@ -2242,10 +2565,16 @@ pub mod big_query_audit_metadata {
         CreateMaterializedView = 13,
         /// CREATE FUNCTION &lt;Function&gt;(&lt;Signature&gt;) AS ...
         CreateFunction = 14,
+        /// CREATE TABLE FUNCTION &lt;Function&gt;(&lt;Signature&gt;) AS ...
+        CreateTableFunction = 56,
         /// CREATE PROCEDURE &lt;Procedure&gt;
         CreateProcedure = 20,
+        /// CREATE ROW ACCESS POLICY &lt;RowAccessPolicy&gt ON &lt;Table&gt;
+        CreateRowAccessPolicy = 24,
         /// CREATE SCHEMA &lt;Schema&gt;
         CreateSchema = 53,
+        /// CREATE SNAPSHOT TABLE &lt;Snapshot&gt CLONE &lt;Table&gt;
+        CreateSnapshotTable = 59,
         /// DROP TABLE &lt;Table&gt;
         DropTable = 10,
         /// DROP EXTERNAL TABLE &lt;Table&gt;
@@ -2262,6 +2591,11 @@ pub mod big_query_audit_metadata {
         DropProcedure = 21,
         /// DROP SCHEMA &lt;Schema&gt;
         DropSchema = 54,
+        /// DROP ROW ACCESS POLICY &lt;RowAccessPolicy&gt ON &lt;Table&gt; <or> DROP
+        /// ALL ROW ACCESS POLICIES ON ON &lt;Table&gt;
+        DropRowAccessPolicy = 25,
+        /// DROP SNAPSHOT TABLE &lt;Snapshot&gt;
+        DropSnapshotTable = 62,
         /// ALTER TABLE &lt;Table&gt;
         AlterTable = 17,
         /// ALTER VIEW &lt;View&gt;
@@ -2272,7 +2606,7 @@ pub mod big_query_audit_metadata {
         AlterSchema = 55,
         /// Script
         Script = 19,
-        /// TRUNCATE TABLE &lt;Table&gt
+        /// TRUNCATE TABLE &lt;Table&gt;
         TruncateTable = 26,
         /// CREATE EXTERNAL TABLE &lt;TABLE&gt;
         CreateExternalTable = 27,
@@ -2301,8 +2635,11 @@ pub mod big_query_audit_metadata {
                 QueryStatementType::CreateModel => "CREATE_MODEL",
                 QueryStatementType::CreateMaterializedView => "CREATE_MATERIALIZED_VIEW",
                 QueryStatementType::CreateFunction => "CREATE_FUNCTION",
+                QueryStatementType::CreateTableFunction => "CREATE_TABLE_FUNCTION",
                 QueryStatementType::CreateProcedure => "CREATE_PROCEDURE",
+                QueryStatementType::CreateRowAccessPolicy => "CREATE_ROW_ACCESS_POLICY",
                 QueryStatementType::CreateSchema => "CREATE_SCHEMA",
+                QueryStatementType::CreateSnapshotTable => "CREATE_SNAPSHOT_TABLE",
                 QueryStatementType::DropTable => "DROP_TABLE",
                 QueryStatementType::DropExternalTable => "DROP_EXTERNAL_TABLE",
                 QueryStatementType::DropView => "DROP_VIEW",
@@ -2311,6 +2648,8 @@ pub mod big_query_audit_metadata {
                 QueryStatementType::DropFunction => "DROP_FUNCTION",
                 QueryStatementType::DropProcedure => "DROP_PROCEDURE",
                 QueryStatementType::DropSchema => "DROP_SCHEMA",
+                QueryStatementType::DropRowAccessPolicy => "DROP_ROW_ACCESS_POLICY",
+                QueryStatementType::DropSnapshotTable => "DROP_SNAPSHOT_TABLE",
                 QueryStatementType::AlterTable => "ALTER_TABLE",
                 QueryStatementType::AlterView => "ALTER_VIEW",
                 QueryStatementType::AlterMaterializedView => "ALTER_MATERIALIZED_VIEW",
@@ -2338,8 +2677,11 @@ pub mod big_query_audit_metadata {
                 "CREATE_MODEL" => Some(Self::CreateModel),
                 "CREATE_MATERIALIZED_VIEW" => Some(Self::CreateMaterializedView),
                 "CREATE_FUNCTION" => Some(Self::CreateFunction),
+                "CREATE_TABLE_FUNCTION" => Some(Self::CreateTableFunction),
                 "CREATE_PROCEDURE" => Some(Self::CreateProcedure),
+                "CREATE_ROW_ACCESS_POLICY" => Some(Self::CreateRowAccessPolicy),
                 "CREATE_SCHEMA" => Some(Self::CreateSchema),
+                "CREATE_SNAPSHOT_TABLE" => Some(Self::CreateSnapshotTable),
                 "DROP_TABLE" => Some(Self::DropTable),
                 "DROP_EXTERNAL_TABLE" => Some(Self::DropExternalTable),
                 "DROP_VIEW" => Some(Self::DropView),
@@ -2348,6 +2690,8 @@ pub mod big_query_audit_metadata {
                 "DROP_FUNCTION" => Some(Self::DropFunction),
                 "DROP_PROCEDURE" => Some(Self::DropProcedure),
                 "DROP_SCHEMA" => Some(Self::DropSchema),
+                "DROP_ROW_ACCESS_POLICY" => Some(Self::DropRowAccessPolicy),
+                "DROP_SNAPSHOT_TABLE" => Some(Self::DropSnapshotTable),
                 "ALTER_TABLE" => Some(Self::AlterTable),
                 "ALTER_VIEW" => Some(Self::AlterView),
                 "ALTER_MATERIALIZED_VIEW" => Some(Self::AlterMaterializedView),
@@ -2371,6 +2715,9 @@ pub mod big_query_audit_metadata {
         /// Job state change event.
         #[prost(message, tag = "2")]
         JobChange(JobChange),
+        /// Job deletion event.
+        #[prost(message, tag = "23")]
+        JobDeletion(JobDeletion),
         /// Dataset creation event.
         #[prost(message, tag = "3")]
         DatasetCreation(DatasetCreation),
@@ -2419,5 +2766,17 @@ pub mod big_query_audit_metadata {
         /// Routine deletion event.
         #[prost(message, tag = "18")]
         RoutineDeletion(RoutineDeletion),
+        /// Row access policy create event.
+        #[prost(message, tag = "20")]
+        RowAccessPolicyCreation(RowAccessPolicyCreation),
+        /// Row access policy change event.
+        #[prost(message, tag = "21")]
+        RowAccessPolicyChange(RowAccessPolicyChange),
+        /// Row access policy deletion event.
+        #[prost(message, tag = "22")]
+        RowAccessPolicyDeletion(RowAccessPolicyDeletion),
+        /// Unlink linked dataset from its source dataset event
+        #[prost(message, tag = "25")]
+        UnlinkDataset(UnlinkDataset),
     }
 }

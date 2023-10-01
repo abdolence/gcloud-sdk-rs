@@ -445,7 +445,8 @@ pub struct QueryPlan {
 ///
 ///       Queries on change streams must be performed with the snapshot read-only
 ///       transaction mode, specifying a strong read. Please see
-///       [TransactionOptions.ReadOnly.strong][google.spanner.v1.TransactionOptions.ReadOnly.strong] for more details.
+///       [TransactionOptions.ReadOnly.strong][google.spanner.v1.TransactionOptions.ReadOnly.strong]
+///       for more details.
 ///
 ///    3. Partitioned DML. This type of transaction is used to execute
 ///       a single Partitioned DML statement. Partitioned DML partitions
@@ -581,7 +582,8 @@ pub struct QueryPlan {
 /// Queries on change streams (see below for more details) must also specify
 /// the strong read timestamp bound.
 ///
-/// See [TransactionOptions.ReadOnly.strong][google.spanner.v1.TransactionOptions.ReadOnly.strong].
+/// See
+/// [TransactionOptions.ReadOnly.strong][google.spanner.v1.TransactionOptions.ReadOnly.strong].
 ///
 /// Exact staleness:
 ///
@@ -602,7 +604,9 @@ pub struct QueryPlan {
 /// equivalent boundedly stale concurrency modes. On the other hand,
 /// boundedly stale reads usually return fresher results.
 ///
-/// See [TransactionOptions.ReadOnly.read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.read_timestamp] and
+/// See
+/// [TransactionOptions.ReadOnly.read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.read_timestamp]
+/// and
 /// [TransactionOptions.ReadOnly.exact_staleness][google.spanner.v1.TransactionOptions.ReadOnly.exact_staleness].
 ///
 /// Bounded staleness:
@@ -632,7 +636,9 @@ pub struct QueryPlan {
 /// which rows will be read, it can only be used with single-use
 /// read-only transactions.
 ///
-/// See [TransactionOptions.ReadOnly.max_staleness][google.spanner.v1.TransactionOptions.ReadOnly.max_staleness] and
+/// See
+/// [TransactionOptions.ReadOnly.max_staleness][google.spanner.v1.TransactionOptions.ReadOnly.max_staleness]
+/// and
 /// [TransactionOptions.ReadOnly.min_read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.min_read_timestamp].
 ///
 /// Old read timestamps and garbage collection:
@@ -747,7 +753,66 @@ pub mod transaction_options {
     /// transaction type has no options.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ReadWrite {}
+    pub struct ReadWrite {
+        /// Read lock mode for the transaction.
+        #[prost(enumeration = "read_write::ReadLockMode", tag = "1")]
+        pub read_lock_mode: i32,
+    }
+    /// Nested message and enum types in `ReadWrite`.
+    pub mod read_write {
+        /// `ReadLockMode` is used to set the read lock mode for read-write
+        /// transactions.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ReadLockMode {
+            /// Default value.
+            ///
+            /// If the value is not specified, the pessimistic read lock is used.
+            Unspecified = 0,
+            /// Pessimistic lock mode.
+            ///
+            /// Read locks are acquired immediately on read.
+            Pessimistic = 1,
+            /// Optimistic lock mode.
+            ///
+            /// Locks for reads within the transaction are not acquired on read.
+            /// Instead the locks are acquired on a commit to validate that
+            /// read/queried data has not changed since the transaction started.
+            Optimistic = 2,
+        }
+        impl ReadLockMode {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    ReadLockMode::Unspecified => "READ_LOCK_MODE_UNSPECIFIED",
+                    ReadLockMode::Pessimistic => "PESSIMISTIC",
+                    ReadLockMode::Optimistic => "OPTIMISTIC",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "READ_LOCK_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PESSIMISTIC" => Some(Self::Pessimistic),
+                    "OPTIMISTIC" => Some(Self::Optimistic),
+                    _ => None,
+                }
+            }
+        }
+    }
     /// Message type to initiate a Partitioned DML transaction.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -757,7 +822,8 @@ pub mod transaction_options {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ReadOnly {
         /// If true, the Cloud Spanner-selected read timestamp is included in
-        /// the [Transaction][google.spanner.v1.Transaction] message that describes the transaction.
+        /// the [Transaction][google.spanner.v1.Transaction] message that describes
+        /// the transaction.
         #[prost(bool, tag = "6")]
         pub return_read_timestamp: bool,
         /// How to choose the timestamp for the read-only transaction.
@@ -884,7 +950,8 @@ pub struct Transaction {
 /// [Read][google.spanner.v1.Spanner.Read] or
 /// [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] call runs.
 ///
-/// See [TransactionOptions][google.spanner.v1.TransactionOptions] for more information about transactions.
+/// See [TransactionOptions][google.spanner.v1.TransactionOptions] for more
+/// information about transactions.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionSelector {
@@ -910,7 +977,8 @@ pub mod transaction_selector {
         Id(::prost::alloc::vec::Vec<u8>),
         /// Begin a new transaction and execute this read or SQL query in
         /// it. The transaction ID of the new transaction is returned in
-        /// [ResultSetMetadata.transaction][google.spanner.v1.ResultSetMetadata.transaction], which is a [Transaction][google.spanner.v1.Transaction].
+        /// [ResultSetMetadata.transaction][google.spanner.v1.ResultSetMetadata.transaction],
+        /// which is a [Transaction][google.spanner.v1.Transaction].
         #[prost(message, tag = "3")]
         Begin(super::TransactionOptions),
     }
@@ -1273,6 +1341,18 @@ pub struct ResultSetMetadata {
     /// information about the new transaction is yielded here.
     #[prost(message, optional, tag = "2")]
     pub transaction: ::core::option::Option<Transaction>,
+    /// A SQL query can be parameterized. In PLAN mode, these parameters can be
+    /// undeclared. This indicates the field names and types for those undeclared
+    /// parameters in the SQL query. For example, a SQL query like `"SELECT * FROM
+    /// Users where UserId = @userId and UserName = @userName "` could return a
+    /// `undeclared_parameters` value like:
+    ///
+    ///      "fields": [
+    ///        { "name": "UserId", "type": { "code": "INT64" } },
+    ///        { "name": "UserName", "type": { "code": "STRING" } },
+    ///      ]
+    #[prost(message, optional, tag = "3")]
+    pub undeclared_parameters: ::core::option::Option<StructType>,
 }
 /// Additional statistics about a [ResultSet][google.spanner.v1.ResultSet] or [PartialResultSet][google.spanner.v1.PartialResultSet].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1621,6 +1701,13 @@ pub struct ExecuteSqlRequest {
     /// Common options for this request.
     #[prost(message, optional, tag = "11")]
     pub request_options: ::core::option::Option<RequestOptions>,
+    /// If this is for a partitioned query and this field is set to `true`, the
+    /// request will be executed via Spanner independent compute resources.
+    ///
+    /// If the field is set to `true` but the request does not set
+    /// `partition_token`, the API will return an `INVALID_ARGUMENT` error.
+    #[prost(bool, tag = "16")]
+    pub data_boost_enabled: bool,
 }
 /// Nested message and enum types in `ExecuteSqlRequest`.
 pub mod execute_sql_request {
@@ -2034,6 +2121,13 @@ pub struct ReadRequest {
     /// Common options for this request.
     #[prost(message, optional, tag = "11")]
     pub request_options: ::core::option::Option<RequestOptions>,
+    /// If this is for a partitioned read and this field is set to `true`, the
+    /// request will be executed via Spanner independent compute resources.
+    ///
+    /// If the field is set to `true` but the request does not set
+    /// `partition_token`, the API will return an `INVALID_ARGUMENT` error.
+    #[prost(bool, tag = "15")]
+    pub data_boost_enabled: bool,
 }
 /// The request for [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2109,6 +2203,49 @@ pub struct RollbackRequest {
     /// Required. The transaction to roll back.
     #[prost(bytes = "vec", tag = "2")]
     pub transaction_id: ::prost::alloc::vec::Vec<u8>,
+}
+/// The request for [BatchWrite][google.spanner.v1.Spanner.BatchWrite].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchWriteRequest {
+    /// Required. The session in which the batch request is to be run.
+    #[prost(string, tag = "1")]
+    pub session: ::prost::alloc::string::String,
+    /// Common options for this request.
+    #[prost(message, optional, tag = "3")]
+    pub request_options: ::core::option::Option<RequestOptions>,
+    /// Required. The groups of mutations to be applied.
+    #[prost(message, repeated, tag = "4")]
+    pub mutation_groups: ::prost::alloc::vec::Vec<batch_write_request::MutationGroup>,
+}
+/// Nested message and enum types in `BatchWriteRequest`.
+pub mod batch_write_request {
+    /// A group of mutations to be committed together. Related mutations should be
+    /// placed in a group. For example, two mutations inserting rows with the same
+    /// primary key prefix in both parent and child tables are related.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MutationGroup {
+        /// Required. The mutations in this group.
+        #[prost(message, repeated, tag = "1")]
+        pub mutations: ::prost::alloc::vec::Vec<super::Mutation>,
+    }
+}
+/// The result of applying a batch of mutations.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchWriteResponse {
+    /// The mutation groups applied in this batch. The values index into the
+    /// `mutation_groups` field in the corresponding `BatchWriteRequest`.
+    #[prost(int32, repeated, tag = "1")]
+    pub indexes: ::prost::alloc::vec::Vec<i32>,
+    /// An `OK` status indicates success. Any other status indicates a failure.
+    #[prost(message, optional, tag = "2")]
+    pub status: ::core::option::Option<super::super::rpc::Status>,
+    /// The commit timestamp of the transaction that applied this batch.
+    /// Present if `status` is `OK`, absent otherwise.
+    #[prost(message, optional, tag = "3")]
+    pub commit_timestamp: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Generated client implementations.
 pub mod spanner_client {
@@ -2680,6 +2817,46 @@ pub mod spanner_client {
             req.extensions_mut()
                 .insert(GrpcMethod::new("google.spanner.v1.Spanner", "PartitionRead"));
             self.inner.unary(req, path, codec).await
+        }
+        /// Batches the supplied mutation groups in a collection of efficient
+        /// transactions. All mutations in a group are committed atomically. However,
+        /// mutations across groups can be committed non-atomically in an unspecified
+        /// order and thus, they must be independent of each other. Partial failure is
+        /// possible, i.e., some groups may have been committed successfully, while
+        /// some may have failed. The results of individual batches are streamed into
+        /// the response as the batches are applied.
+        ///
+        /// BatchWrite requests are not replay protected, meaning that each mutation
+        /// group may be applied more than once. Replays of non-idempotent mutations
+        /// may have undesirable effects. For example, replays of an insert mutation
+        /// may produce an already exists error or if you use generated or commit
+        /// timestamp-based keys, it may result in additional rows being added to the
+        /// mutation's table. We recommend structuring your mutation groups to be
+        /// idempotent to avoid this issue.
+        pub async fn batch_write(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchWriteRequest>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::BatchWriteResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.spanner.v1.Spanner/BatchWrite",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.spanner.v1.Spanner", "BatchWrite"));
+            self.inner.server_streaming(req, path, codec).await
         }
     }
 }

@@ -1,3 +1,146 @@
+/// Metadata describing an operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OperationMetadata {
+    /// Output only. The current operation state.
+    #[prost(enumeration = "operation_metadata::State", tag = "1")]
+    pub state: i32,
+    /// Output only. The type of operation being performed.
+    #[prost(enumeration = "operation_metadata::Type", tag = "2")]
+    pub operation_type: i32,
+    /// Output only. The resource being operated on, as a [relative resource name](
+    /// /apis/design/resource_names#relative_resource_name).
+    #[prost(string, tag = "3")]
+    pub resource: ::prost::alloc::string::String,
+    /// Output only. The UUID of the resource being operated on.
+    #[prost(string, tag = "4")]
+    pub resource_uuid: ::prost::alloc::string::String,
+    /// Output only. The time the operation was submitted to the server.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the operation terminated, regardless of its
+    /// success. This field is unset if the operation is still ongoing.
+    #[prost(message, optional, tag = "6")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `OperationMetadata`.
+pub mod operation_metadata {
+    /// An enum describing the overall state of an operation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unused.
+        Unspecified = 0,
+        /// The operation has been created but is not yet started.
+        Pending = 1,
+        /// The operation is underway.
+        Running = 2,
+        /// The operation completed successfully.
+        Successful = 3,
+        /// The operation is no longer running but did not succeed.
+        Failed = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Pending => "PENDING",
+                State::Running => "RUNNING",
+                State::Successful => "SUCCESSFUL",
+                State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "SUCCESSFUL" => Some(Self::Successful),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+    /// Type of longrunning operation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Unused.
+        Unspecified = 0,
+        /// A resource creation operation.
+        Create = 1,
+        /// A resource deletion operation.
+        Delete = 2,
+        /// A resource update operation.
+        Update = 3,
+        /// A resource check operation.
+        Check = 4,
+        /// Saves snapshot of the resource operation.
+        SaveSnapshot = 5,
+        /// Loads snapshot of the resource operation.
+        LoadSnapshot = 6,
+        /// Triggers failover of environment's Cloud SQL instance (only for highly
+        /// resilient environments).
+        DatabaseFailover = 7,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Type::Unspecified => "TYPE_UNSPECIFIED",
+                Type::Create => "CREATE",
+                Type::Delete => "DELETE",
+                Type::Update => "UPDATE",
+                Type::Check => "CHECK",
+                Type::SaveSnapshot => "SAVE_SNAPSHOT",
+                Type::LoadSnapshot => "LOAD_SNAPSHOT",
+                Type::DatabaseFailover => "DATABASE_FAILOVER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATE" => Some(Self::Create),
+                "DELETE" => Some(Self::Delete),
+                "UPDATE" => Some(Self::Update),
+                "CHECK" => Some(Self::Check),
+                "SAVE_SNAPSHOT" => Some(Self::SaveSnapshot),
+                "LOAD_SNAPSHOT" => Some(Self::LoadSnapshot),
+                "DATABASE_FAILOVER" => Some(Self::DatabaseFailover),
+                _ => None,
+            }
+        }
+    }
+}
 /// Create a new environment.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -152,7 +295,9 @@ pub struct UpdateEnvironmentRequest {
     /// * `config.nodeCount`
     ///      * Horizontally scale the number of nodes in the environment. An integer
     ///        greater than or equal to 3 must be provided in the `config.nodeCount`
-    ///        field. * `config.webServerNetworkAccessControl`
+    ///        field. Supported for Cloud Composer environments in versions
+    ///        composer-1.*.*-airflow-*.*.*.
+    /// * `config.webServerNetworkAccessControl`
     ///      * Replace the environment's current WebServerNetworkAccessControl.
     /// * `config.softwareConfig.airflowConfigOverrides`
     ///      * Replace all Apache Airflow config overrides. If a replacement config
@@ -171,30 +316,43 @@ pub struct UpdateEnvironmentRequest {
     /// * `config.softwareConfig.envVariables`
     ///      * Replace all environment variables. If a replacement environment
     ///        variable map is not included in `environment`, all custom environment
-    ///        variables  are cleared.
-    ///        It is an error to provide both this mask and a mask specifying one or
-    ///        more individual environment variables.
+    ///        variables are cleared.
     /// * `config.softwareConfig.imageVersion`
     ///      * Upgrade the version of the environment in-place. Refer to
     ///        `SoftwareConfig.image_version` for information on how to format the
     ///        new image version. Additionally, the new image version cannot effect
-    ///        a version downgrade and must match the current image version's
-    ///        Composer major version and Airflow major and minor versions. Consult
-    ///        the [Cloud Composer Version
-    ///        List](<https://cloud.google.com/composer/docs/concepts/versioning/composer-versions>)
+    ///        a version downgrade, and must match the current image version's
+    ///        Composer and Airflow major versions. Consult the [Cloud Composer
+    ///        version list](/composer/docs/concepts/versioning/composer-versions)
     ///        for valid values.
     /// * `config.softwareConfig.schedulerCount`
     ///      * Horizontally scale the number of schedulers in Airflow. A positive
     ///        integer not greater than the number of nodes must be provided in the
-    ///        `config.softwareConfig.schedulerCount` field. * `config.databaseConfig.machineType`
+    ///        `config.softwareConfig.schedulerCount` field. Supported for Cloud
+    ///        Composer environments in versions composer-1.*.*-airflow-2.*.*.
+    /// * `config.softwareConfig.cloudDataLineageIntegration`
+    ///      * Configuration for Cloud Data Lineage integration.
+    /// * `config.databaseConfig.machineType`
     ///      * Cloud SQL machine type used by Airflow database.
     ///        It has to be one of: db-n1-standard-2, db-n1-standard-4,
-    ///        db-n1-standard-8 or db-n1-standard-16. * `config.webServerConfig.machineType`
+    ///        db-n1-standard-8 or db-n1-standard-16. Supported for Cloud Composer
+    ///        environments in versions composer-1.*.*-airflow-*.*.*.
+    /// * `config.webServerConfig.machineType`
     ///      * Machine type on which Airflow web server is running.
     ///        It has to be one of: composer-n1-webserver-2, composer-n1-webserver-4
-    ///        or composer-n1-webserver-8. * `config.maintenanceWindow`
+    ///        or composer-n1-webserver-8. Supported for Cloud Composer environments
+    ///        in versions composer-1.*.*-airflow-*.*.*.
+    /// * `config.maintenanceWindow`
     ///      * Maintenance window during which Cloud Composer components may be
     ///        under maintenance.
+    /// * `config.workloadsConfig`
+    ///      * The workloads configuration settings for the GKE cluster associated
+    ///        with the Cloud Composer environment. Supported for Cloud Composer
+    ///        environments in versions composer-2.*.*-airflow-*.*.* and newer.
+    /// * `config.environmentSize`
+    ///      * The size of the Cloud Composer environment. Supported for Cloud
+    ///        Composer environments in versions composer-2.*.*-airflow-*.*.* and
+    ///        newer.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -208,6 +366,235 @@ pub struct RestartWebServerRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Execute Airflow Command request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExecuteAirflowCommandRequest {
+    /// The resource name of the environment in the form:
+    /// "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
+    #[prost(string, tag = "1")]
+    pub environment: ::prost::alloc::string::String,
+    /// Airflow command.
+    #[prost(string, tag = "2")]
+    pub command: ::prost::alloc::string::String,
+    /// Airflow subcommand.
+    #[prost(string, tag = "3")]
+    pub subcommand: ::prost::alloc::string::String,
+    /// Parameters for the Airflow command/subcommand as an array of arguments.
+    /// It may contain positional arguments like `\["my-dag-id"\]`, key-value
+    /// parameters like `\["--foo=bar"\]` or `\["--foo","bar"\]`,
+    /// or other flags like `\["-f"\]`.
+    #[prost(string, repeated, tag = "4")]
+    pub parameters: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Response to ExecuteAirflowCommandRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExecuteAirflowCommandResponse {
+    /// The unique ID of the command execution for polling.
+    #[prost(string, tag = "1")]
+    pub execution_id: ::prost::alloc::string::String,
+    /// The name of the pod where the command is executed.
+    #[prost(string, tag = "2")]
+    pub pod: ::prost::alloc::string::String,
+    /// The namespace of the pod where the command is executed.
+    #[prost(string, tag = "3")]
+    pub pod_namespace: ::prost::alloc::string::String,
+    /// Error message. Empty if there was no error.
+    #[prost(string, tag = "4")]
+    pub error: ::prost::alloc::string::String,
+}
+/// Stop Airflow Command request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StopAirflowCommandRequest {
+    /// The resource name of the environment in the form:
+    /// "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
+    #[prost(string, tag = "1")]
+    pub environment: ::prost::alloc::string::String,
+    /// The unique ID of the command execution.
+    #[prost(string, tag = "2")]
+    pub execution_id: ::prost::alloc::string::String,
+    /// The name of the pod where the command is executed.
+    #[prost(string, tag = "3")]
+    pub pod: ::prost::alloc::string::String,
+    /// The namespace of the pod where the command is executed.
+    #[prost(string, tag = "4")]
+    pub pod_namespace: ::prost::alloc::string::String,
+    /// If true, the execution is terminated forcefully (SIGKILL). If false, the
+    /// execution is stopped gracefully, giving it time for cleanup.
+    #[prost(bool, tag = "5")]
+    pub force: bool,
+}
+/// Response to StopAirflowCommandRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StopAirflowCommandResponse {
+    /// Whether the execution is still running.
+    #[prost(bool, tag = "1")]
+    pub is_done: bool,
+    /// Output message from stopping execution request.
+    #[prost(string, repeated, tag = "2")]
+    pub output: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Poll Airflow Command request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PollAirflowCommandRequest {
+    /// The resource name of the environment in the form:
+    /// "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
+    #[prost(string, tag = "1")]
+    pub environment: ::prost::alloc::string::String,
+    /// The unique ID of the command execution.
+    #[prost(string, tag = "2")]
+    pub execution_id: ::prost::alloc::string::String,
+    /// The name of the pod where the command is executed.
+    #[prost(string, tag = "3")]
+    pub pod: ::prost::alloc::string::String,
+    /// The namespace of the pod where the command is executed.
+    #[prost(string, tag = "4")]
+    pub pod_namespace: ::prost::alloc::string::String,
+    /// Line number from which new logs should be fetched.
+    #[prost(int32, tag = "5")]
+    pub next_line_number: i32,
+}
+/// Response to PollAirflowCommandRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PollAirflowCommandResponse {
+    /// Output from the command execution. It may not contain the full output
+    /// and the caller may need to poll for more lines.
+    #[prost(message, repeated, tag = "1")]
+    pub output: ::prost::alloc::vec::Vec<poll_airflow_command_response::Line>,
+    /// Whether the command execution has finished and there is no more output.
+    #[prost(bool, tag = "2")]
+    pub output_end: bool,
+    /// The result exit status of the command.
+    #[prost(message, optional, tag = "3")]
+    pub exit_info: ::core::option::Option<poll_airflow_command_response::ExitInfo>,
+}
+/// Nested message and enum types in `PollAirflowCommandResponse`.
+pub mod poll_airflow_command_response {
+    /// Contains information about a single line from logs.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Line {
+        /// Number of the line.
+        #[prost(int32, tag = "1")]
+        pub line_number: i32,
+        /// Text content of the log line.
+        #[prost(string, tag = "2")]
+        pub content: ::prost::alloc::string::String,
+    }
+    /// Information about how a command ended.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ExitInfo {
+        /// The exit code from the command execution.
+        #[prost(int32, tag = "1")]
+        pub exit_code: i32,
+        /// Error message. Empty if there was no error.
+        #[prost(string, tag = "2")]
+        pub error: ::prost::alloc::string::String,
+    }
+}
+/// Request to create a snapshot of a Cloud Composer environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SaveSnapshotRequest {
+    /// The resource name of the source environment in the form:
+    /// "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
+    #[prost(string, tag = "1")]
+    pub environment: ::prost::alloc::string::String,
+    /// Location in a Cloud Storage where the snapshot is going to be stored, e.g.:
+    /// "gs://my-bucket/snapshots".
+    #[prost(string, tag = "2")]
+    pub snapshot_location: ::prost::alloc::string::String,
+}
+/// Response to SaveSnapshotRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SaveSnapshotResponse {
+    /// The fully-resolved Cloud Storage path of the created snapshot,
+    /// e.g.:
+    /// "gs://my-bucket/snapshots/project_location_environment_timestamp".
+    /// This field is populated only if the snapshot creation was successful.
+    #[prost(string, tag = "1")]
+    pub snapshot_path: ::prost::alloc::string::String,
+}
+/// Request to load a snapshot into a Cloud Composer environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LoadSnapshotRequest {
+    /// The resource name of the target environment in the form:
+    /// "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
+    #[prost(string, tag = "1")]
+    pub environment: ::prost::alloc::string::String,
+    /// A Cloud Storage path to a snapshot to load, e.g.:
+    /// "gs://my-bucket/snapshots/project_location_environment_timestamp".
+    #[prost(string, tag = "2")]
+    pub snapshot_path: ::prost::alloc::string::String,
+    /// Whether or not to skip installing Pypi packages when loading the
+    /// environment's state.
+    #[prost(bool, tag = "3")]
+    pub skip_pypi_packages_installation: bool,
+    /// Whether or not to skip setting environment variables when loading the
+    /// environment's state.
+    #[prost(bool, tag = "4")]
+    pub skip_environment_variables_setting: bool,
+    /// Whether or not to skip setting Airflow overrides when loading the
+    /// environment's state.
+    #[prost(bool, tag = "5")]
+    pub skip_airflow_overrides_setting: bool,
+    /// Whether or not to skip copying Cloud Storage data when loading the
+    /// environment's state.
+    #[prost(bool, tag = "6")]
+    pub skip_gcs_data_copying: bool,
+}
+/// Response to LoadSnapshotRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LoadSnapshotResponse {}
+/// Request to trigger database failover (only for highly resilient
+/// environments).
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DatabaseFailoverRequest {
+    /// Target environment:
+    /// "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
+    #[prost(string, tag = "1")]
+    pub environment: ::prost::alloc::string::String,
+}
+/// Response for DatabaseFailoverRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DatabaseFailoverResponse {}
+/// Request to fetch properties of environment's database.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchDatabasePropertiesRequest {
+    /// Required. The resource name of the environment, in the form:
+    /// "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
+    #[prost(string, tag = "1")]
+    pub environment: ::prost::alloc::string::String,
+}
+/// Response for FetchDatabasePropertiesRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchDatabasePropertiesResponse {
+    /// The Compute Engine zone that the instance is currently serving from.
+    #[prost(string, tag = "1")]
+    pub primary_gce_zone: ::prost::alloc::string::String,
+    /// The Compute Engine zone that the failover instance is currently serving
+    /// from for a regional Cloud SQL instance.
+    #[prost(string, tag = "2")]
+    pub secondary_gce_zone: ::prost::alloc::string::String,
+    /// The availability status of the failover replica. A false status indicates
+    /// that the failover replica is out of sync. The primary instance can only
+    /// fail over to the failover replica when the status is true.
+    #[prost(bool, tag = "3")]
+    pub is_failover_replica_available: bool,
+}
 /// Configuration information for an environment.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -215,14 +602,18 @@ pub struct EnvironmentConfig {
     /// Output only. The Kubernetes Engine cluster used to run this environment.
     #[prost(string, tag = "1")]
     pub gke_cluster: ::prost::alloc::string::String,
-    /// Output only. The Cloud Storage prefix of the DAGs for this environment. Although Cloud
-    /// Storage objects reside in a flat namespace, a hierarchical file tree
-    /// can be simulated using "/"-delimited object name prefixes. DAG objects for
-    /// this environment reside in a simulated directory with the given prefix.
+    /// Output only. The Cloud Storage prefix of the DAGs for this environment.
+    /// Although Cloud Storage objects reside in a flat namespace, a hierarchical
+    /// file tree can be simulated using "/"-delimited object name prefixes. DAG
+    /// objects for this environment reside in a simulated directory with the given
+    /// prefix.
     #[prost(string, tag = "2")]
     pub dag_gcs_prefix: ::prost::alloc::string::String,
     /// The number of nodes in the Kubernetes Engine cluster that will be
     /// used to run this environment.
+    ///
+    /// This field is supported for Cloud Composer environments in versions
+    /// composer-1.*.*-airflow-*.*.*.
     #[prost(int32, tag = "3")]
     pub node_count: i32,
     /// The configuration settings for software inside the environment.
@@ -234,31 +625,43 @@ pub struct EnvironmentConfig {
     /// The configuration used for the Private IP Cloud Composer environment.
     #[prost(message, optional, tag = "7")]
     pub private_environment_config: ::core::option::Option<PrivateEnvironmentConfig>,
-    /// Optional. The network-level access control policy for the Airflow web server. If
-    /// unspecified, no network-level access restrictions will be applied.
+    /// Optional. The network-level access control policy for the Airflow web
+    /// server. If unspecified, no network-level access restrictions will be
+    /// applied.
     #[prost(message, optional, tag = "9")]
     pub web_server_network_access_control: ::core::option::Option<
         WebServerNetworkAccessControl,
     >,
-    /// Optional. The configuration settings for Cloud SQL instance used internally by Apache
-    /// Airflow software.
+    /// Optional. The configuration settings for Cloud SQL instance used internally
+    /// by Apache Airflow software.
     #[prost(message, optional, tag = "10")]
     pub database_config: ::core::option::Option<DatabaseConfig>,
-    /// Optional. The configuration settings for the Airflow web server App Engine instance.
+    /// Optional. The configuration settings for the Airflow web server App Engine
+    /// instance.
+    ///
+    /// This field is supported for Cloud Composer environments in versions
+    /// composer-1.*.*-airflow-*.*.*.
     #[prost(message, optional, tag = "11")]
     pub web_server_config: ::core::option::Option<WebServerConfig>,
-    /// Output only. The URI of the Apache Airflow Web UI hosted within this environment (see
-    /// [Airflow web
+    /// Output only. The URI of the Apache Airflow Web UI hosted within this
+    /// environment (see [Airflow web
     /// interface](/composer/docs/how-to/accessing/airflow-web-interface)).
     #[prost(string, tag = "6")]
     pub airflow_uri: ::prost::alloc::string::String,
+    /// Output only. The 'bring your own identity' variant of the URI of the Apache
+    /// Airflow Web UI hosted within this environment, to be accessed with external
+    /// identities using workforce identity federation (see [Access environments
+    /// with workforce identity
+    /// federation](/composer/docs/composer-2/access-environments-with-workforce-identity-federation)).
+    #[prost(string, tag = "21")]
+    pub airflow_byoid_uri: ::prost::alloc::string::String,
     /// Optional. The encryption options for the Cloud Composer environment and its
     /// dependencies. Cannot be updated.
     #[prost(message, optional, tag = "12")]
     pub encryption_config: ::core::option::Option<EncryptionConfig>,
-    /// Optional. The maintenance window is the period when Cloud Composer components may
-    /// undergo maintenance. It is defined so that maintenance is not executed
-    /// during peak hours or critical time periods.
+    /// Optional. The maintenance window is the period when Cloud Composer
+    /// components may undergo maintenance. It is defined so that maintenance is
+    /// not executed during peak hours or critical time periods.
     ///
     /// The system will not be under maintenance for every occurrence of this
     /// window, but when maintenance is planned, it will be scheduled
@@ -272,9 +675,9 @@ pub struct EnvironmentConfig {
     /// maintenance at any time.
     #[prost(message, optional, tag = "13")]
     pub maintenance_window: ::core::option::Option<MaintenanceWindow>,
-    /// Optional. The workloads configuration settings for the GKE cluster associated with
-    /// the Cloud Composer environment. The GKE cluster runs Airflow scheduler, web
-    /// server and workers workloads.
+    /// Optional. The workloads configuration settings for the GKE cluster
+    /// associated with the Cloud Composer environment. The GKE cluster runs
+    /// Airflow scheduler, web server and workers workloads.
     ///
     /// This field is supported for Cloud Composer environments in versions
     /// composer-2.*.*-airflow-*.*.* and newer.
@@ -286,6 +689,27 @@ pub struct EnvironmentConfig {
     /// composer-2.*.*-airflow-*.*.* and newer.
     #[prost(enumeration = "environment_config::EnvironmentSize", tag = "16")]
     pub environment_size: i32,
+    /// Optional. The configuration options for GKE cluster master authorized
+    /// networks. By default master authorized networks feature is:
+    /// - in case of private environment: enabled with no external networks
+    /// allowlisted.
+    /// - in case of public environment: disabled.
+    #[prost(message, optional, tag = "17")]
+    pub master_authorized_networks_config: ::core::option::Option<
+        MasterAuthorizedNetworksConfig,
+    >,
+    /// Optional. The Recovery settings configuration of an environment.
+    ///
+    /// This field is supported for Cloud Composer environments in versions
+    /// composer-2.*.*-airflow-*.*.* and newer.
+    #[prost(message, optional, tag = "18")]
+    pub recovery_config: ::core::option::Option<RecoveryConfig>,
+    /// Optional. Resilience mode of the Cloud Composer Environment.
+    ///
+    /// This field is supported for Cloud Composer environments in versions
+    /// composer-2.2.0-airflow-*.*.* and newer.
+    #[prost(enumeration = "environment_config::ResilienceMode", tag = "20")]
+    pub resilience_mode: i32,
 }
 /// Nested message and enum types in `EnvironmentConfig`.
 pub mod environment_config {
@@ -336,6 +760,45 @@ pub mod environment_config {
             }
         }
     }
+    /// Resilience mode of the Cloud Composer Environment.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ResilienceMode {
+        /// Default mode doesn't change environment parameters.
+        Unspecified = 0,
+        /// Enabled High Resilience mode, including Cloud SQL HA.
+        HighResilience = 1,
+    }
+    impl ResilienceMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ResilienceMode::Unspecified => "RESILIENCE_MODE_UNSPECIFIED",
+                ResilienceMode::HighResilience => "HIGH_RESILIENCE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESILIENCE_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "HIGH_RESILIENCE" => Some(Self::HighResilience),
+                _ => None,
+            }
+        }
+    }
 }
 /// Network-level access control policy for the Airflow web server.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -363,7 +826,8 @@ pub mod web_server_network_access_control {
         /// `2001:db8::1/32` should be truncated to `2001:db8::/32`.
         #[prost(string, tag = "1")]
         pub value: ::prost::alloc::string::String,
-        /// Optional. User-provided description. It must contain at most 300 characters.
+        /// Optional. User-provided description. It must contain at most 300
+        /// characters.
         #[prost(string, tag = "2")]
         pub description: ::prost::alloc::string::String,
     }
@@ -375,23 +839,27 @@ pub struct SoftwareConfig {
     /// The version of the software running in the environment.
     /// This encapsulates both the version of Cloud Composer functionality and the
     /// version of Apache Airflow. It must match the regular expression
-    /// `composer-(\[0-9\]+\.\[0-9\]+\.\[0-9\]+|latest)-airflow-\[0-9\]+\.\[0-9\]+(\.\[0-9\]+.*)?`.
+    /// `composer-(\[0-9\]+(\.\[0-9\]+\.\[0-9\]+(-preview\.\[0-9\]+)?)?|latest)-airflow-(\[0-9\]+(\.\[0-9\]+(\.\[0-9\]+)?)?)`.
     /// When used as input, the server also checks if the provided version is
     /// supported and denies the request for an unsupported version.
     ///
-    /// The Cloud Composer portion of the version is a
-    /// [semantic version](<https://semver.org>) or `latest`. When the patch version
-    /// is omitted, the current Cloud Composer patch version is selected.
-    /// When `latest` is provided instead of an explicit version number,
-    /// the server replaces `latest` with the current Cloud Composer version
-    /// and stores that version number in the same field.
+    /// The Cloud Composer portion of the image version is a full
+    /// [semantic version](<https://semver.org>), or an alias in the form of major
+    /// version number or `latest`. When an alias is provided, the server replaces
+    /// it with the current Cloud Composer version that satisfies the alias.
     ///
-    /// The portion of the image version that follows *airflow-* is an
-    /// official Apache Airflow repository
-    /// [release name](<https://github.com/apache/incubator-airflow/releases>).
+    /// The Apache Airflow portion of the image version is a full semantic version
+    /// that points to one of the supported Apache Airflow versions, or an alias in
+    /// the form of only major or major.minor versions specified. When an alias is
+    /// provided, the server replaces it with the latest Apache Airflow version
+    /// that satisfies the alias and is supported in the given Cloud Composer
+    /// version.
     ///
-    /// See also [Version
-    /// List](/composer/docs/concepts/versioning/composer-versions).
+    /// In all cases, the resolved image version is stored in the same field.
+    ///
+    /// See also [version
+    /// list](/composer/docs/concepts/versioning/composer-versions) and [versioning
+    /// overview](/composer/docs/concepts/versioning/composer-versioning-overview).
     #[prost(string, tag = "1")]
     pub image_version: ::prost::alloc::string::String,
     /// Optional. Apache Airflow configuration properties to override.
@@ -459,8 +927,23 @@ pub struct SoftwareConfig {
     ///
     /// Can be set to '2' or '3'. If not specified, the default is '3'. Cannot be
     /// updated.
+    ///
+    /// This field is only supported for Cloud Composer environments in versions
+    /// composer-1.*.*-airflow-*.*.*. Environments in newer versions always use
+    /// Python major version 3.
     #[prost(string, tag = "6")]
     pub python_version: ::prost::alloc::string::String,
+    /// Optional. The number of schedulers for Airflow.
+    ///
+    /// This field is supported for Cloud Composer environments in versions
+    /// composer-1.*.*-airflow-2.*.*.
+    #[prost(int32, tag = "7")]
+    pub scheduler_count: i32,
+    /// Optional. The configuration for Cloud Data Lineage integration.
+    #[prost(message, optional, tag = "8")]
+    pub cloud_data_lineage_integration: ::core::option::Option<
+        CloudDataLineageIntegration,
+    >,
 }
 /// Configuration for controlling how IPs are allocated in the
 /// GKE cluster.
@@ -469,27 +952,33 @@ pub struct SoftwareConfig {
 pub struct IpAllocationPolicy {
     /// Optional. Whether or not to enable Alias IPs in the GKE cluster.
     /// If `true`, a VPC-native cluster is created.
+    ///
+    /// This field is only supported for Cloud Composer environments in versions
+    /// composer-1.*.*-airflow-*.*.*. Environments in newer versions always use
+    /// VPC-native GKE clusters.
     #[prost(bool, tag = "1")]
     pub use_ip_aliases: bool,
     /// Optional. The name of the cluster's secondary range used to allocate
     /// IP addresses to pods. Specify either `cluster_secondary_range_name`
     /// or `cluster_ipv4_cidr_block` but not both.
     ///
-    /// This field is applicable only when `use_ip_aliases` is true.
+    /// For Cloud Composer environments in versions composer-1.*.*-airflow-*.*.*,
+    /// this field is applicable only when `use_ip_aliases` is true.
     #[prost(string, tag = "2")]
     pub cluster_secondary_range_name: ::prost::alloc::string::String,
     /// Optional. The name of the services' secondary range used to allocate
     /// IP addresses to the cluster. Specify either `services_secondary_range_name`
     /// or `services_ipv4_cidr_block` but not both.
     ///
-    /// This field is applicable only when `use_ip_aliases` is true.
+    /// For Cloud Composer environments in versions composer-1.*.*-airflow-*.*.*,
+    /// this field is applicable only when `use_ip_aliases` is true.
     #[prost(string, tag = "3")]
     pub services_secondary_range_name: ::prost::alloc::string::String,
     /// Optional. The IP address range used to allocate IP addresses to pods in
     /// the cluster.
     ///
-    /// This field is applicable only when `use_ip_aliases` is true.
-    ///
+    /// For Cloud Composer environments in versions composer-1.*.*-airflow-*.*.*,
+    /// this field is applicable only when `use_ip_aliases` is true.
     ///
     /// Set to blank to have GKE choose a range with the default size.
     ///
@@ -497,7 +986,7 @@ pub struct IpAllocationPolicy {
     /// netmask.
     ///
     /// Set to a
-    /// [CIDR](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
+    /// [CIDR](<https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
     /// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
     /// to use.
@@ -508,8 +997,8 @@ pub struct IpAllocationPolicy {
     /// Optional. The IP address range of the services IP addresses in this
     /// cluster.
     ///
-    /// This field is applicable only when `use_ip_aliases` is true.
-    ///
+    /// For Cloud Composer environments in versions composer-1.*.*-airflow-*.*.*,
+    /// this field is applicable only when `use_ip_aliases` is true.
     ///
     /// Set to blank to have GKE choose a range with the default size.
     ///
@@ -517,7 +1006,7 @@ pub struct IpAllocationPolicy {
     /// netmask.
     ///
     /// Set to a
-    /// [CIDR](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
+    /// [CIDR](<https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
     /// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
     /// to use.
@@ -545,6 +1034,9 @@ pub struct NodeConfig {
     /// both fields. If only one field (`location` or `nodeConfig.machineType`) is
     /// specified, the location information from the specified field will be
     /// propagated to the unspecified field.
+    ///
+    /// This field is supported for Cloud Composer environments in versions
+    /// composer-1.*.*-airflow-*.*.*.
     #[prost(string, tag = "1")]
     pub location: ::prost::alloc::string::String,
     /// Optional. The Compute Engine
@@ -568,6 +1060,9 @@ pub struct NodeConfig {
     ///
     /// If this field is unspecified, the `machineTypeId` defaults
     /// to "n1-standard-1".
+    ///
+    /// This field is supported for Cloud Composer environments in versions
+    /// composer-1.*.*-airflow-*.*.*.
     #[prost(string, tag = "2")]
     pub machine_type: ::prost::alloc::string::String,
     /// Optional. The Compute Engine network to be used for machine
@@ -594,18 +1089,24 @@ pub struct NodeConfig {
     /// location.
     #[prost(string, tag = "4")]
     pub subnetwork: ::prost::alloc::string::String,
-    /// Optional. The disk size in GB used for node VMs. Minimum size is 20GB.
+    /// Optional. The disk size in GB used for node VMs. Minimum size is 30GB.
     /// If unspecified, defaults to 100GB. Cannot be updated.
+    ///
+    /// This field is supported for Cloud Composer environments in versions
+    /// composer-1.*.*-airflow-*.*.*.
     #[prost(int32, tag = "5")]
     pub disk_size_gb: i32,
     /// Optional. The set of Google API scopes to be made available on all
     /// node VMs. If `oauth_scopes` is empty, defaults to
     /// \["<https://www.googleapis.com/auth/cloud-platform"\].> Cannot be updated.
+    ///
+    /// This field is supported for Cloud Composer environments in versions
+    /// composer-1.*.*-airflow-*.*.*.
     #[prost(string, repeated, tag = "6")]
     pub oauth_scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. The Google Cloud Platform Service Account to be used by the workloads. If a
-    /// service account is not specified, the "default" Compute Engine service
-    /// account is used. Cannot be updated.
+    /// Optional. The Google Cloud Platform Service Account to be used by the
+    /// workloads. If a service account is not specified, the "default" Compute
+    /// Engine service account is used. Cannot be updated.
     #[prost(string, tag = "7")]
     pub service_account: ::prost::alloc::string::String,
     /// Optional. The list of instance tags applied to all node VMs. Tags are used
@@ -617,18 +1118,29 @@ pub struct NodeConfig {
     /// Optional. The IPAllocationPolicy fields for the GKE cluster.
     #[prost(message, optional, tag = "9")]
     pub ip_allocation_policy: ::core::option::Option<IpAllocationPolicy>,
-    /// Optional. The maximum number of pods per node in the Cloud Composer GKE cluster.
-    /// The value must be between 8 and 110 and it can be set only if
-    /// the environment is VPC-native.
-    /// The default value is 32. Values of this field will be propagated both to
-    /// the `default-pool` node pool of the newly created GKE cluster, and to the
-    /// default "Maximum Pods per Node" value which is used for newly created
-    /// node pools if their value is not explicitly set during node pool creation.
-    /// For more information, see \[Optimizing IP address allocation\]
+    /// Optional. The maximum number of pods per node in the Cloud Composer GKE
+    /// cluster. The value must be between 8 and 110 and it can be set only if the
+    /// environment is VPC-native. The default value is 32. Values of this field
+    /// will be propagated both to the `default-pool` node pool of the newly
+    /// created GKE cluster, and to the default "Maximum Pods per Node" value which
+    /// is used for newly created node pools if their value is not explicitly set
+    /// during node pool creation. For more information, see [Optimizing IP address
+    /// allocation]
     /// (<https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr>).
     /// Cannot be updated.
+    ///
+    /// This field is supported for Cloud Composer environments in versions
+    /// composer-1.*.*-airflow-*.*.*.
     #[prost(int32, tag = "10")]
     pub max_pods_per_node: i32,
+    /// Optional. Deploys 'ip-masq-agent' daemon set in the GKE cluster and defines
+    /// nonMasqueradeCIDRs equals to pod IP range so IP masquerading is used for
+    /// all destination addresses, except between pods traffic.
+    ///
+    /// See:
+    /// <https://cloud.google.com/kubernetes-engine/docs/how-to/ip-masquerade-agent>
+    #[prost(bool, tag = "11")]
+    pub enable_ip_masq_agent: bool,
 }
 /// Configuration options for the private GKE cluster in a Cloud Composer
 /// environment.
@@ -639,17 +1151,79 @@ pub struct PrivateClusterConfig {
     /// denied.
     #[prost(bool, tag = "1")]
     pub enable_private_endpoint: bool,
-    /// Optional. The CIDR block from which IPv4 range for GKE master will be reserved. If
-    /// left blank, the default value of '172.16.0.0/23' is used.
+    /// Optional. The CIDR block from which IPv4 range for GKE master will be
+    /// reserved. If left blank, the default value of '172.16.0.0/23' is used.
     #[prost(string, tag = "2")]
     pub master_ipv4_cidr_block: ::prost::alloc::string::String,
-    /// Output only. The IP range in CIDR notation to use for the hosted master network. This
-    /// range is used for assigning internal IP addresses to the cluster
-    /// master or set of masters and to the internal load balancer virtual IP.
-    /// This range must not overlap with any other ranges in use
-    /// within the cluster's network.
+    /// Output only. The IP range in CIDR notation to use for the hosted master
+    /// network. This range is used for assigning internal IP addresses to the
+    /// cluster master or set of masters and to the internal load balancer virtual
+    /// IP. This range must not overlap with any other ranges in use within the
+    /// cluster's network.
     #[prost(string, tag = "3")]
     pub master_ipv4_reserved_range: ::prost::alloc::string::String,
+}
+/// Configuration options for networking connections in the Composer 2
+/// environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NetworkingConfig {
+    /// Optional. Indicates the user requested specifc connection type between
+    /// Tenant and Customer projects. You cannot set networking connection type in
+    /// public IP environment.
+    #[prost(enumeration = "networking_config::ConnectionType", tag = "1")]
+    pub connection_type: i32,
+}
+/// Nested message and enum types in `NetworkingConfig`.
+pub mod networking_config {
+    /// Represents connection type between Composer environment in Customer
+    /// Project and the corresponding Tenant project, from a predefined list
+    /// of available connection modes.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConnectionType {
+        /// No specific connection type was requested, so the environment uses
+        /// the default value corresponding to the rest of its configuration.
+        Unspecified = 0,
+        /// Requests the use of VPC peerings for connecting the Customer and Tenant
+        /// projects.
+        VpcPeering = 1,
+        /// Requests the use of Private Service Connect for connecting the Customer
+        /// and Tenant projects.
+        PrivateServiceConnect = 2,
+    }
+    impl ConnectionType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ConnectionType::Unspecified => "CONNECTION_TYPE_UNSPECIFIED",
+                ConnectionType::VpcPeering => "VPC_PEERING",
+                ConnectionType::PrivateServiceConnect => "PRIVATE_SERVICE_CONNECT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONNECTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VPC_PEERING" => Some(Self::VpcPeering),
+                "PRIVATE_SERVICE_CONNECT" => Some(Self::PrivateServiceConnect),
+                _ => None,
+            }
+        }
+    }
 }
 /// The configuration information for configuring a Private IP Cloud Composer
 /// environment.
@@ -658,27 +1232,36 @@ pub struct PrivateClusterConfig {
 pub struct PrivateEnvironmentConfig {
     /// Optional. If `true`, a Private IP Cloud Composer environment is created.
     /// If this field is set to true, `IPAllocationPolicy.use_ip_aliases` must be
-    /// set to true .
+    /// set to true for Cloud Composer environments in versions
+    /// composer-1.*.*-airflow-*.*.*.
     #[prost(bool, tag = "1")]
     pub enable_private_environment: bool,
     /// Optional. Configuration for the private GKE cluster for a Private IP
     /// Cloud Composer environment.
     #[prost(message, optional, tag = "2")]
     pub private_cluster_config: ::core::option::Option<PrivateClusterConfig>,
-    /// Optional. The CIDR block from which IP range for web server will be reserved. Needs
-    /// to be disjoint from private_cluster_config.master_ipv4_cidr_block and
+    /// Optional. The CIDR block from which IP range for web server will be
+    /// reserved. Needs to be disjoint from
+    /// private_cluster_config.master_ipv4_cidr_block and
     /// cloud_sql_ipv4_cidr_block.
+    ///
+    /// This field is supported for Cloud Composer environments in versions
+    /// composer-1.*.*-airflow-*.*.*.
     #[prost(string, tag = "3")]
     pub web_server_ipv4_cidr_block: ::prost::alloc::string::String,
-    /// Optional. The CIDR block from which IP range in tenant project will be reserved for
-    /// Cloud SQL. Needs to be disjoint from web_server_ipv4_cidr_block
+    /// Optional. The CIDR block from which IP range in tenant project will be
+    /// reserved for Cloud SQL. Needs to be disjoint from
+    /// web_server_ipv4_cidr_block
     #[prost(string, tag = "4")]
     pub cloud_sql_ipv4_cidr_block: ::prost::alloc::string::String,
     /// Output only. The IP range reserved for the tenant project's App Engine VMs.
+    ///
+    /// This field is supported for Cloud Composer environments in versions
+    /// composer-1.*.*-airflow-*.*.*.
     #[prost(string, tag = "5")]
     pub web_server_ipv4_reserved_range: ::prost::alloc::string::String,
-    /// Optional. The CIDR block from which IP range for Cloud Composer Network in tenant
-    /// project will be reserved. Needs to be disjoint from
+    /// Optional. The CIDR block from which IP range for Cloud Composer Network in
+    /// tenant project will be reserved. Needs to be disjoint from
     /// private_cluster_config.master_ipv4_cidr_block and
     /// cloud_sql_ipv4_cidr_block.
     ///
@@ -686,12 +1269,28 @@ pub struct PrivateEnvironmentConfig {
     /// composer-2.*.*-airflow-*.*.* and newer.
     #[prost(string, tag = "7")]
     pub cloud_composer_network_ipv4_cidr_block: ::prost::alloc::string::String,
-    /// Output only. The IP range reserved for the tenant project's Cloud Composer network.
+    /// Output only. The IP range reserved for the tenant project's Cloud Composer
+    /// network.
     ///
     /// This field is supported for Cloud Composer environments in versions
     /// composer-2.*.*-airflow-*.*.* and newer.
     #[prost(string, tag = "8")]
     pub cloud_composer_network_ipv4_reserved_range: ::prost::alloc::string::String,
+    /// Optional. When enabled, IPs from public (non-RFC1918) ranges can be used
+    /// for `IPAllocationPolicy.cluster_ipv4_cidr_block` and
+    /// `IPAllocationPolicy.service_ipv4_cidr_block`.
+    #[prost(bool, tag = "6")]
+    pub enable_privately_used_public_ips: bool,
+    /// Optional. When specified, the environment will use Private Service Connect
+    /// instead of VPC peerings to connect to Cloud SQL in the Tenant Project,
+    /// and the PSC endpoint in the Customer Project will use an IP address from
+    /// this subnetwork.
+    #[prost(string, tag = "9")]
+    pub cloud_composer_connection_subnetwork: ::prost::alloc::string::String,
+    /// Optional. Configuration for the network connections configuration in the
+    /// environment.
+    #[prost(message, optional, tag = "10")]
+    pub networking_config: ::core::option::Option<NetworkingConfig>,
 }
 /// The configuration of Cloud SQL instance that is used by the Apache Airflow
 /// software.
@@ -701,10 +1300,14 @@ pub struct DatabaseConfig {
     /// Optional. Cloud SQL machine type used by Airflow database.
     /// It has to be one of: db-n1-standard-2, db-n1-standard-4, db-n1-standard-8
     /// or db-n1-standard-16. If not specified, db-n1-standard-2 will be used.
+    /// Supported for Cloud Composer environments in versions
+    /// composer-1.*.*-airflow-*.*.*.
     #[prost(string, tag = "1")]
     pub machine_type: ::prost::alloc::string::String,
 }
 /// The configuration settings for the Airflow web server App Engine instance.
+/// Supported for Cloud Composer environments in versions
+/// composer-1.*.*-airflow-*.*.*.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebServerConfig {
@@ -718,13 +1321,14 @@ pub struct WebServerConfig {
     pub machine_type: ::prost::alloc::string::String,
 }
 /// The encryption options for the Cloud Composer environment and its
-/// dependencies.
+/// dependencies. Supported for Cloud Composer environments in versions
+/// composer-1.*.*-airflow-*.*.*.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptionConfig {
-    /// Optional. Customer-managed Encryption Key available through Google's Key Management
-    /// Service. Cannot be updated.
-    /// If not specified, Google-managed key will be used.
+    /// Optional. Customer-managed Encryption Key available through Google's Key
+    /// Management Service. Cannot be updated. If not specified, Google-managed key
+    /// will be used.
     #[prost(string, tag = "1")]
     pub kms_key_name: ::prost::alloc::string::String,
 }
@@ -747,9 +1351,9 @@ pub struct MaintenanceWindow {
     /// Required. Start time of the first recurrence of the maintenance window.
     #[prost(message, optional, tag = "1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Required. Maintenance window end time. It is used only to calculate the duration of
-    /// the maintenance window.
-    /// The value for end_time must be in the future, relative to `start_time`.
+    /// Required. Maintenance window end time. It is used only to calculate the
+    /// duration of the maintenance window. The value for end_time must be in the
+    /// future, relative to `start_time`.
     #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Required. Maintenance window recurrence. Format is a subset of
@@ -774,6 +1378,9 @@ pub struct WorkloadsConfig {
     /// Optional. Resources used by Airflow workers.
     #[prost(message, optional, tag = "3")]
     pub worker: ::core::option::Option<workloads_config::WorkerResource>,
+    /// Optional. Resources used by Airflow triggerers.
+    #[prost(message, optional, tag = "4")]
+    pub triggerer: ::core::option::Option<workloads_config::TriggererResource>,
 }
 /// Nested message and enum types in `WorkloadsConfig`.
 pub mod workloads_config {
@@ -784,10 +1391,12 @@ pub mod workloads_config {
         /// Optional. CPU request and limit for a single Airflow scheduler replica.
         #[prost(float, tag = "1")]
         pub cpu: f32,
-        /// Optional. Memory (GB) request and limit for a single Airflow scheduler replica.
+        /// Optional. Memory (GB) request and limit for a single Airflow scheduler
+        /// replica.
         #[prost(float, tag = "2")]
         pub memory_gb: f32,
-        /// Optional. Storage (GB) request and limit for a single Airflow scheduler replica.
+        /// Optional. Storage (GB) request and limit for a single Airflow scheduler
+        /// replica.
         #[prost(float, tag = "3")]
         pub storage_gb: f32,
         /// Optional. The number of schedulers.
@@ -815,10 +1424,12 @@ pub mod workloads_config {
         /// Optional. CPU request and limit for a single Airflow worker replica.
         #[prost(float, tag = "1")]
         pub cpu: f32,
-        /// Optional. Memory (GB) request and limit for a single Airflow worker replica.
+        /// Optional. Memory (GB) request and limit for a single Airflow worker
+        /// replica.
         #[prost(float, tag = "2")]
         pub memory_gb: f32,
-        /// Optional. Storage (GB) request and limit for a single Airflow worker replica.
+        /// Optional. Storage (GB) request and limit for a single Airflow worker
+        /// replica.
         #[prost(float, tag = "3")]
         pub storage_gb: f32,
         /// Optional. Minimum number of workers for autoscaling.
@@ -828,6 +1439,89 @@ pub mod workloads_config {
         #[prost(int32, tag = "5")]
         pub max_count: i32,
     }
+    /// Configuration for resources used by Airflow triggerers.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TriggererResource {
+        /// Optional. The number of triggerers.
+        #[prost(int32, tag = "1")]
+        pub count: i32,
+        /// Optional. CPU request and limit for a single Airflow triggerer replica.
+        #[prost(float, tag = "2")]
+        pub cpu: f32,
+        /// Optional. Memory (GB) request and limit for a single Airflow triggerer
+        /// replica.
+        #[prost(float, tag = "3")]
+        pub memory_gb: f32,
+    }
+}
+/// The Recovery settings of an environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RecoveryConfig {
+    /// Optional. The configuration for scheduled snapshot creation mechanism.
+    #[prost(message, optional, tag = "1")]
+    pub scheduled_snapshots_config: ::core::option::Option<ScheduledSnapshotsConfig>,
+}
+/// The configuration for scheduled snapshot creation mechanism.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ScheduledSnapshotsConfig {
+    /// Optional. Whether scheduled snapshots creation is enabled.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+    /// Optional. The Cloud Storage location for storing automatically created
+    /// snapshots.
+    #[prost(string, tag = "6")]
+    pub snapshot_location: ::prost::alloc::string::String,
+    /// Optional. The cron expression representing the time when snapshots creation
+    /// mechanism runs. This field is subject to additional validation around
+    /// frequency of execution.
+    #[prost(string, tag = "3")]
+    pub snapshot_creation_schedule: ::prost::alloc::string::String,
+    /// Optional. Time zone that sets the context to interpret
+    /// snapshot_creation_schedule.
+    #[prost(string, tag = "5")]
+    pub time_zone: ::prost::alloc::string::String,
+}
+/// Configuration options for the master authorized networks feature. Enabled
+/// master authorized networks will disallow all external traffic to access
+/// Kubernetes master through HTTPS except traffic from the given CIDR blocks,
+/// Google Compute Engine Public IPs and Google Prod IPs.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MasterAuthorizedNetworksConfig {
+    /// Whether or not master authorized networks feature is enabled.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+    /// Up to 50 external networks that could access Kubernetes master through
+    /// HTTPS.
+    #[prost(message, repeated, tag = "2")]
+    pub cidr_blocks: ::prost::alloc::vec::Vec<
+        master_authorized_networks_config::CidrBlock,
+    >,
+}
+/// Nested message and enum types in `MasterAuthorizedNetworksConfig`.
+pub mod master_authorized_networks_config {
+    /// CIDR block with an optional name.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CidrBlock {
+        /// User-defined name that identifies the CIDR block.
+        #[prost(string, tag = "1")]
+        pub display_name: ::prost::alloc::string::String,
+        /// CIDR block that must be specified in CIDR notation.
+        #[prost(string, tag = "2")]
+        pub cidr_block: ::prost::alloc::string::String,
+    }
+}
+/// Configuration for Cloud Data Lineage integration.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudDataLineageIntegration {
+    /// Optional. Whether or not Cloud Data Lineage integration is enabled.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
 }
 /// An environment for running orchestration tasks.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -843,8 +1537,8 @@ pub struct Environment {
     /// Configuration parameters for this environment.
     #[prost(message, optional, tag = "2")]
     pub config: ::core::option::Option<EnvironmentConfig>,
-    /// Output only. The UUID (Universally Unique IDentifier) associated with this environment.
-    /// This value is generated when the environment is created.
+    /// Output only. The UUID (Universally Unique IDentifier) associated with this
+    /// environment. This value is generated when the environment is created.
     #[prost(string, tag = "3")]
     pub uuid: ::prost::alloc::string::String,
     /// The current state of the environment.
@@ -941,23 +1635,27 @@ pub struct CheckUpgradeRequest {
     /// The version of the software running in the environment.
     /// This encapsulates both the version of Cloud Composer functionality and the
     /// version of Apache Airflow. It must match the regular expression
-    /// `composer-(\[0-9\]+\.\[0-9\]+\.\[0-9\]+|latest)-airflow-\[0-9\]+\.\[0-9\]+(\.\[0-9\]+.*)?`.
+    /// `composer-(\[0-9\]+(\.\[0-9\]+\.\[0-9\]+(-preview\.\[0-9\]+)?)?|latest)-airflow-(\[0-9\]+(\.\[0-9\]+(\.\[0-9\]+)?)?)`.
     /// When used as input, the server also checks if the provided version is
     /// supported and denies the request for an unsupported version.
     ///
-    /// The Cloud Composer portion of the version is a
-    /// [semantic version](<https://semver.org>) or `latest`. When the patch version
-    /// is omitted, the current Cloud Composer patch version is selected.
-    /// When `latest` is provided instead of an explicit version number,
-    /// the server replaces `latest` with the current Cloud Composer version
-    /// and stores that version number in the same field.
+    /// The Cloud Composer portion of the image version is a full
+    /// [semantic version](<https://semver.org>), or an alias in the form of major
+    /// version number or `latest`. When an alias is provided, the server replaces
+    /// it with the current Cloud Composer version that satisfies the alias.
     ///
-    /// The portion of the image version that follows `airflow-` is an
-    /// official Apache Airflow repository
-    /// [release name](<https://github.com/apache/incubator-airflow/releases>).
+    /// The Apache Airflow portion of the image version is a full semantic version
+    /// that points to one of the supported Apache Airflow versions, or an alias in
+    /// the form of only major or major.minor versions specified. When an alias is
+    /// provided, the server replaces it with the latest Apache Airflow version
+    /// that satisfies the alias and is supported in the given Cloud Composer
+    /// version.
     ///
-    /// See also \[Version List\]
-    /// (/composer/docs/concepts/versioning/composer-versions).
+    /// In all cases, the resolved image version is stored in the same field.
+    ///
+    /// See also [version
+    /// list](/composer/docs/concepts/versioning/composer-versions) and [versioning
+    /// overview](/composer/docs/concepts/versioning/composer-versioning-overview).
     #[prost(string, tag = "2")]
     pub image_version: ::prost::alloc::string::String,
 }
@@ -972,8 +1670,8 @@ pub struct CheckUpgradeResponse {
     /// Output only. Whether build has succeeded or failed on modules conflicts.
     #[prost(enumeration = "check_upgrade_response::ConflictResult", tag = "4")]
     pub contains_pypi_modules_conflict: i32,
-    /// Output only. Extract from a docker image build log containing information about pypi
-    /// modules conflicts.
+    /// Output only. Extract from a docker image build log containing information
+    /// about pypi modules conflicts.
     #[prost(string, tag = "3")]
     pub pypi_conflict_build_log_extract: ::prost::alloc::string::String,
     /// Composer image for which the build was happening.
@@ -1345,6 +2043,235 @@ pub mod environments_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Executes Airflow CLI command.
+        pub async fn execute_airflow_command(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExecuteAirflowCommandRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ExecuteAirflowCommandResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/ExecuteAirflowCommand",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "ExecuteAirflowCommand",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Stops Airflow CLI command execution.
+        pub async fn stop_airflow_command(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StopAirflowCommandRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::StopAirflowCommandResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/StopAirflowCommand",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "StopAirflowCommand",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Polls Airflow CLI command execution and fetches logs.
+        pub async fn poll_airflow_command(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PollAirflowCommandRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::PollAirflowCommandResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/PollAirflowCommand",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "PollAirflowCommand",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a snapshots of a Cloud Composer environment.
+        ///
+        /// As a result of this operation, snapshot of environment's state is stored
+        /// in a location specified in the SaveSnapshotRequest.
+        pub async fn save_snapshot(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SaveSnapshotRequest>,
+        ) -> std::result::Result<
+            tonic::Response<
+                super::super::super::super::super::super::longrunning::Operation,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/SaveSnapshot",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "SaveSnapshot",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Loads a snapshot of a Cloud Composer environment.
+        ///
+        /// As a result of this operation, a snapshot of environment's specified in
+        /// LoadSnapshotRequest is loaded into the environment.
+        pub async fn load_snapshot(
+            &mut self,
+            request: impl tonic::IntoRequest<super::LoadSnapshotRequest>,
+        ) -> std::result::Result<
+            tonic::Response<
+                super::super::super::super::super::super::longrunning::Operation,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/LoadSnapshot",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "LoadSnapshot",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Triggers database failover (only for highly resilient environments).
+        pub async fn database_failover(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DatabaseFailoverRequest>,
+        ) -> std::result::Result<
+            tonic::Response<
+                super::super::super::super::super::super::longrunning::Operation,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/DatabaseFailover",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "DatabaseFailover",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Fetches database properties.
+        pub async fn fetch_database_properties(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchDatabasePropertiesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FetchDatabasePropertiesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/FetchDatabaseProperties",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "FetchDatabaseProperties",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// List ImageVersions in a project and location.
@@ -1381,7 +2308,7 @@ pub struct ListImageVersionsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageVersion {
     /// The string identifier of the ImageVersion, in the form:
-    /// "composer-x.y.z-airflow-a.b(.c)"
+    /// "composer-x.y.z-airflow-a.b.c"
     #[prost(string, tag = "1")]
     pub image_version_id: ::prost::alloc::string::String,
     /// Whether this is the default ImageVersion used by Composer during
@@ -1522,136 +2449,6 @@ pub mod image_versions_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
-        }
-    }
-}
-/// Metadata describing an operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OperationMetadata {
-    /// Output only. The current operation state.
-    #[prost(enumeration = "operation_metadata::State", tag = "1")]
-    pub state: i32,
-    /// Output only. The type of operation being performed.
-    #[prost(enumeration = "operation_metadata::Type", tag = "2")]
-    pub operation_type: i32,
-    /// Output only. The resource being operated on, as a [relative resource name](
-    /// /apis/design/resource_names#relative_resource_name).
-    #[prost(string, tag = "3")]
-    pub resource: ::prost::alloc::string::String,
-    /// Output only. The UUID of the resource being operated on.
-    #[prost(string, tag = "4")]
-    pub resource_uuid: ::prost::alloc::string::String,
-    /// Output only. The time the operation was submitted to the server.
-    #[prost(message, optional, tag = "5")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time when the operation terminated, regardless of its success.
-    /// This field is unset if the operation is still ongoing.
-    #[prost(message, optional, tag = "6")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// Nested message and enum types in `OperationMetadata`.
-pub mod operation_metadata {
-    /// An enum describing the overall state of an operation.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum State {
-        /// Unused.
-        Unspecified = 0,
-        /// The operation has been created but is not yet started.
-        Pending = 1,
-        /// The operation is underway.
-        Running = 2,
-        /// The operation completed successfully.
-        Successful = 3,
-        /// The operation is no longer running but did not succeed.
-        Failed = 4,
-    }
-    impl State {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Pending => "PENDING",
-                State::Running => "RUNNING",
-                State::Successful => "SUCCESSFUL",
-                State::Failed => "FAILED",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
-                "PENDING" => Some(Self::Pending),
-                "RUNNING" => Some(Self::Running),
-                "SUCCESSFUL" => Some(Self::Successful),
-                "FAILED" => Some(Self::Failed),
-                _ => None,
-            }
-        }
-    }
-    /// Type of longrunning operation.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum Type {
-        /// Unused.
-        Unspecified = 0,
-        /// A resource creation operation.
-        Create = 1,
-        /// A resource deletion operation.
-        Delete = 2,
-        /// A resource update operation.
-        Update = 3,
-        /// A resource check operation.
-        Check = 4,
-    }
-    impl Type {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Create => "CREATE",
-                Type::Delete => "DELETE",
-                Type::Update => "UPDATE",
-                Type::Check => "CHECK",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                "CREATE" => Some(Self::Create),
-                "DELETE" => Some(Self::Delete),
-                "UPDATE" => Some(Self::Update),
-                "CHECK" => Some(Self::Check),
-                _ => None,
-            }
         }
     }
 }

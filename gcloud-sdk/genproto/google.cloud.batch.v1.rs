@@ -1,20 +1,19 @@
-/// Volume and mount parameters to be associated with a TaskSpec. A TaskSpec
-/// might describe zero, one, or multiple volumes to be mounted as part of the
-/// task.
+/// Volume describes a volume and parameters for it to be mounted to a VM.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Volume {
-    /// Mount path for the volume, e.g. /mnt/share
+    /// The mount path for the volume, e.g. /mnt/disks/share.
     #[prost(string, tag = "4")]
     pub mount_path: ::prost::alloc::string::String,
-    /// Mount options
-    /// For Google Cloud Storage, mount options are the global options supported by
-    /// gcsfuse tool. Batch will use them to mount the volume with the following
-    /// command:
-    /// "gcsfuse \[global options\] bucket mountpoint".
-    /// For PD, NFS, mount options are these supported by /etc/fstab. Batch will
-    /// use Fstab to mount such volumes.
-    /// <https://help.ubuntu.com/community/Fstab>
+    /// For Google Cloud Storage (GCS), mount options are the options supported by
+    /// the gcsfuse tool (<https://github.com/GoogleCloudPlatform/gcsfuse>).
+    /// For existing persistent disks, mount options provided by the
+    /// mount command (<https://man7.org/linux/man-pages/man8/mount.8.html>) except
+    /// writing are supported. This is due to restrictions of multi-writer mode
+    /// (<https://cloud.google.com/compute/docs/disks/sharing-disks-between-vms>).
+    /// For other attached disks and Network File System (NFS), mount options are
+    /// these supported by the mount command
+    /// (<https://man7.org/linux/man-pages/man8/mount.8.html>).
     #[prost(string, repeated, tag = "5")]
     pub mount_options: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The source for the volume.
@@ -27,29 +26,34 @@ pub mod volume {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// An NFS source for the volume (could be a Filestore, for example).
+        /// A Network File System (NFS) volume. For example, a
+        /// Filestore file share.
         #[prost(message, tag = "1")]
         Nfs(super::Nfs),
-        /// A Google Cloud Storage source for the volume.
+        /// A Google Cloud Storage (GCS) volume.
         #[prost(message, tag = "3")]
         Gcs(super::Gcs),
-        /// Device name of an attached disk
+        /// Device name of an attached disk volume, which should align with a
+        /// device_name specified by
+        /// job.allocation_policy.instances\[0\].policy.disks\[i\].device_name or
+        /// defined by the given instance template in
+        /// job.allocation_policy.instances\[0\].instance_template.
         #[prost(string, tag = "6")]
         DeviceName(::prost::alloc::string::String),
     }
 }
-/// Represents an NFS server and remote path: <server>:<remote_path>
+/// Represents an NFS volume.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Nfs {
-    /// URI of the NFS server, e.g. an IP address.
+    /// The IP address of the NFS.
     #[prost(string, tag = "1")]
     pub server: ::prost::alloc::string::String,
-    /// Remote source path exported from NFS, e.g., "/share".
+    /// Remote source path exported from the NFS, e.g., "/share".
     #[prost(string, tag = "2")]
     pub remote_path: ::prost::alloc::string::String,
 }
-/// Represents a Google Cloud Storage volume source config.
+/// Represents a Google Cloud Storage volume.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Gcs {
@@ -58,14 +62,52 @@ pub struct Gcs {
     #[prost(string, tag = "1")]
     pub remote_path: ::prost::alloc::string::String,
 }
-/// Compute resource requirements
+/// Compute resource requirements.
+///
+/// ComputeResource defines the amount of resources required for each task.
+/// Make sure your tasks have enough resources to successfully run.
+/// If you also define the types of resources for a job to use with the
+/// [InstancePolicyOrTemplate](<https://cloud.google.com/batch/docs/reference/rest/v1/projects.locations.jobs#instancepolicyortemplate>)
+/// field, make sure both fields are compatible with each other.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeResource {
     /// The milliCPU count.
+    ///
+    /// `cpuMilli` defines the amount of CPU resources per task in milliCPU units.
+    /// For example, `1000` corresponds to 1 vCPU per task. If undefined, the
+    /// default value is `2000`.
+    ///
+    /// If you also define the VM's machine type using the `machineType` in
+    /// [InstancePolicy](<https://cloud.google.com/batch/docs/reference/rest/v1/projects.locations.jobs#instancepolicy>)
+    /// field or inside the `instanceTemplate` in the
+    /// [InstancePolicyOrTemplate](<https://cloud.google.com/batch/docs/reference/rest/v1/projects.locations.jobs#instancepolicyortemplate>)
+    /// field, make sure the CPU resources for both fields are compatible with each
+    /// other and with how many tasks you want to allow to run on the same VM at
+    /// the same time.
+    ///
+    /// For example, if you specify the `n2-standard-2` machine type, which has 2
+    /// vCPUs each, you are recommended to set `cpuMilli` no more than `2000`, or
+    /// you are recommended to run two tasks on the same VM if you set `cpuMilli`
+    /// to `1000` or less.
     #[prost(int64, tag = "1")]
     pub cpu_milli: i64,
     /// Memory in MiB.
+    ///
+    /// `memoryMib` defines the amount of memory per task in MiB units.
+    /// If undefined, the default value is `2000`.
+    /// If you also define the VM's machine type using the `machineType` in
+    /// [InstancePolicy](<https://cloud.google.com/batch/docs/reference/rest/v1/projects.locations.jobs#instancepolicy>)
+    /// field or inside the `instanceTemplate` in the
+    /// [InstancePolicyOrTemplate](<https://cloud.google.com/batch/docs/reference/rest/v1/projects.locations.jobs#instancepolicyortemplate>)
+    /// field, make sure the memory resources for both fields are compatible with
+    /// each other and with how many tasks you want to allow to run on the same VM
+    /// at the same time.
+    ///
+    /// For example, if you specify the `n2-standard-2` machine type, which has 8
+    /// GiB each, you are recommended to set `memoryMib` to no more than `8192`,
+    /// or you are recommended to run two tasks on the same VM if you set
+    /// `memoryMib` to `4096` or less.
     #[prost(int64, tag = "2")]
     pub memory_mib: i64,
     /// Extra boot disk size in MiB for each task.
@@ -88,6 +130,9 @@ pub struct StatusEvent {
     /// Task Execution
     #[prost(message, optional, tag = "4")]
     pub task_execution: ::core::option::Option<TaskExecution>,
+    /// Task State
+    #[prost(enumeration = "task_status::State", tag = "5")]
+    pub task_state: i32,
 }
 /// This Task Execution field includes detail information for
 /// task execution procedures, based on StatusEvent types.
@@ -126,7 +171,7 @@ pub mod task_status {
     )]
     #[repr(i32)]
     pub enum State {
-        /// unknown state
+        /// Unknown state.
         Unspecified = 0,
         /// The Task is created and waiting for resources.
         Pending = 1,
@@ -138,6 +183,8 @@ pub mod task_status {
         Failed = 4,
         /// The Task has succeeded.
         Succeeded = 5,
+        /// The Task has not been executed when the Job finishes.
+        Unexecuted = 6,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -152,6 +199,7 @@ pub mod task_status {
                 State::Running => "RUNNING",
                 State::Failed => "FAILED",
                 State::Succeeded => "SUCCEEDED",
+                State::Unexecuted => "UNEXECUTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -163,6 +211,7 @@ pub mod task_status {
                 "RUNNING" => Some(Self::Running),
                 "FAILED" => Some(Self::Failed),
                 "SUCCEEDED" => Some(Self::Succeeded),
+                "UNEXECUTED" => Some(Self::Unexecuted),
                 _ => None,
             }
         }
@@ -199,6 +248,12 @@ pub struct Runnable {
     /// Timeout for this Runnable.
     #[prost(message, optional, tag = "8")]
     pub timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Labels for this Runnable.
+    #[prost(map = "string, string", tag = "9")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// The script or container to run.
     #[prost(oneof = "runnable::Executable", tags = "1, 2, 6")]
     pub executable: ::core::option::Option<runnable::Executable>,
@@ -230,17 +285,18 @@ pub mod runnable {
         #[prost(string, tag = "8")]
         pub options: ::prost::alloc::string::String,
         /// If set to true, external network access to and from container will be
-        /// blocked. The container will use the default internal network
-        /// 'goog-internal'.
+        /// blocked, containers that are with block_external_network as true can
+        /// still communicate with each other, network cannot be specified in the
+        /// `container.options` field.
         #[prost(bool, tag = "9")]
         pub block_external_network: bool,
         /// Optional username for logging in to a docker registry. If username
-        /// matches "projects/*/secrets/*/versions/*" then Batch will read the
+        /// matches `projects/*/secrets/*/versions/*` then Batch will read the
         /// username from the Secret Manager.
         #[prost(string, tag = "10")]
         pub username: ::prost::alloc::string::String,
         /// Optional password for logging in to a docker registry. If password
-        /// matches "projects/*/secrets/*/versions/*" then Batch will read the
+        /// matches `projects/*/secrets/*/versions/*` then Batch will read the
         /// password from the Secret Manager;
         #[prost(string, tag = "11")]
         pub password: ::prost::alloc::string::String,
@@ -258,9 +314,23 @@ pub mod runnable {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Command {
             /// Script file path on the host VM.
+            ///
+            /// To specify an interpreter, please add a `#!<interpreter>`(also known as
+            /// [shebang line](<https://en.wikipedia.org/wiki/Shebang_(Unix>))) as the
+            /// first line of the file.(For example, to execute the script using bash,
+            /// `#!/bin/bash` should be the first line of the file. To execute the
+            /// script using`Python3`, `#!/usr/bin/env python3` should be the first
+            /// line of the file.) Otherwise, the file will by default be excuted by
+            /// `/bin/sh`.
             #[prost(string, tag = "1")]
             Path(::prost::alloc::string::String),
             /// Shell script text.
+            ///
+            /// To specify an interpreter, please add a `#!<interpreter>\n` at the
+            /// beginning of the text.(For example, to execute the script using bash,
+            /// `#!/bin/bash\n` should be added. To execute the script using`Python3`,
+            /// `#!/usr/bin/env python3\n` should be added.) Otherwise, the script will
+            /// by default be excuted by `/bin/sh`.
             #[prost(string, tag = "2")]
             Text(::prost::alloc::string::String),
         }
@@ -318,18 +388,16 @@ pub struct TaskSpec {
     #[prost(int32, tag = "5")]
     pub max_retry_count: i32,
     /// Lifecycle management schema when any task in a task group is failed.
-    /// The valid size of lifecycle policies are \[0, 10\].
-    /// For each lifecycle policy, when the condition is met,
-    /// the action in that policy will execute.
-    /// If there are multiple policies that the task execution result matches,
-    /// we use the action from the first matched policy. If task execution result
-    /// does not meet with any of the defined lifecycle policy, we consider it as
-    /// the default policy. Default policy means if the exit code is 0, exit task.
+    /// Currently we only support one lifecycle policy.
+    /// When the lifecycle policy condition is met,
+    /// the action in the policy will execute.
+    /// If task execution result does not meet with the defined lifecycle
+    /// policy, we consider it as the default policy.
+    /// Default policy means if the exit code is 0, exit task.
     /// If task ends with non-zero exit code, retry the task with max_retry_count.
     #[prost(message, repeated, tag = "9")]
     pub lifecycle_policies: ::prost::alloc::vec::Vec<LifecyclePolicy>,
-    /// Environment variables to set before running the Task.
-    /// You can set up to 100 environments.
+    /// Deprecated: please use environment(non-plural) instead.
     #[prost(map = "string, string", tag = "6")]
     pub environments: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -348,6 +416,10 @@ pub struct TaskSpec {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LifecyclePolicy {
     /// Action to execute when ActionCondition is true.
+    /// When RETRY_TASK is specified, we will retry failed tasks
+    /// if we notice any exit code match and fail tasks if no match is found.
+    /// Likewise, when FAIL_TASK is specified, we will fail tasks
+    /// if we notice any exit code match and retry tasks if no match is found.
     #[prost(enumeration = "lifecycle_policy::Action", tag = "1")]
     pub action: i32,
     /// Conditions that decide why a task failure is dealt with a specific action.
@@ -436,6 +508,31 @@ pub struct Environment {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// A map of environment variable names to Secret Manager secret names.
+    /// The VM will access the named secrets to set the value of each environment
+    /// variable.
+    #[prost(map = "string, string", tag = "2")]
+    pub secret_variables: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// An encrypted JSON dictionary where the key/value pairs correspond to
+    /// environment variable names and their values.
+    #[prost(message, optional, tag = "3")]
+    pub encrypted_variables: ::core::option::Option<environment::KmsEnvMap>,
+}
+/// Nested message and enum types in `Environment`.
+pub mod environment {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct KmsEnvMap {
+        /// The name of the KMS key that will be used to decrypt the cipher text.
+        #[prost(string, tag = "1")]
+        pub key_name: ::prost::alloc::string::String,
+        /// The value of the cipherText response from the `encrypt` method.
+        #[prost(string, tag = "2")]
+        pub cipher_text: ::prost::alloc::string::String,
+    }
 }
 /// The Cloud Batch Job description.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -449,7 +546,8 @@ pub struct Job {
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
     /// Priority of the Job.
-    /// The valid value range is [0, 100).
+    /// The valid value range is [0, 100). Default value is 0.
+    /// Higher value indicates higher priority.
     /// A job with higher priority value is more likely to run earlier if all other
     /// requirements are satisfied.
     #[prost(int64, tag = "3")]
@@ -587,6 +685,9 @@ pub mod job_status {
         /// The max number of tasks can be assigned to this instance type.
         #[prost(int64, tag = "3")]
         pub task_pack: i64,
+        /// The VM boot disk.
+        #[prost(message, optional, tag = "4")]
+        pub boot_disk: ::core::option::Option<super::allocation_policy::Disk>,
     }
     /// Aggregated task status for a TaskGroup.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -614,6 +715,7 @@ pub mod job_status {
     )]
     #[repr(i32)]
     pub enum State {
+        /// Job state unspecified.
         Unspecified = 0,
         /// Job is admitted (validated and persisted) and waiting for resources.
         Queued = 1,
@@ -668,8 +770,8 @@ pub mod job_status {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobNotification {
     /// The Pub/Sub topic where notifications like the job state changes
-    /// will be published. This topic exist in the same project as the job
-    /// and billings will be charged to this project.
+    /// will be published. The topic must exist in the same project as
+    /// the job and billings will be charged to this project.
     /// If not specified, no Pub/Sub messages will be sent.
     /// Topic format: `projects/{project}/topics/{topic}`.
     #[prost(string, tag = "1")]
@@ -682,8 +784,12 @@ pub struct JobNotification {
 /// Nested message and enum types in `JobNotification`.
 pub mod job_notification {
     /// Message details.
-    /// Describe the attribute that a message should have.
-    /// Without specified message attributes, no message will be sent by default.
+    /// Describe the conditions under which messages will be sent.
+    /// If no attribute is defined, no message will be sent by default.
+    /// One message should specify either the job or the task level attributes,
+    /// but not both. For example,
+    /// job level: JOB_STATE_CHANGED and/or a specified new_job_state;
+    /// task level: TASK_STATE_CHANGED and/or a specified new_task_state.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Message {
@@ -753,6 +859,9 @@ pub struct AllocationPolicy {
     /// Only instances\[0\] is supported now.
     #[prost(message, repeated, tag = "8")]
     pub instances: ::prost::alloc::vec::Vec<allocation_policy::InstancePolicyOrTemplate>,
+    /// Service account that VMs will run as.
+    #[prost(message, optional, tag = "9")]
+    pub service_account: ::core::option::Option<ServiceAccount>,
     /// Labels applied to all VM instances and other resources
     /// created by AllocationPolicy.
     /// Labels could be user provided or system generated.
@@ -768,6 +877,9 @@ pub struct AllocationPolicy {
     /// The network policy.
     #[prost(message, optional, tag = "7")]
     pub network: ::core::option::Option<allocation_policy::NetworkPolicy>,
+    /// The placement policy.
+    #[prost(message, optional, tag = "10")]
+    pub placement: ::core::option::Option<allocation_policy::PlacementPolicy>,
 }
 /// Nested message and enum types in `AllocationPolicy`.
 pub mod allocation_policy {
@@ -775,12 +887,14 @@ pub mod allocation_policy {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LocationPolicy {
         /// A list of allowed location names represented by internal URLs.
+        ///
         /// Each location can be a region or a zone.
         /// Only one region or multiple zones in one region is supported now.
         /// For example,
         /// \["regions/us-central1"\] allow VMs in any zones in region us-central1.
         /// \["zones/us-central1-a", "zones/us-central1-c"\] only allow VMs
         /// in zones us-central1-a and us-central1-c.
+        ///
         /// All locations end up in different regions would cause errors.
         /// For example,
         /// ["regions/us-central1", "zones/us-central1-a", "zones/us-central1-b",
@@ -791,24 +905,43 @@ pub mod allocation_policy {
     }
     /// A new persistent disk or a local ssd.
     /// A VM can only have one local SSD setting but multiple local SSD partitions.
-    /// <https://cloud.google.com/compute/docs/disks#pdspecs.>
+    /// See <https://cloud.google.com/compute/docs/disks#pdspecs> and
     /// <https://cloud.google.com/compute/docs/disks#localssds.>
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Disk {
-        /// Disk type as shown in `gcloud compute disk-types list`
-        /// For example, "pd-ssd", "pd-standard", "pd-balanced", "local-ssd".
+        /// Disk type as shown in `gcloud compute disk-types list`.
+        /// For example, local SSD uses type "local-ssd".
+        /// Persistent disks and boot disks use "pd-balanced", "pd-extreme", "pd-ssd"
+        /// or "pd-standard".
         #[prost(string, tag = "1")]
         pub r#type: ::prost::alloc::string::String,
         /// Disk size in GB.
-        /// This field is ignored if `data_source` is `disk` or `image`.
-        /// If `type` is `local-ssd`, size_gb should be a multiple of 375GB,
-        /// otherwise, the final size will be the next greater multiple of 375 GB.
+        ///
+        /// **Non-Boot Disk**:
+        /// If the `type` specifies a persistent disk, this field
+        /// is ignored if `data_source` is set as `image` or `snapshot`.
+        /// If the `type` specifies a local SSD, this field should be a multiple of
+        /// 375 GB, otherwise, the final size will be the next greater multiple of
+        /// 375 GB.
+        ///
+        /// **Boot Disk**:
+        /// Batch will calculate the boot disk size based on source
+        /// image and task requirements if you do not speicify the size.
+        /// If both this field and the `boot_disk_mib` field in task spec's
+        /// `compute_resource` are defined, Batch will only honor this field.
+        /// Also, this field should be no smaller than the source disk's
+        /// size when the `data_source` is set as `snapshot` or `image`.
+        /// For example, if you set an image as the `data_source` field and the
+        /// image's default disk size 30 GB, you can only use this field to make the
+        /// disk larger or equal to 30 GB.
         #[prost(int64, tag = "2")]
         pub size_gb: i64,
         /// Local SSDs are available through both "SCSI" and "NVMe" interfaces.
         /// If not indicated, "NVMe" will be the default one for local ssds.
-        /// We only support "SCSI" for persistent disks now.
+        /// This field is ignored for persistent disks as the interface is chosen
+        /// automatically. See
+        /// <https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface.>
         #[prost(string, tag = "6")]
         pub disk_interface: ::prost::alloc::string::String,
         /// A data source from which a PD will be created.
@@ -821,21 +954,38 @@ pub mod allocation_policy {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum DataSource {
-            /// Name of a public or custom image used as the data source.
+            /// URL for a VM image to use as the data source for this disk.
+            /// For example, the following are all valid URLs:
+            ///
+            /// * Specify the image by its family name:
+            /// projects/{project}/global/images/family/{image_family}
+            /// * Specify the image version:
+            /// projects/{project}/global/images/{image_version}
+            ///
+            /// You can also use Batch customized image in short names.
+            /// The following image values are supported for a boot disk:
+            ///
+            /// * `batch-debian`: use Batch Debian images.
+            /// * `batch-centos`: use Batch CentOS images.
+            /// * `batch-cos`: use Batch Container-Optimized images.
+            /// * `batch-hpc-centos`: use Batch HPC CentOS images.
             #[prost(string, tag = "4")]
             Image(::prost::alloc::string::String),
             /// Name of a snapshot used as the data source.
+            /// Snapshot is not supported as boot disk now.
             #[prost(string, tag = "5")]
             Snapshot(::prost::alloc::string::String),
         }
     }
-    /// A new or an existing persistent disk or a local ssd attached to a VM
+    /// A new or an existing persistent disk (PD) or a local ssd attached to a VM
     /// instance.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AttachedDisk {
         /// Device name that the guest operating system will see.
-        /// If not specified, this is default to the disk name.
+        /// It is used by Runnable.volumes field to mount disks. So please specify
+        /// the device_name if you want Batch to help mount the disk, and it should
+        /// match the device_name field in volumes.
         #[prost(string, tag = "3")]
         pub device_name: ::prost::alloc::string::String,
         #[prost(oneof = "attached_disk::Attached", tags = "1, 2")]
@@ -853,7 +1003,7 @@ pub mod allocation_policy {
             ExistingDisk(::prost::alloc::string::String),
         }
     }
-    /// Accelerator describes Compute Engine accelerators to be attached to VMs.
+    /// Accelerator describes Compute Engine accelerators to be attached to the VM.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Accelerator {
@@ -864,9 +1014,19 @@ pub mod allocation_policy {
         /// The number of accelerators of this type.
         #[prost(int64, tag = "2")]
         pub count: i64,
+        /// Deprecated: please use instances\[0\].install_gpu_drivers instead.
         #[deprecated]
         #[prost(bool, tag = "3")]
         pub install_gpu_drivers: bool,
+        /// Optional. The NVIDIA GPU driver version that should be installed for this
+        /// type.
+        ///
+        /// You can define the specific driver version such as "470.103.01",
+        /// following the driver version requirements in
+        /// <https://cloud.google.com/compute/docs/gpus/install-drivers-gpu#minimum-driver.>
+        /// Batch will install the specific accelerator driver if qualified.
+        #[prost(string, tag = "4")]
+        pub driver_version: ::prost::alloc::string::String,
     }
     /// InstancePolicy describes an instance type and resources attached to each VM
     /// created by this InstancePolicy.
@@ -878,26 +1038,47 @@ pub mod allocation_policy {
         pub machine_type: ::prost::alloc::string::String,
         /// The minimum CPU platform.
         /// See
-        /// `<https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform`.>
-        /// Not yet implemented.
+        /// <https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform.>
         #[prost(string, tag = "3")]
         pub min_cpu_platform: ::prost::alloc::string::String,
         /// The provisioning model.
         #[prost(enumeration = "ProvisioningModel", tag = "4")]
         pub provisioning_model: i32,
         /// The accelerators attached to each VM instance.
-        /// Not yet implemented.
         #[prost(message, repeated, tag = "5")]
         pub accelerators: ::prost::alloc::vec::Vec<Accelerator>,
+        /// Boot disk to be created and attached to each VM by this InstancePolicy.
+        /// Boot disk will be deleted when the VM is deleted.
+        /// Batch API now only supports booting from image.
+        #[prost(message, optional, tag = "8")]
+        pub boot_disk: ::core::option::Option<Disk>,
         /// Non-boot disks to be attached for each VM created by this InstancePolicy.
-        /// New disks will be deleted when the attached VM is deleted.
+        /// New disks will be deleted when the VM is deleted.
+        /// A non-boot disk is a disk that can be of a device with a
+        /// file system or a raw storage drive that is not ready for data
+        /// storage and accessing.
         #[prost(message, repeated, tag = "6")]
         pub disks: ::prost::alloc::vec::Vec<AttachedDisk>,
     }
-    /// Either an InstancePolicy or an instance template.
+    /// InstancePolicyOrTemplate lets you define the type of resources to use for
+    /// this job either with an InstancePolicy or an instance template.
+    /// If undefined, Batch picks the type of VM to use and doesn't include
+    /// optional VM resources such as GPUs and extra disks.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InstancePolicyOrTemplate {
+        /// Set this field true if users want Batch to help fetch drivers from a
+        /// third party location and install them for GPUs specified in
+        /// policy.accelerators or instance_template on their behalf. Default is
+        /// false.
+        ///
+        /// For Container-Optimized Image cases, Batch will install the
+        /// accelerator driver following milestones of
+        /// <https://cloud.google.com/container-optimized-os/docs/release-notes.> For
+        /// non Container-Optimized Image cases, following
+        /// <https://github.com/GoogleCloudPlatform/compute-gpu-installation/blob/main/linux/install_gpu_driver.py.>
+        #[prost(bool, tag = "3")]
+        pub install_gpu_drivers: bool,
         #[prost(oneof = "instance_policy_or_template::PolicyTemplate", tags = "1, 2")]
         pub policy_template: ::core::option::Option<
             instance_policy_or_template::PolicyTemplate,
@@ -922,10 +1103,24 @@ pub mod allocation_policy {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NetworkInterface {
-        /// The URL of the network resource.
+        /// The URL of an existing network resource.
+        /// You can specify the network as a full or partial URL.
+        ///
+        /// For example, the following are all valid URLs:
+        ///
+        /// * <https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}>
+        /// * projects/{project}/global/networks/{network}
+        /// * global/networks/{network}
         #[prost(string, tag = "1")]
         pub network: ::prost::alloc::string::String,
-        /// The URL of the Subnetwork resource.
+        /// The URL of an existing subnetwork resource in the network.
+        /// You can specify the subnetwork as a full or partial URL.
+        ///
+        /// For example, the following are all valid URLs:
+        ///
+        /// * <https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetwork}>
+        /// * projects/{project}/regions/{region}/subnetworks/{subnetwork}
+        /// * regions/{region}/subnetworks/{subnetwork}
         #[prost(string, tag = "2")]
         pub subnetwork: ::prost::alloc::string::String,
         /// Default is false (with an external IP address). Required if
@@ -945,6 +1140,25 @@ pub mod allocation_policy {
         /// Network configurations.
         #[prost(message, repeated, tag = "1")]
         pub network_interfaces: ::prost::alloc::vec::Vec<NetworkInterface>,
+    }
+    /// PlacementPolicy describes a group placement policy for the VMs controlled
+    /// by this AllocationPolicy.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PlacementPolicy {
+        /// UNSPECIFIED vs. COLLOCATED (default UNSPECIFIED). Use COLLOCATED when you
+        /// want VMs to be located close to each other for low network latency
+        /// between the VMs. No placement policy will be generated when collocation
+        /// is UNSPECIFIED.
+        #[prost(string, tag = "1")]
+        pub collocation: ::prost::alloc::string::String,
+        /// When specified, causes the job to fail if more than max_distance logical
+        /// switches are required between VMs. Batch uses the most compact possible
+        /// placement of VMs even when max_distance is not specified. An explicit
+        /// max_distance makes that level of compactness a strict requirement.
+        /// Not yet implemented
+        #[prost(int64, tag = "2")]
+        pub max_distance: i64,
     }
     /// Compute Engine VM instance provisioning model.
     #[derive(
@@ -999,8 +1213,7 @@ pub mod allocation_policy {
         }
     }
 }
-/// A TaskGroup contains one or multiple Tasks that share the same
-/// Runnable but with different runtime parameters.
+/// A TaskGroup defines one or more Tasks that all share the same TaskSpec.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TaskGroup {
@@ -1014,13 +1227,18 @@ pub struct TaskGroup {
     #[prost(message, optional, tag = "3")]
     pub task_spec: ::core::option::Option<TaskSpec>,
     /// Number of Tasks in the TaskGroup.
-    /// default is 1
+    /// Default is 1.
     #[prost(int64, tag = "4")]
     pub task_count: i64,
     /// Max number of tasks that can run in parallel.
     /// Default to min(task_count, 1000).
+    /// Field parallelism must be 1 if the scheduling_policy is IN_ORDER.
     #[prost(int64, tag = "5")]
     pub parallelism: i64,
+    /// Scheduling policy for Tasks in the TaskGroup.
+    /// The default value is AS_SOON_AS_POSSIBLE.
+    #[prost(enumeration = "task_group::SchedulingPolicy", tag = "6")]
+    pub scheduling_policy: i32,
     /// An array of environment variable mappings, which are passed to Tasks with
     /// matching indices. If task_environments is used then task_count should
     /// not be specified in the request (and will be ignored). Task count will be
@@ -1030,8 +1248,6 @@ pub struct TaskGroup {
     /// addition to any environment variables set in task_environments, specifying
     /// the number of Tasks in the Task's parent TaskGroup, and the specific Task's
     /// index in the TaskGroup (0 through BATCH_TASK_COUNT - 1).
-    ///
-    /// task_environments supports up to 200 entries.
     #[prost(message, repeated, tag = "9")]
     pub task_environments: ::prost::alloc::vec::Vec<Environment>,
     /// Max number of tasks that can be run on a VM at the same time.
@@ -1049,6 +1265,70 @@ pub struct TaskGroup {
     #[prost(bool, tag = "12")]
     pub permissive_ssh: bool,
 }
+/// Nested message and enum types in `TaskGroup`.
+pub mod task_group {
+    /// How Tasks in the TaskGroup should be scheduled relative to each other.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SchedulingPolicy {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Run Tasks as soon as resources are available.
+        ///
+        /// Tasks might be executed in parallel depending on parallelism and
+        /// task_count values.
+        AsSoonAsPossible = 1,
+        /// Run Tasks sequentially with increased task index.
+        InOrder = 2,
+    }
+    impl SchedulingPolicy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                SchedulingPolicy::Unspecified => "SCHEDULING_POLICY_UNSPECIFIED",
+                SchedulingPolicy::AsSoonAsPossible => "AS_SOON_AS_POSSIBLE",
+                SchedulingPolicy::InOrder => "IN_ORDER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCHEDULING_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                "AS_SOON_AS_POSSIBLE" => Some(Self::AsSoonAsPossible),
+                "IN_ORDER" => Some(Self::InOrder),
+                _ => None,
+            }
+        }
+    }
+}
+/// Carries information about a Google Cloud service account.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceAccount {
+    /// Email address of the service account. If not specified, the default
+    /// Compute Engine service account for the project will be used. If instance
+    /// template is being used, the service account has to be specified in the
+    /// instance template and it has to match the email field here.
+    #[prost(string, tag = "1")]
+    pub email: ::prost::alloc::string::String,
+    /// List of scopes to be enabled for this service account on the VM, in
+    /// addition to the cloud-platform API scope that will be added by default.
+    #[prost(string, repeated, tag = "2")]
+    pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// CreateJob Request.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1058,8 +1338,9 @@ pub struct CreateJobRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// ID used to uniquely identify the Job within its parent scope.
-    /// This field should contain at most 63 characters.
-    /// Only alphanumeric characters or '-' are accepted.
+    /// This field should contain at most 63 characters and must start with
+    /// lowercase characters.
+    /// Only lowercase characters, numbers and '-' are accepted.
     /// The '-' character cannot be the first or the last one.
     /// A system generated ID will be used if the field is not set.
     ///
@@ -1070,13 +1351,13 @@ pub struct CreateJobRequest {
     /// Required. The Job to create.
     #[prost(message, optional, tag = "3")]
     pub job: ::core::option::Option<Job>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -1104,13 +1385,13 @@ pub struct DeleteJobRequest {
     /// Optional. Reason for this deletion.
     #[prost(string, tag = "2")]
     pub reason: ::prost::alloc::string::String,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes after the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -1130,6 +1411,10 @@ pub struct ListJobsRequest {
     /// List filter.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
+    /// Optional. Sort results. Supported are "name", "name desc", "create_time",
+    /// and "create_time desc".
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
     /// Page size.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -1215,8 +1500,9 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
-    /// corresponding to `Code.CANCELLED`.
+    /// have [Operation.error][] value with a
+    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.

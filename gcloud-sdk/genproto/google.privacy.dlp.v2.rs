@@ -6,7 +6,7 @@ pub struct InfoType {
     /// creating a CustomInfoType, or one of the names listed
     /// at <https://cloud.google.com/dlp/docs/infotypes-reference> when specifying
     /// a built-in type.  When sending Cloud DLP results to Data Catalog, infoType
-    /// names should conform to the pattern `\[A-Za-z0-9$-_\]{1,64}`.
+    /// names should conform to the pattern `\[A-Za-z0-9$_-\]{1,64}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional version name for this InfoType.
@@ -1106,6 +1106,22 @@ pub struct ExcludeInfoTypes {
     #[prost(message, repeated, tag = "1")]
     pub info_types: ::prost::alloc::vec::Vec<InfoType>,
 }
+/// The rule to exclude findings based on a hotword. For record inspection of
+/// tables, column names are considered hotwords. An example of this is to
+/// exclude a finding if a BigQuery column matches a specific pattern.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExcludeByHotword {
+    /// Regular expression pattern defining what qualifies as a hotword.
+    #[prost(message, optional, tag = "1")]
+    pub hotword_regex: ::core::option::Option<custom_info_type::Regex>,
+    /// Range of characters within which the entire hotword must reside.
+    /// The total length of the window cannot exceed 1000 characters.
+    /// The windowBefore property in proximity should be set to 1 if the hotword
+    /// needs to be included in a column header.
+    #[prost(message, optional, tag = "2")]
+    pub proximity: ::core::option::Option<custom_info_type::detection_rule::Proximity>,
+}
 /// The rule that specifies conditions when findings of infoTypes specified in
 /// `InspectionRuleSet` are removed from results.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1115,7 +1131,7 @@ pub struct ExclusionRule {
     #[prost(enumeration = "MatchingType", tag = "4")]
     pub matching_type: i32,
     /// Exclusion rule types.
-    #[prost(oneof = "exclusion_rule::Type", tags = "1, 2, 3")]
+    #[prost(oneof = "exclusion_rule::Type", tags = "1, 2, 3, 5")]
     pub r#type: ::core::option::Option<exclusion_rule::Type>,
 }
 /// Nested message and enum types in `ExclusionRule`.
@@ -1133,6 +1149,10 @@ pub mod exclusion_rule {
         /// Set of infoTypes for which findings would affect this rule.
         #[prost(message, tag = "3")]
         ExcludeInfoTypes(super::ExcludeInfoTypes),
+        /// Drop if the hotword rule is contained in the proximate context. For
+        /// tabular data, the context includes the column name.
+        #[prost(message, tag = "5")]
+        ExcludeByHotword(super::ExcludeByHotword),
     }
 }
 /// A single inspection rule to be applied to infoTypes, specified in
@@ -1378,7 +1398,6 @@ pub mod byte_content_item {
         }
     }
 }
-/// Container structure for the content to inspect.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContentItem {
@@ -1876,6 +1895,13 @@ pub struct DeidentifyContentRequest {
     #[prost(message, optional, tag = "3")]
     pub inspect_config: ::core::option::Option<InspectConfig>,
     /// The item to de-identify. Will be treated as text.
+    ///
+    /// This value must be of type
+    /// [Table][google.privacy.dlp.v2.Table] if your
+    /// [deidentify_config][google.privacy.dlp.v2.DeidentifyContentRequest.deidentify_config]
+    /// is a
+    /// [RecordTransformations][google.privacy.dlp.v2.RecordTransformations]
+    /// object.
     #[prost(message, optional, tag = "4")]
     pub item: ::core::option::Option<ContentItem>,
     /// Template to use. Any configuration directly specified in
@@ -2335,6 +2361,8 @@ pub mod info_type_category {
         Venezuela = 39,
         /// The infoType is typically used in Google internally.
         Internal = 40,
+        /// The infoType is typically used in New Zealand.
+        NewZealand = 41,
     }
     impl LocationCategory {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2384,6 +2412,7 @@ pub mod info_type_category {
                 LocationCategory::Uruguay => "URUGUAY",
                 LocationCategory::Venezuela => "VENEZUELA",
                 LocationCategory::Internal => "INTERNAL",
+                LocationCategory::NewZealand => "NEW_ZEALAND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2430,6 +2459,7 @@ pub mod info_type_category {
                 "URUGUAY" => Some(Self::Uruguay),
                 "VENEZUELA" => Some(Self::Venezuela),
                 "INTERNAL" => Some(Self::Internal),
+                "NEW_ZEALAND" => Some(Self::NewZealand),
                 _ => None,
             }
         }
@@ -5041,8 +5071,9 @@ pub mod action {
         /// Create a de-identified copy of the input data.
         #[prost(message, tag = "7")]
         Deidentify(Deidentify),
-        /// Enable email notification for project owners and editors on job's
-        /// completion/failure.
+        /// Sends an email when the job completes. The email goes to IAM project
+        /// owners and technical [Essential
+        /// Contacts](<https://cloud.google.com/resource-manager/docs/managing-notification-contacts>).
         #[prost(message, tag = "8")]
         JobNotificationEmails(JobNotificationEmails),
         /// Enable Stackdriver metric dlp.googleapis.com/finding_count.
@@ -6563,6 +6594,7 @@ pub struct TableDataProfile {
     #[prost(int64, tag = "12")]
     pub table_size_bytes: i64,
     /// Number of rows in the table when the profile was generated.
+    /// This will not be populated for BigLake tables.
     #[prost(int64, tag = "13")]
     pub row_count: i64,
     /// How the table is encrypted.

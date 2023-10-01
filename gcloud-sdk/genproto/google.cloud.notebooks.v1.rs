@@ -1,3 +1,40 @@
+/// Defines flags that are used to run the diagnostic tool
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiagnosticConfig {
+    /// Required. User Cloud Storage bucket location (REQUIRED).
+    /// Must be formatted with path prefix (`gs://$GCS_BUCKET`).
+    ///
+    /// Permissions:
+    /// User Managed Notebooks:
+    /// - storage.buckets.writer: Must be given to the project's service account
+    ///    attached to VM.
+    /// Google Managed Notebooks:
+    /// - storage.buckets.writer: Must be given to the project's service account or
+    ///    user credentials attached to VM depending on authentication mode.
+    ///
+    /// Cloud Storage bucket Log file will be written to
+    /// `gs://$GCS_BUCKET/$RELATIVE_PATH/$VM_DATE_$TIME.tar.gz`
+    #[prost(string, tag = "1")]
+    pub gcs_bucket: ::prost::alloc::string::String,
+    /// Optional. Defines the relative storage path in the Cloud Storage bucket
+    /// where the diagnostic logs will be written: Default path will be the root
+    /// directory of the Cloud Storage bucket
+    /// (`gs://$GCS_BUCKET/$DATE_$TIME.tar.gz`)
+    /// Example of full path where Log file will be written:
+    /// `gs://$GCS_BUCKET/$RELATIVE_PATH/`
+    #[prost(string, tag = "2")]
+    pub relative_path: ::prost::alloc::string::String,
+    /// Optional. Enables flag to repair service for instance
+    #[prost(bool, tag = "3")]
+    pub repair_flag_enabled: bool,
+    /// Optional. Enables flag to capture packets from the instance for 30 seconds
+    #[prost(bool, tag = "4")]
+    pub packet_capture_flag_enabled: bool,
+    /// Optional. Enables flag to copy all `/home/jupyter` folder contents
+    #[prost(bool, tag = "5")]
+    pub copy_home_files_flag_enabled: bool,
+}
 /// Definition of a software environment that is used to start a notebook
 /// instance.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -316,20 +353,21 @@ pub mod execution_template {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct VertexAiParameters {
         /// The full name of the Compute Engine
-        /// [network](/compute/docs/networks-and-firewalls#networks) to which the Job
-        /// should be peered. For example, `projects/12345/global/networks/myVPC`.
+        /// [network](<https://cloud.google.com/compute/docs/networks-and-firewalls#networks>)
+        /// to which the Job should be peered. For example,
+        /// `projects/12345/global/networks/myVPC`.
         /// [Format](<https://cloud.google.com/compute/docs/reference/rest/v1/networks/insert>)
         /// is of the form `projects/{project}/global/networks/{network}`.
-        /// Where {project} is a project number, as in `12345`, and {network} is a
-        /// network name.
+        /// Where `{project}` is a project number, as in `12345`, and `{network}` is
+        /// a network name.
         ///
         /// Private services access must already be configured for the network. If
         /// left unspecified, the job is not peered with any network.
         #[prost(string, tag = "1")]
         pub network: ::prost::alloc::string::String,
         /// Environment variables.
-        ///   At most 100 environment variables can be specified and unique.
-        /// Example: GCP_BUCKET=gs://my-bucket/samples/
+        /// At most 100 environment variables can be specified and unique.
+        /// Example: `GCP_BUCKET=gs://my-bucket/samples/`
         #[prost(map = "string, string", tag = "2")]
         pub env: ::std::collections::HashMap<
             ::prost::alloc::string::String,
@@ -752,14 +790,15 @@ pub struct Instance {
     ///     <https://www.googleapis.com/auth/compute>
     #[prost(string, repeated, tag = "31")]
     pub service_account_scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Required. The [Compute Engine machine type](/compute/docs/machine-types) of this
+    /// Required. The [Compute Engine machine
+    /// type](<https://cloud.google.com/compute/docs/machine-types>) of this
     /// instance.
     #[prost(string, tag = "8")]
     pub machine_type: ::prost::alloc::string::String,
     /// The hardware accelerator used on this instance. If you use
     /// accelerators, make sure that your configuration has
-    /// [enough vCPUs and memory to support the `machine_type` you
-    /// have selected](/compute/docs/gpus/#gpus-list).
+    /// [enough vCPUs and memory to support the `machine_type` you have
+    /// selected](<https://cloud.google.com/compute/docs/gpus/#gpus-list>).
     #[prost(message, optional, tag = "9")]
     pub accelerator_config: ::core::option::Option<instance::AcceleratorConfig>,
     /// Output only. The state of this instance.
@@ -780,8 +819,8 @@ pub struct Instance {
     #[prost(enumeration = "instance::DiskType", tag = "13")]
     pub boot_disk_type: i32,
     /// Input only. The size of the boot disk in GB attached to this instance, up to a maximum
-    /// of 64000&nbsp;GB (64&nbsp;TB). The minimum recommended value is
-    /// 100&nbsp;GB. If not specified, this defaults to 100.
+    /// of 64000 GB (64 TB). The minimum recommended value is 100 GB. If not
+    /// specified, this defaults to 100.
     #[prost(int64, tag = "14")]
     pub boot_disk_size_gb: i64,
     /// Input only. The type of the data disk attached to this instance, defaults to
@@ -789,9 +828,8 @@ pub struct Instance {
     #[prost(enumeration = "instance::DiskType", tag = "25")]
     pub data_disk_type: i32,
     /// Input only. The size of the data disk in GB attached to this instance, up to a maximum
-    /// of 64000&nbsp;GB (64&nbsp;TB). You can choose the size of the data disk
-    /// based on how big your notebooks and data are. If not specified, this
-    /// defaults to 100.
+    /// of 64000 GB (64 TB). You can choose the size of the data disk based on how
+    /// big your notebooks and data are. If not specified, this defaults to 100.
     #[prost(int64, tag = "26")]
     pub data_disk_size_gb: i64,
     /// Input only. If true, the data disk will not be auto deleted when deleting the instance.
@@ -884,9 +922,9 @@ pub struct Instance {
 /// Nested message and enum types in `Instance`.
 pub mod instance {
     /// Definition of a hardware accelerator. Note that not all combinations
-    /// of `type` and `core_count` are valid. Check [GPUs on
-    /// Compute Engine](/compute/docs/gpus/#gpus-list) to find a valid
-    /// combination. TPUs are not supported.
+    /// of `type` and `core_count` are valid. Check [GPUs on Compute
+    /// Engine](<https://cloud.google.com/compute/docs/gpus/#gpus-list>) to find a
+    /// valid combination. TPUs are not supported.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AcceleratorConfig {
@@ -910,9 +948,9 @@ pub mod instance {
         #[prost(bool, tag = "2")]
         pub boot: bool,
         /// Indicates a unique device name of your choice that is reflected into the
-        /// /dev/disk/by-id/google-* tree of a Linux operating system running within
-        /// the instance. This name can be used to reference the device for mounting,
-        /// resizing, and so on, from within the instance.
+        /// `/dev/disk/by-id/google-*` tree of a Linux operating system running
+        /// within the instance. This name can be used to reference the device for
+        /// mounting, resizing, and so on, from within the instance.
         ///
         /// If not specified, the server chooses a default device name to apply to
         /// this disk, in the form persistent-disk-x, where x is a number assigned by
@@ -940,8 +978,8 @@ pub mod instance {
         /// performance.
         /// Valid values:
         ///
-        /// * NVME
-        /// * SCSI
+        /// * `NVME`
+        /// * `SCSI`
         #[prost(string, tag = "7")]
         pub interface: ::prost::alloc::string::String,
         /// Type of the resource. Always compute#attachedDisk for attached
@@ -953,23 +991,23 @@ pub mod instance {
         /// and marketplace images.
         #[prost(string, repeated, tag = "9")]
         pub licenses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// The mode in which to attach this disk, either READ_WRITE or READ_ONLY. If
-        /// not specified, the default is to attach the disk in READ_WRITE mode.
-        /// Valid values:
+        /// The mode in which to attach this disk, either `READ_WRITE` or
+        /// `READ_ONLY`. If not specified, the default is to attach the disk in
+        /// `READ_WRITE` mode. Valid values:
         ///
-        /// * READ_ONLY
-        /// * READ_WRITE
+        /// * `READ_ONLY`
+        /// * `READ_WRITE`
         #[prost(string, tag = "10")]
         pub mode: ::prost::alloc::string::String,
         /// Indicates a valid partial or full URL to an existing Persistent Disk
         /// resource.
         #[prost(string, tag = "11")]
         pub source: ::prost::alloc::string::String,
-        /// Indicates the type of the disk, either SCRATCH or PERSISTENT.
+        /// Indicates the type of the disk, either `SCRATCH` or `PERSISTENT`.
         /// Valid values:
         ///
-        /// * PERSISTENT
-        /// * SCRATCH
+        /// * `PERSISTENT`
+        /// * `SCRATCH`
         #[prost(string, tag = "12")]
         pub r#type: ::prost::alloc::string::String,
     }
@@ -983,18 +1021,19 @@ pub mod instance {
             /// features to see a list of available options.
             /// Valid values:
             ///
-            /// * FEATURE_TYPE_UNSPECIFIED
-            /// * MULTI_IP_SUBNET
-            /// * SECURE_BOOT
-            /// * UEFI_COMPATIBLE
-            /// * VIRTIO_SCSI_MULTIQUEUE
-            /// * WINDOWS
+            /// * `FEATURE_TYPE_UNSPECIFIED`
+            /// * `MULTI_IP_SUBNET`
+            /// * `SECURE_BOOT`
+            /// * `UEFI_COMPATIBLE`
+            /// * `VIRTIO_SCSI_MULTIQUEUE`
+            /// * `WINDOWS`
             #[prost(string, tag = "1")]
             pub r#type: ::prost::alloc::string::String,
         }
     }
     /// A set of Shielded Instance options.
-    /// Check \[Images using supported Shielded VM features\]
+    /// Check [Images using supported Shielded VM
+    /// features](<https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>).
     /// Not all combinations are valid.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1043,7 +1082,7 @@ pub mod instance {
         /// The time that this instance upgrade history entry is created.
         #[prost(message, optional, tag = "7")]
         pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-        /// Target VM Image. Format: ainotebooks-vm/project/image-name/name.
+        /// Target VM Image. Format: `ainotebooks-vm/project/image-name/name`.
         #[deprecated]
         #[prost(string, tag = "8")]
         pub target_image: ::prost::alloc::string::String,
@@ -1770,7 +1809,7 @@ pub struct LocalDisk {
     pub boot: bool,
     /// Optional. Output only. Specifies a unique device name
     /// of your choice that is reflected into the
-    /// /dev/disk/by-id/google-* tree of a Linux operating system running within
+    /// `/dev/disk/by-id/google-*` tree of a Linux operating system running within
     /// the instance. This name can be used to reference the device for mounting,
     /// resizing, and so on, from within the instance.
     ///
@@ -1804,8 +1843,8 @@ pub struct LocalDisk {
     /// performance characteristics of SCSI over NVMe, see Local SSD performance.
     /// Valid values:
     ///
-    /// * NVME
-    /// * SCSI
+    /// * `NVME`
+    /// * `SCSI`
     #[prost(string, tag = "7")]
     pub interface: ::prost::alloc::string::String,
     /// Output only. Type of the resource. Always compute#attachedDisk for attached disks.
@@ -1814,24 +1853,24 @@ pub struct LocalDisk {
     /// Output only. Any valid publicly visible licenses.
     #[prost(string, repeated, tag = "9")]
     pub licenses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The mode in which to attach this disk, either READ_WRITE or READ_ONLY. If
-    /// not specified, the default is to attach the disk in READ_WRITE mode.
+    /// The mode in which to attach this disk, either `READ_WRITE` or `READ_ONLY`.
+    /// If not specified, the default is to attach the disk in `READ_WRITE` mode.
     /// Valid values:
     ///
-    /// * READ_ONLY
-    /// * READ_WRITE
+    /// * `READ_ONLY`
+    /// * `READ_WRITE`
     #[prost(string, tag = "10")]
     pub mode: ::prost::alloc::string::String,
     /// Specifies a valid partial or full URL to an existing Persistent Disk
     /// resource.
     #[prost(string, tag = "11")]
     pub source: ::prost::alloc::string::String,
-    /// Specifies the type of the disk, either SCRATCH or PERSISTENT. If not
-    /// specified, the default is PERSISTENT.
+    /// Specifies the type of the disk, either `SCRATCH` or `PERSISTENT`. If not
+    /// specified, the default is `PERSISTENT`.
     /// Valid values:
     ///
-    /// * PERSISTENT
-    /// * SCRATCH
+    /// * `PERSISTENT`
+    /// * `SCRATCH`
     #[prost(string, tag = "12")]
     pub r#type: ::prost::alloc::string::String,
 }
@@ -1852,12 +1891,12 @@ pub mod local_disk {
         ///
         /// Valid values:
         ///
-        /// * FEATURE_TYPE_UNSPECIFIED
-        /// * MULTI_IP_SUBNET
-        /// * SECURE_BOOT
-        /// * UEFI_COMPATIBLE
-        /// * VIRTIO_SCSI_MULTIQUEUE
-        /// * WINDOWS
+        /// * `FEATURE_TYPE_UNSPECIFIED`
+        /// * `MULTI_IP_SUBNET`
+        /// * `SECURE_BOOT`
+        /// * `UEFI_COMPATIBLE`
+        /// * `VIRTIO_SCSI_MULTIQUEUE`
+        /// * `WINDOWS`
         #[prost(string, tag = "1")]
         pub r#type: ::prost::alloc::string::String,
     }
@@ -2058,6 +2097,69 @@ pub struct RuntimeSoftwareConfig {
     /// Output only. Bool indicating whether an newer image is available in an image family.
     #[prost(bool, optional, tag = "9")]
     pub upgradeable: ::core::option::Option<bool>,
+    /// Behavior for the post startup script.
+    #[prost(
+        enumeration = "runtime_software_config::PostStartupScriptBehavior",
+        tag = "10"
+    )]
+    pub post_startup_script_behavior: i32,
+    /// Bool indicating whether JupyterLab terminal will be available or not.
+    /// Default: False
+    #[prost(bool, optional, tag = "11")]
+    pub disable_terminal: ::core::option::Option<bool>,
+    /// Output only. version of boot image such as M100, from release label of the image.
+    #[prost(string, optional, tag = "12")]
+    pub version: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `RuntimeSoftwareConfig`.
+pub mod runtime_software_config {
+    /// Behavior for the post startup script.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PostStartupScriptBehavior {
+        /// Unspecified post startup script behavior. Will run only once at creation.
+        Unspecified = 0,
+        /// Runs the post startup script provided during creation at every start.
+        RunEveryStart = 1,
+        /// Downloads and runs the provided post startup script at every start.
+        DownloadAndRunEveryStart = 2,
+    }
+    impl PostStartupScriptBehavior {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                PostStartupScriptBehavior::Unspecified => {
+                    "POST_STARTUP_SCRIPT_BEHAVIOR_UNSPECIFIED"
+                }
+                PostStartupScriptBehavior::RunEveryStart => "RUN_EVERY_START",
+                PostStartupScriptBehavior::DownloadAndRunEveryStart => {
+                    "DOWNLOAD_AND_RUN_EVERY_START"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "POST_STARTUP_SCRIPT_BEHAVIOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUN_EVERY_START" => Some(Self::RunEveryStart),
+                "DOWNLOAD_AND_RUN_EVERY_START" => Some(Self::DownloadAndRunEveryStart),
+                _ => None,
+            }
+        }
+    }
 }
 /// Contains runtime daemon metrics, such as OS and kernels and sessions stats.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2149,8 +2251,8 @@ pub struct VirtualMachineConfig {
     ///
     /// A full URL or partial URI. Examples:
     ///
-    /// * `<https://www.googleapis.com/compute/v1/projects/\[project_id\]/regions/global/default`>
-    /// * `projects/\[project_id\]/regions/global/default`
+    /// * `<https://www.googleapis.com/compute/v1/projects/\[project_id\]/global/networks/default`>
+    /// * `projects/\[project_id\]/global/networks/default`
     ///
     /// Runtimes are managed resources inside Google Infrastructure.
     /// Runtimes support the following network configurations:
@@ -2220,14 +2322,15 @@ pub struct VirtualMachineConfig {
     /// The subnetwork allocation will use the range *name* if it's assigned.
     ///
     /// Example: managed-notebooks-range-c
-    /// PEERING_RANGE_NAME_3=managed-notebooks-range-c
-    /// gcloud compute addresses create $PEERING_RANGE_NAME_3 \
-    ///    --global \
-    ///    --prefix-length=24 \
-    ///    --description="Google Cloud Managed Notebooks Range 24 c" \
-    ///    --network=$NETWORK \
-    ///    --addresses=192.168.0.0 \
-    ///    --purpose=VPC_PEERING
+    ///
+    ///      PEERING_RANGE_NAME_3=managed-notebooks-range-c
+    ///      gcloud compute addresses create $PEERING_RANGE_NAME_3 \
+    ///        --global \
+    ///        --prefix-length=24 \
+    ///        --description="Google Cloud Managed Notebooks Range 24 c" \
+    ///        --network=$NETWORK \
+    ///        --addresses=192.168.0.0 \
+    ///        --purpose=VPC_PEERING
     ///
     /// Field value will be: `managed-notebooks-range-c`
     #[prost(string, tag = "18")]
@@ -2316,7 +2419,7 @@ pub struct ListRuntimesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached. For example,
-    /// \['us-west1', 'us-central1'\].
+    /// `\['us-west1', 'us-central1'\]`.
     /// A ListRuntimesResponse will only contain either runtimes or unreachables,
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -2414,6 +2517,20 @@ pub struct ResetRuntimeRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// Request for upgrading a Managed Notebook Runtime to the latest version.
+/// option (google.api.message_visibility).restriction =
+///      "TRUSTED_TESTER,SPECIAL_TESTER";
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpgradeRuntimeRequest {
+    /// Required. Format:
+    /// `projects/{project_id}/locations/{location}/runtimes/{runtime_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Idempotent request UUID.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
 /// Request for reporting a Managed Notebook Event.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2429,6 +2546,42 @@ pub struct ReportRuntimeEventRequest {
     /// Required. The Event to be reported.
     #[prost(message, optional, tag = "3")]
     pub event: ::core::option::Option<Event>,
+}
+/// Request for updating a Managed Notebook configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateRuntimeRequest {
+    /// Required. The Runtime to be updated.
+    #[prost(message, optional, tag = "1")]
+    pub runtime: ::core::option::Option<Runtime>,
+    /// Required. Specifies the path, relative to `Runtime`, of
+    /// the field to update. For example, to change the software configuration
+    /// kernels, the `update_mask` parameter would be
+    /// specified as `software_config.kernels`,
+    /// and the `PATCH` request body would specify the new value, as follows:
+    ///
+    ///      {
+    ///        "software_config":{
+    ///          "kernels": [{
+    ///             'repository':
+    ///             'gcr.io/deeplearning-platform-release/pytorch-gpu', 'tag':
+    ///             'latest' }],
+    ///          }
+    ///      }
+    ///
+    ///
+    /// Currently, only the following fields can be updated:
+    /// - `software_config.kernels`
+    /// - `software_config.post_startup_script`
+    /// - `software_config.custom_gpu_driver_path`
+    /// - `software_config.idle_shutdown`
+    /// - `software_config.idle_shutdown_timeout`
+    /// - `software_config.disable_terminal`
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Idempotent request UUID.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request for getting a new access token.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2453,6 +2606,18 @@ pub struct RefreshRuntimeTokenInternalResponse {
     /// Output only. Token expiration time.
     #[prost(message, optional, tag = "2")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request for creating a notebook instance diagnostic file.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiagnoseRuntimeRequest {
+    /// Required. Format:
+    /// `projects/{project_id}/locations/{location}/runtimes/{runtimes_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Defines flags that are used to run the diagnostic tool
+    #[prost(message, optional, tag = "2")]
+    pub diagnostic_config: ::core::option::Option<DiagnosticConfig>,
 }
 /// Generated client implementations.
 pub mod managed_notebook_service_client {
@@ -2633,6 +2798,37 @@ pub mod managed_notebook_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Update Notebook Runtime configuration.
+        pub async fn update_runtime(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateRuntimeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.notebooks.v1.ManagedNotebookService/UpdateRuntime",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.notebooks.v1.ManagedNotebookService",
+                        "UpdateRuntime",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Deletes a single Runtime.
         pub async fn delete_runtime(
             &mut self,
@@ -2796,6 +2992,37 @@ pub mod managed_notebook_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Upgrades a Managed Notebook Runtime to the latest version.
+        pub async fn upgrade_runtime(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpgradeRuntimeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.notebooks.v1.ManagedNotebookService/UpgradeRuntime",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.notebooks.v1.ManagedNotebookService",
+                        "UpgradeRuntime",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Report and process a runtime event.
         pub async fn report_runtime_event(
             &mut self,
@@ -2859,6 +3086,37 @@ pub mod managed_notebook_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Creates a Diagnostic File and runs Diagnostic Tool given a Runtime.
+        pub async fn diagnose_runtime(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DiagnoseRuntimeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.notebooks.v1.ManagedNotebookService/DiagnoseRuntime",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.notebooks.v1.ManagedNotebookService",
+                        "DiagnoseRuntime",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// The definition of a schedule.
@@ -2870,8 +3128,8 @@ pub struct Schedule {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Display name used for UI purposes.
-    /// Name can only contain alphanumeric characters, hyphens '-',
-    /// and underscores '_'.
+    /// Name can only contain alphanumeric characters, hyphens `-`,
+    /// and underscores `_`.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// A brief description of this environment.
@@ -2881,7 +3139,7 @@ pub struct Schedule {
     pub state: i32,
     /// Cron-tab formatted schedule by which the job will execute.
     /// Format: minute, hour, day of month, month, day of week,
-    /// e.g. 0 0 * * WED = every Wednesday
+    /// e.g. `0 0 * * WED` = every Wednesday
     /// More examples: <https://crontab.guru/examples.html>
     #[prost(string, tag = "5")]
     pub cron_schedule: ::prost::alloc::string::String,
@@ -3036,7 +3294,7 @@ pub struct ListInstancesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached. For example,
-    /// \['us-west1-a', 'us-central1-b'\].
+    /// `\['us-west1-a', 'us-central1-b'\]`.
     /// A ListInstancesResponse will only contain either instances or unreachables,
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -3287,13 +3545,13 @@ pub struct GetInstanceHealthResponse {
     pub health_state: i32,
     /// Output only. Additional information about instance health.
     /// Example:
-    ///   healthInfo": {
-    ///    "docker_proxy_agent_status": "1",
-    ///    "docker_status": "1",
-    ///    "jupyterlab_api_status": "-1",
-    ///    "jupyterlab_status": "-1",
-    ///    "updated": "2020-10-18 09:40:03.573409"
-    ///   }
+    ///      healthInfo": {
+    ///        "docker_proxy_agent_status": "1",
+    ///        "docker_status": "1",
+    ///        "jupyterlab_api_status": "-1",
+    ///        "jupyterlab_status": "-1",
+    ///        "updated": "2020-10-18 09:40:03.573409"
+    ///      }
     #[prost(map = "string, string", tag = "2")]
     pub health_info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3382,7 +3640,7 @@ pub struct RollbackInstanceRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The snapshot for rollback.
-    /// Example: "projects/test-project/global/snapshots/krwlzipynril".
+    /// Example: `projects/test-project/global/snapshots/krwlzipynril`.
     #[prost(string, tag = "2")]
     pub target_snapshot: ::prost::alloc::string::String,
 }
@@ -3417,6 +3675,18 @@ pub struct ListEnvironmentsRequest {
     /// the last result.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+}
+/// Request for creating a notebook instance diagnostic file.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiagnoseInstanceRequest {
+    /// Required. Format:
+    /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Defines flags that are used to run the diagnostic tool
+    #[prost(message, optional, tag = "2")]
+    pub diagnostic_config: ::core::option::Option<DiagnosticConfig>,
 }
 /// Response for listing environments.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3566,7 +3836,7 @@ pub struct ListExecutionsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filter applied to resulting executions. Currently only supports filtering
-    /// executions by a specified schedule_id.
+    /// executions by a specified `schedule_id`.
     /// Format: `schedule_id=<Schedule_ID>`
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
@@ -4341,6 +4611,37 @@ pub mod notebook_service_client {
                     GrpcMethod::new(
                         "google.cloud.notebooks.v1.NotebookService",
                         "RollbackInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a Diagnostic File and runs Diagnostic Tool given an Instance.
+        pub async fn diagnose_instance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DiagnoseInstanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.notebooks.v1.NotebookService/DiagnoseInstance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.notebooks.v1.NotebookService",
+                        "DiagnoseInstance",
                     ),
                 );
             self.inner.unary(req, path, codec).await

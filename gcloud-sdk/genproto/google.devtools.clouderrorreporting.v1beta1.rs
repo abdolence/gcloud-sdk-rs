@@ -1105,9 +1105,6 @@ pub mod report_errors_service_client {
         /// on Cloud Logging and doesn't analyze logs stored
         /// in regional log buckets or logs routed to other Google Cloud projects.
         ///
-        /// For more information, see
-        /// [Using Error Reporting with regionalized
-        /// logs](/error-reporting/docs/regionalization).
         pub async fn report_error_event(
             &mut self,
             request: impl tonic::IntoRequest<super::ReportErrorEventRequest>,

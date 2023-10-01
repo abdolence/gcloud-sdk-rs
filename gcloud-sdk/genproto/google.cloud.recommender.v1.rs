@@ -1,5 +1,5 @@
 /// An insight along with the information used to derive the insight. The insight
-/// may have associated recomendations as well.
+/// may have associated recommendations as well.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Insight {
@@ -82,6 +82,10 @@ pub mod insight {
         Performance = 3,
         /// This insight is related to manageability.
         Manageability = 4,
+        /// The insight is related to sustainability.
+        Sustainability = 5,
+        /// This insight is related to reliability.
+        Reliability = 6,
     }
     impl Category {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -95,6 +99,8 @@ pub mod insight {
                 Category::Security => "SECURITY",
                 Category::Performance => "PERFORMANCE",
                 Category::Manageability => "MANAGEABILITY",
+                Category::Sustainability => "SUSTAINABILITY",
+                Category::Reliability => "RELIABILITY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -105,6 +111,8 @@ pub mod insight {
                 "SECURITY" => Some(Self::Security),
                 "PERFORMANCE" => Some(Self::Performance),
                 "MANAGEABILITY" => Some(Self::Manageability),
+                "SUSTAINABILITY" => Some(Self::Sustainability),
+                "RELIABILITY" => Some(Self::Reliability),
                 _ => None,
             }
         }
@@ -526,6 +534,81 @@ pub struct SecurityProjection {
     #[prost(message, optional, tag = "2")]
     pub details: ::core::option::Option<::prost_types::Struct>,
 }
+/// Contains metadata about how much sustainability a recommendation can save or
+/// incur.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SustainabilityProjection {
+    /// Carbon Footprint generated in kg of CO2 equivalent.
+    /// Chose kg_c_o2e so that the name renders correctly in camelCase (kgCO2e).
+    #[prost(double, tag = "1")]
+    pub kg_c_o2e: f64,
+    /// Duration for which this sustainability applies.
+    #[prost(message, optional, tag = "2")]
+    pub duration: ::core::option::Option<::prost_types::Duration>,
+}
+/// Contains information on the impact of a reliability recommendation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReliabilityProjection {
+    /// Reliability risks mitigated by this recommendation.
+    #[prost(enumeration = "reliability_projection::RiskType", repeated, tag = "1")]
+    pub risks: ::prost::alloc::vec::Vec<i32>,
+    /// Per-recommender projection.
+    #[prost(message, optional, tag = "2")]
+    pub details: ::core::option::Option<::prost_types::Struct>,
+}
+/// Nested message and enum types in `ReliabilityProjection`.
+pub mod reliability_projection {
+    /// The risk associated with the reliability issue.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RiskType {
+        /// Default unspecified risk. Don't use directly.
+        Unspecified = 0,
+        /// Potential service downtime.
+        ServiceDisruption = 1,
+        /// Potential data loss.
+        DataLoss = 2,
+        /// Potential access denial. The service is still up but some or all clients
+        /// can't access it.
+        AccessDeny = 3,
+    }
+    impl RiskType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RiskType::Unspecified => "RISK_TYPE_UNSPECIFIED",
+                RiskType::ServiceDisruption => "SERVICE_DISRUPTION",
+                RiskType::DataLoss => "DATA_LOSS",
+                RiskType::AccessDeny => "ACCESS_DENY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RISK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SERVICE_DISRUPTION" => Some(Self::ServiceDisruption),
+                "DATA_LOSS" => Some(Self::DataLoss),
+                "ACCESS_DENY" => Some(Self::AccessDeny),
+                _ => None,
+            }
+        }
+    }
+}
 /// Contains the impact a recommendation can have for a given category.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -534,7 +617,7 @@ pub struct Impact {
     #[prost(enumeration = "impact::Category", tag = "1")]
     pub category: i32,
     /// Contains projections (if any) for this category.
-    #[prost(oneof = "impact::Projection", tags = "100, 101")]
+    #[prost(oneof = "impact::Projection", tags = "100, 101, 102, 103")]
     pub projection: ::core::option::Option<impact::Projection>,
 }
 /// Nested message and enum types in `Impact`.
@@ -563,6 +646,10 @@ pub mod impact {
         Performance = 3,
         /// Indicates a potential increase or decrease in manageability.
         Manageability = 4,
+        /// Indicates a potential increase or decrease in sustainability.
+        Sustainability = 5,
+        /// Indicates a potential increase or decrease in reliability.
+        Reliability = 6,
     }
     impl Category {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -576,6 +663,8 @@ pub mod impact {
                 Category::Security => "SECURITY",
                 Category::Performance => "PERFORMANCE",
                 Category::Manageability => "MANAGEABILITY",
+                Category::Sustainability => "SUSTAINABILITY",
+                Category::Reliability => "RELIABILITY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -586,6 +675,8 @@ pub mod impact {
                 "SECURITY" => Some(Self::Security),
                 "PERFORMANCE" => Some(Self::Performance),
                 "MANAGEABILITY" => Some(Self::Manageability),
+                "SUSTAINABILITY" => Some(Self::Sustainability),
+                "RELIABILITY" => Some(Self::Reliability),
                 _ => None,
             }
         }
@@ -600,6 +691,12 @@ pub mod impact {
         /// Use with CategoryType.SECURITY
         #[prost(message, tag = "101")]
         SecurityProjection(super::SecurityProjection),
+        /// Use with CategoryType.SUSTAINABILITY
+        #[prost(message, tag = "102")]
+        SustainabilityProjection(super::SustainabilityProjection),
+        /// Use with CategoryType.RELAIBILITY
+        #[prost(message, tag = "103")]
+        ReliabilityProjection(super::ReliabilityProjection),
     }
 }
 /// Information for state. Contains state and metadata.
@@ -975,6 +1072,17 @@ pub struct GetRecommendationRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Request for the `MarkRecommendationDismissed` Method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MarkRecommendationDismissedRequest {
+    /// Name of the recommendation.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Fingerprint of the Recommendation. Provides optimistic locking.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+}
 /// Request for the `MarkRecommendationClaimed` Method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1048,6 +1156,8 @@ pub struct GetRecommenderConfigRequest {
     /// * `projects/\[PROJECT_ID\]/locations/\[LOCATION\]/recommenders/\[RECOMMENDER_ID\]/config`
     ///
     /// * `organizations/\[ORGANIZATION_ID\]/locations/\[LOCATION\]/recommenders/\[RECOMMENDER_ID\]/config`
+    ///
+    /// * `billingAccounts/\[BILLING_ACCOUNT_ID\]/locations/\[LOCATION\]/recommenders/\[RECOMMENDER_ID\]/config`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1074,11 +1184,13 @@ pub struct GetInsightTypeConfigRequest {
     ///
     /// Acceptable formats:
     ///
-    /// * `projects/\[PROJECT_NUMBER\]/locations/global/recommenders/\[INSIGHT_TYPE_ID\]/config`
+    /// * `projects/\[PROJECT_NUMBER\]/locations/\[LOCATION\]/insightTypes/\[INSIGHT_TYPE_ID\]/config`
     ///
-    /// * `projects/\[PROJECT_ID\]/locations/global/recommenders/\[INSIGHT_TYPE_ID\]/config`
+    /// * `projects/\[PROJECT_ID\]/locations/\[LOCATION\]/insightTypes/\[INSIGHT_TYPE_ID\]/config`
     ///
-    /// * `organizations/\[ORGANIZATION_ID\]/locations/global/recommenders/\[INSIGHT_TYPE_ID\]/config`
+    /// * `organizations/\[ORGANIZATION_ID\]/locations/\[LOCATION\]/insightTypes/\[INSIGHT_TYPE_ID\]/config`
+    ///
+    /// * `billingAccounts/\[BILLING_ACCOUNT_ID\]/locations/\[LOCATION\]/insightTypes/\[INSIGHT_TYPE_ID\]/config`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1337,6 +1449,42 @@ pub mod recommender_client {
                     GrpcMethod::new(
                         "google.cloud.recommender.v1.Recommender",
                         "GetRecommendation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Mark the Recommendation State as Dismissed. Users can use this method to
+        /// indicate to the Recommender API that an ACTIVE recommendation has to
+        /// be marked back as DISMISSED.
+        ///
+        /// MarkRecommendationDismissed can be applied to recommendations in ACTIVE
+        /// state.
+        ///
+        /// Requires the recommender.*.update IAM permission for the specified
+        /// recommender.
+        pub async fn mark_recommendation_dismissed(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MarkRecommendationDismissedRequest>,
+        ) -> std::result::Result<tonic::Response<super::Recommendation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.recommender.v1.Recommender/MarkRecommendationDismissed",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommender.v1.Recommender",
+                        "MarkRecommendationDismissed",
                     ),
                 );
             self.inner.unary(req, path, codec).await

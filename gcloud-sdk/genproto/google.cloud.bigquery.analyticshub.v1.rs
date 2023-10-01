@@ -8,22 +8,21 @@ pub struct DataExchange {
     /// e.g. `projects/myproject/locations/US/dataExchanges/123`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. Human-readable display name of the data exchange. The display name must
-    /// contain only Unicode letters, numbers (0-9), underscores (_), dashes (-),
-    /// spaces ( ), ampersands (&) and must not start or end with spaces.
-    /// Default value is an empty string.
-    /// Max length: 63 bytes.
+    /// Required. Human-readable display name of the data exchange. The display
+    /// name must contain only Unicode letters, numbers (0-9), underscores (_),
+    /// dashes (-), spaces ( ), ampersands (&) and must not start or end with
+    /// spaces. Default value is an empty string. Max length: 63 bytes.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Optional. Description of the data exchange. The description must not contain Unicode
-    /// non-characters as well as C0 and C1 control codes except tabs (HT),
-    /// new lines (LF), carriage returns (CR), and page breaks (FF).
+    /// Optional. Description of the data exchange. The description must not
+    /// contain Unicode non-characters as well as C0 and C1 control codes except
+    /// tabs (HT), new lines (LF), carriage returns (CR), and page breaks (FF).
     /// Default value is an empty string.
     /// Max length: 2000 bytes.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// Optional. Email or URL of the primary point of contact of the data exchange.
-    /// Max Length: 1000 bytes.
+    /// Optional. Email or URL of the primary point of contact of the data
+    /// exchange. Max Length: 1000 bytes.
     #[prost(string, tag = "4")]
     pub primary_contact: ::prost::alloc::string::String,
     /// Optional. Documentation describing the data exchange.
@@ -32,13 +31,45 @@ pub struct DataExchange {
     /// Output only. Number of listings contained in the data exchange.
     #[prost(int32, tag = "6")]
     pub listing_count: i32,
-    /// Optional. Base64 encoded image representing the data exchange. Max Size: 3.0MiB
-    /// Expected image dimensions are 512x512 pixels, however the API only
-    /// performs validation on size of the encoded data.
-    /// Note: For byte fields, the content of the fields are base64-encoded (which
-    /// increases the size of the data by 33-36%) when using JSON on the wire.
+    /// Optional. Base64 encoded image representing the data exchange. Max
+    /// Size: 3.0MiB Expected image dimensions are 512x512 pixels, however the API
+    /// only performs validation on size of the encoded data. Note: For byte
+    /// fields, the content of the fields are base64-encoded (which increases the
+    /// size of the data by 33-36%) when using JSON on the wire.
     #[prost(bytes = "vec", tag = "7")]
     pub icon: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. Configurable data sharing environment option for a data exchange.
+    #[prost(message, optional, tag = "8")]
+    pub sharing_environment_config: ::core::option::Option<SharingEnvironmentConfig>,
+}
+/// Sharing environment is a behavior model for sharing data within a
+/// data exchange. This option is configurable for a data exchange.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SharingEnvironmentConfig {
+    #[prost(oneof = "sharing_environment_config::Environment", tags = "1, 2")]
+    pub environment: ::core::option::Option<sharing_environment_config::Environment>,
+}
+/// Nested message and enum types in `SharingEnvironmentConfig`.
+pub mod sharing_environment_config {
+    /// Default Analytics Hub data exchange, used for secured data sharing.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DefaultExchangeConfig {}
+    /// Data Clean Room (DCR), used for privacy-safe and secured data sharing.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DcrExchangeConfig {}
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Environment {
+        /// Default Analytics Hub data exchange, used for secured data sharing.
+        #[prost(message, tag = "1")]
+        DefaultExchangeConfig(DefaultExchangeConfig),
+        /// Data Clean Room (DCR), used for privacy-safe and secured data sharing.
+        #[prost(message, tag = "2")]
+        DcrExchangeConfig(DcrExchangeConfig),
+    }
 }
 /// Contains details of the data provider.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -117,18 +148,16 @@ pub struct Listing {
     /// e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. Human-readable display name of the listing. The display name must contain
-    /// only Unicode letters, numbers (0-9), underscores (_), dashes (-), spaces
-    /// ( ), ampersands (&) and can't start or end with spaces.
-    /// Default value is an empty string.
-    /// Max length: 63 bytes.
+    /// Required. Human-readable display name of the listing. The display name must
+    /// contain only Unicode letters, numbers (0-9), underscores (_), dashes (-),
+    /// spaces ( ), ampersands (&) and can't start or end with spaces. Default
+    /// value is an empty string. Max length: 63 bytes.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Optional. Short description of the listing. The description must not contain
-    /// Unicode non-characters and C0 and C1 control codes except tabs (HT),
-    /// new lines (LF), carriage returns (CR), and page breaks (FF).
-    /// Default value is an empty string.
-    /// Max length: 2000 bytes.
+    /// Optional. Short description of the listing. The description must not
+    /// contain Unicode non-characters and C0 and C1 control codes except tabs
+    /// (HT), new lines (LF), carriage returns (CR), and page breaks (FF). Default
+    /// value is an empty string. Max length: 2000 bytes.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// Optional. Email or URL of the primary point of contact of the listing.
@@ -163,6 +192,12 @@ pub struct Listing {
     /// Max Length: 1000 bytes.
     #[prost(string, tag = "12")]
     pub request_access: ::prost::alloc::string::String,
+    /// Optional. If set, restricted export configuration will be propagated and
+    /// enforced on the linked dataset.
+    #[prost(message, optional, tag = "13")]
+    pub restricted_export_config: ::core::option::Option<
+        listing::RestrictedExportConfig,
+    >,
     /// Listing source.
     #[prost(oneof = "listing::Source", tags = "6")]
     pub source: ::core::option::Option<listing::Source>,
@@ -183,6 +218,23 @@ pub mod listing {
         /// e.g. `projects/myproject/datasets/123`
         #[prost(string, tag = "1")]
         pub dataset: ::prost::alloc::string::String,
+    }
+    /// Restricted export config, used to configure restricted export on linked
+    /// dataset.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RestrictedExportConfig {
+        /// Optional. If true, enable restricted export.
+        #[prost(bool, tag = "3")]
+        pub enabled: bool,
+        /// Output only. If true, restrict direct table access(read
+        /// api/tabledata.list) on linked table.
+        #[prost(bool, tag = "1")]
+        pub restrict_direct_table_access: bool,
+        /// Optional. If true, restrict export of query result derived from
+        /// restricted linked dataset table.
+        #[prost(bool, tag = "2")]
+        pub restrict_query_result: bool,
     }
     /// State of the listing.
     #[derive(
@@ -334,6 +386,131 @@ pub mod listing {
         BigqueryDataset(BigQueryDatasetSource),
     }
 }
+/// A subscription represents a subscribers' access to a particular set of
+/// published data. It contains references to associated listings,
+/// data exchanges, and linked datasets.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Subscription {
+    /// Output only. The resource name of the subscription.
+    /// e.g. `projects/myproject/locations/US/subscriptions/123`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Timestamp when the subscription was created.
+    #[prost(message, optional, tag = "2")]
+    pub creation_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when the subscription was last modified.
+    #[prost(message, optional, tag = "3")]
+    pub last_modify_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Organization of the project this subscription belongs to.
+    #[prost(string, tag = "4")]
+    pub organization_id: ::prost::alloc::string::String,
+    /// Output only. Display name of the project of this subscription.
+    #[prost(string, tag = "10")]
+    pub organization_display_name: ::prost::alloc::string::String,
+    /// Output only. Current state of the subscription.
+    #[prost(enumeration = "subscription::State", tag = "7")]
+    pub state: i32,
+    /// Output only. Map of listing resource names to associated linked resource,
+    /// e.g. projects/123/locations/US/dataExchanges/456/listings/789
+    /// ->
+    /// projects/123/datasets/my_dataset
+    ///
+    /// For listing-level subscriptions, this is a map of size 1.
+    /// Only contains values if state == STATE_ACTIVE.
+    #[prost(map = "string, message", tag = "8")]
+    pub linked_dataset_map: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        subscription::LinkedResource,
+    >,
+    /// Output only. Email of the subscriber.
+    #[prost(string, tag = "9")]
+    pub subscriber_contact: ::prost::alloc::string::String,
+    #[prost(oneof = "subscription::ResourceName", tags = "5, 6")]
+    pub resource_name: ::core::option::Option<subscription::ResourceName>,
+}
+/// Nested message and enum types in `Subscription`.
+pub mod subscription {
+    /// Reference to a linked resource tracked by this Subscription.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct LinkedResource {
+        #[prost(oneof = "linked_resource::Reference", tags = "1")]
+        pub reference: ::core::option::Option<linked_resource::Reference>,
+    }
+    /// Nested message and enum types in `LinkedResource`.
+    pub mod linked_resource {
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Reference {
+            /// Output only. Name of the linked dataset, e.g.
+            /// projects/subscriberproject/datasets/linked_dataset
+            #[prost(string, tag = "1")]
+            LinkedDataset(::prost::alloc::string::String),
+        }
+    }
+    /// State of the subscription.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// This subscription is active and the data is accessible.
+        Active = 1,
+        /// The data referenced by this subscription is out of date and should be
+        /// refreshed. This can happen when a data provider adds or removes datasets.
+        Stale = 2,
+        /// This subscription has been cancelled or revoked and the data is no longer
+        /// accessible.
+        Inactive = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Active => "STATE_ACTIVE",
+                State::Stale => "STATE_STALE",
+                State::Inactive => "STATE_INACTIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STATE_ACTIVE" => Some(Self::Active),
+                "STATE_STALE" => Some(Self::Stale),
+                "STATE_INACTIVE" => Some(Self::Inactive),
+                _ => None,
+            }
+        }
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ResourceName {
+        /// Output only. Resource name of the source Listing.
+        /// e.g. projects/123/locations/US/dataExchanges/456/listings/789
+        #[prost(string, tag = "5")]
+        Listing(::prost::alloc::string::String),
+        /// Output only. Resource name of the source Data Exchange.
+        /// e.g. projects/123/locations/US/dataExchanges/456
+        #[prost(string, tag = "6")]
+        DataExchange(::prost::alloc::string::String),
+    }
+}
 /// Message for requesting the list of data exchanges.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -367,8 +544,8 @@ pub struct ListDataExchangesResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrgDataExchangesRequest {
-    /// Required. The organization resource path of the projects containing DataExchanges.
-    /// e.g. `organizations/myorg/locations/US`.
+    /// Required. The organization resource path of the projects containing
+    /// DataExchanges. e.g. `organizations/myorg/locations/US`.
     #[prost(string, tag = "1")]
     pub organization: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response page. Leverage
@@ -437,8 +614,8 @@ pub struct UpdateDataExchangeRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDataExchangeRequest {
-    /// Required. The full name of the data exchange resource that you want to delete.
-    /// For example, `projects/myproject/locations/US/dataExchanges/123`.
+    /// Required. The full name of the data exchange resource that you want to
+    /// delete. For example, `projects/myproject/locations/US/dataExchanges/123`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -502,9 +679,9 @@ pub struct CreateListingRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateListingRequest {
-    /// Required. Field mask specifies the fields to update in the listing resource. The
-    /// fields specified in the `updateMask` are relative to the resource and are
-    /// not a full request.
+    /// Required. Field mask specifies the fields to update in the listing
+    /// resource. The fields specified in the `updateMask` are relative to the
+    /// resource and are not a full request.
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The listing to update.
@@ -546,7 +723,178 @@ pub mod subscribe_listing_request {
 /// Message for response when you subscribe to a listing.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SubscribeListingResponse {}
+pub struct SubscribeListingResponse {
+    /// Subscription object created from this subscribe action.
+    #[prost(message, optional, tag = "1")]
+    pub subscription: ::core::option::Option<Subscription>,
+}
+/// Message for subscribing to a Data Exchange.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SubscribeDataExchangeRequest {
+    /// Required. Resource name of the Data Exchange.
+    /// e.g. `projects/publisherproject/locations/US/dataExchanges/123`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The parent resource path of the Subscription.
+    /// e.g. `projects/subscriberproject/locations/US`
+    #[prost(string, tag = "2")]
+    pub destination: ::prost::alloc::string::String,
+    /// Required. Name of the subscription to create.
+    /// e.g. `subscription1`
+    #[prost(string, tag = "4")]
+    pub subscription: ::prost::alloc::string::String,
+    /// Email of the subscriber.
+    #[prost(string, tag = "3")]
+    pub subscriber_contact: ::prost::alloc::string::String,
+}
+/// Message for response when you subscribe to a Data Exchange.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SubscribeDataExchangeResponse {
+    /// Subscription object created from this subscribe action.
+    #[prost(message, optional, tag = "1")]
+    pub subscription: ::core::option::Option<Subscription>,
+}
+/// Message for refreshing a subscription.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RefreshSubscriptionRequest {
+    /// Required. Resource name of the Subscription to refresh.
+    /// e.g. `projects/subscriberproject/locations/US/subscriptions/123`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Message for response when you refresh a subscription.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RefreshSubscriptionResponse {
+    /// The refreshed subscription resource.
+    #[prost(message, optional, tag = "1")]
+    pub subscription: ::core::option::Option<Subscription>,
+}
+/// Message for getting a subscription.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetSubscriptionRequest {
+    /// Required. Resource name of the subscription.
+    /// e.g. projects/123/locations/US/subscriptions/456
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Message for listing subscriptions.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSubscriptionsRequest {
+    /// Required. The parent resource path of the subscription.
+    /// e.g. projects/myproject/locations/US
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The filter expression may be used to filter by Data Exchange or Listing.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// The maximum number of results to return in a single response page.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Page token, returned by a previous call.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Message for response to the listing of subscriptions.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSubscriptionsResponse {
+    /// The list of subscriptions.
+    #[prost(message, repeated, tag = "1")]
+    pub subscriptions: ::prost::alloc::vec::Vec<Subscription>,
+    /// Next page token.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Message for listing subscriptions of a shared resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSharedResourceSubscriptionsRequest {
+    /// Required. Resource name of the requested target. This resource may be
+    /// either a Listing or a DataExchange. e.g.
+    /// projects/123/locations/US/dataExchanges/456 OR e.g.
+    /// projects/123/locations/US/dataExchanges/456/listings/789
+    #[prost(string, tag = "1")]
+    pub resource: ::prost::alloc::string::String,
+    /// If selected, includes deleted subscriptions in the response
+    /// (up to 63 days after deletion).
+    #[prost(bool, tag = "2")]
+    pub include_deleted_subscriptions: bool,
+    /// The maximum number of results to return in a single response page.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Page token, returned by a previous call.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Message for response to the listing of shared resource subscriptions.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSharedResourceSubscriptionsResponse {
+    /// The list of subscriptions.
+    #[prost(message, repeated, tag = "1")]
+    pub shared_resource_subscriptions: ::prost::alloc::vec::Vec<Subscription>,
+    /// Next page token.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Message for revoking a subscription.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RevokeSubscriptionRequest {
+    /// Required. Resource name of the subscription to revoke.
+    /// e.g. projects/123/locations/US/subscriptions/456
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Message for response when you revoke a subscription.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RevokeSubscriptionResponse {}
+/// Message for deleting a subscription.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteSubscriptionRequest {
+    /// Required. Resource name of the subscription to delete.
+    /// e.g. projects/123/locations/US/subscriptions/456
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Represents the metadata of a long-running operation in Analytics Hub.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OperationMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Server-defined resource path for the target of the operation.
+    #[prost(string, tag = "3")]
+    pub target: ::prost::alloc::string::String,
+    /// Output only. Name of the verb executed by the operation.
+    #[prost(string, tag = "4")]
+    pub verb: ::prost::alloc::string::String,
+    /// Output only. Human-readable status of the operation, if any.
+    #[prost(string, tag = "5")]
+    pub status_message: ::prost::alloc::string::String,
+    /// Output only. Identifies whether the user has requested cancellation
+    /// of the operation. Operations that have successfully been cancelled
+    /// have [Operation.error][] value with a
+    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// `Code.CANCELLED`.
+    #[prost(bool, tag = "6")]
+    pub requested_cancellation: bool,
+    /// Output only. API version used to start the operation.
+    #[prost(string, tag = "7")]
+    pub api_version: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod analytics_hub_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -988,6 +1336,225 @@ pub mod analytics_hub_service_client {
                     GrpcMethod::new(
                         "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
                         "SubscribeListing",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a Subscription to a Data Exchange. This is a long-running operation
+        /// as it will create one or more linked datasets.
+        pub async fn subscribe_data_exchange(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SubscribeDataExchangeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/SubscribeDataExchange",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
+                        "SubscribeDataExchange",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Refreshes a Subscription to a Data Exchange. A Data Exchange can become
+        /// stale when a publisher adds or removes data. This is a long-running
+        /// operation as it may create many linked datasets.
+        pub async fn refresh_subscription(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RefreshSubscriptionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/RefreshSubscription",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
+                        "RefreshSubscription",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the details of a Subscription.
+        pub async fn get_subscription(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSubscriptionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Subscription>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/GetSubscription",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
+                        "GetSubscription",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all subscriptions in a given project and location.
+        pub async fn list_subscriptions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSubscriptionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSubscriptionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListSubscriptions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
+                        "ListSubscriptions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all subscriptions on a given Data Exchange or Listing.
+        pub async fn list_shared_resource_subscriptions(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListSharedResourceSubscriptionsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSharedResourceSubscriptionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListSharedResourceSubscriptions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
+                        "ListSharedResourceSubscriptions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Revokes a given subscription.
+        pub async fn revoke_subscription(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RevokeSubscriptionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RevokeSubscriptionResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/RevokeSubscription",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
+                        "RevokeSubscription",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a subscription.
+        pub async fn delete_subscription(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSubscriptionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/DeleteSubscription",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.analyticshub.v1.AnalyticsHubService",
+                        "DeleteSubscription",
                     ),
                 );
             self.inner.unary(req, path, codec).await

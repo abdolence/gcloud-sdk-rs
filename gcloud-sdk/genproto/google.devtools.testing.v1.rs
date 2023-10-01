@@ -1,3 +1,217 @@
+/// A message returned from a device.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeviceMessage {
+    #[prost(oneof = "device_message::Contents", tags = "1, 2, 3")]
+    pub contents: ::core::option::Option<device_message::Contents>,
+}
+/// Nested message and enum types in `DeviceMessage`.
+pub mod device_message {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Contents {
+        /// Information about the device's state.
+        #[prost(message, tag = "1")]
+        StatusUpdate(super::StatusUpdate),
+        /// The result of a device stream from ADB.
+        #[prost(message, tag = "2")]
+        StreamStatus(super::StreamStatus),
+        /// Data from an open stream.
+        #[prost(message, tag = "3")]
+        StreamData(super::StreamData),
+    }
+}
+/// A message to an ADB server.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdbMessage {
+    #[prost(oneof = "adb_message::Contents", tags = "1, 2")]
+    pub contents: ::core::option::Option<adb_message::Contents>,
+}
+/// Nested message and enum types in `AdbMessage`.
+pub mod adb_message {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Contents {
+        /// Open a new stream.
+        #[prost(message, tag = "1")]
+        Open(super::Open),
+        /// Send data to a stream.
+        #[prost(message, tag = "2")]
+        StreamData(super::StreamData),
+    }
+}
+/// A StatusUpdate message given over the ADB protocol for the device state.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StatusUpdate {
+    /// The device's state
+    #[prost(enumeration = "status_update::DeviceState", tag = "1")]
+    pub state: i32,
+    /// A map of properties with information about this device.
+    #[prost(map = "string, string", tag = "2")]
+    pub properties: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// A comma-separated list of "features" that this device supports.
+    #[prost(string, tag = "3")]
+    pub features: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `StatusUpdate`.
+pub mod status_update {
+    /// The state displayed with the ADB Device when running "adb devices"
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DeviceState {
+        /// The device state is unknown.
+        Unspecified = 0,
+        /// The ADB device is in the "device" status.
+        Device = 1,
+        /// The ADB device is in the "recovery" status.
+        Recovery = 2,
+        /// The ADB device is in the "rescue" status.
+        Rescue = 3,
+        /// The ADB device is in the "sideload" status.
+        Sideload = 4,
+        /// The ADB device is in the "missing" status.
+        Missing = 10,
+        /// The ADB device is in the "offline" status.
+        Offline = 11,
+        /// The ADB device is in the "unauthorized" status.
+        Unauthorized = 12,
+        /// The ADB device is in the "authorizing" status.
+        Authorizing = 13,
+        /// The ADB device is in the "connecting" status.
+        Connecting = 14,
+    }
+    impl DeviceState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DeviceState::Unspecified => "DEVICE_STATE_UNSPECIFIED",
+                DeviceState::Device => "DEVICE",
+                DeviceState::Recovery => "RECOVERY",
+                DeviceState::Rescue => "RESCUE",
+                DeviceState::Sideload => "SIDELOAD",
+                DeviceState::Missing => "MISSING",
+                DeviceState::Offline => "OFFLINE",
+                DeviceState::Unauthorized => "UNAUTHORIZED",
+                DeviceState::Authorizing => "AUTHORIZING",
+                DeviceState::Connecting => "CONNECTING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEVICE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEVICE" => Some(Self::Device),
+                "RECOVERY" => Some(Self::Recovery),
+                "RESCUE" => Some(Self::Rescue),
+                "SIDELOAD" => Some(Self::Sideload),
+                "MISSING" => Some(Self::Missing),
+                "OFFLINE" => Some(Self::Offline),
+                "UNAUTHORIZED" => Some(Self::Unauthorized),
+                "AUTHORIZING" => Some(Self::Authorizing),
+                "CONNECTING" => Some(Self::Connecting),
+                _ => None,
+            }
+        }
+    }
+}
+/// The result of a stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamStatus {
+    /// The unique ID of this stream, assigned by the client.
+    #[prost(int32, tag = "1")]
+    pub stream_id: i32,
+    /// The result of the stream. Either "Okay" for success or "Fail" for failure.
+    #[prost(oneof = "stream_status::Status", tags = "2, 3")]
+    pub status: ::core::option::Option<stream_status::Status>,
+}
+/// Nested message and enum types in `StreamStatus`.
+pub mod stream_status {
+    /// The result of the stream. Either "Okay" for success or "Fail" for failure.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Status {
+        /// Okay for success.
+        #[prost(message, tag = "2")]
+        Okay(super::Okay),
+        /// Fail for failure.
+        #[prost(message, tag = "3")]
+        Fail(super::Fail),
+    }
+}
+/// Message for opening a new stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Open {
+    /// The unique ID that will be used to talk to this stream. This should
+    /// probably just be a number that increments for each new Open request.
+    #[prost(int32, tag = "1")]
+    pub stream_id: i32,
+    /// An ADB service to use in the new stream.
+    #[prost(string, tag = "2")]
+    pub service: ::prost::alloc::string::String,
+}
+/// Data for a stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamData {
+    /// The unique ID of this stream, assigned by the client.
+    #[prost(int32, tag = "1")]
+    pub stream_id: i32,
+    /// The data of the stream, either bytes or "Close", indicating that the stream
+    /// is done.
+    #[prost(oneof = "stream_data::Contents", tags = "2, 3")]
+    pub contents: ::core::option::Option<stream_data::Contents>,
+}
+/// Nested message and enum types in `StreamData`.
+pub mod stream_data {
+    /// The data of the stream, either bytes or "Close", indicating that the stream
+    /// is done.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Contents {
+        /// Data in the stream.
+        #[prost(bytes, tag = "2")]
+        Data(::prost::alloc::vec::Vec<u8>),
+        /// The stream is closing. EOF.
+        #[prost(message, tag = "3")]
+        Close(super::Close),
+    }
+}
+/// Message signifying that the stream is open
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Okay {}
+/// Message signifying that the stream failed to open
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Fail {
+    /// A user-displayable failure reason.
+    #[prost(string, tag = "1")]
+    pub reason: ::prost::alloc::string::String,
+}
+/// Message signifying that the stream closed.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Close {}
 /// TestMatrix captures all details about a test. It contains the environment
 /// configuration, test specification, test executions and overall state and
 /// outcome.
@@ -114,7 +328,7 @@ pub struct TestSpecification {
     #[prost(oneof = "test_specification::Setup", tags = "6, 14")]
     pub setup: ::core::option::Option<test_specification::Setup>,
     /// Required. The type of test to run.
-    #[prost(oneof = "test_specification::Test", tags = "2, 3, 9, 13, 15")]
+    #[prost(oneof = "test_specification::Test", tags = "2, 3, 9, 13, 15, 17")]
     pub test: ::core::option::Option<test_specification::Test>,
 }
 /// Nested message and enum types in `TestSpecification`.
@@ -150,6 +364,9 @@ pub mod test_specification {
         /// An iOS application with a test loop.
         #[prost(message, tag = "15")]
         IosTestLoop(super::IosTestLoop),
+        /// An iOS Robo test.
+        #[prost(message, tag = "17")]
+        IosRoboTest(super::IosRoboTest),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -157,6 +374,7 @@ pub mod test_specification {
 pub struct SystraceSetup {
     /// Systrace duration in seconds.
     /// Should be between 1 and 30 seconds. 0 disables systrace.
+    #[deprecated]
     #[prost(int32, tag = "1")]
     pub duration_seconds: i32,
 }
@@ -177,7 +395,8 @@ pub struct TestSetup {
     /// storage path prefix for that device.
     #[prost(string, repeated, tag = "2")]
     pub directories_to_pull: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// APKs to install in addition to those being directly tested.
+    /// APKs to install in addition to those being directly tested. These will be
+    /// installed after the app under test.
     /// Currently capped at 100.
     #[prost(message, repeated, tag = "3")]
     pub additional_apks: ::prost::alloc::vec::Vec<Apk>,
@@ -195,9 +414,10 @@ pub struct TestSetup {
     #[prost(message, repeated, tag = "6")]
     pub environment_variables: ::prost::alloc::vec::Vec<EnvironmentVariable>,
     /// Systrace configuration for the run.
-    /// If set a systrace will be taken, starting on test start and lasting for the
-    /// configured duration. The systrace file thus obtained is put in the results
-    /// bucket together with the other artifacts from the run.
+    /// Deprecated: Systrace used Python 2 which was sunsetted on 2020-01-01.
+    /// Systrace is no longer supported in the Cloud Testing API, and no Systrace
+    /// file will be provided in the results.
+    #[deprecated]
     #[prost(message, optional, tag = "9")]
     pub systrace: ::core::option::Option<SystraceSetup>,
     /// Whether to prevent all runtime permissions to be granted at app install
@@ -223,9 +443,9 @@ pub struct IosTestSetup {
     /// List of directories on the device to upload to Cloud Storage at the end of
     /// the test.
     ///
-    /// Directories should either be in a shared directory
-    /// (e.g. /private/var/mobile/Media) or within an accessible directory inside
-    /// the app's filesystem (e.g. /Documents) by specifying the bundle id.
+    /// Directories should either be in a shared directory (such as
+    /// /private/var/mobile/Media) or within an accessible directory inside the
+    /// app's filesystem (such as /Documents) by specifying the bundle ID.
     #[prost(message, repeated, tag = "4")]
     pub pull_directories: ::prost::alloc::vec::Vec<IosDeviceFile>,
 }
@@ -481,6 +701,23 @@ pub struct IosTestLoop {
     #[prost(string, tag = "3")]
     pub app_bundle_id: ::prost::alloc::string::String,
 }
+/// A test that explores an iOS application on an iOS device.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IosRoboTest {
+    /// Required. The ipa stored at this file should be used to run the test.
+    #[prost(message, optional, tag = "1")]
+    pub app_ipa: ::core::option::Option<FileReference>,
+    /// The bundle ID for the app-under-test.
+    /// This is determined by examining the application's "Info.plist" file.
+    #[prost(string, tag = "4")]
+    pub app_bundle_id: ::prost::alloc::string::String,
+    /// An optional Roboscript to customize the crawl. See
+    /// <https://firebase.google.com/docs/test-lab/android/robo-scripts-reference>
+    /// for more information about Roboscripts.
+    #[prost(message, optional, tag = "5")]
+    pub robo_script: ::core::option::Option<FileReference>,
+}
 /// A test of an Android application that can control an Android component
 /// independently of its normal lifecycle.
 /// Android instrumentation tests run an application APK and test APK inside the
@@ -488,7 +725,7 @@ pub struct IosTestLoop {
 /// a test runner class, such as com.google.GoogleTestRunner, which can vary
 /// on the specific instrumentation framework chosen.
 ///
-/// See <<http://developer.android.com/tools/testing/testing_android.html>> for
+/// See <<https://developer.android.com/training/testing/fundamentals>> for
 /// more information on types of Android tests.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -510,6 +747,7 @@ pub struct AndroidInstrumentationTest {
     pub test_runner_class: ::prost::alloc::string::String,
     /// Each target must be fully qualified with the package name or class name,
     /// in one of these formats:
+    ///
     ///   - "package package_name"
     ///   - "class package_name.class_name"
     ///   - "class package_name.class_name#method_name"
@@ -519,9 +757,10 @@ pub struct AndroidInstrumentationTest {
     pub test_targets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The option of whether running each test within its own invocation of
     /// instrumentation with Android Test Orchestrator or not.
-    /// ** Orchestrator is only compatible with AndroidJUnitRunner version 1.0 or
+    /// ** Orchestrator is only compatible with AndroidJUnitRunner version 1.1 or
     /// higher! **
     /// Orchestrator offers the following benefits:
+    ///
     ///   - No shared state
     ///   - Crashes are isolated
     ///   - Logs are scoped per test
@@ -558,7 +797,6 @@ pub mod android_instrumentation_test {
 }
 /// A test of an android application that explores the application on a virtual
 /// or physical Android Device, finding culprits and crashes as it goes.
-/// Next tag: 30
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AndroidRoboTest {
@@ -585,6 +823,10 @@ pub struct AndroidRoboTest {
     /// password for a test account can be provided.
     #[prost(message, repeated, tag = "11")]
     pub robo_directives: ::prost::alloc::vec::Vec<RoboDirective>,
+    /// The mode in which Robo should run. Most clients should allow the server to
+    /// populate this field automatically.
+    #[prost(enumeration = "RoboMode", tag = "14")]
+    pub robo_mode: i32,
     /// A JSON file with a sequence of actions Robo should perform as a prologue
     /// for the crawl.
     #[prost(message, optional, tag = "13")]
@@ -644,7 +886,7 @@ pub struct RoboStartingIntent {
     #[prost(message, optional, tag = "3")]
     pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// Required. Intent details to start an activity.
-    #[prost(oneof = "robo_starting_intent::StartingIntent", tags = "1, 2")]
+    #[prost(oneof = "robo_starting_intent::StartingIntent", tags = "1, 2, 4")]
     pub starting_intent: ::core::option::Option<robo_starting_intent::StartingIntent>,
 }
 /// Nested message and enum types in `RoboStartingIntent`.
@@ -659,6 +901,9 @@ pub mod robo_starting_intent {
         /// An intent that starts an activity with specific details.
         #[prost(message, tag = "2")]
         StartActivity(super::StartActivityIntent),
+        /// Skips the starting activity
+        #[prost(message, tag = "4")]
+        NoActivity(super::NoActivityIntent),
     }
 }
 /// Specifies an intent that starts the main launcher activity.
@@ -680,6 +925,10 @@ pub struct StartActivityIntent {
     #[prost(string, repeated, tag = "4")]
     pub categories: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Skips the starting activity
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NoActivityIntent {}
 /// The matrix of environments in which the test is to be executed.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1021,7 +1270,7 @@ pub mod invalid_request_detail {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShardingOption {
-    #[prost(oneof = "sharding_option::Option", tags = "1, 2")]
+    #[prost(oneof = "sharding_option::Option", tags = "1, 2, 3")]
     pub option: ::core::option::Option<sharding_option::Option>,
 }
 /// Nested message and enum types in `ShardingOption`.
@@ -1036,19 +1285,28 @@ pub mod sharding_option {
         /// methods.
         #[prost(message, tag = "2")]
         ManualSharding(super::ManualSharding),
+        /// Shards test based on previous test case timing records.
+        #[prost(message, tag = "3")]
+        SmartSharding(super::SmartSharding),
     }
 }
 /// Uniformly shards test cases given a total number of shards.
 ///
-/// For Instrumentation test, it will be translated to "-e numShard" "-e
+/// For instrumentation tests, it will be translated to "-e numShard" and "-e
 /// shardIndex" AndroidJUnitRunner arguments. With uniform sharding enabled,
-/// specifying these sharding arguments via environment_variables is invalid.
+/// specifying either of these sharding arguments via `environment_variables` is
+/// invalid.
+///
+/// Based on the sharding mechanism AndroidJUnitRunner uses, there is no
+/// guarantee that test cases will be distributed uniformly across all shards.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UniformSharding {
-    /// Required. Total number of shards. When any physical devices are selected,
-    /// the number must be >= 1 and <= 50. When no physical devices are selected,
-    /// the number must be >= 1 and <= 500.
+    /// Required. The total number of shards to create. This must always be a
+    /// positive number that is no greater than the total number of test cases.
+    /// When you select one or more physical devices, the number of shards must be
+    /// <= 50. When you select one or more ARM virtual devices, it must be <= 100.
+    /// When you select only x86 virtual devices, it must be <= 500.
     #[prost(int32, tag = "1")]
     pub num_shards: i32,
 }
@@ -1061,9 +1319,11 @@ pub struct UniformSharding {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManualSharding {
     /// Required. Group of packages, classes, and/or test methods to be run for
-    /// each shard. When any physical devices are selected,  the number of
-    /// test_targets_for_shard must be >= 1 and <= 50. When no physical devices are
-    /// selected, the number must be >= 1 and <= 500.
+    /// each manually-created shard. You must specify at least one shard if this
+    /// field is present. When you select one or more physical devices, the number
+    /// of repeated test_targets_for_shard must be <= 50. When you select one or
+    /// more ARM virtual devices, it must be <= 100. When you select only x86
+    /// virtual devices, it must be <= 500.
     #[prost(message, repeated, tag = "1")]
     pub test_targets_for_shard: ::prost::alloc::vec::Vec<TestTargetsForShard>,
 }
@@ -1075,9 +1335,55 @@ pub struct TestTargetsForShard {
     /// The targets need to be specified in AndroidJUnitRunner argument format. For
     /// example, "package com.my.packages" "class com.my.package.MyClass".
     ///
-    /// The number of shard_test_targets must be greater than 0.
+    /// The number of test_targets must be greater than 0.
     #[prost(string, repeated, tag = "1")]
     pub test_targets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Shards test based on previous test case timing records.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SmartSharding {
+    /// The amount of time tests within a shard should take.
+    ///
+    /// Default: 300 seconds (5 minutes).
+    /// The minimum allowed: 120 seconds (2 minutes).
+    ///
+    /// The shard count is dynamically set based on time, up to the maximum shard
+    /// limit (described below). To guarantee at least one test case for each
+    /// shard, the number of shards will not exceed the number of test cases. Shard
+    /// duration will be exceeded if:
+    ///
+    /// - The maximum shard limit is reached and there is more calculated test time
+    /// remaining to allocate into shards.
+    /// - Any individual test is estimated to be longer than the targeted shard
+    /// duration.
+    ///
+    /// Shard duration is not guaranteed because smart sharding uses test case
+    /// history and default durations which may not be accurate. The rules for
+    /// finding the test case timing records are:
+    ///
+    /// - If the service has processed a test case in the last 30 days, the record
+    ///   of the latest successful test case will be used.
+    /// - For new test cases, the average duration of other known test cases will
+    ///   be used.
+    /// - If there are no previous test case timing records available, the default
+    ///   test case duration is 15 seconds.
+    ///
+    /// Because the actual shard duration can exceed the targeted shard duration,
+    /// we recommend that you set the targeted value at least 5 minutes less than
+    /// the maximum allowed test timeout (45 minutes for physical devices and 60
+    /// minutes for virtual), or that you use the custom test timeout value that
+    /// you set. This approach avoids cancelling the shard before all tests can
+    /// finish.
+    ///
+    /// Note that there is a limit for maximum number of shards. When you select
+    /// one or more physical devices, the number of shards must be <= 50. When you
+    /// select one or more ARM virtual devices, it must be <= 100. When you select
+    /// only x86 virtual devices, it must be <= 500. To guarantee at least one test
+    /// case for per shard, the number of shards will not exceed the number of test
+    /// cases. Each shard created counts toward daily test quota.
+    #[prost(message, optional, tag = "1")]
+    pub targeted_shard_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Output only. Details about the shard.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1089,9 +1395,13 @@ pub struct Shard {
     /// Output only. The total number of shards.
     #[prost(int32, tag = "2")]
     pub num_shards: i32,
-    /// Output only. Test targets for each shard.
+    /// Output only. Test targets for each shard. Only set for manual sharding.
     #[prost(message, optional, tag = "3")]
     pub test_targets_for_shard: ::core::option::Option<TestTargetsForShard>,
+    /// Output only. The estimated shard duration based on previous test case
+    /// timing records, if available.
+    #[prost(message, optional, tag = "4")]
+    pub estimated_shard_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Request to submit a matrix of tests for execution.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1155,7 +1465,7 @@ pub enum OrchestratorOption {
     /// offers.
     Unspecified = 0,
     /// Run test using orchestrator.
-    /// ** Only compatible with AndroidJUnitRunner version 1.0 or higher! **
+    /// ** Only compatible with AndroidJUnitRunner version 1.1 or higher! **
     /// Recommended.
     UseOrchestrator = 1,
     /// Run test without using orchestrator.
@@ -1179,6 +1489,40 @@ impl OrchestratorOption {
             "ORCHESTRATOR_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
             "USE_ORCHESTRATOR" => Some(Self::UseOrchestrator),
             "DO_NOT_USE_ORCHESTRATOR" => Some(Self::DoNotUseOrchestrator),
+            _ => None,
+        }
+    }
+}
+/// The mode in which Robo should run.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum RoboMode {
+    /// This means that the server should choose the mode.
+    /// Recommended.
+    Unspecified = 0,
+    /// Runs Robo in UIAutomator-only mode without app resigning
+    RoboVersion1 = 1,
+    /// Runs Robo in standard Espresso with UIAutomator fallback
+    RoboVersion2 = 2,
+}
+impl RoboMode {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            RoboMode::Unspecified => "ROBO_MODE_UNSPECIFIED",
+            RoboMode::RoboVersion1 => "ROBO_VERSION_1",
+            RoboMode::RoboVersion2 => "ROBO_VERSION_2",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ROBO_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ROBO_VERSION_1" => Some(Self::RoboVersion1),
+            "ROBO_VERSION_2" => Some(Self::RoboVersion2),
             _ => None,
         }
     }
@@ -1250,14 +1594,15 @@ pub enum InvalidMatrixDetails {
     NoSignature = 20,
     /// The test runner class specified by user or in the test APK's manifest file
     /// is not compatible with Android Test Orchestrator.
-    /// Orchestrator is only compatible with AndroidJUnitRunner version 1.0 or
+    /// Orchestrator is only compatible with AndroidJUnitRunner version 1.1 or
     /// higher.
     /// Orchestrator can be disabled by using DO_NOT_USE_ORCHESTRATOR
     /// OrchestratorOption.
     InstrumentationOrchestratorIncompatible = 18,
-    /// The test APK does not contain the test runner class specified by user or in
-    /// the manifest file.
-    /// This can be caused by either of the following reasons:
+    /// The test APK does not contain the test runner class specified by the user
+    /// or in the manifest file. This can be caused by one of the following
+    /// reasons:
+    ///
     /// - the user provided a runner class name that's incorrect, or
     /// - the test runner isn't built into the test APK (might be in the app APK
     /// instead).
@@ -1323,6 +1668,16 @@ pub enum InvalidMatrixDetails {
     InvalidInputApk = 27,
     /// APK is built for a preview SDK which is unsupported
     InvalidApkPreviewSdk = 29,
+    /// The matrix expanded to contain too many executions.
+    MatrixTooLarge = 37,
+    /// Not enough test quota to run the executions in this matrix.
+    TestQuotaExceeded = 39,
+    /// A required cloud service api is not activated.
+    /// See:
+    /// <https://firebase.google.com/docs/test-lab/android/continuous#requirements>
+    ServiceNotActivated = 40,
+    /// There was an unknown permission issue running this test.
+    UnknownPermissionError = 41,
 }
 impl InvalidMatrixDetails {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1372,6 +1727,10 @@ impl InvalidMatrixDetails {
             InvalidMatrixDetails::NoCodeApk => "NO_CODE_APK",
             InvalidMatrixDetails::InvalidInputApk => "INVALID_INPUT_APK",
             InvalidMatrixDetails::InvalidApkPreviewSdk => "INVALID_APK_PREVIEW_SDK",
+            InvalidMatrixDetails::MatrixTooLarge => "MATRIX_TOO_LARGE",
+            InvalidMatrixDetails::TestQuotaExceeded => "TEST_QUOTA_EXCEEDED",
+            InvalidMatrixDetails::ServiceNotActivated => "SERVICE_NOT_ACTIVATED",
+            InvalidMatrixDetails::UnknownPermissionError => "UNKNOWN_PERMISSION_ERROR",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1416,6 +1775,10 @@ impl InvalidMatrixDetails {
             "NO_CODE_APK" => Some(Self::NoCodeApk),
             "INVALID_INPUT_APK" => Some(Self::InvalidInputApk),
             "INVALID_APK_PREVIEW_SDK" => Some(Self::InvalidApkPreviewSdk),
+            "MATRIX_TOO_LARGE" => Some(Self::MatrixTooLarge),
+            "TEST_QUOTA_EXCEEDED" => Some(Self::TestQuotaExceeded),
+            "SERVICE_NOT_ACTIVATED" => Some(Self::ServiceNotActivated),
+            "UNKNOWN_PERMISSION_ERROR" => Some(Self::UnknownPermissionError),
             _ => None,
         }
     }
@@ -1518,11 +1881,13 @@ pub enum OutcomeSummary {
     /// Do not use. For proto versioning only.
     Unspecified = 0,
     /// The test matrix run was successful, for instance:
+    ///
     /// - All the test cases passed.
     /// - Robo did not detect a crash of the application under test.
     Success = 1,
     /// A run failed, for instance:
-    /// - One or more test case failed.
+    ///
+    /// - One or more test cases failed.
     /// - A test timed out.
     /// - The application under test crashed.
     Failure = 2,
@@ -1531,6 +1896,7 @@ pub enum OutcomeSummary {
     /// test might be successful.
     Inconclusive = 3,
     /// All tests were skipped, for instance:
+    ///
     /// - All device configurations were incompatible.
     Skipped = 4,
 }
@@ -1673,6 +2039,10 @@ pub mod test_execution_service_client {
         /// Unsupported environments will be returned in the state UNSUPPORTED.
         /// A test matrix is limited to use at most 2000 devices in parallel.
         ///
+        /// The returned matrix will not yet contain the executions that will be
+        /// created for this matrix. Execution creation happens later on and will
+        /// require a call to GetTestMatrix.
+        ///
         /// May return any of the following canonical error codes:
         ///
         /// - PERMISSION_DENIED - if the user is not authorized to write to project
@@ -1705,7 +2075,13 @@ pub mod test_execution_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Checks the status of a test matrix.
+        /// Checks the status of a test matrix and the executions once they
+        /// are created.
+        ///
+        /// The test matrix will contain the list of test executions to run if and only
+        /// if the resultStorage.toolResultsExecution fields have been populated.
+        ///
+        /// Note: Flaky test executions may be added to the matrix at a later stage.
         ///
         /// May return any of the following canonical error codes:
         ///
@@ -1814,6 +2190,33 @@ pub struct ApkManifest {
     /// Permissions declared to be used by the application
     #[prost(string, repeated, tag = "7")]
     pub uses_permission: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Version number used internally by the app.
+    #[prost(int64, tag = "8")]
+    pub version_code: i64,
+    /// Version number shown to users.
+    #[prost(string, tag = "9")]
+    pub version_name: ::prost::alloc::string::String,
+    /// Meta-data tags defined in the manifest.
+    #[prost(message, repeated, tag = "10")]
+    pub metadata: ::prost::alloc::vec::Vec<Metadata>,
+    /// Feature usage tags defined in the manifest.
+    #[prost(message, repeated, tag = "11")]
+    pub uses_feature: ::prost::alloc::vec::Vec<UsesFeature>,
+    /// Services contained in the <application> tag.
+    #[prost(message, repeated, tag = "12")]
+    pub services: ::prost::alloc::vec::Vec<Service>,
+}
+/// The <service> section of an <application> tag.
+/// <https://developer.android.com/guide/topics/manifest/service-element>
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Service {
+    /// The android:name value
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Intent filters in the service
+    #[prost(message, repeated, tag = "2")]
+    pub intent_filter: ::prost::alloc::vec::Vec<IntentFilter>,
 }
 /// The <intent-filter> section of an <activity> tag.
 /// <https://developer.android.com/guide/topics/manifest/intent-filter-element.html>
@@ -1829,6 +2232,30 @@ pub struct IntentFilter {
     /// The android:mimeType value of the <data> tag.
     #[prost(string, tag = "3")]
     pub mime_type: ::prost::alloc::string::String,
+}
+/// A <meta-data> tag within a manifest.
+/// <https://developer.android.com/guide/topics/manifest/meta-data-element.html>
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Metadata {
+    /// The android:name value
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The android:value value
+    #[prost(string, tag = "2")]
+    pub value: ::prost::alloc::string::String,
+}
+/// A <uses-feature> tag within a manifest.
+/// <https://developer.android.com/guide/topics/manifest/uses-feature-element.html>
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UsesFeature {
+    /// The android:name value
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The android:required value
+    #[prost(bool, tag = "2")]
+    pub is_required: bool,
 }
 /// A request to get the details of an Android application APK.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1965,6 +2392,514 @@ pub mod application_detail_service_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// A Request for the device session from the session service.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDeviceSessionRequest {
+    /// Required. The Compute Engine project under which this device will be
+    /// allocated. "projects/{project_id}"
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. A device session to create.
+    #[prost(message, optional, tag = "2")]
+    pub device_session: ::core::option::Option<DeviceSession>,
+}
+/// Request a list of device sessions in the provided parent matching the given
+/// filter.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDeviceSessionsRequest {
+    /// Required. The name of the parent to request, e.g. "projects/{project_id}"
+    #[prost(string, tag = "4")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of DeviceSessions to return.
+    #[prost(int32, tag = "1")]
+    pub page_size: i32,
+    /// Optional. A continuation token for paging.
+    #[prost(string, tag = "2")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. If specified, responses will be filtered by the given filter.
+    /// Allowed fields are: session_state.
+    #[prost(string, tag = "3")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// A list of device sessions.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDeviceSessionsResponse {
+    /// The sessions matching the specified filter in the given cloud project.
+    #[prost(message, repeated, tag = "1")]
+    pub device_sessions: ::prost::alloc::vec::Vec<DeviceSession>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request object for a Device Session.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetDeviceSessionRequest {
+    /// Required. Name of the DeviceSession, e.g.
+    /// "projects/{project_id}/deviceSessions/{session_id}"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request object for cancelling a Device Session.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CancelDeviceSessionRequest {
+    /// Required. Name of the DeviceSession, e.g.
+    /// "projects/{project_id}/deviceSessions/{session_id}"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request object for the UpdateDeviceSession RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDeviceSessionRequest {
+    /// Required. DeviceSession to update.
+    /// The device session's `name` field is used to identify the session to update
+    /// "projects/{project_id}/deviceSessions/{session_id}"
+    #[prost(message, optional, tag = "1")]
+    pub device_session: ::core::option::Option<DeviceSession>,
+    /// Required. The list of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Protobuf message describing the device message, used from several RPCs.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeviceSession {
+    /// Optional. Name of the DeviceSession, e.g.
+    /// "projects/{project_id}/deviceSessions/{session_id}"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The title of the DeviceSession to be presented in the UI.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. Current state of the DeviceSession.
+    #[prost(enumeration = "device_session::SessionState", tag = "3")]
+    pub state: i32,
+    /// Output only. The historical state transitions of the session_state message
+    /// including the current session state.
+    #[prost(message, repeated, tag = "14")]
+    pub state_histories: ::prost::alloc::vec::Vec<device_session::SessionStateEvent>,
+    /// Output only. The interval of time that this device must be interacted with
+    /// before it transitions from ACTIVE to TIMEOUT_INACTIVITY.
+    #[prost(message, optional, tag = "7")]
+    pub inactivity_timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Output only. The time that the Session was created.
+    #[prost(message, optional, tag = "8")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp that the session first became ACTIVE.
+    #[prost(message, optional, tag = "9")]
+    pub active_start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The list of requested devices. At most two devices may be
+    /// simultaneously requested.
+    #[deprecated]
+    #[prost(message, optional, tag = "12")]
+    pub android_device_list: ::core::option::Option<AndroidDeviceList>,
+    /// Required. The requested device
+    #[prost(message, optional, tag = "15")]
+    pub android_device: ::core::option::Option<AndroidDevice>,
+    #[prost(oneof = "device_session::Expiration", tags = "13, 5")]
+    pub expiration: ::core::option::Option<device_session::Expiration>,
+}
+/// Nested message and enum types in `DeviceSession`.
+pub mod device_session {
+    /// A message encapsulating a series of Session states and the time that the
+    /// DeviceSession first entered those states.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SessionStateEvent {
+        /// Output only. The session_state tracked by this event
+        #[prost(enumeration = "SessionState", tag = "1")]
+        pub session_state: i32,
+        /// Output only. The time that the session_state first encountered that
+        /// state.
+        #[prost(message, optional, tag = "2")]
+        pub event_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. A human-readable message to explain the state.
+        #[prost(string, tag = "3")]
+        pub state_message: ::prost::alloc::string::String,
+    }
+    /// The state that the device session resides.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SessionState {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// Initial state of a session request. The session is being validated for
+        /// correctness and a device is not yet requested.
+        Requested = 1,
+        /// The session has been validated and is in the queue for a device.
+        Pending = 2,
+        /// The session has been granted and the device is accepting
+        /// connections.
+        Active = 3,
+        /// The session duration exceeded the device’s reservation time period and
+        /// timed out automatically.
+        Expired = 4,
+        /// The user is finished with the session and it was canceled by the user
+        /// while the request was still getting allocated or after allocation and
+        /// during device usage period.
+        Finished = 5,
+        /// Unable to complete the session because the device was unavailable and
+        /// it failed to allocate through the scheduler. For example, a device not
+        /// in the catalog was requested or the request expired in the allocation
+        /// queue.
+        Unavailable = 6,
+        /// Unable to complete the session for an internal reason, such as an
+        /// infrastructure failure.
+        Error = 7,
+    }
+    impl SessionState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                SessionState::Unspecified => "SESSION_STATE_UNSPECIFIED",
+                SessionState::Requested => "REQUESTED",
+                SessionState::Pending => "PENDING",
+                SessionState::Active => "ACTIVE",
+                SessionState::Expired => "EXPIRED",
+                SessionState::Finished => "FINISHED",
+                SessionState::Unavailable => "UNAVAILABLE",
+                SessionState::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SESSION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REQUESTED" => Some(Self::Requested),
+                "PENDING" => Some(Self::Pending),
+                "ACTIVE" => Some(Self::Active),
+                "EXPIRED" => Some(Self::Expired),
+                "FINISHED" => Some(Self::Finished),
+                "UNAVAILABLE" => Some(Self::Unavailable),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Expiration {
+        /// Optional. The amount of time that a device will be initially allocated
+        /// for. This can eventually be extended with the ExtendDeviceSession RPC.
+        /// Default: 30 minutes.
+        #[prost(message, tag = "13")]
+        Ttl(::prost_types::Duration),
+        /// Optional. If the device is still in use at this time, any connections
+        /// will be ended and the SessionState will transition from ACTIVE to
+        /// FINISHED.
+        #[prost(message, tag = "5")]
+        ExpireTime(::prost_types::Timestamp),
+    }
+}
+/// Generated client implementations.
+pub mod direct_access_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// A service for allocating devices and interacting with the live-allocated
+    /// devices.
+    ///
+    /// This service is part of Firebase Test Lab. To learn about how to use the
+    /// product, and how to integrate it with your system,
+    /// visit https://firebase.google.com/docs/test-lab.
+    ///
+    /// Each Session will wait for available capacity, at a higher
+    /// priority over Test Execution. When allocated, the session will be exposed
+    /// through a stream for integration.
+    ///
+    /// DirectAccessService is currently available as a preview to select developers.
+    /// You can register today on behalf of you and your team at
+    /// https://developer.android.com/studio/preview/android-device-streaming
+    #[derive(Debug, Clone)]
+    pub struct DirectAccessServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl DirectAccessServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> DirectAccessServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> DirectAccessServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            DirectAccessServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// POST /v1/projects/{project_id}/deviceSessions
+        pub async fn create_device_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDeviceSessionRequest>,
+        ) -> std::result::Result<tonic::Response<super::DeviceSession>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.devtools.testing.v1.DirectAccessService/CreateDeviceSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.testing.v1.DirectAccessService",
+                        "CreateDeviceSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// GET /v1/projects/{project_id}/deviceSessions
+        /// Lists device Sessions owned by the project user.
+        pub async fn list_device_sessions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDeviceSessionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDeviceSessionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.devtools.testing.v1.DirectAccessService/ListDeviceSessions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.testing.v1.DirectAccessService",
+                        "ListDeviceSessions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// GET /v1/projects/{project_id}/deviceSessions/{device_session_id}
+        /// Return a DeviceSession, which documents the allocation status and
+        /// whether the device is allocated. Clients making requests from this API
+        /// must poll GetDeviceSession.
+        pub async fn get_device_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDeviceSessionRequest>,
+        ) -> std::result::Result<tonic::Response<super::DeviceSession>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.devtools.testing.v1.DirectAccessService/GetDeviceSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.testing.v1.DirectAccessService",
+                        "GetDeviceSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// POST
+        /// /v1/projects/{project_id}/deviceSessions/{device_session_id}:cancel
+        /// Changes the DeviceSession to state FINISHED and terminates all connections.
+        /// Canceled sessions are not deleted and can be retrieved or
+        /// listed by the user until they expire based on the 28 day deletion policy.
+        pub async fn cancel_device_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CancelDeviceSessionRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.devtools.testing.v1.DirectAccessService/CancelDeviceSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.testing.v1.DirectAccessService",
+                        "CancelDeviceSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// PATCH
+        /// /v1/projects/{projectId}/deviceSessions/deviceSessionId}:updateDeviceSession
+        /// Updates the current device session to the fields described by the
+        /// update_mask.
+        pub async fn update_device_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDeviceSessionRequest>,
+        ) -> std::result::Result<tonic::Response<super::DeviceSession>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.devtools.testing.v1.DirectAccessService/UpdateDeviceSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.testing.v1.DirectAccessService",
+                        "UpdateDeviceSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Exposes ADB connection for use with the Adb Device Forwarder project
+        /// if the reserved device supports ADB.
+        /// gRPC headers are used to authenticate the Connect RPC, as well as
+        /// associate to a particular device session.
+        /// In particular, the user must specify the "X-FTL-Session-Name" header.
+        pub async fn adb_connect(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<Message = super::AdbMessage>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::DeviceMessage>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.devtools.testing.v1.DirectAccessService/AdbConnect",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.testing.v1.DirectAccessService",
+                        "AdbConnect",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
         }
     }
 }
@@ -2152,6 +3087,9 @@ pub struct AndroidModel {
     /// Whether this device is a phone, tablet, wearable, etc.
     #[prost(enumeration = "DeviceFormFactor", tag = "16")]
     pub form_factor: i32,
+    /// Version-specific information of an Android model.
+    #[prost(message, repeated, tag = "21")]
+    pub per_version_info: ::prost::alloc::vec::Vec<PerAndroidVersionInfo>,
     /// Screen size in the horizontal (X) dimension measured in pixels.
     #[prost(int32, tag = "5")]
     pub screen_x: i32,
@@ -2184,7 +3122,6 @@ pub struct AndroidModel {
     #[prost(string, repeated, tag = "8")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// URL of a thumbnail image (photo) of the device.
-    /// e.g. <https://lh3.googleusercontent.com/90WcauuJiCYABEl8U0lcZeuS5STUbf2yW...>
     #[prost(string, tag = "19")]
     pub thumbnail_url: ::prost::alloc::string::String,
 }
@@ -2218,6 +3155,41 @@ pub struct AndroidVersion {
     /// Examples: "default", "preview", "deprecated".
     #[prost(string, repeated, tag = "7")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A version-specific information of an Android model.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PerAndroidVersionInfo {
+    /// An Android version.
+    #[prost(string, tag = "1")]
+    pub version_id: ::prost::alloc::string::String,
+    /// The number of online devices for an Android version.
+    #[prost(enumeration = "DeviceCapacity", tag = "2")]
+    pub device_capacity: i32,
+    /// Output only. Identifies supported clients for DirectAccess for this Android
+    /// version.
+    #[prost(message, optional, tag = "4")]
+    pub direct_access_version_info: ::core::option::Option<DirectAccessVersionInfo>,
+}
+/// Denotes whether Direct Access is supported, and by which client versions.
+///
+/// DirectAccessService is currently available as a preview to select developers.
+/// You can register today on behalf of you and your team at
+/// <https://developer.android.com/studio/preview/android-device-streaming>
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DirectAccessVersionInfo {
+    /// Whether direct access is supported at all. Clients are expected to
+    /// filter down the device list to only android models and versions which
+    /// support Direct Access when that is the user intent.
+    #[prost(bool, tag = "1")]
+    pub direct_access_supported: bool,
+    /// Output only. Indicates client-device compatibility, where a device is known
+    /// to work only with certain workarounds implemented in the Android Studio
+    /// client. Expected format "major.minor.micro.patch", e.g.
+    /// "5921.22.2211.8881706".
+    #[prost(string, tag = "2")]
+    pub minimum_android_studio_version: ::prost::alloc::string::String,
 }
 /// Data about the relative number of devices running a
 /// given configuration of the Android platform.
@@ -2296,6 +3268,9 @@ pub struct IosModel {
     /// Whether this device is a phone, tablet, wearable, etc.
     #[prost(enumeration = "DeviceFormFactor", tag = "6")]
     pub form_factor: i32,
+    /// Version-specific information of an iOS model.
+    #[prost(message, repeated, tag = "14")]
+    pub per_version_info: ::prost::alloc::vec::Vec<PerIosVersionInfo>,
 }
 /// An iOS version.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2322,6 +3297,17 @@ pub struct IosVersion {
     pub supported_xcode_version_ids: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
+}
+/// A version-specific information of an iOS model.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PerIosVersionInfo {
+    /// An iOS version.
+    #[prost(string, tag = "1")]
+    pub version_id: ::prost::alloc::string::String,
+    /// The number of online devices for an iOS version.
+    #[prost(enumeration = "DeviceCapacity", tag = "2")]
+    pub device_capacity: i32,
 }
 /// A location/region designation for language.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2417,9 +3403,12 @@ pub struct TrafficRule {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProvidedSoftwareCatalog {
+    /// Deprecated: Use AndroidX Test Orchestrator going forward.
+    ///
     /// A string representing the current version of Android Test Orchestrator
     /// that is used in the environment. The package is available at
     /// <https://maven.google.com/web/index.html#com.android.support.test:orchestrator.>
+    #[deprecated]
     #[prost(string, tag = "1")]
     pub orchestrator_version: ::prost::alloc::string::String,
     /// A string representing the current version of AndroidX Test Orchestrator
@@ -2500,6 +3489,78 @@ impl DeviceFormFactor {
             "PHONE" => Some(Self::Phone),
             "TABLET" => Some(Self::Tablet),
             "WEARABLE" => Some(Self::Wearable),
+            _ => None,
+        }
+    }
+}
+/// Capacity based on the number of online devices in the lab.
+///
+/// Important: device capacity does not directly reflect the length of the
+/// queue at a moment in time. It does not take into account current traffic or
+/// the state of the devices.
+///
+/// For physical devices, the number is the average of online devices in the last
+/// 30 days.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DeviceCapacity {
+    /// The value of device capacity is unknown or unset.
+    Unspecified = 0,
+    /// Devices that are high in capacity (The lab has a large number of these
+    /// devices).
+    ///
+    /// These devices are generally suggested for running a large number of
+    /// simultaneous tests (e.g. more than 100 tests).
+    ///
+    /// Please note that high capacity devices do not guarantee short wait times
+    /// due to several factors:
+    /// 1. Traffic (how heavily they are used at any given moment)
+    /// 2. High capacity devices are prioritized for certain usages, which may
+    /// cause user tests to be slower than selecting other similar device types.
+    High = 1,
+    /// Devices that are medium in capacity (The lab has a decent number of these
+    /// devices, though not as many as high capacity devices).
+    ///
+    /// These devices are suitable for fewer test runs (e.g. fewer than 100 tests)
+    /// and only for low shard counts (e.g. less than 10 shards).
+    Medium = 2,
+    /// Devices that are low in capacity (The lab has a small number of these
+    /// devices).
+    ///
+    /// These devices may be used if users need to test on this specific device
+    /// model and version. Please note that due to low capacity, the tests may take
+    /// much longer to finish, especially if a large number of tests are invoked at
+    /// once. These devices are not suitable for test sharding.
+    Low = 3,
+    /// Devices that are completely missing from the lab.
+    ///
+    /// These devices are unavailable either temporarily or permanently and should
+    /// not be requested. If the device is also marked as deprecated, this state
+    /// is very likely permanent.
+    None = 4,
+}
+impl DeviceCapacity {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            DeviceCapacity::Unspecified => "DEVICE_CAPACITY_UNSPECIFIED",
+            DeviceCapacity::High => "DEVICE_CAPACITY_HIGH",
+            DeviceCapacity::Medium => "DEVICE_CAPACITY_MEDIUM",
+            DeviceCapacity::Low => "DEVICE_CAPACITY_LOW",
+            DeviceCapacity::None => "DEVICE_CAPACITY_NONE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DEVICE_CAPACITY_UNSPECIFIED" => Some(Self::Unspecified),
+            "DEVICE_CAPACITY_HIGH" => Some(Self::High),
+            "DEVICE_CAPACITY_MEDIUM" => Some(Self::Medium),
+            "DEVICE_CAPACITY_LOW" => Some(Self::Low),
+            "DEVICE_CAPACITY_NONE" => Some(Self::None),
             _ => None,
         }
     }

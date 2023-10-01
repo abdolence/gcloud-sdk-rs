@@ -1,20 +1,25 @@
-/// A [Secret][google.cloud.secretmanager.v1.Secret] is a logical secret whose value and versions can
-/// be accessed.
+/// A [Secret][google.cloud.secretmanager.v1.Secret] is a logical secret whose
+/// value and versions can be accessed.
 ///
-/// A [Secret][google.cloud.secretmanager.v1.Secret] is made up of zero or more [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] that
-/// represent the secret data.
+/// A [Secret][google.cloud.secretmanager.v1.Secret] is made up of zero or more
+/// [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] that represent
+/// the secret data.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Secret {
-    /// Output only. The resource name of the [Secret][google.cloud.secretmanager.v1.Secret] in the format `projects/*/secrets/*`.
+    /// Output only. The resource name of the
+    /// [Secret][google.cloud.secretmanager.v1.Secret] in the format
+    /// `projects/*/secrets/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. Immutable. The replication policy of the secret data attached to the [Secret][google.cloud.secretmanager.v1.Secret].
+    /// Required. Immutable. The replication policy of the secret data attached to
+    /// the [Secret][google.cloud.secretmanager.v1.Secret].
     ///
     /// The replication policy cannot be changed after the Secret has been created.
     #[prost(message, optional, tag = "2")]
     pub replication: ::core::option::Option<Replication>,
-    /// Output only. The time at which the [Secret][google.cloud.secretmanager.v1.Secret] was created.
+    /// Output only. The time at which the
+    /// [Secret][google.cloud.secretmanager.v1.Secret] was created.
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The labels assigned to this Secret.
@@ -33,15 +38,17 @@ pub struct Secret {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Optional. A list of up to 10 Pub/Sub topics to which messages are published when
-    /// control plane operations are called on the secret or its versions.
+    /// Optional. A list of up to 10 Pub/Sub topics to which messages are published
+    /// when control plane operations are called on the secret or its versions.
     #[prost(message, repeated, tag = "5")]
     pub topics: ::prost::alloc::vec::Vec<Topic>,
-    /// Optional. Etag of the currently stored [Secret][google.cloud.secretmanager.v1.Secret].
+    /// Optional. Etag of the currently stored
+    /// [Secret][google.cloud.secretmanager.v1.Secret].
     #[prost(string, tag = "8")]
     pub etag: ::prost::alloc::string::String,
-    /// Optional. Rotation policy attached to the [Secret][google.cloud.secretmanager.v1.Secret]. May be excluded if there is no
-    /// rotation policy.
+    /// Optional. Rotation policy attached to the
+    /// [Secret][google.cloud.secretmanager.v1.Secret]. May be excluded if there is
+    /// no rotation policy.
     #[prost(message, optional, tag = "9")]
     pub rotation: ::core::option::Option<Rotation>,
     /// Optional. Mapping from version alias to version name.
@@ -60,9 +67,29 @@ pub struct Secret {
         ::prost::alloc::string::String,
         i64,
     >,
-    /// Expiration policy attached to the [Secret][google.cloud.secretmanager.v1.Secret]. If specified the [Secret][google.cloud.secretmanager.v1.Secret]
-    /// and all [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] will be automatically deleted at
-    /// expiration. Expired secrets are irreversibly deleted.
+    /// Optional. Custom metadata about the secret.
+    ///
+    /// Annotations are distinct from various forms of labels.
+    /// Annotations exist to allow client tools to store their own state
+    /// information without requiring a database.
+    ///
+    /// Annotation keys must be between 1 and 63 characters long, have a UTF-8
+    /// encoding of maximum 128 bytes, begin and end with an alphanumeric character
+    /// (\[a-z0-9A-Z\]), and may have dashes (-), underscores (_), dots (.), and
+    /// alphanumerics in between these symbols.
+    ///
+    /// The total size of annotation keys and values must be less than 16KiB.
+    #[prost(map = "string, string", tag = "13")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Expiration policy attached to the
+    /// [Secret][google.cloud.secretmanager.v1.Secret]. If specified the
+    /// [Secret][google.cloud.secretmanager.v1.Secret] and all
+    /// [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] will be
+    /// automatically deleted at expiration. Expired secrets are irreversibly
+    /// deleted.
     ///
     /// Expiration is *not* the recommended way to set time-based permissions. [IAM
     /// Conditions](<https://cloud.google.com/secret-manager/docs/access-control#conditions>)
@@ -73,9 +100,12 @@ pub struct Secret {
 }
 /// Nested message and enum types in `Secret`.
 pub mod secret {
-    /// Expiration policy attached to the [Secret][google.cloud.secretmanager.v1.Secret]. If specified the [Secret][google.cloud.secretmanager.v1.Secret]
-    /// and all [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] will be automatically deleted at
-    /// expiration. Expired secrets are irreversibly deleted.
+    /// Expiration policy attached to the
+    /// [Secret][google.cloud.secretmanager.v1.Secret]. If specified the
+    /// [Secret][google.cloud.secretmanager.v1.Secret] and all
+    /// [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] will be
+    /// automatically deleted at expiration. Expired secrets are irreversibly
+    /// deleted.
     ///
     /// Expiration is *not* the recommended way to set time-based permissions. [IAM
     /// Conditions](<https://cloud.google.com/secret-manager/docs/access-control#conditions>)
@@ -84,11 +114,13 @@ pub mod secret {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expiration {
-        /// Optional. Timestamp in UTC when the [Secret][google.cloud.secretmanager.v1.Secret] is scheduled to expire. This is
-        /// always provided on output, regardless of what was sent on input.
+        /// Optional. Timestamp in UTC when the
+        /// [Secret][google.cloud.secretmanager.v1.Secret] is scheduled to expire.
+        /// This is always provided on output, regardless of what was sent on input.
         #[prost(message, tag = "6")]
         ExpireTime(::prost_types::Timestamp),
-        /// Input only. The TTL for the [Secret][google.cloud.secretmanager.v1.Secret].
+        /// Input only. The TTL for the
+        /// [Secret][google.cloud.secretmanager.v1.Secret].
         #[prost(message, tag = "7")]
         Ttl(::prost_types::Duration),
     }
@@ -97,39 +129,52 @@ pub mod secret {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecretVersion {
-    /// Output only. The resource name of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] in the
-    /// format `projects/*/secrets/*/versions/*`.
+    /// Output only. The resource name of the
+    /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] in the format
+    /// `projects/*/secrets/*/versions/*`.
     ///
-    /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] IDs in a [Secret][google.cloud.secretmanager.v1.Secret] start at 1 and
-    /// are incremented for each subsequent version of the secret.
+    /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] IDs in a
+    /// [Secret][google.cloud.secretmanager.v1.Secret] start at 1 and are
+    /// incremented for each subsequent version of the secret.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. The time at which the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was created.
+    /// Output only. The time at which the
+    /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was created.
     #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time this [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was destroyed.
-    /// Only present if [state][google.cloud.secretmanager.v1.SecretVersion.state] is
+    /// Output only. The time this
+    /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was destroyed.
+    /// Only present if [state][google.cloud.secretmanager.v1.SecretVersion.state]
+    /// is
     /// [DESTROYED][google.cloud.secretmanager.v1.SecretVersion.State.DESTROYED].
     #[prost(message, optional, tag = "3")]
     pub destroy_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The current state of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+    /// Output only. The current state of the
+    /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     #[prost(enumeration = "secret_version::State", tag = "4")]
     pub state: i32,
-    /// The replication status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+    /// The replication status of the
+    /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     #[prost(message, optional, tag = "5")]
     pub replication_status: ::core::option::Option<ReplicationStatus>,
-    /// Output only. Etag of the currently stored [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+    /// Output only. Etag of the currently stored
+    /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     #[prost(string, tag = "6")]
     pub etag: ::prost::alloc::string::String,
-    /// Output only. True if payload checksum specified in [SecretPayload][google.cloud.secretmanager.v1.SecretPayload] object has been
-    /// received by [SecretManagerService][google.cloud.secretmanager.v1.SecretManagerService] on
+    /// Output only. True if payload checksum specified in
+    /// [SecretPayload][google.cloud.secretmanager.v1.SecretPayload] object has
+    /// been received by
+    /// [SecretManagerService][google.cloud.secretmanager.v1.SecretManagerService]
+    /// on
     /// [SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion].
     #[prost(bool, tag = "7")]
     pub client_specified_payload_checksum: bool,
 }
 /// Nested message and enum types in `SecretVersion`.
 pub mod secret_version {
-    /// The state of a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion], indicating if it can be accessed.
+    /// The state of a
+    /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion], indicating if
+    /// it can be accessed.
     #[derive(
         Clone,
         Copy,
@@ -145,14 +190,18 @@ pub mod secret_version {
     pub enum State {
         /// Not specified. This value is unused and invalid.
         Unspecified = 0,
-        /// The [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] may be accessed.
+        /// The [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] may be
+        /// accessed.
         Enabled = 1,
-        /// The [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] may not be accessed, but the secret data
-        /// is still available and can be placed back into the [ENABLED][google.cloud.secretmanager.v1.SecretVersion.State.ENABLED]
+        /// The [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] may not
+        /// be accessed, but the secret data is still available and can be placed
+        /// back into the
+        /// [ENABLED][google.cloud.secretmanager.v1.SecretVersion.State.ENABLED]
         /// state.
         Disabled = 2,
-        /// The [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] is destroyed and the secret data is no longer
-        /// stored. A version may not leave this state once entered.
+        /// The [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] is
+        /// destroyed and the secret data is no longer stored. A version may not
+        /// leave this state once entered.
         Destroyed = 3,
     }
     impl State {
@@ -190,28 +239,34 @@ pub struct Replication {
 }
 /// Nested message and enum types in `Replication`.
 pub mod replication {
-    /// A replication policy that replicates the [Secret][google.cloud.secretmanager.v1.Secret] payload without any
+    /// A replication policy that replicates the
+    /// [Secret][google.cloud.secretmanager.v1.Secret] payload without any
     /// restrictions.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Automatic {
-        /// Optional. The customer-managed encryption configuration of the [Secret][google.cloud.secretmanager.v1.Secret]. If no
-        /// configuration is provided, Google-managed default encryption is used.
+        /// Optional. The customer-managed encryption configuration of the
+        /// [Secret][google.cloud.secretmanager.v1.Secret]. If no configuration is
+        /// provided, Google-managed default encryption is used.
         ///
-        /// Updates to the [Secret][google.cloud.secretmanager.v1.Secret] encryption configuration only apply to
-        /// [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] added afterwards. They do not apply
-        /// retroactively to existing [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
+        /// Updates to the [Secret][google.cloud.secretmanager.v1.Secret] encryption
+        /// configuration only apply to
+        /// [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] added
+        /// afterwards. They do not apply retroactively to existing
+        /// [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
         #[prost(message, optional, tag = "1")]
         pub customer_managed_encryption: ::core::option::Option<
             super::CustomerManagedEncryption,
         >,
     }
-    /// A replication policy that replicates the [Secret][google.cloud.secretmanager.v1.Secret] payload into the
-    /// locations specified in [Secret.replication.user_managed.replicas][]
+    /// A replication policy that replicates the
+    /// [Secret][google.cloud.secretmanager.v1.Secret] payload into the locations
+    /// specified in [Secret.replication.user_managed.replicas][]
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UserManaged {
-        /// Required. The list of Replicas for this [Secret][google.cloud.secretmanager.v1.Secret].
+        /// Required. The list of Replicas for this
+        /// [Secret][google.cloud.secretmanager.v1.Secret].
         ///
         /// Cannot be empty.
         #[prost(message, repeated, tag = "1")]
@@ -219,7 +274,8 @@ pub mod replication {
     }
     /// Nested message and enum types in `UserManaged`.
     pub mod user_managed {
-        /// Represents a Replica for this [Secret][google.cloud.secretmanager.v1.Secret].
+        /// Represents a Replica for this
+        /// [Secret][google.cloud.secretmanager.v1.Secret].
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Replica {
@@ -227,13 +283,15 @@ pub mod replication {
             /// For example: `"us-east1"`.
             #[prost(string, tag = "1")]
             pub location: ::prost::alloc::string::String,
-            /// Optional. The customer-managed encryption configuration of the [User-Managed
-            /// Replica][Replication.UserManaged.Replica]. If no configuration is
-            /// provided, Google-managed default encryption is used.
+            /// Optional. The customer-managed encryption configuration of the
+            /// [User-Managed Replica][Replication.UserManaged.Replica]. If no
+            /// configuration is provided, Google-managed default encryption is used.
             ///
-            /// Updates to the [Secret][google.cloud.secretmanager.v1.Secret] encryption configuration only apply to
-            /// [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] added afterwards. They do not apply
-            /// retroactively to existing [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
+            /// Updates to the [Secret][google.cloud.secretmanager.v1.Secret]
+            /// encryption configuration only apply to
+            /// [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] added
+            /// afterwards. They do not apply retroactively to existing
+            /// [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
             #[prost(message, optional, tag = "2")]
             pub customer_managed_encryption: ::core::option::Option<
                 super::super::CustomerManagedEncryption,
@@ -244,10 +302,12 @@ pub mod replication {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Replication {
-        /// The [Secret][google.cloud.secretmanager.v1.Secret] will automatically be replicated without any restrictions.
+        /// The [Secret][google.cloud.secretmanager.v1.Secret] will automatically be
+        /// replicated without any restrictions.
         #[prost(message, tag = "1")]
         Automatic(Automatic),
-        /// The [Secret][google.cloud.secretmanager.v1.Secret] will only be replicated into the locations specified.
+        /// The [Secret][google.cloud.secretmanager.v1.Secret] will only be
+        /// replicated into the locations specified.
         #[prost(message, tag = "2")]
         UserManaged(UserManaged),
     }
@@ -257,25 +317,29 @@ pub mod replication {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerManagedEncryption {
-    /// Required. The resource name of the Cloud KMS CryptoKey used to encrypt secret
-    /// payloads.
+    /// Required. The resource name of the Cloud KMS CryptoKey used to encrypt
+    /// secret payloads.
     ///
-    /// For secrets using the [UserManaged][google.cloud.secretmanager.v1.Replication.UserManaged] replication
-    /// policy type, Cloud KMS CryptoKeys must reside in the same location as the
-    /// [replica location][Secret.UserManaged.Replica.location].
+    /// For secrets using the
+    /// [UserManaged][google.cloud.secretmanager.v1.Replication.UserManaged]
+    /// replication policy type, Cloud KMS CryptoKeys must reside in the same
+    /// location as the [replica location][Secret.UserManaged.Replica.location].
     ///
-    /// For secrets using the [Automatic][google.cloud.secretmanager.v1.Replication.Automatic] replication policy
-    /// type, Cloud KMS CryptoKeys must reside in `global`.
+    /// For secrets using the
+    /// [Automatic][google.cloud.secretmanager.v1.Replication.Automatic]
+    /// replication policy type, Cloud KMS CryptoKeys must reside in `global`.
     ///
     /// The expected format is `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
     #[prost(string, tag = "1")]
     pub kms_key_name: ::prost::alloc::string::String,
 }
-/// The replication status of a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+/// The replication status of a
+/// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplicationStatus {
-    /// The replication status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+    /// The replication status of the
+    /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     #[prost(oneof = "replication_status::ReplicationStatus", tags = "1, 2")]
     pub replication_status: ::core::option::Option<
         replication_status::ReplicationStatus,
@@ -283,35 +347,41 @@ pub struct ReplicationStatus {
 }
 /// Nested message and enum types in `ReplicationStatus`.
 pub mod replication_status {
-    /// The replication status of a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] using automatic replication.
+    /// The replication status of a
+    /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] using
+    /// automatic replication.
     ///
-    /// Only populated if the parent [Secret][google.cloud.secretmanager.v1.Secret] has an automatic replication
-    /// policy.
+    /// Only populated if the parent [Secret][google.cloud.secretmanager.v1.Secret]
+    /// has an automatic replication policy.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AutomaticStatus {
-        /// Output only. The customer-managed encryption status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only
+        /// Output only. The customer-managed encryption status of the
+        /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only
         /// populated if customer-managed encryption is used.
         #[prost(message, optional, tag = "1")]
         pub customer_managed_encryption: ::core::option::Option<
             super::CustomerManagedEncryptionStatus,
         >,
     }
-    /// The replication status of a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] using user-managed
-    /// replication.
+    /// The replication status of a
+    /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] using
+    /// user-managed replication.
     ///
-    /// Only populated if the parent [Secret][google.cloud.secretmanager.v1.Secret] has a user-managed replication
-    /// policy.
+    /// Only populated if the parent [Secret][google.cloud.secretmanager.v1.Secret]
+    /// has a user-managed replication policy.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UserManagedStatus {
-        /// Output only. The list of replica statuses for the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+        /// Output only. The list of replica statuses for the
+        /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
         #[prost(message, repeated, tag = "1")]
         pub replicas: ::prost::alloc::vec::Vec<user_managed_status::ReplicaStatus>,
     }
     /// Nested message and enum types in `UserManagedStatus`.
     pub mod user_managed_status {
-        /// Describes the status of a user-managed replica for the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+        /// Describes the status of a user-managed replica for the
+        /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ReplicaStatus {
@@ -319,7 +389,8 @@ pub mod replication_status {
             /// For example: `"us-east1"`.
             #[prost(string, tag = "1")]
             pub location: ::prost::alloc::string::String,
-            /// Output only. The customer-managed encryption status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only
+            /// Output only. The customer-managed encryption status of the
+            /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only
             /// populated if customer-managed encryption is used.
             #[prost(message, optional, tag = "2")]
             pub customer_managed_encryption: ::core::option::Option<
@@ -327,22 +398,27 @@ pub mod replication_status {
             >,
         }
     }
-    /// The replication status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+    /// The replication status of the
+    /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ReplicationStatus {
-        /// Describes the replication status of a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] with
+        /// Describes the replication status of a
+        /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] with
         /// automatic replication.
         ///
-        /// Only populated if the parent [Secret][google.cloud.secretmanager.v1.Secret] has an automatic replication
-        /// policy.
+        /// Only populated if the parent
+        /// [Secret][google.cloud.secretmanager.v1.Secret] has an automatic
+        /// replication policy.
         #[prost(message, tag = "1")]
         Automatic(AutomaticStatus),
-        /// Describes the replication status of a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] with
+        /// Describes the replication status of a
+        /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] with
         /// user-managed replication.
         ///
-        /// Only populated if the parent [Secret][google.cloud.secretmanager.v1.Secret] has a user-managed replication
-        /// policy.
+        /// Only populated if the parent
+        /// [Secret][google.cloud.secretmanager.v1.Secret] has a user-managed
+        /// replication policy.
         #[prost(message, tag = "2")]
         UserManaged(UserManagedStatus),
     }
@@ -351,8 +427,8 @@ pub mod replication_status {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerManagedEncryptionStatus {
-    /// Required. The resource name of the Cloud KMS CryptoKeyVersion used to encrypt the
-    /// secret payload, in the following format:
+    /// Required. The resource name of the Cloud KMS CryptoKeyVersion used to
+    /// encrypt the secret payload, in the following format:
     /// `projects/*/locations/*/keyRings/*/cryptoKeys/*/versions/*`.
     #[prost(string, tag = "1")]
     pub kms_key_version_name: ::prost::alloc::string::String,
@@ -362,31 +438,43 @@ pub struct CustomerManagedEncryptionStatus {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Topic {
-    /// Required. The resource name of the Pub/Sub topic that will be published to, in the
-    /// following format: `projects/*/topics/*`. For publication to succeed, the
-    /// Secret Manager P4SA must have `pubsub.publisher` permissions on the topic.
+    /// Required. The resource name of the Pub/Sub topic that will be published to,
+    /// in the following format: `projects/*/topics/*`. For publication to succeed,
+    /// the Secret Manager P4SA must have `pubsub.publisher` permissions on the
+    /// topic.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The rotation time and period for a [Secret][google.cloud.secretmanager.v1.Secret]. At next_rotation_time, Secret
+/// The rotation time and period for a
+/// [Secret][google.cloud.secretmanager.v1.Secret]. At next_rotation_time, Secret
 /// Manager will send a Pub/Sub notification to the topics configured on the
-/// Secret. [Secret.topics][google.cloud.secretmanager.v1.Secret.topics] must be set to configure rotation.
+/// Secret. [Secret.topics][google.cloud.secretmanager.v1.Secret.topics] must be
+/// set to configure rotation.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rotation {
-    /// Optional. Timestamp in UTC at which the [Secret][google.cloud.secretmanager.v1.Secret] is scheduled to rotate. Cannot be
-    /// set to less than 300s (5 min) in the future and at most 3153600000s (100
-    /// years).
+    /// Optional. Timestamp in UTC at which the
+    /// [Secret][google.cloud.secretmanager.v1.Secret] is scheduled to rotate.
+    /// Cannot be set to less than 300s (5 min) in the future and at most
+    /// 3153600000s (100 years).
     ///
-    /// [next_rotation_time][google.cloud.secretmanager.v1.Rotation.next_rotation_time] MUST  be set if [rotation_period][google.cloud.secretmanager.v1.Rotation.rotation_period] is set.
+    /// [next_rotation_time][google.cloud.secretmanager.v1.Rotation.next_rotation_time]
+    /// MUST  be set if
+    /// [rotation_period][google.cloud.secretmanager.v1.Rotation.rotation_period]
+    /// is set.
     #[prost(message, optional, tag = "1")]
     pub next_rotation_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Input only. The Duration between rotation notifications. Must be in seconds
     /// and at least 3600s (1h) and at most 3153600000s (100 years).
     ///
-    /// If [rotation_period][google.cloud.secretmanager.v1.Rotation.rotation_period] is set, [next_rotation_time][google.cloud.secretmanager.v1.Rotation.next_rotation_time] must be set.
-    /// [next_rotation_time][google.cloud.secretmanager.v1.Rotation.next_rotation_time] will be advanced by this period when the service
-    /// automatically sends rotation notifications.
+    /// If
+    /// [rotation_period][google.cloud.secretmanager.v1.Rotation.rotation_period]
+    /// is set,
+    /// [next_rotation_time][google.cloud.secretmanager.v1.Rotation.next_rotation_time]
+    /// must be set.
+    /// [next_rotation_time][google.cloud.secretmanager.v1.Rotation.next_rotation_time]
+    /// will be advanced by this period when the service automatically sends
+    /// rotation notifications.
     #[prost(message, optional, tag = "2")]
     pub rotation_period: ::core::option::Option<::prost_types::Duration>,
 }

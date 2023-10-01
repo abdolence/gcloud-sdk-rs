@@ -8,16 +8,16 @@ pub struct ValidationError {
     /// The names of the entries that the error is associated with.
     /// Format:
     ///
-    /// - "projects/<Project ID>/agent", if the error is associated with the entire
+    /// - `projects/<Project ID>/agent`, if the error is associated with the entire
     /// agent.
-    /// - "projects/<Project ID>/agent/intents/<Intent ID>", if the error is
+    /// - `projects/<Project ID>/agent/intents/<Intent ID>`, if the error is
     /// associated with certain intents.
-    /// - "projects/<Project
-    /// ID>/agent/intents/<Intent Id>/trainingPhrases/<Training Phrase ID>", if the
-    /// error is associated with certain intent training phrases.
-    /// - "projects/<Project ID>/agent/intents/<Intent Id>/parameters/<Parameter
-    /// ID>", if the error is associated with certain intent parameters.
-    /// - "projects/<Project ID>/agent/entities/<Entity ID>", if the error is
+    /// - `projects/<Project ID>/agent/intents/<Intent
+    /// Id>/trainingPhrases/<Training Phrase ID>`, if the error is associated with
+    /// certain intent training phrases.
+    /// - `projects/<Project ID>/agent/intents/<Intent Id>/parameters/<Parameter
+    /// ID>`, if the error is associated with certain intent parameters.
+    /// - `projects/<Project ID>/agent/entities/<Entity ID>`, if the error is
     /// associated with certain entities.
     #[prost(string, repeated, tag = "3")]
     pub entries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -305,7 +305,8 @@ pub mod agent {
         }
     }
 }
-/// The request message for [Agents.GetAgent][google.cloud.dialogflow.v2.Agents.GetAgent].
+/// The request message for
+/// [Agents.GetAgent][google.cloud.dialogflow.v2.Agents.GetAgent].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAgentRequest {
@@ -314,7 +315,8 @@ pub struct GetAgentRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
 }
-/// The request message for [Agents.SetAgent][google.cloud.dialogflow.v2.Agents.SetAgent].
+/// The request message for
+/// [Agents.SetAgent][google.cloud.dialogflow.v2.Agents.SetAgent].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetAgentRequest {
@@ -325,7 +327,8 @@ pub struct SetAgentRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request message for [Agents.DeleteAgent][google.cloud.dialogflow.v2.Agents.DeleteAgent].
+/// The request message for
+/// [Agents.DeleteAgent][google.cloud.dialogflow.v2.Agents.DeleteAgent].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAgentRequest {
@@ -334,7 +337,8 @@ pub struct DeleteAgentRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
 }
-/// The request message for [Agents.SearchAgents][google.cloud.dialogflow.v2.Agents.SearchAgents].
+/// The request message for
+/// [Agents.SearchAgents][google.cloud.dialogflow.v2.Agents.SearchAgents].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAgentsRequest {
@@ -350,7 +354,8 @@ pub struct SearchAgentsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response message for [Agents.SearchAgents][google.cloud.dialogflow.v2.Agents.SearchAgents].
+/// The response message for
+/// [Agents.SearchAgents][google.cloud.dialogflow.v2.Agents.SearchAgents].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAgentsResponse {
@@ -363,7 +368,8 @@ pub struct SearchAgentsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request message for [Agents.TrainAgent][google.cloud.dialogflow.v2.Agents.TrainAgent].
+/// The request message for
+/// [Agents.TrainAgent][google.cloud.dialogflow.v2.Agents.TrainAgent].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrainAgentRequest {
@@ -372,7 +378,8 @@ pub struct TrainAgentRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
 }
-/// The request message for [Agents.ExportAgent][google.cloud.dialogflow.v2.Agents.ExportAgent].
+/// The request message for
+/// [Agents.ExportAgent][google.cloud.dialogflow.v2.Agents.ExportAgent].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportAgentRequest {
@@ -380,10 +387,10 @@ pub struct ExportAgentRequest {
     /// Format: `projects/<Project ID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. The [Google Cloud Storage](<https://cloud.google.com/storage/docs/>)
-    /// URI to export the agent to.
-    /// The format of this URI must be `gs://<bucket-name>/<object-name>`.
-    /// If left unspecified, the serialized agent is returned inline.
+    /// Required. The [Google Cloud
+    /// Storage](<https://cloud.google.com/storage/docs/>) URI to export the agent
+    /// to. The format of this URI must be `gs://<bucket-name>/<object-name>`. If
+    /// left unspecified, the serialized agent is returned inline.
     ///
     /// Dialogflow performs a write operation for the Cloud Storage object
     /// on the caller's behalf, so your request authentication must
@@ -393,7 +400,8 @@ pub struct ExportAgentRequest {
     #[prost(string, tag = "2")]
     pub agent_uri: ::prost::alloc::string::String,
 }
-/// The response message for [Agents.ExportAgent][google.cloud.dialogflow.v2.Agents.ExportAgent].
+/// The response message for
+/// [Agents.ExportAgent][google.cloud.dialogflow.v2.Agents.ExportAgent].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportAgentResponse {
@@ -416,7 +424,8 @@ pub mod export_agent_response {
         AgentContent(::prost::alloc::vec::Vec<u8>),
     }
 }
-/// The request message for [Agents.ImportAgent][google.cloud.dialogflow.v2.Agents.ImportAgent].
+/// The request message for
+/// [Agents.ImportAgent][google.cloud.dialogflow.v2.Agents.ImportAgent].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAgentRequest {
@@ -449,7 +458,8 @@ pub mod import_agent_request {
         AgentContent(::prost::alloc::vec::Vec<u8>),
     }
 }
-/// The request message for [Agents.RestoreAgent][google.cloud.dialogflow.v2.Agents.RestoreAgent].
+/// The request message for
+/// [Agents.RestoreAgent][google.cloud.dialogflow.v2.Agents.RestoreAgent].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreAgentRequest {
@@ -482,7 +492,8 @@ pub mod restore_agent_request {
         AgentContent(::prost::alloc::vec::Vec<u8>),
     }
 }
-/// The request message for [Agents.GetValidationResult][google.cloud.dialogflow.v2.Agents.GetValidationResult].
+/// The request message for
+/// [Agents.GetValidationResult][google.cloud.dialogflow.v2.Agents.GetValidationResult].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetValidationResultRequest {
@@ -746,7 +757,8 @@ pub mod agents_client {
         ///
         /// - `metadata`: An empty [Struct
         ///   message](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct)
-        /// - `response`: [ExportAgentResponse][google.cloud.dialogflow.v2.ExportAgentResponse]
+        /// - `response`:
+        /// [ExportAgentResponse][google.cloud.dialogflow.v2.ExportAgentResponse]
         pub async fn export_agent(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportAgentRequest>,
@@ -778,11 +790,13 @@ pub mod agents_client {
         ///
         /// Uploads new intents and entity types without deleting the existing ones.
         /// Intents and entity types with the same name are replaced with the new
-        /// versions from [ImportAgentRequest][google.cloud.dialogflow.v2.ImportAgentRequest]. After the import, the imported draft
-        /// agent will be trained automatically (unless disabled in agent settings).
-        /// However, once the import is done, training may not be completed yet. Please
-        /// call [TrainAgent][google.cloud.dialogflow.v2.Agents.TrainAgent] and wait for the operation it returns in order to train
-        /// explicitly.
+        /// versions from
+        /// [ImportAgentRequest][google.cloud.dialogflow.v2.ImportAgentRequest]. After
+        /// the import, the imported draft agent will be trained automatically (unless
+        /// disabled in agent settings). However, once the import is done, training may
+        /// not be completed yet. Please call
+        /// [TrainAgent][google.cloud.dialogflow.v2.Agents.TrainAgent] and wait for the
+        /// operation it returns in order to train explicitly.
         ///
         /// This method is a [long-running
         /// operation](https://cloud.google.com/dialogflow/es/docs/how/long-running-operations).
@@ -832,8 +846,9 @@ pub mod agents_client {
         /// entity types in the older version are deleted. After the restore, the
         /// restored draft agent will be trained automatically (unless disabled in
         /// agent settings). However, once the restore is done, training may not be
-        /// completed yet. Please call [TrainAgent][google.cloud.dialogflow.v2.Agents.TrainAgent] and wait for the operation it
-        /// returns in order to train explicitly.
+        /// completed yet. Please call
+        /// [TrainAgent][google.cloud.dialogflow.v2.Agents.TrainAgent] and wait for the
+        /// operation it returns in order to train explicitly.
         ///
         /// This method is a [long-running
         /// operation](https://cloud.google.com/dialogflow/es/docs/how/long-running-operations).
@@ -978,8 +993,7 @@ pub struct InputAudioConfig {
     #[prost(enumeration = "AudioEncoding", tag = "1")]
     pub audio_encoding: i32,
     /// Required. Sample rate (in Hertz) of the audio content sent in the query.
-    /// Refer to
-    /// [Cloud Speech API
+    /// Refer to [Cloud Speech API
     /// documentation](<https://cloud.google.com/speech-to-text/docs/basics>) for
     /// more details.
     #[prost(int32, tag = "2")]
@@ -991,10 +1005,12 @@ pub struct InputAudioConfig {
     /// the same session do not necessarily need to specify the same language.
     #[prost(string, tag = "3")]
     pub language_code: ::prost::alloc::string::String,
-    /// If `true`, Dialogflow returns [SpeechWordInfo][google.cloud.dialogflow.v2.SpeechWordInfo] in
-    /// [StreamingRecognitionResult][google.cloud.dialogflow.v2.StreamingRecognitionResult] with information about the recognized speech
-    /// words, e.g. start and end time offsets. If false or unspecified, Speech
-    /// doesn't return any word-level information.
+    /// If `true`, Dialogflow returns
+    /// [SpeechWordInfo][google.cloud.dialogflow.v2.SpeechWordInfo] in
+    /// [StreamingRecognitionResult][google.cloud.dialogflow.v2.StreamingRecognitionResult]
+    /// with information about the recognized speech words, e.g. start and end time
+    /// offsets. If false or unspecified, Speech doesn't return any word-level
+    /// information.
     #[prost(bool, tag = "13")]
     pub enable_word_info: bool,
     /// A list of strings containing words and phrases that the speech
@@ -1004,9 +1020,9 @@ pub struct InputAudioConfig {
     /// documentation](<https://cloud.google.com/speech-to-text/docs/basics#phrase-hints>)
     /// for more details.
     ///
-    /// This field is deprecated. Please use [speech_contexts]() instead. If you
-    /// specify both [phrase_hints]() and [speech_contexts](), Dialogflow will
-    /// treat the [phrase_hints]() as a single additional [SpeechContext]().
+    /// This field is deprecated. Please use [`speech_contexts`]() instead. If you
+    /// specify both [`phrase_hints`]() and [`speech_contexts`](), Dialogflow will
+    /// treat the [`phrase_hints`]() as a single additional [`SpeechContext`]().
     #[deprecated]
     #[prost(string, repeated, tag = "4")]
     pub phrase_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -1028,9 +1044,16 @@ pub struct InputAudioConfig {
     /// [Cloud Speech API
     /// documentation](<https://cloud.google.com/speech-to-text/docs/basics#select-model>)
     /// for more details.
+    /// If you specify a model, the following models typically have the best
+    /// performance:
+    ///
+    /// - phone_call (best for Agent Assist and telephony)
+    /// - latest_short (best for Dialogflow non-telephony)
+    /// - command_and_search (best for very short utterances and commands)
     #[prost(string, tag = "7")]
     pub model: ::prost::alloc::string::String,
-    /// Which variant of the [Speech model][google.cloud.dialogflow.v2.InputAudioConfig.model] to use.
+    /// Which variant of the [Speech
+    /// model][google.cloud.dialogflow.v2.InputAudioConfig.model] to use.
     #[prost(enumeration = "SpeechModelVariant", tag = "10")]
     pub model_variant: i32,
     /// If `false` (default), recognition does not cease until the
@@ -1045,12 +1068,17 @@ pub struct InputAudioConfig {
     /// over StreamingDetectIntentRequest.single_utterance.
     #[prost(bool, tag = "8")]
     pub single_utterance: bool,
-    /// Only used in [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent] and
+    /// Only used in
+    /// [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent]
+    /// and
     /// [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2.Participants.StreamingAnalyzeContent].
     /// If `false` and recognition doesn't return any result, trigger
     /// `NO_SPEECH_RECOGNIZED` event to Dialogflow agent.
     #[prost(bool, tag = "14")]
     pub disable_no_speech_recognized_event: bool,
+    /// Enable automatic punctuation option at the speech backend.
+    #[prost(bool, tag = "17")]
+    pub enable_automatic_punctuation: bool,
 }
 /// Description of which voice to use for speech synthesis.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1063,9 +1091,10 @@ pub struct VoiceSelectionParams {
     pub name: ::prost::alloc::string::String,
     /// Optional. The preferred gender of the voice. If not set, the service will
     /// choose a voice based on the other parameters such as language_code and
-    /// [name][google.cloud.dialogflow.v2.VoiceSelectionParams.name]. Note that this is only a preference, not requirement. If a
-    /// voice of the appropriate gender is not available, the synthesizer should
-    /// substitute a voice with a different gender rather than failing the request.
+    /// [name][google.cloud.dialogflow.v2.VoiceSelectionParams.name]. Note that
+    /// this is only a preference, not requirement. If a voice of the appropriate
+    /// gender is not available, the synthesizer should substitute a voice with a
+    /// different gender rather than failing the request.
     #[prost(enumeration = "SsmlVoiceGender", tag = "2")]
     pub ssml_gender: i32,
 }
@@ -1074,9 +1103,9 @@ pub struct VoiceSelectionParams {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynthesizeSpeechConfig {
     /// Optional. Speaking rate/speed, in the range \[0.25, 4.0\]. 1.0 is the normal
-    /// native speed supported by the specific voice. 2.0 is twice as fast, and
-    /// 0.5 is half as fast. If unset(0.0), defaults to the native 1.0 speed. Any
-    /// other values < 0.25 or > 4.0 will return an error.
+    /// native speed supported by the specific voice. 2.0 is twice as fast, and 0.5
+    /// is half as fast. If unset(0.0), defaults to the native 1.0 speed. Any other
+    /// values < 0.25 or > 4.0 will return an error.
     #[prost(double, tag = "1")]
     pub speaking_rate: f64,
     /// Optional. Speaking pitch, in the range \[-20.0, 20.0\]. 20 means increase 20
@@ -1123,19 +1152,133 @@ pub struct OutputAudioConfig {
     #[prost(message, optional, tag = "3")]
     pub synthesize_speech_config: ::core::option::Option<SynthesizeSpeechConfig>,
 }
-/// Configures speech transcription for [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile].
+/// A wrapper of repeated TelephonyDtmf digits.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TelephonyDtmfEvents {
+    /// A sequence of TelephonyDtmf digits.
+    #[prost(enumeration = "TelephonyDtmf", repeated, tag = "1")]
+    pub dtmf_events: ::prost::alloc::vec::Vec<i32>,
+}
+/// Configures speech transcription for
+/// [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechToTextConfig {
     /// The speech model used in speech to text.
     /// `SPEECH_MODEL_VARIANT_UNSPECIFIED`, `USE_BEST_AVAILABLE` will be treated as
-    /// `USE_ENHANCED`. It can be overridden in [AnalyzeContentRequest][google.cloud.dialogflow.v2.AnalyzeContentRequest] and
-    /// [StreamingAnalyzeContentRequest][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest] request.
-    /// If enhanced model variant is specified and an enhanced
-    /// version of the specified model for the language does not exist, then it
-    /// would emit an error.
+    /// `USE_ENHANCED`. It can be overridden in
+    /// [AnalyzeContentRequest][google.cloud.dialogflow.v2.AnalyzeContentRequest]
+    /// and
+    /// [StreamingAnalyzeContentRequest][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest]
+    /// request. If enhanced model variant is specified and an enhanced version of
+    /// the specified model for the language does not exist, then it would emit an
+    /// error.
     #[prost(enumeration = "SpeechModelVariant", tag = "1")]
     pub speech_model_variant: i32,
+    /// Which Speech model to select. Select the model best suited to your domain
+    /// to get best results. If a model is not explicitly specified, then a default
+    /// model is used.
+    /// Refer to
+    /// [Cloud Speech API
+    /// documentation](<https://cloud.google.com/speech-to-text/docs/basics#select-model>)
+    /// for more details.
+    #[prost(string, tag = "2")]
+    pub model: ::prost::alloc::string::String,
+    /// Use timeout based endpointing, interpreting endpointer sensitivy as
+    /// seconds of timeout value.
+    #[prost(bool, tag = "11")]
+    pub use_timeout_based_endpointing: bool,
+}
+/// [DTMF](<https://en.wikipedia.org/wiki/Dual-tone_multi-frequency_signaling>)
+/// digit in Telephony Gateway.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum TelephonyDtmf {
+    /// Not specified. This value may be used to indicate an absent digit.
+    Unspecified = 0,
+    /// Number: '1'.
+    DtmfOne = 1,
+    /// Number: '2'.
+    DtmfTwo = 2,
+    /// Number: '3'.
+    DtmfThree = 3,
+    /// Number: '4'.
+    DtmfFour = 4,
+    /// Number: '5'.
+    DtmfFive = 5,
+    /// Number: '6'.
+    DtmfSix = 6,
+    /// Number: '7'.
+    DtmfSeven = 7,
+    /// Number: '8'.
+    DtmfEight = 8,
+    /// Number: '9'.
+    DtmfNine = 9,
+    /// Number: '0'.
+    DtmfZero = 10,
+    /// Letter: 'A'.
+    DtmfA = 11,
+    /// Letter: 'B'.
+    DtmfB = 12,
+    /// Letter: 'C'.
+    DtmfC = 13,
+    /// Letter: 'D'.
+    DtmfD = 14,
+    /// Asterisk/star: '*'.
+    DtmfStar = 15,
+    /// Pound/diamond/hash/square/gate/octothorpe: '#'.
+    DtmfPound = 16,
+}
+impl TelephonyDtmf {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            TelephonyDtmf::Unspecified => "TELEPHONY_DTMF_UNSPECIFIED",
+            TelephonyDtmf::DtmfOne => "DTMF_ONE",
+            TelephonyDtmf::DtmfTwo => "DTMF_TWO",
+            TelephonyDtmf::DtmfThree => "DTMF_THREE",
+            TelephonyDtmf::DtmfFour => "DTMF_FOUR",
+            TelephonyDtmf::DtmfFive => "DTMF_FIVE",
+            TelephonyDtmf::DtmfSix => "DTMF_SIX",
+            TelephonyDtmf::DtmfSeven => "DTMF_SEVEN",
+            TelephonyDtmf::DtmfEight => "DTMF_EIGHT",
+            TelephonyDtmf::DtmfNine => "DTMF_NINE",
+            TelephonyDtmf::DtmfZero => "DTMF_ZERO",
+            TelephonyDtmf::DtmfA => "DTMF_A",
+            TelephonyDtmf::DtmfB => "DTMF_B",
+            TelephonyDtmf::DtmfC => "DTMF_C",
+            TelephonyDtmf::DtmfD => "DTMF_D",
+            TelephonyDtmf::DtmfStar => "DTMF_STAR",
+            TelephonyDtmf::DtmfPound => "DTMF_POUND",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TELEPHONY_DTMF_UNSPECIFIED" => Some(Self::Unspecified),
+            "DTMF_ONE" => Some(Self::DtmfOne),
+            "DTMF_TWO" => Some(Self::DtmfTwo),
+            "DTMF_THREE" => Some(Self::DtmfThree),
+            "DTMF_FOUR" => Some(Self::DtmfFour),
+            "DTMF_FIVE" => Some(Self::DtmfFive),
+            "DTMF_SIX" => Some(Self::DtmfSix),
+            "DTMF_SEVEN" => Some(Self::DtmfSeven),
+            "DTMF_EIGHT" => Some(Self::DtmfEight),
+            "DTMF_NINE" => Some(Self::DtmfNine),
+            "DTMF_ZERO" => Some(Self::DtmfZero),
+            "DTMF_A" => Some(Self::DtmfA),
+            "DTMF_B" => Some(Self::DtmfB),
+            "DTMF_C" => Some(Self::DtmfC),
+            "DTMF_D" => Some(Self::DtmfD),
+            "DTMF_STAR" => Some(Self::DtmfStar),
+            "DTMF_POUND" => Some(Self::DtmfPound),
+            _ => None,
+        }
+    }
 }
 /// Audio encoding of the audio content sent in the conversational query request.
 /// Refer to the
@@ -1212,7 +1355,8 @@ impl AudioEncoding {
         }
     }
 }
-/// Variant of the specified [Speech model][google.cloud.dialogflow.v2.InputAudioConfig.model] to use.
+/// Variant of the specified [Speech
+/// model][google.cloud.dialogflow.v2.InputAudioConfig.model] to use.
 ///
 /// See the [Cloud Speech
 /// documentation](<https://cloud.google.com/speech-to-text/docs/enhanced-models>)
@@ -1240,8 +1384,8 @@ pub enum SpeechModelVariant {
     /// Use an enhanced model variant:
     ///
     /// * If an enhanced variant does not exist for the given
-    ///    [model][google.cloud.dialogflow.v2.InputAudioConfig.model] and request language, Dialogflow falls
-    ///    back to the standard variant.
+    ///    [model][google.cloud.dialogflow.v2.InputAudioConfig.model] and request
+    ///    language, Dialogflow falls back to the standard variant.
     ///
     ///    The [Cloud Speech
     ///    documentation](<https://cloud.google.com/speech-to-text/docs/enhanced-models>)
@@ -1389,7 +1533,7 @@ pub struct Context {
     /// ID>/sessions/<Session ID>/contexts/<Context ID>`.
     ///
     /// The `Context ID` is always converted to lowercase, may only contain
-    /// characters in a-zA-Z0-9_-% and may be at most 250 bytes long.
+    /// characters in `a-zA-Z0-9_-%` and may be at most 250 bytes long.
     ///
     /// If `Environment ID` is not specified, we assume default 'draft'
     /// environment. If `User ID` is not specified, we assume default '-' user.
@@ -1414,20 +1558,19 @@ pub struct Context {
     /// map, associative array, symbol table, dictionary, or JSON object
     /// composed of a collection of (MapKey, MapValue) pairs:
     ///
-    /// -   MapKey type: string
-    /// -   MapKey value: parameter name
-    /// -   MapValue type:
-    ///      -   If parameter's entity type is a composite entity: map
-    ///      -   Else: depending on parameter value type, could be one of string,
-    ///          number, boolean, null, list or map
-    /// -   MapValue value:
-    ///      -   If parameter's entity type is a composite entity:
-    ///          map from composite entity property names to property values
-    ///      -   Else: parameter value
+    /// * MapKey type: string
+    /// * MapKey value: parameter name
+    /// * MapValue type: If parameter's entity type is a composite entity then use
+    /// map, otherwise, depending on the parameter value type, it could be one of
+    /// string, number, boolean, null, list or map.
+    /// * MapValue value: If parameter's entity type is a composite entity then use
+    /// map from composite entity property names to property values, otherwise,
+    /// use parameter value.
     #[prost(message, optional, tag = "3")]
     pub parameters: ::core::option::Option<::prost_types::Struct>,
 }
-/// The request message for [Contexts.ListContexts][google.cloud.dialogflow.v2.Contexts.ListContexts].
+/// The request message for
+/// [Contexts.ListContexts][google.cloud.dialogflow.v2.Contexts.ListContexts].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListContextsRequest {
@@ -1447,7 +1590,8 @@ pub struct ListContextsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response message for [Contexts.ListContexts][google.cloud.dialogflow.v2.Contexts.ListContexts].
+/// The response message for
+/// [Contexts.ListContexts][google.cloud.dialogflow.v2.Contexts.ListContexts].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListContextsResponse {
@@ -1460,7 +1604,8 @@ pub struct ListContextsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request message for [Contexts.GetContext][google.cloud.dialogflow.v2.Contexts.GetContext].
+/// The request message for
+/// [Contexts.GetContext][google.cloud.dialogflow.v2.Contexts.GetContext].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetContextRequest {
@@ -1473,7 +1618,8 @@ pub struct GetContextRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [Contexts.CreateContext][google.cloud.dialogflow.v2.Contexts.CreateContext].
+/// The request message for
+/// [Contexts.CreateContext][google.cloud.dialogflow.v2.Contexts.CreateContext].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateContextRequest {
@@ -1489,7 +1635,8 @@ pub struct CreateContextRequest {
     #[prost(message, optional, tag = "2")]
     pub context: ::core::option::Option<Context>,
 }
-/// The request message for [Contexts.UpdateContext][google.cloud.dialogflow.v2.Contexts.UpdateContext].
+/// The request message for
+/// [Contexts.UpdateContext][google.cloud.dialogflow.v2.Contexts.UpdateContext].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateContextRequest {
@@ -1500,7 +1647,8 @@ pub struct UpdateContextRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request message for [Contexts.DeleteContext][google.cloud.dialogflow.v2.Contexts.DeleteContext].
+/// The request message for
+/// [Contexts.DeleteContext][google.cloud.dialogflow.v2.Contexts.DeleteContext].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteContextRequest {
@@ -1513,7 +1661,8 @@ pub struct DeleteContextRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [Contexts.DeleteAllContexts][google.cloud.dialogflow.v2.Contexts.DeleteAllContexts].
+/// The request message for
+/// [Contexts.DeleteAllContexts][google.cloud.dialogflow.v2.Contexts.DeleteAllContexts].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAllContextsRequest {
@@ -1797,7 +1946,9 @@ pub mod contexts_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Intent {
     /// Optional. The unique identifier of this intent.
-    /// Required for [Intents.UpdateIntent][google.cloud.dialogflow.v2.Intents.UpdateIntent] and [Intents.BatchUpdateIntents][google.cloud.dialogflow.v2.Intents.BatchUpdateIntents]
+    /// Required for
+    /// [Intents.UpdateIntent][google.cloud.dialogflow.v2.Intents.UpdateIntent] and
+    /// [Intents.BatchUpdateIntents][google.cloud.dialogflow.v2.Intents.BatchUpdateIntents]
     /// methods.
     /// Format: `projects/<Project ID>/agent/intents/<Intent ID>`.
     #[prost(string, tag = "1")]
@@ -1894,16 +2045,18 @@ pub struct Intent {
     pub root_followup_intent_name: ::prost::alloc::string::String,
     /// Read-only after creation. The unique identifier of the parent intent in the
     /// chain of followup intents. You can set this field when creating an intent,
-    /// for example with [CreateIntent][google.cloud.dialogflow.v2.Intents.CreateIntent] or
-    /// [BatchUpdateIntents][google.cloud.dialogflow.v2.Intents.BatchUpdateIntents], in order to make this
-    /// intent a followup intent.
+    /// for example with
+    /// [CreateIntent][google.cloud.dialogflow.v2.Intents.CreateIntent] or
+    /// [BatchUpdateIntents][google.cloud.dialogflow.v2.Intents.BatchUpdateIntents],
+    /// in order to make this intent a followup intent.
     ///
     /// It identifies the parent followup intent.
     /// Format: `projects/<Project ID>/agent/intents/<Intent ID>`.
     #[prost(string, tag = "17")]
     pub parent_followup_intent_name: ::prost::alloc::string::String,
-    /// Output only. Read-only. Information about all followup intents that have this intent as
-    /// a direct or indirect parent. We populate this field only in the output.
+    /// Output only. Read-only. Information about all followup intents that have
+    /// this intent as a direct or indirect parent. We populate this field only in
+    /// the output.
     #[prost(message, repeated, tag = "18")]
     pub followup_intent_info: ::prost::alloc::vec::Vec<intent::FollowupIntentInfo>,
 }
@@ -1929,7 +2082,9 @@ pub mod intent {
         /// so the training phrase is well formatted when the parts are concatenated.
         ///
         /// If the training phrase does not need to be annotated with parameters,
-        /// you just need a single part with only the [Part.text][google.cloud.dialogflow.v2.Intent.TrainingPhrase.Part.text] field set.
+        /// you just need a single part with only the
+        /// [Part.text][google.cloud.dialogflow.v2.Intent.TrainingPhrase.Part.text]
+        /// field set.
         ///
         /// If you want to annotate the training phrase, you must create multiple
         /// parts, where the fields of each part are populated in one of two ways:
@@ -2611,7 +2766,8 @@ pub mod intent {
             #[prost(message, repeated, tag = "6")]
             pub buttons: ::prost::alloc::vec::Vec<basic_card::Button>,
         }
-        /// Column properties for [TableCard][google.cloud.dialogflow.v2.Intent.Message.TableCard].
+        /// Column properties for
+        /// [TableCard][google.cloud.dialogflow.v2.Intent.Message.TableCard].
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ColumnProperties {
@@ -2685,7 +2841,8 @@ pub mod intent {
             #[prost(bool, tag = "2")]
             pub divider_after: bool,
         }
-        /// Cell of [TableCardRow][google.cloud.dialogflow.v2.Intent.Message.TableCardRow].
+        /// Cell of
+        /// [TableCardRow][google.cloud.dialogflow.v2.Intent.Message.TableCardRow].
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TableCardCell {
@@ -2877,7 +3034,8 @@ pub mod intent {
         }
     }
 }
-/// The request message for [Intents.ListIntents][google.cloud.dialogflow.v2.Intents.ListIntents].
+/// The request message for
+/// [Intents.ListIntents][google.cloud.dialogflow.v2.Intents.ListIntents].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIntentsRequest {
@@ -2911,7 +3069,8 @@ pub struct ListIntentsRequest {
     #[prost(string, tag = "5")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response message for [Intents.ListIntents][google.cloud.dialogflow.v2.Intents.ListIntents].
+/// The response message for
+/// [Intents.ListIntents][google.cloud.dialogflow.v2.Intents.ListIntents].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIntentsResponse {
@@ -2924,7 +3083,8 @@ pub struct ListIntentsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request message for [Intents.GetIntent][google.cloud.dialogflow.v2.Intents.GetIntent].
+/// The request message for
+/// [Intents.GetIntent][google.cloud.dialogflow.v2.Intents.GetIntent].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIntentRequest {
@@ -2943,7 +3103,8 @@ pub struct GetIntentRequest {
     #[prost(enumeration = "IntentView", tag = "3")]
     pub intent_view: i32,
 }
-/// The request message for [Intents.CreateIntent][google.cloud.dialogflow.v2.Intents.CreateIntent].
+/// The request message for
+/// [Intents.CreateIntent][google.cloud.dialogflow.v2.Intents.CreateIntent].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIntentRequest {
@@ -2965,7 +3126,8 @@ pub struct CreateIntentRequest {
     #[prost(enumeration = "IntentView", tag = "4")]
     pub intent_view: i32,
 }
-/// The request message for [Intents.UpdateIntent][google.cloud.dialogflow.v2.Intents.UpdateIntent].
+/// The request message for
+/// [Intents.UpdateIntent][google.cloud.dialogflow.v2.Intents.UpdateIntent].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateIntentRequest {
@@ -2986,7 +3148,8 @@ pub struct UpdateIntentRequest {
     #[prost(enumeration = "IntentView", tag = "4")]
     pub intent_view: i32,
 }
-/// The request message for [Intents.DeleteIntent][google.cloud.dialogflow.v2.Intents.DeleteIntent].
+/// The request message for
+/// [Intents.DeleteIntent][google.cloud.dialogflow.v2.Intents.DeleteIntent].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteIntentRequest {
@@ -3036,7 +3199,8 @@ pub mod batch_update_intents_request {
         IntentBatchInline(super::IntentBatch),
     }
 }
-/// The response message for [Intents.BatchUpdateIntents][google.cloud.dialogflow.v2.Intents.BatchUpdateIntents].
+/// The response message for
+/// [Intents.BatchUpdateIntents][google.cloud.dialogflow.v2.Intents.BatchUpdateIntents].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateIntentsResponse {
@@ -3044,7 +3208,8 @@ pub struct BatchUpdateIntentsResponse {
     #[prost(message, repeated, tag = "1")]
     pub intents: ::prost::alloc::vec::Vec<Intent>,
 }
-/// The request message for [Intents.BatchDeleteIntents][google.cloud.dialogflow.v2.Intents.BatchDeleteIntents].
+/// The request message for
+/// [Intents.BatchDeleteIntents][google.cloud.dialogflow.v2.Intents.BatchDeleteIntents].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteIntentsRequest {
@@ -3330,7 +3495,8 @@ pub mod intents_client {
         ///
         /// - `metadata`: An empty [Struct
         ///   message](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct)
-        /// - `response`: [BatchUpdateIntentsResponse][google.cloud.dialogflow.v2.BatchUpdateIntentsResponse]
+        /// - `response`:
+        /// [BatchUpdateIntentsResponse][google.cloud.dialogflow.v2.BatchUpdateIntentsResponse]
         ///
         /// Note: You should always train an agent prior to sending it queries. See the
         /// [training
@@ -3427,9 +3593,12 @@ pub mod intents_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityType {
     /// The unique identifier of the entity type.
-    /// Required for [EntityTypes.UpdateEntityType][google.cloud.dialogflow.v2.EntityTypes.UpdateEntityType] and
-    /// [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2.EntityTypes.BatchUpdateEntityTypes] methods.
-    /// Format: `projects/<Project ID>/agent/entityTypes/<Entity Type ID>`.
+    /// Required for
+    /// [EntityTypes.UpdateEntityType][google.cloud.dialogflow.v2.EntityTypes.UpdateEntityType]
+    /// and
+    /// [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2.EntityTypes.BatchUpdateEntityTypes]
+    /// methods. Format: `projects/<Project ID>/agent/entityTypes/<Entity Type
+    /// ID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The name of the entity type.
@@ -3573,7 +3742,8 @@ pub mod entity_type {
         }
     }
 }
-/// The request message for [EntityTypes.ListEntityTypes][google.cloud.dialogflow.v2.EntityTypes.ListEntityTypes].
+/// The request message for
+/// [EntityTypes.ListEntityTypes][google.cloud.dialogflow.v2.EntityTypes.ListEntityTypes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntityTypesRequest {
@@ -3596,7 +3766,8 @@ pub struct ListEntityTypesRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response message for [EntityTypes.ListEntityTypes][google.cloud.dialogflow.v2.EntityTypes.ListEntityTypes].
+/// The response message for
+/// [EntityTypes.ListEntityTypes][google.cloud.dialogflow.v2.EntityTypes.ListEntityTypes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntityTypesResponse {
@@ -3609,7 +3780,8 @@ pub struct ListEntityTypesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request message for [EntityTypes.GetEntityType][google.cloud.dialogflow.v2.EntityTypes.GetEntityType].
+/// The request message for
+/// [EntityTypes.GetEntityType][google.cloud.dialogflow.v2.EntityTypes.GetEntityType].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEntityTypeRequest {
@@ -3625,7 +3797,8 @@ pub struct GetEntityTypeRequest {
     #[prost(string, tag = "2")]
     pub language_code: ::prost::alloc::string::String,
 }
-/// The request message for [EntityTypes.CreateEntityType][google.cloud.dialogflow.v2.EntityTypes.CreateEntityType].
+/// The request message for
+/// [EntityTypes.CreateEntityType][google.cloud.dialogflow.v2.EntityTypes.CreateEntityType].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntityTypeRequest {
@@ -3644,7 +3817,8 @@ pub struct CreateEntityTypeRequest {
     #[prost(string, tag = "3")]
     pub language_code: ::prost::alloc::string::String,
 }
-/// The request message for [EntityTypes.UpdateEntityType][google.cloud.dialogflow.v2.EntityTypes.UpdateEntityType].
+/// The request message for
+/// [EntityTypes.UpdateEntityType][google.cloud.dialogflow.v2.EntityTypes.UpdateEntityType].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEntityTypeRequest {
@@ -3662,7 +3836,8 @@ pub struct UpdateEntityTypeRequest {
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request message for [EntityTypes.DeleteEntityType][google.cloud.dialogflow.v2.EntityTypes.DeleteEntityType].
+/// The request message for
+/// [EntityTypes.DeleteEntityType][google.cloud.dialogflow.v2.EntityTypes.DeleteEntityType].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEntityTypeRequest {
@@ -3671,7 +3846,8 @@ pub struct DeleteEntityTypeRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2.EntityTypes.BatchUpdateEntityTypes].
+/// The request message for
+/// [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2.EntityTypes.BatchUpdateEntityTypes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateEntityTypesRequest {
@@ -3722,7 +3898,8 @@ pub mod batch_update_entity_types_request {
         EntityTypeBatchInline(super::EntityTypeBatch),
     }
 }
-/// The response message for [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2.EntityTypes.BatchUpdateEntityTypes].
+/// The response message for
+/// [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2.EntityTypes.BatchUpdateEntityTypes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateEntityTypesResponse {
@@ -3730,7 +3907,8 @@ pub struct BatchUpdateEntityTypesResponse {
     #[prost(message, repeated, tag = "1")]
     pub entity_types: ::prost::alloc::vec::Vec<EntityType>,
 }
-/// The request message for [EntityTypes.BatchDeleteEntityTypes][google.cloud.dialogflow.v2.EntityTypes.BatchDeleteEntityTypes].
+/// The request message for
+/// [EntityTypes.BatchDeleteEntityTypes][google.cloud.dialogflow.v2.EntityTypes.BatchDeleteEntityTypes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteEntityTypesRequest {
@@ -3743,7 +3921,8 @@ pub struct BatchDeleteEntityTypesRequest {
     #[prost(string, repeated, tag = "2")]
     pub entity_type_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// The request message for [EntityTypes.BatchCreateEntities][google.cloud.dialogflow.v2.EntityTypes.BatchCreateEntities].
+/// The request message for
+/// [EntityTypes.BatchCreateEntities][google.cloud.dialogflow.v2.EntityTypes.BatchCreateEntities].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateEntitiesRequest {
@@ -3762,7 +3941,8 @@ pub struct BatchCreateEntitiesRequest {
     #[prost(string, tag = "3")]
     pub language_code: ::prost::alloc::string::String,
 }
-/// The request message for [EntityTypes.BatchUpdateEntities][google.cloud.dialogflow.v2.EntityTypes.BatchUpdateEntities].
+/// The request message for
+/// [EntityTypes.BatchUpdateEntities][google.cloud.dialogflow.v2.EntityTypes.BatchUpdateEntities].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateEntitiesRequest {
@@ -3784,7 +3964,8 @@ pub struct BatchUpdateEntitiesRequest {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request message for [EntityTypes.BatchDeleteEntities][google.cloud.dialogflow.v2.EntityTypes.BatchDeleteEntities].
+/// The request message for
+/// [EntityTypes.BatchDeleteEntities][google.cloud.dialogflow.v2.EntityTypes.BatchDeleteEntities].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteEntitiesRequest {
@@ -4062,7 +4243,8 @@ pub mod entity_types_client {
         ///
         /// - `metadata`: An empty [Struct
         ///   message](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct)
-        /// - `response`: [BatchUpdateEntityTypesResponse][google.cloud.dialogflow.v2.BatchUpdateEntityTypesResponse]
+        /// - `response`:
+        /// [BatchUpdateEntityTypesResponse][google.cloud.dialogflow.v2.BatchUpdateEntityTypesResponse]
         ///
         /// Note: You should always train an agent prior to sending it queries. See the
         /// [training
@@ -4338,8 +4520,9 @@ pub mod session_entity_type {
         /// `GetSessionEntityType`, `CreateSessionEntityType` and
         /// `UpdateSessionEntityType` only return the additional entities added in
         /// this session entity type. If you want to get the supplemented list,
-        /// please call [EntityTypes.GetEntityType][google.cloud.dialogflow.v2.EntityTypes.GetEntityType] on the custom entity type
-        /// and merge.
+        /// please call
+        /// [EntityTypes.GetEntityType][google.cloud.dialogflow.v2.EntityTypes.GetEntityType]
+        /// on the custom entity type and merge.
         Supplement = 2,
     }
     impl EntityOverrideMode {
@@ -4365,7 +4548,8 @@ pub mod session_entity_type {
         }
     }
 }
-/// The request message for [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.v2.SessionEntityTypes.ListSessionEntityTypes].
+/// The request message for
+/// [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.v2.SessionEntityTypes.ListSessionEntityTypes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSessionEntityTypesRequest {
@@ -4385,7 +4569,8 @@ pub struct ListSessionEntityTypesRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response message for [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.v2.SessionEntityTypes.ListSessionEntityTypes].
+/// The response message for
+/// [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.v2.SessionEntityTypes.ListSessionEntityTypes].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSessionEntityTypesResponse {
@@ -4398,7 +4583,8 @@ pub struct ListSessionEntityTypesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request message for [SessionEntityTypes.GetSessionEntityType][google.cloud.dialogflow.v2.SessionEntityTypes.GetSessionEntityType].
+/// The request message for
+/// [SessionEntityTypes.GetSessionEntityType][google.cloud.dialogflow.v2.SessionEntityTypes.GetSessionEntityType].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSessionEntityTypeRequest {
@@ -4412,7 +4598,8 @@ pub struct GetSessionEntityTypeRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [SessionEntityTypes.CreateSessionEntityType][google.cloud.dialogflow.v2.SessionEntityTypes.CreateSessionEntityType].
+/// The request message for
+/// [SessionEntityTypes.CreateSessionEntityType][google.cloud.dialogflow.v2.SessionEntityTypes.CreateSessionEntityType].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSessionEntityTypeRequest {
@@ -4428,7 +4615,8 @@ pub struct CreateSessionEntityTypeRequest {
     #[prost(message, optional, tag = "2")]
     pub session_entity_type: ::core::option::Option<SessionEntityType>,
 }
-/// The request message for [SessionEntityTypes.UpdateSessionEntityType][google.cloud.dialogflow.v2.SessionEntityTypes.UpdateSessionEntityType].
+/// The request message for
+/// [SessionEntityTypes.UpdateSessionEntityType][google.cloud.dialogflow.v2.SessionEntityTypes.UpdateSessionEntityType].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSessionEntityTypeRequest {
@@ -4439,7 +4627,8 @@ pub struct UpdateSessionEntityTypeRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request message for [SessionEntityTypes.DeleteSessionEntityType][google.cloud.dialogflow.v2.SessionEntityTypes.DeleteSessionEntityType].
+/// The request message for
+/// [SessionEntityTypes.DeleteSessionEntityType][google.cloud.dialogflow.v2.SessionEntityTypes.DeleteSessionEntityType].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSessionEntityTypeRequest {
@@ -4458,7 +4647,8 @@ pub mod session_entity_types_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Service for managing [SessionEntityTypes][google.cloud.dialogflow.v2.SessionEntityType].
+    /// Service for managing
+    /// [SessionEntityTypes][google.cloud.dialogflow.v2.SessionEntityType].
     #[derive(Debug, Clone)]
     pub struct SessionEntityTypesClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -4744,12 +4934,12 @@ pub struct DetectIntentRequest {
     pub query_params: ::core::option::Option<QueryParameters>,
     /// Required. The input specification. It can be set to:
     ///
-    /// 1.  an audio config
-    ///      which instructs the speech recognizer how to process the speech audio,
+    /// 1. an audio config which instructs the speech recognizer how to process
+    /// the speech audio,
     ///
-    /// 2.  a conversational query in the form of text, or
+    /// 2. a conversational query in the form of text, or
     ///
-    /// 3.  an event that specifies which intent to trigger.
+    /// 3. an event that specifies which intent to trigger.
     #[prost(message, optional, tag = "3")]
     pub query_input: ::core::option::Option<QueryInput>,
     /// Instructs the speech synthesizer how to generate the output
@@ -4757,12 +4947,14 @@ pub struct DetectIntentRequest {
     /// configured, no output audio is generated.
     #[prost(message, optional, tag = "4")]
     pub output_audio_config: ::core::option::Option<OutputAudioConfig>,
-    /// Mask for [output_audio_config][google.cloud.dialogflow.v2.DetectIntentRequest.output_audio_config] indicating which settings in this
-    /// request-level config should override speech synthesizer settings defined at
-    /// agent-level.
+    /// Mask for
+    /// [output_audio_config][google.cloud.dialogflow.v2.DetectIntentRequest.output_audio_config]
+    /// indicating which settings in this request-level config should override
+    /// speech synthesizer settings defined at agent-level.
     ///
-    /// If unspecified or empty, [output_audio_config][google.cloud.dialogflow.v2.DetectIntentRequest.output_audio_config] replaces the agent-level
-    /// config in its entirety.
+    /// If unspecified or empty,
+    /// [output_audio_config][google.cloud.dialogflow.v2.DetectIntentRequest.output_audio_config]
+    /// replaces the agent-level config in its entirety.
     #[prost(message, optional, tag = "7")]
     pub output_audio_config_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The natural language speech audio to be processed. This field
@@ -4855,15 +5047,22 @@ pub struct QueryParameters {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// The platform of the virtual agent response messages.
+    ///
+    /// If not empty, only emits messages from this platform in the response.
+    /// Valid values are the enum names of
+    /// [platform][google.cloud.dialogflow.v2.Intent.Message.platform].
+    #[prost(string, tag = "18")]
+    pub platform: ::prost::alloc::string::String,
 }
 /// Represents the query input. It can contain either:
 ///
-/// 1.  An audio config which
-///      instructs the speech recognizer how to process the speech audio.
+/// 1. An audio config which instructs the speech recognizer how to process the
+/// speech audio.
 ///
-/// 2.  A conversational query in the form of text,.
+/// 2. A conversational query in the form of text.
 ///
-/// 3.  An event that specifies which intent to trigger.
+/// 3. An event that specifies which intent to trigger.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryInput {
@@ -4930,16 +5129,14 @@ pub struct QueryResult {
     /// map, associative array, symbol table, dictionary, or JSON object
     /// composed of a collection of (MapKey, MapValue) pairs:
     ///
-    /// -   MapKey type: string
-    /// -   MapKey value: parameter name
-    /// -   MapValue type:
-    ///      -   If parameter's entity type is a composite entity: map
-    ///      -   Else: depending on parameter value type, could be one of string,
-    ///          number, boolean, null, list or map
-    /// -   MapValue value:
-    ///      -   If parameter's entity type is a composite entity:
-    ///          map from composite entity property names to property values
-    ///      -   Else: parameter value
+    /// * MapKey type: string
+    /// * MapKey value: parameter name
+    /// * MapValue type: If parameter's entity type is a composite entity then use
+    /// map, otherwise, depending on the parameter value type, it could be one of
+    /// string, number, boolean, null, list or map.
+    /// * MapValue value: If parameter's entity type is a composite entity then use
+    /// map from composite entity property names to property values, otherwise,
+    /// use parameter value.
     #[prost(message, optional, tag = "4")]
     pub parameters: ::core::option::Option<::prost_types::Struct>,
     /// This field is set to:
@@ -5006,25 +5203,29 @@ pub struct QueryResult {
     pub sentiment_analysis_result: ::core::option::Option<SentimentAnalysisResult>,
 }
 /// The top-level message sent by the client to the
-/// [Sessions.StreamingDetectIntent][google.cloud.dialogflow.v2.Sessions.StreamingDetectIntent] method.
+/// [Sessions.StreamingDetectIntent][google.cloud.dialogflow.v2.Sessions.StreamingDetectIntent]
+/// method.
 ///
 /// Multiple request messages should be sent in order:
 ///
 /// 1.  The first message must contain
 /// [session][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.session],
-///      [query_input][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_input] plus optionally
-///      [query_params][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_params]. If the client
-///      wants to receive an audio response, it should also contain
+///      [query_input][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_input]
+///      plus optionally
+///      [query_params][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_params].
+///      If the client wants to receive an audio response, it should also contain
 ///      [output_audio_config][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.output_audio_config].
 ///      The message must not contain
 ///      [input_audio][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.input_audio].
-/// 2.  If [query_input][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_input] was set to
-///      [query_input.audio_config][google.cloud.dialogflow.v2.InputAudioConfig], all subsequent
-///      messages must contain
-///      [input_audio][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.input_audio] to continue with
-///      Speech recognition.
-///      If you decide to rather detect an intent from text input after you
-///      already started Speech recognition, please send a message with
+/// 2.  If
+/// [query_input][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_input]
+/// was set to
+///      [query_input.audio_config][google.cloud.dialogflow.v2.InputAudioConfig],
+///      all subsequent messages must contain
+///      [input_audio][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.input_audio]
+///      to continue with Speech recognition. If you decide to rather detect an
+///      intent from text input after you already started Speech recognition,
+///      please send a message with
 ///      [query_input.text][google.cloud.dialogflow.v2.QueryInput.text].
 ///
 ///      However, note that:
@@ -5062,22 +5263,23 @@ pub struct StreamingDetectIntentRequest {
     pub query_params: ::core::option::Option<QueryParameters>,
     /// Required. The input specification. It can be set to:
     ///
-    /// 1.  an audio config which instructs the speech recognizer how to process
-    ///      the speech audio,
+    /// 1. an audio config which instructs the speech recognizer how to process
+    /// the speech audio,
     ///
-    /// 2.  a conversational query in the form of text, or
+    /// 2. a conversational query in the form of text, or
     ///
-    /// 3.  an event that specifies which intent to trigger.
+    /// 3. an event that specifies which intent to trigger.
     #[prost(message, optional, tag = "3")]
     pub query_input: ::core::option::Option<QueryInput>,
-    /// Please use [InputAudioConfig.single_utterance][google.cloud.dialogflow.v2.InputAudioConfig.single_utterance] instead.
-    /// If `false` (default), recognition does not cease until
-    /// the client closes the stream. If `true`, the recognizer will detect a
-    /// single spoken utterance in input audio. Recognition ceases when it detects
-    /// the audio's voice has stopped or paused. In this case, once a detected
-    /// intent is received, the client should close the stream and start a new
-    /// request with a new stream as needed.
-    /// This setting is ignored when `query_input` is a piece of text or an event.
+    /// Please use
+    /// [InputAudioConfig.single_utterance][google.cloud.dialogflow.v2.InputAudioConfig.single_utterance]
+    /// instead. If `false` (default), recognition does not cease until the client
+    /// closes the stream. If `true`, the recognizer will detect a single spoken
+    /// utterance in input audio. Recognition ceases when it detects the audio's
+    /// voice has stopped or paused. In this case, once a detected intent is
+    /// received, the client should close the stream and start a new request with a
+    /// new stream as needed. This setting is ignored when `query_input` is a piece
+    /// of text or an event.
     #[deprecated]
     #[prost(bool, tag = "4")]
     pub single_utterance: bool,
@@ -5086,12 +5288,14 @@ pub struct StreamingDetectIntentRequest {
     /// configured, no output audio is generated.
     #[prost(message, optional, tag = "5")]
     pub output_audio_config: ::core::option::Option<OutputAudioConfig>,
-    /// Mask for [output_audio_config][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.output_audio_config] indicating which settings in this
-    /// request-level config should override speech synthesizer settings defined at
-    /// agent-level.
+    /// Mask for
+    /// [output_audio_config][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.output_audio_config]
+    /// indicating which settings in this request-level config should override
+    /// speech synthesizer settings defined at agent-level.
     ///
-    /// If unspecified or empty, [output_audio_config][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.output_audio_config] replaces the agent-level
-    /// config in its entirety.
+    /// If unspecified or empty,
+    /// [output_audio_config][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.output_audio_config]
+    /// replaces the agent-level config in its entirety.
     #[prost(message, optional, tag = "7")]
     pub output_audio_config_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The input audio content to be recognized. Must be sent if
@@ -5099,6 +5303,87 @@ pub struct StreamingDetectIntentRequest {
     /// over all streaming messages must not exceed 1 minute.
     #[prost(bytes = "vec", tag = "6")]
     pub input_audio: ::prost::alloc::vec::Vec<u8>,
+    /// if true, `StreamingDetectIntentResponse.debugging_info` will get populated.
+    #[prost(bool, tag = "8")]
+    pub enable_debugging_info: bool,
+}
+/// Cloud conversation info for easier debugging.
+/// It will get populated in `StreamingDetectIntentResponse` or
+/// `StreamingAnalyzeContentResponse` when the flag `enable_debugging_info` is
+/// set to true in corresponding requests.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudConversationDebuggingInfo {
+    /// Number of input audio data chunks in streaming requests.
+    #[prost(int32, tag = "1")]
+    pub audio_data_chunks: i32,
+    /// Time offset of the end of speech utterance relative to the
+    /// beginning of the first audio chunk.
+    #[prost(message, optional, tag = "2")]
+    pub result_end_time_offset: ::core::option::Option<::prost_types::Duration>,
+    /// Duration of first audio chunk.
+    #[prost(message, optional, tag = "3")]
+    pub first_audio_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Whether client used single utterance mode.
+    #[prost(bool, tag = "5")]
+    pub single_utterance: bool,
+    /// Time offsets of the speech partial results relative to the beginning of
+    /// the stream.
+    #[prost(message, repeated, tag = "6")]
+    pub speech_partial_results_end_times: ::prost::alloc::vec::Vec<
+        ::prost_types::Duration,
+    >,
+    /// Time offsets of the speech final results (is_final=true) relative to the
+    /// beginning of the stream.
+    #[prost(message, repeated, tag = "7")]
+    pub speech_final_results_end_times: ::prost::alloc::vec::Vec<
+        ::prost_types::Duration,
+    >,
+    /// Total number of partial responses.
+    #[prost(int32, tag = "8")]
+    pub partial_responses: i32,
+    /// Time offset of Speaker ID stream close time relative to the Speech stream
+    /// close time in milliseconds. Only meaningful for conversations involving
+    /// passive verification.
+    #[prost(int32, tag = "9")]
+    pub speaker_id_passive_latency_ms_offset: i32,
+    /// Whether a barge-in event is triggered in this request.
+    #[prost(bool, tag = "10")]
+    pub bargein_event_triggered: bool,
+    /// Whether speech uses single utterance mode.
+    #[prost(bool, tag = "11")]
+    pub speech_single_utterance: bool,
+    /// Time offsets of the DTMF partial results relative to the beginning of
+    /// the stream.
+    #[prost(message, repeated, tag = "12")]
+    pub dtmf_partial_results_times: ::prost::alloc::vec::Vec<::prost_types::Duration>,
+    /// Time offsets of the DTMF final results relative to the beginning of
+    /// the stream.
+    #[prost(message, repeated, tag = "13")]
+    pub dtmf_final_results_times: ::prost::alloc::vec::Vec<::prost_types::Duration>,
+    /// Time offset of the end-of-single-utterance signal relative to the
+    /// beginning of the stream.
+    #[prost(message, optional, tag = "14")]
+    pub single_utterance_end_time_offset: ::core::option::Option<
+        ::prost_types::Duration,
+    >,
+    /// No speech timeout settings for the stream.
+    #[prost(message, optional, tag = "15")]
+    pub no_speech_timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Speech endpointing timeout settings for the stream.
+    #[prost(message, optional, tag = "19")]
+    pub endpointing_timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Whether the streaming terminates with an injected text query.
+    #[prost(bool, tag = "16")]
+    pub is_input_text: bool,
+    /// Client half close time in terms of input audio duration.
+    #[prost(message, optional, tag = "17")]
+    pub client_half_close_time_offset: ::core::option::Option<::prost_types::Duration>,
+    /// Client half close time in terms of API streaming duration.
+    #[prost(message, optional, tag = "18")]
+    pub client_half_close_streaming_time_offset: ::core::option::Option<
+        ::prost_types::Duration,
+    >,
 }
 /// The top-level message returned from the
 /// `StreamingDetectIntent` method.
@@ -5108,8 +5393,9 @@ pub struct StreamingDetectIntentRequest {
 /// 1.  If the `StreamingDetectIntentRequest.input_audio` field was
 ///      set, the `recognition_result` field is populated for one
 ///      or more messages.
-///      See the [StreamingRecognitionResult][google.cloud.dialogflow.v2.StreamingRecognitionResult] message for details
-///      about the result message sequence.
+///      See the
+///      [StreamingRecognitionResult][google.cloud.dialogflow.v2.StreamingRecognitionResult]
+///      message for details about the result message sequence.
 ///
 /// 2.  The next message contains `response_id`, `query_result`
 ///      and optionally `webhook_status` if a WebHook was called.
@@ -5144,6 +5430,10 @@ pub struct StreamingDetectIntentResponse {
     /// The config used by the speech synthesizer to generate the output audio.
     #[prost(message, optional, tag = "6")]
     pub output_audio_config: ::core::option::Option<OutputAudioConfig>,
+    /// Debugging info that would get populated when
+    /// `StreamingDetectIntentRequest.enable_debugging_info` is set to true.
+    #[prost(message, optional, tag = "8")]
+    pub debugging_info: ::core::option::Option<CloudConversationDebuggingInfo>,
 }
 /// Contains a speech recognition result corresponding to a portion of the audio
 /// that is currently being processed or an indication that this is the end
@@ -5208,7 +5498,8 @@ pub struct StreamingRecognitionResult {
     #[prost(float, tag = "4")]
     pub confidence: f32,
     /// Word-specific information for the words recognized by Speech in
-    /// [transcript][google.cloud.dialogflow.v2.StreamingRecognitionResult.transcript]. Populated if and only if `message_type` = `TRANSCRIPT` and
+    /// [transcript][google.cloud.dialogflow.v2.StreamingRecognitionResult.transcript].
+    /// Populated if and only if `message_type` = `TRANSCRIPT` and
     /// \[InputAudioConfig.enable_word_info\] is set.
     #[prost(message, repeated, tag = "7")]
     pub speech_word_info: ::prost::alloc::vec::Vec<SpeechWordInfo>,
@@ -5242,11 +5533,12 @@ pub mod streaming_recognition_result {
         Transcript = 1,
         /// Event indicates that the server has detected the end of the user's speech
         /// utterance and expects no additional inputs.
-        /// Therefore, the server will not process additional audio (although it may subsequently return additional results). The
-        /// client should stop sending additional audio data, half-close the gRPC
-        /// connection, and wait for any additional results until the server closes
-        /// the gRPC connection. This message is only sent if `single_utterance` was
-        /// set to `true`, and is not used otherwise.
+        /// Therefore, the server will not process additional audio (although it may
+        /// subsequently return additional results). The client should stop sending
+        /// additional audio data, half-close the gRPC connection, and wait for any
+        /// additional results until the server closes the gRPC connection. This
+        /// message is only sent if `single_utterance` was set to `true`, and is not
+        /// used otherwise.
         EndOfSingleUtterance = 2,
     }
     impl MessageType {
@@ -5272,7 +5564,6 @@ pub mod streaming_recognition_result {
         }
     }
 }
-/// ============================================================================
 /// Auxiliary proto messages.
 ///
 /// Represents the natural language text to be processed.
@@ -5307,16 +5598,14 @@ pub struct EventInput {
     /// map, associative array, symbol table, dictionary, or JSON object
     /// composed of a collection of (MapKey, MapValue) pairs:
     ///
-    /// -   MapKey type: string
-    /// -   MapKey value: parameter name
-    /// -   MapValue type:
-    ///      -   If parameter's entity type is a composite entity: map
-    ///      -   Else: depending on parameter value type, could be one of string,
-    ///          number, boolean, null, list or map
-    /// -   MapValue value:
-    ///      -   If parameter's entity type is a composite entity:
-    ///          map from composite entity property names to property values
-    ///      -   Else: parameter value
+    /// * MapKey type: string
+    /// * MapKey value: parameter name
+    /// * MapValue type: If parameter's entity type is a composite entity then use
+    /// map, otherwise, depending on the parameter value type, it could be one of
+    /// string, number, boolean, null, list or map.
+    /// * MapValue value: If parameter's entity type is a composite entity then use
+    /// map from composite entity property names to property values, otherwise,
+    /// use parameter value.
     #[prost(message, optional, tag = "2")]
     pub parameters: ::core::option::Option<::prost_types::Struct>,
     /// Required. The language of this query. See [Language
@@ -5325,8 +5614,8 @@ pub struct EventInput {
     /// the same session do not necessarily need to specify the same language.
     ///
     /// This field is ignored when used in the context of a
-    /// [WebhookResponse.followup_event_input][google.cloud.dialogflow.v2.WebhookResponse.followup_event_input] field,
-    /// because the language was already defined in the originating detect
+    /// [WebhookResponse.followup_event_input][google.cloud.dialogflow.v2.WebhookResponse.followup_event_input]
+    /// field, because the language was already defined in the originating detect
     /// intent request.
     #[prost(string, tag = "3")]
     pub language_code: ::prost::alloc::string::String,
@@ -5345,11 +5634,14 @@ pub struct SentimentAnalysisRequestConfig {
 /// and identifies the prevailing subjective opinion, especially to determine a
 /// user's attitude as positive, negative, or neutral.
 /// For [Participants.DetectIntent][], it needs to be configured in
-/// [DetectIntentRequest.query_params][google.cloud.dialogflow.v2.DetectIntentRequest.query_params]. For
-/// [Participants.StreamingDetectIntent][], it needs to be configured in
+/// [DetectIntentRequest.query_params][google.cloud.dialogflow.v2.DetectIntentRequest.query_params].
+/// For [Participants.StreamingDetectIntent][], it needs to be configured in
 /// [StreamingDetectIntentRequest.query_params][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_params].
-/// And for [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent] and
-/// [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2.Participants.StreamingAnalyzeContent], it needs to be configured in
+/// And for
+/// [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent]
+/// and
+/// [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2.Participants.StreamingAnalyzeContent],
+/// it needs to be configured in
 /// [ConversationProfile.human_agent_assistant_config][google.cloud.dialogflow.v2.ConversationProfile.human_agent_assistant_config]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5359,7 +5651,9 @@ pub struct SentimentAnalysisResult {
     pub query_text_sentiment: ::core::option::Option<Sentiment>,
 }
 /// The sentiment, such as positive/negative feeling or association, for a unit
-/// of analysis, such as the query text.
+/// of analysis, such as the query text. See:
+/// <https://cloud.google.com/natural-language/docs/basics#interpreting_sentiment_analysis_values>
+/// for how to interpret the result.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Sentiment {
@@ -5565,8 +5859,8 @@ pub struct Participant {
     /// ID>/conversations/<Conversation ID>/participants/<Participant ID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Immutable. The role this participant plays in the conversation. This field must be set
-    /// during participant creation and is then immutable.
+    /// Immutable. The role this participant plays in the conversation. This field
+    /// must be set during participant creation and is then immutable.
     #[prost(enumeration = "participant::Role", tag = "2")]
     pub role: i32,
     /// Optional. Label applied to streams representing this participant in SIPREC
@@ -5574,9 +5868,45 @@ pub struct Participant {
     /// media stream to this participant. This field can be updated.
     #[prost(string, tag = "6")]
     pub sip_recording_media_label: ::prost::alloc::string::String,
-    /// Optional. Key-value filters on the metadata of documents returned by article
-    /// suggestion. If specified, article suggestion only returns suggested
-    /// documents that match all filters in their [Document.metadata][google.cloud.dialogflow.v2.Document.metadata]. Multiple
+    /// Optional. Obfuscated user id that should be associated with the created
+    /// participant.
+    ///
+    /// You can specify a user id as follows:
+    ///
+    /// 1. If you set this field in
+    ///     [CreateParticipantRequest][google.cloud.dialogflow.v2.CreateParticipantRequest.participant]
+    ///     or
+    ///     [UpdateParticipantRequest][google.cloud.dialogflow.v2.UpdateParticipantRequest.participant],
+    ///     Dialogflow adds the obfuscated user id with the participant.
+    ///
+    /// 2. If you set this field in
+    ///     [AnalyzeContent][google.cloud.dialogflow.v2.AnalyzeContentRequest.obfuscated_external_user_id]
+    ///     or
+    ///     [StreamingAnalyzeContent][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.obfuscated_external_user_id],
+    ///     Dialogflow will update
+    ///     [Participant.obfuscated_external_user_id][google.cloud.dialogflow.v2.Participant.obfuscated_external_user_id].
+    ///
+    /// Dialogflow returns an error if you try to add a user id for a
+    /// non-[END_USER][google.cloud.dialogflow.v2.Participant.Role.END_USER]
+    /// participant.
+    ///
+    /// Dialogflow uses this user id for billing and measurement purposes. For
+    /// example, Dialogflow determines whether a user in one conversation returned
+    /// in a later conversation.
+    ///
+    /// Note:
+    ///
+    /// * Please never pass raw user ids to Dialogflow. Always obfuscate your user
+    ///    id first.
+    /// * Dialogflow only accepts a UTF-8 encoded string, e.g., a hex digest of a
+    ///    hash function like SHA-512.
+    /// * The length of the user id must be <= 256 characters.
+    #[prost(string, tag = "7")]
+    pub obfuscated_external_user_id: ::prost::alloc::string::String,
+    /// Optional. Key-value filters on the metadata of documents returned by
+    /// article suggestion. If specified, article suggestion only returns suggested
+    /// documents that match all filters in their
+    /// [Document.metadata][google.cloud.dialogflow.v2.Document.metadata]. Multiple
     /// values for a metadata key should be concatenated by comma. For example,
     /// filters to match all documents that have 'US' or 'CA' in their market
     /// metadata values and 'agent' in their user metadata values will be
@@ -5683,7 +6013,8 @@ pub struct Message {
     #[prost(message, optional, tag = "8")]
     pub sentiment_analysis: ::core::option::Option<SentimentAnalysisResult>,
 }
-/// The request message for [Participants.CreateParticipant][google.cloud.dialogflow.v2.Participants.CreateParticipant].
+/// The request message for
+/// [Participants.CreateParticipant][google.cloud.dialogflow.v2.Participants.CreateParticipant].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateParticipantRequest {
@@ -5696,7 +6027,8 @@ pub struct CreateParticipantRequest {
     #[prost(message, optional, tag = "2")]
     pub participant: ::core::option::Option<Participant>,
 }
-/// The request message for [Participants.GetParticipant][google.cloud.dialogflow.v2.Participants.GetParticipant].
+/// The request message for
+/// [Participants.GetParticipant][google.cloud.dialogflow.v2.Participants.GetParticipant].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetParticipantRequest {
@@ -5706,7 +6038,8 @@ pub struct GetParticipantRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [Participants.ListParticipants][google.cloud.dialogflow.v2.Participants.ListParticipants].
+/// The request message for
+/// [Participants.ListParticipants][google.cloud.dialogflow.v2.Participants.ListParticipants].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListParticipantsRequest {
@@ -5723,7 +6056,8 @@ pub struct ListParticipantsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response message for [Participants.ListParticipants][google.cloud.dialogflow.v2.Participants.ListParticipants].
+/// The response message for
+/// [Participants.ListParticipants][google.cloud.dialogflow.v2.Participants.ListParticipants].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListParticipantsResponse {
@@ -5736,7 +6070,8 @@ pub struct ListParticipantsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request message for [Participants.UpdateParticipant][google.cloud.dialogflow.v2.Participants.UpdateParticipant].
+/// The request message for
+/// [Participants.UpdateParticipant][google.cloud.dialogflow.v2.Participants.UpdateParticipant].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateParticipantRequest {
@@ -5747,7 +6082,8 @@ pub struct UpdateParticipantRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request message for [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent].
+/// The request message for
+/// [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeContentRequest {
@@ -5783,7 +6119,7 @@ pub struct AnalyzeContentRequest {
     #[prost(string, tag = "11")]
     pub request_id: ::prost::alloc::string::String,
     /// Required. The input content.
-    #[prost(oneof = "analyze_content_request::Input", tags = "6, 8")]
+    #[prost(oneof = "analyze_content_request::Input", tags = "6, 8, 12")]
     pub input: ::core::option::Option<analyze_content_request::Input>,
 }
 /// Nested message and enum types in `AnalyzeContentRequest`.
@@ -5798,6 +6134,9 @@ pub mod analyze_content_request {
         /// An input event to send to Dialogflow.
         #[prost(message, tag = "8")]
         EventInput(super::EventInput),
+        /// An input representing the selection of a suggestion.
+        #[prost(message, tag = "12")]
+        SuggestionInput(super::SuggestionInput),
     }
 }
 /// The message in the response that indicates the parameters of DTMF.
@@ -5808,7 +6147,8 @@ pub struct DtmfParameters {
     #[prost(bool, tag = "1")]
     pub accepts_dtmf_input: bool,
 }
-/// The response message for [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent].
+/// The response message for
+/// [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeContentResponse {
@@ -5833,14 +6173,17 @@ pub struct AnalyzeContentResponse {
     /// Only set if a Dialogflow automated agent has responded.
     /// Note that: [AutomatedAgentReply.detect_intent_response.output_audio][]
     /// and [AutomatedAgentReply.detect_intent_response.output_audio_config][]
-    /// are always empty, use [reply_audio][google.cloud.dialogflow.v2.AnalyzeContentResponse.reply_audio] instead.
+    /// are always empty, use
+    /// [reply_audio][google.cloud.dialogflow.v2.AnalyzeContentResponse.reply_audio]
+    /// instead.
     #[prost(message, optional, tag = "3")]
     pub automated_agent_reply: ::core::option::Option<AutomatedAgentReply>,
     /// Message analyzed by CCAI.
     #[prost(message, optional, tag = "5")]
     pub message: ::core::option::Option<Message>,
     /// The suggestions for most recent human agent. The order is the same as
-    /// [HumanAgentAssistantConfig.SuggestionConfig.feature_configs][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.feature_configs] of
+    /// [HumanAgentAssistantConfig.SuggestionConfig.feature_configs][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.feature_configs]
+    /// of
     /// [HumanAgentAssistantConfig.human_agent_suggestion_config][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.human_agent_suggestion_config].
     ///
     /// Note that any failure of Agent Assist features will not lead to the overall
@@ -5850,7 +6193,8 @@ pub struct AnalyzeContentResponse {
     #[prost(message, repeated, tag = "6")]
     pub human_agent_suggestion_results: ::prost::alloc::vec::Vec<SuggestionResult>,
     /// The suggestions for end user. The order is the same as
-    /// [HumanAgentAssistantConfig.SuggestionConfig.feature_configs][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.feature_configs] of
+    /// [HumanAgentAssistantConfig.SuggestionConfig.feature_configs][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.feature_configs]
+    /// of
     /// [HumanAgentAssistantConfig.end_user_suggestion_config][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.end_user_suggestion_config].
     ///
     /// Same as human_agent_suggestion_results, any failure of Agent Assist
@@ -5863,7 +6207,226 @@ pub struct AnalyzeContentResponse {
     #[prost(message, optional, tag = "9")]
     pub dtmf_parameters: ::core::option::Option<DtmfParameters>,
 }
-/// The request message for [Participants.SuggestArticles][google.cloud.dialogflow.v2.Participants.SuggestArticles].
+/// The top-level message sent by the client to the
+/// [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2.Participants.StreamingAnalyzeContent]
+/// method.
+///
+/// Multiple request messages should be sent in order:
+///
+/// 1.  The first message must contain
+///      [participant][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.participant],
+///      [config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config]
+///      and optionally
+///      [query_params][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.query_params].
+///      If you want to receive an audio response, it should also contain
+///      [reply_audio_config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.reply_audio_config].
+///      The message must not contain
+///      [input][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.input].
+///
+/// 2.  If
+/// [config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config] in
+/// the first message
+///      was set to
+///      [audio_config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.audio_config],
+///      all subsequent messages must contain
+///      [input_audio][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.input_audio]
+///      to continue with Speech recognition. However, note that:
+///
+///      * Dialogflow will bill you for the audio so far.
+///      * Dialogflow discards all Speech recognition results in favor of the
+///        text input.
+///
+///   3. If
+///   [StreamingAnalyzeContentRequest.config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config]
+///   in the first message was set
+///     to
+///     [StreamingAnalyzeContentRequest.text_config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.text_config],
+///     then the second message must contain only
+///     [input_text][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.input_text].
+///     Moreover, you must not send more than two messages.
+///
+///   After you sent all input, you must half-close or abort the request stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingAnalyzeContentRequest {
+    /// Required. The name of the participant this text comes from.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>/participants/<Participant ID>`.
+    #[prost(string, tag = "1")]
+    pub participant: ::prost::alloc::string::String,
+    /// Speech synthesis configuration.
+    /// The speech synthesis settings for a virtual agent that may be configured
+    /// for the associated conversation profile are not used when calling
+    /// StreamingAnalyzeContent. If this configuration is not supplied, speech
+    /// synthesis is disabled.
+    #[prost(message, optional, tag = "4")]
+    pub reply_audio_config: ::core::option::Option<OutputAudioConfig>,
+    /// Parameters for a Dialogflow virtual-agent query.
+    #[prost(message, optional, tag = "7")]
+    pub query_params: ::core::option::Option<QueryParameters>,
+    /// Parameters for a human assist query.
+    #[prost(message, optional, tag = "8")]
+    pub assist_query_params: ::core::option::Option<AssistQueryParameters>,
+    /// Additional parameters to be put into Dialogflow CX session parameters. To
+    /// remove a parameter from the session, clients should explicitly set the
+    /// parameter value to null.
+    ///
+    /// Note: this field should only be used if you are connecting to a Dialogflow
+    /// CX agent.
+    #[prost(message, optional, tag = "13")]
+    pub cx_parameters: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Enable full bidirectional streaming. You can keep streaming the
+    /// audio until timeout, and there's no need to half close the stream to get
+    /// the response.
+    ///
+    /// Restrictions:
+    ///
+    /// - Timeout: 3 mins.
+    /// - Audio Encoding: only supports
+    /// [AudioEncoding.AUDIO_ENCODING_LINEAR_16][google.cloud.dialogflow.v2.AudioEncoding.AUDIO_ENCODING_LINEAR_16]
+    /// and
+    /// [AudioEncoding.AUDIO_ENCODING_MULAW][google.cloud.dialogflow.v2.AudioEncoding.AUDIO_ENCODING_MULAW]
+    /// - Lifecycle: conversation should be in `Assist Stage`, go to
+    ///    [Conversation.CreateConversation][] for more information.
+    ///
+    /// InvalidArgument Error will be returned if the one of restriction checks
+    /// failed.
+    ///
+    /// You can find more details in
+    /// <https://cloud.google.com/agent-assist/docs/extended-streaming>
+    #[prost(bool, tag = "11")]
+    pub enable_extended_streaming: bool,
+    /// Enable partial virtual agent responses. If this flag is not enabled,
+    /// response stream still contains only one final response even if some
+    /// `Fulfillment`s in Dialogflow virtual agent have been configured to return
+    /// partial responses.
+    #[prost(bool, tag = "12")]
+    pub enable_partial_automated_agent_reply: bool,
+    /// If true, `StreamingAnalyzeContentResponse.debugging_info` will get
+    /// populated.
+    #[prost(bool, tag = "19")]
+    pub enable_debugging_info: bool,
+    /// The input config.
+    #[prost(oneof = "streaming_analyze_content_request::Config", tags = "2, 3")]
+    pub config: ::core::option::Option<streaming_analyze_content_request::Config>,
+    /// The input.
+    #[prost(oneof = "streaming_analyze_content_request::Input", tags = "5, 6, 9")]
+    pub input: ::core::option::Option<streaming_analyze_content_request::Input>,
+}
+/// Nested message and enum types in `StreamingAnalyzeContentRequest`.
+pub mod streaming_analyze_content_request {
+    /// The input config.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Config {
+        /// Instructs the speech recognizer how to process the speech audio.
+        #[prost(message, tag = "2")]
+        AudioConfig(super::InputAudioConfig),
+        /// The natural language text to be processed.
+        #[prost(message, tag = "3")]
+        TextConfig(super::InputTextConfig),
+    }
+    /// The input.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Input {
+        /// The input audio content to be recognized. Must be sent if `audio_config`
+        /// is set in the first message. The complete audio over all streaming
+        /// messages must not exceed 1 minute.
+        #[prost(bytes, tag = "5")]
+        InputAudio(::prost::alloc::vec::Vec<u8>),
+        /// The UTF-8 encoded natural language text to be processed. Must be sent if
+        /// `text_config` is set in the first message. Text length must not exceed
+        /// 256 bytes for virtual agent interactions. The `input_text` field can be
+        /// only sent once, and would cancel the speech recognition if any ongoing.
+        #[prost(string, tag = "6")]
+        InputText(::prost::alloc::string::String),
+        /// The DTMF digits used to invoke intent and fill in parameter value.
+        ///
+        /// This input is ignored if the previous response indicated that DTMF input
+        /// is not accepted.
+        #[prost(message, tag = "9")]
+        InputDtmf(super::TelephonyDtmfEvents),
+    }
+}
+/// The top-level message returned from the `StreamingAnalyzeContent` method.
+///
+/// Multiple response messages can be returned in order:
+///
+/// 1.  If the input was set to streaming audio, the first one or more messages
+///      contain `recognition_result`. Each `recognition_result` represents a more
+///      complete transcript of what the user said. The last `recognition_result`
+///      has `is_final` set to `true`.
+///
+/// 2.  In virtual agent stage: if `enable_partial_automated_agent_reply` is
+///      true, the following N (currently 1 <= N <= 4) messages
+///      contain `automated_agent_reply` and optionally `reply_audio`
+///      returned by the virtual agent. The first (N-1)
+///      `automated_agent_reply`s will have `automated_agent_reply_type` set to
+///      `PARTIAL`. The last `automated_agent_reply` has
+///      `automated_agent_reply_type` set to `FINAL`.
+///      If `enable_partial_automated_agent_reply` is not enabled, response stream
+///      only contains the final reply.
+///
+///      In human assist stage: the following N (N >= 1) messages contain
+///      `human_agent_suggestion_results`, `end_user_suggestion_results` or
+///      `message`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingAnalyzeContentResponse {
+    /// The result of speech recognition.
+    #[prost(message, optional, tag = "1")]
+    pub recognition_result: ::core::option::Option<StreamingRecognitionResult>,
+    /// The output text content.
+    /// This field is set if an automated agent responded with a text for the user.
+    #[prost(string, tag = "2")]
+    pub reply_text: ::prost::alloc::string::String,
+    /// The audio data bytes encoded as specified in the request.
+    /// This field is set if:
+    ///
+    ///   - The `reply_audio_config` field is specified in the request.
+    ///   - The automated agent, which this output comes from, responded with audio.
+    ///     In such case, the `reply_audio.config` field contains settings used to
+    ///     synthesize the speech.
+    ///
+    /// In some scenarios, multiple output audio fields may be present in the
+    /// response structure. In these cases, only the top-most-level audio output
+    /// has content.
+    #[prost(message, optional, tag = "3")]
+    pub reply_audio: ::core::option::Option<OutputAudio>,
+    /// Only set if a Dialogflow automated agent has responded.
+    /// Note that: [AutomatedAgentReply.detect_intent_response.output_audio][]
+    /// and [AutomatedAgentReply.detect_intent_response.output_audio_config][]
+    /// are always empty, use
+    /// [reply_audio][google.cloud.dialogflow.v2.StreamingAnalyzeContentResponse.reply_audio]
+    /// instead.
+    #[prost(message, optional, tag = "4")]
+    pub automated_agent_reply: ::core::option::Option<AutomatedAgentReply>,
+    /// Message analyzed by CCAI.
+    #[prost(message, optional, tag = "6")]
+    pub message: ::core::option::Option<Message>,
+    /// The suggestions for most recent human agent. The order is the same as
+    /// [HumanAgentAssistantConfig.SuggestionConfig.feature_configs][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.feature_configs]
+    /// of
+    /// [HumanAgentAssistantConfig.human_agent_suggestion_config][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.human_agent_suggestion_config].
+    #[prost(message, repeated, tag = "7")]
+    pub human_agent_suggestion_results: ::prost::alloc::vec::Vec<SuggestionResult>,
+    /// The suggestions for end user. The order is the same as
+    /// [HumanAgentAssistantConfig.SuggestionConfig.feature_configs][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.feature_configs]
+    /// of
+    /// [HumanAgentAssistantConfig.end_user_suggestion_config][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.end_user_suggestion_config].
+    #[prost(message, repeated, tag = "8")]
+    pub end_user_suggestion_results: ::prost::alloc::vec::Vec<SuggestionResult>,
+    /// Indicates the parameters of DTMF.
+    #[prost(message, optional, tag = "10")]
+    pub dtmf_parameters: ::core::option::Option<DtmfParameters>,
+    /// Debugging info that would get populated when
+    /// `StreamingAnalyzeContentRequest.enable_debugging_info` is set to true.
+    #[prost(message, optional, tag = "11")]
+    pub debugging_info: ::core::option::Option<CloudConversationDebuggingInfo>,
+}
+/// The request message for
+/// [Participants.SuggestArticles][google.cloud.dialogflow.v2.Participants.SuggestArticles].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestArticlesRequest {
@@ -5880,15 +6443,17 @@ pub struct SuggestArticlesRequest {
     #[prost(string, tag = "2")]
     pub latest_message: ::prost::alloc::string::String,
     /// Optional. Max number of messages prior to and including
-    /// [latest_message][google.cloud.dialogflow.v2.SuggestArticlesRequest.latest_message] to use as context
-    /// when compiling the suggestion. By default 20 and at most 50.
+    /// [latest_message][google.cloud.dialogflow.v2.SuggestArticlesRequest.latest_message]
+    /// to use as context when compiling the suggestion. By default 20 and at
+    /// most 50.
     #[prost(int32, tag = "3")]
     pub context_size: i32,
     /// Parameters for a human assist query.
     #[prost(message, optional, tag = "4")]
     pub assist_query_params: ::core::option::Option<AssistQueryParameters>,
 }
-/// The response message for [Participants.SuggestArticles][google.cloud.dialogflow.v2.Participants.SuggestArticles].
+/// The response message for
+/// [Participants.SuggestArticles][google.cloud.dialogflow.v2.Participants.SuggestArticles].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestArticlesResponse {
@@ -5903,14 +6468,16 @@ pub struct SuggestArticlesResponse {
     #[prost(string, tag = "2")]
     pub latest_message: ::prost::alloc::string::String,
     /// Number of messages prior to and including
-    /// [latest_message][google.cloud.dialogflow.v2.SuggestArticlesResponse.latest_message] to compile the
-    /// suggestion. It may be smaller than the
-    /// [SuggestArticlesRequest.context_size][google.cloud.dialogflow.v2.SuggestArticlesRequest.context_size] field in the request if there
-    /// aren't that many messages in the conversation.
+    /// [latest_message][google.cloud.dialogflow.v2.SuggestArticlesResponse.latest_message]
+    /// to compile the suggestion. It may be smaller than the
+    /// [SuggestArticlesRequest.context_size][google.cloud.dialogflow.v2.SuggestArticlesRequest.context_size]
+    /// field in the request if there aren't that many messages in the
+    /// conversation.
     #[prost(int32, tag = "3")]
     pub context_size: i32,
 }
-/// The request message for [Participants.SuggestFaqAnswers][google.cloud.dialogflow.v2.Participants.SuggestFaqAnswers].
+/// The request message for
+/// [Participants.SuggestFaqAnswers][google.cloud.dialogflow.v2.Participants.SuggestFaqAnswers].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestFaqAnswersRequest {
@@ -5935,7 +6502,8 @@ pub struct SuggestFaqAnswersRequest {
     #[prost(message, optional, tag = "4")]
     pub assist_query_params: ::core::option::Option<AssistQueryParameters>,
 }
-/// The request message for [Participants.SuggestFaqAnswers][google.cloud.dialogflow.v2.Participants.SuggestFaqAnswers].
+/// The request message for
+/// [Participants.SuggestFaqAnswers][google.cloud.dialogflow.v2.Participants.SuggestFaqAnswers].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestFaqAnswersResponse {
@@ -5950,14 +6518,16 @@ pub struct SuggestFaqAnswersResponse {
     #[prost(string, tag = "2")]
     pub latest_message: ::prost::alloc::string::String,
     /// Number of messages prior to and including
-    /// [latest_message][google.cloud.dialogflow.v2.SuggestFaqAnswersResponse.latest_message] to compile the
-    /// suggestion. It may be smaller than the
-    /// [SuggestFaqAnswersRequest.context_size][google.cloud.dialogflow.v2.SuggestFaqAnswersRequest.context_size] field in the request if there
-    /// aren't that many messages in the conversation.
+    /// [latest_message][google.cloud.dialogflow.v2.SuggestFaqAnswersResponse.latest_message]
+    /// to compile the suggestion. It may be smaller than the
+    /// [SuggestFaqAnswersRequest.context_size][google.cloud.dialogflow.v2.SuggestFaqAnswersRequest.context_size]
+    /// field in the request if there aren't that many messages in the
+    /// conversation.
     #[prost(int32, tag = "3")]
     pub context_size: i32,
 }
-/// The request message for [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2.Participants.SuggestSmartReplies].
+/// The request message for
+/// [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2.Participants.SuggestSmartReplies].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestSmartRepliesRequest {
@@ -5984,7 +6554,8 @@ pub struct SuggestSmartRepliesRequest {
     #[prost(int32, tag = "3")]
     pub context_size: i32,
 }
-/// The response message for [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2.Participants.SuggestSmartReplies].
+/// The response message for
+/// [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2.Participants.SuggestSmartReplies].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestSmartRepliesResponse {
@@ -6001,10 +6572,11 @@ pub struct SuggestSmartRepliesResponse {
     #[prost(string, tag = "2")]
     pub latest_message: ::prost::alloc::string::String,
     /// Number of messages prior to and including
-    /// [latest_message][google.cloud.dialogflow.v2.SuggestSmartRepliesResponse.latest_message] to compile the
-    /// suggestion. It may be smaller than the
-    /// [SuggestSmartRepliesRequest.context_size][google.cloud.dialogflow.v2.SuggestSmartRepliesRequest.context_size] field in the request if there
-    /// aren't that many messages in the conversation.
+    /// [latest_message][google.cloud.dialogflow.v2.SuggestSmartRepliesResponse.latest_message]
+    /// to compile the suggestion. It may be smaller than the
+    /// [SuggestSmartRepliesRequest.context_size][google.cloud.dialogflow.v2.SuggestSmartRepliesRequest.context_size]
+    /// field in the request if there aren't that many messages in the
+    /// conversation.
     #[prost(int32, tag = "3")]
     pub context_size: i32,
 }
@@ -6024,7 +6596,9 @@ pub struct OutputAudio {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutomatedAgentReply {
-    /// Response of the Dialogflow [Sessions.DetectIntent][google.cloud.dialogflow.v2.Sessions.DetectIntent] call.
+    /// Response of the Dialogflow
+    /// [Sessions.DetectIntent][google.cloud.dialogflow.v2.Sessions.DetectIntent]
+    /// call.
     #[prost(message, optional, tag = "1")]
     pub detect_intent_response: ::core::option::Option<DetectIntentResponse>,
     /// AutomatedAgentReply type.
@@ -6035,6 +6609,11 @@ pub struct AutomatedAgentReply {
     /// partial response, it can be cancelled.
     #[prost(bool, tag = "8")]
     pub allow_cancellation: bool,
+    /// The unique identifier of the current Dialogflow CX conversation page.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/flows/<Flow ID>/pages/<Page ID>`.
+    #[prost(string, tag = "11")]
+    pub cx_current_page: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `AutomatedAgentReply`.
 pub mod automated_agent_reply {
@@ -6171,9 +6750,68 @@ pub struct SmartReplyAnswer {
     #[prost(string, tag = "3")]
     pub answer_record: ::prost::alloc::string::String,
 }
+/// Represents an intent suggestion.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IntentSuggestion {
+    /// The display name of the intent.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Human readable description for better understanding an intent like its
+    /// scope, content, result etc. Maximum character limit: 140 characters.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// The name of the intent.
+    #[prost(oneof = "intent_suggestion::Intent", tags = "2")]
+    pub intent: ::core::option::Option<intent_suggestion::Intent>,
+}
+/// Nested message and enum types in `IntentSuggestion`.
+pub mod intent_suggestion {
+    /// The name of the intent.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Intent {
+        /// The unique identifier of this
+        /// [intent][google.cloud.dialogflow.v2.Intent]. Format: `projects/<Project
+        /// ID>/locations/<Location ID>/agent/intents/<Intent ID>`.
+        #[prost(string, tag = "2")]
+        IntentV2(::prost::alloc::string::String),
+    }
+}
+/// Represents a Dialogflow assist answer.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DialogflowAssistAnswer {
+    /// The name of answer record, in the format of
+    /// "projects/<Project ID>/locations/<Location ID>/answerRecords/<Answer Record
+    /// ID>"
+    #[prost(string, tag = "2")]
+    pub answer_record: ::prost::alloc::string::String,
+    /// Result from DetectIntent for one matched intent.
+    #[prost(oneof = "dialogflow_assist_answer::Result", tags = "1, 5")]
+    pub result: ::core::option::Option<dialogflow_assist_answer::Result>,
+}
+/// Nested message and enum types in `DialogflowAssistAnswer`.
+pub mod dialogflow_assist_answer {
+    /// Result from DetectIntent for one matched intent.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Result {
+        /// Result from v2 agent.
+        #[prost(message, tag = "1")]
+        QueryResult(super::QueryResult),
+        /// An intent suggestion generated from conversation.
+        #[prost(message, tag = "5")]
+        IntentSuggestion(super::IntentSuggestion),
+    }
+}
 /// One response of different type of suggestion response which is used in
-/// the response of [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent] and
-/// [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent], as well as [HumanAgentAssistantEvent][google.cloud.dialogflow.v2.HumanAgentAssistantEvent].
+/// the response of
+/// [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent]
+/// and
+/// [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent],
+/// as well as
+/// [HumanAgentAssistantEvent][google.cloud.dialogflow.v2.HumanAgentAssistantEvent].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestionResult {
@@ -6202,6 +6840,16 @@ pub mod suggestion_result {
         #[prost(message, tag = "4")]
         SuggestSmartRepliesResponse(super::SuggestSmartRepliesResponse),
     }
+}
+/// Defines the language used in the input text.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InputTextConfig {
+    /// Required. The language of this conversational query. See [Language
+    /// Support](<https://cloud.google.com/dialogflow/docs/reference/language>)
+    /// for a list of the currently supported language codes.
+    #[prost(string, tag = "1")]
+    pub language_code: ::prost::alloc::string::String,
 }
 /// Represents a part of a message possibly annotated with an entity. The part
 /// can be an entity or purely a part of the message between two entities or
@@ -6244,13 +6892,27 @@ pub struct MessageAnnotation {
     #[prost(bool, tag = "2")]
     pub contain_entities: bool,
 }
+/// Represents the selection of a suggestion.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SuggestionInput {
+    /// Required. The ID of a suggestion selected by the human agent.
+    /// The suggestion(s) were generated in a previous call to
+    /// request Dialogflow assist.
+    /// The format is:
+    /// `projects/<Project ID>/locations/<Location ID>/answerRecords/<Answer Record
+    /// ID>` where <Answer Record ID> is an alphanumeric string.
+    #[prost(string, tag = "1")]
+    pub answer_record: ::prost::alloc::string::String,
+}
 /// Represents the parameters of human assist query.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssistQueryParameters {
     /// Key-value filters on the metadata of documents returned by article
     /// suggestion. If specified, article suggestion only returns suggested
-    /// documents that match all filters in their [Document.metadata][google.cloud.dialogflow.v2.Document.metadata]. Multiple
+    /// documents that match all filters in their
+    /// [Document.metadata][google.cloud.dialogflow.v2.Document.metadata]. Multiple
     /// values for a metadata key should be concatenated by comma. For example,
     /// filters to match all documents that have 'US' or 'CA' in their market
     /// metadata values and 'agent' in their user metadata values will be
@@ -6507,6 +7169,55 @@ pub mod participants_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Adds a text (chat, for example), or audio (phone recording, for example)
+        /// message from a participant into the conversation.
+        /// Note: This method is only available through the gRPC API (not REST).
+        ///
+        /// The top-level message sent to the client by the server is
+        /// `StreamingAnalyzeContentResponse`. Multiple response messages can be
+        /// returned in order. The first one or more messages contain the
+        /// `recognition_result` field. Each result represents a more complete
+        /// transcript of what the user said. The next message contains the
+        /// `reply_text` field and potentially the `reply_audio` field. The message can
+        /// also contain the `automated_agent_reply` field.
+        ///
+        /// Note: Always use agent versions for production traffic
+        /// sent to virtual agents. See [Versions and
+        /// environments](https://cloud.google.com/dialogflow/es/docs/agents-versions).
+        pub async fn streaming_analyze_content(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::StreamingAnalyzeContentRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<
+                tonic::codec::Streaming<super::StreamingAnalyzeContentResponse>,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.Participants/StreamingAnalyzeContent",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.Participants",
+                        "StreamingAnalyzeContent",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
+        }
         /// Gets suggested articles for a participant based on specific historical
         /// messages.
         pub async fn suggest_articles(
@@ -6626,9 +7337,11 @@ pub mod participants_client {
 /// A typical workflow for customers provide feedback to an answer is:
 ///
 /// 1. For human agent assistant, customers get suggestion via ListSuggestions
-///     API. Together with the answers, [AnswerRecord.name][google.cloud.dialogflow.v2.AnswerRecord.name] are returned to the
-///     customers.
-/// 2. The customer uses the [AnswerRecord.name][google.cloud.dialogflow.v2.AnswerRecord.name] to call the
+///     API. Together with the answers,
+///     [AnswerRecord.name][google.cloud.dialogflow.v2.AnswerRecord.name] are
+///     returned to the customers.
+/// 2. The customer uses the
+/// [AnswerRecord.name][google.cloud.dialogflow.v2.AnswerRecord.name] to call the
 ///     [UpdateAnswerRecord][] method to send feedback about a specific answer
 ///     that they believe is wrong.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6640,8 +7353,8 @@ pub struct AnswerRecord {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The AnswerFeedback for this record. You can set this with
-    /// [AnswerRecords.UpdateAnswerRecord][google.cloud.dialogflow.v2.AnswerRecords.UpdateAnswerRecord] in order to give us feedback about
-    /// this answer.
+    /// [AnswerRecords.UpdateAnswerRecord][google.cloud.dialogflow.v2.AnswerRecords.UpdateAnswerRecord]
+    /// in order to give us feedback about this answer.
     #[prost(message, optional, tag = "2")]
     pub answer_feedback: ::core::option::Option<AnswerFeedback>,
     /// The record for this answer.
@@ -6659,7 +7372,8 @@ pub mod answer_record {
         AgentAssistantRecord(super::AgentAssistantRecord),
     }
 }
-/// Request message for [AnswerRecords.ListAnswerRecords][google.cloud.dialogflow.v2.AnswerRecords.ListAnswerRecords].
+/// Request message for
+/// [AnswerRecords.ListAnswerRecords][google.cloud.dialogflow.v2.AnswerRecords.ListAnswerRecords].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAnswerRecordsRequest {
@@ -6689,7 +7403,8 @@ pub struct ListAnswerRecordsRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for [AnswerRecords.ListAnswerRecords][google.cloud.dialogflow.v2.AnswerRecords.ListAnswerRecords].
+/// Response message for
+/// [AnswerRecords.ListAnswerRecords][google.cloud.dialogflow.v2.AnswerRecords.ListAnswerRecords].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAnswerRecordsResponse {
@@ -6705,7 +7420,8 @@ pub struct ListAnswerRecordsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for [AnswerRecords.UpdateAnswerRecord][google.cloud.dialogflow.v2.AnswerRecords.UpdateAnswerRecord].
+/// Request message for
+/// [AnswerRecords.UpdateAnswerRecord][google.cloud.dialogflow.v2.AnswerRecords.UpdateAnswerRecord].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAnswerRecordRequest {
@@ -6726,6 +7442,8 @@ pub struct AnswerFeedback {
     pub correctness_level: i32,
     /// Indicates whether the answer/item was clicked by the human agent
     /// or not. Default to false.
+    /// For knowledge search and knowledge assist, the answer record is considered
+    /// to be clicked if the answer was copied or any URI was clicked.
     #[prost(bool, tag = "3")]
     pub clicked: bool,
     /// Time when the answer/item was clicked.
@@ -6827,13 +7545,57 @@ pub struct AgentAssistantFeedback {
     pub document_correctness: i32,
     /// Optional. Whether or not the suggested document is efficient. For example,
     /// if the document is poorly written, hard to understand, hard to use or
-    /// too long to find useful information, [document_efficiency][google.cloud.dialogflow.v2.AgentAssistantFeedback.document_efficiency] is
+    /// too long to find useful information,
+    /// [document_efficiency][google.cloud.dialogflow.v2.AgentAssistantFeedback.document_efficiency]
+    /// is
     /// [DocumentEfficiency.INEFFICIENT][google.cloud.dialogflow.v2.AgentAssistantFeedback.DocumentEfficiency.INEFFICIENT].
     #[prost(enumeration = "agent_assistant_feedback::DocumentEfficiency", tag = "3")]
     pub document_efficiency: i32,
+    /// Optional. Feedback for conversation summarization.
+    #[prost(message, optional, tag = "4")]
+    pub summarization_feedback: ::core::option::Option<
+        agent_assistant_feedback::SummarizationFeedback,
+    >,
+    /// Optional. Feedback for knowledge search.
+    #[prost(message, optional, tag = "5")]
+    pub knowledge_search_feedback: ::core::option::Option<
+        agent_assistant_feedback::KnowledgeSearchFeedback,
+    >,
 }
 /// Nested message and enum types in `AgentAssistantFeedback`.
 pub mod agent_assistant_feedback {
+    /// Feedback for conversation summarization.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SummarizationFeedback {
+        /// Timestamp when composing of the summary starts.
+        #[prost(message, optional, tag = "1")]
+        pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Timestamp when the summary was submitted.
+        #[prost(message, optional, tag = "2")]
+        pub submit_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Text of actual submitted summary.
+        #[prost(string, tag = "3")]
+        pub summary_text: ::prost::alloc::string::String,
+    }
+    /// Feedback for knowledge search.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct KnowledgeSearchFeedback {
+        /// Whether the answer was copied by the human agent or not.
+        /// If the value is set to be true,
+        /// [AnswerFeedback.clicked][google.cloud.dialogflow.v2.AnswerFeedback.clicked]
+        /// will be updated to be true.
+        #[prost(bool, tag = "1")]
+        pub answer_copied: bool,
+        /// The URIs clicked by the human agent. The value is appended for each
+        /// [UpdateAnswerRecordRequest][google.cloud.dialogflow.v2.UpdateAnswerRecordRequest].
+        /// If the value is not empty,
+        /// [AnswerFeedback.clicked][google.cloud.dialogflow.v2.AnswerFeedback.clicked]
+        /// will be updated to be true.
+        #[prost(string, repeated, tag = "2")]
+        pub clicked_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
     /// Relevance of an answer.
     #[derive(
         Clone,
@@ -6969,7 +7731,7 @@ pub mod agent_assistant_feedback {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgentAssistantRecord {
     /// Output only. The agent assist answer.
-    #[prost(oneof = "agent_assistant_record::Answer", tags = "5, 6")]
+    #[prost(oneof = "agent_assistant_record::Answer", tags = "5, 6, 7")]
     pub answer: ::core::option::Option<agent_assistant_record::Answer>,
 }
 /// Nested message and enum types in `AgentAssistantRecord`.
@@ -6984,6 +7746,9 @@ pub mod agent_assistant_record {
         /// Output only. The FAQ answer.
         #[prost(message, tag = "6")]
         FaqAnswer(super::FaqAnswer),
+        /// Output only. Dialogflow assist answer.
+        #[prost(message, tag = "7")]
+        DialogflowAssistAnswer(super::DialogflowAssistAnswer),
     }
 }
 /// Generated client implementations.
@@ -6991,7 +7756,8 @@ pub mod answer_records_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Service for managing [AnswerRecords][google.cloud.dialogflow.v2.AnswerRecord].
+    /// Service for managing
+    /// [AnswerRecords][google.cloud.dialogflow.v2.AnswerRecord].
     #[derive(Debug, Clone)]
     pub struct AnswerRecordsClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -7134,6 +7900,1109 @@ pub mod answer_records_client {
         }
     }
 }
+/// Defines the services to connect to incoming Dialogflow conversations.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversationProfile {
+    /// The unique identifier of this conversation profile.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversationProfiles/<Conversation Profile ID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Human readable name for this profile. Max length 1024 bytes.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. Create time of the conversation profile.
+    #[prost(message, optional, tag = "11")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Update time of the conversation profile.
+    #[prost(message, optional, tag = "12")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Configuration for an automated agent to use with this profile.
+    #[prost(message, optional, tag = "3")]
+    pub automated_agent_config: ::core::option::Option<AutomatedAgentConfig>,
+    /// Configuration for agent assistance to use with this profile.
+    #[prost(message, optional, tag = "4")]
+    pub human_agent_assistant_config: ::core::option::Option<HumanAgentAssistantConfig>,
+    /// Configuration for connecting to a live agent.
+    ///
+    /// Currently, this feature is not general available, please contact Google
+    /// to get access.
+    #[prost(message, optional, tag = "5")]
+    pub human_agent_handoff_config: ::core::option::Option<HumanAgentHandoffConfig>,
+    /// Configuration for publishing conversation lifecycle events.
+    #[prost(message, optional, tag = "6")]
+    pub notification_config: ::core::option::Option<NotificationConfig>,
+    /// Configuration for logging conversation lifecycle events.
+    #[prost(message, optional, tag = "7")]
+    pub logging_config: ::core::option::Option<LoggingConfig>,
+    /// Configuration for publishing new message events. Event will be sent in
+    /// format of [ConversationEvent][google.cloud.dialogflow.v2.ConversationEvent]
+    #[prost(message, optional, tag = "8")]
+    pub new_message_event_notification_config: ::core::option::Option<
+        NotificationConfig,
+    >,
+    /// Settings for speech transcription.
+    #[prost(message, optional, tag = "9")]
+    pub stt_config: ::core::option::Option<SpeechToTextConfig>,
+    /// Language code for the conversation profile. If not specified, the language
+    /// is en-US. Language at ConversationProfile should be set for all non en-US
+    /// languages.
+    /// This should be a [BCP-47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>)
+    /// language tag. Example: "en-US".
+    #[prost(string, tag = "10")]
+    pub language_code: ::prost::alloc::string::String,
+    /// The time zone of this conversational profile from the
+    /// [time zone database](<https://www.iana.org/time-zones>), e.g.,
+    /// America/New_York, Europe/Paris. Defaults to America/New_York.
+    #[prost(string, tag = "14")]
+    pub time_zone: ::prost::alloc::string::String,
+    /// Name of the CX SecuritySettings reference for the agent.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/securitySettings/<Security Settings ID>`.
+    #[prost(string, tag = "13")]
+    pub security_settings: ::prost::alloc::string::String,
+    /// Configuration for Text-to-Speech synthesization.
+    ///
+    /// Used by Phone Gateway to specify synthesization options. If agent defines
+    /// synthesization options as well, agent settings overrides the option here.
+    #[prost(message, optional, tag = "18")]
+    pub tts_config: ::core::option::Option<SynthesizeSpeechConfig>,
+}
+/// The request message for
+/// [ConversationProfiles.ListConversationProfiles][google.cloud.dialogflow.v2.ConversationProfiles.ListConversationProfiles].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListConversationProfilesRequest {
+    /// Required. The project to list all conversation profiles from.
+    /// Format: `projects/<Project ID>/locations/<Location ID>`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of items to return in a single page. By
+    /// default 100 and at most 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The next_page_token value returned from a previous list request.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response message for
+/// [ConversationProfiles.ListConversationProfiles][google.cloud.dialogflow.v2.ConversationProfiles.ListConversationProfiles].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListConversationProfilesResponse {
+    /// The list of project conversation profiles. There is a maximum number
+    /// of items returned based on the page_size field in the request.
+    #[prost(message, repeated, tag = "1")]
+    pub conversation_profiles: ::prost::alloc::vec::Vec<ConversationProfile>,
+    /// Token to retrieve the next page of results, or empty if there are no
+    /// more results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request message for
+/// [ConversationProfiles.GetConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.GetConversationProfile].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetConversationProfileRequest {
+    /// Required. The resource name of the conversation profile.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversationProfiles/<Conversation Profile ID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request message for
+/// [ConversationProfiles.CreateConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.CreateConversationProfile].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateConversationProfileRequest {
+    /// Required. The project to create a conversation profile for.
+    /// Format: `projects/<Project ID>/locations/<Location ID>`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The conversation profile to create.
+    #[prost(message, optional, tag = "2")]
+    pub conversation_profile: ::core::option::Option<ConversationProfile>,
+}
+/// The request message for
+/// [ConversationProfiles.UpdateConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.UpdateConversationProfile].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateConversationProfileRequest {
+    /// Required. The conversation profile to update.
+    #[prost(message, optional, tag = "1")]
+    pub conversation_profile: ::core::option::Option<ConversationProfile>,
+    /// Required. The mask to control which fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The request message for
+/// [ConversationProfiles.DeleteConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.DeleteConversationProfile].
+///
+/// This operation fails if the conversation profile is still referenced from
+/// a phone number.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteConversationProfileRequest {
+    /// Required. The name of the conversation profile to delete.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversationProfiles/<Conversation Profile ID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Defines the Automated Agent to connect to a conversation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutomatedAgentConfig {
+    /// Required. ID of the Dialogflow agent environment to use.
+    ///
+    /// This project needs to either be the same project as the conversation or you
+    /// need to grant `service-<Conversation Project
+    /// Number>@gcp-sa-dialogflow.iam.gserviceaccount.com` the `Dialogflow API
+    /// Service Agent` role in this project.
+    ///
+    /// - For ES agents, use format: `projects/<Project ID>/locations/<Location
+    /// ID>/agent/environments/<Environment ID or '-'>`. If environment is not
+    /// specified, the default `draft` environment is used. Refer to
+    /// [DetectIntentRequest](/dialogflow/docs/reference/rpc/google.cloud.dialogflow.v2#google.cloud.dialogflow.v2.DetectIntentRequest)
+    /// for more details.
+    ///
+    /// - For CX agents, use format `projects/<Project ID>/locations/<Location
+    /// ID>/agents/<Agent ID>/environments/<Environment ID
+    /// or '-'>`. If environment is not specified, the default `draft` environment
+    /// is used.
+    #[prost(string, tag = "1")]
+    pub agent: ::prost::alloc::string::String,
+    /// Optional. Sets Dialogflow CX session life time.
+    /// By default, a Dialogflow CX session remains active and its data is stored
+    /// for 30 minutes after the last request is sent for the session. This value
+    /// should be no longer than 1 day.
+    #[prost(message, optional, tag = "3")]
+    pub session_ttl: ::core::option::Option<::prost_types::Duration>,
+}
+/// Defines the Human Agent Assist to connect to a conversation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HumanAgentAssistantConfig {
+    /// Pub/Sub topic on which to publish new agent assistant events.
+    #[prost(message, optional, tag = "2")]
+    pub notification_config: ::core::option::Option<NotificationConfig>,
+    /// Configuration for agent assistance of human agent participant.
+    #[prost(message, optional, tag = "3")]
+    pub human_agent_suggestion_config: ::core::option::Option<
+        human_agent_assistant_config::SuggestionConfig,
+    >,
+    /// Configuration for agent assistance of end user participant.
+    ///
+    /// Currently, this feature is not general available, please contact Google
+    /// to get access.
+    #[prost(message, optional, tag = "4")]
+    pub end_user_suggestion_config: ::core::option::Option<
+        human_agent_assistant_config::SuggestionConfig,
+    >,
+    /// Configuration for message analysis.
+    #[prost(message, optional, tag = "5")]
+    pub message_analysis_config: ::core::option::Option<
+        human_agent_assistant_config::MessageAnalysisConfig,
+    >,
+}
+/// Nested message and enum types in `HumanAgentAssistantConfig`.
+pub mod human_agent_assistant_config {
+    /// Settings of suggestion trigger.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SuggestionTriggerSettings {
+        /// Do not trigger if last utterance is small talk.
+        #[prost(bool, tag = "1")]
+        pub no_smalltalk: bool,
+        /// Only trigger suggestion if participant role of last utterance is
+        /// END_USER.
+        #[prost(bool, tag = "2")]
+        pub only_end_user: bool,
+    }
+    /// Config for suggestion features.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SuggestionFeatureConfig {
+        /// The suggestion feature.
+        #[prost(message, optional, tag = "5")]
+        pub suggestion_feature: ::core::option::Option<super::SuggestionFeature>,
+        /// Automatically iterates all participants and tries to compile
+        /// suggestions.
+        ///
+        /// Supported features: ARTICLE_SUGGESTION, FAQ, DIALOGFLOW_ASSIST,
+        /// KNOWLEDGE_ASSIST.
+        #[prost(bool, tag = "3")]
+        pub enable_event_based_suggestion: bool,
+        /// Optional. Disable the logging of search queries sent by human agents. It
+        /// can prevent those queries from being stored at answer records.
+        ///
+        /// Supported features: KNOWLEDGE_SEARCH.
+        #[prost(bool, tag = "14")]
+        pub disable_agent_query_logging: bool,
+        /// Settings of suggestion trigger.
+        ///
+        /// Currently, only ARTICLE_SUGGESTION and FAQ will use this field.
+        #[prost(message, optional, tag = "10")]
+        pub suggestion_trigger_settings: ::core::option::Option<
+            SuggestionTriggerSettings,
+        >,
+        /// Configs of query.
+        #[prost(message, optional, tag = "6")]
+        pub query_config: ::core::option::Option<SuggestionQueryConfig>,
+        /// Configs of custom conversation model.
+        #[prost(message, optional, tag = "7")]
+        pub conversation_model_config: ::core::option::Option<ConversationModelConfig>,
+        /// Configs for processing conversation.
+        #[prost(message, optional, tag = "8")]
+        pub conversation_process_config: ::core::option::Option<
+            ConversationProcessConfig,
+        >,
+    }
+    /// Detail human agent assistant config.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SuggestionConfig {
+        /// Configuration of different suggestion features. One feature can have only
+        /// one config.
+        #[prost(message, repeated, tag = "2")]
+        pub feature_configs: ::prost::alloc::vec::Vec<SuggestionFeatureConfig>,
+        /// If `group_suggestion_responses` is false, and there are multiple
+        /// `feature_configs` in `event based suggestion` or
+        /// StreamingAnalyzeContent, we will try to deliver suggestions to customers
+        /// as soon as we get new suggestion. Different type of suggestions based on
+        /// the same context will be in  separate Pub/Sub event or
+        /// `StreamingAnalyzeContentResponse`.
+        ///
+        /// If `group_suggestion_responses` set to true. All the suggestions to the
+        /// same participant based on the same context will be grouped into a single
+        /// Pub/Sub event or StreamingAnalyzeContentResponse.
+        #[prost(bool, tag = "3")]
+        pub group_suggestion_responses: bool,
+    }
+    /// Config for suggestion query.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SuggestionQueryConfig {
+        /// Maximum number of results to return. Currently, if unset, defaults to 10.
+        /// And the max number is 20.
+        #[prost(int32, tag = "4")]
+        pub max_results: i32,
+        /// Confidence threshold of query result.
+        ///
+        /// Agent Assist gives each suggestion a score in the range \[0.0, 1.0\], based
+        /// on the relevance between the suggestion and the current conversation
+        /// context. A score of 0.0 has no relevance, while a score of 1.0 has high
+        /// relevance. Only suggestions with a score greater than or equal to the
+        /// value of this field are included in the results.
+        ///
+        /// For a baseline model (the default), the recommended value is in the range
+        /// \[0.05, 0.1\].
+        ///
+        /// For a custom model, there is no recommended value. Tune this value by
+        /// starting from a very low value and slowly increasing until you have
+        /// desired results.
+        ///
+        /// If this field is not set, it defaults to 0.0, which means that all
+        /// suggestions are returned.
+        ///
+        /// Supported features: ARTICLE_SUGGESTION, FAQ, SMART_REPLY, SMART_COMPOSE,
+        /// KNOWLEDGE_SEARCH, KNOWLEDGE_ASSIST, ENTITY_EXTRACTION.
+        #[prost(float, tag = "5")]
+        pub confidence_threshold: f32,
+        /// Determines how recent conversation context is filtered when generating
+        /// suggestions. If unspecified, no messages will be dropped.
+        #[prost(message, optional, tag = "7")]
+        pub context_filter_settings: ::core::option::Option<
+            suggestion_query_config::ContextFilterSettings,
+        >,
+        /// Source of query.
+        #[prost(oneof = "suggestion_query_config::QuerySource", tags = "1, 2, 3")]
+        pub query_source: ::core::option::Option<suggestion_query_config::QuerySource>,
+    }
+    /// Nested message and enum types in `SuggestionQueryConfig`.
+    pub mod suggestion_query_config {
+        /// Knowledge base source settings.
+        ///
+        /// Supported features: ARTICLE_SUGGESTION, FAQ.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct KnowledgeBaseQuerySource {
+            /// Required. Knowledge bases to query. Format:
+            /// `projects/<Project ID>/locations/<Location
+            /// ID>/knowledgeBases/<Knowledge Base ID>`. Currently, at most 5 knowledge
+            /// bases are supported.
+            #[prost(string, repeated, tag = "1")]
+            pub knowledge_bases: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
+        }
+        /// Document source settings.
+        ///
+        /// Supported features: SMART_REPLY, SMART_COMPOSE.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct DocumentQuerySource {
+            /// Required. Knowledge documents to query from. Format:
+            /// `projects/<Project ID>/locations/<Location
+            /// ID>/knowledgeBases/<KnowledgeBase ID>/documents/<Document ID>`.
+            /// Currently, at most 5 documents are supported.
+            #[prost(string, repeated, tag = "1")]
+            pub documents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
+        /// Dialogflow source setting.
+        ///
+        /// Supported feature: DIALOGFLOW_ASSIST.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct DialogflowQuerySource {
+            /// Required. The name of a Dialogflow virtual agent used for end user side
+            /// intent detection and suggestion. Format: `projects/<Project
+            /// ID>/locations/<Location ID>/agent`. When multiple agents are allowed in
+            /// the same Dialogflow project.
+            #[prost(string, tag = "1")]
+            pub agent: ::prost::alloc::string::String,
+            /// Optional. The Dialogflow assist configuration for human agent.
+            #[prost(message, optional, tag = "3")]
+            pub human_agent_side_config: ::core::option::Option<
+                dialogflow_query_source::HumanAgentSideConfig,
+            >,
+        }
+        /// Nested message and enum types in `DialogflowQuerySource`.
+        pub mod dialogflow_query_source {
+            /// The configuration used for human agent side Dialogflow assist
+            /// suggestion.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct HumanAgentSideConfig {
+                /// Optional. The name of a dialogflow virtual agent used for intent
+                /// detection and suggestion triggered by human agent.
+                /// Format: `projects/<Project ID>/locations/<Location ID>/agent`.
+                #[prost(string, tag = "1")]
+                pub agent: ::prost::alloc::string::String,
+            }
+        }
+        /// Settings that determine how to filter recent conversation context when
+        /// generating suggestions.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ContextFilterSettings {
+            /// If set to true, the last message from virtual agent (hand off message)
+            /// and the message before it (trigger message of hand off) are dropped.
+            #[prost(bool, tag = "1")]
+            pub drop_handoff_messages: bool,
+            /// If set to true, all messages from virtual agent are dropped.
+            #[prost(bool, tag = "2")]
+            pub drop_virtual_agent_messages: bool,
+            /// If set to true, all messages from ivr stage are dropped.
+            #[prost(bool, tag = "3")]
+            pub drop_ivr_messages: bool,
+        }
+        /// Source of query.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum QuerySource {
+            /// Query from knowledgebase. It is used by:
+            /// ARTICLE_SUGGESTION, FAQ.
+            #[prost(message, tag = "1")]
+            KnowledgeBaseQuerySource(KnowledgeBaseQuerySource),
+            /// Query from knowledge base document. It is used by:
+            /// SMART_REPLY, SMART_COMPOSE.
+            #[prost(message, tag = "2")]
+            DocumentQuerySource(DocumentQuerySource),
+            /// Query from Dialogflow agent. It is used by DIALOGFLOW_ASSIST.
+            #[prost(message, tag = "3")]
+            DialogflowQuerySource(DialogflowQuerySource),
+        }
+    }
+    /// Custom conversation models used in agent assist feature.
+    ///
+    /// Supported feature: ARTICLE_SUGGESTION, SMART_COMPOSE, SMART_REPLY,
+    /// CONVERSATION_SUMMARIZATION.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConversationModelConfig {
+        /// Conversation model resource name. Format: `projects/<Project
+        /// ID>/conversationModels/<Model ID>`.
+        #[prost(string, tag = "1")]
+        pub model: ::prost::alloc::string::String,
+        /// Version of current baseline model. It will be ignored if
+        /// [model][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.ConversationModelConfig.model]
+        /// is set. Valid versions are:
+        ///    Article Suggestion baseline model:
+        ///      - 0.9
+        ///      - 1.0 (default)
+        ///    Summarization baseline model:
+        ///      - 1.0
+        #[prost(string, tag = "8")]
+        pub baseline_model_version: ::prost::alloc::string::String,
+    }
+    /// Config to process conversation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConversationProcessConfig {
+        /// Number of recent non-small-talk sentences to use as context for article
+        /// and FAQ suggestion
+        #[prost(int32, tag = "2")]
+        pub recent_sentences_count: i32,
+    }
+    /// Configuration for analyses to run on each conversation message.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MessageAnalysisConfig {
+        /// Enable entity extraction in conversation messages on [agent assist
+        /// stage](<https://cloud.google.com/dialogflow/priv/docs/contact-center/basics#stages>).
+        /// If unspecified, defaults to false.
+        ///
+        /// Currently, this feature is not general available, please contact Google
+        /// to get access.
+        #[prost(bool, tag = "2")]
+        pub enable_entity_extraction: bool,
+        /// Enable sentiment analysis in conversation messages on [agent assist
+        /// stage](<https://cloud.google.com/dialogflow/priv/docs/contact-center/basics#stages>).
+        /// If unspecified, defaults to false. Sentiment analysis inspects user input
+        /// and identifies the prevailing subjective opinion, especially to determine
+        /// a user's attitude as positive, negative, or neutral:
+        /// <https://cloud.google.com/natural-language/docs/basics#sentiment_analysis>
+        /// For
+        /// [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2.Participants.StreamingAnalyzeContent]
+        /// method, result will be in
+        /// [StreamingAnalyzeContentResponse.message.SentimentAnalysisResult][google.cloud.dialogflow.v2.StreamingAnalyzeContentResponse.message].
+        /// For
+        /// [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent]
+        /// method, result will be in
+        /// [AnalyzeContentResponse.message.SentimentAnalysisResult][google.cloud.dialogflow.v2.AnalyzeContentResponse.message]
+        /// For
+        /// [Conversations.ListMessages][google.cloud.dialogflow.v2.Conversations.ListMessages]
+        /// method, result will be in
+        /// [ListMessagesResponse.messages.SentimentAnalysisResult][google.cloud.dialogflow.v2.ListMessagesResponse.messages]
+        /// If Pub/Sub notification is configured, result will be in
+        /// [ConversationEvent.new_message_payload.SentimentAnalysisResult][google.cloud.dialogflow.v2.ConversationEvent.new_message_payload].
+        #[prost(bool, tag = "3")]
+        pub enable_sentiment_analysis: bool,
+    }
+}
+/// Defines the hand off to a live agent, typically on which external agent
+/// service provider to connect to a conversation.
+///
+/// Currently, this feature is not general available, please contact Google
+/// to get access.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HumanAgentHandoffConfig {
+    /// Required. Specifies which agent service to connect for human agent handoff.
+    #[prost(oneof = "human_agent_handoff_config::AgentService", tags = "1, 2")]
+    pub agent_service: ::core::option::Option<human_agent_handoff_config::AgentService>,
+}
+/// Nested message and enum types in `HumanAgentHandoffConfig`.
+pub mod human_agent_handoff_config {
+    /// Configuration specific to LivePerson (<https://www.liveperson.com>).
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct LivePersonConfig {
+        /// Required. Account number of the LivePerson account to connect. This is
+        /// the account number you input at the login page.
+        #[prost(string, tag = "1")]
+        pub account_number: ::prost::alloc::string::String,
+    }
+    /// Configuration specific to Salesforce Live Agent.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SalesforceLiveAgentConfig {
+        /// Required. The organization ID of the Salesforce account.
+        #[prost(string, tag = "1")]
+        pub organization_id: ::prost::alloc::string::String,
+        /// Required. Live Agent deployment ID.
+        #[prost(string, tag = "2")]
+        pub deployment_id: ::prost::alloc::string::String,
+        /// Required. Live Agent chat button ID.
+        #[prost(string, tag = "3")]
+        pub button_id: ::prost::alloc::string::String,
+        /// Required. Domain of the Live Agent endpoint for this agent. You can find
+        /// the endpoint URL in the `Live Agent settings` page. For example if URL
+        /// has the form <https://d.la4-c2-phx.salesforceliveagent.com/...,>
+        /// you should fill in d.la4-c2-phx.salesforceliveagent.com.
+        #[prost(string, tag = "4")]
+        pub endpoint_domain: ::prost::alloc::string::String,
+    }
+    /// Required. Specifies which agent service to connect for human agent handoff.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AgentService {
+        /// Uses LivePerson (<https://www.liveperson.com>).
+        #[prost(message, tag = "1")]
+        LivePersonConfig(LivePersonConfig),
+        /// Uses Salesforce Live Agent.
+        #[prost(message, tag = "2")]
+        SalesforceLiveAgentConfig(SalesforceLiveAgentConfig),
+    }
+}
+/// Defines notification behavior.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NotificationConfig {
+    /// Name of the Pub/Sub topic to publish conversation
+    /// events like
+    /// [CONVERSATION_STARTED][google.cloud.dialogflow.v2.ConversationEvent.Type.CONVERSATION_STARTED]
+    /// as serialized
+    /// [ConversationEvent][google.cloud.dialogflow.v2.ConversationEvent] protos.
+    ///
+    /// For telephony integration to receive notification, make sure either this
+    /// topic is in the same project as the conversation or you grant
+    /// `service-<Conversation Project
+    /// Number>@gcp-sa-dialogflow.iam.gserviceaccount.com` the `Dialogflow Service
+    /// Agent` role in the topic project.
+    ///
+    /// For chat integration to receive notification, make sure API caller has been
+    /// granted the `Dialogflow Service Agent` role for the topic.
+    ///
+    /// Format: `projects/<Project ID>/locations/<Location ID>/topics/<Topic ID>`.
+    #[prost(string, tag = "1")]
+    pub topic: ::prost::alloc::string::String,
+    /// Format of message.
+    #[prost(enumeration = "notification_config::MessageFormat", tag = "2")]
+    pub message_format: i32,
+}
+/// Nested message and enum types in `NotificationConfig`.
+pub mod notification_config {
+    /// Format of cloud pub/sub message.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MessageFormat {
+        /// If it is unspecified, PROTO will be used.
+        Unspecified = 0,
+        /// Pub/Sub message will be serialized proto.
+        Proto = 1,
+        /// Pub/Sub message will be json.
+        Json = 2,
+    }
+    impl MessageFormat {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                MessageFormat::Unspecified => "MESSAGE_FORMAT_UNSPECIFIED",
+                MessageFormat::Proto => "PROTO",
+                MessageFormat::Json => "JSON",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MESSAGE_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROTO" => Some(Self::Proto),
+                "JSON" => Some(Self::Json),
+                _ => None,
+            }
+        }
+    }
+}
+/// Defines logging behavior for conversation lifecycle events.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LoggingConfig {
+    /// Whether to log conversation events like
+    /// [CONVERSATION_STARTED][google.cloud.dialogflow.v2.ConversationEvent.Type.CONVERSATION_STARTED]
+    /// to Stackdriver in the conversation project as JSON format
+    /// [ConversationEvent][google.cloud.dialogflow.v2.ConversationEvent] protos.
+    #[prost(bool, tag = "3")]
+    pub enable_stackdriver_logging: bool,
+}
+/// The type of Human Agent Assistant API suggestion to perform, and the maximum
+/// number of results to return for that type. Multiple `Feature` objects can
+/// be specified in the `features` list.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SuggestionFeature {
+    /// Type of Human Agent Assistant API feature to request.
+    #[prost(enumeration = "suggestion_feature::Type", tag = "1")]
+    pub r#type: i32,
+}
+/// Nested message and enum types in `SuggestionFeature`.
+pub mod suggestion_feature {
+    /// Defines the type of Human Agent Assistant feature.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Unspecified feature type.
+        Unspecified = 0,
+        /// Run article suggestion model for chat.
+        ArticleSuggestion = 1,
+        /// Run FAQ model for chat.
+        Faq = 2,
+        /// Run smart reply model for chat.
+        SmartReply = 3,
+        /// Run knowledge search with text input from agent or text generated query.
+        KnowledgeSearch = 14,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Type::Unspecified => "TYPE_UNSPECIFIED",
+                Type::ArticleSuggestion => "ARTICLE_SUGGESTION",
+                Type::Faq => "FAQ",
+                Type::SmartReply => "SMART_REPLY",
+                Type::KnowledgeSearch => "KNOWLEDGE_SEARCH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ARTICLE_SUGGESTION" => Some(Self::ArticleSuggestion),
+                "FAQ" => Some(Self::Faq),
+                "SMART_REPLY" => Some(Self::SmartReply),
+                "KNOWLEDGE_SEARCH" => Some(Self::KnowledgeSearch),
+                _ => None,
+            }
+        }
+    }
+}
+/// The request message for
+/// [ConversationProfiles.SetSuggestionFeature][].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SetSuggestionFeatureConfigRequest {
+    /// Required. The Conversation Profile to add or update the suggestion feature
+    /// config. Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversationProfiles/<Conversation Profile ID>`.
+    #[prost(string, tag = "1")]
+    pub conversation_profile: ::prost::alloc::string::String,
+    /// Required. The participant role to add or update the suggestion feature
+    /// config. Only HUMAN_AGENT or END_USER can be used.
+    #[prost(enumeration = "participant::Role", tag = "2")]
+    pub participant_role: i32,
+    /// Required. The suggestion feature config to add or update.
+    #[prost(message, optional, tag = "3")]
+    pub suggestion_feature_config: ::core::option::Option<
+        human_agent_assistant_config::SuggestionFeatureConfig,
+    >,
+}
+/// The request message for [ConversationProfiles.ClearFeature][].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClearSuggestionFeatureConfigRequest {
+    /// Required. The Conversation Profile to add or update the suggestion feature
+    /// config. Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversationProfiles/<Conversation Profile ID>`.
+    #[prost(string, tag = "1")]
+    pub conversation_profile: ::prost::alloc::string::String,
+    /// Required. The participant role to remove the suggestion feature
+    /// config. Only HUMAN_AGENT or END_USER can be used.
+    #[prost(enumeration = "participant::Role", tag = "2")]
+    pub participant_role: i32,
+    /// Required. The type of the suggestion feature to remove.
+    #[prost(enumeration = "suggestion_feature::Type", tag = "3")]
+    pub suggestion_feature_type: i32,
+}
+/// Metadata for a [ConversationProfile.SetSuggestionFeatureConfig][]
+/// operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SetSuggestionFeatureConfigOperationMetadata {
+    /// The resource name of the conversation profile. Format:
+    /// `projects/<Project ID>/locations/<Location
+    /// ID>/conversationProfiles/<Conversation Profile ID>`
+    #[prost(string, tag = "1")]
+    pub conversation_profile: ::prost::alloc::string::String,
+    /// Required. The participant role to add or update the suggestion feature
+    /// config. Only HUMAN_AGENT or END_USER can be used.
+    #[prost(enumeration = "participant::Role", tag = "2")]
+    pub participant_role: i32,
+    /// Required. The type of the suggestion feature to add or update.
+    #[prost(enumeration = "suggestion_feature::Type", tag = "3")]
+    pub suggestion_feature_type: i32,
+    /// Timestamp whe the request was created. The time is measured on server side.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Metadata for a [ConversationProfile.ClearSuggestionFeatureConfig][]
+/// operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClearSuggestionFeatureConfigOperationMetadata {
+    /// The resource name of the conversation profile. Format:
+    /// `projects/<Project ID>/locations/<Location
+    /// ID>/conversationProfiles/<Conversation Profile ID>`
+    #[prost(string, tag = "1")]
+    pub conversation_profile: ::prost::alloc::string::String,
+    /// Required. The participant role to remove the suggestion feature
+    /// config. Only HUMAN_AGENT or END_USER can be used.
+    #[prost(enumeration = "participant::Role", tag = "2")]
+    pub participant_role: i32,
+    /// Required. The type of the suggestion feature to remove.
+    #[prost(enumeration = "suggestion_feature::Type", tag = "3")]
+    pub suggestion_feature_type: i32,
+    /// Timestamp whe the request was created. The time is measured on server side.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Generated client implementations.
+pub mod conversation_profiles_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for managing
+    /// [ConversationProfiles][google.cloud.dialogflow.v2.ConversationProfile].
+    #[derive(Debug, Clone)]
+    pub struct ConversationProfilesClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl ConversationProfilesClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> ConversationProfilesClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ConversationProfilesClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            ConversationProfilesClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Returns the list of all conversation profiles in the specified project.
+        pub async fn list_conversation_profiles(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListConversationProfilesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListConversationProfilesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.ConversationProfiles/ListConversationProfiles",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.ConversationProfiles",
+                        "ListConversationProfiles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves the specified conversation profile.
+        pub async fn get_conversation_profile(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetConversationProfileRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ConversationProfile>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.ConversationProfiles/GetConversationProfile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.ConversationProfiles",
+                        "GetConversationProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a conversation profile in the specified project.
+        ///
+        /// [ConversationProfile.CreateTime][] and [ConversationProfile.UpdateTime][]
+        /// aren't populated in the response. You can retrieve them via
+        /// [GetConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.GetConversationProfile]
+        /// API.
+        pub async fn create_conversation_profile(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateConversationProfileRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ConversationProfile>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.ConversationProfiles/CreateConversationProfile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.ConversationProfiles",
+                        "CreateConversationProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the specified conversation profile.
+        ///
+        /// [ConversationProfile.CreateTime][] and [ConversationProfile.UpdateTime][]
+        /// aren't populated in the response. You can retrieve them via
+        /// [GetConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.GetConversationProfile]
+        /// API.
+        pub async fn update_conversation_profile(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateConversationProfileRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ConversationProfile>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.ConversationProfiles/UpdateConversationProfile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.ConversationProfiles",
+                        "UpdateConversationProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the specified conversation profile.
+        pub async fn delete_conversation_profile(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteConversationProfileRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.ConversationProfiles/DeleteConversationProfile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.ConversationProfiles",
+                        "DeleteConversationProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Adds or updates a suggestion feature in a conversation profile.
+        /// If the conversation profile contains the type of suggestion feature for
+        /// the participant role, it will update it. Otherwise it will insert the
+        /// suggestion feature.
+        ///
+        /// This method is a [long-running
+        /// operation](https://cloud.google.com/dialogflow/es/docs/how/long-running-operations).
+        /// The returned `Operation` type has the following method-specific fields:
+        ///
+        /// - `metadata`:
+        /// [SetSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2.SetSuggestionFeatureConfigOperationMetadata]
+        /// - `response`:
+        /// [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile]
+        ///
+        /// If a long running operation to add or update suggestion feature
+        /// config for the same conversation profile, participant role and suggestion
+        /// feature type exists, please cancel the existing long running operation
+        /// before sending such request, otherwise the request will be rejected.
+        pub async fn set_suggestion_feature_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SetSuggestionFeatureConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.ConversationProfiles/SetSuggestionFeatureConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.ConversationProfiles",
+                        "SetSuggestionFeatureConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Clears a suggestion feature from a conversation profile for the given
+        /// participant role.
+        ///
+        /// This method is a [long-running
+        /// operation](https://cloud.google.com/dialogflow/es/docs/how/long-running-operations).
+        /// The returned `Operation` type has the following method-specific fields:
+        ///
+        /// - `metadata`:
+        /// [ClearSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2.ClearSuggestionFeatureConfigOperationMetadata]
+        /// - `response`:
+        /// [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile]
+        pub async fn clear_suggestion_feature_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ClearSuggestionFeatureConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.ConversationProfiles/ClearSuggestionFeatureConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.ConversationProfiles",
+                        "ClearSuggestionFeatureConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// Represents a conversation.
 /// A conversation is an interaction between an agent, including live agents
 /// and Dialogflow agents, and a support customer. Conversations can
@@ -7155,8 +9024,8 @@ pub struct Conversation {
     /// ID>/conversationProfiles/<Conversation Profile ID>`.
     #[prost(string, tag = "3")]
     pub conversation_profile: ::prost::alloc::string::String,
-    /// Output only. It will not be empty if the conversation is to be connected over
-    /// telephony.
+    /// Output only. It will not be empty if the conversation is to be connected
+    /// over telephony.
     #[prost(message, optional, tag = "4")]
     pub phone_number: ::core::option::Option<ConversationPhoneNumber>,
     /// Output only. The time the conversation was started.
@@ -7170,13 +9039,16 @@ pub struct Conversation {
     ///
     /// If the conversation is created with the conversation profile that has
     /// Dialogflow config set, defaults to
-    /// [ConversationStage.VIRTUAL_AGENT_STAGE][google.cloud.dialogflow.v2.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE]; Otherwise, defaults to
+    /// [ConversationStage.VIRTUAL_AGENT_STAGE][google.cloud.dialogflow.v2.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE];
+    /// Otherwise, defaults to
     /// [ConversationStage.HUMAN_ASSIST_STAGE][google.cloud.dialogflow.v2.Conversation.ConversationStage.HUMAN_ASSIST_STAGE].
     ///
     /// If the conversation is created with the conversation profile that has
     /// Dialogflow config set but explicitly sets conversation_stage to
-    /// [ConversationStage.HUMAN_ASSIST_STAGE][google.cloud.dialogflow.v2.Conversation.ConversationStage.HUMAN_ASSIST_STAGE], it skips
-    /// [ConversationStage.VIRTUAL_AGENT_STAGE][google.cloud.dialogflow.v2.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE] stage and directly goes to
+    /// [ConversationStage.HUMAN_ASSIST_STAGE][google.cloud.dialogflow.v2.Conversation.ConversationStage.HUMAN_ASSIST_STAGE],
+    /// it skips
+    /// [ConversationStage.VIRTUAL_AGENT_STAGE][google.cloud.dialogflow.v2.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE]
+    /// stage and directly goes to
     /// [ConversationStage.HUMAN_ASSIST_STAGE][google.cloud.dialogflow.v2.Conversation.ConversationStage.HUMAN_ASSIST_STAGE].
     #[prost(enumeration = "conversation::ConversationStage", tag = "7")]
     pub conversation_stage: i32,
@@ -7275,7 +9147,8 @@ pub mod conversation {
         }
     }
 }
-/// The request message for [Conversations.CreateConversation][google.cloud.dialogflow.v2.Conversations.CreateConversation].
+/// The request message for
+/// [Conversations.CreateConversation][google.cloud.dialogflow.v2.Conversations.CreateConversation].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConversationRequest {
@@ -7286,12 +9159,12 @@ pub struct CreateConversationRequest {
     /// Required. The conversation to create.
     #[prost(message, optional, tag = "2")]
     pub conversation: ::core::option::Option<Conversation>,
-    /// Optional. Identifier of the conversation. Generally it's auto generated by Google.
-    /// Only set it if you cannot wait for the response to return a
+    /// Optional. Identifier of the conversation. Generally it's auto generated by
+    /// Google. Only set it if you cannot wait for the response to return a
     /// auto-generated one to you.
     ///
     /// The conversation ID must be compliant with the regression fomula
-    /// "[a-zA-Z][a-zA-Z0-9_-]*" with the characters length in range of \[3,64\].
+    /// `[a-zA-Z][a-zA-Z0-9_-]*` with the characters length in range of \[3,64\].
     /// If the field is provided, the caller is resposible for
     /// 1. the uniqueness of the ID, otherwise the request will be rejected.
     /// 2. the consistency for whether to use custom ID or not under a project to
@@ -7299,7 +9172,8 @@ pub struct CreateConversationRequest {
     #[prost(string, tag = "3")]
     pub conversation_id: ::prost::alloc::string::String,
 }
-/// The request message for [Conversations.ListConversations][google.cloud.dialogflow.v2.Conversations.ListConversations].
+/// The request message for
+/// [Conversations.ListConversations][google.cloud.dialogflow.v2.Conversations.ListConversations].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConversationsRequest {
@@ -7334,7 +9208,8 @@ pub struct ListConversationsRequest {
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
-/// The response message for [Conversations.ListConversations][google.cloud.dialogflow.v2.Conversations.ListConversations].
+/// The response message for
+/// [Conversations.ListConversations][google.cloud.dialogflow.v2.Conversations.ListConversations].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConversationsResponse {
@@ -7347,7 +9222,8 @@ pub struct ListConversationsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request message for [Conversations.GetConversation][google.cloud.dialogflow.v2.Conversations.GetConversation].
+/// The request message for
+/// [Conversations.GetConversation][google.cloud.dialogflow.v2.Conversations.GetConversation].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConversationRequest {
@@ -7357,7 +9233,8 @@ pub struct GetConversationRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [Conversations.CompleteConversation][google.cloud.dialogflow.v2.Conversations.CompleteConversation].
+/// The request message for
+/// [Conversations.CompleteConversation][google.cloud.dialogflow.v2.Conversations.CompleteConversation].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompleteConversationRequest {
@@ -7367,7 +9244,8 @@ pub struct CompleteConversationRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [Conversations.ListMessages][google.cloud.dialogflow.v2.Conversations.ListMessages].
+/// The request message for
+/// [Conversations.ListMessages][google.cloud.dialogflow.v2.Conversations.ListMessages].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMessagesRequest {
@@ -7394,7 +9272,8 @@ pub struct ListMessagesRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response message for [Conversations.ListMessages][google.cloud.dialogflow.v2.Conversations.ListMessages].
+/// The response message for
+/// [Conversations.ListMessages][google.cloud.dialogflow.v2.Conversations.ListMessages].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMessagesResponse {
@@ -7417,12 +9296,309 @@ pub struct ConversationPhoneNumber {
     #[prost(string, tag = "3")]
     pub phone_number: ::prost::alloc::string::String,
 }
+/// The request message for
+/// [Conversations.SuggestConversationSummary][google.cloud.dialogflow.v2.Conversations.SuggestConversationSummary].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SuggestConversationSummaryRequest {
+    /// Required. The conversation to fetch suggestion for.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>`.
+    #[prost(string, tag = "1")]
+    pub conversation: ::prost::alloc::string::String,
+    /// The name of the latest conversation message used as context for
+    /// compiling suggestion. If empty, the latest message of the conversation will
+    /// be used.
+    ///
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>/messages/<Message ID>`.
+    #[prost(string, tag = "3")]
+    pub latest_message: ::prost::alloc::string::String,
+    /// Max number of messages prior to and including
+    /// \[latest_message\] to use as context when compiling the
+    /// suggestion. By default 500 and at most 1000.
+    #[prost(int32, tag = "4")]
+    pub context_size: i32,
+    /// Parameters for a human assist query. Only used for POC/demo purpose.
+    #[prost(message, optional, tag = "5")]
+    pub assist_query_params: ::core::option::Option<AssistQueryParameters>,
+}
+/// The response message for
+/// [Conversations.SuggestConversationSummary][google.cloud.dialogflow.v2.Conversations.SuggestConversationSummary].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SuggestConversationSummaryResponse {
+    /// Generated summary.
+    #[prost(message, optional, tag = "1")]
+    pub summary: ::core::option::Option<suggest_conversation_summary_response::Summary>,
+    /// The name of the latest conversation message used as context for
+    /// compiling suggestion.
+    ///
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>/messages/<Message ID>`.
+    #[prost(string, tag = "2")]
+    pub latest_message: ::prost::alloc::string::String,
+    /// Number of messages prior to and including
+    /// [last_conversation_message][] used to compile the suggestion. It may be
+    /// smaller than the [SuggestSummaryRequest.context_size][] field in the
+    /// request if there weren't that many messages in the conversation.
+    #[prost(int32, tag = "3")]
+    pub context_size: i32,
+}
+/// Nested message and enum types in `SuggestConversationSummaryResponse`.
+pub mod suggest_conversation_summary_response {
+    /// Generated summary for a conversation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Summary {
+        /// The summary content that is concatenated into one string.
+        #[prost(string, tag = "1")]
+        pub text: ::prost::alloc::string::String,
+        /// The summary content that is divided into sections. The key is the
+        /// section's name and the value is the section's content. There is no
+        /// specific format for the key or value.
+        #[prost(map = "string, string", tag = "4")]
+        pub text_sections: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        /// The name of the answer record. Format:
+        /// "projects/<Project ID>/answerRecords/<Answer Record ID>"
+        #[prost(string, tag = "3")]
+        pub answer_record: ::prost::alloc::string::String,
+        /// The baseline model version used to generate this summary. It is empty if
+        /// a baseline model was not used to generate this summary.
+        #[prost(string, tag = "5")]
+        pub baseline_model_version: ::prost::alloc::string::String,
+    }
+}
+/// The request message for
+/// [Conversations.GenerateStatelessSummary][google.cloud.dialogflow.v2.Conversations.GenerateStatelessSummary].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateStatelessSummaryRequest {
+    /// Required. The conversation to suggest a summary for.
+    #[prost(message, optional, tag = "1")]
+    pub stateless_conversation: ::core::option::Option<
+        generate_stateless_summary_request::MinimalConversation,
+    >,
+    /// Required. A ConversationProfile containing information required for Summary
+    /// generation.
+    /// Required fields: {language_code, security_settings}
+    /// Optional fields: {agent_assistant_config}
+    #[prost(message, optional, tag = "2")]
+    pub conversation_profile: ::core::option::Option<ConversationProfile>,
+    /// The name of the latest conversation message used as context for
+    /// generating a Summary. If empty, the latest message of the conversation will
+    /// be used. The format is specific to the user and the names of the messages
+    /// provided.
+    #[prost(string, tag = "3")]
+    pub latest_message: ::prost::alloc::string::String,
+    /// Max number of messages prior to and including
+    /// \[latest_message\] to use as context when compiling the
+    /// suggestion. By default 500 and at most 1000.
+    #[prost(int32, tag = "4")]
+    pub max_context_size: i32,
+}
+/// Nested message and enum types in `GenerateStatelessSummaryRequest`.
+pub mod generate_stateless_summary_request {
+    /// The minimum amount of information required to generate a Summary without
+    /// having a Conversation resource created.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MinimalConversation {
+        /// Required. The messages that the Summary will be generated from. It is
+        /// expected that this message content is already redacted and does not
+        /// contain any PII. Required fields: {content, language_code, participant,
+        /// participant_role} Optional fields: {send_time} If send_time is not
+        /// provided, then the messages must be provided in chronological order.
+        #[prost(message, repeated, tag = "1")]
+        pub messages: ::prost::alloc::vec::Vec<super::Message>,
+        /// Required. The parent resource to charge for the Summary's generation.
+        /// Format: `projects/<Project ID>/locations/<Location ID>`.
+        #[prost(string, tag = "2")]
+        pub parent: ::prost::alloc::string::String,
+    }
+}
+/// The response message for
+/// [Conversations.GenerateStatelessSummary][google.cloud.dialogflow.v2.Conversations.GenerateStatelessSummary].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateStatelessSummaryResponse {
+    /// Generated summary.
+    #[prost(message, optional, tag = "1")]
+    pub summary: ::core::option::Option<generate_stateless_summary_response::Summary>,
+    /// The name of the latest conversation message used as context for
+    /// compiling suggestion. The format is specific to the user and the names of
+    /// the messages provided.
+    #[prost(string, tag = "2")]
+    pub latest_message: ::prost::alloc::string::String,
+    /// Number of messages prior to and including
+    /// [last_conversation_message][] used to compile the suggestion. It may be
+    /// smaller than the [GenerateStatelessSummaryRequest.context_size][] field in
+    /// the request if there weren't that many messages in the conversation.
+    #[prost(int32, tag = "3")]
+    pub context_size: i32,
+}
+/// Nested message and enum types in `GenerateStatelessSummaryResponse`.
+pub mod generate_stateless_summary_response {
+    /// Generated summary for a conversation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Summary {
+        /// The summary content that is concatenated into one string.
+        #[prost(string, tag = "1")]
+        pub text: ::prost::alloc::string::String,
+        /// The summary content that is divided into sections. The key is the
+        /// section's name and the value is the section's content. There is no
+        /// specific format for the key or value.
+        #[prost(map = "string, string", tag = "2")]
+        pub text_sections: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        /// The baseline model version used to generate this summary. It is empty if
+        /// a baseline model was not used to generate this summary.
+        #[prost(string, tag = "4")]
+        pub baseline_model_version: ::prost::alloc::string::String,
+    }
+}
+/// The request message for
+/// [Conversations.SearchKnowledge][google.cloud.dialogflow.v2.Conversations.SearchKnowledge].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchKnowledgeRequest {
+    /// The parent resource contains the conversation profile
+    /// Format: 'projects/<Project ID>' or `projects/<Project
+    /// ID>/locations/<Location ID>`.
+    #[prost(string, tag = "6")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The natural language text query for knowledge search.
+    #[prost(message, optional, tag = "1")]
+    pub query: ::core::option::Option<TextInput>,
+    /// Required. The conversation profile used to configure the search.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversationProfiles/<Conversation Profile ID>`.
+    #[prost(string, tag = "2")]
+    pub conversation_profile: ::prost::alloc::string::String,
+    /// The ID of the search session.
+    /// The session_id can be combined with Dialogflow V3 Agent ID retrieved from
+    /// conversation profile or on its own to identify a search session. The search
+    /// history of the same session will impact the search result. It's up to the
+    /// API caller to choose an appropriate `Session ID`. It can be a random number
+    /// or some type of session identifiers (preferably hashed). The length must
+    /// not exceed 36 characters.
+    #[prost(string, tag = "3")]
+    pub session_id: ::prost::alloc::string::String,
+    /// The conversation (between human agent and end user) where the search
+    /// request is triggered. Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>`.
+    #[prost(string, tag = "4")]
+    pub conversation: ::prost::alloc::string::String,
+    /// The name of the latest conversation message when the request is
+    /// triggered.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>/messages/<Message ID>`.
+    #[prost(string, tag = "5")]
+    pub latest_message: ::prost::alloc::string::String,
+}
+/// The response message for
+/// [Conversations.SearchKnowledge][google.cloud.dialogflow.v2.Conversations.SearchKnowledge].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchKnowledgeResponse {
+    /// Most relevant snippets extracted from articles in the given knowledge base,
+    /// ordered by confidence.
+    #[prost(message, repeated, tag = "2")]
+    pub answers: ::prost::alloc::vec::Vec<SearchKnowledgeAnswer>,
+}
+/// Represents a SearchKnowledge answer.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchKnowledgeAnswer {
+    /// The piece of text from the knowledge base documents that answers
+    /// the search query
+    #[prost(string, tag = "1")]
+    pub answer: ::prost::alloc::string::String,
+    /// The type of the answer.
+    #[prost(enumeration = "search_knowledge_answer::AnswerType", tag = "2")]
+    pub answer_type: i32,
+    /// All sources used to generate the answer.
+    #[prost(message, repeated, tag = "3")]
+    pub answer_sources: ::prost::alloc::vec::Vec<search_knowledge_answer::AnswerSource>,
+    /// The name of the answer record.
+    /// Format: `projects/<Project ID>/locations/<location ID>/answer
+    /// Records/<Answer Record ID>`
+    #[prost(string, tag = "5")]
+    pub answer_record: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `SearchKnowledgeAnswer`.
+pub mod search_knowledge_answer {
+    /// The sources of the answers.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AnswerSource {
+        /// The title of the article.
+        #[prost(string, tag = "1")]
+        pub title: ::prost::alloc::string::String,
+        /// The URI of the article.
+        #[prost(string, tag = "2")]
+        pub uri: ::prost::alloc::string::String,
+        /// The relevant snippet of the article.
+        #[prost(string, tag = "3")]
+        pub snippet: ::prost::alloc::string::String,
+    }
+    /// The type of the answer.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AnswerType {
+        /// The answer has a unspecified type.
+        Unspecified = 0,
+        /// The answer is from FAQ doucments.
+        Faq = 1,
+        /// The answer is from generative model.
+        Generative = 2,
+    }
+    impl AnswerType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                AnswerType::Unspecified => "ANSWER_TYPE_UNSPECIFIED",
+                AnswerType::Faq => "FAQ",
+                AnswerType::Generative => "GENERATIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ANSWER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FAQ" => Some(Self::Faq),
+                "GENERATIVE" => Some(Self::Generative),
+                _ => None,
+            }
+        }
+    }
+}
 /// Generated client implementations.
 pub mod conversations_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Service for managing [Conversations][google.cloud.dialogflow.v2.Conversation].
+    /// Service for managing
+    /// [Conversations][google.cloud.dialogflow.v2.Conversation].
     #[derive(Debug, Clone)]
     pub struct ConversationsClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -7516,11 +9692,14 @@ pub mod conversations_client {
         /// For Assist Stage, there's no dialogflow agent responding to user queries.
         /// But we will provide suggestions which are generated from conversation.
         ///
-        /// If [Conversation.conversation_profile][google.cloud.dialogflow.v2.Conversation.conversation_profile] is configured for a dialogflow
-        /// agent, conversation will start from `Automated Agent Stage`, otherwise, it
-        /// will start from `Assist Stage`. And during `Automated Agent Stage`, once an
-        /// [Intent][google.cloud.dialogflow.v2.Intent] with [Intent.live_agent_handoff][google.cloud.dialogflow.v2.Intent.live_agent_handoff] is triggered, conversation
-        /// will transfer to Assist Stage.
+        /// If
+        /// [Conversation.conversation_profile][google.cloud.dialogflow.v2.Conversation.conversation_profile]
+        /// is configured for a dialogflow agent, conversation will start from
+        /// `Automated Agent Stage`, otherwise, it will start from `Assist Stage`. And
+        /// during `Automated Agent Stage`, once an
+        /// [Intent][google.cloud.dialogflow.v2.Intent] with
+        /// [Intent.live_agent_handoff][google.cloud.dialogflow.v2.Intent.live_agent_handoff]
+        /// is triggered, conversation will transfer to Assist Stage.
         pub async fn create_conversation(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateConversationRequest>,
@@ -7671,6 +9850,102 @@ pub mod conversations_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Suggests summary for a conversation based on specific historical messages.
+        /// The range of the messages to be used for summary can be specified in the
+        /// request.
+        pub async fn suggest_conversation_summary(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SuggestConversationSummaryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SuggestConversationSummaryResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.Conversations/SuggestConversationSummary",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.Conversations",
+                        "SuggestConversationSummary",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Generates and returns a summary for a conversation that does not have a
+        /// resource created for it.
+        pub async fn generate_stateless_summary(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GenerateStatelessSummaryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerateStatelessSummaryResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.Conversations/GenerateStatelessSummary",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.Conversations",
+                        "GenerateStatelessSummary",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get answers for the given query based on knowledge documents.
+        pub async fn search_knowledge(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SearchKnowledgeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SearchKnowledgeResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.Conversations/SearchKnowledge",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2.Conversations",
+                        "SearchKnowledge",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Google Cloud Storage location for the inputs.
@@ -7678,7 +9953,7 @@ pub mod conversations_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSources {
     /// Required. Google Cloud Storage URIs for the inputs. A URI is of the form:
-    ///    gs://bucket/object-prefix-or-name
+    /// `gs://bucket/object-prefix-or-name`
     /// Whether a prefix or name is used depends on the use case.
     #[prost(string, repeated, tag = "2")]
     pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -7689,7 +9964,7 @@ pub struct GcsSources {
 pub struct GcsDestination {
     /// The Google Cloud Storage URIs for the output. A URI is of the
     /// form:
-    ///    gs://bucket/object-prefix-or-name
+    /// `gs://bucket/object-prefix-or-name`
     /// Whether a prefix or name is used depends on the use case. The requesting
     /// user must have "write-permission" to the bucket.
     #[prost(string, tag = "1")]
@@ -7699,9 +9974,9 @@ pub struct GcsDestination {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversationInfo {
-    /// Optional. The language code of the conversation data within this dataset. See
-    /// <https://cloud.google.com/apis/design/standard_fields> for more information.
-    /// Supports all UTF-8 languages.
+    /// Optional. The language code of the conversation data within this dataset.
+    /// See <https://cloud.google.com/apis/design/standard_fields> for more
+    /// information. Supports all UTF-8 languages.
     #[prost(string, tag = "1")]
     pub language_code: ::prost::alloc::string::String,
 }
@@ -7754,7 +10029,8 @@ pub struct ConversationDataset {
     /// Output only. Metadata set during conversation data import.
     #[prost(message, optional, tag = "6")]
     pub conversation_info: ::core::option::Option<ConversationInfo>,
-    /// Output only. The number of conversations this conversation dataset contains.
+    /// Output only. The number of conversations this conversation dataset
+    /// contains.
     #[prost(int64, tag = "7")]
     pub conversation_count: i64,
 }
@@ -7787,8 +10063,8 @@ pub struct GetConversationDatasetRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConversationDatasetsRequest {
-    /// Required. The project and location name to list all conversation datasets for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>`
+    /// Required. The project and location name to list all conversation datasets
+    /// for. Format: `projects/<Project ID>/locations/<Location ID>`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Maximum number of conversation datasets to return in a single
@@ -7823,7 +10099,8 @@ pub struct DeleteConversationDatasetRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [ConversationDatasets.ImportConversationData][google.cloud.dialogflow.v2.ConversationDatasets.ImportConversationData].
+/// The request message for
+/// [ConversationDatasets.ImportConversationData][google.cloud.dialogflow.v2.ConversationDatasets.ImportConversationData].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportConversationDataRequest {
@@ -7836,7 +10113,9 @@ pub struct ImportConversationDataRequest {
     #[prost(message, optional, tag = "2")]
     pub input_config: ::core::option::Option<InputConfig>,
 }
-/// Metadata for a [ConversationDatasets.ImportConversationData][google.cloud.dialogflow.v2.ConversationDatasets.ImportConversationData] operation.
+/// Metadata for a
+/// [ConversationDatasets.ImportConversationData][google.cloud.dialogflow.v2.ConversationDatasets.ImportConversationData]
+/// operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportConversationDataOperationMetadata {
@@ -7854,8 +10133,9 @@ pub struct ImportConversationDataOperationMetadata {
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// Response used for [ConversationDatasets.ImportConversationData][google.cloud.dialogflow.v2.ConversationDatasets.ImportConversationData] long
-/// running operation.
+/// Response used for
+/// [ConversationDatasets.ImportConversationData][google.cloud.dialogflow.v2.ConversationDatasets.ImportConversationData]
+/// long running operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportConversationDataOperationResponse {
@@ -7977,8 +10257,10 @@ pub mod conversation_datasets_client {
         /// operation](https://cloud.google.com/dialogflow/es/docs/how/long-running-operations).
         /// The returned `Operation` type has the following method-specific fields:
         ///
-        /// - `metadata`: [CreateConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.CreateConversationDatasetOperationMetadata]
-        /// - `response`: [ConversationDataset][google.cloud.dialogflow.v2.ConversationDataset]
+        /// - `metadata`:
+        /// [CreateConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.CreateConversationDatasetOperationMetadata]
+        /// - `response`:
+        /// [ConversationDataset][google.cloud.dialogflow.v2.ConversationDataset]
         pub async fn create_conversation_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateConversationDatasetRequest>,
@@ -8078,7 +10360,8 @@ pub mod conversation_datasets_client {
         /// operation](https://cloud.google.com/dialogflow/es/docs/how/long-running-operations).
         /// The returned `Operation` type has the following method-specific fields:
         ///
-        /// - `metadata`: [DeleteConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationDatasetOperationMetadata]
+        /// - `metadata`:
+        /// [DeleteConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationDatasetOperationMetadata]
         /// - `response`: An [Empty
         ///   message](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty)
         pub async fn delete_conversation_dataset(
@@ -8119,8 +10402,10 @@ pub mod conversation_datasets_client {
         /// operation](https://cloud.google.com/dialogflow/es/docs/how/long-running-operations).
         /// The returned `Operation` type has the following method-specific fields:
         ///
-        /// - `metadata`: [ImportConversationDataOperationMetadata][google.cloud.dialogflow.v2.ImportConversationDataOperationMetadata]
-        /// - `response`: [ImportConversationDataOperationResponse][google.cloud.dialogflow.v2.ImportConversationDataOperationResponse]
+        /// - `metadata`:
+        /// [ImportConversationDataOperationMetadata][google.cloud.dialogflow.v2.ImportConversationDataOperationMetadata]
+        /// - `response`:
+        /// [ImportConversationDataOperationResponse][google.cloud.dialogflow.v2.ImportConversationDataOperationResponse]
         pub async fn import_conversation_data(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportConversationDataRequest>,
@@ -8436,6 +10721,23 @@ pub struct ConversationModelEvaluation {
     /// Output only. Creation time of this model.
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Human eval template in csv format.
+    /// It tooks real-world conversations provided through input dataset, generates
+    /// example suggestions for customer to verify quality of the model.
+    /// For Smart Reply, the generated csv file contains columns of
+    /// Context, (Suggestions,Q1,Q2)*3, Actual reply.
+    /// Context contains at most 10 latest messages in the conversation prior to
+    /// the current suggestion.
+    /// Q1: "Would you send it as the next message of agent?"
+    /// Evaluated based on whether the suggest is appropriate to be sent by
+    /// agent in current context.
+    /// Q2: "Does the suggestion move the conversation closer to resolution?"
+    /// Evaluated based on whether the suggestion provide solutions, or answers
+    /// customer's question or collect information from customer to resolve the
+    /// customer's issue.
+    /// Actual reply column contains the actual agent reply sent in the context.
+    #[prost(string, tag = "8")]
+    pub raw_human_eval_template_csv: ::prost::alloc::string::String,
     /// Metrics details.
     #[prost(oneof = "conversation_model_evaluation::Metrics", tags = "5")]
     pub metrics: ::core::option::Option<conversation_model_evaluation::Metrics>,
@@ -8475,10 +10777,10 @@ pub mod evaluation_config {
         /// ID>/documents/<Document ID>`. Only used for smart reply model.
         #[prost(string, tag = "1")]
         pub allowlist_document: ::prost::alloc::string::String,
-        /// Required. The model to be evaluated can return multiple results with confidence
-        /// score on each query. These results will be sorted by the descending order
-        /// of the scores and we only keep the first max_result_count results as the
-        /// final results to evaluate.
+        /// Required. The model to be evaluated can return multiple results with
+        /// confidence score on each query. These results will be sorted by the
+        /// descending order of the scores and we only keep the first
+        /// max_result_count results as the final results to evaluate.
         #[prost(int32, tag = "2")]
         pub max_result_count: i32,
     }
@@ -8491,10 +10793,10 @@ pub mod evaluation_config {
         /// ID>/documents/<Document ID>`. Only used for smart compose model.
         #[prost(string, tag = "1")]
         pub allowlist_document: ::prost::alloc::string::String,
-        /// Required. The model to be evaluated can return multiple results with confidence
-        /// score on each query. These results will be sorted by the descending order
-        /// of the scores and we only keep the first max_result_count results as the
-        /// final results to evaluate.
+        /// Required. The model to be evaluated can return multiple results with
+        /// confidence score on each query. These results will be sorted by the
+        /// descending order of the scores and we only keep the first
+        /// max_result_count results as the final results to evaluate.
         #[prost(int32, tag = "2")]
         pub max_result_count: i32,
     }
@@ -8525,7 +10827,8 @@ pub struct InputDataset {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArticleSuggestionModelMetadata {
-    /// Optional. Type of the article suggestion model. If not provided, model_type is used.
+    /// Optional. Type of the article suggestion model. If not provided, model_type
+    /// is used.
     #[prost(enumeration = "conversation_model::ModelType", tag = "3")]
     pub training_model_type: i32,
 }
@@ -8533,7 +10836,8 @@ pub struct ArticleSuggestionModelMetadata {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SmartReplyModelMetadata {
-    /// Optional. Type of the smart reply model. If not provided, model_type is used.
+    /// Optional. Type of the smart reply model. If not provided, model_type is
+    /// used.
     #[prost(enumeration = "conversation_model::ModelType", tag = "6")]
     pub training_model_type: i32,
 }
@@ -8714,7 +11018,9 @@ pub struct CreateConversationModelEvaluationRequest {
         ConversationModelEvaluation,
     >,
 }
-/// Metadata for a [ConversationModels.CreateConversationModel][google.cloud.dialogflow.v2.ConversationModels.CreateConversationModel] operation.
+/// Metadata for a
+/// [ConversationModels.CreateConversationModel][google.cloud.dialogflow.v2.ConversationModels.CreateConversationModel]
+/// operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConversationModelOperationMetadata {
@@ -8797,7 +11103,9 @@ pub mod create_conversation_model_operation_metadata {
         }
     }
 }
-/// Metadata for a [ConversationModels.DeployConversationModel][google.cloud.dialogflow.v2.ConversationModels.DeployConversationModel] operation.
+/// Metadata for a
+/// [ConversationModels.DeployConversationModel][google.cloud.dialogflow.v2.ConversationModels.DeployConversationModel]
+/// operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployConversationModelOperationMetadata {
@@ -8810,7 +11118,9 @@ pub struct DeployConversationModelOperationMetadata {
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// Metadata for a [ConversationModels.UndeployConversationModel][google.cloud.dialogflow.v2.ConversationModels.UndeployConversationModel] operation.
+/// Metadata for a
+/// [ConversationModels.UndeployConversationModel][google.cloud.dialogflow.v2.ConversationModels.UndeployConversationModel]
+/// operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeployConversationModelOperationMetadata {
@@ -8823,7 +11133,9 @@ pub struct UndeployConversationModelOperationMetadata {
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// Metadata for a [ConversationModels.DeleteConversationModel][google.cloud.dialogflow.v2.ConversationModels.DeleteConversationModel] operation.
+/// Metadata for a
+/// [ConversationModels.DeleteConversationModel][google.cloud.dialogflow.v2.ConversationModels.DeleteConversationModel]
+/// operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteConversationModelOperationMetadata {
@@ -9013,8 +11325,10 @@ pub mod conversation_models_client {
         /// operation](https://cloud.google.com/dialogflow/es/docs/how/long-running-operations).
         /// The returned `Operation` type has the following method-specific fields:
         ///
-        /// - `metadata`: [CreateConversationModelOperationMetadata][google.cloud.dialogflow.v2.CreateConversationModelOperationMetadata]
-        /// - `response`: [ConversationModel][google.cloud.dialogflow.v2.ConversationModel]
+        /// - `metadata`:
+        /// [CreateConversationModelOperationMetadata][google.cloud.dialogflow.v2.CreateConversationModelOperationMetadata]
+        /// - `response`:
+        /// [ConversationModel][google.cloud.dialogflow.v2.ConversationModel]
         pub async fn create_conversation_model(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateConversationModelRequest>,
@@ -9113,7 +11427,8 @@ pub mod conversation_models_client {
         /// operation](https://cloud.google.com/dialogflow/es/docs/how/long-running-operations).
         /// The returned `Operation` type has the following method-specific fields:
         ///
-        /// - `metadata`: [DeleteConversationModelOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationModelOperationMetadata]
+        /// - `metadata`:
+        /// [DeleteConversationModelOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationModelOperationMetadata]
         /// - `response`: An [Empty
         ///   message](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty)
         pub async fn delete_conversation_model(
@@ -9155,7 +11470,8 @@ pub mod conversation_models_client {
         /// operation](https://cloud.google.com/dialogflow/es/docs/how/long-running-operations).
         /// The returned `Operation` type has the following method-specific fields:
         ///
-        /// - `metadata`: [DeployConversationModelOperationMetadata][google.cloud.dialogflow.v2.DeployConversationModelOperationMetadata]
+        /// - `metadata`:
+        /// [DeployConversationModelOperationMetadata][google.cloud.dialogflow.v2.DeployConversationModelOperationMetadata]
         /// - `response`: An [Empty
         ///   message](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty)
         pub async fn deploy_conversation_model(
@@ -9197,7 +11513,8 @@ pub mod conversation_models_client {
         /// operation](https://cloud.google.com/dialogflow/es/docs/how/long-running-operations).
         /// The returned `Operation` type has the following method-specific fields:
         ///
-        /// - `metadata`: [UndeployConversationModelOperationMetadata][google.cloud.dialogflow.v2.UndeployConversationModelOperationMetadata]
+        /// - `metadata`:
+        /// [UndeployConversationModelOperationMetadata][google.cloud.dialogflow.v2.UndeployConversationModelOperationMetadata]
         /// - `response`: An [Empty
         ///   message](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty)
         pub async fn undeploy_conversation_model(
@@ -9331,1037 +11648,8 @@ pub mod conversation_models_client {
         }
     }
 }
-/// Defines the services to connect to incoming Dialogflow conversations.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversationProfile {
-    /// The unique identifier of this conversation profile.
-    /// Format: `projects/<Project ID>/locations/<Location
-    /// ID>/conversationProfiles/<Conversation Profile ID>`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Required. Human readable name for this profile. Max length 1024 bytes.
-    #[prost(string, tag = "2")]
-    pub display_name: ::prost::alloc::string::String,
-    /// Output only. Create time of the conversation profile.
-    #[prost(message, optional, tag = "11")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Update time of the conversation profile.
-    #[prost(message, optional, tag = "12")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Configuration for an automated agent to use with this profile.
-    #[prost(message, optional, tag = "3")]
-    pub automated_agent_config: ::core::option::Option<AutomatedAgentConfig>,
-    /// Configuration for agent assistance to use with this profile.
-    #[prost(message, optional, tag = "4")]
-    pub human_agent_assistant_config: ::core::option::Option<HumanAgentAssistantConfig>,
-    /// Configuration for connecting to a live agent.
-    ///
-    /// Currently, this feature is not general available, please contact Google
-    /// to get access.
-    #[prost(message, optional, tag = "5")]
-    pub human_agent_handoff_config: ::core::option::Option<HumanAgentHandoffConfig>,
-    /// Configuration for publishing conversation lifecycle events.
-    #[prost(message, optional, tag = "6")]
-    pub notification_config: ::core::option::Option<NotificationConfig>,
-    /// Configuration for logging conversation lifecycle events.
-    #[prost(message, optional, tag = "7")]
-    pub logging_config: ::core::option::Option<LoggingConfig>,
-    /// Configuration for publishing new message events. Event will be sent in
-    /// format of [ConversationEvent][google.cloud.dialogflow.v2.ConversationEvent]
-    #[prost(message, optional, tag = "8")]
-    pub new_message_event_notification_config: ::core::option::Option<
-        NotificationConfig,
-    >,
-    /// Settings for speech transcription.
-    #[prost(message, optional, tag = "9")]
-    pub stt_config: ::core::option::Option<SpeechToTextConfig>,
-    /// Language code for the conversation profile. If not specified, the language
-    /// is en-US. Language at ConversationProfile should be set for all non en-US
-    /// languages.
-    /// This should be a [BCP-47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>)
-    /// language tag. Example: "en-US".
-    #[prost(string, tag = "10")]
-    pub language_code: ::prost::alloc::string::String,
-    /// The time zone of this conversational profile from the
-    /// [time zone database](<https://www.iana.org/time-zones>), e.g.,
-    /// America/New_York, Europe/Paris. Defaults to America/New_York.
-    #[prost(string, tag = "14")]
-    pub time_zone: ::prost::alloc::string::String,
-    /// Name of the CX SecuritySettings reference for the agent.
-    /// Format: `projects/<Project ID>/locations/<Location
-    /// ID>/securitySettings/<Security Settings ID>`.
-    #[prost(string, tag = "13")]
-    pub security_settings: ::prost::alloc::string::String,
-}
-/// The request message for [ConversationProfiles.ListConversationProfiles][google.cloud.dialogflow.v2.ConversationProfiles.ListConversationProfiles].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListConversationProfilesRequest {
-    /// Required. The project to list all conversation profiles from.
-    /// Format: `projects/<Project ID>/locations/<Location ID>`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of items to return in a single page. By
-    /// default 100 and at most 1000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// The next_page_token value returned from a previous list request.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// The response message for [ConversationProfiles.ListConversationProfiles][google.cloud.dialogflow.v2.ConversationProfiles.ListConversationProfiles].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListConversationProfilesResponse {
-    /// The list of project conversation profiles. There is a maximum number
-    /// of items returned based on the page_size field in the request.
-    #[prost(message, repeated, tag = "1")]
-    pub conversation_profiles: ::prost::alloc::vec::Vec<ConversationProfile>,
-    /// Token to retrieve the next page of results, or empty if there are no
-    /// more results in the list.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// The request message for [ConversationProfiles.GetConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.GetConversationProfile].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetConversationProfileRequest {
-    /// Required. The resource name of the conversation profile.
-    /// Format: `projects/<Project ID>/locations/<Location
-    /// ID>/conversationProfiles/<Conversation Profile ID>`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// The request message for [ConversationProfiles.CreateConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.CreateConversationProfile].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateConversationProfileRequest {
-    /// Required. The project to create a conversation profile for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>`.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. The conversation profile to create.
-    #[prost(message, optional, tag = "2")]
-    pub conversation_profile: ::core::option::Option<ConversationProfile>,
-}
-/// The request message for [ConversationProfiles.UpdateConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.UpdateConversationProfile].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateConversationProfileRequest {
-    /// Required. The conversation profile to update.
-    #[prost(message, optional, tag = "1")]
-    pub conversation_profile: ::core::option::Option<ConversationProfile>,
-    /// Required. The mask to control which fields to update.
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-}
-/// The request message for [ConversationProfiles.DeleteConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.DeleteConversationProfile].
-///
-/// This operation fails if the conversation profile is still referenced from
-/// a phone number.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteConversationProfileRequest {
-    /// Required. The name of the conversation profile to delete.
-    /// Format: `projects/<Project ID>/locations/<Location
-    /// ID>/conversationProfiles/<Conversation Profile ID>`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Defines the Automated Agent to connect to a conversation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AutomatedAgentConfig {
-    /// Required. ID of the Dialogflow agent environment to use.
-    ///
-    /// This project needs to either be the same project as the conversation or you
-    /// need to grant `service-<Conversation Project
-    /// Number>@gcp-sa-dialogflow.iam.gserviceaccount.com` the `Dialogflow API
-    /// Service Agent` role in this project.
-    ///
-    /// - For ES agents, use format: `projects/<Project ID>/locations/<Location
-    /// ID>/agent/environments/<Environment ID or '-'>`. If environment is not
-    /// specified, the default `draft` environment is used. Refer to
-    /// [DetectIntentRequest](/dialogflow/docs/reference/rpc/google.cloud.dialogflow.v2#google.cloud.dialogflow.v2.DetectIntentRequest)
-    /// for more details.
-    ///
-    /// - For CX agents, use format `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/environments/<Environment ID
-    /// or '-'>`. If environment is not specified, the default `draft` environment
-    /// is used.
-    #[prost(string, tag = "1")]
-    pub agent: ::prost::alloc::string::String,
-}
-/// Defines the Human Agent Assist to connect to a conversation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HumanAgentAssistantConfig {
-    /// Pub/Sub topic on which to publish new agent assistant events.
-    #[prost(message, optional, tag = "2")]
-    pub notification_config: ::core::option::Option<NotificationConfig>,
-    /// Configuration for agent assistance of human agent participant.
-    #[prost(message, optional, tag = "3")]
-    pub human_agent_suggestion_config: ::core::option::Option<
-        human_agent_assistant_config::SuggestionConfig,
-    >,
-    /// Configuration for agent assistance of end user participant.
-    ///
-    /// Currently, this feature is not general available, please contact Google
-    /// to get access.
-    #[prost(message, optional, tag = "4")]
-    pub end_user_suggestion_config: ::core::option::Option<
-        human_agent_assistant_config::SuggestionConfig,
-    >,
-    /// Configuration for message analysis.
-    #[prost(message, optional, tag = "5")]
-    pub message_analysis_config: ::core::option::Option<
-        human_agent_assistant_config::MessageAnalysisConfig,
-    >,
-}
-/// Nested message and enum types in `HumanAgentAssistantConfig`.
-pub mod human_agent_assistant_config {
-    /// Settings of suggestion trigger.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct SuggestionTriggerSettings {
-        /// Do not trigger if last utterance is small talk.
-        #[prost(bool, tag = "1")]
-        pub no_smalltalk: bool,
-        /// Only trigger suggestion if participant role of last utterance is
-        /// END_USER.
-        #[prost(bool, tag = "2")]
-        pub only_end_user: bool,
-    }
-    /// Config for suggestion features.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct SuggestionFeatureConfig {
-        /// The suggestion feature.
-        #[prost(message, optional, tag = "5")]
-        pub suggestion_feature: ::core::option::Option<super::SuggestionFeature>,
-        /// Automatically iterates all participants and tries to compile
-        /// suggestions.
-        ///
-        /// Supported features: ARTICLE_SUGGESTION, FAQ, DIALOGFLOW_ASSIST.
-        #[prost(bool, tag = "3")]
-        pub enable_event_based_suggestion: bool,
-        /// Settings of suggestion trigger.
-        ///
-        /// Currently, only ARTICLE_SUGGESTION and FAQ will use this field.
-        #[prost(message, optional, tag = "10")]
-        pub suggestion_trigger_settings: ::core::option::Option<
-            SuggestionTriggerSettings,
-        >,
-        /// Configs of query.
-        #[prost(message, optional, tag = "6")]
-        pub query_config: ::core::option::Option<SuggestionQueryConfig>,
-        /// Configs of custom conversation model.
-        #[prost(message, optional, tag = "7")]
-        pub conversation_model_config: ::core::option::Option<ConversationModelConfig>,
-        /// Configs for processing conversation.
-        #[prost(message, optional, tag = "8")]
-        pub conversation_process_config: ::core::option::Option<
-            ConversationProcessConfig,
-        >,
-    }
-    /// Detail human agent assistant config.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct SuggestionConfig {
-        /// Configuration of different suggestion features. One feature can have only
-        /// one config.
-        #[prost(message, repeated, tag = "2")]
-        pub feature_configs: ::prost::alloc::vec::Vec<SuggestionFeatureConfig>,
-        /// If `group_suggestion_responses` is false, and there are multiple
-        /// `feature_configs` in `event based suggestion` or
-        /// StreamingAnalyzeContent, we will try to deliver suggestions to customers
-        /// as soon as we get new suggestion. Different type of suggestions based on
-        /// the same context will be in  separate Pub/Sub event or
-        /// `StreamingAnalyzeContentResponse`.
-        ///
-        /// If `group_suggestion_responses` set to true. All the suggestions to the
-        /// same participant based on the same context will be grouped into a single
-        /// Pub/Sub event or StreamingAnalyzeContentResponse.
-        #[prost(bool, tag = "3")]
-        pub group_suggestion_responses: bool,
-    }
-    /// Config for suggestion query.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct SuggestionQueryConfig {
-        /// Maximum number of results to return. Currently, if unset, defaults to 10.
-        /// And the max number is 20.
-        #[prost(int32, tag = "4")]
-        pub max_results: i32,
-        /// Confidence threshold of query result.
-        ///
-        /// Agent Assist gives each suggestion a score in the range \[0.0, 1.0\], based
-        /// on the relevance between the suggestion and the current conversation
-        /// context. A score of 0.0 has no relevance, while a score of 1.0 has high
-        /// relevance. Only suggestions with a score greater than or equal to the
-        /// value of this field are included in the results.
-        ///
-        /// For a baseline model (the default), the recommended value is in the range
-        /// \[0.05, 0.1\].
-        ///
-        /// For a custom model, there is no recommended value. Tune this value by
-        /// starting from a very low value and slowly increasing until you have
-        /// desired results.
-        ///
-        /// If this field is not set, it defaults to 0.0, which means that all
-        /// suggestions are returned.
-        ///
-        /// Supported features: ARTICLE_SUGGESTION, FAQ, SMART_REPLY, SMART_COMPOSE.
-        #[prost(float, tag = "5")]
-        pub confidence_threshold: f32,
-        /// Determines how recent conversation context is filtered when generating
-        /// suggestions. If unspecified, no messages will be dropped.
-        #[prost(message, optional, tag = "7")]
-        pub context_filter_settings: ::core::option::Option<
-            suggestion_query_config::ContextFilterSettings,
-        >,
-        /// Source of query.
-        #[prost(oneof = "suggestion_query_config::QuerySource", tags = "1, 2, 3")]
-        pub query_source: ::core::option::Option<suggestion_query_config::QuerySource>,
-    }
-    /// Nested message and enum types in `SuggestionQueryConfig`.
-    pub mod suggestion_query_config {
-        /// Knowledge base source settings.
-        ///
-        /// Supported features: ARTICLE_SUGGESTION, FAQ.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct KnowledgeBaseQuerySource {
-            /// Required. Knowledge bases to query. Format:
-            /// `projects/<Project ID>/locations/<Location
-            /// ID>/knowledgeBases/<Knowledge Base ID>`. Currently, at most 5 knowledge
-            /// bases are supported.
-            #[prost(string, repeated, tag = "1")]
-            pub knowledge_bases: ::prost::alloc::vec::Vec<
-                ::prost::alloc::string::String,
-            >,
-        }
-        /// Document source settings.
-        ///
-        /// Supported features: SMART_REPLY, SMART_COMPOSE.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct DocumentQuerySource {
-            /// Required. Knowledge documents to query from. Format:
-            /// `projects/<Project ID>/locations/<Location
-            /// ID>/knowledgeBases/<KnowledgeBase ID>/documents/<Document ID>`.
-            /// Currently, at most 5 documents are supported.
-            #[prost(string, repeated, tag = "1")]
-            pub documents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        }
-        /// Dialogflow source setting.
-        ///
-        /// Supported feature: DIALOGFLOW_ASSIST.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct DialogflowQuerySource {
-            /// Required. The name of a Dialogflow virtual agent used for end user side intent
-            /// detection and suggestion. Format: `projects/<Project Number/
-            /// ID>/locations/<Location ID>/agent`. When multiple agents are allowed in
-            /// the same Dialogflow project.
-            #[prost(string, tag = "1")]
-            pub agent: ::prost::alloc::string::String,
-        }
-        /// Settings that determine how to filter recent conversation context when
-        /// generating suggestions.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct ContextFilterSettings {
-            /// If set to true, the last message from virtual agent (hand off message)
-            /// and the message before it (trigger message of hand off) are dropped.
-            #[prost(bool, tag = "1")]
-            pub drop_handoff_messages: bool,
-            /// If set to true, all messages from virtual agent are dropped.
-            #[prost(bool, tag = "2")]
-            pub drop_virtual_agent_messages: bool,
-            /// If set to true, all messages from ivr stage are dropped.
-            #[prost(bool, tag = "3")]
-            pub drop_ivr_messages: bool,
-        }
-        /// Source of query.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
-        pub enum QuerySource {
-            /// Query from knowledgebase. It is used by:
-            /// ARTICLE_SUGGESTION, FAQ.
-            #[prost(message, tag = "1")]
-            KnowledgeBaseQuerySource(KnowledgeBaseQuerySource),
-            /// Query from knowledge base document. It is used by:
-            /// SMART_REPLY, SMART_COMPOSE.
-            #[prost(message, tag = "2")]
-            DocumentQuerySource(DocumentQuerySource),
-            /// Query from Dialogflow agent. It is used by DIALOGFLOW_ASSIST.
-            #[prost(message, tag = "3")]
-            DialogflowQuerySource(DialogflowQuerySource),
-        }
-    }
-    /// Custom conversation models used in agent assist feature.
-    ///
-    /// Supported feature: ARTICLE_SUGGESTION, SMART_COMPOSE, SMART_REPLY,
-    /// CONVERSATION_SUMMARIZATION.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ConversationModelConfig {
-        /// Conversation model resource name. Format: `projects/<Project
-        /// ID>/conversationModels/<Model ID>`.
-        #[prost(string, tag = "1")]
-        pub model: ::prost::alloc::string::String,
-    }
-    /// Config to process conversation.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ConversationProcessConfig {
-        /// Number of recent non-small-talk sentences to use as context for article
-        /// and FAQ suggestion
-        #[prost(int32, tag = "2")]
-        pub recent_sentences_count: i32,
-    }
-    /// Configuration for analyses to run on each conversation message.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct MessageAnalysisConfig {
-        /// Enable entity extraction in conversation messages on [agent assist
-        /// stage](<https://cloud.google.com/dialogflow/priv/docs/contact-center/basics#stages>).
-        /// If unspecified, defaults to false.
-        ///
-        /// Currently, this feature is not general available, please contact Google
-        /// to get access.
-        #[prost(bool, tag = "2")]
-        pub enable_entity_extraction: bool,
-        /// Enable sentiment analysis in conversation messages on [agent assist
-        /// stage](<https://cloud.google.com/dialogflow/priv/docs/contact-center/basics#stages>).
-        /// If unspecified, defaults to false. Sentiment analysis inspects user input
-        /// and identifies the prevailing subjective opinion, especially to determine
-        /// a user's attitude as positive, negative, or neutral:
-        /// <https://cloud.google.com/natural-language/docs/basics#sentiment_analysis>
-        /// For [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2.Participants.StreamingAnalyzeContent] method, result will be in
-        /// [StreamingAnalyzeContentResponse.message.SentimentAnalysisResult][google.cloud.dialogflow.v2.StreamingAnalyzeContentResponse.message].
-        /// For [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent] method, result will be in
-        /// [AnalyzeContentResponse.message.SentimentAnalysisResult][google.cloud.dialogflow.v2.AnalyzeContentResponse.message]
-        /// For [Conversations.ListMessages][google.cloud.dialogflow.v2.Conversations.ListMessages] method, result will be in
-        /// [ListMessagesResponse.messages.SentimentAnalysisResult][google.cloud.dialogflow.v2.ListMessagesResponse.messages]
-        /// If Pub/Sub notification is configured, result will be in
-        /// [ConversationEvent.new_message_payload.SentimentAnalysisResult][google.cloud.dialogflow.v2.ConversationEvent.new_message_payload].
-        #[prost(bool, tag = "3")]
-        pub enable_sentiment_analysis: bool,
-    }
-}
-/// Defines the hand off to a live agent, typically on which external agent
-/// service provider to connect to a conversation.
-///
-/// Currently, this feature is not general available, please contact Google
-/// to get access.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HumanAgentHandoffConfig {
-    /// Required. Specifies which agent service to connect for human agent handoff.
-    #[prost(oneof = "human_agent_handoff_config::AgentService", tags = "1, 2")]
-    pub agent_service: ::core::option::Option<human_agent_handoff_config::AgentService>,
-}
-/// Nested message and enum types in `HumanAgentHandoffConfig`.
-pub mod human_agent_handoff_config {
-    /// Configuration specific to LivePerson (<https://www.liveperson.com>).
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct LivePersonConfig {
-        /// Required. Account number of the LivePerson account to connect. This is
-        /// the account number you input at the login page.
-        #[prost(string, tag = "1")]
-        pub account_number: ::prost::alloc::string::String,
-    }
-    /// Configuration specific to Salesforce Live Agent.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct SalesforceLiveAgentConfig {
-        /// Required. The organization ID of the Salesforce account.
-        #[prost(string, tag = "1")]
-        pub organization_id: ::prost::alloc::string::String,
-        /// Required. Live Agent deployment ID.
-        #[prost(string, tag = "2")]
-        pub deployment_id: ::prost::alloc::string::String,
-        /// Required. Live Agent chat button ID.
-        #[prost(string, tag = "3")]
-        pub button_id: ::prost::alloc::string::String,
-        /// Required. Domain of the Live Agent endpoint for this agent. You can find
-        /// the endpoint URL in the `Live Agent settings` page. For example if URL
-        /// has the form <https://d.la4-c2-phx.salesforceliveagent.com/...,>
-        /// you should fill in d.la4-c2-phx.salesforceliveagent.com.
-        #[prost(string, tag = "4")]
-        pub endpoint_domain: ::prost::alloc::string::String,
-    }
-    /// Required. Specifies which agent service to connect for human agent handoff.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum AgentService {
-        /// Uses LivePerson (<https://www.liveperson.com>).
-        #[prost(message, tag = "1")]
-        LivePersonConfig(LivePersonConfig),
-        /// Uses Salesforce Live Agent.
-        #[prost(message, tag = "2")]
-        SalesforceLiveAgentConfig(SalesforceLiveAgentConfig),
-    }
-}
-/// Defines notification behavior.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct NotificationConfig {
-    /// Name of the Pub/Sub topic to publish conversation
-    /// events like
-    /// [CONVERSATION_STARTED][google.cloud.dialogflow.v2.ConversationEvent.Type.CONVERSATION_STARTED] as
-    /// serialized [ConversationEvent][google.cloud.dialogflow.v2.ConversationEvent] protos.
-    ///
-    /// For telephony integration to receive notification, make sure either this
-    /// topic is in the same project as the conversation or you grant
-    /// `service-<Conversation Project
-    /// Number>@gcp-sa-dialogflow.iam.gserviceaccount.com` the `Dialogflow Service
-    /// Agent` role in the topic project.
-    ///
-    /// For chat integration to receive notification, make sure API caller has been
-    /// granted the `Dialogflow Service Agent` role for the topic.
-    ///
-    /// Format: `projects/<Project ID>/locations/<Location ID>/topics/<Topic ID>`.
-    #[prost(string, tag = "1")]
-    pub topic: ::prost::alloc::string::String,
-    /// Format of message.
-    #[prost(enumeration = "notification_config::MessageFormat", tag = "2")]
-    pub message_format: i32,
-}
-/// Nested message and enum types in `NotificationConfig`.
-pub mod notification_config {
-    /// Format of cloud pub/sub message.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum MessageFormat {
-        /// If it is unspecified, PROTO will be used.
-        Unspecified = 0,
-        /// Pub/Sub message will be serialized proto.
-        Proto = 1,
-        /// Pub/Sub message will be json.
-        Json = 2,
-    }
-    impl MessageFormat {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                MessageFormat::Unspecified => "MESSAGE_FORMAT_UNSPECIFIED",
-                MessageFormat::Proto => "PROTO",
-                MessageFormat::Json => "JSON",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "MESSAGE_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
-                "PROTO" => Some(Self::Proto),
-                "JSON" => Some(Self::Json),
-                _ => None,
-            }
-        }
-    }
-}
-/// Defines logging behavior for conversation lifecycle events.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LoggingConfig {
-    /// Whether to log conversation events like
-    /// [CONVERSATION_STARTED][google.cloud.dialogflow.v2.ConversationEvent.Type.CONVERSATION_STARTED] to
-    /// Stackdriver in the conversation project as JSON format
-    /// [ConversationEvent][google.cloud.dialogflow.v2.ConversationEvent] protos.
-    #[prost(bool, tag = "3")]
-    pub enable_stackdriver_logging: bool,
-}
-/// The type of Human Agent Assistant API suggestion to perform, and the maximum
-/// number of results to return for that type. Multiple `Feature` objects can
-/// be specified in the `features` list.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SuggestionFeature {
-    /// Type of Human Agent Assistant API feature to request.
-    #[prost(enumeration = "suggestion_feature::Type", tag = "1")]
-    pub r#type: i32,
-}
-/// Nested message and enum types in `SuggestionFeature`.
-pub mod suggestion_feature {
-    /// Defines the type of Human Agent Assistant feature.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum Type {
-        /// Unspecified feature type.
-        Unspecified = 0,
-        /// Run article suggestion model for chat.
-        ArticleSuggestion = 1,
-        /// Run FAQ model for chat.
-        Faq = 2,
-        /// Run smart reply model for chat.
-        SmartReply = 3,
-    }
-    impl Type {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::ArticleSuggestion => "ARTICLE_SUGGESTION",
-                Type::Faq => "FAQ",
-                Type::SmartReply => "SMART_REPLY",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                "ARTICLE_SUGGESTION" => Some(Self::ArticleSuggestion),
-                "FAQ" => Some(Self::Faq),
-                "SMART_REPLY" => Some(Self::SmartReply),
-                _ => None,
-            }
-        }
-    }
-}
-/// The request message for
-/// [ConversationProfiles.SetSuggestionFeature][].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SetSuggestionFeatureConfigRequest {
-    /// Required. The Conversation Profile to add or update the suggestion feature
-    /// config. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/conversationProfiles/<Conversation Profile ID>`.
-    #[prost(string, tag = "1")]
-    pub conversation_profile: ::prost::alloc::string::String,
-    /// Required. The participant role to add or update the suggestion feature
-    /// config. Only HUMAN_AGENT or END_USER can be used.
-    #[prost(enumeration = "participant::Role", tag = "2")]
-    pub participant_role: i32,
-    /// Required. The suggestion feature config to add or update.
-    #[prost(message, optional, tag = "3")]
-    pub suggestion_feature_config: ::core::option::Option<
-        human_agent_assistant_config::SuggestionFeatureConfig,
-    >,
-}
-/// The request message for [ConversationProfiles.ClearFeature][].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ClearSuggestionFeatureConfigRequest {
-    /// Required. The Conversation Profile to add or update the suggestion feature
-    /// config. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/conversationProfiles/<Conversation Profile ID>`.
-    #[prost(string, tag = "1")]
-    pub conversation_profile: ::prost::alloc::string::String,
-    /// Required. The participant role to remove the suggestion feature
-    /// config. Only HUMAN_AGENT or END_USER can be used.
-    #[prost(enumeration = "participant::Role", tag = "2")]
-    pub participant_role: i32,
-    /// Required. The type of the suggestion feature to remove.
-    #[prost(enumeration = "suggestion_feature::Type", tag = "3")]
-    pub suggestion_feature_type: i32,
-}
-/// Metadata for a [ConversationProfile.SetSuggestionFeatureConfig][]
-/// operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SetSuggestionFeatureConfigOperationMetadata {
-    /// The resource name of the conversation profile. Format:
-    /// `projects/<Project ID>/locations/<Location
-    /// ID>/conversationProfiles/<Conversation Profile ID>`
-    #[prost(string, tag = "1")]
-    pub conversation_profile: ::prost::alloc::string::String,
-    /// Required. The participant role to add or update the suggestion feature
-    /// config. Only HUMAN_AGENT or END_USER can be used.
-    #[prost(enumeration = "participant::Role", tag = "2")]
-    pub participant_role: i32,
-    /// Required. The type of the suggestion feature to add or update.
-    #[prost(enumeration = "suggestion_feature::Type", tag = "3")]
-    pub suggestion_feature_type: i32,
-    /// Timestamp whe the request was created. The time is measured on server side.
-    #[prost(message, optional, tag = "4")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// Metadata for a [ConversationProfile.ClearSuggestionFeatureConfig][]
-/// operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ClearSuggestionFeatureConfigOperationMetadata {
-    /// The resource name of the conversation profile. Format:
-    /// `projects/<Project ID>/locations/<Location
-    /// ID>/conversationProfiles/<Conversation Profile ID>`
-    #[prost(string, tag = "1")]
-    pub conversation_profile: ::prost::alloc::string::String,
-    /// Required. The participant role to remove the suggestion feature
-    /// config. Only HUMAN_AGENT or END_USER can be used.
-    #[prost(enumeration = "participant::Role", tag = "2")]
-    pub participant_role: i32,
-    /// Required. The type of the suggestion feature to remove.
-    #[prost(enumeration = "suggestion_feature::Type", tag = "3")]
-    pub suggestion_feature_type: i32,
-    /// Timestamp whe the request was created. The time is measured on server side.
-    #[prost(message, optional, tag = "4")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// Generated client implementations.
-pub mod conversation_profiles_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
-    use tonic::codegen::*;
-    use tonic::codegen::http::Uri;
-    /// Service for managing [ConversationProfiles][google.cloud.dialogflow.v2.ConversationProfile].
-    #[derive(Debug, Clone)]
-    pub struct ConversationProfilesClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl ConversationProfilesClient<tonic::transport::Channel> {
-        /// Attempt to create a new client by connecting to a given endpoint.
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
-    impl<T> ConversationProfilesClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_origin(inner: T, origin: Uri) -> Self {
-            let inner = tonic::client::Grpc::with_origin(inner, origin);
-            Self { inner }
-        }
-        pub fn with_interceptor<F>(
-            inner: T,
-            interceptor: F,
-        ) -> ConversationProfilesClient<InterceptedService<T, F>>
-        where
-            F: tonic::service::Interceptor,
-            T::ResponseBody: Default,
-            T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-                Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
-                >,
-            >,
-            <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
-        {
-            ConversationProfilesClient::new(InterceptedService::new(inner, interceptor))
-        }
-        /// Compress requests with the given encoding.
-        ///
-        /// This requires the server to support it otherwise it might respond with an
-        /// error.
-        #[must_use]
-        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.send_compressed(encoding);
-            self
-        }
-        /// Enable decompressing responses.
-        #[must_use]
-        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.accept_compressed(encoding);
-            self
-        }
-        /// Limits the maximum size of a decoded message.
-        ///
-        /// Default: `4MB`
-        #[must_use]
-        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_decoding_message_size(limit);
-            self
-        }
-        /// Limits the maximum size of an encoded message.
-        ///
-        /// Default: `usize::MAX`
-        #[must_use]
-        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_encoding_message_size(limit);
-            self
-        }
-        /// Returns the list of all conversation profiles in the specified project.
-        pub async fn list_conversation_profiles(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListConversationProfilesRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListConversationProfilesResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2.ConversationProfiles/ListConversationProfiles",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dialogflow.v2.ConversationProfiles",
-                        "ListConversationProfiles",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Retrieves the specified conversation profile.
-        pub async fn get_conversation_profile(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetConversationProfileRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ConversationProfile>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2.ConversationProfiles/GetConversationProfile",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dialogflow.v2.ConversationProfiles",
-                        "GetConversationProfile",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Creates a conversation profile in the specified project.
-        ///
-        /// [ConversationProfile.CreateTime][] and [ConversationProfile.UpdateTime][]
-        /// aren't populated in the response. You can retrieve them via
-        /// [GetConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.GetConversationProfile] API.
-        pub async fn create_conversation_profile(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateConversationProfileRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ConversationProfile>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2.ConversationProfiles/CreateConversationProfile",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dialogflow.v2.ConversationProfiles",
-                        "CreateConversationProfile",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Updates the specified conversation profile.
-        ///
-        /// [ConversationProfile.CreateTime][] and [ConversationProfile.UpdateTime][]
-        /// aren't populated in the response. You can retrieve them via
-        /// [GetConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.GetConversationProfile] API.
-        pub async fn update_conversation_profile(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateConversationProfileRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ConversationProfile>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2.ConversationProfiles/UpdateConversationProfile",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dialogflow.v2.ConversationProfiles",
-                        "UpdateConversationProfile",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Deletes the specified conversation profile.
-        pub async fn delete_conversation_profile(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteConversationProfileRequest>,
-        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2.ConversationProfiles/DeleteConversationProfile",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dialogflow.v2.ConversationProfiles",
-                        "DeleteConversationProfile",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Adds or updates a suggestion feature in a conversation profile.
-        /// If the conversation profile contains the type of suggestion feature for
-        /// the participant role, it will update it. Otherwise it will insert the
-        /// suggestion feature.
-        ///
-        /// This method is a [long-running
-        /// operation](https://cloud.google.com/dialogflow/es/docs/how/long-running-operations).
-        /// The returned `Operation` type has the following method-specific fields:
-        ///
-        /// - `metadata`: [SetSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2.SetSuggestionFeatureConfigOperationMetadata]
-        /// - `response`: [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile]
-        ///
-        /// If a long running operation to add or update suggestion feature
-        /// config for the same conversation profile, participant role and suggestion
-        /// feature type exists, please cancel the existing long running operation
-        /// before sending such request, otherwise the request will be rejected.
-        pub async fn set_suggestion_feature_config(
-            &mut self,
-            request: impl tonic::IntoRequest<super::SetSuggestionFeatureConfigRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2.ConversationProfiles/SetSuggestionFeatureConfig",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dialogflow.v2.ConversationProfiles",
-                        "SetSuggestionFeatureConfig",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Clears a suggestion feature from a conversation profile for the given
-        /// participant role.
-        ///
-        /// This method is a [long-running
-        /// operation](https://cloud.google.com/dialogflow/es/docs/how/long-running-operations).
-        /// The returned `Operation` type has the following method-specific fields:
-        ///
-        /// - `metadata`: [ClearSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2.ClearSuggestionFeatureConfigOperationMetadata]
-        /// - `response`: [ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile]
-        pub async fn clear_suggestion_feature_config(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ClearSuggestionFeatureConfigRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::longrunning::Operation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2.ConversationProfiles/ClearSuggestionFeatureConfig",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dialogflow.v2.ConversationProfiles",
-                        "ClearSuggestionFeatureConfig",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-    }
-}
-/// A knowledge document to be used by a [KnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBase].
+/// A knowledge document to be used by a
+/// [KnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBase].
 ///
 /// For more information, see the [knowledge base
 /// guide](<https://cloud.google.com/dialogflow/docs/how/knowledge-bases>).
@@ -10404,7 +11692,7 @@ pub struct Document {
     ///
     /// If a reload fails with internal errors, the system will try to reload the
     /// document on the next day.
-    /// If a reload fails with non-retriable errors (e.g. PERMISION_DENIED), the
+    /// If a reload fails with non-retriable errors (e.g. PERMISSION_DENIED), the
     /// system will not try to reload the document anymore. You need to manually
     /// reload the document successfully by calling `ReloadDocument` and clear the
     /// errors.
@@ -10581,7 +11869,8 @@ pub mod document {
         RawContent(::prost::alloc::vec::Vec<u8>),
     }
 }
-/// Request message for [Documents.GetDocument][google.cloud.dialogflow.v2.Documents.GetDocument].
+/// Request message for
+/// [Documents.GetDocument][google.cloud.dialogflow.v2.Documents.GetDocument].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDocumentRequest {
@@ -10591,7 +11880,8 @@ pub struct GetDocumentRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [Documents.ListDocuments][google.cloud.dialogflow.v2.Documents.ListDocuments].
+/// Request message for
+/// [Documents.ListDocuments][google.cloud.dialogflow.v2.Documents.ListDocuments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDocumentsRequest {
@@ -10631,7 +11921,8 @@ pub struct ListDocumentsRequest {
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
-/// Response message for [Documents.ListDocuments][google.cloud.dialogflow.v2.Documents.ListDocuments].
+/// Response message for
+/// [Documents.ListDocuments][google.cloud.dialogflow.v2.Documents.ListDocuments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDocumentsResponse {
@@ -10643,7 +11934,8 @@ pub struct ListDocumentsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for [Documents.CreateDocument][google.cloud.dialogflow.v2.Documents.CreateDocument].
+/// Request message for
+/// [Documents.CreateDocument][google.cloud.dialogflow.v2.Documents.CreateDocument].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDocumentRequest {
@@ -10656,7 +11948,8 @@ pub struct CreateDocumentRequest {
     #[prost(message, optional, tag = "2")]
     pub document: ::core::option::Option<Document>,
 }
-/// Request message for [Documents.ImportDocuments][google.cloud.dialogflow.v2.Documents.ImportDocuments].
+/// Request message for
+/// [Documents.ImportDocuments][google.cloud.dialogflow.v2.Documents.ImportDocuments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsRequest {
@@ -10696,7 +11989,7 @@ pub mod import_documents_request {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// The Google Cloud Storage location for the documents.
+        /// Optional. The Google Cloud Storage location for the documents.
         /// The path can include a wildcard.
         ///
         /// These URIs may have the forms
@@ -10731,7 +12024,8 @@ pub struct ImportDocumentTemplate {
         ::prost::alloc::string::String,
     >,
 }
-/// Response message for [Documents.ImportDocuments][google.cloud.dialogflow.v2.Documents.ImportDocuments].
+/// Response message for
+/// [Documents.ImportDocuments][google.cloud.dialogflow.v2.Documents.ImportDocuments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsResponse {
@@ -10739,7 +12033,8 @@ pub struct ImportDocumentsResponse {
     #[prost(message, repeated, tag = "1")]
     pub warnings: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
 }
-/// Request message for [Documents.DeleteDocument][google.cloud.dialogflow.v2.Documents.DeleteDocument].
+/// Request message for
+/// [Documents.DeleteDocument][google.cloud.dialogflow.v2.Documents.DeleteDocument].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDocumentRequest {
@@ -10749,7 +12044,8 @@ pub struct DeleteDocumentRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [Documents.UpdateDocument][google.cloud.dialogflow.v2.Documents.UpdateDocument].
+/// Request message for
+/// [Documents.UpdateDocument][google.cloud.dialogflow.v2.Documents.UpdateDocument].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDocumentRequest {
@@ -10762,7 +12058,8 @@ pub struct UpdateDocumentRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// Request message for [Documents.ReloadDocument][google.cloud.dialogflow.v2.Documents.ReloadDocument].
+/// Request message for
+/// [Documents.ReloadDocument][google.cloud.dialogflow.v2.Documents.ReloadDocument].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReloadDocumentRequest {
@@ -10775,26 +12072,36 @@ pub struct ReloadDocumentRequest {
     /// Only valid when the document source is Google Cloud Storage URI.
     #[prost(bool, tag = "4")]
     pub import_gcs_custom_metadata: bool,
-    /// Optional. When enabled, the reload request is to apply partial update to the smart
-    /// messaging allowlist.
+    /// Optional. When enabled, the reload request is to apply partial update to
+    /// the smart messaging allowlist.
     #[prost(bool, tag = "5")]
     pub smart_messaging_partial_update: bool,
     /// The source for document reloading.
+    ///
     /// If provided, the service will load the contents from the source
     /// and update document in the knowledge base.
+    ///
+    /// Reloading from a new document source is allowed for smart messaging
+    /// documents only. If you want to update the source for other document types,
+    /// please delete the existing document and create a new one instead.
     #[prost(oneof = "reload_document_request::Source", tags = "3")]
     pub source: ::core::option::Option<reload_document_request::Source>,
 }
 /// Nested message and enum types in `ReloadDocumentRequest`.
 pub mod reload_document_request {
     /// The source for document reloading.
+    ///
     /// If provided, the service will load the contents from the source
     /// and update document in the knowledge base.
+    ///
+    /// Reloading from a new document source is allowed for smart messaging
+    /// documents only. If you want to update the source for other document types,
+    /// please delete the existing document and create a new one instead.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// Optional. The path of gcs source file for reloading document content. For now,
-        /// only gcs uri is supported.
+        /// Optional. The path of gcs source file for reloading document content. For
+        /// now, only gcs uri is supported.
         ///
         /// For documents stored in Google Cloud Storage, these URIs must have
         /// the form `gs://<bucket-name>/<object-name>`.
@@ -10802,7 +12109,8 @@ pub mod reload_document_request {
         ContentUri(::prost::alloc::string::String),
     }
 }
-/// Request message for [Documents.ExportDocument][google.cloud.dialogflow.v2.Documents.ExportDocument].
+/// Request message for
+/// [Documents.ExportDocument][google.cloud.dialogflow.v2.Documents.ExportDocument].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentRequest {
@@ -10921,7 +12229,8 @@ pub mod documents_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Service for managing knowledge [Documents][google.cloud.dialogflow.v2.Document].
+    /// Service for managing knowledge
+    /// [Documents][google.cloud.dialogflow.v2.Document].
     #[derive(Debug, Clone)]
     pub struct DocumentsClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -11067,7 +12376,8 @@ pub mod documents_client {
         /// operation](https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation).
         /// The returned `Operation` type has the following method-specific fields:
         ///
-        /// - `metadata`: [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        /// - `metadata`:
+        /// [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
         /// - `response`: [Document][google.cloud.dialogflow.v2.Document]
         pub async fn create_document(
             &mut self,
@@ -11107,8 +12417,10 @@ pub mod documents_client {
         /// operation](https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation).
         /// The returned `Operation` type has the following method-specific fields:
         ///
-        /// - `metadata`: [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
-        /// - `response`: [ImportDocumentsResponse][google.cloud.dialogflow.v2.ImportDocumentsResponse]
+        /// - `metadata`:
+        /// [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        /// - `response`:
+        /// [ImportDocumentsResponse][google.cloud.dialogflow.v2.ImportDocumentsResponse]
         pub async fn import_documents(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportDocumentsRequest>,
@@ -11145,7 +12457,8 @@ pub mod documents_client {
         /// operation](https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation).
         /// The returned `Operation` type has the following method-specific fields:
         ///
-        /// - `metadata`: [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        /// - `metadata`:
+        /// [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
         /// - `response`: An [Empty
         ///   message](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty)
         pub async fn delete_document(
@@ -11184,7 +12497,8 @@ pub mod documents_client {
         /// operation](https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation).
         /// The returned `Operation` type has the following method-specific fields:
         ///
-        /// - `metadata`: [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        /// - `metadata`:
+        /// [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
         /// - `response`: [Document][google.cloud.dialogflow.v2.Document]
         pub async fn update_document(
             &mut self,
@@ -11225,7 +12539,8 @@ pub mod documents_client {
         /// operation](https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation).
         /// The returned `Operation` type has the following method-specific fields:
         ///
-        /// - `metadata`: [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        /// - `metadata`:
+        /// [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
         /// - `response`: [Document][google.cloud.dialogflow.v2.Document]
         ///
         /// Note: The `projects.agent.knowledgeBases.documents` resource is deprecated;
@@ -11267,7 +12582,8 @@ pub mod documents_client {
         /// operation](https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation).
         /// The returned `Operation` type has the following method-specific fields:
         ///
-        /// - `metadata`: [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        /// - `metadata`:
+        /// [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
         /// - `response`: [Document][google.cloud.dialogflow.v2.Document]
         pub async fn export_document(
             &mut self,
@@ -11323,7 +12639,8 @@ pub struct Fulfillment {
     /// This field is not used for Fulfillment in an Environment.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. The human-readable name of the fulfillment, unique within the agent.
+    /// Optional. The human-readable name of the fulfillment, unique within the
+    /// agent.
     ///
     /// This field is not used for Fulfillment in an Environment.
     #[prost(string, tag = "2")]
@@ -11331,7 +12648,8 @@ pub struct Fulfillment {
     /// Optional. Whether fulfillment is enabled.
     #[prost(bool, tag = "4")]
     pub enabled: bool,
-    /// Optional. The field defines whether the fulfillment is enabled for certain features.
+    /// Optional. The field defines whether the fulfillment is enabled for certain
+    /// features.
     #[prost(message, repeated, tag = "5")]
     pub features: ::prost::alloc::vec::Vec<fulfillment::Feature>,
     /// Required. The fulfillment configuration.
@@ -11361,14 +12679,15 @@ pub mod fulfillment {
         /// Optional. The password for HTTP Basic authentication.
         #[prost(string, tag = "3")]
         pub password: ::prost::alloc::string::String,
-        /// Optional. The HTTP request headers to send together with fulfillment requests.
+        /// Optional. The HTTP request headers to send together with fulfillment
+        /// requests.
         #[prost(map = "string, string", tag = "4")]
         pub request_headers: ::std::collections::HashMap<
             ::prost::alloc::string::String,
             ::prost::alloc::string::String,
         >,
-        /// Optional. Indicates if generic web service is created through Cloud Functions
-        /// integration. Defaults to false.
+        /// Optional. Indicates if generic web service is created through Cloud
+        /// Functions integration. Defaults to false.
         ///
         /// is_cloud_function is deprecated. Cloud functions can be configured by
         /// its uri as a regular web service now.
@@ -11435,7 +12754,8 @@ pub mod fulfillment {
         GenericWebService(GenericWebService),
     }
 }
-/// The request message for [Fulfillments.GetFulfillment][google.cloud.dialogflow.v2.Fulfillments.GetFulfillment].
+/// The request message for
+/// [Fulfillments.GetFulfillment][google.cloud.dialogflow.v2.Fulfillments.GetFulfillment].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFulfillmentRequest {
@@ -11444,7 +12764,8 @@ pub struct GetFulfillmentRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [Fulfillments.UpdateFulfillment][google.cloud.dialogflow.v2.Fulfillments.UpdateFulfillment].
+/// The request message for
+/// [Fulfillments.UpdateFulfillment][google.cloud.dialogflow.v2.Fulfillments.UpdateFulfillment].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFulfillmentRequest {
@@ -11643,12 +12964,12 @@ pub struct Environment {
     ///    ID>`
     #[prost(string, tag = "3")]
     pub agent_version: ::prost::alloc::string::String,
-    /// Output only. The state of this environment. This field is read-only, i.e., it cannot be
-    /// set by create and update methods.
+    /// Output only. The state of this environment. This field is read-only, i.e.,
+    /// it cannot be set by create and update methods.
     #[prost(enumeration = "environment::State", tag = "4")]
     pub state: i32,
-    /// Output only. The last update time of this environment. This field is read-only, i.e., it
-    /// cannot be set by create and update methods.
+    /// Output only. The last update time of this environment. This field is
+    /// read-only, i.e., it cannot be set by create and update methods.
     #[prost(message, optional, tag = "5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Text to speech settings for this environment.
@@ -11716,22 +13037,22 @@ pub mod environment {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextToSpeechSettings {
-    /// Optional. Indicates whether text to speech is enabled. Even when this field is false,
-    /// other settings in this proto are still retained.
+    /// Optional. Indicates whether text to speech is enabled. Even when this field
+    /// is false, other settings in this proto are still retained.
     #[prost(bool, tag = "1")]
     pub enable_text_to_speech: bool,
     /// Required. Audio encoding of the synthesized audio content.
     #[prost(enumeration = "OutputAudioEncoding", tag = "2")]
     pub output_audio_encoding: i32,
-    /// Optional. The synthesis sample rate (in hertz) for this audio. If not provided, then
-    /// the synthesizer will use the default sample rate based on the audio
-    /// encoding. If this is different from the voice's natural sample rate, then
-    /// the synthesizer will honor this request by converting to the desired sample
-    /// rate (which might result in worse audio quality).
+    /// Optional. The synthesis sample rate (in hertz) for this audio. If not
+    /// provided, then the synthesizer will use the default sample rate based on
+    /// the audio encoding. If this is different from the voice's natural sample
+    /// rate, then the synthesizer will honor this request by converting to the
+    /// desired sample rate (which might result in worse audio quality).
     #[prost(int32, tag = "3")]
     pub sample_rate_hertz: i32,
-    /// Optional. Configuration of how speech should be synthesized, mapping from language
-    /// (<https://cloud.google.com/dialogflow/docs/reference/language>) to
+    /// Optional. Configuration of how speech should be synthesized, mapping from
+    /// language (<https://cloud.google.com/dialogflow/docs/reference/language>) to
     /// SynthesizeSpeechConfig.
     #[prost(map = "string, message", tag = "4")]
     pub synthesize_speech_configs: ::std::collections::HashMap<
@@ -11739,7 +13060,8 @@ pub struct TextToSpeechSettings {
         SynthesizeSpeechConfig,
     >,
 }
-/// The request message for [Environments.ListEnvironments][google.cloud.dialogflow.v2.Environments.ListEnvironments].
+/// The request message for
+/// [Environments.ListEnvironments][google.cloud.dialogflow.v2.Environments.ListEnvironments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEnvironmentsRequest {
@@ -11750,15 +13072,16 @@ pub struct ListEnvironmentsRequest {
     /// - `projects/<Project ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of items to return in a single page. By default 100 and
-    /// at most 1000.
+    /// Optional. The maximum number of items to return in a single page. By
+    /// default 100 and at most 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous list request.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response message for [Environments.ListEnvironments][google.cloud.dialogflow.v2.Environments.ListEnvironments].
+/// The response message for
+/// [Environments.ListEnvironments][google.cloud.dialogflow.v2.Environments.ListEnvironments].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEnvironmentsResponse {
@@ -11771,7 +13094,8 @@ pub struct ListEnvironmentsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request message for [Environments.GetEnvironment][google.cloud.dialogflow.v2.Environments.GetEnvironment].
+/// The request message for
+/// [Environments.GetEnvironment][google.cloud.dialogflow.v2.Environments.GetEnvironment].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEnvironmentRequest {
@@ -11786,7 +13110,8 @@ pub struct GetEnvironmentRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [Environments.CreateEnvironment][google.cloud.dialogflow.v2.Environments.CreateEnvironment].
+/// The request message for
+/// [Environments.CreateEnvironment][google.cloud.dialogflow.v2.Environments.CreateEnvironment].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEnvironmentRequest {
@@ -11804,7 +13129,8 @@ pub struct CreateEnvironmentRequest {
     #[prost(string, tag = "3")]
     pub environment_id: ::prost::alloc::string::String,
 }
-/// The request message for [Environments.UpdateEnvironment][google.cloud.dialogflow.v2.Environments.UpdateEnvironment].
+/// The request message for
+/// [Environments.UpdateEnvironment][google.cloud.dialogflow.v2.Environments.UpdateEnvironment].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEnvironmentRequest {
@@ -11821,7 +13147,8 @@ pub struct UpdateEnvironmentRequest {
     #[prost(bool, tag = "3")]
     pub allow_load_to_draft_and_discard_changes: bool,
 }
-/// The request message for [Environments.DeleteEnvironment][google.cloud.dialogflow.v2.Environments.DeleteEnvironment].
+/// The request message for
+/// [Environments.DeleteEnvironment][google.cloud.dialogflow.v2.Environments.DeleteEnvironment].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEnvironmentRequest {
@@ -11836,7 +13163,8 @@ pub struct DeleteEnvironmentRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [Environments.GetEnvironmentHistory][google.cloud.dialogflow.v2.Environments.GetEnvironmentHistory].
+/// The request message for
+/// [Environments.GetEnvironmentHistory][google.cloud.dialogflow.v2.Environments.GetEnvironmentHistory].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEnvironmentHistoryRequest {
@@ -11850,15 +13178,16 @@ pub struct GetEnvironmentHistoryRequest {
     /// The environment ID for the default environment is `-`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of items to return in a single page. By default 100 and
-    /// at most 1000.
+    /// Optional. The maximum number of items to return in a single page. By
+    /// default 100 and at most 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous list request.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response message for [Environments.GetEnvironmentHistory][google.cloud.dialogflow.v2.Environments.GetEnvironmentHistory].
+/// The response message for
+/// [Environments.GetEnvironmentHistory][google.cloud.dialogflow.v2.Environments.GetEnvironmentHistory].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnvironmentHistory {
@@ -11872,12 +13201,12 @@ pub struct EnvironmentHistory {
     /// The environment ID for the default environment is `-`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Output only. The list of agent environments. There will be a maximum number of items
-    /// returned based on the page_size field in the request.
+    /// Output only. The list of agent environments. There will be a maximum number
+    /// of items returned based on the page_size field in the request.
     #[prost(message, repeated, tag = "2")]
     pub entries: ::prost::alloc::vec::Vec<environment_history::Entry>,
-    /// Output only. Token to retrieve the next page of results, or empty if there are no
-    /// more results in the list.
+    /// Output only. Token to retrieve the next page of results, or empty if there
+    /// are no more results in the list.
     #[prost(string, tag = "3")]
     pub next_page_token: ::prost::alloc::string::String,
 }
@@ -12218,7 +13547,8 @@ pub struct KnowledgeBase {
     #[prost(string, tag = "4")]
     pub language_code: ::prost::alloc::string::String,
 }
-/// Request message for [KnowledgeBases.ListKnowledgeBases][google.cloud.dialogflow.v2.KnowledgeBases.ListKnowledgeBases].
+/// Request message for
+/// [KnowledgeBases.ListKnowledgeBases][google.cloud.dialogflow.v2.KnowledgeBases.ListKnowledgeBases].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListKnowledgeBasesRequest {
@@ -12262,7 +13592,8 @@ pub struct ListKnowledgeBasesRequest {
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
-/// Response message for [KnowledgeBases.ListKnowledgeBases][google.cloud.dialogflow.v2.KnowledgeBases.ListKnowledgeBases].
+/// Response message for
+/// [KnowledgeBases.ListKnowledgeBases][google.cloud.dialogflow.v2.KnowledgeBases.ListKnowledgeBases].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListKnowledgeBasesResponse {
@@ -12274,7 +13605,8 @@ pub struct ListKnowledgeBasesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for [KnowledgeBases.GetKnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBases.GetKnowledgeBase].
+/// Request message for
+/// [KnowledgeBases.GetKnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBases.GetKnowledgeBase].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetKnowledgeBaseRequest {
@@ -12284,7 +13616,8 @@ pub struct GetKnowledgeBaseRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [KnowledgeBases.CreateKnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBases.CreateKnowledgeBase].
+/// Request message for
+/// [KnowledgeBases.CreateKnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBases.CreateKnowledgeBase].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateKnowledgeBaseRequest {
@@ -12296,7 +13629,8 @@ pub struct CreateKnowledgeBaseRequest {
     #[prost(message, optional, tag = "2")]
     pub knowledge_base: ::core::option::Option<KnowledgeBase>,
 }
-/// Request message for [KnowledgeBases.DeleteKnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBases.DeleteKnowledgeBase].
+/// Request message for
+/// [KnowledgeBases.DeleteKnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBases.DeleteKnowledgeBase].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteKnowledgeBaseRequest {
@@ -12310,7 +13644,8 @@ pub struct DeleteKnowledgeBaseRequest {
     #[prost(bool, tag = "2")]
     pub force: bool,
 }
-/// Request message for [KnowledgeBases.UpdateKnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBases.UpdateKnowledgeBase].
+/// Request message for
+/// [KnowledgeBases.UpdateKnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBases.UpdateKnowledgeBase].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateKnowledgeBaseRequest {
@@ -12328,7 +13663,8 @@ pub mod knowledge_bases_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Service for managing [KnowledgeBases][google.cloud.dialogflow.v2.KnowledgeBase].
+    /// Service for managing
+    /// [KnowledgeBases][google.cloud.dialogflow.v2.KnowledgeBase].
     #[derive(Debug, Clone)]
     pub struct KnowledgeBasesClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -12586,16 +13922,16 @@ pub struct Version {
     /// Optional. The developer-provided description of this version.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
-    /// Output only. The sequential number of this version. This field is read-only which means
-    /// it cannot be set by create and update methods.
+    /// Output only. The sequential number of this version. This field is read-only
+    /// which means it cannot be set by create and update methods.
     #[prost(int32, tag = "3")]
     pub version_number: i32,
-    /// Output only. The creation time of this version. This field is read-only, i.e., it cannot
-    /// be set by create and update methods.
+    /// Output only. The creation time of this version. This field is read-only,
+    /// i.e., it cannot be set by create and update methods.
     #[prost(message, optional, tag = "4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The status of this version. This field is read-only and cannot be set by
-    /// create and update methods.
+    /// Output only. The status of this version. This field is read-only and cannot
+    /// be set by create and update methods.
     #[prost(enumeration = "version::VersionStatus", tag = "6")]
     pub status: i32,
 }
@@ -12649,7 +13985,8 @@ pub mod version {
         }
     }
 }
-/// The request message for [Versions.ListVersions][google.cloud.dialogflow.v2.Versions.ListVersions].
+/// The request message for
+/// [Versions.ListVersions][google.cloud.dialogflow.v2.Versions.ListVersions].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVersionsRequest {
@@ -12660,15 +13997,16 @@ pub struct ListVersionsRequest {
     /// - `projects/<Project ID>/locations/<Location ID>/agent`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of items to return in a single page. By default 100 and
-    /// at most 1000.
+    /// Optional. The maximum number of items to return in a single page. By
+    /// default 100 and at most 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous list request.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response message for [Versions.ListVersions][google.cloud.dialogflow.v2.Versions.ListVersions].
+/// The response message for
+/// [Versions.ListVersions][google.cloud.dialogflow.v2.Versions.ListVersions].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVersionsResponse {
@@ -12681,7 +14019,8 @@ pub struct ListVersionsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request message for [Versions.GetVersion][google.cloud.dialogflow.v2.Versions.GetVersion].
+/// The request message for
+/// [Versions.GetVersion][google.cloud.dialogflow.v2.Versions.GetVersion].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVersionRequest {
@@ -12694,7 +14033,8 @@ pub struct GetVersionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [Versions.CreateVersion][google.cloud.dialogflow.v2.Versions.CreateVersion].
+/// The request message for
+/// [Versions.CreateVersion][google.cloud.dialogflow.v2.Versions.CreateVersion].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVersionRequest {
@@ -12709,7 +14049,8 @@ pub struct CreateVersionRequest {
     #[prost(message, optional, tag = "2")]
     pub version: ::core::option::Option<Version>,
 }
-/// The request message for [Versions.UpdateVersion][google.cloud.dialogflow.v2.Versions.UpdateVersion].
+/// The request message for
+/// [Versions.UpdateVersion][google.cloud.dialogflow.v2.Versions.UpdateVersion].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateVersionRequest {
@@ -12725,7 +14066,8 @@ pub struct UpdateVersionRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request message for [Versions.DeleteVersion][google.cloud.dialogflow.v2.Versions.DeleteVersion].
+/// The request message for
+/// [Versions.DeleteVersion][google.cloud.dialogflow.v2.Versions.DeleteVersion].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteVersionRequest {
@@ -13001,9 +14343,10 @@ pub struct WebhookRequest {
 /// The response message for a webhook call.
 ///
 /// This response is validated by the Dialogflow server. If validation fails,
-/// an error will be returned in the [QueryResult.diagnostic_info][google.cloud.dialogflow.v2.QueryResult.diagnostic_info] field.
-/// Setting JSON fields to an empty value with the wrong type is a common error.
-/// To avoid this error:
+/// an error will be returned in the
+/// [QueryResult.diagnostic_info][google.cloud.dialogflow.v2.QueryResult.diagnostic_info]
+/// field. Setting JSON fields to an empty value with the wrong type is a common
+/// error. To avoid this error:
 ///
 /// - Use `""` for empty strings
 /// - Use `{}` or `null` for empty objects
@@ -13018,25 +14361,28 @@ pub struct WebhookResponse {
     /// Optional. The text response message intended for the end-user.
     /// It is recommended to use `fulfillment_messages.text.text\[0\]` instead.
     /// When provided, Dialogflow uses this field to populate
-    /// [QueryResult.fulfillment_text][google.cloud.dialogflow.v2.QueryResult.fulfillment_text] sent to the integration or API caller.
+    /// [QueryResult.fulfillment_text][google.cloud.dialogflow.v2.QueryResult.fulfillment_text]
+    /// sent to the integration or API caller.
     #[prost(string, tag = "1")]
     pub fulfillment_text: ::prost::alloc::string::String,
     /// Optional. The rich response messages intended for the end-user.
     /// When provided, Dialogflow uses this field to populate
-    /// [QueryResult.fulfillment_messages][google.cloud.dialogflow.v2.QueryResult.fulfillment_messages] sent to the integration or API caller.
+    /// [QueryResult.fulfillment_messages][google.cloud.dialogflow.v2.QueryResult.fulfillment_messages]
+    /// sent to the integration or API caller.
     #[prost(message, repeated, tag = "2")]
     pub fulfillment_messages: ::prost::alloc::vec::Vec<intent::Message>,
     /// Optional. A custom field used to identify the webhook source.
     /// Arbitrary strings are supported.
     /// When provided, Dialogflow uses this field to populate
-    /// [QueryResult.webhook_source][google.cloud.dialogflow.v2.QueryResult.webhook_source] sent to the integration or API caller.
+    /// [QueryResult.webhook_source][google.cloud.dialogflow.v2.QueryResult.webhook_source]
+    /// sent to the integration or API caller.
     #[prost(string, tag = "3")]
     pub source: ::prost::alloc::string::String,
-    /// Optional. This field can be used to pass custom data from your webhook to the
-    /// integration or API caller. Arbitrary JSON objects are supported.
-    /// When provided, Dialogflow uses this field to populate
-    /// [QueryResult.webhook_payload][google.cloud.dialogflow.v2.QueryResult.webhook_payload] sent to the integration or API caller.
-    /// This field is also used by the
+    /// Optional. This field can be used to pass custom data from your webhook to
+    /// the integration or API caller. Arbitrary JSON objects are supported. When
+    /// provided, Dialogflow uses this field to populate
+    /// [QueryResult.webhook_payload][google.cloud.dialogflow.v2.QueryResult.webhook_payload]
+    /// sent to the integration or API caller. This field is also used by the
     /// [Google Assistant
     /// integration](<https://cloud.google.com/dialogflow/docs/integrations/aog>)
     /// for rich response messages.
@@ -13047,7 +14393,8 @@ pub struct WebhookResponse {
     /// Optional. The collection of output contexts that will overwrite currently
     /// active contexts for the session and reset their lifespans.
     /// When provided, Dialogflow uses this field to populate
-    /// [QueryResult.output_contexts][google.cloud.dialogflow.v2.QueryResult.output_contexts] sent to the integration or API caller.
+    /// [QueryResult.output_contexts][google.cloud.dialogflow.v2.QueryResult.output_contexts]
+    /// sent to the integration or API caller.
     #[prost(message, repeated, tag = "5")]
     pub output_contexts: ::prost::alloc::vec::Vec<Context>,
     /// Optional. Invokes the supplied events.
@@ -13059,7 +14406,9 @@ pub struct WebhookResponse {
     /// entity types with. The entity synonyms apply to all languages and persist
     /// for the session. Setting this data from a webhook overwrites
     /// the session entity types that have been set using `detectIntent`,
-    /// `streamingDetectIntent` or [SessionEntityType][google.cloud.dialogflow.v2.SessionEntityType] management methods.
+    /// `streamingDetectIntent` or
+    /// [SessionEntityType][google.cloud.dialogflow.v2.SessionEntityType]
+    /// management methods.
     #[prost(message, repeated, tag = "10")]
     pub session_entity_types: ::prost::alloc::vec::Vec<SessionEntityType>,
 }

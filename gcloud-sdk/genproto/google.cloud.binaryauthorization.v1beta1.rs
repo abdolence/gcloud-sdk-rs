@@ -3,7 +3,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContinuousValidationEvent {
     /// Type of CV event.
-    #[prost(oneof = "continuous_validation_event::EventType", tags = "1, 2")]
+    #[prost(oneof = "continuous_validation_event::EventType", tags = "1, 4")]
     pub event_type: ::core::option::Option<continuous_validation_event::EventType>,
 }
 /// Nested message and enum types in `ContinuousValidationEvent`.
@@ -18,6 +18,9 @@ pub mod continuous_validation_event {
         /// The name of the Pod.
         #[prost(string, tag = "1")]
         pub pod: ::prost::alloc::string::String,
+        /// The name of the policy.
+        #[prost(string, tag = "8")]
+        pub policy_name: ::prost::alloc::string::String,
         /// Deploy time of the Pod from k8s.
         #[prost(message, optional, tag = "2")]
         pub deploy_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -51,9 +54,108 @@ pub mod continuous_validation_event {
             /// Description of the above result.
             #[prost(string, tag = "3")]
             pub description: ::prost::alloc::string::String,
+            /// List of check results.
+            #[prost(message, repeated, tag = "4")]
+            pub check_results: ::prost::alloc::vec::Vec<image_details::CheckResult>,
         }
         /// Nested message and enum types in `ImageDetails`.
         pub mod image_details {
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct CheckResult {
+                /// The index of the check set.
+                #[prost(string, tag = "1")]
+                pub check_set_index: ::prost::alloc::string::String,
+                /// The name of the check set.
+                #[prost(string, tag = "2")]
+                pub check_set_name: ::prost::alloc::string::String,
+                /// The scope of the check set.
+                #[prost(message, optional, tag = "3")]
+                pub check_set_scope: ::core::option::Option<check_result::CheckSetScope>,
+                /// The index of the check.
+                #[prost(string, tag = "4")]
+                pub check_index: ::prost::alloc::string::String,
+                /// The name of the check.
+                #[prost(string, tag = "5")]
+                pub check_name: ::prost::alloc::string::String,
+                /// The type of the check.
+                #[prost(string, tag = "6")]
+                pub check_type: ::prost::alloc::string::String,
+                /// The verdict of this check.
+                #[prost(enumeration = "check_result::CheckVerdict", tag = "7")]
+                pub verdict: i32,
+                /// User-friendly explanation of this check result.
+                #[prost(string, tag = "8")]
+                pub explanation: ::prost::alloc::string::String,
+            }
+            /// Nested message and enum types in `CheckResult`.
+            pub mod check_result {
+                /// A scope specifier for check sets.
+                #[allow(clippy::derive_partial_eq_without_eq)]
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct CheckSetScope {
+                    #[prost(oneof = "check_set_scope::Scope", tags = "1, 2")]
+                    pub scope: ::core::option::Option<check_set_scope::Scope>,
+                }
+                /// Nested message and enum types in `CheckSetScope`.
+                pub mod check_set_scope {
+                    #[allow(clippy::derive_partial_eq_without_eq)]
+                    #[derive(Clone, PartialEq, ::prost::Oneof)]
+                    pub enum Scope {
+                        /// Matches a single Kubernetes service account, e.g.
+                        /// 'my-namespace:my-service-account'.
+                        /// `kubernetes_service_account` scope is always more specific than
+                        /// `kubernetes_namespace` scope for the same namespace.
+                        #[prost(string, tag = "1")]
+                        KubernetesServiceAccount(::prost::alloc::string::String),
+                        /// Matches all Kubernetes service accounts in the provided
+                        /// namespace, unless a more specific `kubernetes_service_account`
+                        /// scope already matched.
+                        #[prost(string, tag = "2")]
+                        KubernetesNamespace(::prost::alloc::string::String),
+                    }
+                }
+                /// Result of evaluating one check.
+                #[derive(
+                    Clone,
+                    Copy,
+                    Debug,
+                    PartialEq,
+                    Eq,
+                    Hash,
+                    PartialOrd,
+                    Ord,
+                    ::prost::Enumeration
+                )]
+                #[repr(i32)]
+                pub enum CheckVerdict {
+                    /// We should always have a verdict. This is an error.
+                    Unspecified = 0,
+                    /// The check was successfully evaluated and the image did not satisfy
+                    /// the check.
+                    NonConformant = 1,
+                }
+                impl CheckVerdict {
+                    /// String value of the enum field names used in the ProtoBuf definition.
+                    ///
+                    /// The values are not transformed in any way and thus are considered stable
+                    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                    pub fn as_str_name(&self) -> &'static str {
+                        match self {
+                            CheckVerdict::Unspecified => "CHECK_VERDICT_UNSPECIFIED",
+                            CheckVerdict::NonConformant => "NON_CONFORMANT",
+                        }
+                    }
+                    /// Creates an enum from field names used in the ProtoBuf definition.
+                    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                        match value {
+                            "CHECK_VERDICT_UNSPECIFIED" => Some(Self::Unspecified),
+                            "NON_CONFORMANT" => Some(Self::NonConformant),
+                            _ => None,
+                        }
+                    }
+                }
+            }
             /// Result of the audit.
             #[derive(
                 Clone,
@@ -140,11 +242,12 @@ pub mod continuous_validation_event {
             }
         }
     }
-    /// An event describing that the project policy is unsupported by CV.
+    /// An event describing a user-actionable configuration issue that prevents CV
+    /// from auditing.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct UnsupportedPolicyEvent {
-        /// A description of the unsupported policy.
+    pub struct ConfigErrorEvent {
+        /// A description of the issue.
         #[prost(string, tag = "1")]
         pub description: ::prost::alloc::string::String,
     }
@@ -155,9 +258,9 @@ pub mod continuous_validation_event {
         /// Pod event.
         #[prost(message, tag = "1")]
         PodEvent(ContinuousValidationPodEvent),
-        /// Unsupported policy event.
-        #[prost(message, tag = "2")]
-        UnsupportedPolicyEvent(UnsupportedPolicyEvent),
+        /// Config error event.
+        #[prost(message, tag = "4")]
+        ConfigErrorEvent(ConfigErrorEvent),
     }
 }
 /// A [policy][google.cloud.binaryauthorization.v1beta1.Policy] for Binary Authorization.

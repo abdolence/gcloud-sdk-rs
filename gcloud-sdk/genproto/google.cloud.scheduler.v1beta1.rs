@@ -1,6 +1,7 @@
 /// Http target. The job will be pushed to the job handler by means of
-/// an HTTP request via an [http_method][google.cloud.scheduler.v1beta1.HttpTarget.http_method] such as HTTP
-/// POST, HTTP GET, etc. The job is acknowledged by means of an HTTP
+/// an HTTP request via an
+/// [http_method][google.cloud.scheduler.v1beta1.HttpTarget.http_method] such as
+/// HTTP POST, HTTP GET, etc. The job is acknowledged by means of an HTTP
 /// response code in the range \[200 - 299\]. A failure to receive a response
 /// constitutes a failed execution. For a redirected request, the response
 /// returned by the redirected request is considered.
@@ -31,6 +32,11 @@ pub struct HttpTarget {
     /// * `User-Agent`: This will be set to `"Google-Cloud-Scheduler"`.
     /// * `X-Google-*`: Google internal use only.
     /// * `X-AppEngine-*`: Google internal use only.
+    /// * `X-CloudScheduler`: This header will be set to true.
+    /// * `X-CloudScheduler-JobName`: This header will contain the job name.
+    /// * `X-CloudScheduler-ScheduleTime`: For Cloud Scheduler jobs specified in
+    /// the unix-cron format, this header will contain the job schedule time in
+    /// RFC3339 UTC "Zulu" format.
     ///
     /// The total size of headers must be less than 80KB.
     #[prost(map = "string, string", tag = "3")]
@@ -45,7 +51,8 @@ pub struct HttpTarget {
     pub body: ::prost::alloc::vec::Vec<u8>,
     /// The mode for generating an `Authorization` header for HTTP requests.
     ///
-    /// If specified, all `Authorization` headers in the [HttpTarget.headers][google.cloud.scheduler.v1beta1.HttpTarget.headers]
+    /// If specified, all `Authorization` headers in the
+    /// [HttpTarget.headers][google.cloud.scheduler.v1beta1.HttpTarget.headers]
     /// field will be overridden.
     #[prost(oneof = "http_target::AuthorizationHeader", tags = "5, 6")]
     pub authorization_header: ::core::option::Option<http_target::AuthorizationHeader>,
@@ -54,7 +61,8 @@ pub struct HttpTarget {
 pub mod http_target {
     /// The mode for generating an `Authorization` header for HTTP requests.
     ///
-    /// If specified, all `Authorization` headers in the [HttpTarget.headers][google.cloud.scheduler.v1beta1.HttpTarget.headers]
+    /// If specified, all `Authorization` headers in the
+    /// [HttpTarget.headers][google.cloud.scheduler.v1beta1.HttpTarget.headers]
     /// field will be overridden.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -81,14 +89,14 @@ pub mod http_target {
     }
 }
 /// App Engine target. The job will be pushed to a job handler by means
-/// of an HTTP request via an [http_method][google.cloud.scheduler.v1beta1.AppEngineHttpTarget.http_method] such
-/// as HTTP POST, HTTP GET, etc. The job is acknowledged by means of an
-/// HTTP response code in the range \[200 - 299\]. Error 503 is
-/// considered an App Engine system error instead of an application
-/// error. Requests returning error 503 will be retried regardless of
-/// retry configuration and not counted against retry counts. Any other
-/// response code, or a failure to receive a response before the
-/// deadline, constitutes a failed attempt.
+/// of an HTTP request via an
+/// [http_method][google.cloud.scheduler.v1beta1.AppEngineHttpTarget.http_method]
+/// such as HTTP POST, HTTP GET, etc. The job is acknowledged by means of an HTTP
+/// response code in the range \[200 - 299\]. Error 503 is considered an App Engine
+/// system error instead of an application error. Requests returning error 503
+/// will be retried regardless of retry configuration and not counted against
+/// retry counts. Any other response code, or a failure to receive a response
+/// before the deadline, constitutes a failed attempt.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppEngineHttpTarget {
@@ -120,9 +128,14 @@ pub struct AppEngineHttpTarget {
     ///    `"AppEngine-Google; (+<http://code.google.com/appengine>)"` to the
     ///    modified `User-Agent`.
     /// * `X-CloudScheduler`: This header will be set to true.
+    /// * `X-CloudScheduler-JobName`: This header will contain the job name.
+    /// * `X-CloudScheduler-ScheduleTime`: For Cloud Scheduler jobs specified in
+    /// the unix-cron format, this header will contain the job schedule time in
+    /// RFC3339 UTC "Zulu" format.
     ///
-    /// If the job has an [body][google.cloud.scheduler.v1beta1.AppEngineHttpTarget.body], Cloud Scheduler sets
-    /// the following headers:
+    /// If the job has an
+    /// [body][google.cloud.scheduler.v1beta1.AppEngineHttpTarget.body], Cloud
+    /// Scheduler sets the following headers:
     ///
     /// * `Content-Type`: By default, the `Content-Type` header is set to
     ///    `"application/octet-stream"`. The default can be overridden by explictly
@@ -148,7 +161,8 @@ pub struct AppEngineHttpTarget {
     ///
     /// HTTP request body. A request body is allowed only if the HTTP method is
     /// POST or PUT. It will result in invalid argument error to set a body on a
-    /// job with an incompatible [HttpMethod][google.cloud.scheduler.v1beta1.HttpMethod].
+    /// job with an incompatible
+    /// [HttpMethod][google.cloud.scheduler.v1beta1.HttpMethod].
     #[prost(bytes = "vec", tag = "5")]
     pub body: ::prost::alloc::vec::Vec<u8>,
 }
@@ -159,7 +173,7 @@ pub struct AppEngineHttpTarget {
 pub struct PubsubTarget {
     /// Required. The name of the Cloud Pub/Sub topic to which messages will
     /// be published when a job is delivered. The topic name must be in the
-    /// same format as required by PubSub's
+    /// same format as required by Pub/Sub's
     /// [PublishRequest.name](<https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#publishrequest>),
     /// for example `projects/PROJECT_ID/topics/TOPIC_ID`.
     ///
@@ -215,7 +229,7 @@ pub struct AppEngineRouting {
     ///
     /// Requests can only be sent to a specific instance if
     /// [manual scaling is used in App Engine
-    /// Standard](<https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?hl=en_US#scaling_types_and_instance_classes>).
+    /// Standard](<https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?#scaling_types_and_instance_classes>).
     /// App Engine Flex does not support instances. For more information, see
     /// [App Engine Standard request
     /// routing](<https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>)
@@ -244,43 +258,51 @@ pub struct AppEngineRouting {
     ///    example <app-id>.appspot.com, which is associated with the
     ///    job's project ID.
     ///
-    /// * `service =` [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service]
+    /// * `service =`
+    /// [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service]
     ///
-    /// * `version =` [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version]
+    /// * `version =`
+    /// [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version]
     ///
     /// * `version_dot_service =`
-    ///    [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version] `+ '.' +`
-    ///    [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service]
+    ///    [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version] `+ '.'
+    ///    +` [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service]
     ///
-    /// * `instance =` [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance]
+    /// * `instance =`
+    /// [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance]
     ///
     /// * `instance_dot_service =`
-    ///    [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance] `+ '.' +`
-    ///    [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service]
+    ///    [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance] `+
+    ///    '.' +` [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service]
     ///
     /// * `instance_dot_version =`
-    ///    [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance] `+ '.' +`
-    ///    [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version]
+    ///    [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance] `+
+    ///    '.' +` [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version]
     ///
     /// * `instance_dot_version_dot_service =`
-    ///    [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance] `+ '.' +`
-    ///    [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version] `+ '.' +`
+    ///    [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance] `+
+    ///    '.' +` [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version]
+    ///    `+ '.' +`
     ///    [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service]
     ///
     ///
-    /// If [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service] is empty, then the job will be sent
-    /// to the service which is the default service when the job is attempted.
+    /// If [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service] is
+    /// empty, then the job will be sent to the service which is the default
+    /// service when the job is attempted.
     ///
-    /// If [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version] is empty, then the job will be sent
-    /// to the version which is the default version when the job is attempted.
+    /// If [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version] is
+    /// empty, then the job will be sent to the version which is the default
+    /// version when the job is attempted.
     ///
-    /// If [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance] is empty, then the job will be
-    /// sent to an instance which is available when the job is attempted.
+    /// If [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance] is
+    /// empty, then the job will be sent to an instance which is available when the
+    /// job is attempted.
     ///
     /// If [service][google.cloud.scheduler.v1beta1.AppEngineRouting.service],
     /// [version][google.cloud.scheduler.v1beta1.AppEngineRouting.version], or
-    /// [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance] is invalid, then the job will be sent
-    /// to the default version of the default service when the job is attempted.
+    /// [instance][google.cloud.scheduler.v1beta1.AppEngineRouting.instance] is
+    /// invalid, then the job will be sent to the default version of the default
+    /// service when the job is attempted.
     #[prost(string, tag = "4")]
     pub host: ::prost::alloc::string::String,
 }
@@ -377,11 +399,12 @@ impl HttpMethod {
     }
 }
 /// Configuration for a job.
-/// The maximum allowed size for a job is 100KB.
+/// The maximum allowed size for a job is 1MB.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Job {
-    /// Optionally caller-specified in [CreateJob][google.cloud.scheduler.v1beta1.CloudScheduler.CreateJob], after
+    /// Optionally caller-specified in
+    /// [CreateJob][google.cloud.scheduler.v1beta1.CloudScheduler.CreateJob], after
     /// which it becomes output only.
     ///
     /// The job name. For example:
@@ -400,20 +423,22 @@ pub struct Job {
     ///     hyphens (-), or underscores (_). The maximum length is 500 characters.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optionally caller-specified in [CreateJob][google.cloud.scheduler.v1beta1.CloudScheduler.CreateJob] or
+    /// Optionally caller-specified in
+    /// [CreateJob][google.cloud.scheduler.v1beta1.CloudScheduler.CreateJob] or
     /// [UpdateJob][google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob].
     ///
     /// A human-readable description for the job. This string must not contain
     /// more than 500 characters.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
-    /// Required, except when used with [UpdateJob][google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob].
+    /// Required, except when used with
+    /// [UpdateJob][google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob].
     ///
     /// Describes the schedule on which the job will be executed.
     ///
     /// The schedule can be either of the following types:
     ///
-    /// * [Crontab](<http://en.wikipedia.org/wiki/Cron#Overview>)
+    /// * [Crontab](<https://en.wikipedia.org/wiki/Cron#Overview>)
     /// * English-like
     /// [schedule](<https://cloud.google.com/scheduler/docs/configuring/cron-job-schedules>)
     ///
@@ -426,15 +451,17 @@ pub struct Job {
     /// A scheduled start time will be delayed if the previous
     /// execution has not ended when its scheduled time occurs.
     ///
-    /// If [retry_count][google.cloud.scheduler.v1beta1.RetryConfig.retry_count] > 0 and a job attempt fails,
-    /// the job will be tried a total of [retry_count][google.cloud.scheduler.v1beta1.RetryConfig.retry_count]
+    /// If [retry_count][google.cloud.scheduler.v1beta1.RetryConfig.retry_count] >
+    /// 0 and a job attempt fails, the job will be tried a total of
+    /// [retry_count][google.cloud.scheduler.v1beta1.RetryConfig.retry_count]
     /// times, with exponential backoff, until the next scheduled start
     /// time.
     #[prost(string, tag = "20")]
     pub schedule: ::prost::alloc::string::String,
     /// Specifies the time zone to be used in interpreting
-    /// [schedule][google.cloud.scheduler.v1beta1.Job.schedule]. The value of this field must be a time
-    /// zone name from the [tz database](<http://en.wikipedia.org/wiki/Tz_database>).
+    /// [schedule][google.cloud.scheduler.v1beta1.Job.schedule]. The value of this
+    /// field must be a time zone name from the [tz
+    /// database](<http://en.wikipedia.org/wiki/Tz_database>).
     ///
     /// Note that some time zones include a provision for
     /// daylight savings time. The rules for daylight saving time are
@@ -469,14 +496,31 @@ pub struct Job {
     /// execution logs. Cloud Scheduler will retry the job according
     /// to the [RetryConfig][google.cloud.scheduler.v1beta1.RetryConfig].
     ///
-    /// The allowed duration for this deadline is:
+    /// The default and the allowed values depend on the type of target:
     ///
-    /// * For [HTTP targets][google.cloud.scheduler.v1beta1.Job.http_target], between 15 seconds and 30 minutes.
-    /// * For [App Engine HTTP targets][google.cloud.scheduler.v1beta1.Job.app_engine_http_target], between 15
-    ///    seconds and 24 hours.
-    /// * For [PubSub targets][google.cloud.scheduler.v1beta1.Job.pubsub_target], this field is ignored.
+    /// * For [HTTP targets][google.cloud.scheduler.v1beta1.Job.http_target], the
+    /// default is 3 minutes. The deadline must be in the interval [15 seconds, 30
+    /// minutes].
+    ///
+    /// * For [App Engine HTTP
+    /// targets][google.cloud.scheduler.v1beta1.Job.app_engine_http_target], 0
+    /// indicates that the request has the default deadline. The default deadline
+    /// depends on the scaling type of the service: 10 minutes for standard apps
+    /// with automatic scaling, 24 hours for standard apps with manual and basic
+    /// scaling, and 60 minutes for flex apps. If the request deadline is set, it
+    /// must be in the interval \[15 seconds, 24 hours 15 seconds\].
+    ///
+    /// * For [Pub/Sub targets][google.cloud.scheduler.v1beta1.Job.pubsub_target],
+    /// this field is ignored.
     #[prost(message, optional, tag = "22")]
     pub attempt_deadline: ::core::option::Option<::prost_types::Duration>,
+    /// Immutable. This field is used to manage the legacy App Engine Cron jobs
+    /// using the Cloud Scheduler API. If the field is set to true, the job will be
+    /// considered a legacy job. Note that App Engine Cron jobs have fewer
+    /// features than Cloud Scheduler jobs, e.g., are only limited to App Engine
+    /// targets.
+    #[prost(bool, tag = "23")]
+    pub legacy_app_engine_cron: bool,
     /// Required.
     ///
     /// Delivery settings containing destination and parameters.
@@ -510,9 +554,11 @@ pub mod job {
         /// The job is disabled by the system due to error. The user
         /// cannot directly set a job to be disabled.
         Disabled = 3,
-        /// The job state resulting from a failed [CloudScheduler.UpdateJob][google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob]
+        /// The job state resulting from a failed
+        /// [CloudScheduler.UpdateJob][google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob]
         /// operation. To recover a job from this state, retry
-        /// [CloudScheduler.UpdateJob][google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob] until a successful response is received.
+        /// [CloudScheduler.UpdateJob][google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob]
+        /// until a successful response is received.
         UpdateFailed = 4,
     }
     impl State {
@@ -562,7 +608,8 @@ pub mod job {
 ///
 /// By default, if a job does not complete successfully (meaning that
 /// an acknowledgement is not received from the handler, then it will be retried
-/// with exponential backoff according to the settings in [RetryConfig][google.cloud.scheduler.v1beta1.RetryConfig].
+/// with exponential backoff according to the settings in
+/// [RetryConfig][google.cloud.scheduler.v1beta1.RetryConfig].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RetryConfig {
@@ -586,8 +633,8 @@ pub struct RetryConfig {
     pub retry_count: i32,
     /// The time limit for retrying a failed job, measured from time when an
     /// execution was first attempted. If specified with
-    /// [retry_count][google.cloud.scheduler.v1beta1.RetryConfig.retry_count], the job will be retried until both
-    /// limits are reached.
+    /// [retry_count][google.cloud.scheduler.v1beta1.RetryConfig.retry_count], the
+    /// job will be retried until both limits are reached.
     ///
     /// The default value for max_retry_duration is zero, which means retry
     /// duration is unlimited.
@@ -608,26 +655,32 @@ pub struct RetryConfig {
     /// The time between retries will double `max_doublings` times.
     ///
     /// A job's retry interval starts at
-    /// [min_backoff_duration][google.cloud.scheduler.v1beta1.RetryConfig.min_backoff_duration], then doubles
-    /// `max_doublings` times, then increases linearly, and finally
-    /// retries retries at intervals of
-    /// [max_backoff_duration][google.cloud.scheduler.v1beta1.RetryConfig.max_backoff_duration] up to
-    /// [retry_count][google.cloud.scheduler.v1beta1.RetryConfig.retry_count] times.
+    /// [min_backoff_duration][google.cloud.scheduler.v1beta1.RetryConfig.min_backoff_duration],
+    /// then doubles `max_doublings` times, then increases linearly, and finally
+    /// retries at intervals of
+    /// [max_backoff_duration][google.cloud.scheduler.v1beta1.RetryConfig.max_backoff_duration]
+    /// up to [retry_count][google.cloud.scheduler.v1beta1.RetryConfig.retry_count]
+    /// times.
     ///
-    /// For example, if [min_backoff_duration][google.cloud.scheduler.v1beta1.RetryConfig.min_backoff_duration] is
-    /// 10s, [max_backoff_duration][google.cloud.scheduler.v1beta1.RetryConfig.max_backoff_duration] is 300s, and
-    /// `max_doublings` is 3, then the a job will first be retried in 10s. The
-    /// retry interval will double three times, and then increase linearly by
-    /// 2^3 * 10s.  Finally, the job will retry at intervals of
-    /// [max_backoff_duration][google.cloud.scheduler.v1beta1.RetryConfig.max_backoff_duration] until the job has
-    /// been attempted [retry_count][google.cloud.scheduler.v1beta1.RetryConfig.retry_count] times. Thus, the
-    /// requests will retry at 10s, 20s, 40s, 80s, 160s, 240s, 300s, 300s, ....
+    /// For example, if
+    /// [min_backoff_duration][google.cloud.scheduler.v1beta1.RetryConfig.min_backoff_duration]
+    /// is 10s,
+    /// [max_backoff_duration][google.cloud.scheduler.v1beta1.RetryConfig.max_backoff_duration]
+    /// is 300s, and `max_doublings` is 3, then the a job will first be retried in
+    /// 10s. The retry interval will double three times, and then increase linearly
+    /// by 2^3 * 10s.  Finally, the job will retry at intervals of
+    /// [max_backoff_duration][google.cloud.scheduler.v1beta1.RetryConfig.max_backoff_duration]
+    /// until the job has been attempted
+    /// [retry_count][google.cloud.scheduler.v1beta1.RetryConfig.retry_count]
+    /// times. Thus, the requests will retry at 10s, 20s, 40s, 80s, 160s, 240s,
+    /// 300s, 300s, ....
     ///
     /// The default value of this field is 5.
     #[prost(int32, tag = "5")]
     pub max_doublings: i32,
 }
-/// Request message for listing jobs using [ListJobs][google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs].
+/// Request message for listing jobs using
+/// [ListJobs][google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsRequest {
@@ -635,6 +688,16 @@ pub struct ListJobsRequest {
     /// `projects/PROJECT_ID/locations/LOCATION_ID`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
+    /// `filter` can be used to specify a subset of jobs.
+    ///
+    /// If `filter` equals `target_config="HttpConfig"`, then the http
+    /// target jobs are retrieved. If `filter` equals
+    /// `target_config="PubSubConfig"`, then the Pub/Sub target jobs are
+    /// retrieved. If `filter` equals `labels.foo=value1
+    /// labels.foo=value2` then only jobs which are labeled with
+    /// foo=value1 AND foo=value2 will be returned.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
     /// Requested page size.
     ///
     /// The maximum page size is 500. If unspecified, the page size will
@@ -646,14 +709,23 @@ pub struct ListJobsRequest {
     /// A token identifying a page of results the server will return. To
     /// request the first page results, page_token must be empty. To
     /// request the next page of results, page_token must be the value of
-    /// [next_page_token][google.cloud.scheduler.v1beta1.ListJobsResponse.next_page_token] returned from
-    /// the previous call to [ListJobs][google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs]. It is an error to
-    /// switch the value of [filter][google.cloud.scheduler.v1beta1.ListJobsRequest.filter] or
-    /// [order_by][google.cloud.scheduler.v1beta1.ListJobsRequest.order_by] while iterating through pages.
+    /// [next_page_token][google.cloud.scheduler.v1beta1.ListJobsResponse.next_page_token]
+    /// returned from the previous call to
+    /// [ListJobs][google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs]. It is
+    /// an error to switch the value of
+    /// [filter][google.cloud.scheduler.v1beta1.ListJobsRequest.filter] or
+    /// [order_by][google.cloud.scheduler.v1beta1.ListJobsRequest.order_by] while
+    /// iterating through pages.
     #[prost(string, tag = "6")]
     pub page_token: ::prost::alloc::string::String,
+    /// This field is used to manage the legacy App Engine Cron jobs using the
+    /// Cloud Scheduler API. If the field is set to true, the jobs in the __cron
+    /// queue will be listed instead.
+    #[prost(bool, tag = "7")]
+    pub legacy_app_engine_cron: bool,
 }
-/// Response message for listing jobs using [ListJobs][google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs].
+/// Response message for listing jobs using
+/// [ListJobs][google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsResponse {
@@ -661,16 +733,18 @@ pub struct ListJobsResponse {
     #[prost(message, repeated, tag = "1")]
     pub jobs: ::prost::alloc::vec::Vec<Job>,
     /// A token to retrieve next page of results. Pass this value in the
-    /// [page_token][google.cloud.scheduler.v1beta1.ListJobsRequest.page_token] field in the subsequent call to
-    /// [ListJobs][google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs] to retrieve the next page of results.
-    /// If this is empty it indicates that there are no more results
-    /// through which to paginate.
+    /// [page_token][google.cloud.scheduler.v1beta1.ListJobsRequest.page_token]
+    /// field in the subsequent call to
+    /// [ListJobs][google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs] to
+    /// retrieve the next page of results. If this is empty it indicates that there
+    /// are no more results through which to paginate.
     ///
     /// The page token is valid for only 2 hours.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for [GetJob][google.cloud.scheduler.v1beta1.CloudScheduler.GetJob].
+/// Request message for
+/// [GetJob][google.cloud.scheduler.v1beta1.CloudScheduler.GetJob].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetJobRequest {
@@ -679,7 +753,8 @@ pub struct GetJobRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [CreateJob][google.cloud.scheduler.v1beta1.CloudScheduler.CreateJob].
+/// Request message for
+/// [CreateJob][google.cloud.scheduler.v1beta1.CloudScheduler.CreateJob].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateJobRequest {
@@ -688,18 +763,21 @@ pub struct CreateJobRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The job to add. The user can optionally specify a name for the
-    /// job in [name][google.cloud.scheduler.v1beta1.Job.name]. [name][google.cloud.scheduler.v1beta1.Job.name] cannot be the same as an
+    /// job in [name][google.cloud.scheduler.v1beta1.Job.name].
+    /// [name][google.cloud.scheduler.v1beta1.Job.name] cannot be the same as an
     /// existing job. If a name is not specified then the system will
     /// generate a random unique name that will be returned
     /// ([name][google.cloud.scheduler.v1beta1.Job.name]) in the response.
     #[prost(message, optional, tag = "2")]
     pub job: ::core::option::Option<Job>,
 }
-/// Request message for [UpdateJob][google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob].
+/// Request message for
+/// [UpdateJob][google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateJobRequest {
-    /// Required. The new job properties. [name][google.cloud.scheduler.v1beta1.Job.name] must be specified.
+    /// Required. The new job properties.
+    /// [name][google.cloud.scheduler.v1beta1.Job.name] must be specified.
     ///
     /// Output only fields cannot be modified using UpdateJob.
     /// Any value specified for an output only field will be ignored.
@@ -718,8 +796,14 @@ pub struct DeleteJobRequest {
     /// `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// This field is used to manage the legacy App Engine Cron jobs using the
+    /// Cloud Scheduler API. If the field is set to true, the job in the __cron
+    /// queue with the corresponding name will be deleted instead.
+    #[prost(bool, tag = "2")]
+    pub legacy_app_engine_cron: bool,
 }
-/// Request message for [PauseJob][google.cloud.scheduler.v1beta1.CloudScheduler.PauseJob].
+/// Request message for
+/// [PauseJob][google.cloud.scheduler.v1beta1.CloudScheduler.PauseJob].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PauseJobRequest {
@@ -728,7 +812,8 @@ pub struct PauseJobRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [ResumeJob][google.cloud.scheduler.v1beta1.CloudScheduler.ResumeJob].
+/// Request message for
+/// [ResumeJob][google.cloud.scheduler.v1beta1.CloudScheduler.ResumeJob].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResumeJobRequest {
@@ -746,6 +831,11 @@ pub struct RunJobRequest {
     /// `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// This field is used to manage the legacy App Engine Cron jobs using the
+    /// Cloud Scheduler API. If the field is set to true, the job in the __cron
+    /// queue with the corresponding name will be forced to run instead.
+    #[prost(bool, tag = "2")]
+    pub legacy_app_engine_cron: bool,
 }
 /// Generated client implementations.
 pub mod cloud_scheduler_client {
@@ -923,13 +1013,14 @@ pub mod cloud_scheduler_client {
         }
         /// Updates a job.
         ///
-        /// If successful, the updated [Job][google.cloud.scheduler.v1beta1.Job] is returned. If the job does
-        /// not exist, `NOT_FOUND` is returned.
+        /// If successful, the updated [Job][google.cloud.scheduler.v1beta1.Job] is
+        /// returned. If the job does not exist, `NOT_FOUND` is returned.
         ///
         /// If UpdateJob does not successfully return, it is possible for the
-        /// job to be in an [Job.State.UPDATE_FAILED][google.cloud.scheduler.v1beta1.Job.State.UPDATE_FAILED] state. A job in this state may
-        /// not be executed. If this happens, retry the UpdateJob request
-        /// until a successful response is received.
+        /// job to be in an
+        /// [Job.State.UPDATE_FAILED][google.cloud.scheduler.v1beta1.Job.State.UPDATE_FAILED]
+        /// state. A job in this state may not be executed. If this happens, retry the
+        /// UpdateJob request until a successful response is received.
         pub async fn update_job(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateJobRequest>,
@@ -988,10 +1079,14 @@ pub mod cloud_scheduler_client {
         /// Pauses a job.
         ///
         /// If a job is paused then the system will stop executing the job
-        /// until it is re-enabled via [ResumeJob][google.cloud.scheduler.v1beta1.CloudScheduler.ResumeJob]. The
-        /// state of the job is stored in [state][google.cloud.scheduler.v1beta1.Job.state]; if paused it
-        /// will be set to [Job.State.PAUSED][google.cloud.scheduler.v1beta1.Job.State.PAUSED]. A job must be in [Job.State.ENABLED][google.cloud.scheduler.v1beta1.Job.State.ENABLED]
-        /// to be paused.
+        /// until it is re-enabled via
+        /// [ResumeJob][google.cloud.scheduler.v1beta1.CloudScheduler.ResumeJob]. The
+        /// state of the job is stored in
+        /// [state][google.cloud.scheduler.v1beta1.Job.state]; if paused it will be set
+        /// to [Job.State.PAUSED][google.cloud.scheduler.v1beta1.Job.State.PAUSED]. A
+        /// job must be in
+        /// [Job.State.ENABLED][google.cloud.scheduler.v1beta1.Job.State.ENABLED] to be
+        /// paused.
         pub async fn pause_job(
             &mut self,
             request: impl tonic::IntoRequest<super::PauseJobRequest>,
@@ -1021,10 +1116,15 @@ pub mod cloud_scheduler_client {
         }
         /// Resume a job.
         ///
-        /// This method reenables a job after it has been [Job.State.PAUSED][google.cloud.scheduler.v1beta1.Job.State.PAUSED]. The
-        /// state of a job is stored in [Job.state][google.cloud.scheduler.v1beta1.Job.state]; after calling this method it
-        /// will be set to [Job.State.ENABLED][google.cloud.scheduler.v1beta1.Job.State.ENABLED]. A job must be in
-        /// [Job.State.PAUSED][google.cloud.scheduler.v1beta1.Job.State.PAUSED] to be resumed.
+        /// This method reenables a job after it has been
+        /// [Job.State.PAUSED][google.cloud.scheduler.v1beta1.Job.State.PAUSED]. The
+        /// state of a job is stored in
+        /// [Job.state][google.cloud.scheduler.v1beta1.Job.state]; after calling this
+        /// method it will be set to
+        /// [Job.State.ENABLED][google.cloud.scheduler.v1beta1.Job.State.ENABLED]. A
+        /// job must be in
+        /// [Job.State.PAUSED][google.cloud.scheduler.v1beta1.Job.State.PAUSED] to be
+        /// resumed.
         pub async fn resume_job(
             &mut self,
             request: impl tonic::IntoRequest<super::ResumeJobRequest>,

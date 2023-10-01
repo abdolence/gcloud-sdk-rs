@@ -1,5 +1,5 @@
 /// An insight along with the information used to derive the insight. The insight
-/// may have associated recomendations as well.
+/// may have associated recommendations as well.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Insight {
@@ -230,6 +230,15 @@ pub mod insight_state_info {
             }
         }
     }
+}
+/// The type of insight.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InsightType {
+    /// The insight_type’s name in format insightTypes/{insight_type}
+    /// eg: insightTypes/google.iam.policy.Insight
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// A recommendation along with a suggested action. E.g., a rightsizing
 /// recommendation for an underutilized VM, IAM role recommendations, etc
@@ -710,6 +719,15 @@ pub mod recommendation_state_info {
         }
     }
 }
+/// The type of a recommender.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RecommenderType {
+    /// The recommender's name in format RecommenderTypes/{recommender_type}
+    /// eg:  recommenderTypes/google.iam.policy.Recommender
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Configuration for an InsightType.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -845,15 +863,15 @@ pub struct ListInsightsRequest {
     /// <https://cloud.google.com/recommender/docs/insights/insight-types.>
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of results to return from this request.  Non-positive
-    /// values are ignored. If not specified, the server will determine the number
-    /// of results to return.
+    /// Optional. The maximum number of results to return from this request.
+    /// Non-positive values are ignored. If not specified, the server will
+    /// determine the number of results to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. If present, retrieves the next batch of results from the preceding call to
-    /// this method. `page_token` must be the value of `next_page_token` from the
-    /// previous response. The values of other method parameters must be identical
-    /// to those in the previous call.
+    /// Optional. If present, retrieves the next batch of results from the
+    /// preceding call to this method. `page_token` must be the value of
+    /// `next_page_token` from the previous response. The values of other method
+    /// parameters must be identical to those in the previous call.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Filter expression to restrict the insights returned. Supported
@@ -907,8 +925,8 @@ pub struct MarkInsightAcceptedRequest {
     /// Required. Name of the insight.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. State properties user wish to include with this state.  Full replace of the
-    /// current state_metadata.
+    /// Optional. State properties user wish to include with this state.  Full
+    /// replace of the current state_metadata.
     #[prost(map = "string, string", tag = "2")]
     pub state_metadata: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -941,15 +959,15 @@ pub struct ListRecommendationsRequest {
     /// <https://cloud.google.com/recommender/docs/recommenders.>
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of results to return from this request.  Non-positive
-    /// values are ignored. If not specified, the server will determine the number
-    /// of results to return.
+    /// Optional. The maximum number of results to return from this request.
+    /// Non-positive values are ignored. If not specified, the server will
+    /// determine the number of results to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. If present, retrieves the next batch of results from the preceding call to
-    /// this method. `page_token` must be the value of `next_page_token` from the
-    /// previous response. The values of other method parameters must be identical
-    /// to those in the previous call.
+    /// Optional. If present, retrieves the next batch of results from the
+    /// preceding call to this method. `page_token` must be the value of
+    /// `next_page_token` from the previous response. The values of other method
+    /// parameters must be identical to those in the previous call.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filter expression to restrict the recommendations returned. Supported
@@ -1117,6 +1135,56 @@ pub struct UpdateInsightTypeConfigRequest {
     /// update it.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
+}
+/// Request for the `ListRecommender` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListRecommendersRequest {
+    /// The number of RecommenderTypes to return per page. The service may return
+    /// fewer than this value.
+    #[prost(int32, tag = "1")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListRecommenders` call.
+    /// Provide this to retrieve the subsequent page.
+    #[prost(string, tag = "2")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for the `ListRecommender` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListRecommendersResponse {
+    /// The set of recommenders available
+    #[prost(message, repeated, tag = "1")]
+    pub recommenders: ::prost::alloc::vec::Vec<RecommenderType>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request for the `ListInsightTypes` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListInsightTypesRequest {
+    /// The number of InsightTypes to return per page. The service may return
+    /// fewer than this value.
+    #[prost(int32, tag = "1")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListRecommenders` call.
+    /// Provide this to retrieve the subsequent page.
+    #[prost(string, tag = "2")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for the `ListInsightTypes` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListInsightTypesResponse {
+    /// The set of recommenders available
+    #[prost(message, repeated, tag = "1")]
+    pub insight_types: ::prost::alloc::vec::Vec<InsightType>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod recommender_client {
@@ -1599,6 +1667,70 @@ pub mod recommender_client {
                     GrpcMethod::new(
                         "google.cloud.recommender.v1beta1.Recommender",
                         "UpdateInsightTypeConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all available Recommenders.
+        /// No IAM permissions are required.
+        pub async fn list_recommenders(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListRecommendersRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListRecommendersResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.recommender.v1beta1.Recommender/ListRecommenders",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommender.v1beta1.Recommender",
+                        "ListRecommenders",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists available InsightTypes.
+        /// No IAM permissions are required.
+        pub async fn list_insight_types(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListInsightTypesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListInsightTypesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.recommender.v1beta1.Recommender/ListInsightTypes",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recommender.v1beta1.Recommender",
+                        "ListInsightTypes",
                     ),
                 );
             self.inner.unary(req, path, codec).await

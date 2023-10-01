@@ -91,8 +91,8 @@ pub struct Sentence {
     #[prost(message, optional, tag = "1")]
     pub text: ::core::option::Option<TextSpan>,
     /// For calls to [AnalyzeSentiment][] or if
-    /// [AnnotateTextRequest.Features.extract_document_sentiment][google.cloud.language.v1.AnnotateTextRequest.Features.extract_document_sentiment] is set to
-    /// true, this field will contain the sentiment for the sentence.
+    /// [AnnotateTextRequest.Features.extract_document_sentiment][google.cloud.language.v1.AnnotateTextRequest.Features.extract_document_sentiment]
+    /// is set to true, this field will contain the sentiment for the sentence.
     #[prost(message, optional, tag = "2")]
     pub sentiment: ::core::option::Option<Sentiment>,
 }
@@ -131,9 +131,9 @@ pub struct Entity {
     #[prost(message, repeated, tag = "5")]
     pub mentions: ::prost::alloc::vec::Vec<EntityMention>,
     /// For calls to [AnalyzeEntitySentiment][] or if
-    /// [AnnotateTextRequest.Features.extract_entity_sentiment][google.cloud.language.v1.AnnotateTextRequest.Features.extract_entity_sentiment] is set to
-    /// true, this field will contain the aggregate sentiment expressed for this
-    /// entity in the provided document.
+    /// [AnnotateTextRequest.Features.extract_entity_sentiment][google.cloud.language.v1.AnnotateTextRequest.Features.extract_entity_sentiment]
+    /// is set to true, this field will contain the aggregate sentiment expressed
+    /// for this entity in the provided document.
     #[prost(message, optional, tag = "6")]
     pub sentiment: ::core::option::Option<Sentiment>,
 }
@@ -1440,9 +1440,9 @@ pub struct EntityMention {
     #[prost(enumeration = "entity_mention::Type", tag = "2")]
     pub r#type: i32,
     /// For calls to [AnalyzeEntitySentiment][] or if
-    /// [AnnotateTextRequest.Features.extract_entity_sentiment][google.cloud.language.v1.AnnotateTextRequest.Features.extract_entity_sentiment] is set to
-    /// true, this field will contain the sentiment expressed for this mention of
-    /// the entity in the provided document.
+    /// [AnnotateTextRequest.Features.extract_entity_sentiment][google.cloud.language.v1.AnnotateTextRequest.Features.extract_entity_sentiment]
+    /// is set to true, this field will contain the sentiment expressed for this
+    /// mention of the entity in the provided document.
     #[prost(message, optional, tag = "3")]
     pub sentiment: ::core::option::Option<Sentiment>,
 }
@@ -1500,7 +1500,9 @@ pub struct TextSpan {
     #[prost(string, tag = "1")]
     pub content: ::prost::alloc::string::String,
     /// The API calculates the beginning offset of the content in the original
-    /// document according to the [EncodingType][google.cloud.language.v1.EncodingType] specified in the API request.
+    /// document according to the
+    /// [EncodingType][google.cloud.language.v1.EncodingType] specified in the API
+    /// request.
     #[prost(int32, tag = "2")]
     pub begin_offset: i32,
 }
@@ -1508,8 +1510,7 @@ pub struct TextSpan {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClassificationCategory {
-    /// The name of the category representing the document, from the [predefined
-    /// taxonomy](<https://cloud.google.com/natural-language/docs/categories>).
+    /// The name of the category representing the document.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The classifier's confidence of the category. Number represents how certain
@@ -1623,7 +1624,8 @@ pub struct AnalyzeSentimentResponse {
     pub document_sentiment: ::core::option::Option<Sentiment>,
     /// The language of the text, which will be the same as the language specified
     /// in the request or, if not specified, the automatically-detected language.
-    /// See [Document.language][google.cloud.language.v1.Document.language] field for more details.
+    /// See [Document.language][google.cloud.language.v1.Document.language] field
+    /// for more details.
     #[prost(string, tag = "2")]
     pub language: ::prost::alloc::string::String,
     /// The sentiment for all the sentences in the document.
@@ -1650,7 +1652,8 @@ pub struct AnalyzeEntitySentimentResponse {
     pub entities: ::prost::alloc::vec::Vec<Entity>,
     /// The language of the text, which will be the same as the language specified
     /// in the request or, if not specified, the automatically-detected language.
-    /// See [Document.language][google.cloud.language.v1.Document.language] field for more details.
+    /// See [Document.language][google.cloud.language.v1.Document.language] field
+    /// for more details.
     #[prost(string, tag = "2")]
     pub language: ::prost::alloc::string::String,
 }
@@ -1674,7 +1677,8 @@ pub struct AnalyzeEntitiesResponse {
     pub entities: ::prost::alloc::vec::Vec<Entity>,
     /// The language of the text, which will be the same as the language specified
     /// in the request or, if not specified, the automatically-detected language.
-    /// See [Document.language][google.cloud.language.v1.Document.language] field for more details.
+    /// See [Document.language][google.cloud.language.v1.Document.language] field
+    /// for more details.
     #[prost(string, tag = "2")]
     pub language: ::prost::alloc::string::String,
 }
@@ -1701,7 +1705,8 @@ pub struct AnalyzeSyntaxResponse {
     pub tokens: ::prost::alloc::vec::Vec<Token>,
     /// The language of the text, which will be the same as the language specified
     /// in the request or, if not specified, the automatically-detected language.
-    /// See [Document.language][google.cloud.language.v1.Document.language] field for more details.
+    /// See [Document.language][google.cloud.language.v1.Document.language] field
+    /// for more details.
     #[prost(string, tag = "3")]
     pub language: ::prost::alloc::string::String,
 }
@@ -1724,6 +1729,22 @@ pub struct ClassifyTextResponse {
     /// Categories representing the input document.
     #[prost(message, repeated, tag = "1")]
     pub categories: ::prost::alloc::vec::Vec<ClassificationCategory>,
+}
+/// The document moderation request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModerateTextRequest {
+    /// Required. Input document.
+    #[prost(message, optional, tag = "1")]
+    pub document: ::core::option::Option<Document>,
+}
+/// The document moderation response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModerateTextResponse {
+    /// Harmful and sensitive categories representing the input document.
+    #[prost(message, repeated, tag = "1")]
+    pub moderation_categories: ::prost::alloc::vec::Vec<ClassificationCategory>,
 }
 /// The request message for the text annotation API, which can perform multiple
 /// analysis types (sentiment, entities, and syntax) in one call.
@@ -1762,6 +1783,9 @@ pub mod annotate_text_request {
         /// Classify the full document into categories.
         #[prost(bool, tag = "6")]
         pub classify_text: bool,
+        /// Moderate the document for harmful and sensitive categories.
+        #[prost(bool, tag = "11")]
+        pub moderate_text: bool,
         /// The model options to use for classification. Defaults to v1 options
         /// if not specified. Only used if `classify_text` is set to true.
         #[prost(message, optional, tag = "10")]
@@ -1794,12 +1818,16 @@ pub struct AnnotateTextResponse {
     pub document_sentiment: ::core::option::Option<Sentiment>,
     /// The language of the text, which will be the same as the language specified
     /// in the request or, if not specified, the automatically-detected language.
-    /// See [Document.language][google.cloud.language.v1.Document.language] field for more details.
+    /// See [Document.language][google.cloud.language.v1.Document.language] field
+    /// for more details.
     #[prost(string, tag = "5")]
     pub language: ::prost::alloc::string::String,
     /// Categories identified in the input document.
     #[prost(message, repeated, tag = "6")]
     pub categories: ::prost::alloc::vec::Vec<ClassificationCategory>,
+    /// Harmful and sensitive categories identified in the input document.
+    #[prost(message, repeated, tag = "7")]
+    pub moderation_categories: ::prost::alloc::vec::Vec<ClassificationCategory>,
 }
 /// Represents the text encoding that the caller uses to process the output.
 /// Providing an `EncodingType` is recommended because the API provides the
@@ -2000,8 +2028,10 @@ pub mod language_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Finds entities, similar to [AnalyzeEntities][google.cloud.language.v1.LanguageService.AnalyzeEntities] in the text and analyzes
-        /// sentiment associated with each entity and its mentions.
+        /// Finds entities, similar to
+        /// [AnalyzeEntities][google.cloud.language.v1.LanguageService.AnalyzeEntities]
+        /// in the text and analyzes sentiment associated with each entity and its
+        /// mentions.
         pub async fn analyze_entity_sentiment(
             &mut self,
             request: impl tonic::IntoRequest<super::AnalyzeEntitySentimentRequest>,
@@ -2092,6 +2122,37 @@ pub mod language_service_client {
                     GrpcMethod::new(
                         "google.cloud.language.v1.LanguageService",
                         "ClassifyText",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Moderates a document for harmful and sensitive categories.
+        pub async fn moderate_text(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ModerateTextRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ModerateTextResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.language.v1.LanguageService/ModerateText",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.language.v1.LanguageService",
+                        "ModerateText",
                     ),
                 );
             self.inner.unary(req, path, codec).await

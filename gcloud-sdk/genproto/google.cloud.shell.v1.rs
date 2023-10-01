@@ -355,6 +355,9 @@ pub mod cloud_shell_error_details {
         /// The user has exhausted their weekly Cloud Shell quota, and Cloud Shell
         /// will be disabled until the quota resets.
         QuotaExceeded = 5,
+        /// The Cloud Shell environment is unavailable and cannot be connected to at
+        /// the moment.
+        EnvironmentUnavailable = 6,
     }
     impl CloudShellErrorCode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -368,6 +371,7 @@ pub mod cloud_shell_error_details {
                 CloudShellErrorCode::CloudShellDisabled => "CLOUD_SHELL_DISABLED",
                 CloudShellErrorCode::TosViolation => "TOS_VIOLATION",
                 CloudShellErrorCode::QuotaExceeded => "QUOTA_EXCEEDED",
+                CloudShellErrorCode::EnvironmentUnavailable => "ENVIRONMENT_UNAVAILABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -378,6 +382,7 @@ pub mod cloud_shell_error_details {
                 "CLOUD_SHELL_DISABLED" => Some(Self::CloudShellDisabled),
                 "TOS_VIOLATION" => Some(Self::TosViolation),
                 "QUOTA_EXCEEDED" => Some(Self::QuotaExceeded),
+                "ENVIRONMENT_UNAVAILABLE" => Some(Self::EnvironmentUnavailable),
                 _ => None,
             }
         }

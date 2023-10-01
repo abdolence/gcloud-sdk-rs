@@ -16,13 +16,24 @@ pub struct LoginProfile {
         super::common::SshPublicKey,
     >,
 }
+/// A request message for creating an SSH public key.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSshPublicKeyRequest {
+    /// Required. The unique ID for the user in format `users/{user}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The SSH public key and expiration time.
+    #[prost(message, optional, tag = "2")]
+    pub ssh_public_key: ::core::option::Option<super::common::SshPublicKey>,
+}
 /// A request message for deleting a POSIX account entry.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePosixAccountRequest {
-    /// Required. A reference to the POSIX account to update. POSIX accounts are identified
-    /// by the project ID they are associated with. A reference to the POSIX
-    /// account is in format `users/{user}/projects/{project}`.
+    /// Required. A reference to the POSIX account to update. POSIX accounts are
+    /// identified by the project ID they are associated with. A reference to the
+    /// POSIX account is in format `users/{user}/projects/{project}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -30,9 +41,9 @@ pub struct DeletePosixAccountRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSshPublicKeyRequest {
-    /// Required. The fingerprint of the public key to update. Public keys are identified by
-    /// their SHA-256 fingerprint. The fingerprint of the public key is in format
-    /// `users/{user}/sshPublicKeys/{fingerprint}`.
+    /// Required. The fingerprint of the public key to update. Public keys are
+    /// identified by their SHA-256 fingerprint. The fingerprint of the public key
+    /// is in format `users/{user}/sshPublicKeys/{fingerprint}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -54,9 +65,9 @@ pub struct GetLoginProfileRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSshPublicKeyRequest {
-    /// Required. The fingerprint of the public key to retrieve. Public keys are identified
-    /// by their SHA-256 fingerprint. The fingerprint of the public key is in
-    /// format `users/{user}/sshPublicKeys/{fingerprint}`.
+    /// Required. The fingerprint of the public key to retrieve. Public keys are
+    /// identified by their SHA-256 fingerprint. The fingerprint of the public key
+    /// is in format `users/{user}/sshPublicKeys/{fingerprint}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -81,14 +92,17 @@ pub struct ImportSshPublicKeyResponse {
     /// The login profile information for the user.
     #[prost(message, optional, tag = "1")]
     pub login_profile: ::core::option::Option<LoginProfile>,
+    /// Detailed information about import results.
+    #[prost(string, tag = "2")]
+    pub details: ::prost::alloc::string::String,
 }
 /// A request message for updating an SSH public key.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSshPublicKeyRequest {
-    /// Required. The fingerprint of the public key to update. Public keys are identified by
-    /// their SHA-256 fingerprint. The fingerprint of the public key is in format
-    /// `users/{user}/sshPublicKeys/{fingerprint}`.
+    /// Required. The fingerprint of the public key to update. Public keys are
+    /// identified by their SHA-256 fingerprint. The fingerprint of the public key
+    /// is in format `users/{user}/sshPublicKeys/{fingerprint}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The SSH public key and expiration time.
@@ -186,6 +200,37 @@ pub mod os_login_service_client {
         pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
+        }
+        /// Create an SSH public key
+        pub async fn create_ssh_public_key(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSshPublicKeyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::common::SshPublicKey>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oslogin.v1.OsLoginService/CreateSshPublicKey",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oslogin.v1.OsLoginService",
+                        "CreateSshPublicKey",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Deletes a POSIX account.
         pub async fn delete_posix_account(

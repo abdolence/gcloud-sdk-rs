@@ -51,6 +51,15 @@ pub struct Pipeline {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// The encrypted environment to pass into every action. Each action can also
+    /// specify its own encrypted environment.
+    ///
+    /// The secret must decrypt to a JSON-encoded dictionary where key-value pairs
+    /// serve as environment variable names and their values. The decoded
+    /// environment variables can overwrite the values specified by the
+    /// `environment` field.
+    #[prost(message, optional, tag = "5")]
+    pub encrypted_environment: ::core::option::Option<Secret>,
     /// The maximum amount of time to give the pipeline to complete.  This includes
     /// the time spent waiting for a worker to be allocated.  If the pipeline fails
     /// to complete before the timeout, it will be cancelled and the error code
@@ -70,9 +79,9 @@ pub struct Action {
     /// and cannot start with a hyphen.
     #[prost(string, tag = "1")]
     pub container_name: ::prost::alloc::string::String,
-    /// Required. The URI to pull the container image from. Note that all images referenced
-    /// by actions in the pipeline are pulled before the first action runs. If
-    /// multiple actions reference the same image, it is only pulled once,
+    /// Required. The URI to pull the container image from. Note that all images
+    /// referenced by actions in the pipeline are pulled before the first action
+    /// runs. If multiple actions reference the same image, it is only pulled once,
     /// ensuring that the same image is used for all actions in a single pipeline.
     ///
     /// The image URI can be either a complete host and image specification (e.g.,
@@ -83,7 +92,8 @@ pub struct Action {
     /// If the specified image is not public, the service account specified for
     /// the Virtual Machine must have access to pull the images from GCR, or
     /// appropriate credentials must be specified in the
-    /// [google.cloud.lifesciences.v2beta.Action.credentials][google.cloud.lifesciences.v2beta.Action.credentials] field.
+    /// [google.cloud.lifesciences.v2beta.Action.credentials][google.cloud.lifesciences.v2beta.Action.credentials]
+    /// field.
     #[prost(string, tag = "2")]
     pub image_uri: ::prost::alloc::string::String,
     /// If specified, overrides the `CMD` specified in the container. If the
@@ -96,7 +106,8 @@ pub struct Action {
     #[prost(string, tag = "4")]
     pub entrypoint: ::prost::alloc::string::String,
     /// The environment to pass into the container. This environment is merged
-    /// with values specified in the [google.cloud.lifesciences.v2beta.Pipeline][google.cloud.lifesciences.v2beta.Pipeline]
+    /// with values specified in the
+    /// [google.cloud.lifesciences.v2beta.Pipeline][google.cloud.lifesciences.v2beta.Pipeline]
     /// message, overwriting any duplicate values.
     ///
     /// In addition to the values passed here, a few other values are
@@ -116,6 +127,17 @@ pub struct Action {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// The encrypted environment to pass into the container. This environment is
+    /// merged with values specified in the
+    /// [google.cloud.lifesciences.v2beta.Pipeline][google.cloud.lifesciences.v2beta.Pipeline]
+    /// message, overwriting any duplicate values.
+    ///
+    /// The secret must decrypt to a JSON-encoded dictionary where key-value pairs
+    /// serve as environment variable names and their values. The decoded
+    /// environment variables can overwrite the values specified by the
+    /// `environment` field.
+    #[prost(message, optional, tag = "21")]
+    pub encrypted_environment: ::core::option::Option<Secret>,
     /// An optional identifier for a PID namespace to run the action inside.
     /// Multiple actions should use the same string to share a namespace.  If
     /// unspecified, a separate isolated namespace is used.
@@ -270,11 +292,11 @@ pub struct Resources {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VirtualMachine {
-    /// Required. The machine type of the virtual machine to create. Must be the short name
-    /// of a standard machine type (such as "n1-standard-1") or a custom machine
-    /// type (such as "custom-1-4096", where "1" indicates the number of vCPUs and
-    /// "4096" indicates the memory in MB). See
-    /// [Creating an instance with a custom machine
+    /// Required. The machine type of the virtual machine to create. Must be the
+    /// short name of a standard machine type (such as "n1-standard-1") or a custom
+    /// machine type (such as "custom-1-4096", where "1" indicates the number of
+    /// vCPUs and "4096" indicates the memory in MB). See [Creating an instance
+    /// with a custom machine
     /// type](<https://cloud.google.com/compute/docs/instances/creating-instance-with-custom-machine-type#create>)
     /// for more specifications on creating a custom machine type.
     #[prost(string, tag = "1")]
@@ -368,6 +390,10 @@ pub struct VirtualMachine {
     /// Specify either the `volumes\[\]` field or the `disks\[\]` field, but not both.
     #[prost(message, repeated, tag = "14")]
     pub volumes: ::prost::alloc::vec::Vec<Volume>,
+    /// If specified, the VM will only be allocated inside the matching
+    /// reservation. It will fail if the VM parameters don't match the reservation.
+    #[prost(string, tag = "15")]
+    pub reservation: ::prost::alloc::string::String,
 }
 /// Carries information about a Google Cloud service account.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -596,34 +622,44 @@ pub mod event {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
-        /// See [google.cloud.lifesciences.v2beta.DelayedEvent][google.cloud.lifesciences.v2beta.DelayedEvent].
+        /// See
+        /// [google.cloud.lifesciences.v2beta.DelayedEvent][google.cloud.lifesciences.v2beta.DelayedEvent].
         #[prost(message, tag = "17")]
         Delayed(super::DelayedEvent),
-        /// See [google.cloud.lifesciences.v2beta.WorkerAssignedEvent][google.cloud.lifesciences.v2beta.WorkerAssignedEvent].
+        /// See
+        /// [google.cloud.lifesciences.v2beta.WorkerAssignedEvent][google.cloud.lifesciences.v2beta.WorkerAssignedEvent].
         #[prost(message, tag = "18")]
         WorkerAssigned(super::WorkerAssignedEvent),
-        /// See [google.cloud.lifesciences.v2beta.WorkerReleasedEvent][google.cloud.lifesciences.v2beta.WorkerReleasedEvent].
+        /// See
+        /// [google.cloud.lifesciences.v2beta.WorkerReleasedEvent][google.cloud.lifesciences.v2beta.WorkerReleasedEvent].
         #[prost(message, tag = "19")]
         WorkerReleased(super::WorkerReleasedEvent),
-        /// See [google.cloud.lifesciences.v2beta.PullStartedEvent][google.cloud.lifesciences.v2beta.PullStartedEvent].
+        /// See
+        /// [google.cloud.lifesciences.v2beta.PullStartedEvent][google.cloud.lifesciences.v2beta.PullStartedEvent].
         #[prost(message, tag = "20")]
         PullStarted(super::PullStartedEvent),
-        /// See [google.cloud.lifesciences.v2beta.PullStoppedEvent][google.cloud.lifesciences.v2beta.PullStoppedEvent].
+        /// See
+        /// [google.cloud.lifesciences.v2beta.PullStoppedEvent][google.cloud.lifesciences.v2beta.PullStoppedEvent].
         #[prost(message, tag = "21")]
         PullStopped(super::PullStoppedEvent),
-        /// See [google.cloud.lifesciences.v2beta.ContainerStartedEvent][google.cloud.lifesciences.v2beta.ContainerStartedEvent].
+        /// See
+        /// [google.cloud.lifesciences.v2beta.ContainerStartedEvent][google.cloud.lifesciences.v2beta.ContainerStartedEvent].
         #[prost(message, tag = "22")]
         ContainerStarted(super::ContainerStartedEvent),
-        /// See [google.cloud.lifesciences.v2beta.ContainerStoppedEvent][google.cloud.lifesciences.v2beta.ContainerStoppedEvent].
+        /// See
+        /// [google.cloud.lifesciences.v2beta.ContainerStoppedEvent][google.cloud.lifesciences.v2beta.ContainerStoppedEvent].
         #[prost(message, tag = "23")]
         ContainerStopped(super::ContainerStoppedEvent),
-        /// See [google.cloud.lifesciences.v2beta.ContainerKilledEvent][google.cloud.lifesciences.v2beta.ContainerKilledEvent].
+        /// See
+        /// [google.cloud.lifesciences.v2beta.ContainerKilledEvent][google.cloud.lifesciences.v2beta.ContainerKilledEvent].
         #[prost(message, tag = "24")]
         ContainerKilled(super::ContainerKilledEvent),
-        /// See [google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent][google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent].
+        /// See
+        /// [google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent][google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent].
         #[prost(message, tag = "25")]
         UnexpectedExitStatus(super::UnexpectedExitStatusEvent),
-        /// See [google.cloud.lifesciences.v2beta.FailedEvent][google.cloud.lifesciences.v2beta.FailedEvent].
+        /// See
+        /// [google.cloud.lifesciences.v2beta.FailedEvent][google.cloud.lifesciences.v2beta.FailedEvent].
         #[prost(message, tag = "26")]
         Failed(super::FailedEvent),
     }
@@ -855,11 +891,11 @@ pub mod workflows_service_v2_beta_client {
         }
         /// Runs a pipeline.  The returned Operation's [metadata]
         /// [google.longrunning.Operation.metadata] field will contain a
-        /// [google.cloud.lifesciences.v2beta.Metadata][google.cloud.lifesciences.v2beta.Metadata] object describing the status
-        /// of the pipeline execution. The
+        /// [google.cloud.lifesciences.v2beta.Metadata][google.cloud.lifesciences.v2beta.Metadata]
+        /// object describing the status of the pipeline execution. The
         /// [response][google.longrunning.Operation.response] field will contain a
-        /// [google.cloud.lifesciences.v2beta.RunPipelineResponse][google.cloud.lifesciences.v2beta.RunPipelineResponse] object if the
-        /// pipeline completes successfully.
+        /// [google.cloud.lifesciences.v2beta.RunPipelineResponse][google.cloud.lifesciences.v2beta.RunPipelineResponse]
+        /// object if the pipeline completes successfully.
         ///
         /// **Note:** Before you can use this method, the *Life Sciences Service Agent*
         /// must have access to your project. This is done automatically when the

@@ -31,8 +31,8 @@ pub struct Key {
     /// updated.
     #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. A timestamp when this key was deleted. If the resource is not deleted,
-    /// this must be empty.
+    /// Output only. A timestamp when this key was deleted. If the resource is not
+    /// deleted, this must be empty.
     #[prost(message, optional, tag = "7")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Annotations is an unstructured key-value map stored with a policy that
@@ -46,10 +46,10 @@ pub struct Key {
     /// Key restrictions.
     #[prost(message, optional, tag = "9")]
     pub restrictions: ::core::option::Option<Restrictions>,
-    /// Output only. A checksum computed by the server based on the current value of the Key
-    /// resource. This may be sent on update and delete requests to ensure the
-    /// client has an up-to-date value before proceeding.
-    /// See <https://google.aip.dev/154.>
+    /// Output only. A checksum computed by the server based on the current value
+    /// of the Key resource. This may be sent on update and delete requests to
+    /// ensure the client has an up-to-date value before proceeding. See
+    /// <https://google.aip.dev/154.>
     #[prost(string, tag = "11")]
     pub etag: ::prost::alloc::string::String,
 }
