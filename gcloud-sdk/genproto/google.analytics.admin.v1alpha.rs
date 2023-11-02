@@ -1730,8 +1730,7 @@ pub struct Property {
     pub name: ::prost::alloc::string::String,
     /// Immutable. The property type for this Property resource. When creating a
     /// property, if the type is "PROPERTY_TYPE_UNSPECIFIED", then
-    /// "ORDINARY_PROPERTY" will be implied. "SUBPROPERTY" and "ROLLUP_PROPERTY"
-    /// types cannot yet be created with the Google Analytics Admin API.
+    /// "ORDINARY_PROPERTY" will be implied.
     #[prost(enumeration = "PropertyType", tag = "14")]
     pub property_type: i32,
     /// Output only. Time when the entity was originally created.
@@ -1934,60 +1933,6 @@ pub mod data_stream {
         #[prost(message, tag = "8")]
         IosAppStreamData(IosAppStreamData),
     }
-}
-/// A resource message representing a user's permissions on an Account or
-/// Property resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserLink {
-    /// Output only. Example format: properties/1234/userLinks/5678
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Immutable. Email address of the user to link
-    #[prost(string, tag = "2")]
-    pub email_address: ::prost::alloc::string::String,
-    /// Roles directly assigned to this user for this account or property.
-    ///
-    /// Valid values:
-    /// predefinedRoles/viewer
-    /// predefinedRoles/analyst
-    /// predefinedRoles/editor
-    /// predefinedRoles/admin
-    /// predefinedRoles/no-cost-data
-    /// predefinedRoles/no-revenue-data
-    ///
-    /// Excludes roles that are inherited from a higher-level entity, group,
-    /// or organization admin role.
-    ///
-    /// A UserLink that is updated to have an empty list of direct_roles will be
-    /// deleted.
-    #[prost(string, repeated, tag = "3")]
-    pub direct_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// Read-only resource used to summarize a principal's effective roles.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AuditUserLink {
-    /// Example format: properties/1234/userLinks/5678
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Email address of the linked user
-    #[prost(string, tag = "2")]
-    pub email_address: ::prost::alloc::string::String,
-    /// Roles directly assigned to this user for this entity.
-    ///
-    /// Format: predefinedRoles/viewer
-    ///
-    /// Excludes roles that are inherited from an account (if this is for a
-    /// property), group, or organization admin role.
-    #[prost(string, repeated, tag = "3")]
-    pub direct_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Union of all permissions a user has at this account or property (includes
-    /// direct permissions, group-inherited permissions, etc.).
-    ///
-    /// Format: predefinedRoles/viewer
-    #[prost(string, repeated, tag = "4")]
-    pub effective_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A link between a GA4 property and a Firebase project.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2337,7 +2282,7 @@ pub mod change_history_change {
     pub struct ChangeHistoryResource {
         #[prost(
             oneof = "change_history_resource::Resource",
-            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 26, 27, 28, 29"
+            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29"
         )]
         pub resource: ::core::option::Option<change_history_resource::Resource>,
     }
@@ -2407,6 +2352,9 @@ pub mod change_history_change {
             /// A snapshot of EnhancedMeasurementSettings resource in change history.
             #[prost(message, tag = "24")]
             EnhancedMeasurementSettings(super::super::EnhancedMeasurementSettings),
+            /// A snapshot of DataRedactionSettings resource in change history.
+            #[prost(message, tag = "25")]
+            DataRedactionSettings(super::super::DataRedactionSettings),
             /// A snapshot of SKAdNetworkConversionValueSchema resource in change
             /// history.
             #[prost(message, tag = "26")]
@@ -3560,6 +3508,36 @@ pub struct ConnectedSiteTag {
     #[prost(string, tag = "2")]
     pub tag_id: ::prost::alloc::string::String,
 }
+/// Settings for client-side data redaction. Singleton resource under a Web
+/// Stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataRedactionSettings {
+    /// Output only. Name of this Data Redaction Settings resource.
+    /// Format:
+    /// properties/{property_id}/dataStreams/{data_stream}/dataRedactionSettings
+    /// Example: "properties/1000/dataStreams/2000/dataRedactionSettings"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// If enabled, any event parameter or user property values that look like an
+    /// email will be redacted.
+    #[prost(bool, tag = "2")]
+    pub email_redaction_enabled: bool,
+    /// Query Parameter redaction removes the key and value portions of a
+    /// query parameter if it is in the configured set of query parameters.
+    ///
+    /// If enabled, URL query replacement logic will be run for the Stream. Any
+    /// query parameters defined in query_parameter_keys will be redacted.
+    #[prost(bool, tag = "3")]
+    pub query_parameter_redaction_enabled: bool,
+    /// The query parameter keys to apply redaction logic to if present in the URL.
+    /// Query parameter matching is case-insensitive.
+    ///
+    /// Must contain at least one element if query_parameter_replacement_enabled
+    /// is true. Keys cannot contain commas.
+    #[prost(string, repeated, tag = "4")]
+    pub query_parameter_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// A link between a GA4 Property and an AdSense for Content ad client.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3573,6 +3551,22 @@ pub struct AdSenseLink {
     /// Example format: "ca-pub-1234567890"
     #[prost(string, tag = "2")]
     pub ad_client_code: ::prost::alloc::string::String,
+}
+/// A link that references a source property under the parent rollup property.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RollupPropertySourceLink {
+    /// Output only. Resource name of this RollupPropertySourceLink.
+    /// Format:
+    /// 'properties/{property_id}/rollupPropertySourceLinks/{rollup_property_source_link}'
+    /// Format: 'properties/123/rollupPropertySourceLinks/456'
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Immutable. Resource name of the source property.
+    /// Format: properties/{property_id}
+    /// Example: "properties/789"
+    #[prost(string, tag = "2")]
+    pub source_property: ::prost::alloc::string::String,
 }
 /// The category selected for this property, used for industry benchmarking.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3855,6 +3849,8 @@ pub enum ChangeHistoryResourceType {
     ChannelGroup = 22,
     /// EnhancedMeasurementSettings resource
     EnhancedMeasurementSettings = 24,
+    /// DataRedactionSettings resource
+    DataRedactionSettings = 25,
     /// SKAdNetworkConversionValueSchema resource
     SkadnetworkConversionValueSchema = 26,
     /// AdSenseLink resource
@@ -3900,6 +3896,7 @@ impl ChangeHistoryResourceType {
             ChangeHistoryResourceType::EnhancedMeasurementSettings => {
                 "ENHANCED_MEASUREMENT_SETTINGS"
             }
+            ChangeHistoryResourceType::DataRedactionSettings => "DATA_REDACTION_SETTINGS",
             ChangeHistoryResourceType::SkadnetworkConversionValueSchema => {
                 "SKADNETWORK_CONVERSION_VALUE_SCHEMA"
             }
@@ -3934,6 +3931,7 @@ impl ChangeHistoryResourceType {
             "EXPANDED_DATA_SET" => Some(Self::ExpandedDataSet),
             "CHANNEL_GROUP" => Some(Self::ChannelGroup),
             "ENHANCED_MEASUREMENT_SETTINGS" => Some(Self::EnhancedMeasurementSettings),
+            "DATA_REDACTION_SETTINGS" => Some(Self::DataRedactionSettings),
             "SKADNETWORK_CONVERSION_VALUE_SCHEMA" => {
                 Some(Self::SkadnetworkConversionValueSchema)
             }
@@ -4191,6 +4189,230 @@ impl CoarseValue {
         }
     }
 }
+/// A specific filter expression
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SubpropertyEventFilterCondition {
+    /// Required. The field that is being filtered.
+    #[prost(string, tag = "1")]
+    pub field_name: ::prost::alloc::string::String,
+    #[prost(oneof = "subproperty_event_filter_condition::OneFilter", tags = "2, 3")]
+    pub one_filter: ::core::option::Option<
+        subproperty_event_filter_condition::OneFilter,
+    >,
+}
+/// Nested message and enum types in `SubpropertyEventFilterCondition`.
+pub mod subproperty_event_filter_condition {
+    /// A filter for a string-type dimension that matches a particular pattern.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct StringFilter {
+        /// Required. The match type for the string filter.
+        #[prost(enumeration = "string_filter::MatchType", tag = "1")]
+        pub match_type: i32,
+        /// Required. The string value used for the matching.
+        #[prost(string, tag = "2")]
+        pub value: ::prost::alloc::string::String,
+        /// Optional. If true, the string value is case sensitive. If false, the
+        /// match is case-insensitive.
+        #[prost(bool, tag = "3")]
+        pub case_sensitive: bool,
+    }
+    /// Nested message and enum types in `StringFilter`.
+    pub mod string_filter {
+        /// How the filter will be used to determine a match.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum MatchType {
+            /// Match type unknown or not specified.
+            Unspecified = 0,
+            /// Exact match of the string value.
+            Exact = 1,
+            /// Begins with the string value.
+            BeginsWith = 2,
+            /// Ends with the string value.
+            EndsWith = 3,
+            /// Contains the string value.
+            Contains = 4,
+            /// Full regular expression matches with the string value.
+            FullRegexp = 5,
+            /// Partial regular expression matches with the string value.
+            PartialRegexp = 6,
+        }
+        impl MatchType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    MatchType::Unspecified => "MATCH_TYPE_UNSPECIFIED",
+                    MatchType::Exact => "EXACT",
+                    MatchType::BeginsWith => "BEGINS_WITH",
+                    MatchType::EndsWith => "ENDS_WITH",
+                    MatchType::Contains => "CONTAINS",
+                    MatchType::FullRegexp => "FULL_REGEXP",
+                    MatchType::PartialRegexp => "PARTIAL_REGEXP",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MATCH_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "EXACT" => Some(Self::Exact),
+                    "BEGINS_WITH" => Some(Self::BeginsWith),
+                    "ENDS_WITH" => Some(Self::EndsWith),
+                    "CONTAINS" => Some(Self::Contains),
+                    "FULL_REGEXP" => Some(Self::FullRegexp),
+                    "PARTIAL_REGEXP" => Some(Self::PartialRegexp),
+                    _ => None,
+                }
+            }
+        }
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum OneFilter {
+        /// A filter for null values.
+        #[prost(bool, tag = "2")]
+        NullFilter(bool),
+        /// A filter for a string-type dimension that matches a particular pattern.
+        #[prost(message, tag = "3")]
+        StringFilter(StringFilter),
+    }
+}
+/// A logical expression of Subproperty event filters.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SubpropertyEventFilterExpression {
+    /// The expression applied to a filter.
+    #[prost(oneof = "subproperty_event_filter_expression::Expr", tags = "1, 2, 3")]
+    pub expr: ::core::option::Option<subproperty_event_filter_expression::Expr>,
+}
+/// Nested message and enum types in `SubpropertyEventFilterExpression`.
+pub mod subproperty_event_filter_expression {
+    /// The expression applied to a filter.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Expr {
+        /// A list of expressions to OR’ed together. Must only contain
+        /// not_expression or filter_condition expressions.
+        #[prost(message, tag = "1")]
+        OrGroup(super::SubpropertyEventFilterExpressionList),
+        /// A filter expression to be NOT'ed (inverted, complemented). It can only
+        /// include a filter. This cannot be set on the top level
+        /// SubpropertyEventFilterExpression.
+        #[prost(message, tag = "2")]
+        NotExpression(
+            ::prost::alloc::boxed::Box<super::SubpropertyEventFilterExpression>,
+        ),
+        /// Creates a filter that matches a specific event. This cannot be set on the
+        /// top level SubpropertyEventFilterExpression.
+        #[prost(message, tag = "3")]
+        FilterCondition(super::SubpropertyEventFilterCondition),
+    }
+}
+/// A list of Subproperty event filter expressions.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SubpropertyEventFilterExpressionList {
+    /// Required. Unordered list. A list of Subproperty event filter expressions
+    #[prost(message, repeated, tag = "1")]
+    pub filter_expressions: ::prost::alloc::vec::Vec<SubpropertyEventFilterExpression>,
+}
+/// A clause for defining a filter. A filter may be inclusive (events satisfying
+/// the filter clause are included in the subproperty's data) or exclusive
+/// (events satisfying the filter clause are excluded from the subproperty's
+/// data).
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SubpropertyEventFilterClause {
+    /// Required. The type for the filter clause.
+    #[prost(
+        enumeration = "subproperty_event_filter_clause::FilterClauseType",
+        tag = "1"
+    )]
+    pub filter_clause_type: i32,
+    /// Required. The logical expression for what events are sent to the
+    /// subproperty.
+    #[prost(message, optional, tag = "2")]
+    pub filter_expression: ::core::option::Option<SubpropertyEventFilterExpression>,
+}
+/// Nested message and enum types in `SubpropertyEventFilterClause`.
+pub mod subproperty_event_filter_clause {
+    /// Specifies whether this is an include or exclude filter clause.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum FilterClauseType {
+        /// Filter clause type unknown or not specified.
+        Unspecified = 0,
+        /// Events will be included in the Sub property if the filter clause is met.
+        Include = 1,
+        /// Events will be excluded from the Sub property if the filter clause is
+        /// met.
+        Exclude = 2,
+    }
+    impl FilterClauseType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                FilterClauseType::Unspecified => "FILTER_CLAUSE_TYPE_UNSPECIFIED",
+                FilterClauseType::Include => "INCLUDE",
+                FilterClauseType::Exclude => "EXCLUDE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FILTER_CLAUSE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INCLUDE" => Some(Self::Include),
+                "EXCLUDE" => Some(Self::Exclude),
+                _ => None,
+            }
+        }
+    }
+}
+/// A resource message representing a GA4 Subproperty event filter.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SubpropertyEventFilter {
+    /// Output only. Format:
+    /// properties/{ordinary_property_id}/subpropertyEventFilters/{sub_property_event_filter}
+    /// Example: properties/1234/subpropertyEventFilters/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Immutable. Resource name of the Subproperty that uses this filter.
+    #[prost(string, optional, tag = "2")]
+    pub apply_to_property: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Unordered list. Filter clauses that define the
+    /// SubpropertyEventFilter. All clauses are AND'ed together to determine what
+    /// data is sent to the subproperty.
+    #[prost(message, repeated, tag = "3")]
+    pub filter_clauses: ::prost::alloc::vec::Vec<SubpropertyEventFilterClause>,
+}
 /// The request for a Data Access Record Report.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4272,6 +4494,19 @@ pub struct RunAccessReportRequest {
     /// requests, this field must be false.
     #[prost(bool, tag = "11")]
     pub return_entity_quota: bool,
+    /// Optional. Determines whether to include users who have never made an API
+    /// call in the response. If true, all users with access to the specified
+    /// property or account are included in the response, regardless of whether
+    /// they have made an API call or not. If false, only the users who have made
+    /// an API call will be included.
+    #[prost(bool, tag = "12")]
+    pub include_all_users: bool,
+    /// Optional. Decides whether to return the users within user groups. This
+    /// field works only when include_all_users is set to true. If true, it will
+    /// return all users with access to the specified property or account.
+    /// If false, only the users with direct access will be returned.
+    #[prost(bool, tag = "13")]
+    pub expand_groups: bool,
 }
 /// The customized Data Access Record Report response.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -4490,207 +4725,6 @@ pub struct DeletePropertyRequest {
     /// Example: "properties/1000"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-}
-/// Request message for GetUserLink RPC.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetUserLinkRequest {
-    /// Required. Example format: accounts/1234/userLinks/5678
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message for BatchGetUserLinks RPC.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BatchGetUserLinksRequest {
-    /// Required. The account or property that all user links in the request are
-    /// for. The parent of all provided values for the 'names' field must match
-    /// this field.
-    /// Example format: accounts/1234
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. The names of the user links to retrieve.
-    /// A maximum of 1000 user links can be retrieved in a batch.
-    /// Format: accounts/{accountId}/userLinks/{userLinkId}
-    #[prost(string, repeated, tag = "2")]
-    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// Response message for BatchGetUserLinks RPC.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BatchGetUserLinksResponse {
-    /// The requested user links.
-    #[prost(message, repeated, tag = "1")]
-    pub user_links: ::prost::alloc::vec::Vec<UserLink>,
-}
-/// Request message for ListUserLinks RPC.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListUserLinksRequest {
-    /// Required. Example format: accounts/1234
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of user links to return.
-    /// The service may return fewer than this value.
-    /// If unspecified, at most 200 user links will be returned.
-    /// The maximum value is 500; values above 500 will be coerced to 500.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// A page token, received from a previous `ListUserLinks` call.
-    /// Provide this to retrieve the subsequent page.
-    /// When paginating, all other parameters provided to `ListUserLinks` must
-    /// match the call that provided the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// Response message for ListUserLinks RPC.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListUserLinksResponse {
-    /// List of UserLinks. These will be ordered stably, but in an arbitrary order.
-    #[prost(message, repeated, tag = "1")]
-    pub user_links: ::prost::alloc::vec::Vec<UserLink>,
-    /// A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Request message for AuditUserLinks RPC.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AuditUserLinksRequest {
-    /// Required. Example format: accounts/1234
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of user links to return.
-    /// The service may return fewer than this value.
-    /// If unspecified, at most 1000 user links will be returned.
-    /// The maximum value is 5000; values above 5000 will be coerced to 5000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// A page token, received from a previous `AuditUserLinks` call.
-    /// Provide this to retrieve the subsequent page.
-    /// When paginating, all other parameters provided to `AuditUserLinks` must
-    /// match the call that provided the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// Response message for AuditUserLinks RPC.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AuditUserLinksResponse {
-    /// List of AuditUserLinks. These will be ordered stably, but in an arbitrary
-    /// order.
-    #[prost(message, repeated, tag = "1")]
-    pub user_links: ::prost::alloc::vec::Vec<AuditUserLink>,
-    /// A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Request message for CreateUserLink RPC.
-///
-/// Users can have multiple email addresses associated with their Google
-/// account, and one of these email addresses is the "primary" email address.
-/// Any of the email addresses associated with a Google account may be used
-/// for a new UserLink, but the returned UserLink will always contain the
-/// "primary" email address. As a result, the input and output email address
-/// for this request may differ.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateUserLinkRequest {
-    /// Required. Example format: accounts/1234
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. If set, then email the new user notifying them that they've been
-    /// granted permissions to the resource.
-    #[prost(bool, tag = "2")]
-    pub notify_new_user: bool,
-    /// Required. The user link to create.
-    #[prost(message, optional, tag = "3")]
-    pub user_link: ::core::option::Option<UserLink>,
-}
-/// Request message for BatchCreateUserLinks RPC.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BatchCreateUserLinksRequest {
-    /// Required. The account or property that all user links in the request are
-    /// for. This field is required. The parent field in the CreateUserLinkRequest
-    /// messages must either be empty or match this field.
-    /// Example format: accounts/1234
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. If set, then email the new users notifying them that they've been
-    /// granted permissions to the resource. Regardless of whether this is set or
-    /// not, notify_new_user field inside each individual request is ignored.
-    #[prost(bool, tag = "2")]
-    pub notify_new_users: bool,
-    /// Required. The requests specifying the user links to create.
-    /// A maximum of 1000 user links can be created in a batch.
-    #[prost(message, repeated, tag = "3")]
-    pub requests: ::prost::alloc::vec::Vec<CreateUserLinkRequest>,
-}
-/// Response message for BatchCreateUserLinks RPC.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BatchCreateUserLinksResponse {
-    /// The user links created.
-    #[prost(message, repeated, tag = "1")]
-    pub user_links: ::prost::alloc::vec::Vec<UserLink>,
-}
-/// Request message for UpdateUserLink RPC.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateUserLinkRequest {
-    /// Required. The user link to update.
-    #[prost(message, optional, tag = "1")]
-    pub user_link: ::core::option::Option<UserLink>,
-}
-/// Request message for BatchUpdateUserLinks RPC.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BatchUpdateUserLinksRequest {
-    /// Required. The account or property that all user links in the request are
-    /// for. The parent field in the UpdateUserLinkRequest messages must either be
-    /// empty or match this field.
-    /// Example format: accounts/1234
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. The requests specifying the user links to update.
-    /// A maximum of 1000 user links can be updated in a batch.
-    #[prost(message, repeated, tag = "2")]
-    pub requests: ::prost::alloc::vec::Vec<UpdateUserLinkRequest>,
-}
-/// Response message for BatchUpdateUserLinks RPC.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BatchUpdateUserLinksResponse {
-    /// The user links updated.
-    #[prost(message, repeated, tag = "1")]
-    pub user_links: ::prost::alloc::vec::Vec<UserLink>,
-}
-/// Request message for DeleteUserLink RPC.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteUserLinkRequest {
-    /// Required. Example format: accounts/1234/userLinks/5678
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message for BatchDeleteUserLinks RPC.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BatchDeleteUserLinksRequest {
-    /// Required. The account or property that all user links in the request are
-    /// for. The parent of all values for user link names to delete must match this
-    /// field.
-    /// Example format: accounts/1234
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. The requests specifying the user links to update.
-    /// A maximum of 1000 user links can be updated in a batch.
-    #[prost(message, repeated, tag = "2")]
-    pub requests: ::prost::alloc::vec::Vec<DeleteUserLinkRequest>,
 }
 /// Request message for CreateFirebaseLink RPC
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5077,9 +5111,10 @@ pub struct UpdateSkAdNetworkConversionValueSchemaRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSkAdNetworkConversionValueSchemasRequest {
-    /// Required. Format:
-    /// properties/{property_id}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema
-    /// Example: properties/1234/dataStreams/5678/sKAdNetworkConversionValueSchema
+    /// Required. The DataStream resource to list schemas for.
+    /// Format:
+    /// properties/{property_id}/dataStreams/{dataStream}
+    /// Example: properties/1234/dataStreams/5678
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of resources to return. The service may return
@@ -6253,6 +6288,32 @@ pub struct UpdateEnhancedMeasurementSettingsRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+/// Request message for GetDataRedactionSettings RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetDataRedactionSettingsRequest {
+    /// Required. The name of the settings to lookup.
+    /// Format:
+    /// properties/{property}/dataStreams/{data_stream}/dataRedactionSettings
+    /// Example: "properties/1000/dataStreams/2000/dataRedactionSettings"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for UpdateDataRedactionSettings RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDataRedactionSettingsRequest {
+    /// Required. The settings to update.
+    /// The `name` field is used to identify the settings to be updated.
+    #[prost(message, optional, tag = "1")]
+    pub data_redaction_settings: ::core::option::Option<DataRedactionSettings>,
+    /// Required. The list of fields to be updated. Field names must be in snake
+    /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "*" to match all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
 /// Request message for CreateConnectedSiteTag RPC.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6474,6 +6535,206 @@ pub struct ListEventCreateRulesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Request message for CreateRollupProperty RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateRollupPropertyRequest {
+    /// Required. The roll-up property to create.
+    #[prost(message, optional, tag = "1")]
+    pub rollup_property: ::core::option::Option<Property>,
+    /// Optional. The resource names of properties that will be sources to the
+    /// created roll-up property.
+    #[prost(string, repeated, tag = "2")]
+    pub source_properties: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Response message for CreateRollupProperty RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateRollupPropertyResponse {
+    /// The created roll-up property.
+    #[prost(message, optional, tag = "1")]
+    pub rollup_property: ::core::option::Option<Property>,
+    /// The created roll-up property source links.
+    #[prost(message, repeated, tag = "2")]
+    pub rollup_property_source_links: ::prost::alloc::vec::Vec<RollupPropertySourceLink>,
+}
+/// Request message for GetRollupPropertySourceLink RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetRollupPropertySourceLinkRequest {
+    /// Required. The name of the roll-up property source link to lookup.
+    /// Format:
+    /// properties/{property_id}/rollupPropertySourceLinks/{rollup_property_source_link_id}
+    /// Example: properties/123/rollupPropertySourceLinks/456
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListRollupPropertySourceLinks RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListRollupPropertySourceLinksRequest {
+    /// Required. The name of the roll-up property to list roll-up property source
+    /// links under. Format: properties/{property_id} Example: properties/1234
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of resources to return. The service may return
+    /// fewer than this value, even if there are additional pages.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200; (higher values will be coerced to the maximum)
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous
+    /// `ListRollupPropertySourceLinks` call. Provide this to retrieve the
+    /// subsequent page. When paginating, all other parameters provided to
+    /// `ListRollupPropertySourceLinks` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListRollupPropertySourceLinks RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListRollupPropertySourceLinksResponse {
+    /// List of RollupPropertySourceLinks.
+    #[prost(message, repeated, tag = "1")]
+    pub rollup_property_source_links: ::prost::alloc::vec::Vec<RollupPropertySourceLink>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for CreateRollupPropertySourceLink RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateRollupPropertySourceLinkRequest {
+    /// Required. Format: properties/{property_id}
+    /// Example: properties/1234
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The roll-up property source link to create.
+    #[prost(message, optional, tag = "2")]
+    pub rollup_property_source_link: ::core::option::Option<RollupPropertySourceLink>,
+}
+/// Request message for DeleteRollupPropertySourceLink RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteRollupPropertySourceLinkRequest {
+    /// Required. Format:
+    /// properties/{property_id}/rollupPropertySourceLinks/{rollup_property_source_link_id}
+    /// Example: properties/1234/rollupPropertySourceLinks/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for CreateSubproperty RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSubpropertyRequest {
+    /// Required. The ordinary property for which to create a subproperty.
+    /// Format: properties/property_id
+    /// Example: properties/123
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The subproperty to create.
+    #[prost(message, optional, tag = "2")]
+    pub subproperty: ::core::option::Option<Property>,
+    /// Optional. The subproperty event filter to create on an ordinary property.
+    #[prost(message, optional, tag = "3")]
+    pub subproperty_event_filter: ::core::option::Option<SubpropertyEventFilter>,
+}
+/// Response message for CreateSubproperty RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSubpropertyResponse {
+    /// The created subproperty.
+    #[prost(message, optional, tag = "1")]
+    pub subproperty: ::core::option::Option<Property>,
+    /// The created subproperty event filter.
+    #[prost(message, optional, tag = "2")]
+    pub subproperty_event_filter: ::core::option::Option<SubpropertyEventFilter>,
+}
+/// Request message for CreateSubpropertyEventFilter RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSubpropertyEventFilterRequest {
+    /// Required. The ordinary property for which to create a subproperty event
+    /// filter. Format: properties/property_id Example: properties/123
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The subproperty event filter to create.
+    #[prost(message, optional, tag = "2")]
+    pub subproperty_event_filter: ::core::option::Option<SubpropertyEventFilter>,
+}
+/// Request message for GetSubpropertyEventFilter RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetSubpropertyEventFilterRequest {
+    /// Required. Resource name of the subproperty event filter to lookup.
+    /// Format:
+    /// properties/property_id/subpropertyEventFilters/subproperty_event_filter
+    /// Example: properties/123/subpropertyEventFilters/456
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListSubpropertyEventFilters RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSubpropertyEventFiltersRequest {
+    /// Required. Resource name of the ordinary property.
+    /// Format: properties/property_id
+    /// Example: properties/123
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of resources to return. The service may return
+    /// fewer than this value, even if there are additional pages. If unspecified,
+    /// at most 50 resources will be returned. The maximum value is 200; (higher
+    /// values will be coerced to the maximum)
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous
+    /// `ListSubpropertyEventFilters` call. Provide this to retrieve the subsequent
+    /// page. When paginating, all other parameters provided to
+    /// `ListSubpropertyEventFilters` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListSubpropertyEventFilter RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSubpropertyEventFiltersResponse {
+    /// List of subproperty event filters.
+    #[prost(message, repeated, tag = "1")]
+    pub subproperty_event_filters: ::prost::alloc::vec::Vec<SubpropertyEventFilter>,
+    /// A token, which can be sent as `page_token` to retrieve the next page. If
+    /// this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for UpdateSubpropertyEventFilter RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateSubpropertyEventFilterRequest {
+    /// Required. The subproperty event filter to update.
+    #[prost(message, optional, tag = "1")]
+    pub subproperty_event_filter: ::core::option::Option<SubpropertyEventFilter>,
+    /// Required. The list of fields to update. Field names must be in snake case
+    /// (for example, "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "*" to match all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for DeleteSubpropertyEventFilter RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteSubpropertyEventFilterRequest {
+    /// Required. Resource name of the subproperty event filter to delete.
+    /// Format:
+    /// properties/property_id/subpropertyEventFilters/subproperty_event_filter
+    /// Example: properties/123/subpropertyEventFilters/456
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod analytics_admin_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -6630,7 +6891,7 @@ pub mod analytics_admin_service_client {
         ///
         /// If the accounts are not restored before the expiration time, the account
         /// and all child resources (eg: Properties, GoogleAdsLinks, Streams,
-        /// UserLinks) will be permanently purged.
+        /// AccessBindings) will be permanently purged.
         /// https://support.google.com/analytics/answer/6154772
         ///
         /// Returns an error if the target is not found.
@@ -6849,7 +7110,7 @@ pub mod analytics_admin_service_client {
         /// However, they can be restored using the Trash Can UI.
         ///
         /// If the properties are not restored before the expiration time, the Property
-        /// and all child resources (eg: GoogleAdsLinks, Streams, UserLinks)
+        /// and all child resources (eg: GoogleAdsLinks, Streams, AccessBindings)
         /// will be permanently purged.
         /// https://support.google.com/analytics/answer/6154772
         ///
@@ -6905,316 +7166,6 @@ pub mod analytics_admin_service_client {
                     GrpcMethod::new(
                         "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "UpdateProperty",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Gets information about a user's link to an account or property.
-        pub async fn get_user_link(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetUserLinkRequest>,
-        ) -> std::result::Result<tonic::Response<super::UserLink>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetUserLink",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "GetUserLink",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Gets information about multiple users' links to an account or property.
-        pub async fn batch_get_user_links(
-            &mut self,
-            request: impl tonic::IntoRequest<super::BatchGetUserLinksRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::BatchGetUserLinksResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchGetUserLinks",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "BatchGetUserLinks",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists all user links on an account or property.
-        pub async fn list_user_links(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListUserLinksRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListUserLinksResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListUserLinks",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "ListUserLinks",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists all user links on an account or property, including implicit ones
-        /// that come from effective permissions granted by groups or organization
-        /// admin roles.
-        ///
-        /// If a returned user link does not have direct permissions, they cannot
-        /// be removed from the account or property directly with the DeleteUserLink
-        /// command. They have to be removed from the group/etc that gives them
-        /// permissions, which is currently only usable/discoverable in the GA or GMP
-        /// UIs.
-        pub async fn audit_user_links(
-            &mut self,
-            request: impl tonic::IntoRequest<super::AuditUserLinksRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::AuditUserLinksResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/AuditUserLinks",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "AuditUserLinks",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Creates a user link on an account or property.
-        ///
-        /// If the user with the specified email already has permissions on the
-        /// account or property, then the user's existing permissions will be unioned
-        /// with the permissions specified in the new UserLink.
-        pub async fn create_user_link(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateUserLinkRequest>,
-        ) -> std::result::Result<tonic::Response<super::UserLink>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateUserLink",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "CreateUserLink",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Creates information about multiple users' links to an account or property.
-        ///
-        /// This method is transactional. If any UserLink cannot be created, none of
-        /// the UserLinks will be created.
-        pub async fn batch_create_user_links(
-            &mut self,
-            request: impl tonic::IntoRequest<super::BatchCreateUserLinksRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::BatchCreateUserLinksResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchCreateUserLinks",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "BatchCreateUserLinks",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Updates a user link on an account or property.
-        pub async fn update_user_link(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateUserLinkRequest>,
-        ) -> std::result::Result<tonic::Response<super::UserLink>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateUserLink",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "UpdateUserLink",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Updates information about multiple users' links to an account or property.
-        pub async fn batch_update_user_links(
-            &mut self,
-            request: impl tonic::IntoRequest<super::BatchUpdateUserLinksRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::BatchUpdateUserLinksResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchUpdateUserLinks",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "BatchUpdateUserLinks",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Deletes a user link on an account or property.
-        pub async fn delete_user_link(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteUserLinkRequest>,
-        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteUserLink",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "DeleteUserLink",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Deletes information about multiple users' links to an account or property.
-        pub async fn batch_delete_user_links(
-            &mut self,
-            request: impl tonic::IntoRequest<super::BatchDeleteUserLinksRequest>,
-        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/BatchDeleteUserLinks",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "BatchDeleteUserLinks",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -10517,6 +10468,323 @@ pub mod analytics_admin_service_client {
                     GrpcMethod::new(
                         "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "DeleteEventCreateRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a DataRedactionSettings on a property.
+        pub async fn update_data_redaction_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDataRedactionSettingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DataRedactionSettings>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateDataRedactionSettings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "UpdateDataRedactionSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lookup for a single DataRedactionSettings.
+        pub async fn get_data_redaction_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDataRedactionSettingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DataRedactionSettings>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetDataRedactionSettings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "GetDataRedactionSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Create a roll-up property and all roll-up property source links.
+        pub async fn create_rollup_property(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateRollupPropertyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CreateRollupPropertyResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateRollupProperty",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "CreateRollupProperty",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lookup for a single roll-up property source Link.
+        /// Only roll-up properties can have source links, so this method will throw an
+        /// error if used on other types of properties.
+        pub async fn get_rollup_property_source_link(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetRollupPropertySourceLinkRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RollupPropertySourceLink>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetRollupPropertySourceLink",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "GetRollupPropertySourceLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists roll-up property source Links on a property.
+        /// Only roll-up properties can have source links, so this method will throw an
+        /// error if used on other types of properties.
+        pub async fn list_rollup_property_source_links(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListRollupPropertySourceLinksRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListRollupPropertySourceLinksResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListRollupPropertySourceLinks",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "ListRollupPropertySourceLinks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a roll-up property source link.
+        /// Only roll-up properties can have source links, so this method will throw an
+        /// error if used on other types of properties.
+        pub async fn create_rollup_property_source_link(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::CreateRollupPropertySourceLinkRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::RollupPropertySourceLink>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateRollupPropertySourceLink",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "CreateRollupPropertySourceLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a roll-up property source link.
+        /// Only roll-up properties can have source links, so this method will throw an
+        /// error if used on other types of properties.
+        pub async fn delete_rollup_property_source_link(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::DeleteRollupPropertySourceLinkRequest,
+            >,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteRollupPropertySourceLink",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "DeleteRollupPropertySourceLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Create a subproperty and a subproperty event filter that applies to the
+        /// created subproperty.
+        pub async fn create_subproperty(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSubpropertyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CreateSubpropertyResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateSubproperty",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "CreateSubproperty",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a subproperty event filter.
+        pub async fn delete_subproperty_event_filter(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSubpropertyEventFilterRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteSubpropertyEventFilter",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "DeleteSubpropertyEventFilter",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a subproperty Event Filter.
+        pub async fn create_subproperty_event_filter(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSubpropertyEventFilterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SubpropertyEventFilter>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateSubpropertyEventFilter",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "CreateSubpropertyEventFilter",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -3,7 +3,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAssessmentRequest {
     /// Required. The name of the project in which the assessment will be created,
-    /// in the format "projects/{project_number}".
+    /// in the format `projects/{project_number}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The assessment details.
@@ -187,7 +187,7 @@ pub mod transaction_event {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateAssessmentRequest {
     /// Required. The resource name of the Assessment, in the format
-    /// "projects/{project_number}/assessments/{assessment_id}".
+    /// `projects/{project_number}/assessments/{assessment_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The annotation that will be assigned to the Event. This field can
@@ -409,7 +409,7 @@ pub struct PasswordLeakVerification {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Assessment {
     /// Output only. The resource name for the Assessment in the format
-    /// "projects/{project_number}/assessments/{assessment_id}".
+    /// `projects/{project_number}/assessments/{assessment_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The event being assessed.
@@ -811,6 +811,11 @@ pub struct FraudPreventionAssessment {
     pub card_testing_verdict: ::core::option::Option<
         fraud_prevention_assessment::CardTestingVerdict,
     >,
+    /// Assessment of this transaction for behavioral trust.
+    #[prost(message, optional, tag = "4")]
+    pub behavioral_trust_verdict: ::core::option::Option<
+        fraud_prevention_assessment::BehavioralTrustVerdict,
+    >,
 }
 /// Nested message and enum types in `FraudPreventionAssessment`.
 pub mod fraud_prevention_assessment {
@@ -833,6 +838,15 @@ pub mod fraud_prevention_assessment {
         /// testing attack.
         #[prost(float, tag = "1")]
         pub risk: f32,
+    }
+    /// Information about behavioral trust of the transaction.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct BehavioralTrustVerdict {
+        /// Probability (0-1) of this transaction attempt being executed in a
+        /// behaviorally trustworthy way.
+        #[prost(float, tag = "1")]
+        pub trust: f32,
     }
 }
 /// Account defender risk assessment.

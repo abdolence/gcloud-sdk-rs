@@ -616,8 +616,8 @@ pub mod cluster {
         /// instance IPs for this cluster will be created in the allocated range. The
         /// range name must comply with RFC 1035. Specifically, the name must be 1-63
         /// characters long and match the regular expression
-        /// [a-z](\[-a-z0-9\]*[a-z0-9])?.
-        /// Field name is intended to be consistent with CloudSQL.
+        /// `[a-z](\[-a-z0-9\]*[a-z0-9])?`.
+        /// Field name is intended to be consistent with Cloud SQL.
         #[prost(string, tag = "2")]
         pub allocated_ip_range: ::prost::alloc::string::String,
     }
@@ -876,7 +876,8 @@ pub struct Instance {
     pub query_insights_config: ::core::option::Option<
         instance::QueryInsightsInstanceConfig,
     >,
-    /// Read pool specific config.
+    /// Read pool instance configuration.
+    /// This is required if the value of instanceType is READ_POOL.
     #[prost(message, optional, tag = "14")]
     pub read_pool_config: ::core::option::Option<instance::ReadPoolConfig>,
     /// Output only. The IP address for the Instance.
@@ -2692,6 +2693,11 @@ pub struct GenerateClientCertificateRequest {
     /// Optional. The public key from the client.
     #[prost(string, tag = "5")]
     pub public_key: ::prost::alloc::string::String,
+    /// Optional. An optional hint to the endpoint to generate a client
+    /// ceritificate that can be used by AlloyDB connectors to exchange additional
+    /// metadata with the server after TLS handshake.
+    #[prost(bool, tag = "6")]
+    pub use_metadata_exchange: bool,
 }
 /// Message returned by a GenerateClientCertificate operation.
 #[allow(clippy::derive_partial_eq_without_eq)]

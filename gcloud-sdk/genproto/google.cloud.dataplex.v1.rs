@@ -2703,9 +2703,23 @@ pub struct DataQualityRuleResult {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataQualityDimensionResult {
+    /// Output only. The dimension config specified in the DataQualitySpec, as is.
+    #[prost(message, optional, tag = "1")]
+    pub dimension: ::core::option::Option<DataQualityDimension>,
     /// Whether the dimension passed or failed.
     #[prost(bool, tag = "3")]
     pub passed: bool,
+}
+/// A dimension captures data quality intent about a defined subset of the rules
+/// specified.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataQualityDimension {
+    /// The dimension name a rule belongs to. Supported dimensions are
+    /// ["COMPLETENESS", "ACCURACY", "CONSISTENCY", "VALIDITY", "UNIQUENESS",
+    /// "INTEGRITY"]
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// A rule captures data quality intent about a data source.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -7959,6 +7973,170 @@ pub mod session_event {
         /// The execution details of the query.
         #[prost(message, tag = "5")]
         Query(QueryDetail),
+    }
+}
+/// Payload associated with Governance related log events.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GovernanceEvent {
+    /// The log message.
+    #[prost(string, tag = "1")]
+    pub message: ::prost::alloc::string::String,
+    /// The type of the event.
+    #[prost(enumeration = "governance_event::EventType", tag = "2")]
+    pub event_type: i32,
+    /// Entity resource information if the log event is associated with a
+    /// specific entity.
+    #[prost(message, optional, tag = "3")]
+    pub entity: ::core::option::Option<governance_event::Entity>,
+}
+/// Nested message and enum types in `GovernanceEvent`.
+pub mod governance_event {
+    /// Information about Entity resource that the log event is associated with.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Entity {
+        /// The Entity resource the log event is associated with.
+        /// Format:
+        /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`
+        #[prost(string, tag = "1")]
+        pub entity: ::prost::alloc::string::String,
+        /// Type of entity.
+        #[prost(enumeration = "entity::EntityType", tag = "2")]
+        pub entity_type: i32,
+    }
+    /// Nested message and enum types in `Entity`.
+    pub mod entity {
+        /// Type of entity.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum EntityType {
+            /// An unspecified Entity type.
+            Unspecified = 0,
+            /// Table entity type.
+            Table = 1,
+            /// Fileset entity type.
+            Fileset = 2,
+        }
+        impl EntityType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    EntityType::Unspecified => "ENTITY_TYPE_UNSPECIFIED",
+                    EntityType::Table => "TABLE",
+                    EntityType::Fileset => "FILESET",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ENTITY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "TABLE" => Some(Self::Table),
+                    "FILESET" => Some(Self::Fileset),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Type of governance log event.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EventType {
+        /// An unspecified event type.
+        Unspecified = 0,
+        /// Resource IAM policy update event.
+        ResourceIamPolicyUpdate = 1,
+        /// BigQuery table create event.
+        BigqueryTableCreate = 2,
+        /// BigQuery table update event.
+        BigqueryTableUpdate = 3,
+        /// BigQuery table delete event.
+        BigqueryTableDelete = 4,
+        /// BigQuery connection create event.
+        BigqueryConnectionCreate = 5,
+        /// BigQuery connection update event.
+        BigqueryConnectionUpdate = 6,
+        /// BigQuery connection delete event.
+        BigqueryConnectionDelete = 7,
+        /// BigQuery taxonomy created.
+        BigqueryTaxonomyCreate = 10,
+        /// BigQuery policy tag created.
+        BigqueryPolicyTagCreate = 11,
+        /// BigQuery policy tag deleted.
+        BigqueryPolicyTagDelete = 12,
+        /// BigQuery set iam policy for policy tag.
+        BigqueryPolicyTagSetIamPolicy = 13,
+        /// Access policy update event.
+        AccessPolicyUpdate = 14,
+    }
+    impl EventType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                EventType::Unspecified => "EVENT_TYPE_UNSPECIFIED",
+                EventType::ResourceIamPolicyUpdate => "RESOURCE_IAM_POLICY_UPDATE",
+                EventType::BigqueryTableCreate => "BIGQUERY_TABLE_CREATE",
+                EventType::BigqueryTableUpdate => "BIGQUERY_TABLE_UPDATE",
+                EventType::BigqueryTableDelete => "BIGQUERY_TABLE_DELETE",
+                EventType::BigqueryConnectionCreate => "BIGQUERY_CONNECTION_CREATE",
+                EventType::BigqueryConnectionUpdate => "BIGQUERY_CONNECTION_UPDATE",
+                EventType::BigqueryConnectionDelete => "BIGQUERY_CONNECTION_DELETE",
+                EventType::BigqueryTaxonomyCreate => "BIGQUERY_TAXONOMY_CREATE",
+                EventType::BigqueryPolicyTagCreate => "BIGQUERY_POLICY_TAG_CREATE",
+                EventType::BigqueryPolicyTagDelete => "BIGQUERY_POLICY_TAG_DELETE",
+                EventType::BigqueryPolicyTagSetIamPolicy => {
+                    "BIGQUERY_POLICY_TAG_SET_IAM_POLICY"
+                }
+                EventType::AccessPolicyUpdate => "ACCESS_POLICY_UPDATE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RESOURCE_IAM_POLICY_UPDATE" => Some(Self::ResourceIamPolicyUpdate),
+                "BIGQUERY_TABLE_CREATE" => Some(Self::BigqueryTableCreate),
+                "BIGQUERY_TABLE_UPDATE" => Some(Self::BigqueryTableUpdate),
+                "BIGQUERY_TABLE_DELETE" => Some(Self::BigqueryTableDelete),
+                "BIGQUERY_CONNECTION_CREATE" => Some(Self::BigqueryConnectionCreate),
+                "BIGQUERY_CONNECTION_UPDATE" => Some(Self::BigqueryConnectionUpdate),
+                "BIGQUERY_CONNECTION_DELETE" => Some(Self::BigqueryConnectionDelete),
+                "BIGQUERY_TAXONOMY_CREATE" => Some(Self::BigqueryTaxonomyCreate),
+                "BIGQUERY_POLICY_TAG_CREATE" => Some(Self::BigqueryPolicyTagCreate),
+                "BIGQUERY_POLICY_TAG_DELETE" => Some(Self::BigqueryPolicyTagDelete),
+                "BIGQUERY_POLICY_TAG_SET_IAM_POLICY" => {
+                    Some(Self::BigqueryPolicyTagSetIamPolicy)
+                }
+                "ACCESS_POLICY_UPDATE" => Some(Self::AccessPolicyUpdate),
+                _ => None,
+            }
+        }
     }
 }
 /// These messages contain information about the execution of a datascan.

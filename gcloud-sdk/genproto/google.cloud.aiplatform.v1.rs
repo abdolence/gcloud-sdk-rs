@@ -2030,6 +2030,22 @@ pub struct DiskSpec {
     #[prost(int32, tag = "2")]
     pub boot_disk_size_gb: i32,
 }
+/// Represents the spec of [persistent
+/// disk][<https://cloud.google.com/compute/docs/disks/persistent-disks]> options.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PersistentDiskSpec {
+    /// Type of the disk (default is "pd-standard").
+    /// Valid values: "pd-ssd" (Persistent Disk Solid State Drive)
+    /// "pd-standard" (Persistent Disk Hard Disk Drive)
+    /// "pd-balanced" (Balanced Persistent Disk)
+    /// "pd-extreme" (Extreme Persistent Disk)
+    #[prost(string, tag = "1")]
+    pub disk_type: ::prost::alloc::string::String,
+    /// Size in GB of the disk (default is 100GB).
+    #[prost(int64, tag = "2")]
+    pub disk_size_gb: i64,
+}
 /// Represents a mount configuration for Network File System (NFS) to mount.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4249,6 +4265,27 @@ pub struct ExportFractionSplit {
     #[prost(double, tag = "3")]
     pub test_fraction: f64,
 }
+/// Describes the dataset version.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DatasetVersion {
+    /// Output only. The resource name of the DatasetVersion.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Timestamp when this DatasetVersion was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this DatasetVersion was last updated.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Used to perform consistent read-modify-write updates. If not set, a blind
+    /// "overwrite" update happens.
+    #[prost(string, tag = "3")]
+    pub etag: ::prost::alloc::string::String,
+    /// Output only. Name of the associated BigQuery dataset.
+    #[prost(string, tag = "4")]
+    pub big_query_dataset_name: ::prost::alloc::string::String,
+}
 /// Generic Metadata shared by all operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4460,6 +4497,22 @@ pub struct ExportDataOperationMetadata {
     #[prost(string, tag = "2")]
     pub gcs_output_directory: ::prost::alloc::string::String,
 }
+/// Request message for
+/// [DatasetService.CreateDatasetVersion][google.cloud.aiplatform.v1.DatasetService.CreateDatasetVersion].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDatasetVersionRequest {
+    /// Required. The name of the Dataset resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/datasets/{dataset}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The version to be created. The same CMEK policies with the
+    /// original Dataset will be applied the dataset version. So here we don't need
+    /// to specify the EncryptionSpecType here.
+    #[prost(message, optional, tag = "2")]
+    pub dataset_version: ::core::option::Option<DatasetVersion>,
+}
 /// Runtime operation information for
 /// [DatasetService.CreateDatasetVersion][google.cloud.aiplatform.v1.DatasetService.CreateDatasetVersion].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -4468,6 +4521,81 @@ pub struct CreateDatasetVersionOperationMetadata {
     /// The common part of the operation metadata.
     #[prost(message, optional, tag = "1")]
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Request message for
+/// [DatasetService.DeleteDatasetVersion][google.cloud.aiplatform.v1.DatasetService.DeleteDatasetVersion].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteDatasetVersionRequest {
+    /// Required. The resource name of the Dataset version to delete.
+    /// Format:
+    /// `projects/{project}/locations/{location}/datasets/{dataset}/datasetVersions/{dataset_version}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [DatasetService.GetDatasetVersion][google.cloud.aiplatform.v1.DatasetService.GetDatasetVersion].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetDatasetVersionRequest {
+    /// Required. The resource name of the Dataset version to delete.
+    /// Format:
+    /// `projects/{project}/locations/{location}/datasets/{dataset}/datasetVersions/{dataset_version}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Mask specifying which fields to read.
+    #[prost(message, optional, tag = "2")]
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for
+/// [DatasetService.ListDatasetVersions][google.cloud.aiplatform.v1.DatasetService.ListDatasetVersions].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDatasetVersionsRequest {
+    /// Required. The resource name of the Dataset to list DatasetVersions from.
+    /// Format:
+    /// `projects/{project}/locations/{location}/datasets/{dataset}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The standard list filter.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The standard list page size.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. The standard list page token.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Mask specifying which fields to read.
+    #[prost(message, optional, tag = "5")]
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. A comma-separated list of fields to order by, sorted in ascending
+    /// order. Use "desc" after a field name for descending.
+    #[prost(string, tag = "6")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [DatasetService.ListDatasetVersions][google.cloud.aiplatform.v1.DatasetService.ListDatasetVersions].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDatasetVersionsResponse {
+    /// A list of DatasetVersions that matches the specified filter in the request.
+    #[prost(message, repeated, tag = "1")]
+    pub dataset_versions: ::prost::alloc::vec::Vec<DatasetVersion>,
+    /// The standard List next-page token.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [DatasetService.RestoreDatasetVersion][google.cloud.aiplatform.v1.DatasetService.RestoreDatasetVersion].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestoreDatasetVersionRequest {
+    /// Required. The name of the DatasetVersion resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/datasets/{dataset}/datasetVersions/{dataset_version}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Runtime operation information for
 /// [DatasetService.RestoreDatasetVersion][google.cloud.aiplatform.v1.DatasetService.RestoreDatasetVersion].
@@ -5061,6 +5189,158 @@ pub mod dataset_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Create a version from a Dataset.
+        pub async fn create_dataset_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDatasetVersionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.DatasetService/CreateDatasetVersion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.DatasetService",
+                        "CreateDatasetVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a Dataset version.
+        pub async fn delete_dataset_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteDatasetVersionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.DatasetService/DeleteDatasetVersion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.DatasetService",
+                        "DeleteDatasetVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a Dataset version.
+        pub async fn get_dataset_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDatasetVersionRequest>,
+        ) -> std::result::Result<tonic::Response<super::DatasetVersion>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.DatasetService/GetDatasetVersion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.DatasetService",
+                        "GetDatasetVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists DatasetVersions in a Dataset.
+        pub async fn list_dataset_versions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDatasetVersionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDatasetVersionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.DatasetService/ListDatasetVersions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.DatasetService",
+                        "ListDatasetVersions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Restores a dataset version.
+        pub async fn restore_dataset_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RestoreDatasetVersionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.DatasetService/RestoreDatasetVersion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.DatasetService",
+                        "RestoreDatasetVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Lists DataItems in a Dataset.
         pub async fn list_data_items(
             &mut self,
@@ -5365,7 +5645,7 @@ pub struct DeployedModel {
     /// Immutable. The ID of the DeployedModel. If not provided upon deployment,
     /// Vertex AI will generate a value for this ID.
     ///
-    /// This value should be 1-10 characters, and valid characters are /\[0-9\]/.
+    /// This value should be 1-10 characters, and valid characters are `/\[0-9\]/`.
     #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// Required. The resource name of the Model that this is the deployment of.
@@ -10900,7 +11180,7 @@ pub mod index {
         /// Should not be used.
         Unspecified = 0,
         /// BatchUpdate: user can call UpdateIndex with files on Cloud Storage of
-        /// datapoints to update.
+        /// Datapoints to update.
         BatchUpdate = 1,
         /// StreamUpdate: user can call UpsertDatapoints/DeleteDatapoints to update
         /// the Index and the updates will be applied in corresponding
@@ -10943,7 +11223,7 @@ pub struct IndexDatapoint {
     pub feature_vector: ::prost::alloc::vec::Vec<f32>,
     /// Optional. List of Restrict of the datapoint, used to perform "restricted
     /// searches" where boolean rule are used to filter the subset of the database
-    /// eligible for matching. See:
+    /// eligible for matching. This uses categorical tokens. See:
     /// <https://cloud.google.com/vertex-ai/docs/matching-engine/filtering>
     #[prost(message, repeated, tag = "4")]
     pub restricts: ::prost::alloc::vec::Vec<index_datapoint::Restriction>,
@@ -10959,13 +11239,13 @@ pub mod index_datapoint {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Restriction {
-        /// The namespace of this restriction. eg: color.
+        /// The namespace of this restriction. e.g.: color.
         #[prost(string, tag = "1")]
         pub namespace: ::prost::alloc::string::String,
-        /// The attributes to allow in this namespace. eg: 'red'
+        /// The attributes to allow in this namespace. e.g.: 'red'
         #[prost(string, repeated, tag = "2")]
         pub allow_list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// The attributes to deny in this namespace. eg: 'blue'
+        /// The attributes to deny in this namespace. e.g.: 'blue'
         #[prost(string, repeated, tag = "3")]
         pub deny_list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
@@ -11197,7 +11477,10 @@ pub struct DeployedIndex {
     ///
     /// The value should be the name of the address
     /// (<https://cloud.google.com/compute/docs/reference/rest/v1/addresses>)
-    /// Example: 'vertex-ai-ip-range'.
+    /// Example: \['vertex-ai-ip-range'\].
+    ///
+    /// For more information about subnets and network IP ranges, please see
+    /// <https://cloud.google.com/vpc/docs/subnets#manually_created_subnet_ip_ranges.>
     #[prost(string, repeated, tag = "10")]
     pub reserved_ip_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The deployment group can be no longer than 64 characters (eg:
@@ -12632,6 +12915,11 @@ pub struct ModelMonitoringAlertConfig {
     /// by Cloud Logging.
     #[prost(bool, tag = "2")]
     pub enable_logging: bool,
+    /// Resource names of the NotificationChannels to send alert.
+    /// Must be of the format
+    /// `projects/<project_id_or_number>/notificationChannels/<channel_id>`
+    #[prost(string, repeated, tag = "3")]
+    pub notification_channels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     #[prost(oneof = "model_monitoring_alert_config::Alert", tags = "1")]
     pub alert: ::core::option::Option<model_monitoring_alert_config::Alert>,
 }
@@ -20861,7 +21149,9 @@ pub struct PipelineJob {
     pub reserved_ip_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A template uri from where the
     /// [PipelineJob.pipeline_spec][google.cloud.aiplatform.v1.PipelineJob.pipeline_spec],
-    /// if empty, will be downloaded.
+    /// if empty, will be downloaded. Currently, only uri from Vertex Template
+    /// Registry & Gallery is supported. Reference to
+    /// <https://cloud.google.com/vertex-ai/docs/pipelines/create-pipeline-template.>
     #[prost(string, tag = "19")]
     pub template_uri: ::prost::alloc::string::String,
     /// Output only. Pipeline template metadata. Will fill up fields if
@@ -21787,7 +22077,7 @@ pub struct CreatePipelineJobRequest {
     /// generated.
     ///
     /// This value should be less than 128 characters, and valid characters
-    /// are /[a-z][0-9]-/.
+    /// are `/[a-z][0-9]-/`.
     #[prost(string, tag = "3")]
     pub pipeline_job_id: ::prost::alloc::string::String,
 }
@@ -24354,7 +24644,7 @@ pub struct CreateTensorboardExperimentRequest {
     /// final component of the Tensorboard experiment's resource name.
     ///
     /// This value should be 1-128 characters, and valid characters
-    /// are /[a-z][0-9]-/.
+    /// are `/[a-z][0-9]-/`.
     #[prost(string, tag = "3")]
     pub tensorboard_experiment_id: ::prost::alloc::string::String,
 }
@@ -24492,7 +24782,7 @@ pub struct CreateTensorboardRunRequest {
     /// component of the Tensorboard run's resource name.
     ///
     /// This value should be 1-128 characters, and valid characters
-    /// are /[a-z][0-9]-/.
+    /// are `/[a-z][0-9]-/`.
     #[prost(string, tag = "3")]
     pub tensorboard_run_id: ::prost::alloc::string::String,
 }

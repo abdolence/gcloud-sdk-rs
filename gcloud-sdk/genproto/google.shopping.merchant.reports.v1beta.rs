@@ -13,13 +13,14 @@ pub struct SearchRequest {
     /// fields.
     #[prost(string, tag = "2")]
     pub query: ::prost::alloc::string::String,
-    /// Number of `ReportRows` to retrieve in a single page. Defaults to the
-    /// maximum of 1000. Values above 1000 are coerced to 1000.
+    /// Optional. Number of `ReportRows` to retrieve in a single page. Defaults to
+    /// the maximum of 1000. Values above 1000 are coerced to 1000.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
-    /// Token of the page to retrieve. If not specified, the first page of results
-    /// is returned. In order to request the next page of results, the value
-    /// obtained from `next_page_token` in the previous response should be used.
+    /// Optional. Token of the page to retrieve. If not specified, the first page
+    /// of results is returned. In order to request the next page of results, the
+    /// value obtained from `next_page_token` in the previous response should be
+    /// used.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -46,9 +47,6 @@ pub struct ReportRow {
     /// Fields available for query in `product_performance_view` table.
     #[prost(message, optional, tag = "1")]
     pub product_performance_view: ::core::option::Option<ProductPerformanceView>,
-    /// Fields available for query in `non_product_performance_view` table.
-    #[prost(message, optional, tag = "7")]
-    pub non_product_performance_view: ::core::option::Option<NonProductPerformanceView>,
     /// Fields available for query in `product_view` table.
     #[prost(message, optional, tag = "2")]
     pub product_view: ::core::option::Option<ProductView>,
@@ -102,16 +100,9 @@ pub struct ReportRow {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductPerformanceView {
-    /// Destination of the product to which metrics apply. Segment.
-    ///
-    /// Product performance data is not available for the LOCAL_INVENTORY_ADS
-    /// destination.
-    #[prost(
-        enumeration = "super::super::super::r#type::Destination",
-        optional,
-        tag = "1"
-    )]
-    pub destination: ::core::option::Option<i32>,
+    /// Marketing method to which metrics apply. Segment.
+    #[prost(enumeration = "marketing_method::MarketingMethodEnum", optional, tag = "1")]
+    pub marketing_method: ::core::option::Option<i32>,
     /// Date in the merchant timezone to which metrics apply. Segment.
     ///
     /// Condition on `date` is required in the `WHERE` clause.
@@ -128,25 +119,6 @@ pub struct ProductPerformanceView {
     /// returned.
     #[prost(string, optional, tag = "4")]
     pub customer_country_code: ::core::option::Option<::prost::alloc::string::String>,
-    /// Merchant Center account id of the seller of the offer. Segment.
-    ///
-    /// Available only for multi-client accounts.
-    #[prost(int64, optional, tag = "29")]
-    pub account_id: ::core::option::Option<i64>,
-    /// Merchant Center account name of the seller of the offer. Segment.
-    ///
-    /// Available only for multi-client accounts.
-    #[prost(string, optional, tag = "30")]
-    pub account_display_name: ::core::option::Option<::prost::alloc::string::String>,
-    /// [External account
-    /// id](<https://support.google.com/merchants/answer/11537846?hl=en>) submitted
-    /// in an offer feed by a multi-seller account to identify the seller of the
-    /// offer. Segment.
-    ///
-    /// Available only for multi-client accounts. This field is non-empty only for
-    /// auto-seller accounts.
-    #[prost(string, optional, tag = "31")]
-    pub external_account_id: ::core::option::Option<::prost::alloc::string::String>,
     /// Merchant-provided id of the product. Segment.
     #[prost(string, optional, tag = "5")]
     pub offer_id: ::core::option::Option<::prost::alloc::string::String>,
@@ -264,16 +236,24 @@ pub struct ProductPerformanceView {
 ///
 /// Values are only set for fields requested explicitly in the request's search
 /// query.
+///
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductView {
-    /// REST ID of the product, in the form of languageCode~feedLabel~offerId.
-    /// Merchant API methods that operate on products take this as their `name`
-    /// parameter.
+    /// REST ID of the product, in the form of
+    /// `channel~languageCode~feedLabel~offerId`. Merchant API methods that operate
+    /// on products take this as their `name` parameter.
     ///
     /// Required in the `SELECT` clause.
     #[prost(string, optional, tag = "1")]
     pub id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Channel of the product. Can be `ONLINE` or `LOCAL`.
+    #[prost(
+        enumeration = "super::super::super::r#type::channel::ChannelEnum",
+        optional,
+        tag = "28"
+    )]
+    pub channel: ::core::option::Option<i32>,
     /// Language code of the product in BCP 47 format.
     #[prost(string, optional, tag = "2")]
     pub language_code: ::core::option::Option<::prost::alloc::string::String>,
@@ -364,13 +344,13 @@ pub struct ProductView {
     pub expiration_date: ::core::option::Option<
         super::super::super::super::r#type::Date,
     >,
-    /// Aggregated destination status.
+    /// Aggregated status.
     #[prost(
-        enumeration = "product_view::AggregatedDestinationStatus",
+        enumeration = "product_view::AggregatedReportingContextStatus",
         optional,
         tag = "26"
     )]
-    pub aggregated_destination_status: ::core::option::Option<i32>,
+    pub aggregated_reporting_context_status: ::core::option::Option<i32>,
     /// List of item issues for the product.
     ///
     /// **This field cannot be used for sorting the results.**
@@ -417,12 +397,12 @@ pub mod product_view {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ItemIssueSeverity {
-            /// Issue severity per destination.
+            /// Issue severity per reporting context.
             #[prost(message, repeated, tag = "1")]
-            pub severity_per_destination: ::prost::alloc::vec::Vec<
-                item_issue_severity::IssueSeverityPerDestination,
+            pub severity_per_reporting_context: ::prost::alloc::vec::Vec<
+                item_issue_severity::IssueSeverityPerReportingContext,
             >,
-            /// Aggregated severity of the issue for all destinations it affects.
+            /// Aggregated severity of the issue for all reporting contexts it affects.
             ///
             /// **This field can be used for filtering the results.**
             #[prost(
@@ -434,31 +414,31 @@ pub mod product_view {
         }
         /// Nested message and enum types in `ItemIssueSeverity`.
         pub mod item_issue_severity {
-            /// Issue severity per destination.
+            /// Issue severity per reporting context.
             #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
-            pub struct IssueSeverityPerDestination {
-                /// Destination the issue applies to.
+            pub struct IssueSeverityPerReportingContext {
+                /// Reporting context the issue applies to.
                 #[prost(
-                    enumeration = "super::super::super::super::super::super::r#type::Destination",
+                    enumeration = "super::super::super::super::super::super::r#type::reporting_context::ReportingContextEnum",
                     optional,
                     tag = "1"
                 )]
-                pub destination: ::core::option::Option<i32>,
-                /// List of disapproved countries in the destination, represented in ISO
-                /// 3166 format.
+                pub reporting_context: ::core::option::Option<i32>,
+                /// List of disapproved countries in the reporting context, represented
+                /// in ISO 3166 format.
                 #[prost(string, repeated, tag = "2")]
                 pub disapproved_countries: ::prost::alloc::vec::Vec<
                     ::prost::alloc::string::String,
                 >,
-                /// List of demoted countries in the destination, represented in ISO 3166
-                /// format.
+                /// List of demoted countries in the reporting context, represented in
+                /// ISO 3166 format.
                 #[prost(string, repeated, tag = "3")]
                 pub demoted_countries: ::prost::alloc::vec::Vec<
                     ::prost::alloc::string::String,
                 >,
             }
-            /// Issue severity aggregated for all destinations.
+            /// Issue severity aggregated for all reporting contexts.
             #[derive(
                 Clone,
                 Copy,
@@ -474,9 +454,9 @@ pub mod product_view {
             pub enum AggregatedIssueSeverity {
                 /// Not specified.
                 Unspecified = 0,
-                /// Issue disapproves the product in at least one destination.
+                /// Issue disapproves the product in at least one reporting context.
                 Disapproved = 1,
-                /// Issue demotes the product in all destinations it affects.
+                /// Issue demotes the product in all reporting contexts it affects.
                 Demoted = 2,
                 /// Issue resolution is `PENDING_PROCESSING`.
                 Pending = 3,
@@ -558,9 +538,9 @@ pub mod product_view {
             }
         }
     }
-    /// Status of the product aggregated for all destinations.
+    /// Status of the product aggregated for all reporting contexts.
     ///
-    /// Here's an example of how the aggregated destination status is computed:
+    /// Here's an example of how the aggregated status is computed:
     ///
     /// Free listings | Shopping Ads | Status
     /// --------------|--------------|------------------------------
@@ -569,7 +549,6 @@ pub mod product_view {
     /// Approved      | Disapproved  | ELIGIBLE_LIMITED
     /// Pending       | Pending      | PENDING
     /// Disapproved   | Disapproved  | NOT_ELIGIBLE_OR_DISAPPROVED
-    ///
     ///
     ///
     #[derive(
@@ -584,40 +563,42 @@ pub mod product_view {
         ::prost::Enumeration
     )]
     #[repr(i32)]
-    pub enum AggregatedDestinationStatus {
+    pub enum AggregatedReportingContextStatus {
         /// Not specified.
         Unspecified = 0,
-        /// Product is not eligible or is disapproved for all destinations.
+        /// Product is not eligible or is disapproved for all reporting contexts.
         NotEligibleOrDisapproved = 1,
-        /// Product's status is pending in all destinations.
+        /// Product's status is pending in all reporting contexts.
         Pending = 2,
-        /// Product is eligible for some (but not all) destinations.
+        /// Product is eligible for some (but not all) reporting contexts.
         EligibleLimited = 3,
-        /// Product is eligible for all destinations.
+        /// Product is eligible for all reporting contexts.
         Eligible = 4,
     }
-    impl AggregatedDestinationStatus {
+    impl AggregatedReportingContextStatus {
         /// String value of the enum field names used in the ProtoBuf definition.
         ///
         /// The values are not transformed in any way and thus are considered stable
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AggregatedDestinationStatus::Unspecified => {
-                    "AGGREGATED_DESTINATION_STATUS_UNSPECIFIED"
+                AggregatedReportingContextStatus::Unspecified => {
+                    "AGGREGATED_REPORTING_CONTEXT_STATUS_UNSPECIFIED"
                 }
-                AggregatedDestinationStatus::NotEligibleOrDisapproved => {
+                AggregatedReportingContextStatus::NotEligibleOrDisapproved => {
                     "NOT_ELIGIBLE_OR_DISAPPROVED"
                 }
-                AggregatedDestinationStatus::Pending => "PENDING",
-                AggregatedDestinationStatus::EligibleLimited => "ELIGIBLE_LIMITED",
-                AggregatedDestinationStatus::Eligible => "ELIGIBLE",
+                AggregatedReportingContextStatus::Pending => "PENDING",
+                AggregatedReportingContextStatus::EligibleLimited => "ELIGIBLE_LIMITED",
+                AggregatedReportingContextStatus::Eligible => "ELIGIBLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
-                "AGGREGATED_DESTINATION_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "AGGREGATED_REPORTING_CONTEXT_STATUS_UNSPECIFIED" => {
+                    Some(Self::Unspecified)
+                }
                 "NOT_ELIGIBLE_OR_DISAPPROVED" => Some(Self::NotEligibleOrDisapproved),
                 "PENDING" => Some(Self::Pending),
                 "ELIGIBLE_LIMITED" => Some(Self::EligibleLimited),
@@ -642,8 +623,9 @@ pub struct PriceCompetitivenessProductView {
     /// Required in the `SELECT` clause.
     #[prost(string, optional, tag = "1")]
     pub report_country_code: ::core::option::Option<::prost::alloc::string::String>,
-    /// REST ID of the product, in the form of languageCode~feedLabel~offerId. Can
-    /// be used to join data with the `product_view` table.
+    /// REST ID of the product, in the form of
+    /// `channel~languageCode~feedLabel~offerId`. Can be used to join data with the
+    /// `product_view` table.
     ///
     /// Required in the `SELECT` clause.
     #[prost(string, optional, tag = "2")]
@@ -715,8 +697,9 @@ pub struct PriceCompetitivenessProductView {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PriceInsightsProductView {
-    /// REST ID of the product, in the form of languageCode~feedLabel~offerId. Can
-    /// be used to join data with the `product_view` table.
+    /// REST ID of the product, in the form of
+    /// `channel~languageCode~feedLabel~offerId`. Can be used to join data with the
+    /// `product_view` table.
     ///
     /// Required in the `SELECT` clause.
     #[prost(string, optional, tag = "1")]
@@ -791,17 +774,6 @@ pub struct PriceInsightsProductView {
     /// predicted increase in conversions).
     #[prost(double, optional, tag = "19")]
     pub predicted_conversions_change_fraction: ::core::option::Option<f64>,
-    /// Predicted change in gross profit as a fraction after introducing the
-    /// suggested price compared to current active price. For example, 0.05 is a 5%
-    /// predicted increase in gross profit.
-    #[prost(double, optional, tag = "20")]
-    pub predicted_gross_profit_change_fraction: ::core::option::Option<f64>,
-    /// Predicted change in gross profit after introducing the suggested price
-    /// for a month compared to current active price.
-    #[prost(message, optional, tag = "21")]
-    pub predicted_monthly_gross_profit_change: ::core::option::Option<
-        super::super::super::r#type::Price,
-    >,
 }
 /// Fields available for query in `best_sellers_product_cluster_view` table.
 ///
@@ -830,7 +802,11 @@ pub struct BestSellersProductClusterView {
     ///
     /// Required in the `SELECT` clause. Condition on `report_granularity` is
     /// required in the `WHERE` clause.
-    #[prost(enumeration = "ReportGranularity", optional, tag = "2")]
+    #[prost(
+        enumeration = "report_granularity::ReportGranularityEnum",
+        optional,
+        tag = "2"
+    )]
     pub report_granularity: ::core::option::Option<i32>,
     /// Country where the ranking is calculated. Represented in the ISO 3166
     /// format.
@@ -848,9 +824,6 @@ pub struct BestSellersProductClusterView {
     /// top-level categories are returned.
     #[prost(int64, optional, tag = "4")]
     pub report_category_id: ::core::option::Option<i64>,
-    /// Google-assigned id of the product cluster.
-    #[prost(string, optional, tag = "5")]
-    pub id: ::core::option::Option<::prost::alloc::string::String>,
     /// Title of the product cluster.
     #[prost(string, optional, tag = "6")]
     pub title: ::core::option::Option<::prost::alloc::string::String>,
@@ -917,15 +890,19 @@ pub struct BestSellersProductClusterView {
     pub previous_rank: ::core::option::Option<i64>,
     /// Estimated demand in relation to the product cluster with the highest
     /// popularity rank in the same category and country.
-    #[prost(enumeration = "RelativeDemand", optional, tag = "18")]
+    #[prost(enumeration = "relative_demand::RelativeDemandEnum", optional, tag = "18")]
     pub relative_demand: ::core::option::Option<i32>,
     /// Estimated demand in relation to the product cluster with the highest
     /// popularity rank in the same category and country in the previous week or
     /// month.
-    #[prost(enumeration = "RelativeDemand", optional, tag = "19")]
+    #[prost(enumeration = "relative_demand::RelativeDemandEnum", optional, tag = "19")]
     pub previous_relative_demand: ::core::option::Option<i32>,
     /// Change in the estimated demand. Whether it rose, sank or remained flat.
-    #[prost(enumeration = "RelativeDemandChangeType", optional, tag = "20")]
+    #[prost(
+        enumeration = "relative_demand_change_type::RelativeDemandChangeTypeEnum",
+        optional,
+        tag = "20"
+    )]
     pub relative_demand_change: ::core::option::Option<i32>,
 }
 /// Nested message and enum types in `BestSellersProductClusterView`.
@@ -1004,7 +981,11 @@ pub struct BestSellersBrandView {
     ///
     /// Required in the `SELECT` clause. Condition on `report_granularity` is
     /// required in the `WHERE` clause.
-    #[prost(enumeration = "ReportGranularity", optional, tag = "2")]
+    #[prost(
+        enumeration = "report_granularity::ReportGranularityEnum",
+        optional,
+        tag = "2"
+    )]
     pub report_granularity: ::core::option::Option<i32>,
     /// Country where the ranking is calculated. Represented in the ISO 3166
     /// format.
@@ -1022,9 +1003,6 @@ pub struct BestSellersBrandView {
     /// top-level categories are returned.
     #[prost(int64, optional, tag = "4")]
     pub report_category_id: ::core::option::Option<i64>,
-    /// Google-assigned id of the brand.
-    #[prost(string, optional, tag = "5")]
-    pub id: ::core::option::Option<::prost::alloc::string::String>,
     /// Name of the brand.
     #[prost(string, optional, tag = "6")]
     pub brand: ::core::option::Option<::prost::alloc::string::String>,
@@ -1037,53 +1015,19 @@ pub struct BestSellersBrandView {
     pub previous_rank: ::core::option::Option<i64>,
     /// Estimated demand in relation to the brand with the highest popularity rank
     /// in the same category and country.
-    #[prost(enumeration = "RelativeDemand", optional, tag = "9")]
+    #[prost(enumeration = "relative_demand::RelativeDemandEnum", optional, tag = "9")]
     pub relative_demand: ::core::option::Option<i32>,
     /// Estimated demand in relation to the brand with the highest popularity rank
     /// in the same category and country in the previous week or month.
-    #[prost(enumeration = "RelativeDemand", optional, tag = "10")]
+    #[prost(enumeration = "relative_demand::RelativeDemandEnum", optional, tag = "10")]
     pub previous_relative_demand: ::core::option::Option<i32>,
     /// Change in the estimated demand. Whether it rose, sank or remained flat.
-    #[prost(enumeration = "RelativeDemandChangeType", optional, tag = "11")]
+    #[prost(
+        enumeration = "relative_demand_change_type::RelativeDemandChangeTypeEnum",
+        optional,
+        tag = "11"
+    )]
     pub relative_demand_change: ::core::option::Option<i32>,
-}
-/// Fields available for query in `non_product_performance_view` table.
-///
-/// Performance data on images and website links leading to your non-product
-/// website pages. This includes performance metrics (for example, `clicks`)
-/// and dimensions according to which performance metrics are segmented (for
-/// example, `date`).
-///
-/// Segment fields cannot be selected in queries without also selecting at least
-/// one metric field.
-///
-/// Values are only set for fields requested explicitly in the request's search
-/// query.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct NonProductPerformanceView {
-    /// Date in the merchant timezone to which metrics apply. Segment.
-    ///
-    /// Condition on `date` is required in the `WHERE` clause.
-    #[prost(message, optional, tag = "1")]
-    pub date: ::core::option::Option<super::super::super::super::r#type::Date>,
-    /// First day of the week (Monday) of the metrics date in the merchant
-    /// timezone. Segment.
-    #[prost(message, optional, tag = "2")]
-    pub week: ::core::option::Option<super::super::super::super::r#type::Date>,
-    /// Number of clicks on images and website links leading to your non-product
-    /// website pages. Metric.
-    #[prost(int64, optional, tag = "3")]
-    pub clicks: ::core::option::Option<i64>,
-    /// Number of times images and website links leading to your non-product
-    /// website pages were shown. Metric.
-    #[prost(int64, optional, tag = "4")]
-    pub impressions: ::core::option::Option<i64>,
-    /// Click-through rate - the number of clicks (`clicks`) divided by the number
-    /// of impressions (`impressions`) of images and website links leading to your
-    /// non-product website pages. Metric.
-    #[prost(double, optional, tag = "5")]
-    pub click_through_rate: ::core::option::Option<f64>,
 }
 /// Fields available for query in `competitive_visibility_competitor_view` table.
 ///
@@ -1129,7 +1073,7 @@ pub struct CompetitiveVisibilityCompetitorView {
     /// Traffic source of impressions.
     ///
     /// Required in the `SELECT` clause.
-    #[prost(enumeration = "TrafficSource", optional, tag = "6")]
+    #[prost(enumeration = "traffic_source::TrafficSourceEnum", optional, tag = "6")]
     pub traffic_source: ::core::option::Option<i32>,
     /// Position of the domain in the similar businesses ranking for the selected
     /// keys (`date`, `report_category_id`, `report_country_code`,
@@ -1219,7 +1163,7 @@ pub struct CompetitiveVisibilityTopMerchantView {
     /// Traffic source of impressions.
     ///
     /// Required in the `SELECT` clause.
-    #[prost(enumeration = "TrafficSource", optional, tag = "6")]
+    #[prost(enumeration = "traffic_source::TrafficSourceEnum", optional, tag = "6")]
     pub traffic_source: ::core::option::Option<i32>,
     /// Position of the domain in the top merchants ranking for the selected keys
     /// (`date`, `report_category_id`, `report_country_code`, `traffic_source`)
@@ -1287,7 +1231,7 @@ pub struct CompetitiveVisibilityBenchmarkView {
     /// Traffic source of impressions.
     ///
     /// Required in the `SELECT` clause.
-    #[prost(enumeration = "TrafficSource", optional, tag = "4")]
+    #[prost(enumeration = "traffic_source::TrafficSourceEnum", optional, tag = "4")]
     pub traffic_source: ::core::option::Option<i32>,
     /// Change in visibility based on impressions for your domain with respect to
     /// the start of the selected time range (or first day with non-zero
@@ -1305,164 +1249,285 @@ pub struct CompetitiveVisibilityBenchmarkView {
     #[prost(double, optional, tag = "6")]
     pub category_benchmark_visibility_trend: ::core::option::Option<f64>,
 }
-/// Granularity of the Best sellers report. Best sellers reports are computed
-/// over a week and a month timeframe.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum ReportGranularity {
-    /// Not specified.
-    Unspecified = 0,
-    /// Report is computed over a week timeframe.
-    Weekly = 1,
-    /// Report is computed over a month timeframe.
-    Monthly = 2,
-}
-impl ReportGranularity {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            ReportGranularity::Unspecified => "REPORT_GRANULARITY_UNSPECIFIED",
-            ReportGranularity::Weekly => "WEEKLY",
-            ReportGranularity::Monthly => "MONTHLY",
+/// Marketing method used to promote your products on Google (organic versus
+/// ads).
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MarketingMethod {}
+/// Nested message and enum types in `MarketingMethod`.
+pub mod marketing_method {
+    /// Marketing method values.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MarketingMethodEnum {
+        /// Not specified.
+        Unspecified = 0,
+        /// Organic marketing.
+        Organic = 1,
+        /// Ads-based marketing.
+        Ads = 2,
+    }
+    impl MarketingMethodEnum {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                MarketingMethodEnum::Unspecified => "MARKETING_METHOD_ENUM_UNSPECIFIED",
+                MarketingMethodEnum::Organic => "ORGANIC",
+                MarketingMethodEnum::Ads => "ADS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MARKETING_METHOD_ENUM_UNSPECIFIED" => Some(Self::Unspecified),
+                "ORGANIC" => Some(Self::Organic),
+                "ADS" => Some(Self::Ads),
+                _ => None,
+            }
         }
     }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "REPORT_GRANULARITY_UNSPECIFIED" => Some(Self::Unspecified),
-            "WEEKLY" => Some(Self::Weekly),
-            "MONTHLY" => Some(Self::Monthly),
-            _ => None,
+}
+/// Granularity of the Best sellers report. Best sellers reports are computed
+/// over a week and a month timeframe.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReportGranularity {}
+/// Nested message and enum types in `ReportGranularity`.
+pub mod report_granularity {
+    /// Report granularity values.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ReportGranularityEnum {
+        /// Not specified.
+        Unspecified = 0,
+        /// Report is computed over a week timeframe.
+        Weekly = 1,
+        /// Report is computed over a month timeframe.
+        Monthly = 2,
+    }
+    impl ReportGranularityEnum {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ReportGranularityEnum::Unspecified => {
+                    "REPORT_GRANULARITY_ENUM_UNSPECIFIED"
+                }
+                ReportGranularityEnum::Weekly => "WEEKLY",
+                ReportGranularityEnum::Monthly => "MONTHLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REPORT_GRANULARITY_ENUM_UNSPECIFIED" => Some(Self::Unspecified),
+                "WEEKLY" => Some(Self::Weekly),
+                "MONTHLY" => Some(Self::Monthly),
+                _ => None,
+            }
         }
     }
 }
 /// Relative demand of a product cluster or brand in the Best sellers report.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum RelativeDemand {
-    /// Not specified.
-    Unspecified = 0,
-    /// Demand is 0-5% of the demand of the highest ranked product cluster or
-    /// brand.
-    VeryLow = 10,
-    /// Demand is 6-10% of the demand of the highest ranked product cluster or
-    /// brand.
-    Low = 20,
-    /// Demand is 11-20% of the demand of the highest ranked product cluster or
-    /// brand.
-    Medium = 30,
-    /// Demand is 21-50% of the demand of the highest ranked product cluster or
-    /// brand.
-    High = 40,
-    /// Demand is 51-100% of the demand of the highest ranked product cluster or
-    /// brand.
-    VeryHigh = 50,
-}
-impl RelativeDemand {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            RelativeDemand::Unspecified => "RELATIVE_DEMAND_UNSPECIFIED",
-            RelativeDemand::VeryLow => "VERY_LOW",
-            RelativeDemand::Low => "LOW",
-            RelativeDemand::Medium => "MEDIUM",
-            RelativeDemand::High => "HIGH",
-            RelativeDemand::VeryHigh => "VERY_HIGH",
-        }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RelativeDemand {}
+/// Nested message and enum types in `RelativeDemand`.
+pub mod relative_demand {
+    /// Relative demand values.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RelativeDemandEnum {
+        /// Not specified.
+        Unspecified = 0,
+        /// Demand is 0-5% of the demand of the highest ranked product cluster or
+        /// brand.
+        VeryLow = 10,
+        /// Demand is 6-10% of the demand of the highest ranked product cluster or
+        /// brand.
+        Low = 20,
+        /// Demand is 11-20% of the demand of the highest ranked product cluster or
+        /// brand.
+        Medium = 30,
+        /// Demand is 21-50% of the demand of the highest ranked product cluster or
+        /// brand.
+        High = 40,
+        /// Demand is 51-100% of the demand of the highest ranked product cluster or
+        /// brand.
+        VeryHigh = 50,
     }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "RELATIVE_DEMAND_UNSPECIFIED" => Some(Self::Unspecified),
-            "VERY_LOW" => Some(Self::VeryLow),
-            "LOW" => Some(Self::Low),
-            "MEDIUM" => Some(Self::Medium),
-            "HIGH" => Some(Self::High),
-            "VERY_HIGH" => Some(Self::VeryHigh),
-            _ => None,
+    impl RelativeDemandEnum {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RelativeDemandEnum::Unspecified => "RELATIVE_DEMAND_ENUM_UNSPECIFIED",
+                RelativeDemandEnum::VeryLow => "VERY_LOW",
+                RelativeDemandEnum::Low => "LOW",
+                RelativeDemandEnum::Medium => "MEDIUM",
+                RelativeDemandEnum::High => "HIGH",
+                RelativeDemandEnum::VeryHigh => "VERY_HIGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RELATIVE_DEMAND_ENUM_UNSPECIFIED" => Some(Self::Unspecified),
+                "VERY_LOW" => Some(Self::VeryLow),
+                "LOW" => Some(Self::Low),
+                "MEDIUM" => Some(Self::Medium),
+                "HIGH" => Some(Self::High),
+                "VERY_HIGH" => Some(Self::VeryHigh),
+                _ => None,
+            }
         }
     }
 }
 /// Relative demand of a product cluster or brand in the Best sellers report
 /// compared to the previous time period.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum RelativeDemandChangeType {
-    /// Not specified.
-    Unspecified = 0,
-    /// Relative demand is lower than the previous time period.
-    Sinker = 1,
-    /// Relative demand is equal to the previous time period.
-    Flat = 2,
-    /// Relative demand is higher than the previous time period.
-    Riser = 3,
-}
-impl RelativeDemandChangeType {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            RelativeDemandChangeType::Unspecified => {
-                "RELATIVE_DEMAND_CHANGE_TYPE_UNSPECIFIED"
-            }
-            RelativeDemandChangeType::Sinker => "SINKER",
-            RelativeDemandChangeType::Flat => "FLAT",
-            RelativeDemandChangeType::Riser => "RISER",
-        }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RelativeDemandChangeType {}
+/// Nested message and enum types in `RelativeDemandChangeType`.
+pub mod relative_demand_change_type {
+    /// Relative demand change type values.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RelativeDemandChangeTypeEnum {
+        /// Not specified.
+        Unspecified = 0,
+        /// Relative demand is lower than the previous time period.
+        Sinker = 1,
+        /// Relative demand is equal to the previous time period.
+        Flat = 2,
+        /// Relative demand is higher than the previous time period.
+        Riser = 3,
     }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "RELATIVE_DEMAND_CHANGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-            "SINKER" => Some(Self::Sinker),
-            "FLAT" => Some(Self::Flat),
-            "RISER" => Some(Self::Riser),
-            _ => None,
+    impl RelativeDemandChangeTypeEnum {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RelativeDemandChangeTypeEnum::Unspecified => {
+                    "RELATIVE_DEMAND_CHANGE_TYPE_ENUM_UNSPECIFIED"
+                }
+                RelativeDemandChangeTypeEnum::Sinker => "SINKER",
+                RelativeDemandChangeTypeEnum::Flat => "FLAT",
+                RelativeDemandChangeTypeEnum::Riser => "RISER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RELATIVE_DEMAND_CHANGE_TYPE_ENUM_UNSPECIFIED" => Some(Self::Unspecified),
+                "SINKER" => Some(Self::Sinker),
+                "FLAT" => Some(Self::Flat),
+                "RISER" => Some(Self::Riser),
+                _ => None,
+            }
         }
     }
 }
 /// Traffic source of impressions in the Competitive visibility report.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum TrafficSource {
-    /// Not specified.
-    Unspecified = 0,
-    /// Organic traffic.
-    Organic = 1,
-    /// Traffic from ads.
-    Ads = 2,
-    /// Organic and ads traffic.
-    All = 3,
-}
-impl TrafficSource {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            TrafficSource::Unspecified => "TRAFFIC_SOURCE_UNSPECIFIED",
-            TrafficSource::Organic => "ORGANIC",
-            TrafficSource::Ads => "ADS",
-            TrafficSource::All => "ALL",
-        }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrafficSource {}
+/// Nested message and enum types in `TrafficSource`.
+pub mod traffic_source {
+    /// Traffic source values.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TrafficSourceEnum {
+        /// Not specified.
+        Unspecified = 0,
+        /// Organic traffic.
+        Organic = 1,
+        /// Traffic from ads.
+        Ads = 2,
+        /// Organic and ads traffic.
+        All = 3,
     }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "TRAFFIC_SOURCE_UNSPECIFIED" => Some(Self::Unspecified),
-            "ORGANIC" => Some(Self::Organic),
-            "ADS" => Some(Self::Ads),
-            "ALL" => Some(Self::All),
-            _ => None,
+    impl TrafficSourceEnum {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                TrafficSourceEnum::Unspecified => "TRAFFIC_SOURCE_ENUM_UNSPECIFIED",
+                TrafficSourceEnum::Organic => "ORGANIC",
+                TrafficSourceEnum::Ads => "ADS",
+                TrafficSourceEnum::All => "ALL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TRAFFIC_SOURCE_ENUM_UNSPECIFIED" => Some(Self::Unspecified),
+                "ORGANIC" => Some(Self::Organic),
+                "ADS" => Some(Self::Ads),
+                "ALL" => Some(Self::All),
+                _ => None,
+            }
         }
     }
 }

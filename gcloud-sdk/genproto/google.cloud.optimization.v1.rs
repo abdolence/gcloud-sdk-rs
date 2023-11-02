@@ -1423,6 +1423,34 @@ pub mod shipment_type_requirement {
         }
     }
 }
+/// Encapsulates a set of optional conditions to satisfy when calculating
+/// vehicle routes. This is similar to `RouteModifiers` in the Google Maps
+/// Platform API; see:
+/// <https://developers.google.com/maps/documentation/routes/reference/rest/v2/RouteModifiers.>
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RouteModifiers {
+    /// Specifies whether to avoid toll roads where reasonable. Preference will be
+    /// given to routes not containing toll roads. Applies only to motorized travel
+    /// modes.
+    #[prost(bool, tag = "2")]
+    pub avoid_tolls: bool,
+    /// Specifies whether to avoid highways where reasonable. Preference will be
+    /// given to routes not containing highways. Applies only to motorized travel
+    /// modes.
+    #[prost(bool, tag = "3")]
+    pub avoid_highways: bool,
+    /// Specifies whether to avoid ferries where reasonable. Preference will be
+    /// given to routes not containing travel by ferries. Applies only to motorized
+    /// travel modes.
+    #[prost(bool, tag = "4")]
+    pub avoid_ferries: bool,
+    /// Optional. Specifies whether to avoid navigating indoors where reasonable.
+    /// Preference will be given to routes not containing indoor navigation.
+    /// Applies only to the `WALKING` travel mode.
+    #[prost(bool, tag = "5")]
+    pub avoid_indoor: bool,
+}
 /// Models a vehicle in a shipment problem. Solving a shipment problem will
 /// build a route starting from `start_location` and ending at `end_location`
 /// for this vehicle. A route is a sequence of visits (see `ShipmentRoute`).
@@ -1433,6 +1461,10 @@ pub struct Vehicle {
     /// speed. See also `travel_duration_multiple`.
     #[prost(enumeration = "vehicle::TravelMode", tag = "1")]
     pub travel_mode: i32,
+    /// Optional. A set of conditions to satisfy that affect the way routes are
+    /// calculated for the given vehicle.
+    #[prost(message, optional, tag = "2")]
+    pub route_modifiers: ::core::option::Option<RouteModifiers>,
     /// Geographic location where the vehicle starts before picking up any
     /// shipments. If not specified, the vehicle starts at its first pickup.
     /// If the shipment model has duration and distance matrices, `start_location`
@@ -3236,6 +3268,13 @@ pub struct OptimizeToursValidationError {
     ///      * VISIT_REQUEST_DURATION_NEGATIVE_OR_NAN = 4404;
     ///      * VISIT_REQUEST_DURATION_EXCEEDS_GLOBAL_DURATION = 4405;
     /// * PRECEDENCE_ERROR = 46;
+    ///      * PRECEDENCE_RULE_MISSING_FIRST_INDEX = 4600;
+    ///      * PRECEDENCE_RULE_MISSING_SECOND_INDEX = 4601;
+    ///      * PRECEDENCE_RULE_FIRST_INDEX_OUT_OF_BOUNDS = 4602;
+    ///      * PRECEDENCE_RULE_SECOND_INDEX_OUT_OF_BOUNDS = 4603;
+    ///      * PRECEDENCE_RULE_DUPLICATE_INDEX = 4604;
+    ///      * PRECEDENCE_RULE_INEXISTENT_FIRST_VISIT_REQUEST = 4605;
+    ///      * PRECEDENCE_RULE_INEXISTENT_SECOND_VISIT_REQUEST = 4606;
     /// * BREAK_ERROR = 48;
     ///      * BREAK_RULE_EMPTY = 4800;
     ///      * BREAK_REQUEST_UNSPECIFIED_DURATION = 4801;

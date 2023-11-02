@@ -87,9 +87,9 @@ pub struct Instance {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Output only. A server-assigned timestamp representing when this Instance was created.
-    /// For instances created before this field was added (August 2021), this value
-    /// is `seconds: 0, nanos: 1`.
+    /// Output only. A server-assigned timestamp representing when this Instance
+    /// was created. For instances created before this field was added (August
+    /// 2021), this value is `seconds: 0, nanos: 1`.
     #[prost(message, optional, tag = "7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Reserved for future use.
@@ -203,7 +203,7 @@ pub struct AutoscalingTargets {
     pub cpu_utilization_percent: i32,
     /// The storage utilization that the Autoscaler should be trying to achieve.
     /// This number is limited between 2560 (2.5TiB) and 5120 (5TiB) for a SSD
-    /// cluster and between 8192 (8TiB) and 16384 (16TiB) for an HDD cluster;
+    /// cluster and between 8192 (8TiB) and 16384 (16TiB) for an HDD cluster,
     /// otherwise it will return INVALID_ARGUMENT error. If this value is set to 0,
     /// it will be treated as if it were set to the default value: 2560 for SSD,
     /// 8192 for HDD.
@@ -231,8 +231,8 @@ pub struct Cluster {
     /// `projects/{project}/instances/{instance}/clusters/[a-z][-a-z0-9]*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Immutable. The location where this cluster's nodes and storage reside. For best
-    /// performance, clients should be located as close as possible to this
+    /// Immutable. The location where this cluster's nodes and storage reside. For
+    /// best performance, clients should be located as close as possible to this
     /// cluster. Currently only zones are supported, so values should be of the
     /// form `projects/{project}/locations/{zone}`.
     #[prost(string, tag = "2")]
@@ -385,6 +385,9 @@ pub struct AppProfile {
     /// A value must be explicitly set.
     #[prost(oneof = "app_profile::RoutingPolicy", tags = "5, 6")]
     pub routing_policy: ::core::option::Option<app_profile::RoutingPolicy>,
+    /// Options for isolating this app profile's traffic from other use cases.
+    #[prost(oneof = "app_profile::Isolation", tags = "7, 11")]
+    pub isolation: ::core::option::Option<app_profile::Isolation>,
 }
 /// Nested message and enum types in `AppProfile`.
 pub mod app_profile {
@@ -416,6 +419,61 @@ pub mod app_profile {
         #[prost(bool, tag = "2")]
         pub allow_transactional_writes: bool,
     }
+    /// Standard options for isolating this app profile's traffic from other use
+    /// cases.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct StandardIsolation {
+        /// The priority of requests sent using this app profile.
+        #[prost(enumeration = "Priority", tag = "1")]
+        pub priority: i32,
+    }
+    /// Possible priorities for an app profile. Note that higher priority writes
+    /// can sometimes queue behind lower priority writes to the same tablet, as
+    /// writes must be strictly sequenced in the durability log.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Priority {
+        /// Default value. Mapped to PRIORITY_HIGH (the legacy behavior) on creation.
+        Unspecified = 0,
+        Low = 1,
+        Medium = 2,
+        High = 3,
+    }
+    impl Priority {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Priority::Unspecified => "PRIORITY_UNSPECIFIED",
+                Priority::Low => "PRIORITY_LOW",
+                Priority::Medium => "PRIORITY_MEDIUM",
+                Priority::High => "PRIORITY_HIGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PRIORITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRIORITY_LOW" => Some(Self::Low),
+                "PRIORITY_MEDIUM" => Some(Self::Medium),
+                "PRIORITY_HIGH" => Some(Self::High),
+                _ => None,
+            }
+        }
+    }
     /// The routing policy for all read/write requests that use this app profile.
     /// A value must be explicitly set.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -427,6 +485,21 @@ pub mod app_profile {
         /// Use a single-cluster routing policy.
         #[prost(message, tag = "6")]
         SingleClusterRouting(SingleClusterRouting),
+    }
+    /// Options for isolating this app profile's traffic from other use cases.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Isolation {
+        /// This field has been deprecated in favor of `standard_isolation.priority`.
+        /// If you set this field, `standard_isolation.priority` will be set instead.
+        ///
+        /// The priority of requests sent using this app profile.
+        #[prost(enumeration = "Priority", tag = "7")]
+        Priority(i32),
+        /// The standard options used for isolating this app profile's traffic from
+        /// other use cases.
+        #[prost(message, tag = "11")]
+        StandardIsolation(StandardIsolation),
     }
 }
 /// A tablet is a defined by a start and end key and is explained in
@@ -457,10 +530,10 @@ pub struct HotTablet {
     /// Tablet End Key (inclusive).
     #[prost(string, tag = "6")]
     pub end_key: ::prost::alloc::string::String,
-    /// Output only. The average CPU usage spent by a node on this tablet over the start_time to
-    /// end_time time range. The percentage is the amount of CPU used by the node
-    /// to serve the tablet, from 0% (tablet was not interacted with) to 100% (the
-    /// node spent all cycles serving the hot tablet).
+    /// Output only. The average CPU usage spent by a node on this tablet over the
+    /// start_time to end_time time range. The percentage is the amount of CPU used
+    /// by the node to serve the tablet, from 0% (tablet was not interacted with)
+    /// to 100% (the node spent all cycles serving the hot tablet).
     #[prost(float, tag = "7")]
     pub node_cpu_usage_percent: f32,
 }
@@ -468,12 +541,12 @@ pub struct HotTablet {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceRequest {
-    /// Required. The unique name of the project in which to create the new instance.
-    /// Values are of the form `projects/{project}`.
+    /// Required. The unique name of the project in which to create the new
+    /// instance. Values are of the form `projects/{project}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. The ID to be used when referring to the new instance within its project,
-    /// e.g., just `myinstance` rather than
+    /// Required. The ID to be used when referring to the new instance within its
+    /// project, e.g., just `myinstance` rather than
     /// `projects/myproject/instances/myinstance`.
     #[prost(string, tag = "2")]
     pub instance_id: ::prost::alloc::string::String,
@@ -502,8 +575,8 @@ pub struct GetInstanceRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesRequest {
-    /// Required. The unique name of the project for which a list of instances is requested.
-    /// Values are of the form `projects/{project}`.
+    /// Required. The unique name of the project for which a list of instances is
+    /// requested. Values are of the form `projects/{project}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// DEPRECATED: This field is unused and ignored.
@@ -554,13 +627,12 @@ pub struct DeleteInstanceRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClusterRequest {
-    /// Required. The unique name of the instance in which to create the new cluster.
-    /// Values are of the form
-    /// `projects/{project}/instances/{instance}`.
+    /// Required. The unique name of the instance in which to create the new
+    /// cluster. Values are of the form `projects/{project}/instances/{instance}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. The ID to be used when referring to the new cluster within its instance,
-    /// e.g., just `mycluster` rather than
+    /// Required. The ID to be used when referring to the new cluster within its
+    /// instance, e.g., just `mycluster` rather than
     /// `projects/myproject/instances/myinstance/clusters/mycluster`.
     #[prost(string, tag = "2")]
     pub cluster_id: ::prost::alloc::string::String,
@@ -582,10 +654,11 @@ pub struct GetClusterRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersRequest {
-    /// Required. The unique name of the instance for which a list of clusters is requested.
-    /// Values are of the form `projects/{project}/instances/{instance}`.
-    /// Use `{instance} = '-'` to list Clusters for all Instances in a project,
-    /// e.g., `projects/myproject/instances/-`.
+    /// Required. The unique name of the instance for which a list of clusters is
+    /// requested. Values are of the form
+    /// `projects/{project}/instances/{instance}`. Use `{instance} = '-'` to list
+    /// Clusters for all Instances in a project, e.g.,
+    /// `projects/myproject/instances/-`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// DEPRECATED: This field is unused and ignored.
@@ -614,8 +687,8 @@ pub struct ListClustersResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteClusterRequest {
-    /// Required. The unique name of the cluster to be deleted. Values are of the form
-    /// `projects/{project}/instances/{instance}/clusters/{cluster}`.
+    /// Required. The unique name of the cluster to be deleted. Values are of the
+    /// form `projects/{project}/instances/{instance}/clusters/{cluster}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -778,8 +851,8 @@ pub struct PartialUpdateClusterMetadata {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartialUpdateClusterRequest {
-    /// Required. The Cluster which contains the partial updates to be applied, subject to
-    /// the update_mask.
+    /// Required. The Cluster which contains the partial updates to be applied,
+    /// subject to the update_mask.
     #[prost(message, optional, tag = "1")]
     pub cluster: ::core::option::Option<Cluster>,
     /// Required. The subset of Cluster fields which should be replaced.
@@ -790,13 +863,12 @@ pub struct PartialUpdateClusterRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAppProfileRequest {
-    /// Required. The unique name of the instance in which to create the new app profile.
-    /// Values are of the form
-    /// `projects/{project}/instances/{instance}`.
+    /// Required. The unique name of the instance in which to create the new app
+    /// profile. Values are of the form `projects/{project}/instances/{instance}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. The ID to be used when referring to the new app profile within its
-    /// instance, e.g., just `myprofile` rather than
+    /// Required. The ID to be used when referring to the new app profile within
+    /// its instance, e.g., just `myprofile` rather than
     /// `projects/myproject/instances/myinstance/appProfiles/myprofile`.
     #[prost(string, tag = "2")]
     pub app_profile_id: ::prost::alloc::string::String,
@@ -812,8 +884,8 @@ pub struct CreateAppProfileRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAppProfileRequest {
-    /// Required. The unique name of the requested app profile. Values are of the form
-    /// `projects/{project}/instances/{instance}/appProfiles/{app_profile}`.
+    /// Required. The unique name of the requested app profile. Values are of the
+    /// form `projects/{project}/instances/{instance}/appProfiles/{app_profile}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -821,8 +893,8 @@ pub struct GetAppProfileRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAppProfilesRequest {
-    /// Required. The unique name of the instance for which a list of app profiles is
-    /// requested. Values are of the form
+    /// Required. The unique name of the instance for which a list of app profiles
+    /// is requested. Values are of the form
     /// `projects/{project}/instances/{instance}`.
     /// Use `{instance} = '-'` to list AppProfiles for all Instances in a project,
     /// e.g., `projects/myproject/instances/-`.
@@ -881,7 +953,8 @@ pub struct UpdateAppProfileRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAppProfileRequest {
-    /// Required. The unique name of the app profile to be deleted. Values are of the form
+    /// Required. The unique name of the app profile to be deleted. Values are of
+    /// the form
     /// `projects/{project}/instances/{instance}/appProfiles/{app_profile}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,

@@ -414,6 +414,9 @@ pub struct NodeConfig {
     /// Google Compute Engine hosts.
     #[prost(message, optional, tag = "44")]
     pub host_maintenance_policy: ::core::option::Option<HostMaintenancePolicy>,
+    /// A map of resource manager tag keys and values to be attached to the nodes.
+    #[prost(message, optional, tag = "45")]
+    pub resource_manager_tags: ::core::option::Option<ResourceManagerTags>,
     /// Optional. Enable confidential storage on Hyperdisk.
     /// boot_disk_kms_key is required when enable_confidential_storage is true.
     /// This is only available for private preview.
@@ -684,8 +687,22 @@ pub mod sandbox_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EphemeralStorageConfig {
     /// Number of local SSDs to use to back ephemeral storage. Uses NVMe
-    /// interfaces. Each local SSD is 375 GB in size.
-    /// If zero, it means to disable using local SSDs as ephemeral storage.
+    /// interfaces. The limit for this value is dependent upon the maximum number
+    /// of disk available on a machine per zone. See:
+    /// <https://cloud.google.com/compute/docs/disks/local-ssd>
+    /// for more information.
+    ///
+    /// A zero (or unset) value has different meanings depending on machine type
+    /// being used:
+    /// 1. For pre-Gen3 machines, which support flexible numbers of local ssds,
+    /// zero (or unset) means to disable using local SSDs as ephemeral storage.
+    /// 2. For Gen3 machines which dictate a specific number of local ssds, zero
+    /// (or unset) means to use the default number of local ssds that goes with
+    /// that machine type. For example, for a c3-standard-8-lssd machine, 2 local
+    /// ssds would be provisioned. For c3-standard-8 (which doesn't support local
+    /// ssds), 0 will be provisioned. See
+    /// <https://cloud.google.com/compute/docs/disks/local-ssd#choose_number_local_ssds>
+    /// for more info.
     #[prost(int32, tag = "1")]
     pub local_ssd_count: i32,
 }
@@ -694,13 +711,22 @@ pub struct EphemeralStorageConfig {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalNvmeSsdBlockConfig {
-    /// The number of raw-block local NVMe SSD disks to be attached to the node.
-    /// Each local SSD is 375 GB in size. If zero, it means no raw-block local NVMe
-    /// SSD disks to be attached to the node.
-    /// The limit for this value is dependent upon the maximum number of
-    /// disks available on a machine per zone. See:
+    /// Number of local NVMe SSDs to use.  The limit for this value is dependent
+    /// upon the maximum number of disk available on a machine per zone. See:
     /// <https://cloud.google.com/compute/docs/disks/local-ssd>
     /// for more information.
+    ///
+    /// A zero (or unset) value has different meanings depending on machine type
+    /// being used:
+    /// 1. For pre-Gen3 machines, which support flexible numbers of local ssds,
+    /// zero (or unset) means to disable using local SSDs as ephemeral storage.
+    /// 2. For Gen3 machines which dictate a specific number of local ssds, zero
+    /// (or unset) means to use the default number of local ssds that goes with
+    /// that machine type. For example, for a c3-standard-8-lssd machine, 2 local
+    /// ssds would be provisioned. For c3-standard-8 (which doesn't support local
+    /// ssds), 0 will be provisioned. See
+    /// <https://cloud.google.com/compute/docs/disks/local-ssd#choose_number_local_ssds>
+    /// for more info.
     #[prost(int32, tag = "1")]
     pub local_ssd_count: i32,
 }
@@ -710,12 +736,23 @@ pub struct LocalNvmeSsdBlockConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EphemeralStorageLocalSsdConfig {
     /// Number of local SSDs to use to back ephemeral storage. Uses NVMe
-    /// interfaces. Each local SSD is 375 GB in size.
-    /// If zero, it means to disable using local SSDs as ephemeral storage.
-    /// The limit for this value is dependent upon the maximum number of
-    /// disks available on a machine per zone. See:
+    /// interfaces.
+    ///
+    /// A zero (or unset) value has different meanings depending on machine type
+    /// being used:
+    /// 1. For pre-Gen3 machines, which support flexible numbers of local ssds,
+    /// zero (or unset) means to disable using local SSDs as ephemeral storage. The
+    /// limit for this value is dependent upon the maximum number of disk
+    /// available on a machine per zone. See:
     /// <https://cloud.google.com/compute/docs/disks/local-ssd>
     /// for more information.
+    /// 2. For Gen3 machines which dictate a specific number of local ssds, zero
+    /// (or unset) means to use the default number of local ssds that goes with
+    /// that machine type. For example, for a c3-standard-8-lssd machine, 2 local
+    /// ssds would be provisioned. For c3-standard-8 (which doesn't support local
+    /// ssds), 0 will be provisioned. See
+    /// <https://cloud.google.com/compute/docs/disks/local-ssd#choose_number_local_ssds>
+    /// for more info.
     #[prost(int32, tag = "1")]
     pub local_ssd_count: i32,
 }
@@ -884,9 +921,40 @@ pub struct HostMaintenancePolicy {
         tag = "1"
     )]
     pub maintenance_interval: ::core::option::Option<i32>,
+    /// Set of host maintenance strategies available to the customer, all require
+    /// the maintenance_interval to be PERIODIC. If no strategy is set, and the
+    /// interval is periodic, customer will be expected to trigger maintenance
+    /// manually or let maintenance trigger at its initial scheduled time.
+    #[prost(oneof = "host_maintenance_policy::MaintenanceStrategy", tags = "2")]
+    pub maintenance_strategy: ::core::option::Option<
+        host_maintenance_policy::MaintenanceStrategy,
+    >,
 }
 /// Nested message and enum types in `HostMaintenancePolicy`.
 pub mod host_maintenance_policy {
+    /// Strategy that will trigger maintenance on behalf of the customer.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct OpportunisticMaintenanceStrategy {
+        /// The amount of time that a node can remain idle (no customer owned
+        /// workloads running), before triggering maintenance.
+        #[prost(message, optional, tag = "1")]
+        pub node_idle_time_window: ::core::option::Option<::prost_types::Duration>,
+        /// The window of time that opportunistic maintenance can run. Example: A
+        /// setting of 14 days implies that opportunistic maintenance can only be ran
+        /// in the 2 weeks leading up to the scheduled maintenance date. Setting 28
+        /// days allows opportunistic maintenance to run at any time in the scheduled
+        /// maintenance window (all `PERIODIC` maintenance is set 28 days in
+        /// advance).
+        #[prost(message, optional, tag = "2")]
+        pub maintenance_availability_window: ::core::option::Option<
+            ::prost_types::Duration,
+        >,
+        /// The minimum nodes required to be available in a pool. Blocks maintenance
+        /// if it would cause the number of running nodes to dip below this value.
+        #[prost(int64, optional, tag = "3")]
+        pub min_nodes_per_pool: ::core::option::Option<i64>,
+    }
     /// Allows selecting how infrastructure upgrades should be applied to the
     /// cluster or node pool.
     #[derive(
@@ -937,6 +1005,17 @@ pub mod host_maintenance_policy {
                 _ => None,
             }
         }
+    }
+    /// Set of host maintenance strategies available to the customer, all require
+    /// the maintenance_interval to be PERIODIC. If no strategy is set, and the
+    /// interval is periodic, customer will be expected to trigger maintenance
+    /// manually or let maintenance trigger at its initial scheduled time.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum MaintenanceStrategy {
+        /// Strategy that will trigger maintenance on behalf of the customer.
+        #[prost(message, tag = "2")]
+        OpportunisticMaintenanceStrategy(OpportunisticMaintenanceStrategy),
     }
 }
 /// Kubernetes taint is composed of three fields: key, value, and effect. Effect
@@ -2366,6 +2445,9 @@ pub struct Cluster {
     /// Enable/Disable Security Posture API features for the cluster.
     #[prost(message, optional, tag = "145")]
     pub security_posture_config: ::core::option::Option<SecurityPostureConfig>,
+    /// GKE Enterprise Configuration.
+    #[prost(message, optional, tag = "149")]
+    pub enterprise_config: ::core::option::Option<EnterpriseConfig>,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
@@ -2717,6 +2799,10 @@ pub struct NodePoolAutoConfig {
     /// must comply with RFC1035.
     #[prost(message, optional, tag = "1")]
     pub network_tags: ::core::option::Option<NetworkTags>,
+    /// Resource manager tag keys and values to be attached to the nodes
+    /// for managing Compute Engine firewalls using Network Firewall Policies.
+    #[prost(message, optional, tag = "2")]
+    pub resource_manager_tags: ::core::option::Option<ResourceManagerTags>,
 }
 /// ClusterUpdate describes an update to the cluster. Exactly one update can
 /// be applied to a cluster with each request, so at most one field can be
@@ -2982,6 +3068,15 @@ pub struct ClusterUpdate {
     /// Google Compute Engine hosts.
     #[prost(message, optional, tag = "132")]
     pub desired_host_maintenance_policy: ::core::option::Option<HostMaintenancePolicy>,
+    /// The desired resource manager tags that apply to all auto-provisioned node
+    /// pools in autopilot clusters and node auto-provisioning enabled clusters.
+    #[prost(message, optional, tag = "136")]
+    pub desired_node_pool_auto_config_resource_manager_tags: ::core::option::Option<
+        ResourceManagerTags,
+    >,
+    /// Specify the details of in-transit encryption.
+    #[prost(enumeration = "InTransitEncryptionConfig", optional, tag = "137")]
+    pub desired_in_transit_encryption_config: ::core::option::Option<i32>,
 }
 /// AdditionalPodRangesConfig is the configuration for additional pod secondary
 /// ranges supporting the ClusterUpdate message.
@@ -3255,6 +3350,9 @@ pub mod operation {
         /// [documentation on
         /// resizes](<https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions#repairs>).
         ResizeCluster = 18,
+        /// Fleet features of GKE Enterprise are being upgraded. The cluster should
+        /// be assumed to be blocked for other upgrades until the operation finishes.
+        FleetFeatureUpgrade = 19,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3281,6 +3379,7 @@ pub mod operation {
                 Type::SetNetworkPolicy => "SET_NETWORK_POLICY",
                 Type::SetMaintenancePolicy => "SET_MAINTENANCE_POLICY",
                 Type::ResizeCluster => "RESIZE_CLUSTER",
+                Type::FleetFeatureUpgrade => "FLEET_FEATURE_UPGRADE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3304,6 +3403,7 @@ pub mod operation {
                 "SET_NETWORK_POLICY" => Some(Self::SetNetworkPolicy),
                 "SET_MAINTENANCE_POLICY" => Some(Self::SetMaintenancePolicy),
                 "RESIZE_CLUSTER" => Some(Self::ResizeCluster),
+                "FLEET_FEATURE_UPGRADE" => Some(Self::FleetFeatureUpgrade),
                 _ => None,
             }
         }
@@ -3577,6 +3677,11 @@ pub struct UpdateNodePoolRequest {
     /// node pool to the specified disk size.
     #[prost(int64, tag = "38")]
     pub disk_size_gb: i64,
+    /// Desired resource manager tag keys and values to be attached to the nodes
+    /// for managing Compute Engine firewalls using Network Firewall Policies.
+    /// Existing tags will be replaced with new values.
+    #[prost(message, optional, tag = "39")]
+    pub resource_manager_tags: ::core::option::Option<ResourceManagerTags>,
 }
 /// SetNodePoolAutoscalingRequest sets the autoscaler settings of a node pool.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -4570,6 +4675,8 @@ pub mod node_pool {
                 CreatingGreenPool = 2,
                 /// Start cordoning blue pool nodes.
                 CordoningBluePool = 3,
+                /// Start waiting after cordoning the blue pool and before draining it.
+                WaitingToDrainBluePool = 8,
                 /// Start draining blue pool nodes.
                 DrainingBluePool = 4,
                 /// Start soaking time after draining entire blue pool.
@@ -4590,6 +4697,7 @@ pub mod node_pool {
                         Phase::UpdateStarted => "UPDATE_STARTED",
                         Phase::CreatingGreenPool => "CREATING_GREEN_POOL",
                         Phase::CordoningBluePool => "CORDONING_BLUE_POOL",
+                        Phase::WaitingToDrainBluePool => "WAITING_TO_DRAIN_BLUE_POOL",
                         Phase::DrainingBluePool => "DRAINING_BLUE_POOL",
                         Phase::NodePoolSoaking => "NODE_POOL_SOAKING",
                         Phase::DeletingBluePool => "DELETING_BLUE_POOL",
@@ -4603,6 +4711,9 @@ pub mod node_pool {
                         "UPDATE_STARTED" => Some(Self::UpdateStarted),
                         "CREATING_GREEN_POOL" => Some(Self::CreatingGreenPool),
                         "CORDONING_BLUE_POOL" => Some(Self::CordoningBluePool),
+                        "WAITING_TO_DRAIN_BLUE_POOL" => {
+                            Some(Self::WaitingToDrainBluePool)
+                        }
                         "DRAINING_BLUE_POOL" => Some(Self::DrainingBluePool),
                         "NODE_POOL_SOAKING" => Some(Self::NodePoolSoaking),
                         "DELETING_BLUE_POOL" => Some(Self::DeletingBluePool),
@@ -6043,6 +6154,9 @@ pub struct NetworkConfig {
     /// Whether FQDN Network Policy is enabled on this cluster.
     #[prost(bool, optional, tag = "19")]
     pub enable_fqdn_network_policy: ::core::option::Option<bool>,
+    /// Specify the details of in-transit encryption.
+    #[prost(enumeration = "InTransitEncryptionConfig", optional, tag = "20")]
+    pub in_transit_encryption_config: ::core::option::Option<i32>,
 }
 /// Nested message and enum types in `NetworkConfig`.
 pub mod network_config {
@@ -7483,6 +7597,80 @@ pub struct Fleet {
     #[prost(bool, tag = "3")]
     pub pre_registered: bool,
 }
+/// A map of resource manager tag keys and values to be attached to the nodes
+/// for managing Compute Engine firewalls using Network Firewall Policies.
+/// Tags must be according to specifications in
+/// <https://cloud.google.com/vpc/docs/tags-firewalls-overview#specifications.>
+/// A maximum of 5 tag key-value pairs can be specified.
+/// Existing tags will be replaced with new values.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceManagerTags {
+    /// Tags must be in one of the following formats (\[KEY\]=[VALUE])
+    /// 1. `tagKeys/{tag_key_id}=tagValues/{tag_value_id}`
+    /// 2. `{org_id}/{tag_key_name}={tag_value_name}`
+    /// 3. `{project_id}/{tag_key_name}={tag_value_name}`
+    #[prost(map = "string, string", tag = "1")]
+    pub tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
+/// EnterpriseConfig is the cluster enterprise configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnterpriseConfig {
+    /// Output only. \[Output only\] cluster_tier specifies the premium tier of the
+    /// cluster.
+    #[prost(enumeration = "enterprise_config::ClusterTier", tag = "1")]
+    pub cluster_tier: i32,
+}
+/// Nested message and enum types in `EnterpriseConfig`.
+pub mod enterprise_config {
+    /// Premium tiers for GKE Cluster.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ClusterTier {
+        /// CLUSTER_TIER_UNSPECIFIED is when cluster_tier is not set.
+        Unspecified = 0,
+        /// STANDARD indicates a standard GKE cluster.
+        Standard = 1,
+        /// ENTERPRISE indicates a GKE Enterprise cluster.
+        Enterprise = 2,
+    }
+    impl ClusterTier {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ClusterTier::Unspecified => "CLUSTER_TIER_UNSPECIFIED",
+                ClusterTier::Standard => "STANDARD",
+                ClusterTier::Enterprise => "ENTERPRISE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLUSTER_TIER_UNSPECIFIED" => Some(Self::Unspecified),
+                "STANDARD" => Some(Self::Standard),
+                "ENTERPRISE" => Some(Self::Enterprise),
+                _ => None,
+            }
+        }
+    }
+}
 /// PrivateIPv6GoogleAccess controls whether and how the pods can communicate
 /// with Google Services through gRPC over IPv6.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -7674,6 +7862,48 @@ impl StackType {
             "STACK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
             "IPV4" => Some(Self::Ipv4),
             "IPV4_IPV6" => Some(Self::Ipv4Ipv6),
+            _ => None,
+        }
+    }
+}
+/// Options for in-transit encryption.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum InTransitEncryptionConfig {
+    /// Unspecified, will be inferred as default -
+    /// IN_TRANSIT_ENCRYPTION_UNSPECIFIED.
+    Unspecified = 0,
+    /// In-transit encryption is disabled.
+    InTransitEncryptionDisabled = 1,
+    /// Data in-transit is encrypted using inter-node transparent encryption.
+    InTransitEncryptionInterNodeTransparent = 2,
+}
+impl InTransitEncryptionConfig {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            InTransitEncryptionConfig::Unspecified => {
+                "IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED"
+            }
+            InTransitEncryptionConfig::InTransitEncryptionDisabled => {
+                "IN_TRANSIT_ENCRYPTION_DISABLED"
+            }
+            InTransitEncryptionConfig::InTransitEncryptionInterNodeTransparent => {
+                "IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT"
+            }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED" => Some(Self::Unspecified),
+            "IN_TRANSIT_ENCRYPTION_DISABLED" => Some(Self::InTransitEncryptionDisabled),
+            "IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT" => {
+                Some(Self::InTransitEncryptionInterNodeTransparent)
+            }
             _ => None,
         }
     }

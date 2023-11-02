@@ -128,7 +128,7 @@ pub struct DeliveryVehicleLocation {
     /// Timestamp associated with the raw location.
     #[prost(message, optional, tag = "17")]
     pub raw_location_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Source of the raw location.
+    /// Source of the raw location. Defaults to `GPS`.
     #[prost(enumeration = "DeliveryVehicleLocationSensor", tag = "28")]
     pub raw_location_sensor: i32,
     /// Accuracy of `raw_location` as a radius, in meters.
@@ -142,7 +142,8 @@ pub struct DeliveryVehicleLocation {
     /// Timestamp associated with the supplemental location.
     #[prost(message, optional, tag = "19")]
     pub supplemental_location_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Source of the supplemental location.
+    /// Source of the supplemental location. Defaults to
+    /// `CUSTOMER_SUPPLIED_LOCATION`.
     #[prost(enumeration = "DeliveryVehicleLocationSensor", tag = "20")]
     pub supplemental_location_sensor: i32,
     /// Accuracy of `supplemental_location` as a radius, in meters.
@@ -412,7 +413,7 @@ pub struct DeliveryVehicle {
         VehicleJourneySegment,
     >,
     /// A list of custom Delivery Vehicle attributes. A Delivery Vehicle can have
-    /// at most 50 attributes, and each attribute must have a unique key.
+    /// at most 100 attributes, and each attribute must have a unique key.
     #[prost(message, repeated, tag = "9")]
     pub attributes: ::prost::alloc::vec::Vec<DeliveryVehicleAttribute>,
     /// The type of this delivery vehicle. If unset, this will default to `AUTO`.

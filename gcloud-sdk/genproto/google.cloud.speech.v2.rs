@@ -252,8 +252,12 @@ pub struct Recognizer {
     /// characters or less.
     #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
-    /// Optional. Which model to use for recognition requests. Select the model
-    /// best suited to your domain to get best results.
+    /// Optional. This field is now deprecated. Prefer the
+    /// [`model`][google.cloud.speech.v2.RecognitionConfig.model] field in the
+    /// [`RecognitionConfig`][google.cloud.speech.v2.RecognitionConfig] message.
+    ///
+    /// Which model to use for recognition requests. Select the model best suited
+    /// to your domain to get best results.
     ///
     /// Guidance for choosing which model to use can be found in the [Transcription
     /// Models
@@ -264,7 +268,12 @@ pub struct Recognizer {
     #[deprecated]
     #[prost(string, tag = "4")]
     pub model: ::prost::alloc::string::String,
-    /// Optional. The language of the supplied audio as a
+    /// Optional. This field is now deprecated. Prefer the
+    /// [`language_codes`][google.cloud.speech.v2.RecognitionConfig.language_codes]
+    /// field in the
+    /// [`RecognitionConfig`][google.cloud.speech.v2.RecognitionConfig] message.
+    ///
+    /// The language of the supplied audio as a
     /// [BCP-47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
     ///
     /// Supported languages for each model are listed in the [Table of Supported
@@ -396,6 +405,8 @@ pub mod recognizer {
 /// * OGG_OPUS: Opus audio frames in an Ogg container.
 ///
 /// * WEBM_OPUS: Opus audio frames in a WebM container.
+///
+/// * M4A: M4A audio format.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoDetectDecodingConfig {}
@@ -609,6 +620,37 @@ pub mod recognition_features {
         }
     }
 }
+/// Transcription normalization configuration. Use transcription normalization
+/// to automatically replace parts of the transcript with phrases of your
+/// choosing. For StreamingRecognize, this normalization only applies to stable
+/// partial transcripts (stability > 0.8) and final transcripts.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TranscriptNormalization {
+    /// A list of replacement entries. We will perform replacement with one entry
+    /// at a time. For example, the second entry in ["cat" => "dog", "mountain cat"
+    /// => "mountain dog"] will never be applied because we will always process the
+    /// first entry before it. At most 100 entries.
+    #[prost(message, repeated, tag = "1")]
+    pub entries: ::prost::alloc::vec::Vec<transcript_normalization::Entry>,
+}
+/// Nested message and enum types in `TranscriptNormalization`.
+pub mod transcript_normalization {
+    /// A single replacement configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Entry {
+        /// What to replace. Max length is 100 characters.
+        #[prost(string, tag = "1")]
+        pub search: ::prost::alloc::string::String,
+        /// What to replace with. Max length is 100 characters.
+        #[prost(string, tag = "2")]
+        pub replace: ::prost::alloc::string::String,
+        /// Whether the search is case sensitive.
+        #[prost(bool, tag = "3")]
+        pub case_sensitive: bool,
+    }
+}
 /// Provides "hints" to the speech recognizer to favor specific words and phrases
 /// in the results. PhraseSets can be specified as an inline resource, or a
 /// reference to an existing PhraseSet resource.
@@ -684,6 +726,12 @@ pub struct RecognitionConfig {
     /// words and phrases.
     #[prost(message, optional, tag = "6")]
     pub adaptation: ::core::option::Option<SpeechAdaptation>,
+    /// Optional. Use transcription normalization to automatically replace parts of
+    /// the transcript with phrases of your choosing. For StreamingRecognize, this
+    /// normalization only applies to stable partial transcripts (stability > 0.8)
+    /// and final transcripts.
+    #[prost(message, optional, tag = "11")]
+    pub transcript_normalization: ::core::option::Option<TranscriptNormalization>,
     /// Decoding parameters for audio being sent for recognition.
     #[prost(oneof = "recognition_config::DecodingConfig", tags = "7, 8")]
     pub decoding_config: ::core::option::Option<recognition_config::DecodingConfig>,
@@ -1161,24 +1209,61 @@ pub struct BatchRecognizeResults {
     #[prost(message, optional, tag = "2")]
     pub metadata: ::core::option::Option<RecognitionResponseMetadata>,
 }
+/// Final results written to Cloud Storage.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudStorageResult {
+    /// The Cloud Storage URI to which recognition results were written.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+}
+/// Final results returned inline in the recognition response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InlineResult {
+    /// The transcript for the audio file.
+    #[prost(message, optional, tag = "1")]
+    pub transcript: ::core::option::Option<BatchRecognizeResults>,
+}
 /// Final results for a single file.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRecognizeFileResult {
-    /// The Cloud Storage URI to which recognition results were written.
-    #[prost(string, tag = "1")]
-    pub uri: ::prost::alloc::string::String,
     /// Error if one was encountered.
     #[prost(message, optional, tag = "2")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
     #[prost(message, optional, tag = "3")]
     pub metadata: ::core::option::Option<RecognitionResponseMetadata>,
-    /// The transcript for the audio file. This is populated only when
-    /// [InlineOutputConfig][google.cloud.speech.v2.InlineOutputConfig] is set in
-    /// the
-    /// [RecognitionOutputConfig][\[google.cloud.speech.v2.RecognitionOutputConfig\].
+    /// Deprecated. Use `cloud_storage_result.native_format_uri` instead.
+    #[deprecated]
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+    /// Deprecated. Use `inline_result.transcript` instead.
+    #[deprecated]
     #[prost(message, optional, tag = "4")]
     pub transcript: ::core::option::Option<BatchRecognizeResults>,
+    #[prost(oneof = "batch_recognize_file_result::Result", tags = "5, 6")]
+    pub result: ::core::option::Option<batch_recognize_file_result::Result>,
+}
+/// Nested message and enum types in `BatchRecognizeFileResult`.
+pub mod batch_recognize_file_result {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Result {
+        /// Recognition results written to Cloud Storage. This is
+        /// populated only when
+        /// [GcsOutputConfig][google.cloud.speech.v2.GcsOutputConfig] is set in
+        /// the
+        /// [RecognitionOutputConfig][\[google.cloud.speech.v2.RecognitionOutputConfig\].
+        #[prost(message, tag = "5")]
+        CloudStorageResult(super::CloudStorageResult),
+        /// Recognition results. This is populated only when
+        /// [InlineOutputConfig][google.cloud.speech.v2.InlineOutputConfig] is set in
+        /// the
+        /// [RecognitionOutputConfig][\[google.cloud.speech.v2.RecognitionOutputConfig\].
+        #[prost(message, tag = "6")]
+        InlineResult(super::InlineResult),
+    }
 }
 /// Metadata about transcription for a single file (for example, progress
 /// percent).
