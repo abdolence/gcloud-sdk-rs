@@ -4335,6 +4335,87 @@ pub struct RunAssetDiscoveryRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
 }
+/// Request message to simulate a CustomConfig against a given test resource.
+/// Maximum size of the request is 4 MB by default.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SimulateSecurityHealthAnalyticsCustomModuleRequest {
+    /// Required. The relative resource name of the organization, project, or
+    /// folder. See:
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
+    /// An example is:
+    /// "organizations/{organization_id}".
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The user specified custom configuration to test.
+    #[prost(message, optional, tag = "2")]
+    pub custom_config: ::core::option::Option<CustomConfig>,
+    /// Required. Resource data to simulate custom module against.
+    #[prost(message, optional, tag = "3")]
+    pub resource: ::core::option::Option<
+        simulate_security_health_analytics_custom_module_request::SimulatedResource,
+    >,
+}
+/// Nested message and enum types in `SimulateSecurityHealthAnalyticsCustomModuleRequest`.
+pub mod simulate_security_health_analytics_custom_module_request {
+    /// Manually constructed resource. If the custom module only evaluates against
+    /// the resource data, the iam_policy_data field can be omitted, and vice
+    /// versa.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SimulatedResource {
+        /// Required. The type of the resource, e.g. `compute.googleapis.com/Disk`.
+        #[prost(string, tag = "1")]
+        pub resource_type: ::prost::alloc::string::String,
+        /// Optional. A representation of the GCP resource. Should match the GCP
+        /// resource JSON format.
+        #[prost(message, optional, tag = "2")]
+        pub resource_data: ::core::option::Option<::prost_types::Struct>,
+        /// Optional. A representation of the IAM policy.
+        #[prost(message, optional, tag = "3")]
+        pub iam_policy_data: ::core::option::Option<
+            super::super::super::super::iam::v1::Policy,
+        >,
+    }
+}
+/// Response message for simulating a SecurityHealthAnalyticsCustomModule against
+/// a given resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SimulateSecurityHealthAnalyticsCustomModuleResponse {
+    /// Result for test case in the corresponding request.
+    #[prost(message, optional, tag = "1")]
+    pub result: ::core::option::Option<
+        simulate_security_health_analytics_custom_module_response::SimulatedResult,
+    >,
+}
+/// Nested message and enum types in `SimulateSecurityHealthAnalyticsCustomModuleResponse`.
+pub mod simulate_security_health_analytics_custom_module_response {
+    /// Possible test result.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SimulatedResult {
+        #[prost(oneof = "simulated_result::Result", tags = "1, 2, 3")]
+        pub result: ::core::option::Option<simulated_result::Result>,
+    }
+    /// Nested message and enum types in `SimulatedResult`.
+    pub mod simulated_result {
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Result {
+            /// Finding that would be published for the test case,
+            /// if a violation is detected.
+            #[prost(message, tag = "1")]
+            Finding(super::super::Finding),
+            /// Indicates that the test case does not trigger any violation.
+            #[prost(message, tag = "2")]
+            NoViolation(()),
+            /// Error encountered during the test.
+            #[prost(message, tag = "3")]
+            Error(super::super::super::super::super::rpc::Status),
+        }
+    }
+}
 /// Request message for updating a ExternalSystem resource.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5627,6 +5708,39 @@ pub mod security_center_client {
                     GrpcMethod::new(
                         "google.cloud.securitycenter.v1.SecurityCenter",
                         "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Simulates a given SecurityHealthAnalyticsCustomModule and Resource.
+        pub async fn simulate_security_health_analytics_custom_module(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::SimulateSecurityHealthAnalyticsCustomModuleRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::SimulateSecurityHealthAnalyticsCustomModuleResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/SimulateSecurityHealthAnalyticsCustomModule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securitycenter.v1.SecurityCenter",
+                        "SimulateSecurityHealthAnalyticsCustomModule",
                     ),
                 );
             self.inner.unary(req, path, codec).await

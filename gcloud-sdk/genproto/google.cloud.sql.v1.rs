@@ -717,9 +717,9 @@ pub struct PscConfig {
     /// Whether PSC connectivity is enabled for this instance.
     #[prost(bool, optional, tag = "1")]
     pub psc_enabled: ::core::option::Option<bool>,
-    /// List of consumer projects that are allow-listed for PSC connections to this
-    /// instance. This instance can be connected to with PSC from any network in
-    /// these projects.
+    /// The list of consumer projects that are allow-listed for PSC connections to
+    /// this instance. This instance can be connected to with PSC from any network
+    /// in these projects.
     ///
     /// Each consumer project in this list may be represented by a project number
     /// (numeric) or by a project id (alphanumeric).
@@ -746,6 +746,7 @@ pub struct LocationPreference {
     pub zone: ::prost::alloc::string::String,
     /// The preferred Compute Engine zone for the secondary/failover
     /// (for example: us-central1-a, us-central1-b, etc.).
+    /// To disable this field, set it to 'no_secondary_zone'.
     #[prost(string, tag = "4")]
     pub secondary_zone: ::prost::alloc::string::String,
     /// This is always `sql#locationPreference`.
@@ -4230,10 +4231,7 @@ pub struct SqlInstancesStartExternalSyncRequest {
     pub skip_verification: bool,
     /// Optional. Parallel level for initial data sync. Currently only applicable
     /// for MySQL.
-    #[prost(
-        enumeration = "sql_instances_start_external_sync_request::ExternalSyncParallelLevel",
-        tag = "7"
-    )]
+    #[prost(enumeration = "ExternalSyncParallelLevel", tag = "7")]
     pub sync_parallel_level: i32,
     #[prost(oneof = "sql_instances_start_external_sync_request::SyncConfig", tags = "6")]
     pub sync_config: ::core::option::Option<
@@ -4242,55 +4240,6 @@ pub struct SqlInstancesStartExternalSyncRequest {
 }
 /// Nested message and enum types in `SqlInstancesStartExternalSyncRequest`.
 pub mod sql_instances_start_external_sync_request {
-    /// External Sync parallel level.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum ExternalSyncParallelLevel {
-        /// Unknown sync parallel level. Will be defaulted to OPTIMAL.
-        Unspecified = 0,
-        /// Minimal parallel level.
-        Min = 1,
-        /// Optimal parallel level.
-        Optimal = 2,
-        /// Maximum parallel level.
-        Max = 3,
-    }
-    impl ExternalSyncParallelLevel {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                ExternalSyncParallelLevel::Unspecified => {
-                    "EXTERNAL_SYNC_PARALLEL_LEVEL_UNSPECIFIED"
-                }
-                ExternalSyncParallelLevel::Min => "MIN",
-                ExternalSyncParallelLevel::Optimal => "OPTIMAL",
-                ExternalSyncParallelLevel::Max => "MAX",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "EXTERNAL_SYNC_PARALLEL_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
-                "MIN" => Some(Self::Min),
-                "OPTIMAL" => Some(Self::Optimal),
-                "MAX" => Some(Self::Max),
-                _ => None,
-            }
-        }
-    }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SyncConfig {
@@ -4704,6 +4653,9 @@ pub struct DatabaseInstance {
     /// Output only. The dns name of the instance.
     #[prost(string, optional, tag = "49")]
     pub dns_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The dns name of the primary instance in a replication group.
+    #[prost(string, optional, tag = "51")]
+    pub primary_dns_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `DatabaseInstance`.
 pub mod database_instance {
@@ -5133,6 +5085,8 @@ pub mod sql_external_sync_setting_error {
         /// The replication user is missing parallel import specific privileges.
         /// (e.g. LOCK TABLES) for MySQL.
         MysqlParallelImportInsufficientPrivilege = 34,
+        /// The global variable local_infile is off on external server replica.
+        LocalInfileOff = 35,
     }
     impl SqlExternalSyncSettingErrorType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -5238,6 +5192,7 @@ pub mod sql_external_sync_setting_error {
                 SqlExternalSyncSettingErrorType::MysqlParallelImportInsufficientPrivilege => {
                     "MYSQL_PARALLEL_IMPORT_INSUFFICIENT_PRIVILEGE"
                 }
+                SqlExternalSyncSettingErrorType::LocalInfileOff => "LOCAL_INFILE_OFF",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5296,6 +5251,7 @@ pub mod sql_external_sync_setting_error {
                 "MYSQL_PARALLEL_IMPORT_INSUFFICIENT_PRIVILEGE" => {
                     Some(Self::MysqlParallelImportInsufficientPrivilege)
                 }
+                "LOCAL_INFILE_OFF" => Some(Self::LocalInfileOff),
                 _ => None,
             }
         }
@@ -5356,6 +5312,45 @@ pub struct ReplicaConfiguration {
     /// the replica has to be in different zone with the primary instance.
     #[prost(message, optional, tag = "3")]
     pub failover_target: ::core::option::Option<bool>,
+}
+/// External Sync parallel level.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ExternalSyncParallelLevel {
+    /// Unknown sync parallel level. Will be defaulted to OPTIMAL.
+    Unspecified = 0,
+    /// Minimal parallel level.
+    Min = 1,
+    /// Optimal parallel level.
+    Optimal = 2,
+    /// Maximum parallel level.
+    Max = 3,
+}
+impl ExternalSyncParallelLevel {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ExternalSyncParallelLevel::Unspecified => {
+                "EXTERNAL_SYNC_PARALLEL_LEVEL_UNSPECIFIED"
+            }
+            ExternalSyncParallelLevel::Min => "MIN",
+            ExternalSyncParallelLevel::Optimal => "OPTIMAL",
+            ExternalSyncParallelLevel::Max => "MAX",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "EXTERNAL_SYNC_PARALLEL_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+            "MIN" => Some(Self::Min),
+            "OPTIMAL" => Some(Self::Optimal),
+            "MAX" => Some(Self::Max),
+            _ => None,
+        }
+    }
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]

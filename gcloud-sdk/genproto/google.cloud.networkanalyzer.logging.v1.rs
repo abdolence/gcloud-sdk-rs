@@ -279,6 +279,9 @@ pub enum ReportCauseCode {
     GkeControlPlaneToNodeBlockedByIngressFirewallOnNode = 212,
     GkeIpUtilizationPodRangesAllocationHigh = 221,
     GkeIpUtilizationPodRangesAllocationLimitesAutoscaling = 222,
+    GkeNodeServiceAccountServiceAccountDisabled = 243,
+    GkeNodeServiceAccountDefaultServiceAccountUsed = 244,
+    GkeNodeServiceAccountBadOauthScopes = 245,
     /// Managed Services
     CloudSqlPrivateIpBlockedByEgressFirewall = 601,
     CloudSqlPrivateIpBlockedByRoutingIssue = 602,
@@ -352,6 +355,15 @@ impl ReportCauseCode {
             }
             ReportCauseCode::GkeIpUtilizationPodRangesAllocationLimitesAutoscaling => {
                 "GKE_IP_UTILIZATION_POD_RANGES_ALLOCATION_LIMITES_AUTOSCALING"
+            }
+            ReportCauseCode::GkeNodeServiceAccountServiceAccountDisabled => {
+                "GKE_NODE_SERVICE_ACCOUNT_SERVICE_ACCOUNT_DISABLED"
+            }
+            ReportCauseCode::GkeNodeServiceAccountDefaultServiceAccountUsed => {
+                "GKE_NODE_SERVICE_ACCOUNT_DEFAULT_SERVICE_ACCOUNT_USED"
+            }
+            ReportCauseCode::GkeNodeServiceAccountBadOauthScopes => {
+                "GKE_NODE_SERVICE_ACCOUNT_BAD_OAUTH_SCOPES"
             }
             ReportCauseCode::CloudSqlPrivateIpBlockedByEgressFirewall => {
                 "CLOUD_SQL_PRIVATE_IP_BLOCKED_BY_EGRESS_FIREWALL"
@@ -454,6 +466,15 @@ impl ReportCauseCode {
             }
             "GKE_IP_UTILIZATION_POD_RANGES_ALLOCATION_LIMITES_AUTOSCALING" => {
                 Some(Self::GkeIpUtilizationPodRangesAllocationLimitesAutoscaling)
+            }
+            "GKE_NODE_SERVICE_ACCOUNT_SERVICE_ACCOUNT_DISABLED" => {
+                Some(Self::GkeNodeServiceAccountServiceAccountDisabled)
+            }
+            "GKE_NODE_SERVICE_ACCOUNT_DEFAULT_SERVICE_ACCOUNT_USED" => {
+                Some(Self::GkeNodeServiceAccountDefaultServiceAccountUsed)
+            }
+            "GKE_NODE_SERVICE_ACCOUNT_BAD_OAUTH_SCOPES" => {
+                Some(Self::GkeNodeServiceAccountBadOauthScopes)
             }
             "CLOUD_SQL_PRIVATE_IP_BLOCKED_BY_EGRESS_FIREWALL" => {
                 Some(Self::CloudSqlPrivateIpBlockedByEgressFirewall)

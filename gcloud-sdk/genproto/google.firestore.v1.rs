@@ -570,11 +570,12 @@ pub mod structured_query {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FieldReference {
-        /// The relative path of the document being referenced.
+        /// A reference to a field in a document.
         ///
         /// Requires:
         ///
-        /// * Conform to [document field name][google.firestore.v1.Document.fields]
+        /// * MUST be a dot-delimited (`.`) string of segments, where each segment
+        /// conforms to [document field name][google.firestore.v1.Document.fields]
         /// limitations.
         #[prost(string, tag = "2")]
         pub field_path: ::prost::alloc::string::String,
@@ -1976,7 +1977,7 @@ pub struct PartitionQueryResponse {
     ///   * query, start_at B
     ///
     /// An empty result may indicate that the query has too few results to be
-    /// partitioned.
+    /// partitioned, or that the query is not yet supported for partitioning.
     #[prost(message, repeated, tag = "1")]
     pub partitions: ::prost::alloc::vec::Vec<Cursor>,
     /// A page token that may be used to request an additional set of results, up
@@ -2138,6 +2139,21 @@ pub mod listen_response {
 pub struct Target {
     /// The target ID that identifies the target on the stream. Must be a positive
     /// number and non-zero.
+    ///
+    /// If `target_id` is 0 (or unspecified), the server will assign an ID for this
+    /// target and return that in a `TargetChange::ADD` event. Once a target with
+    /// `target_id=0` is added, all subsequent targets must also have
+    /// `target_id=0`. If an `AddTarget` request with `target_id != 0` is
+    /// sent to the server after a target with `target_id=0` is added, the server
+    /// will immediately send a response with a `TargetChange::Remove` event.
+    ///
+    /// Note that if the client sends multiple `AddTarget` requests
+    /// without an ID, the order of IDs returned in `TargetChage.target_ids` are
+    /// undefined. Therefore, clients should provide a target ID instead of relying
+    /// on the server to assign one.
+    ///
+    /// If `target_id` is non-zero, there must not be an existing active target on
+    /// this stream with the same ID.
     #[prost(int32, tag = "5")]
     pub target_id: i32,
     /// If the target should be removed once it is current and consistent.

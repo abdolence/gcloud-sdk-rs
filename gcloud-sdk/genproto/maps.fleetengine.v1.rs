@@ -298,7 +298,7 @@ pub struct VehicleLocation {
     /// Timestamp associated with the raw location.
     #[prost(message, optional, tag = "17")]
     pub raw_location_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Source of the raw location.
+    /// Source of the raw location. Defaults to `GPS`.
     #[prost(enumeration = "LocationSensor", tag = "28")]
     pub raw_location_sensor: i32,
     /// Accuracy of `raw_location` as a radius, in meters.
@@ -312,7 +312,8 @@ pub struct VehicleLocation {
     /// Timestamp associated with the supplemental location.
     #[prost(message, optional, tag = "19")]
     pub supplemental_location_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Source of the supplemental location.
+    /// Source of the supplemental location. Defaults to
+    /// `CUSTOMER_SUPPLIED_LOCATION`.
     #[prost(enumeration = "LocationSensor", tag = "20")]
     pub supplemental_location_sensor: i32,
     /// Accuracy of `supplemental_location` as a radius, in meters.
@@ -1583,7 +1584,7 @@ pub struct Vehicle {
     /// considered in this value. This value must be greater than or equal to one.
     #[prost(int32, tag = "6")]
     pub maximum_capacity: i32,
-    /// List of vehicle attributes. A vehicle can have at most 50
+    /// List of vehicle attributes. A vehicle can have at most 100
     /// attributes, and each attribute must have a unique key.
     #[prost(message, repeated, tag = "8")]
     pub attributes: ::prost::alloc::vec::Vec<VehicleAttribute>,

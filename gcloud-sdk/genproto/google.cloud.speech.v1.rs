@@ -130,6 +130,37 @@ pub mod speech_adaptation {
         pub abnf_strings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
+/// Transcription normalization configuration. Use transcription normalization
+/// to automatically replace parts of the transcript with phrases of your
+/// choosing. For StreamingRecognize, this normalization only applies to stable
+/// partial transcripts (stability > 0.8) and final transcripts.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TranscriptNormalization {
+    /// A list of replacement entries. We will perform replacement with one entry
+    /// at a time. For example, the second entry in ["cat" => "dog", "mountain cat"
+    /// => "mountain dog"] will never be applied because we will always process the
+    /// first entry before it. At most 100 entries.
+    #[prost(message, repeated, tag = "1")]
+    pub entries: ::prost::alloc::vec::Vec<transcript_normalization::Entry>,
+}
+/// Nested message and enum types in `TranscriptNormalization`.
+pub mod transcript_normalization {
+    /// A single replacement configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Entry {
+        /// What to replace. Max length is 100 characters.
+        #[prost(string, tag = "1")]
+        pub search: ::prost::alloc::string::String,
+        /// What to replace with. Max length is 100 characters.
+        #[prost(string, tag = "2")]
+        pub replace: ::prost::alloc::string::String,
+        /// Whether the search is case sensitive.
+        #[prost(bool, tag = "3")]
+        pub case_sensitive: bool,
+    }
+}
 /// The top-level message sent by the client for the `Recognize` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -362,6 +393,12 @@ pub struct RecognitionConfig {
     /// When speech adaptation is set it supersedes the `speech_contexts` field.
     #[prost(message, optional, tag = "20")]
     pub adaptation: ::core::option::Option<SpeechAdaptation>,
+    /// Optional. Use transcription normalization to automatically replace parts of
+    /// the transcript with phrases of your choosing. For StreamingRecognize, this
+    /// normalization only applies to stable partial transcripts (stability > 0.8)
+    /// and final transcripts.
+    #[prost(message, optional, tag = "24")]
+    pub transcript_normalization: ::core::option::Option<TranscriptNormalization>,
     /// Array of [SpeechContext][google.cloud.speech.v1.SpeechContext].
     /// A means to provide context to assist the speech recognition. For more
     /// information, see
@@ -553,6 +590,11 @@ pub mod recognition_config {
         /// is replaced with a single byte containing the block length. Only Speex
         /// wideband is supported. `sample_rate_hertz` must be 16000.
         SpeexWithHeaderByte = 7,
+        /// MP3 audio. MP3 encoding is a Beta feature and only available in
+        /// v1p1beta1. Support all standard MP3 bitrates (which range from 32-320
+        /// kbps). When using this encoding, `sample_rate_hertz` has to match the
+        /// sample rate of the file being used.
+        Mp3 = 8,
         /// Opus encoded audio frames in WebM container
         /// ([OggOpus](<https://wiki.xiph.org/OggOpus>)). `sample_rate_hertz` must be
         /// one of 8000, 12000, 16000, 24000, or 48000.
@@ -573,6 +615,7 @@ pub mod recognition_config {
                 AudioEncoding::AmrWb => "AMR_WB",
                 AudioEncoding::OggOpus => "OGG_OPUS",
                 AudioEncoding::SpeexWithHeaderByte => "SPEEX_WITH_HEADER_BYTE",
+                AudioEncoding::Mp3 => "MP3",
                 AudioEncoding::WebmOpus => "WEBM_OPUS",
             }
         }
@@ -587,6 +630,7 @@ pub mod recognition_config {
                 "AMR_WB" => Some(Self::AmrWb),
                 "OGG_OPUS" => Some(Self::OggOpus),
                 "SPEEX_WITH_HEADER_BYTE" => Some(Self::SpeexWithHeaderByte),
+                "MP3" => Some(Self::Mp3),
                 "WEBM_OPUS" => Some(Self::WebmOpus),
                 _ => None,
             }
@@ -598,8 +642,8 @@ pub mod recognition_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeakerDiarizationConfig {
     /// If 'true', enables speaker detection for each recognized word in
-    /// the top alternative of the recognition result using a speaker_tag provided
-    /// in the WordInfo.
+    /// the top alternative of the recognition result using a speaker_label
+    /// provided in the WordInfo.
     #[prost(bool, tag = "1")]
     pub enable_speaker_diarization: bool,
     /// Minimum number of speakers in the conversation. This range gives you more
@@ -1294,10 +1338,20 @@ pub struct WordInfo {
     /// Output only. A distinct integer value is assigned for every speaker within
     /// the audio. This field specifies which one of those speakers was detected to
     /// have spoken this word. Value ranges from '1' to diarization_speaker_count.
-    /// speaker_tag is set if enable_speaker_diarization = 'true' and only in the
+    /// speaker_tag is set if enable_speaker_diarization = 'true' and only for the
     /// top alternative.
+    /// Note: Use speaker_label instead.
+    #[deprecated]
     #[prost(int32, tag = "5")]
     pub speaker_tag: i32,
+    /// Output only. A label value assigned for every unique speaker within the
+    /// audio. This field specifies which speaker was detected to have spoken this
+    /// word. For some models, like medical_conversation this can be actual speaker
+    /// role, for example "patient" or "provider", but generally this would be a
+    /// number identifying a speaker. This field is only set if
+    /// enable_speaker_diarization = 'true' and only for the top alternative.
+    #[prost(string, tag = "6")]
+    pub speaker_label: ::prost::alloc::string::String,
 }
 /// Information on speech adaptation use in results
 #[allow(clippy::derive_partial_eq_without_eq)]

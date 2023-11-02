@@ -51,6 +51,55 @@ pub struct StorageSource {
     /// omitted, the latest generation will be used.
     #[prost(int64, tag = "3")]
     pub generation: i64,
+    /// Option to specify the tool to fetch the source file for the build.
+    #[prost(enumeration = "storage_source::SourceFetcher", tag = "5")]
+    pub source_fetcher: i32,
+}
+/// Nested message and enum types in `StorageSource`.
+pub mod storage_source {
+    /// Specifies the tool to fetch the source file for the build.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SourceFetcher {
+        /// Unspecified. Defaults to GSUTIL.
+        Unspecified = 0,
+        /// Use the "gsutil" tool to download the source file.
+        Gsutil = 1,
+        /// Use the Cloud Storage Fetcher tool to download the source file.
+        GcsFetcher = 2,
+    }
+    impl SourceFetcher {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                SourceFetcher::Unspecified => "SOURCE_FETCHER_UNSPECIFIED",
+                SourceFetcher::Gsutil => "GSUTIL",
+                SourceFetcher::GcsFetcher => "GCS_FETCHER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SOURCE_FETCHER_UNSPECIFIED" => Some(Self::Unspecified),
+                "GSUTIL" => Some(Self::Gsutil),
+                "GCS_FETCHER" => Some(Self::GcsFetcher),
+                _ => None,
+            }
+        }
+    }
 }
 /// Location of the source in any accessible Git repository.
 #[allow(clippy::derive_partial_eq_without_eq)]

@@ -222,6 +222,12 @@ pub mod task_status {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Runnable {
+    /// Optional. DisplayName is an optional field that can be provided by the
+    /// caller. If provided, it will be used in logs and other outputs to identify
+    /// the script, making it easier for users to understand the logs. If not
+    /// provided the index of the runnable will be used for outputs.
+    #[prost(string, tag = "10")]
+    pub display_name: ::prost::alloc::string::String,
     /// Normally, a non-zero exit status causes the Task to fail. This flag allows
     /// execution of other Runnables to continue instead.
     #[prost(bool, tag = "3")]
@@ -278,6 +284,14 @@ pub mod runnable {
         /// Volumes to mount (bind mount) from the host machine files or directories
         /// into the container, formatted to match docker run's --volume option,
         /// e.g. /foo:/bar, or /foo:/bar:ro
+        ///
+        /// If the `TaskSpec.Volumes` field is specified but this field is not, Batch
+        /// will mount each volume from the host machine to the container with the
+        /// same mount path by default. In this case, the default mount option for
+        /// containers will be read-only (ro) for existing persistent disks and
+        /// read-write (rw) for other volume types, regardless of the original mount
+        /// options specified in `TaskSpec.Volumes`. If you need different mount
+        /// settings, you can explicitly configure them in this field.
         #[prost(string, repeated, tag = "7")]
         pub volumes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Arbitrary additional options to include in the "docker run" command when
@@ -969,6 +983,7 @@ pub mod allocation_policy {
             /// * `batch-centos`: use Batch CentOS images.
             /// * `batch-cos`: use Batch Container-Optimized images.
             /// * `batch-hpc-centos`: use Batch HPC CentOS images.
+            /// * `batch-hpc-rocky`: use Batch HPC Rocky Linux images.
             #[prost(string, tag = "4")]
             Image(::prost::alloc::string::String),
             /// Name of a snapshot used as the data source.
@@ -1059,6 +1074,10 @@ pub mod allocation_policy {
         /// storage and accessing.
         #[prost(message, repeated, tag = "6")]
         pub disks: ::prost::alloc::vec::Vec<AttachedDisk>,
+        /// Optional. If specified, VMs will consume only the specified reservation.
+        /// If not specified (default), VMs will consume any applicable reservation.
+        #[prost(string, tag = "7")]
+        pub reservation: ::prost::alloc::string::String,
     }
     /// InstancePolicyOrTemplate lets you define the type of resources to use for
     /// this job either with an InstancePolicy or an instance template.
@@ -1231,7 +1250,8 @@ pub struct TaskGroup {
     #[prost(int64, tag = "4")]
     pub task_count: i64,
     /// Max number of tasks that can run in parallel.
-    /// Default to min(task_count, 1000).
+    /// Default to min(task_count, parallel tasks per job limit).
+    /// See: [Job Limits](<https://cloud.google.com/batch/quotas#job_limits>).
     /// Field parallelism must be 1 if the scheduling_policy is IN_ORDER.
     #[prost(int64, tag = "5")]
     pub parallelism: i64,

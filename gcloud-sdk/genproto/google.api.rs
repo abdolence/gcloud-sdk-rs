@@ -3045,6 +3045,84 @@ impl ErrorReason {
         }
     }
 }
+/// Rich semantic information of an API field beyond basic typing.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FieldInfo {
+    /// The standard format of a field value. This does not explicitly configure
+    /// any API consumer, just documents the API's format for the field it is
+    /// applied to.
+    #[prost(enumeration = "field_info::Format", tag = "1")]
+    pub format: i32,
+}
+/// Nested message and enum types in `FieldInfo`.
+pub mod field_info {
+    /// The standard format of a field value. The supported formats are all backed
+    /// by either an RFC defined by the IETF or a Google-defined AIP.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Format {
+        /// Default, unspecified value.
+        Unspecified = 0,
+        /// Universally Unique Identifier, version 4, value as defined by
+        /// <https://datatracker.ietf.org/doc/html/rfc4122.> The value may be
+        /// normalized to entirely lowercase letters. For example, the value
+        /// `F47AC10B-58CC-0372-8567-0E02B2C3D479` would be normalized to
+        /// `f47ac10b-58cc-0372-8567-0e02b2c3d479`.
+        Uuid4 = 1,
+        /// Internet Protocol v4 value as defined by [RFC
+        /// 791](<https://datatracker.ietf.org/doc/html/rfc791>). The value may be
+        /// condensed, with leading zeros in each octet stripped. For example,
+        /// `001.022.233.040` would be condensed to `1.22.233.40`.
+        Ipv4 = 2,
+        /// Internet Protocol v6 value as defined by [RFC
+        /// 2460](<https://datatracker.ietf.org/doc/html/rfc2460>). The value may be
+        /// normalized to entirely lowercase letters, and zero-padded partial and
+        /// empty octets. For example, the value `2001:DB8::` would be normalized to
+        /// `2001:0db8:0:0`.
+        Ipv6 = 3,
+        /// An IP address in either v4 or v6 format as described by the individual
+        /// values defined herein. See the comments on the IPV4 and IPV6 types for
+        /// allowed normalizations of each.
+        Ipv4OrIpv6 = 4,
+    }
+    impl Format {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Format::Unspecified => "FORMAT_UNSPECIFIED",
+                Format::Uuid4 => "UUID4",
+                Format::Ipv4 => "IPV4",
+                Format::Ipv6 => "IPV6",
+                Format::Ipv4OrIpv6 => "IPV4_OR_IPV6",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "UUID4" => Some(Self::Uuid4),
+                "IPV4" => Some(Self::Ipv4),
+                "IPV6" => Some(Self::Ipv6),
+                "IPV4_OR_IPV6" => Some(Self::Ipv4OrIpv6),
+                _ => None,
+            }
+        }
+    }
+}
 /// Message that represents an arbitrary HTTP body. It should only be used for
 /// payload formats that can't be represented as JSON, such as raw binary or
 /// an HTML page.
