@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// CircuitBreakers : Settings controlling the volume of requests, connections and retries to this backend service.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct CircuitBreakers {
     /// The maximum number of connections to the backend service. If not specified, there is no limit. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.
     #[serde(rename = "maxConnections", skip_serializing_if = "Option::is_none")]

@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::bigquery_v2::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`bigquery_jobs_cancel`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodJobsPeriodCancelParams {
     /// [Required] Project ID of the job to cancel
     pub project_id: String,
@@ -39,7 +39,7 @@ pub struct BigqueryPeriodJobsPeriodCancelParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_jobs_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodJobsPeriodDeleteParams {
     /// Required. Project ID of the job for which metadata is to be deleted.
     pub project_id: String,
@@ -64,7 +64,7 @@ pub struct BigqueryPeriodJobsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_jobs_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodJobsPeriodGetParams {
     /// [Required] Project ID of the requested job
     pub project_id: String,
@@ -89,7 +89,7 @@ pub struct BigqueryPeriodJobsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_jobs_get_query_results`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodJobsPeriodGetQueryResultsParams {
     /// [Required] Project ID of the query job
     pub project_id: String,
@@ -122,7 +122,7 @@ pub struct BigqueryPeriodJobsPeriodGetQueryResultsParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_jobs_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodJobsPeriodInsertParams {
     /// Project ID of the project that will be billed for the job
     pub project_id: String,
@@ -144,7 +144,7 @@ pub struct BigqueryPeriodJobsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_jobs_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodJobsPeriodListParams {
     /// Project ID of the jobs to list
     pub project_id: String,
@@ -181,7 +181,7 @@ pub struct BigqueryPeriodJobsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_jobs_query`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodJobsPeriodQueryParams {
     /// Project ID of the project billed for the query
     pub project_id: String,

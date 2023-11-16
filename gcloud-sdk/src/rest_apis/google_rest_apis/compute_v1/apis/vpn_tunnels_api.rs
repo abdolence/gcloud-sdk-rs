@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_vpn_tunnels_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodVpnTunnelsPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodVpnTunnelsPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_vpn_tunnels_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodVpnTunnelsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodVpnTunnelsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_vpn_tunnels_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodVpnTunnelsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -130,7 +130,7 @@ pub struct ComputePeriodVpnTunnelsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_vpn_tunnels_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodVpnTunnelsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -166,7 +166,7 @@ pub struct ComputePeriodVpnTunnelsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_vpn_tunnels_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodVpnTunnelsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -209,7 +209,7 @@ pub struct ComputePeriodVpnTunnelsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_vpn_tunnels_set_labels`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodVpnTunnelsPeriodSetLabelsParams {
     /// Project ID for this request.
     pub project: String,

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InstanceGroupManagersCreateInstancesRequest : InstanceGroupManagers.createInstances
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InstanceGroupManagersCreateInstancesRequest {
     /// [Required] List of specifications of per-instance configs.
     #[serde(rename = "instances", skip_serializing_if = "Option::is_none")]

@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_url_maps_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodUrlMapsPeriodAggregatedListParams {
     /// Name of the project scoping this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodUrlMapsPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_url_maps_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodUrlMapsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -93,7 +93,7 @@ pub struct ComputePeriodUrlMapsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_url_maps_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodUrlMapsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -126,7 +126,7 @@ pub struct ComputePeriodUrlMapsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_url_maps_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodUrlMapsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -160,7 +160,7 @@ pub struct ComputePeriodUrlMapsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_url_maps_invalidate_cache`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodUrlMapsPeriodInvalidateCacheParams {
     /// Project ID for this request.
     pub project: String,
@@ -197,7 +197,7 @@ pub struct ComputePeriodUrlMapsPeriodInvalidateCacheParams {
 }
 
 /// struct for passing parameters to the method [`compute_url_maps_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodUrlMapsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -238,7 +238,7 @@ pub struct ComputePeriodUrlMapsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_url_maps_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodUrlMapsPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -274,7 +274,7 @@ pub struct ComputePeriodUrlMapsPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_url_maps_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodUrlMapsPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,
@@ -310,7 +310,7 @@ pub struct ComputePeriodUrlMapsPeriodUpdateParams {
 }
 
 /// struct for passing parameters to the method [`compute_url_maps_validate`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodUrlMapsPeriodValidateParams {
     /// Project ID for this request.
     pub project: String,

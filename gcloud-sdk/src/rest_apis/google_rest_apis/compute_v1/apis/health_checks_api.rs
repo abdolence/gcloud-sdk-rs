@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_health_checks_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHealthChecksPeriodAggregatedListParams {
     /// Name of the project scoping this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodHealthChecksPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_health_checks_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHealthChecksPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -93,7 +93,7 @@ pub struct ComputePeriodHealthChecksPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_health_checks_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHealthChecksPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -126,7 +126,7 @@ pub struct ComputePeriodHealthChecksPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_health_checks_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHealthChecksPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -160,7 +160,7 @@ pub struct ComputePeriodHealthChecksPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_health_checks_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHealthChecksPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -201,7 +201,7 @@ pub struct ComputePeriodHealthChecksPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_health_checks_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHealthChecksPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -237,7 +237,7 @@ pub struct ComputePeriodHealthChecksPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_health_checks_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHealthChecksPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,

@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_resource_policies_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodResourcePoliciesPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodResourcePoliciesPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_resource_policies_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodResourcePoliciesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodResourcePoliciesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_resource_policies_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodResourcePoliciesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -130,7 +130,7 @@ pub struct ComputePeriodResourcePoliciesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_resource_policies_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodResourcePoliciesPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -167,7 +167,7 @@ pub struct ComputePeriodResourcePoliciesPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_resource_policies_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodResourcePoliciesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -203,7 +203,7 @@ pub struct ComputePeriodResourcePoliciesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_resource_policies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodResourcePoliciesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -246,7 +246,7 @@ pub struct ComputePeriodResourcePoliciesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_resource_policies_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodResourcePoliciesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -286,7 +286,7 @@ pub struct ComputePeriodResourcePoliciesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_resource_policies_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodResourcePoliciesPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -323,7 +323,7 @@ pub struct ComputePeriodResourcePoliciesPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_resource_policies_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodResourcePoliciesPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HttpsHealthCheckList : Contains a list of HttpsHealthCheck resources.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HttpsHealthCheckList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
     #[serde(rename = "id", skip_serializing_if = "Option::is_none")]

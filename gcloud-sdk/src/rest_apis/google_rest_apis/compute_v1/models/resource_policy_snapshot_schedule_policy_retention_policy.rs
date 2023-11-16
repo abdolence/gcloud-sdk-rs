@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ResourcePolicySnapshotSchedulePolicyRetentionPolicy : Policy for retention of scheduled snapshots.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ResourcePolicySnapshotSchedulePolicyRetentionPolicy {
     /// Maximum age of the snapshot that is allowed to be kept.
     #[serde(rename = "maxRetentionDays", skip_serializing_if = "Option::is_none")]

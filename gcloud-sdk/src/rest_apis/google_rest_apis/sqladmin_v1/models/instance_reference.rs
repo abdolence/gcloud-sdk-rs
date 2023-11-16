@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InstanceReference : Reference to another Cloud SQL instance.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InstanceReference {
     /// The name of the Cloud SQL instance being referenced. This does not include the project ID.
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]

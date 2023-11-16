@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ReservationsScopedListWarning : Informational warning which replaces the list of reservations when the list is empty.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ReservationsScopedListWarning {
     /// [Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
     #[serde(rename = "code", skip_serializing_if = "Option::is_none")]

@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_public_advertised_prefixes_announce`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPublicAdvertisedPrefixesPeriodAnnounceParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodPublicAdvertisedPrefixesPeriodAnnounceParams {
 }
 
 /// struct for passing parameters to the method [`compute_public_advertised_prefixes_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPublicAdvertisedPrefixesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -84,7 +84,7 @@ pub struct ComputePeriodPublicAdvertisedPrefixesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_public_advertised_prefixes_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPublicAdvertisedPrefixesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -117,7 +117,7 @@ pub struct ComputePeriodPublicAdvertisedPrefixesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_public_advertised_prefixes_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPublicAdvertisedPrefixesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -152,7 +152,7 @@ pub struct ComputePeriodPublicAdvertisedPrefixesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_public_advertised_prefixes_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPublicAdvertisedPrefixesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -193,7 +193,7 @@ pub struct ComputePeriodPublicAdvertisedPrefixesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_public_advertised_prefixes_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPublicAdvertisedPrefixesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -230,7 +230,7 @@ pub struct ComputePeriodPublicAdvertisedPrefixesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_public_advertised_prefixes_withdraw`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPublicAdvertisedPrefixesPeriodWithdrawParams {
     /// Project ID for this request.
     pub project: String,

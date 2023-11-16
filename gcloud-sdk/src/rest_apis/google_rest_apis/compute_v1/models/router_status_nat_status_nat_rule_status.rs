@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RouterStatusNatStatusNatRuleStatus : Status of a NAT Rule contained in this NAT.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct RouterStatusNatStatusNatRuleStatus {
     /// A list of active IPs for NAT. Example: [\"1.1.1.1\", \"179.12.26.133\"].
     #[serde(rename = "activeNatIps", skip_serializing_if = "Option::is_none")]

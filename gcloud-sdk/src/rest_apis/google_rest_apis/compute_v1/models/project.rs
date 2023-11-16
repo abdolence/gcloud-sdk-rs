@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Project : Represents a Project resource. A project is used to organize resources in a Google Cloud Platform environment. For more information, read about the Resource Hierarchy.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Project {
     #[serde(
         rename = "commonInstanceMetadata",

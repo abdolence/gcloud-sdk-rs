@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SqlInstancesVerifyExternalSyncSettingsResponse : Instance verify external sync settings response.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SqlInstancesVerifyExternalSyncSettingsResponse {
     /// List of migration violations.
     #[serde(rename = "errors", skip_serializing_if = "Option::is_none")]

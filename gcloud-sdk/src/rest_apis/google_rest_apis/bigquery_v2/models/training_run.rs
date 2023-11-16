@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// TrainingRun : Information about a single training query run for the model.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct TrainingRun {
     /// Output only. Global explanation contains the explanation of top features on the class level. Applies to classification models only.
     #[serde(

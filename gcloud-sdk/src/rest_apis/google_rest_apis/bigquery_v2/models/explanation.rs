@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Explanation : Explanation for a single feature.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Explanation {
     /// Attribution of feature.
     #[serde(rename = "attribution", skip_serializing_if = "Option::is_none")]

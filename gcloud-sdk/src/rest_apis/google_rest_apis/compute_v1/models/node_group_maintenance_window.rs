@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// NodeGroupMaintenanceWindow : Time window specified for daily maintenance operations. GCE's internal maintenance will be performed within this window.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct NodeGroupMaintenanceWindow {
     #[serde(
         rename = "maintenanceDuration",

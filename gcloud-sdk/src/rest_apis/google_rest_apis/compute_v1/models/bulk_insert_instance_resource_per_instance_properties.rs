@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BulkInsertInstanceResourcePerInstanceProperties : Per-instance properties to be set on individual instances. To be extended in the future.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BulkInsertInstanceResourcePerInstanceProperties {
     /// Specifies the hostname of the instance. More details in: https://cloud.google.com/compute/docs/instances/custom-hostname-vm#naming_convention
     #[serde(rename = "hostname", skip_serializing_if = "Option::is_none")]

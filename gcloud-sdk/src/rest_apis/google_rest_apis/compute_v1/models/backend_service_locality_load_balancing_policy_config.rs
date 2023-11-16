@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BackendServiceLocalityLoadBalancingPolicyConfig : Container for either a built-in LB policy supported by gRPC or Envoy or a custom one implemented by the end user.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BackendServiceLocalityLoadBalancingPolicyConfig {
     #[serde(rename = "customPolicy", skip_serializing_if = "Option::is_none")]
     pub custom_policy: Option<Box<crate::google_rest_apis::compute_v1::models::BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy>>,

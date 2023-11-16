@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// NodeTypesScopedListWarning : [Output Only] An informational warning that appears when the node types list is empty.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct NodeTypesScopedListWarning {
     /// [Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
     #[serde(rename = "code", skip_serializing_if = "Option::is_none")]

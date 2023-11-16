@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_vpn_gateways_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodVpnGatewaysPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodVpnGatewaysPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_vpn_gateways_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodVpnGatewaysPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodVpnGatewaysPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_vpn_gateways_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodVpnGatewaysPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -130,7 +130,7 @@ pub struct ComputePeriodVpnGatewaysPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_vpn_gateways_get_status`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodVpnGatewaysPeriodGetStatusParams {
     /// Project ID for this request.
     pub project: String,
@@ -165,7 +165,7 @@ pub struct ComputePeriodVpnGatewaysPeriodGetStatusParams {
 }
 
 /// struct for passing parameters to the method [`compute_vpn_gateways_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodVpnGatewaysPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -201,7 +201,7 @@ pub struct ComputePeriodVpnGatewaysPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_vpn_gateways_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodVpnGatewaysPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -244,7 +244,7 @@ pub struct ComputePeriodVpnGatewaysPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_vpn_gateways_set_labels`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodVpnGatewaysPeriodSetLabelsParams {
     /// Project ID for this request.
     pub project: String,
@@ -283,7 +283,7 @@ pub struct ComputePeriodVpnGatewaysPeriodSetLabelsParams {
 }
 
 /// struct for passing parameters to the method [`compute_vpn_gateways_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodVpnGatewaysPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// MySqlSyncConfig : MySQL-specific external server sync settings.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct MySqlSyncConfig {
     /// Flags to use for the initial dump.
     #[serde(rename = "initialSyncFlags", skip_serializing_if = "Option::is_none")]

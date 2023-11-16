@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DisplayDevice : A set of Display Device options
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct DisplayDevice {
     /// Defines whether the instance has Display enabled.
     #[serde(rename = "enableDisplay", skip_serializing_if = "Option::is_none")]

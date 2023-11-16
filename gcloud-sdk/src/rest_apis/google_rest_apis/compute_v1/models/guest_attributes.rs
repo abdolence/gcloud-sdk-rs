@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// GuestAttributes : A guest attributes entry.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct GuestAttributes {
     /// [Output Only] Type of the resource. Always compute#guestAttributes for guest attributes entry.
     #[serde(rename = "kind", skip_serializing_if = "Option::is_none")]

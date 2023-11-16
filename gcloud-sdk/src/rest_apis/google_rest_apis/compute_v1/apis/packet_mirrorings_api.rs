@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_packet_mirrorings_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPacketMirroringsPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodPacketMirroringsPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_packet_mirrorings_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPacketMirroringsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodPacketMirroringsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_packet_mirrorings_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPacketMirroringsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -130,7 +130,7 @@ pub struct ComputePeriodPacketMirroringsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_packet_mirrorings_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPacketMirroringsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -166,7 +166,7 @@ pub struct ComputePeriodPacketMirroringsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_packet_mirrorings_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPacketMirroringsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -209,7 +209,7 @@ pub struct ComputePeriodPacketMirroringsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_packet_mirrorings_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPacketMirroringsPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -247,7 +247,7 @@ pub struct ComputePeriodPacketMirroringsPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_packet_mirrorings_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPacketMirroringsPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

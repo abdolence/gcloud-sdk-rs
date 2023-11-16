@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_instance_groups_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionInstanceGroupsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodRegionInstanceGroupsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_instance_groups_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionInstanceGroupsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -92,7 +92,7 @@ pub struct ComputePeriodRegionInstanceGroupsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_instance_groups_list_instances`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionInstanceGroupsPeriodListInstancesParams {
     /// Project ID for this request.
     pub project: String,
@@ -140,7 +140,7 @@ pub struct ComputePeriodRegionInstanceGroupsPeriodListInstancesParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_instance_groups_set_named_ports`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionInstanceGroupsPeriodSetNamedPortsParams {
     /// Project ID for this request.
     pub project: String,

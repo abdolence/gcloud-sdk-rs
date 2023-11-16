@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InstancesTruncateLogRequest : Instance truncate log request.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InstancesTruncateLogRequest {
     #[serde(rename = "truncateLogContext", skip_serializing_if = "Option::is_none")]
     pub truncate_log_context:

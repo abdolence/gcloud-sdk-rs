@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_target_https_proxies_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetHttpsProxiesPeriodAggregatedListParams {
     /// Name of the project scoping this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodTargetHttpsProxiesPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_https_proxies_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetHttpsProxiesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -93,7 +93,7 @@ pub struct ComputePeriodTargetHttpsProxiesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_https_proxies_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetHttpsProxiesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -126,7 +126,7 @@ pub struct ComputePeriodTargetHttpsProxiesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_https_proxies_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetHttpsProxiesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -160,7 +160,7 @@ pub struct ComputePeriodTargetHttpsProxiesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_https_proxies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetHttpsProxiesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -201,7 +201,7 @@ pub struct ComputePeriodTargetHttpsProxiesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_https_proxies_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetHttpsProxiesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -237,7 +237,7 @@ pub struct ComputePeriodTargetHttpsProxiesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_https_proxies_set_certificate_map`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetHttpsProxiesPeriodSetCertificateMapParams {
     /// Project ID for this request.
     pub project: String,
@@ -275,7 +275,7 @@ pub struct ComputePeriodTargetHttpsProxiesPeriodSetCertificateMapParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_https_proxies_set_quic_override`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetHttpsProxiesPeriodSetQuicOverrideParams {
     /// Project ID for this request.
     pub project: String,
@@ -313,7 +313,7 @@ pub struct ComputePeriodTargetHttpsProxiesPeriodSetQuicOverrideParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_https_proxies_set_ssl_certificates`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetHttpsProxiesPeriodSetSslCertificatesParams {
     /// Project ID for this request.
     pub project: String,
@@ -351,7 +351,7 @@ pub struct ComputePeriodTargetHttpsProxiesPeriodSetSslCertificatesParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_https_proxies_set_ssl_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetHttpsProxiesPeriodSetSslPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -388,7 +388,7 @@ pub struct ComputePeriodTargetHttpsProxiesPeriodSetSslPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_https_proxies_set_url_map`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetHttpsProxiesPeriodSetUrlMapParams {
     /// Project ID for this request.
     pub project: String,

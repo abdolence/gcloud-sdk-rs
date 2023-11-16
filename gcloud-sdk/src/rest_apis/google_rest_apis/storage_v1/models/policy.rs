@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Policy : A bucket/object IAM policy.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Policy {
     /// An association between a role, which comes with a set of permissions, and members who may assume that role.
     #[serde(rename = "bindings", skip_serializing_if = "Option::is_none")]

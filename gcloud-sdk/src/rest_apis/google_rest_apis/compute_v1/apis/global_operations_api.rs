@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_global_operations_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalOperationsPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodGlobalOperationsPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_operations_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalOperationsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -91,7 +91,7 @@ pub struct ComputePeriodGlobalOperationsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_operations_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalOperationsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -124,7 +124,7 @@ pub struct ComputePeriodGlobalOperationsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_operations_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalOperationsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -165,7 +165,7 @@ pub struct ComputePeriodGlobalOperationsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_operations_wait`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalOperationsPeriodWaitParams {
     /// Project ID for this request.
     pub project: String,

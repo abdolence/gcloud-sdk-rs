@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// NetworkEndpointGroupPscData : All data that is specifically relevant to only network endpoint groups of type PRIVATE_SERVICE_CONNECT.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct NetworkEndpointGroupPscData {
     /// [Output Only] Address allocated from given subnetwork for PSC. This IP address acts as a VIP for a PSC NEG, allowing it to act as an endpoint in L7 PSC-XLB.
     #[serde(rename = "consumerPscAddress", skip_serializing_if = "Option::is_none")]

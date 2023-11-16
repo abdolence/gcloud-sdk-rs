@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RouterNatLogConfig : Configuration of logging on a NAT.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct RouterNatLogConfig {
     /// Indicates whether or not to export logs. This is false by default.
     #[serde(rename = "enable", skip_serializing_if = "Option::is_none")]

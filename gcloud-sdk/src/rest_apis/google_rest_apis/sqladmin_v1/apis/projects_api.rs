@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::sqladmin_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`sql_projects_instances_reschedule_maintenance`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodProjectsPeriodInstancesPeriodRescheduleMaintenanceParams {
     /// ID of the project that contains the instance.
     pub project: String,
@@ -48,7 +48,7 @@ pub struct SqlPeriodProjectsPeriodInstancesPeriodRescheduleMaintenanceParams {
 }
 
 /// struct for passing parameters to the method [`sql_projects_instances_start_external_sync`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodProjectsPeriodInstancesPeriodStartExternalSyncParams {
     /// ID of the project that contains the instance.
     pub project: String,
@@ -81,7 +81,7 @@ pub struct SqlPeriodProjectsPeriodInstancesPeriodStartExternalSyncParams {
 }
 
 /// struct for passing parameters to the method [`sql_projects_instances_verify_external_sync_settings`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodProjectsPeriodInstancesPeriodVerifyExternalSyncSettingsParams {
     /// Project ID of the project that contains the instance.
     pub project: String,

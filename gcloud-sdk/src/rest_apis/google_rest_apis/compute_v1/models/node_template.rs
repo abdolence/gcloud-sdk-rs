@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// NodeTemplate : Represent a sole-tenant Node Template resource. You can use a template to define properties for nodes in a node group. For more information, read Creating node groups and instances.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct NodeTemplate {
     #[serde(rename = "accelerators", skip_serializing_if = "Option::is_none")]
     pub accelerators: Option<Vec<crate::google_rest_apis::compute_v1::models::AcceleratorConfig>>,

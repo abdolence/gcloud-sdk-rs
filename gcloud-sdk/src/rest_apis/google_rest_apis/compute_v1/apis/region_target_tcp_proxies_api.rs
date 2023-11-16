@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_target_tcp_proxies_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionTargetTcpProxiesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -51,7 +51,7 @@ pub struct ComputePeriodRegionTargetTcpProxiesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_target_tcp_proxies_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionTargetTcpProxiesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -86,7 +86,7 @@ pub struct ComputePeriodRegionTargetTcpProxiesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_target_tcp_proxies_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionTargetTcpProxiesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -122,7 +122,7 @@ pub struct ComputePeriodRegionTargetTcpProxiesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_target_tcp_proxies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionTargetTcpProxiesPeriodListParams {
     /// Project ID for this request.
     pub project: String,

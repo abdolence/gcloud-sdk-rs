@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Firewall : Represents a Firewall Rule resource. Firewall rules allow or deny ingress traffic to, and egress traffic from your instances. For more information, read Firewall rules.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Firewall {
     /// The list of ALLOW rules specified by this firewall. Each rule specifies a protocol and port-range tuple that describes a permitted connection.
     #[serde(rename = "allowed", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// NetworkAttachment : NetworkAttachments A network attachment resource ...
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct NetworkAttachment {
     /// [Output Only] An array of connections for all the producers connected to this network attachment.
     #[serde(

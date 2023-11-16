@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_global_addresses_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalAddressesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodGlobalAddressesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_addresses_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalAddressesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -82,7 +82,7 @@ pub struct ComputePeriodGlobalAddressesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_addresses_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalAddressesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -116,7 +116,7 @@ pub struct ComputePeriodGlobalAddressesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_addresses_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalAddressesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -157,7 +157,7 @@ pub struct ComputePeriodGlobalAddressesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_addresses_move`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalAddressesPeriodMoveParams {
     /// Source project ID which the Address is moved from.
     pub project: String,
@@ -194,7 +194,7 @@ pub struct ComputePeriodGlobalAddressesPeriodMoveParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_addresses_set_labels`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalAddressesPeriodSetLabelsParams {
     /// Project ID for this request.
     pub project: String,

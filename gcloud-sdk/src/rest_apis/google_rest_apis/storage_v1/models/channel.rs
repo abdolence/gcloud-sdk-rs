@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Channel : An notification channel used to watch for resource changes.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Channel {
     /// The address where notifications are delivered for this channel.
     #[serde(rename = "address", skip_serializing_if = "Option::is_none")]

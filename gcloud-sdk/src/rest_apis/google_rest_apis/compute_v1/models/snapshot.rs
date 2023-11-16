@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Snapshot : Represents a Persistent Disk Snapshot resource. You can use snapshots to back up data on a regular interval. For more information, read Creating persistent disk snapshots.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Snapshot {
     /// [Output Only] The architecture of the snapshot. Valid values are ARM64 or X86_64.
     #[serde(rename = "architecture", skip_serializing_if = "Option::is_none")]

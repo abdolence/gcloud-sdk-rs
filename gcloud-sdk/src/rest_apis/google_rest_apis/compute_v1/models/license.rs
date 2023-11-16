@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// License : Represents a License resource. A License represents billing and aggregate usage data for public and marketplace images. *Caution* This resource is intended for use only by third-party partners who are creating Cloud Marketplace images.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct License {
     /// [Output Only] Deprecated. This field no longer reflects whether a license charges a usage fee.
     #[serde(rename = "chargesUseFee", skip_serializing_if = "Option::is_none")]

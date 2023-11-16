@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_disk_types_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDiskTypesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodRegionDiskTypesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disk_types_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDiskTypesPeriodListParams {
     /// Project ID for this request.
     pub project: String,

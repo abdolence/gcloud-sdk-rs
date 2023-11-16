@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy : The configuration for a custom policy implemented by the user and deployed with the client.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy {
     /// An optional, arbitrary JSON object with configuration data, understood by a locally installed custom policy implementation.
     #[serde(rename = "data", skip_serializing_if = "Option::is_none")]

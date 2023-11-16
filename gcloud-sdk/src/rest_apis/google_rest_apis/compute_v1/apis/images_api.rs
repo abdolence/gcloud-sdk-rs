@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_images_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodImagesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodImagesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_images_deprecate`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodImagesPeriodDeprecateParams {
     /// Project ID for this request.
     pub project: String,
@@ -85,7 +85,7 @@ pub struct ComputePeriodImagesPeriodDeprecateParams {
 }
 
 /// struct for passing parameters to the method [`compute_images_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodImagesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -118,7 +118,7 @@ pub struct ComputePeriodImagesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_images_get_from_family`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodImagesPeriodGetFromFamilyParams {
     /// The image project that the image belongs to. For example, to get a CentOS image, specify centos-cloud as the image project.
     pub project: String,
@@ -151,7 +151,7 @@ pub struct ComputePeriodImagesPeriodGetFromFamilyParams {
 }
 
 /// struct for passing parameters to the method [`compute_images_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodImagesPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -186,7 +186,7 @@ pub struct ComputePeriodImagesPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_images_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodImagesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -222,7 +222,7 @@ pub struct ComputePeriodImagesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_images_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodImagesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -263,7 +263,7 @@ pub struct ComputePeriodImagesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_images_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodImagesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -299,7 +299,7 @@ pub struct ComputePeriodImagesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_images_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodImagesPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -334,7 +334,7 @@ pub struct ComputePeriodImagesPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_images_set_labels`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodImagesPeriodSetLabelsParams {
     /// Project ID for this request.
     pub project: String,
@@ -369,7 +369,7 @@ pub struct ComputePeriodImagesPeriodSetLabelsParams {
 }
 
 /// struct for passing parameters to the method [`compute_images_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodImagesPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

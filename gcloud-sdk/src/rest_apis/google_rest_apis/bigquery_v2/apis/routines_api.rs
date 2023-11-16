@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::bigquery_v2::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`bigquery_routines_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodRoutinesPeriodDeleteParams {
     /// Required. Project ID of the routine to delete
     pub project_id: String,
@@ -39,7 +39,7 @@ pub struct BigqueryPeriodRoutinesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_routines_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodRoutinesPeriodGetParams {
     /// Required. Project ID of the requested routine
     pub project_id: String,
@@ -66,7 +66,7 @@ pub struct BigqueryPeriodRoutinesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_routines_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodRoutinesPeriodInsertParams {
     /// Required. Project ID of the new routine
     pub project_id: String,
@@ -90,7 +90,7 @@ pub struct BigqueryPeriodRoutinesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_routines_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodRoutinesPeriodListParams {
     /// Required. Project ID of the routines to list
     pub project_id: String,
@@ -121,7 +121,7 @@ pub struct BigqueryPeriodRoutinesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_routines_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodRoutinesPeriodUpdateParams {
     /// Required. Project ID of the routine to update
     pub project_id: String,

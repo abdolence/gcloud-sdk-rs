@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::dns_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`dns_response_policies_create`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct DnsPeriodResponsePoliciesPeriodCreateParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -46,7 +46,7 @@ pub struct DnsPeriodResponsePoliciesPeriodCreateParams {
 }
 
 /// struct for passing parameters to the method [`dns_response_policies_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct DnsPeriodResponsePoliciesPeriodDeleteParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -79,7 +79,7 @@ pub struct DnsPeriodResponsePoliciesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`dns_response_policies_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct DnsPeriodResponsePoliciesPeriodGetParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -112,7 +112,7 @@ pub struct DnsPeriodResponsePoliciesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`dns_response_policies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct DnsPeriodResponsePoliciesPeriodListParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -145,7 +145,7 @@ pub struct DnsPeriodResponsePoliciesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`dns_response_policies_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct DnsPeriodResponsePoliciesPeriodPatchParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -179,7 +179,7 @@ pub struct DnsPeriodResponsePoliciesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`dns_response_policies_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct DnsPeriodResponsePoliciesPeriodUpdateParams {
     /// Identifies the project addressed by this request.
     pub project: String,

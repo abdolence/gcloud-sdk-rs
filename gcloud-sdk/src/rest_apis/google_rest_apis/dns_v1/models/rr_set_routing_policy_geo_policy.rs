@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RrSetRoutingPolicyGeoPolicy : Configures a RRSetRoutingPolicy that routes based on the geo location of the querying user.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct RrSetRoutingPolicyGeoPolicy {
     /// Without fencing, if health check fails for all configured items in the current geo bucket, we failover to the next nearest geo bucket. With fencing, if health checking is enabled, as long as some targets in the current geo bucket are healthy, we return only the healthy targets. However, if all targets are unhealthy, we don't failover to the next nearest bucket; instead, we return all the items in the current bucket even when all targets are unhealthy.
     #[serde(rename = "enableFencing", skip_serializing_if = "Option::is_none")]

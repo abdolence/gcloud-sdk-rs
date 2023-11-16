@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// NetworkEndpoint : The network endpoint.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct NetworkEndpoint {
     /// Metadata defined as annotations on the network endpoint.
     #[serde(rename = "annotations", skip_serializing_if = "Option::is_none")]

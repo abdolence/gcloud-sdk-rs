@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// IpMapping : Database instance IP Mapping.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct IpMapping {
     /// The IP address assigned.
     #[serde(rename = "ipAddress", skip_serializing_if = "Option::is_none")]

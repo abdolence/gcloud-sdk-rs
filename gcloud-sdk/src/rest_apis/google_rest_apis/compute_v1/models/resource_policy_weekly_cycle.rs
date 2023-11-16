@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ResourcePolicyWeeklyCycle : Time window specified for weekly operations.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ResourcePolicyWeeklyCycle {
     /// Up to 7 intervals/windows, one for each day of the week.
     #[serde(rename = "dayOfWeeks", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ExternalVpnGatewayList : Response to the list request, and contains a list of externalVpnGateways.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ExternalVpnGatewayList {
     #[serde(rename = "etag", skip_serializing_if = "Option::is_none")]
     pub etag: Option<String>,

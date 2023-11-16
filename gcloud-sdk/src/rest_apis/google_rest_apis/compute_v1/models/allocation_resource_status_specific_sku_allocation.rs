@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// AllocationResourceStatusSpecificSkuAllocation : Contains Properties set for the reservation.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct AllocationResourceStatusSpecificSkuAllocation {
     /// ID of the instance template used to populate reservation properties.
     #[serde(

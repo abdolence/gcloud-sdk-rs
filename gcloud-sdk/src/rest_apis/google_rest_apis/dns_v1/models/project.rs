@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Project : A project resource. The project is a top level container for resources including Cloud DNS ManagedZones. Projects can be created only in the APIs console. Next tag: 7.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Project {
     /// User assigned unique identifier for the resource (output only).
     #[serde(rename = "id", skip_serializing_if = "Option::is_none")]

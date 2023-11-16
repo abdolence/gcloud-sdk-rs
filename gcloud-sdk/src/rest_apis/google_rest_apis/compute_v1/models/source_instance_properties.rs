@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SourceInstanceProperties : DEPRECATED: Please use compute#instanceProperties instead. New properties will not be added to this field.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SourceInstanceProperties {
     /// Enables instances created based on this machine image to send packets with source IP addresses other than their own and receive packets with destination IP addresses other than their own. If these instances will be used as an IP gateway or it will be set as the next-hop in a Route resource, specify true. If unsure, leave this set to false. See the Enable IP forwarding documentation for more information.
     #[serde(rename = "canIpForward", skip_serializing_if = "Option::is_none")]

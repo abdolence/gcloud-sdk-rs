@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ConsistentHashLoadBalancerSettingsHttpCookie : The information about the HTTP Cookie on which the hash function is based for load balancing policies that use a consistent hash.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ConsistentHashLoadBalancerSettingsHttpCookie {
     /// Name of the cookie.
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]

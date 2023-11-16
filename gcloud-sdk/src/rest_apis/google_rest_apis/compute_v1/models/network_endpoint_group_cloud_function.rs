@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// NetworkEndpointGroupCloudFunction : Configuration for a Cloud Function network endpoint group (NEG). The function must be provided explicitly or in the URL mask. Note: Cloud Function must be in the same project and located in the same region as the Serverless NEG.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct NetworkEndpointGroupCloudFunction {
     /// A user-defined name of the Cloud Function. The function name is case-sensitive and must be 1-63 characters long. Example value: \"func1\".
     #[serde(rename = "function", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InstanceGroupManager : Represents a Managed Instance Group resource. An instance group is a collection of VM instances that you can manage as a single entity. For more information, read Instance groups. For zonal Managed Instance Group, use the instanceGroupManagers resource. For regional Managed Instance Group, use the regionInstanceGroupManagers resource.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InstanceGroupManager {
     /// The autohealing policy for this managed instance group. You can specify only one value.
     #[serde(rename = "autoHealingPolicies", skip_serializing_if = "Option::is_none")]

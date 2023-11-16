@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ReservationAffinity : Specifies the reservations that this instance can consume from.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ReservationAffinity {
     /// Specifies the type of reservation from which this instance can consume resources: ANY_RESERVATION (default), SPECIFIC_RESERVATION, or NO_RESERVATION. See Consuming reserved instances for examples.
     #[serde(

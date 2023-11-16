@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ImageRawDisk : The parameters of the raw disk image.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ImageRawDisk {
     /// The format used to encode and transmit the block device, which should be TAR. This is just a container and transmission format and not a runtime format. Provided by the client when the disk image is created.
     #[serde(rename = "containerType", skip_serializing_if = "Option::is_none")]

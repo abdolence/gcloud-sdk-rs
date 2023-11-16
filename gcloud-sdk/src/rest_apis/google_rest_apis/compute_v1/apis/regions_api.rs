@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_regions_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -47,7 +47,7 @@ pub struct ComputePeriodRegionsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_regions_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionsPeriodListParams {
     /// Project ID for this request.
     pub project: String,

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ForwardingRuleServiceDirectoryRegistration : Describes the auto-registration of the Forwarding Rule to Service Directory. The region and project of the Service Directory resource generated from this registration will be the same as this Forwarding Rule.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ForwardingRuleServiceDirectoryRegistration {
     /// Service Directory namespace to register the forwarding rule under.
     #[serde(rename = "namespace", skip_serializing_if = "Option::is_none")]

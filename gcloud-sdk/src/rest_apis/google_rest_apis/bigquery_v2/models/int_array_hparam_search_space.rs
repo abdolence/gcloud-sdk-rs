@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// IntArrayHparamSearchSpace : Search space for int array.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct IntArrayHparamSearchSpace {
     /// Candidates for the int array parameter.
     #[serde(rename = "candidates", skip_serializing_if = "Option::is_none")]

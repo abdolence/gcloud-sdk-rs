@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_disks_add_resource_policies`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodAddResourcePoliciesParams {
     /// Project ID for this request.
     pub project: String,
@@ -53,7 +53,7 @@ pub struct ComputePeriodDisksPeriodAddResourcePoliciesParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -97,7 +97,7 @@ pub struct ComputePeriodDisksPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_bulk_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodBulkInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -134,7 +134,7 @@ pub struct ComputePeriodDisksPeriodBulkInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_create_snapshot`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodCreateSnapshotParams {
     /// Project ID for this request.
     pub project: String,
@@ -174,7 +174,7 @@ pub struct ComputePeriodDisksPeriodCreateSnapshotParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -211,7 +211,7 @@ pub struct ComputePeriodDisksPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -246,7 +246,7 @@ pub struct ComputePeriodDisksPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -283,7 +283,7 @@ pub struct ComputePeriodDisksPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -321,7 +321,7 @@ pub struct ComputePeriodDisksPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -364,7 +364,7 @@ pub struct ComputePeriodDisksPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_remove_resource_policies`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodRemoveResourcePoliciesParams {
     /// Project ID for this request.
     pub project: String,
@@ -403,7 +403,7 @@ pub struct ComputePeriodDisksPeriodRemoveResourcePoliciesParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_resize`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodResizeParams {
     /// Project ID for this request.
     pub project: String,
@@ -442,7 +442,7 @@ pub struct ComputePeriodDisksPeriodResizeParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -479,7 +479,7 @@ pub struct ComputePeriodDisksPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_set_labels`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodSetLabelsParams {
     /// Project ID for this request.
     pub project: String,
@@ -518,7 +518,7 @@ pub struct ComputePeriodDisksPeriodSetLabelsParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_start_async_replication`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodStartAsyncReplicationParams {
     /// Project ID for this request.
     pub project: String,
@@ -557,7 +557,7 @@ pub struct ComputePeriodDisksPeriodStartAsyncReplicationParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_stop_async_replication`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodStopAsyncReplicationParams {
     /// Project ID for this request.
     pub project: String,
@@ -594,7 +594,7 @@ pub struct ComputePeriodDisksPeriodStopAsyncReplicationParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_stop_group_async_replication`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodStopGroupAsyncReplicationParams {
     /// Project ID for this request.
     pub project: String,
@@ -631,7 +631,7 @@ pub struct ComputePeriodDisksPeriodStopGroupAsyncReplicationParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,
@@ -668,7 +668,7 @@ pub struct ComputePeriodDisksPeriodTestIamPermissionsParams {
 }
 
 /// struct for passing parameters to the method [`compute_disks_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodDisksPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,

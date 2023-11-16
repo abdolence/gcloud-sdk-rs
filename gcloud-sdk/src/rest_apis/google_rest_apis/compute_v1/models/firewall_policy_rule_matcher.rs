@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// FirewallPolicyRuleMatcher : Represents a match condition that incoming traffic is evaluated against. Exactly one field must be specified.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct FirewallPolicyRuleMatcher {
     /// Address groups which should be matched against the traffic destination. Maximum number of destination address groups is 10.
     #[serde(rename = "destAddressGroups", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// UpcomingMaintenance : Upcoming Maintenance notification information.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct UpcomingMaintenance {
     /// Indicates if the maintenance can be customer triggered.
     #[serde(rename = "canReschedule", skip_serializing_if = "Option::is_none")]

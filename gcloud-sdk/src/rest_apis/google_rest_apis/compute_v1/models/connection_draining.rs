@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ConnectionDraining : Message containing connection draining configuration.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ConnectionDraining {
     /// Configures a duration timeout for existing requests on a removed backend instance. For supported load balancers and protocols, as described in Enabling connection draining.
     #[serde(rename = "drainingTimeoutSec", skip_serializing_if = "Option::is_none")]

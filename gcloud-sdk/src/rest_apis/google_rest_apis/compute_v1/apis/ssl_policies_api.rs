@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_ssl_policies_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSslPoliciesPeriodAggregatedListParams {
     /// Name of the project scoping this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodSslPoliciesPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_ssl_policies_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSslPoliciesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -93,7 +93,7 @@ pub struct ComputePeriodSslPoliciesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_ssl_policies_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSslPoliciesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -126,7 +126,7 @@ pub struct ComputePeriodSslPoliciesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_ssl_policies_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSslPoliciesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -160,7 +160,7 @@ pub struct ComputePeriodSslPoliciesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_ssl_policies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSslPoliciesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -201,7 +201,7 @@ pub struct ComputePeriodSslPoliciesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_ssl_policies_list_available_features`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSslPoliciesPeriodListAvailableFeaturesParams {
     /// Project ID for this request.
     pub project: String,
@@ -242,7 +242,7 @@ pub struct ComputePeriodSslPoliciesPeriodListAvailableFeaturesParams {
 }
 
 /// struct for passing parameters to the method [`compute_ssl_policies_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSslPoliciesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,

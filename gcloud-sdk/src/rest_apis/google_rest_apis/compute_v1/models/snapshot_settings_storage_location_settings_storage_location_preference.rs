@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SnapshotSettingsStorageLocationSettingsStorageLocationPreference : A structure for specifying storage locations.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SnapshotSettingsStorageLocationSettingsStorageLocationPreference {
     /// Name of the location. It should be one of the GCS buckets.
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]

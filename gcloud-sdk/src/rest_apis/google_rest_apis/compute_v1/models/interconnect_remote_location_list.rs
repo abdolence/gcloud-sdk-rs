@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InterconnectRemoteLocationList : Response to the list request, and contains a list of interconnect remote locations.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InterconnectRemoteLocationList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
     #[serde(rename = "id", skip_serializing_if = "Option::is_none")]

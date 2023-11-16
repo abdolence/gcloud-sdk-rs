@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HealthCheckLogConfig : Configuration of logging on a health check. If logging is enabled, logs will be exported to Stackdriver.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HealthCheckLogConfig {
     /// Indicates whether or not to export logs. This is false by default, which means no health check logging will be done.
     #[serde(rename = "enable", skip_serializing_if = "Option::is_none")]

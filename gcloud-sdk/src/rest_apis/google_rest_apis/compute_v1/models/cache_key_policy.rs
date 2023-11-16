@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// CacheKeyPolicy : Message containing what to include in the cache key for a request for Cloud CDN.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct CacheKeyPolicy {
     /// If true, requests to different hosts will be cached separately.
     #[serde(rename = "includeHost", skip_serializing_if = "Option::is_none")]

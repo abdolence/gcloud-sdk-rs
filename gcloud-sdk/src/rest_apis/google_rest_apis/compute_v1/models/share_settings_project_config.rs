@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ShareSettingsProjectConfig : Config for each project in the share settings.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ShareSettingsProjectConfig {
     /// The project ID, should be same as the key of this project config in the parent map.
     #[serde(rename = "projectId", skip_serializing_if = "Option::is_none")]

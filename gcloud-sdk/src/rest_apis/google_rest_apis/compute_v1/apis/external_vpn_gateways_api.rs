@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_external_vpn_gateways_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodExternalVpnGatewaysPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodExternalVpnGatewaysPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_external_vpn_gateways_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodExternalVpnGatewaysPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -82,7 +82,7 @@ pub struct ComputePeriodExternalVpnGatewaysPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_external_vpn_gateways_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodExternalVpnGatewaysPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -117,7 +117,7 @@ pub struct ComputePeriodExternalVpnGatewaysPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_external_vpn_gateways_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodExternalVpnGatewaysPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -158,7 +158,7 @@ pub struct ComputePeriodExternalVpnGatewaysPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_external_vpn_gateways_set_labels`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodExternalVpnGatewaysPeriodSetLabelsParams {
     /// Project ID for this request.
     pub project: String,
@@ -193,7 +193,7 @@ pub struct ComputePeriodExternalVpnGatewaysPeriodSetLabelsParams {
 }
 
 /// struct for passing parameters to the method [`compute_external_vpn_gateways_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodExternalVpnGatewaysPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

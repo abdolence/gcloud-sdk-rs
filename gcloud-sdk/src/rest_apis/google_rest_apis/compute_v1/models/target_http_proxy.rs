@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// TargetHttpProxy : Represents a Target HTTP Proxy resource. Google Compute Engine has two Target HTTP Proxy resources: * [Global](/compute/docs/reference/rest/v1/targetHttpProxies) * [Regional](/compute/docs/reference/rest/v1/regionTargetHttpProxies) A target HTTP proxy is a component of Google Cloud HTTP load balancers. * targetHttpProxies are used by global external Application Load Balancers, classic Application Load Balancers, cross-region internal Application Load Balancers, and Traffic Director. * regionTargetHttpProxies are used by regional internal Application Load Balancers and regional external Application Load Balancers. Forwarding rules reference a target HTTP proxy, and the target proxy then references a URL map. For more information, read Using Target Proxies and Forwarding rule concepts.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct TargetHttpProxy {
     /// [Output Only] Creation timestamp in RFC3339 text format.
     #[serde(rename = "creationTimestamp", skip_serializing_if = "Option::is_none")]

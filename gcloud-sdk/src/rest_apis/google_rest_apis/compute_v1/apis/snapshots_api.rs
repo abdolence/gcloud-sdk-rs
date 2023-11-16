@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_snapshots_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSnapshotsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodSnapshotsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_snapshots_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSnapshotsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -82,7 +82,7 @@ pub struct ComputePeriodSnapshotsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_snapshots_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSnapshotsPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -117,7 +117,7 @@ pub struct ComputePeriodSnapshotsPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_snapshots_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSnapshotsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -151,7 +151,7 @@ pub struct ComputePeriodSnapshotsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_snapshots_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSnapshotsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -192,7 +192,7 @@ pub struct ComputePeriodSnapshotsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_snapshots_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSnapshotsPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -227,7 +227,7 @@ pub struct ComputePeriodSnapshotsPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_snapshots_set_labels`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSnapshotsPeriodSetLabelsParams {
     /// Project ID for this request.
     pub project: String,
@@ -262,7 +262,7 @@ pub struct ComputePeriodSnapshotsPeriodSetLabelsParams {
 }
 
 /// struct for passing parameters to the method [`compute_snapshots_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSnapshotsPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

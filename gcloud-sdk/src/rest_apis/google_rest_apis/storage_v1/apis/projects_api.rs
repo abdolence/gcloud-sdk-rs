@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::storage_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`storage_projects_hmac_keys_create`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodProjectsPeriodHmacKeysPeriodCreateParams {
     /// Project ID owning the service account.
     pub project_id: String,
@@ -41,7 +41,7 @@ pub struct StoragePeriodProjectsPeriodHmacKeysPeriodCreateParams {
 }
 
 /// struct for passing parameters to the method [`storage_projects_hmac_keys_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodProjectsPeriodHmacKeysPeriodDeleteParams {
     /// Project ID owning the requested key
     pub project_id: String,
@@ -68,7 +68,7 @@ pub struct StoragePeriodProjectsPeriodHmacKeysPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`storage_projects_hmac_keys_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodProjectsPeriodHmacKeysPeriodGetParams {
     /// Project ID owning the service account of the requested key.
     pub project_id: String,
@@ -95,7 +95,7 @@ pub struct StoragePeriodProjectsPeriodHmacKeysPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`storage_projects_hmac_keys_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodProjectsPeriodHmacKeysPeriodListParams {
     /// Name of the project in which to look for HMAC keys.
     pub project_id: String,
@@ -128,7 +128,7 @@ pub struct StoragePeriodProjectsPeriodHmacKeysPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`storage_projects_hmac_keys_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodProjectsPeriodHmacKeysPeriodUpdateParams {
     /// Project ID owning the service account of the updated key.
     pub project_id: String,
@@ -156,7 +156,7 @@ pub struct StoragePeriodProjectsPeriodHmacKeysPeriodUpdateParams {
 }
 
 /// struct for passing parameters to the method [`storage_projects_service_account_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodProjectsPeriodServiceAccountPeriodGetParams {
     /// Project ID
     pub project_id: String,

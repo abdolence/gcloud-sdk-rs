@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::storage_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`storage_buckets_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodBucketsPeriodDeleteParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -43,7 +43,7 @@ pub struct StoragePeriodBucketsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`storage_buckets_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodBucketsPeriodGetParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -74,7 +74,7 @@ pub struct StoragePeriodBucketsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`storage_buckets_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodBucketsPeriodGetIamPolicyParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -101,7 +101,7 @@ pub struct StoragePeriodBucketsPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`storage_buckets_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodBucketsPeriodInsertParams {
     /// A valid API project identifier.
     pub project: String,
@@ -133,7 +133,7 @@ pub struct StoragePeriodBucketsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`storage_buckets_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodBucketsPeriodListParams {
     /// A valid API project identifier.
     pub project: String,
@@ -166,7 +166,7 @@ pub struct StoragePeriodBucketsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`storage_buckets_lock_retention_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodBucketsPeriodLockRetentionPolicyParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -193,7 +193,7 @@ pub struct StoragePeriodBucketsPeriodLockRetentionPolicyParams {
 }
 
 /// struct for passing parameters to the method [`storage_buckets_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodBucketsPeriodPatchParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -229,7 +229,7 @@ pub struct StoragePeriodBucketsPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`storage_buckets_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodBucketsPeriodSetIamPolicyParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -255,7 +255,7 @@ pub struct StoragePeriodBucketsPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`storage_buckets_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodBucketsPeriodTestIamPermissionsParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -282,7 +282,7 @@ pub struct StoragePeriodBucketsPeriodTestIamPermissionsParams {
 }
 
 /// struct for passing parameters to the method [`storage_buckets_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodBucketsPeriodUpdateParams {
     /// Name of a bucket.
     pub bucket: String,

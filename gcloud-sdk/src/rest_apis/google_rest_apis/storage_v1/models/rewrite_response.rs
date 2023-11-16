@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RewriteResponse : A rewrite response.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct RewriteResponse {
     /// true if the copy is finished; otherwise, false if the copy is in progress. This property is always present in the response.
     #[serde(rename = "done", skip_serializing_if = "Option::is_none")]

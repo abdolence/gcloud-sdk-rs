@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// GoogleIamV1SetIamPolicyRequest : Request message for `SetIamPolicy` method.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct GoogleIamV1SetIamPolicyRequest {
     #[serde(rename = "policy", skip_serializing_if = "Option::is_none")]
     pub policy: Option<Box<crate::google_rest_apis::dns_v1::models::GoogleIamV1Policy>>,

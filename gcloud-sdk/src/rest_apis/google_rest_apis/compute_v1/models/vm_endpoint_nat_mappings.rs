@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// VmEndpointNatMappings : Contain information of Nat mapping for a VM endpoint (i.e., NIC).
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct VmEndpointNatMappings {
     /// Name of the VM instance which the endpoint belongs to
     #[serde(rename = "instanceName", skip_serializing_if = "Option::is_none")]

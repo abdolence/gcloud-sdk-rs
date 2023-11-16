@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// UrlRewrite : The spec for modifying the path before sending the request to the matched backend service.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct UrlRewrite {
     /// Before forwarding the request to the selected service, the request's host header is replaced with contents of hostRewrite. The value must be from 1 to 255 characters.
     #[serde(rename = "hostRewrite", skip_serializing_if = "Option::is_none")]

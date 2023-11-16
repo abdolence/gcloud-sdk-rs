@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// NotificationEndpointGrpcSettings : Represents a gRPC setting that describes one gRPC notification endpoint and the retry duration attempting to send notification to this endpoint.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct NotificationEndpointGrpcSettings {
     /// Optional. If specified, this field is used to set the authority header by the sender of notifications. See https://tools.ietf.org/html/rfc7540#section-8.1.2.3
     #[serde(rename = "authority", skip_serializing_if = "Option::is_none")]

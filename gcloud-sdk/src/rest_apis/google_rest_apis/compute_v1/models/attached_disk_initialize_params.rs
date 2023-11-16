@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// AttachedDiskInitializeParams : [Input Only] Specifies the parameters for a new disk that will be created alongside the new instance. Use initialization parameters to create boot disks or local SSDs attached to the new instance. This field is persisted and returned for instanceTemplate and not returned in the context of instance. This property is mutually exclusive with the source property; you can only define one or the other, but not both.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct AttachedDiskInitializeParams {
     /// The architecture of the attached disk. Valid values are arm64 or x86_64.
     #[serde(rename = "architecture", skip_serializing_if = "Option::is_none")]

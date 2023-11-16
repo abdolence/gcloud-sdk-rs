@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ModelDefinitionModelOptions : [Output-only, Beta] Model options used for the first training run. These options are immutable for subsequent training runs. Default values are used for any options not specified in the input query.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ModelDefinitionModelOptions {
     #[serde(rename = "labels", skip_serializing_if = "Option::is_none")]
     pub labels: Option<Vec<String>>,

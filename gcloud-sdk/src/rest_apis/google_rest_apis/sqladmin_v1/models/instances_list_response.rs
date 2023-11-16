@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InstancesListResponse : Database instances list response.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InstancesListResponse {
     /// List of database instance resources.
     #[serde(rename = "items", skip_serializing_if = "Option::is_none")]

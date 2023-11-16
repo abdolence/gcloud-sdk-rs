@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_projects_disable_xpn_host`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodProjectsPeriodDisableXpnHostParams {
     /// Project ID for this request.
     pub project: String,
@@ -47,7 +47,7 @@ pub struct ComputePeriodProjectsPeriodDisableXpnHostParams {
 }
 
 /// struct for passing parameters to the method [`compute_projects_disable_xpn_resource`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodProjectsPeriodDisableXpnResourceParams {
     /// Project ID for this request.
     pub project: String,
@@ -82,7 +82,7 @@ pub struct ComputePeriodProjectsPeriodDisableXpnResourceParams {
 }
 
 /// struct for passing parameters to the method [`compute_projects_enable_xpn_host`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodProjectsPeriodEnableXpnHostParams {
     /// Project ID for this request.
     pub project: String,
@@ -115,7 +115,7 @@ pub struct ComputePeriodProjectsPeriodEnableXpnHostParams {
 }
 
 /// struct for passing parameters to the method [`compute_projects_enable_xpn_resource`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodProjectsPeriodEnableXpnResourceParams {
     /// Project ID for this request.
     pub project: String,
@@ -150,7 +150,7 @@ pub struct ComputePeriodProjectsPeriodEnableXpnResourceParams {
 }
 
 /// struct for passing parameters to the method [`compute_projects_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodProjectsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -181,7 +181,7 @@ pub struct ComputePeriodProjectsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_projects_get_xpn_host`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodProjectsPeriodGetXpnHostParams {
     /// Project ID for this request.
     pub project: String,
@@ -212,7 +212,7 @@ pub struct ComputePeriodProjectsPeriodGetXpnHostParams {
 }
 
 /// struct for passing parameters to the method [`compute_projects_get_xpn_resources`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodProjectsPeriodGetXpnResourcesParams {
     /// Project ID for this request.
     pub project: String,
@@ -253,7 +253,7 @@ pub struct ComputePeriodProjectsPeriodGetXpnResourcesParams {
 }
 
 /// struct for passing parameters to the method [`compute_projects_list_xpn_hosts`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodProjectsPeriodListXpnHostsParams {
     /// Project ID for this request.
     pub project: String,
@@ -296,7 +296,7 @@ pub struct ComputePeriodProjectsPeriodListXpnHostsParams {
 }
 
 /// struct for passing parameters to the method [`compute_projects_move_disk`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodProjectsPeriodMoveDiskParams {
     /// Project ID for this request.
     pub project: String,
@@ -330,7 +330,7 @@ pub struct ComputePeriodProjectsPeriodMoveDiskParams {
 }
 
 /// struct for passing parameters to the method [`compute_projects_move_instance`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodProjectsPeriodMoveInstanceParams {
     /// Project ID for this request.
     pub project: String,
@@ -365,7 +365,7 @@ pub struct ComputePeriodProjectsPeriodMoveInstanceParams {
 }
 
 /// struct for passing parameters to the method [`compute_projects_set_common_instance_metadata`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodProjectsPeriodSetCommonInstanceMetadataParams {
     /// Project ID for this request.
     pub project: String,
@@ -399,7 +399,7 @@ pub struct ComputePeriodProjectsPeriodSetCommonInstanceMetadataParams {
 }
 
 /// struct for passing parameters to the method [`compute_projects_set_default_network_tier`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodProjectsPeriodSetDefaultNetworkTierParams {
     /// Project ID for this request.
     pub project: String,
@@ -434,7 +434,7 @@ pub struct ComputePeriodProjectsPeriodSetDefaultNetworkTierParams {
 }
 
 /// struct for passing parameters to the method [`compute_projects_set_usage_export_bucket`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodProjectsPeriodSetUsageExportBucketParams {
     /// Project ID for this request.
     pub project: String,

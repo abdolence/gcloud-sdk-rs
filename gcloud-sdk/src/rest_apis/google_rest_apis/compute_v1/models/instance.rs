@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Instance : Represents an Instance resource. An instance is a virtual machine that is hosted on Google Cloud Platform. For more information, read Virtual Machine Instances.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Instance {
     #[serde(
         rename = "advancedMachineFeatures",

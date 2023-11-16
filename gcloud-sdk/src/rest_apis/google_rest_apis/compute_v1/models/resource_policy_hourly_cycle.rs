@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ResourcePolicyHourlyCycle : Time window specified for hourly operations.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ResourcePolicyHourlyCycle {
     /// [Output only] Duration of the time window, automatically chosen to be smallest possible in the given scenario.
     #[serde(rename = "duration", skip_serializing_if = "Option::is_none")]

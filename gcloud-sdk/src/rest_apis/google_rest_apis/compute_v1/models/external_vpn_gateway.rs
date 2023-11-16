@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ExternalVpnGateway : Represents an external VPN gateway. External VPN gateway is the on-premises VPN gateway(s) or another cloud provider's VPN gateway that connects to your Google Cloud VPN gateway. To create a highly available VPN from Google Cloud Platform to your VPN gateway or another cloud provider's VPN gateway, you must create a external VPN gateway resource with information about the other gateway. For more information about using external VPN gateways, see Creating an HA VPN gateway and tunnel pair to a peer VPN.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ExternalVpnGateway {
     /// [Output Only] Creation timestamp in RFC3339 text format.
     #[serde(rename = "creationTimestamp", skip_serializing_if = "Option::is_none")]

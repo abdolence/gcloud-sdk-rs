@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Address : Represents an IP Address resource. Google Compute Engine has two IP Address resources: * [Global (external and internal)](https://cloud.google.com/compute/docs/reference/rest/v1/globalAddresses) * [Regional (external and internal)](https://cloud.google.com/compute/docs/reference/rest/v1/addresses) For more information, see Reserving a static external IP address.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Address {
     /// The static IP address represented by this resource.
     #[serde(rename = "address", skip_serializing_if = "Option::is_none")]

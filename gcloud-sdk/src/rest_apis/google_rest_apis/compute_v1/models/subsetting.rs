@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Subsetting : Subsetting configuration for this BackendService. Currently this is applicable only for Internal TCP/UDP load balancing, Internal HTTP(S) load balancing and Traffic Director.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Subsetting {
     #[serde(rename = "policy", skip_serializing_if = "Option::is_none")]
     pub policy: Option<Policy>,

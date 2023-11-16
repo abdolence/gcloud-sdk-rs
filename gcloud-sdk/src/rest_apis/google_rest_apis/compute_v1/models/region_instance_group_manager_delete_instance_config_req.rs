@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RegionInstanceGroupManagerDeleteInstanceConfigReq : RegionInstanceGroupManagers.deletePerInstanceConfigs
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct RegionInstanceGroupManagerDeleteInstanceConfigReq {
     /// The list of instance names for which we want to delete per-instance configs on this managed instance group.
     #[serde(rename = "names", skip_serializing_if = "Option::is_none")]

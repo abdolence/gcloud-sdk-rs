@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ServiceAccount : A service account.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ServiceAccount {
     /// Email address of the service account.
     #[serde(rename = "email", skip_serializing_if = "Option::is_none")]

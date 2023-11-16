@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_ssl_certificates_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSslCertificatesPeriodAggregatedListParams {
     /// Name of the project scoping this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodSslCertificatesPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_ssl_certificates_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSslCertificatesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -93,7 +93,7 @@ pub struct ComputePeriodSslCertificatesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_ssl_certificates_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSslCertificatesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -126,7 +126,7 @@ pub struct ComputePeriodSslCertificatesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_ssl_certificates_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSslCertificatesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -160,7 +160,7 @@ pub struct ComputePeriodSslCertificatesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_ssl_certificates_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSslCertificatesPeriodListParams {
     /// Project ID for this request.
     pub project: String,

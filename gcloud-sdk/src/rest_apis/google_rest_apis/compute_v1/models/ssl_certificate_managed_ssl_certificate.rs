@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SslCertificateManagedSslCertificate : Configuration and status of a managed SSL certificate.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SslCertificateManagedSslCertificate {
     /// [Output only] Detailed statuses of the domains specified for managed certificate resource.
     #[serde(rename = "domainStatus", skip_serializing_if = "Option::is_none")]

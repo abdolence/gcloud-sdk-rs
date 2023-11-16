@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ConfusionMatrix : Confusion matrix for multi-class classification models.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ConfusionMatrix {
     /// Confidence threshold used when computing the entries of the confusion matrix.
     #[serde(

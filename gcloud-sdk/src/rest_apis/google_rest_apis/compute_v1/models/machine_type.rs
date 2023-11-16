@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// MachineType : Represents a Machine Type resource. You can use specific machine types for your VM instances based on performance and pricing requirements. For more information, read Machine Types.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct MachineType {
     /// [Output Only] A list of accelerator configurations assigned to this machine type.
     #[serde(rename = "accelerators", skip_serializing_if = "Option::is_none")]

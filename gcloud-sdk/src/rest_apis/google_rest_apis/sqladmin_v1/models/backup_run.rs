@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BackupRun : A BackupRun resource.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BackupRun {
     /// Specifies the kind of backup, PHYSICAL or DEFAULT_SNAPSHOT.
     #[serde(rename = "backupKind", skip_serializing_if = "Option::is_none")]

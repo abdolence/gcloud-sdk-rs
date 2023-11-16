@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BucketIamConfiguration : The bucket's IAM configuration.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BucketIamConfiguration {
     #[serde(rename = "bucketPolicyOnly", skip_serializing_if = "Option::is_none")]
     pub bucket_policy_only: Option<Box<crate::google_rest_apis::storage_v1::models::BucketIamConfigurationBucketPolicyOnly>>,

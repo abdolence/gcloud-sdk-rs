@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InterconnectCircuitInfo : Describes a single physical circuit between the Customer and Google. CircuitInfo objects are created by Google, so all fields are output only.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InterconnectCircuitInfo {
     /// Customer-side demarc ID for this circuit.
     #[serde(rename = "customerDemarcId", skip_serializing_if = "Option::is_none")]

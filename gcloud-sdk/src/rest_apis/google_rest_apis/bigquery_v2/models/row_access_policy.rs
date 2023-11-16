@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RowAccessPolicy : Represents access on a subset of rows on the specified table, defined by its filter predicate. Access to the subset of rows is controlled by its IAM policy.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct RowAccessPolicy {
     /// Output only. The time when this row access policy was created, in milliseconds since the epoch.
     #[serde(rename = "creationTime", skip_serializing_if = "Option::is_none")]

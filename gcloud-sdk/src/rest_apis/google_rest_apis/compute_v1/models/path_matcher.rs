@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// PathMatcher : A matcher for the path portion of the URL. The BackendService from the longest-matched rule will serve the URL. If no rule was matched, the default service is used.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct PathMatcher {
     #[serde(rename = "defaultRouteAction", skip_serializing_if = "Option::is_none")]
     pub default_route_action:

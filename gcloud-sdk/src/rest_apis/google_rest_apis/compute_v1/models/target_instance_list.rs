@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// TargetInstanceList : Contains a list of TargetInstance resources.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct TargetInstanceList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
     #[serde(rename = "id", skip_serializing_if = "Option::is_none")]

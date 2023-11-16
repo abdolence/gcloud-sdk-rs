@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SqlInstancesRescheduleMaintenanceRequestBody : Reschedule options for maintenance windows.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SqlInstancesRescheduleMaintenanceRequestBody {
     #[serde(rename = "reschedule", skip_serializing_if = "Option::is_none")]
     pub reschedule: Option<Box<crate::google_rest_apis::sqladmin_v1::models::Reschedule>>,

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ShareSettings : The share setting for reservations and sole tenancy node groups.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ShareSettings {
     /// A map of project id and project config. This is only valid when share_type's value is SPECIFIC_PROJECTS.
     #[serde(rename = "projectMap", skip_serializing_if = "Option::is_none")]

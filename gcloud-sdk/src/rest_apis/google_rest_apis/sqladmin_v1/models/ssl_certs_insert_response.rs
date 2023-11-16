@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SslCertsInsertResponse : SslCert insert response.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SslCertsInsertResponse {
     #[serde(rename = "clientCert", skip_serializing_if = "Option::is_none")]
     pub client_cert: Option<Box<crate::google_rest_apis::sqladmin_v1::models::SslCertDetail>>,

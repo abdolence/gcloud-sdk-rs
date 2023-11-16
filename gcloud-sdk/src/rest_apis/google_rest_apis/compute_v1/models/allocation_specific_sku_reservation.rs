@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// AllocationSpecificSkuReservation : This reservation type allows to pre allocate specific instance configuration. Next ID: 6
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct AllocationSpecificSkuReservation {
     /// [Output Only] Indicates how many instances are actually usable currently.
     #[serde(rename = "assuredCount", skip_serializing_if = "Option::is_none")]

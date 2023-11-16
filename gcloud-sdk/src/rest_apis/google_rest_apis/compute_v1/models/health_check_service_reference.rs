@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HealthCheckServiceReference : A full or valid partial URL to a health check service. For example, the following are valid URLs: - https://www.googleapis.com/compute/beta/projects/project-id/regions/us-west1/healthCheckServices/health-check-service - projects/project-id/regions/us-west1/healthCheckServices/health-check-service - regions/us-west1/healthCheckServices/health-check-service
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HealthCheckServiceReference {
     #[serde(rename = "healthCheckService", skip_serializing_if = "Option::is_none")]
     pub health_check_service: Option<String>,

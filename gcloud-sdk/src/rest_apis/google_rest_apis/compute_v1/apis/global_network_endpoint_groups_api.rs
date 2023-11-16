@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_global_network_endpoint_groups_attach_network_endpoints`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalNetworkEndpointGroupsPeriodAttachNetworkEndpointsParams {
     /// Project ID for this request.
     pub project: String,
@@ -50,7 +50,7 @@ pub struct ComputePeriodGlobalNetworkEndpointGroupsPeriodAttachNetworkEndpointsP
 }
 
 /// struct for passing parameters to the method [`compute_global_network_endpoint_groups_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalNetworkEndpointGroupsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -85,7 +85,7 @@ pub struct ComputePeriodGlobalNetworkEndpointGroupsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_network_endpoint_groups_detach_network_endpoints`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalNetworkEndpointGroupsPeriodDetachNetworkEndpointsParams {
     /// Project ID for this request.
     pub project: String,
@@ -121,7 +121,7 @@ pub struct ComputePeriodGlobalNetworkEndpointGroupsPeriodDetachNetworkEndpointsP
 }
 
 /// struct for passing parameters to the method [`compute_global_network_endpoint_groups_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalNetworkEndpointGroupsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -154,7 +154,7 @@ pub struct ComputePeriodGlobalNetworkEndpointGroupsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_network_endpoint_groups_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalNetworkEndpointGroupsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -189,7 +189,7 @@ pub struct ComputePeriodGlobalNetworkEndpointGroupsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_network_endpoint_groups_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalNetworkEndpointGroupsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -230,7 +230,7 @@ pub struct ComputePeriodGlobalNetworkEndpointGroupsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_network_endpoint_groups_list_network_endpoints`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalNetworkEndpointGroupsPeriodListNetworkEndpointsParams {
     /// Project ID for this request.
     pub project: String,

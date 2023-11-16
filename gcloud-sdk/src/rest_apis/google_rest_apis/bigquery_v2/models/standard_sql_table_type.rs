@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// StandardSqlTableType : A table type
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct StandardSqlTableType {
     /// The columns in this table type
     #[serde(rename = "columns", skip_serializing_if = "Option::is_none")]

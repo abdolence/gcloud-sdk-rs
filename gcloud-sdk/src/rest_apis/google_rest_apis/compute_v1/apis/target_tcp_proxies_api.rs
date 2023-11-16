@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_target_tcp_proxies_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetTcpProxiesPeriodAggregatedListParams {
     /// Name of the project scoping this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodTargetTcpProxiesPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_tcp_proxies_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetTcpProxiesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -93,7 +93,7 @@ pub struct ComputePeriodTargetTcpProxiesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_tcp_proxies_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetTcpProxiesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -126,7 +126,7 @@ pub struct ComputePeriodTargetTcpProxiesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_tcp_proxies_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetTcpProxiesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -160,7 +160,7 @@ pub struct ComputePeriodTargetTcpProxiesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_tcp_proxies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetTcpProxiesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -201,7 +201,7 @@ pub struct ComputePeriodTargetTcpProxiesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_tcp_proxies_set_backend_service`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetTcpProxiesPeriodSetBackendServiceParams {
     /// Project ID for this request.
     pub project: String,
@@ -239,7 +239,7 @@ pub struct ComputePeriodTargetTcpProxiesPeriodSetBackendServiceParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_tcp_proxies_set_proxy_header`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetTcpProxiesPeriodSetProxyHeaderParams {
     /// Project ID for this request.
     pub project: String,

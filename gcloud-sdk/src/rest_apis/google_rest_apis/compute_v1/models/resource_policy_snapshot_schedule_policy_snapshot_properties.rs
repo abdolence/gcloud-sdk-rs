@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ResourcePolicySnapshotSchedulePolicySnapshotProperties : Specified snapshot properties for scheduled snapshots created by this policy.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ResourcePolicySnapshotSchedulePolicySnapshotProperties {
     /// Chain name that the snapshot is created in.
     #[serde(rename = "chainName", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HttpFaultInjection : The specification for fault injection introduced into traffic to test the resiliency of clients to backend service failure. As part of fault injection, when clients send requests to a backend service, delays can be introduced by the load balancer on a percentage of requests before sending those request to the backend service. Similarly requests from clients can be aborted by the load balancer for a percentage of requests.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HttpFaultInjection {
     #[serde(rename = "abort", skip_serializing_if = "Option::is_none")]
     pub abort: Option<Box<crate::google_rest_apis::compute_v1::models::HttpFaultAbort>>,

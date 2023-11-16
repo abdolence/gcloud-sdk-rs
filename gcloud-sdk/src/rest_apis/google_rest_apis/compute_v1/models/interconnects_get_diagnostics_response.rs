@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InterconnectsGetDiagnosticsResponse : Response for the InterconnectsGetDiagnosticsRequest.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InterconnectsGetDiagnosticsResponse {
     #[serde(rename = "result", skip_serializing_if = "Option::is_none")]
     pub result: Option<Box<crate::google_rest_apis::compute_v1::models::InterconnectDiagnostics>>,

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HealthCheck : Represents a health check resource. Google Compute Engine has two health check resources: * [Regional](/compute/docs/reference/rest/v1/regionHealthChecks) * [Global](/compute/docs/reference/rest/v1/healthChecks) These health check resources can be used for load balancing and for autohealing VMs in a managed instance group (MIG). **Load balancing** The following load balancer can use either regional or global health check: * Internal TCP/UDP load balancer The following load balancers require regional health check: * Internal HTTP(S) load balancer * Backend service-based network load balancer Traffic Director and the following load balancers require global health check: * External HTTP(S) load balancer * TCP proxy load balancer * SSL proxy load balancer The following load balancer require [legacy HTTP health checks](/compute/docs/reference/rest/v1/httpHealthChecks): * Target pool-based network load balancer **Autohealing in MIGs** The health checks that you use for autohealing VMs in a MIG can be either regional or global. For more information, see Set up an application health check and autohealing. For more information, see Health checks overview.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HealthCheck {
     /// How often (in seconds) to send a health check. The default value is 5 seconds.
     #[serde(rename = "checkIntervalSec", skip_serializing_if = "Option::is_none")]

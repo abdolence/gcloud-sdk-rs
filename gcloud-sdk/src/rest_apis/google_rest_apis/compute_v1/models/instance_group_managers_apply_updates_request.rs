@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InstanceGroupManagersApplyUpdatesRequest : InstanceGroupManagers.applyUpdatesToInstances
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InstanceGroupManagersApplyUpdatesRequest {
     /// Flag to update all instances instead of specified list of “instances”. If the flag is set to true then the instances may not be specified in the request.
     #[serde(rename = "allInstances", skip_serializing_if = "Option::is_none")]

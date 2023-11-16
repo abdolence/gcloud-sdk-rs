@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InterconnectOutageNotification : Description of a planned outage on this Interconnect.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InterconnectOutageNotification {
     /// If issue_type is IT_PARTIAL_OUTAGE, a list of the Google-side circuit IDs that will be affected.
     #[serde(rename = "affectedCircuits", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BackendBucketCdnPolicyCacheKeyPolicy : Message containing what to include in the cache key for a request for Cloud CDN.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BackendBucketCdnPolicyCacheKeyPolicy {
     /// Allows HTTP request headers (by name) to be used in the cache key.
     #[serde(rename = "includeHttpHeaders", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// AcceleratorConfig : A specification of the type and number of accelerator cards attached to the instance.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct AcceleratorConfig {
     /// The number of the guest accelerator cards exposed to this instance.
     #[serde(rename = "acceleratorCount", skip_serializing_if = "Option::is_none")]

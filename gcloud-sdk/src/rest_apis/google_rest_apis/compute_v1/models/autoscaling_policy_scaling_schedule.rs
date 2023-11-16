@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// AutoscalingPolicyScalingSchedule : Scaling based on user-defined schedule. The message describes a single scaling schedule. A scaling schedule changes the minimum number of VM instances an autoscaler can recommend, which can trigger scaling out.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct AutoscalingPolicyScalingSchedule {
     /// A description of a scaling schedule.
     #[serde(rename = "description", skip_serializing_if = "Option::is_none")]

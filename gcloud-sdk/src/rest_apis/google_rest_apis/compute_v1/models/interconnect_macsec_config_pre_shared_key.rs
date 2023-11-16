@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InterconnectMacsecConfigPreSharedKey : Describes a pre-shared key used to setup MACsec in static connectivity association key (CAK) mode.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InterconnectMacsecConfigPreSharedKey {
     /// An auto-generated Connectivity Association Key (CAK) for this key.
     #[serde(rename = "cak", skip_serializing_if = "Option::is_none")]

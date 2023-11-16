@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HttpHeaderAction : The request and response header transformations that take effect before the request is passed along to the selected backendService.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HttpHeaderAction {
     /// Headers to add to a matching request before forwarding the request to the backendService.
     #[serde(

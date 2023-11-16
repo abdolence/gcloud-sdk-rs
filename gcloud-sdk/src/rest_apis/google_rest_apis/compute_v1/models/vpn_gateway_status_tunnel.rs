@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// VpnGatewayStatusTunnel : Contains some information about a VPN tunnel.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct VpnGatewayStatusTunnel {
     /// The VPN gateway interface this VPN tunnel is associated with.
     #[serde(

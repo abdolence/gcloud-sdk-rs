@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ResourcePolicySnapshotSchedulePolicySchedule : A schedule for disks where the schedueled operations are performed.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ResourcePolicySnapshotSchedulePolicySchedule {
     #[serde(rename = "dailySchedule", skip_serializing_if = "Option::is_none")]
     pub daily_schedule:

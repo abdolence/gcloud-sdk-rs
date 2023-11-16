@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ResourcePolicySnapshotSchedulePolicy : A snapshot schedule policy specifies when and how frequently snapshots are to be created for the target disk. Also specifies how many and how long these scheduled snapshots should be retained.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ResourcePolicySnapshotSchedulePolicy {
     #[serde(rename = "retentionPolicy", skip_serializing_if = "Option::is_none")]
     pub retention_policy: Option<Box<crate::google_rest_apis::compute_v1::models::ResourcePolicySnapshotSchedulePolicyRetentionPolicy>>,

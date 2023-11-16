@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SavedAttachedDisk : DEPRECATED: Please use compute#savedDisk instead. An instance-attached disk resource.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SavedAttachedDisk {
     /// Specifies whether the disk will be auto-deleted when the instance is deleted (but not when the disk is detached from the instance).
     #[serde(rename = "autoDelete", skip_serializing_if = "Option::is_none")]

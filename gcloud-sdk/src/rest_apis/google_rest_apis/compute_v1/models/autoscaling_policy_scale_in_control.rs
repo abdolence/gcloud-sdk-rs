@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// AutoscalingPolicyScaleInControl : Configuration that allows for slower scale in so that even if Autoscaler recommends an abrupt scale in of a MIG, it will be throttled as specified by the parameters below.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct AutoscalingPolicyScaleInControl {
     #[serde(
         rename = "maxScaledInReplicas",

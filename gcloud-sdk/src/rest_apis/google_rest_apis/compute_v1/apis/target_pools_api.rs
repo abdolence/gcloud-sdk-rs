@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_target_pools_add_health_check`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetPoolsPeriodAddHealthCheckParams {
     /// Project ID for this request.
     pub project: String,
@@ -53,7 +53,7 @@ pub struct ComputePeriodTargetPoolsPeriodAddHealthCheckParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_pools_add_instance`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetPoolsPeriodAddInstanceParams {
     /// Project ID for this request.
     pub project: String,
@@ -92,7 +92,7 @@ pub struct ComputePeriodTargetPoolsPeriodAddInstanceParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_pools_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetPoolsPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -136,7 +136,7 @@ pub struct ComputePeriodTargetPoolsPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_pools_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetPoolsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -173,7 +173,7 @@ pub struct ComputePeriodTargetPoolsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_pools_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetPoolsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -208,7 +208,7 @@ pub struct ComputePeriodTargetPoolsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_pools_get_health`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetPoolsPeriodGetHealthParams {
     /// Project ID for this request.
     pub project: String,
@@ -244,7 +244,7 @@ pub struct ComputePeriodTargetPoolsPeriodGetHealthParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_pools_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetPoolsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -280,7 +280,7 @@ pub struct ComputePeriodTargetPoolsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_pools_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetPoolsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -323,7 +323,7 @@ pub struct ComputePeriodTargetPoolsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_pools_remove_health_check`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetPoolsPeriodRemoveHealthCheckParams {
     /// Project ID for this request.
     pub project: String,
@@ -362,7 +362,7 @@ pub struct ComputePeriodTargetPoolsPeriodRemoveHealthCheckParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_pools_remove_instance`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetPoolsPeriodRemoveInstanceParams {
     /// Project ID for this request.
     pub project: String,
@@ -401,7 +401,7 @@ pub struct ComputePeriodTargetPoolsPeriodRemoveInstanceParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_pools_set_backup`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetPoolsPeriodSetBackupParams {
     /// Project ID for this request.
     pub project: String,
@@ -441,7 +441,7 @@ pub struct ComputePeriodTargetPoolsPeriodSetBackupParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_pools_set_security_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetPoolsPeriodSetSecurityPolicyParams {
     /// Project ID for this request.
     pub project: String,

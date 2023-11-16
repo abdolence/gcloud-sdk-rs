@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RrSetRoutingPolicyLoadBalancerTarget : The configuration for an individual load balancer to health check.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct RrSetRoutingPolicyLoadBalancerTarget {
     /// The frontend IP address of the load balancer to health check.
     #[serde(rename = "ipAddress", skip_serializing_if = "Option::is_none")]

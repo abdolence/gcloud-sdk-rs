@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ServiceAttachment : Represents a ServiceAttachment resource. A service attachment represents a service that a producer has exposed. It encapsulates the load balancer which fronts the service runs and a list of NAT IP ranges that the producers uses to represent the consumers connecting to the service.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ServiceAttachment {
     /// [Output Only] An array of connections for all the consumers connected to this service attachment.
     #[serde(rename = "connectedEndpoints", skip_serializing_if = "Option::is_none")]

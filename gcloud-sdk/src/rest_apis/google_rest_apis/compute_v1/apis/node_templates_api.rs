@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_node_templates_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeTemplatesPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodNodeTemplatesPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_templates_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeTemplatesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodNodeTemplatesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_templates_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeTemplatesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -130,7 +130,7 @@ pub struct ComputePeriodNodeTemplatesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_templates_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeTemplatesPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -167,7 +167,7 @@ pub struct ComputePeriodNodeTemplatesPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_templates_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeTemplatesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -203,7 +203,7 @@ pub struct ComputePeriodNodeTemplatesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_templates_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeTemplatesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -246,7 +246,7 @@ pub struct ComputePeriodNodeTemplatesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_templates_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeTemplatesPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -283,7 +283,7 @@ pub struct ComputePeriodNodeTemplatesPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_templates_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeTemplatesPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

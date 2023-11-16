@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ResourceCommitment : Commitment for a particular resource (a Commitment is composed of one or more of these).
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ResourceCommitment {
     /// Name of the accelerator type resource. Applicable only when the type is ACCELERATOR.
     #[serde(rename = "acceleratorType", skip_serializing_if = "Option::is_none")]

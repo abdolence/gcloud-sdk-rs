@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_public_delegated_prefixes_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPublicDelegatedPrefixesPeriodAggregatedListParams {
     /// Name of the project scoping this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodPublicDelegatedPrefixesPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_public_delegated_prefixes_announce`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPublicDelegatedPrefixesPeriodAnnounceParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodPublicDelegatedPrefixesPeriodAnnounceParams {
 }
 
 /// struct for passing parameters to the method [`compute_public_delegated_prefixes_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPublicDelegatedPrefixesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -132,7 +132,7 @@ pub struct ComputePeriodPublicDelegatedPrefixesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_public_delegated_prefixes_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPublicDelegatedPrefixesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -167,7 +167,7 @@ pub struct ComputePeriodPublicDelegatedPrefixesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_public_delegated_prefixes_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPublicDelegatedPrefixesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -204,7 +204,7 @@ pub struct ComputePeriodPublicDelegatedPrefixesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_public_delegated_prefixes_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPublicDelegatedPrefixesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -247,7 +247,7 @@ pub struct ComputePeriodPublicDelegatedPrefixesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_public_delegated_prefixes_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPublicDelegatedPrefixesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -286,7 +286,7 @@ pub struct ComputePeriodPublicDelegatedPrefixesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_public_delegated_prefixes_withdraw`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodPublicDelegatedPrefixesPeriodWithdrawParams {
     /// Project ID for this request.
     pub project: String,

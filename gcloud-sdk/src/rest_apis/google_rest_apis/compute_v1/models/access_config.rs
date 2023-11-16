@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// AccessConfig : An access configuration attached to an instance's network interface. Only one access config per instance is supported.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct AccessConfig {
     /// Applies to ipv6AccessConfigs only. The first IPv6 address of the external IPv6 range associated with this instance, prefix length is stored in externalIpv6PrefixLength in ipv6AccessConfig. To use a static external IP address, it must be unused and in the same region as the instance's zone. If not specified, Google Cloud will automatically assign an external IPv6 address from the instance's subnetwork.
     #[serde(rename = "externalIpv6", skip_serializing_if = "Option::is_none")]

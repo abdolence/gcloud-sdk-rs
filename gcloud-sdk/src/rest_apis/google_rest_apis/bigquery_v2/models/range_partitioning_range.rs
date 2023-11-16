@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RangePartitioningRange : [TrustedTester] [Required] Defines the ranges for range partitioning.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct RangePartitioningRange {
     /// [TrustedTester] [Required] The end of range partitioning, exclusive.
     #[serde(rename = "end", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// MultiClassClassificationMetrics : Evaluation metrics for multi-class classification/classifier models.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct MultiClassClassificationMetrics {
     #[serde(
         rename = "aggregateClassificationMetrics",

@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_global_forwarding_rules_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalForwardingRulesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodGlobalForwardingRulesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_forwarding_rules_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalForwardingRulesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -82,7 +82,7 @@ pub struct ComputePeriodGlobalForwardingRulesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_forwarding_rules_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalForwardingRulesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -116,7 +116,7 @@ pub struct ComputePeriodGlobalForwardingRulesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_forwarding_rules_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalForwardingRulesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -157,7 +157,7 @@ pub struct ComputePeriodGlobalForwardingRulesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_forwarding_rules_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalForwardingRulesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -193,7 +193,7 @@ pub struct ComputePeriodGlobalForwardingRulesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_forwarding_rules_set_labels`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalForwardingRulesPeriodSetLabelsParams {
     /// Project ID for this request.
     pub project: String,
@@ -228,7 +228,7 @@ pub struct ComputePeriodGlobalForwardingRulesPeriodSetLabelsParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_forwarding_rules_set_target`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalForwardingRulesPeriodSetTargetParams {
     /// Project ID for this request.
     pub project: String,

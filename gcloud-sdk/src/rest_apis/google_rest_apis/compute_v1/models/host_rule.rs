@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HostRule : UrlMaps A host-matching rule for a URL. If matched, will use the named PathMatcher to select the BackendService.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HostRule {
     /// An optional description of this resource. Provide this property when you create the resource.
     #[serde(rename = "description", skip_serializing_if = "Option::is_none")]

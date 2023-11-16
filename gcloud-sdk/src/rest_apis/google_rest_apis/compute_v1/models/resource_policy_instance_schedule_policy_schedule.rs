@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ResourcePolicyInstanceSchedulePolicySchedule : Schedule for an instance operation.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ResourcePolicyInstanceSchedulePolicySchedule {
     /// Specifies the frequency for the operation, using the unix-cron format.
     #[serde(rename = "schedule", skip_serializing_if = "Option::is_none")]

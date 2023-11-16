@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// LicenseCode : Represents a License Code resource. A License Code is a unique identifier used to represent a license resource. *Caution* This resource is intended for use only by third-party partners who are creating Cloud Marketplace images.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct LicenseCode {
     /// [Output Only] Creation timestamp in RFC3339 text format.
     #[serde(rename = "creationTimestamp", skip_serializing_if = "Option::is_none")]

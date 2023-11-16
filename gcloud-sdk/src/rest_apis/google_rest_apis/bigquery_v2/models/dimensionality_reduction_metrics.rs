@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DimensionalityReductionMetrics : Model evaluation metrics for dimensionality reduction models.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct DimensionalityReductionMetrics {
     /// Total percentage of variance explained by the selected principal components.
     #[serde(

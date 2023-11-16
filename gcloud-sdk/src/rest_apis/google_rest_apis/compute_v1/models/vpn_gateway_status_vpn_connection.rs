@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// VpnGatewayStatusVpnConnection : A VPN connection contains all VPN tunnels connected from this VpnGateway to the same peer gateway. The peer gateway could either be an external VPN gateway or a Google Cloud VPN gateway.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct VpnGatewayStatusVpnConnection {
     /// URL reference to the peer external VPN gateways to which the VPN tunnels in this VPN connection are connected. This field is mutually exclusive with peer_gcp_gateway.
     #[serde(rename = "peerExternalGateway", skip_serializing_if = "Option::is_none")]

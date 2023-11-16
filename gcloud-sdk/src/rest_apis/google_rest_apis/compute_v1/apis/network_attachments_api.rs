@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_network_attachments_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkAttachmentsPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodNetworkAttachmentsPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_attachments_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkAttachmentsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodNetworkAttachmentsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_attachments_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkAttachmentsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -130,7 +130,7 @@ pub struct ComputePeriodNetworkAttachmentsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_attachments_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkAttachmentsPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -167,7 +167,7 @@ pub struct ComputePeriodNetworkAttachmentsPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_attachments_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkAttachmentsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -203,7 +203,7 @@ pub struct ComputePeriodNetworkAttachmentsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_attachments_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkAttachmentsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -246,7 +246,7 @@ pub struct ComputePeriodNetworkAttachmentsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_attachments_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkAttachmentsPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -284,7 +284,7 @@ pub struct ComputePeriodNetworkAttachmentsPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_attachments_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkAttachmentsPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -321,7 +321,7 @@ pub struct ComputePeriodNetworkAttachmentsPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_attachments_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkAttachmentsPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// StatefulPolicyPreservedState : Configuration of preserved resources.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct StatefulPolicyPreservedState {
     /// Disks created on the instances that will be preserved on instance delete, update, etc. This map is keyed with the device names of the disks.
     #[serde(rename = "disks", skip_serializing_if = "Option::is_none")]

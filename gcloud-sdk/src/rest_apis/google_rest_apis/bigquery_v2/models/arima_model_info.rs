@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ArimaModelInfo : Arima model information.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ArimaModelInfo {
     #[serde(rename = "arimaCoefficients", skip_serializing_if = "Option::is_none")]
     pub arima_coefficients:

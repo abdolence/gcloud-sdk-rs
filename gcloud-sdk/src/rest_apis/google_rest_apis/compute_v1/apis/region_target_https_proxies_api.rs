@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_target_https_proxies_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionTargetHttpsProxiesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -51,7 +51,7 @@ pub struct ComputePeriodRegionTargetHttpsProxiesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_target_https_proxies_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionTargetHttpsProxiesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -86,7 +86,7 @@ pub struct ComputePeriodRegionTargetHttpsProxiesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_target_https_proxies_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionTargetHttpsProxiesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -122,7 +122,7 @@ pub struct ComputePeriodRegionTargetHttpsProxiesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_target_https_proxies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionTargetHttpsProxiesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -165,7 +165,7 @@ pub struct ComputePeriodRegionTargetHttpsProxiesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_target_https_proxies_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionTargetHttpsProxiesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -203,7 +203,7 @@ pub struct ComputePeriodRegionTargetHttpsProxiesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_target_https_proxies_set_ssl_certificates`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionTargetHttpsProxiesPeriodSetSslCertificatesParams {
     /// Project ID for this request.
     pub project: String,
@@ -241,7 +241,7 @@ pub struct ComputePeriodRegionTargetHttpsProxiesPeriodSetSslCertificatesParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_target_https_proxies_set_url_map`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionTargetHttpsProxiesPeriodSetUrlMapParams {
     /// Project ID for this request.
     pub project: String,

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ExternalVpnGatewayInterface : The interface for the external VPN gateway.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ExternalVpnGatewayInterface {
     /// The numeric ID of this interface. The allowed input values for this id for different redundancy types of external VPN gateway: - SINGLE_IP_INTERNALLY_REDUNDANT - 0 - TWO_IPS_REDUNDANCY - 0, 1 - FOUR_IPS_REDUNDANCY - 0, 1, 2, 3
     #[serde(rename = "id", skip_serializing_if = "Option::is_none")]

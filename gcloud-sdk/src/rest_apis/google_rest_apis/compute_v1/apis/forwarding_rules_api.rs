@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_forwarding_rules_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodForwardingRulesPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodForwardingRulesPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_forwarding_rules_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodForwardingRulesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodForwardingRulesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_forwarding_rules_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodForwardingRulesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -130,7 +130,7 @@ pub struct ComputePeriodForwardingRulesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_forwarding_rules_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodForwardingRulesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -166,7 +166,7 @@ pub struct ComputePeriodForwardingRulesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_forwarding_rules_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodForwardingRulesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -209,7 +209,7 @@ pub struct ComputePeriodForwardingRulesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_forwarding_rules_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodForwardingRulesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -247,7 +247,7 @@ pub struct ComputePeriodForwardingRulesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_forwarding_rules_set_labels`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodForwardingRulesPeriodSetLabelsParams {
     /// Project ID for this request.
     pub project: String,
@@ -286,7 +286,7 @@ pub struct ComputePeriodForwardingRulesPeriodSetLabelsParams {
 }
 
 /// struct for passing parameters to the method [`compute_forwarding_rules_set_target`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodForwardingRulesPeriodSetTargetParams {
     /// Project ID for this request.
     pub project: String,

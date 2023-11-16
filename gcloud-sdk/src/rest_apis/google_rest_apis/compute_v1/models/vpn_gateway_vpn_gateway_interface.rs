@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// VpnGatewayVpnGatewayInterface : A VPN gateway interface.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct VpnGatewayVpnGatewayInterface {
     /// [Output Only] Numeric identifier for this VPN interface associated with the VPN gateway.
     #[serde(rename = "id", skip_serializing_if = "Option::is_none")]

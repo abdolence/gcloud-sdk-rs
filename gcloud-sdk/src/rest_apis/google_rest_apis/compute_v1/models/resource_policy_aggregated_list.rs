@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ResourcePolicyAggregatedList : Contains a list of resourcePolicies.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ResourcePolicyAggregatedList {
     #[serde(rename = "etag", skip_serializing_if = "Option::is_none")]
     pub etag: Option<String>,

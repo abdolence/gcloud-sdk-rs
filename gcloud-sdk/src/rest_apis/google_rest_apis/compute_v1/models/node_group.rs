@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// NodeGroup : Represents a sole-tenant Node Group resource. A sole-tenant node is a physical server that is dedicated to hosting VM instances only for your specific project. Use sole-tenant nodes to keep your instances physically separated from instances in other projects, or to group your instances together on the same host hardware. For more information, read Sole-tenant nodes.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct NodeGroup {
     #[serde(rename = "autoscalingPolicy", skip_serializing_if = "Option::is_none")]
     pub autoscaling_policy:

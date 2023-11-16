@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BucketLifecycle : The bucket's lifecycle configuration. See lifecycle management for more information.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BucketLifecycle {
     /// A lifecycle management rule, which is made of an action to take and the condition(s) under which the action will be taken.
     #[serde(rename = "rule", skip_serializing_if = "Option::is_none")]

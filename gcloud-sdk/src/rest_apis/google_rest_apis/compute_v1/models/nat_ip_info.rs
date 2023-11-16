@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// NatIpInfo : Contains NAT IP information of a NAT config (i.e. usage status, mode).
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct NatIpInfo {
     /// A list of all NAT IPs assigned to this NAT config.
     #[serde(rename = "natIpInfoMappings", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HttpRedirectAction : Specifies settings for an HTTP redirect.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HttpRedirectAction {
     /// The host that is used in the redirect response instead of the one that was supplied in the request. The value must be from 1 to 255 characters.
     #[serde(rename = "hostRedirect", skip_serializing_if = "Option::is_none")]

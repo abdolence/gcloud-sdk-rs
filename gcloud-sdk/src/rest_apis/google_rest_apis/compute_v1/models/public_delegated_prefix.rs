@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// PublicDelegatedPrefix : A PublicDelegatedPrefix resource represents an IP block within a PublicAdvertisedPrefix that is configured within a single cloud scope (global or region). IPs in the block can be allocated to resources within that scope. Public delegated prefixes may be further broken up into smaller IP blocks in the same scope as the parent block.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct PublicDelegatedPrefix {
     /// [Output Only] The version of BYOIP API.
     #[serde(rename = "byoipApiVersion", skip_serializing_if = "Option::is_none")]

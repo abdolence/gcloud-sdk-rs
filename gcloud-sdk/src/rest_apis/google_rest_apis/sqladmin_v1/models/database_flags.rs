@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DatabaseFlags : Database flags for Cloud SQL instances.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct DatabaseFlags {
     /// The name of the flag. These flags are passed at instance startup, so include both server options and system variables. Flags are specified with underscores, not hyphens. For more information, see [Configuring Database Flags](https://cloud.google.com/sql/docs/mysql/flags) in the Cloud SQL documentation.
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]

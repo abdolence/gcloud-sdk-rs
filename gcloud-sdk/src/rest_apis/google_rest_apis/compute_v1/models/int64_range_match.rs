@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Int64RangeMatch : HttpRouteRuleMatch criteria for field values that must stay within the specified integer range.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Int64RangeMatch {
     /// The end of the range (exclusive) in signed long integer format.
     #[serde(rename = "rangeEnd", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// CorsPolicy : The specification for allowing client-side cross-origin requests. For more information about the W3C recommendation for cross-origin resource sharing (CORS), see Fetch API Living Standard.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct CorsPolicy {
     /// In response to a preflight request, setting this to true indicates that the actual request can include user credentials. This field translates to the Access-Control-Allow-Credentials header. Default is false.
     #[serde(rename = "allowCredentials", skip_serializing_if = "Option::is_none")]

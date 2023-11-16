@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InstanceTemplate : Represents an Instance Template resource. Google Compute Engine has two Instance Template resources: * [Global](/compute/docs/reference/rest/v1/instanceTemplates) * [Regional](/compute/docs/reference/rest/v1/regionInstanceTemplates) You can reuse a global instance template in different regions whereas you can use a regional instance template in a specified region only. If you want to reduce cross-region dependency or achieve data residency, use a regional instance template. To create VMs, managed instance groups, and reservations, you can use either global or regional instance templates. For more information, read Instance Templates.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InstanceTemplate {
     /// [Output Only] The creation timestamp for this instance template in RFC3339 text format.
     #[serde(rename = "creationTimestamp", skip_serializing_if = "Option::is_none")]

@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_license_codes_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodLicenseCodesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -47,7 +47,7 @@ pub struct ComputePeriodLicenseCodesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_license_codes_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodLicenseCodesPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

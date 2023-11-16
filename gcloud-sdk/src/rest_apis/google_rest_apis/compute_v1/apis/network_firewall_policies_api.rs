@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_network_firewall_policies_add_association`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkFirewallPoliciesPeriodAddAssociationParams {
     /// Project ID for this request.
     pub project: String,
@@ -53,7 +53,7 @@ pub struct ComputePeriodNetworkFirewallPoliciesPeriodAddAssociationParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_firewall_policies_add_rule`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkFirewallPoliciesPeriodAddRuleParams {
     /// Project ID for this request.
     pub project: String,
@@ -94,7 +94,7 @@ pub struct ComputePeriodNetworkFirewallPoliciesPeriodAddRuleParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_firewall_policies_clone_rules`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkFirewallPoliciesPeriodCloneRulesParams {
     /// Project ID for this request.
     pub project: String,
@@ -131,7 +131,7 @@ pub struct ComputePeriodNetworkFirewallPoliciesPeriodCloneRulesParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_firewall_policies_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkFirewallPoliciesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -166,7 +166,7 @@ pub struct ComputePeriodNetworkFirewallPoliciesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_firewall_policies_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkFirewallPoliciesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -199,7 +199,7 @@ pub struct ComputePeriodNetworkFirewallPoliciesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_firewall_policies_get_association`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkFirewallPoliciesPeriodGetAssociationParams {
     /// Project ID for this request.
     pub project: String,
@@ -234,7 +234,7 @@ pub struct ComputePeriodNetworkFirewallPoliciesPeriodGetAssociationParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_firewall_policies_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkFirewallPoliciesPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -269,7 +269,7 @@ pub struct ComputePeriodNetworkFirewallPoliciesPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_firewall_policies_get_rule`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkFirewallPoliciesPeriodGetRuleParams {
     /// Project ID for this request.
     pub project: String,
@@ -304,7 +304,7 @@ pub struct ComputePeriodNetworkFirewallPoliciesPeriodGetRuleParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_firewall_policies_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkFirewallPoliciesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -338,7 +338,7 @@ pub struct ComputePeriodNetworkFirewallPoliciesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_firewall_policies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkFirewallPoliciesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -379,7 +379,7 @@ pub struct ComputePeriodNetworkFirewallPoliciesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_firewall_policies_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkFirewallPoliciesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -415,7 +415,7 @@ pub struct ComputePeriodNetworkFirewallPoliciesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_firewall_policies_patch_rule`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkFirewallPoliciesPeriodPatchRuleParams {
     /// Project ID for this request.
     pub project: String,
@@ -454,7 +454,7 @@ pub struct ComputePeriodNetworkFirewallPoliciesPeriodPatchRuleParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_firewall_policies_remove_association`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkFirewallPoliciesPeriodRemoveAssociationParams {
     /// Project ID for this request.
     pub project: String,
@@ -491,7 +491,7 @@ pub struct ComputePeriodNetworkFirewallPoliciesPeriodRemoveAssociationParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_firewall_policies_remove_rule`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkFirewallPoliciesPeriodRemoveRuleParams {
     /// Project ID for this request.
     pub project: String,
@@ -528,7 +528,7 @@ pub struct ComputePeriodNetworkFirewallPoliciesPeriodRemoveRuleParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_firewall_policies_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkFirewallPoliciesPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -563,7 +563,7 @@ pub struct ComputePeriodNetworkFirewallPoliciesPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_firewall_policies_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkFirewallPoliciesPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

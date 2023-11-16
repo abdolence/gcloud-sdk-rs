@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InterconnectDiagnosticsMacsecStatus : Describes the status of MACsec encryption on the link.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InterconnectDiagnosticsMacsecStatus {
     /// Indicates the Connectivity Association Key Name (CKN) currently being used if MACsec is operational.
     #[serde(rename = "ckn", skip_serializing_if = "Option::is_none")]

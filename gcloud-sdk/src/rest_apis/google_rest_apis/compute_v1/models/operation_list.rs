@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// OperationList : Contains a list of Operation resources.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct OperationList {
     /// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
     #[serde(rename = "id", skip_serializing_if = "Option::is_none")]

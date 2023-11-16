@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// PacketMirroring : Represents a Packet Mirroring resource. Packet Mirroring clones the traffic of specified instances in your Virtual Private Cloud (VPC) network and forwards it to a collector destination, such as an instance group of an internal TCP/UDP load balancer, for analysis or examination. For more information about setting up Packet Mirroring, see Using Packet Mirroring.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct PacketMirroring {
     #[serde(rename = "collectorIlb", skip_serializing_if = "Option::is_none")]
     pub collector_ilb:

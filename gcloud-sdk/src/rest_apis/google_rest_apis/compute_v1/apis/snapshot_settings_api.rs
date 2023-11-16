@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_snapshot_settings_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSnapshotSettingsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -45,7 +45,7 @@ pub struct ComputePeriodSnapshotSettingsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_snapshot_settings_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSnapshotSettingsPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,

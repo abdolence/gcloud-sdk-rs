@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// LocationPolicyLocationConstraints : Per-zone constraints on location policy for this zone.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct LocationPolicyLocationConstraints {
     /// Maximum number of items that are allowed to be placed in this zone. The value must be non-negative.
     #[serde(rename = "maxCount", skip_serializing_if = "Option::is_none")]

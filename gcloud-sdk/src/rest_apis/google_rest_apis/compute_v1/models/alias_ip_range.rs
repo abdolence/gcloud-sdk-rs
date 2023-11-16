@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// AliasIpRange : An alias IP range attached to an instance's network interface.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct AliasIpRange {
     /// The IP alias ranges to allocate for this interface. This IP CIDR range must belong to the specified subnetwork and cannot contain IP addresses reserved by system or used by other network interfaces. This range may be a single IP address (such as 10.2.3.4), a netmask (such as /24) or a CIDR-formatted string (such as 10.1.2.0/24).
     #[serde(rename = "ipCidrRange", skip_serializing_if = "Option::is_none")]

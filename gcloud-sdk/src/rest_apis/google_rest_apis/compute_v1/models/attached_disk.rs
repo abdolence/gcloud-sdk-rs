@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// AttachedDisk : An instance-attached disk resource.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct AttachedDisk {
     /// [Output Only] The architecture of the attached disk. Valid values are ARM64 or X86_64.
     #[serde(rename = "architecture", skip_serializing_if = "Option::is_none")]

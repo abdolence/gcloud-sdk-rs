@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ResourcePolicyResourceStatus : Contains output only fields. Use this sub-message for all output fields set on ResourcePolicy. The internal structure of this \"status\" field should mimic the structure of ResourcePolicy proto specification.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ResourcePolicyResourceStatus {
     #[serde(rename = "instanceSchedulePolicy", skip_serializing_if = "Option::is_none")]
     pub instance_schedule_policy: Option<Box<crate::google_rest_apis::compute_v1::models::ResourcePolicyResourceStatusInstanceSchedulePolicyStatus>>,

@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_backend_services_add_signed_url_key`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodBackendServicesPeriodAddSignedUrlKeyParams {
     /// Project ID for this request.
     pub project: String,
@@ -50,7 +50,7 @@ pub struct ComputePeriodBackendServicesPeriodAddSignedUrlKeyParams {
 }
 
 /// struct for passing parameters to the method [`compute_backend_services_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodBackendServicesPeriodAggregatedListParams {
     /// Name of the project scoping this request.
     pub project: String,
@@ -94,7 +94,7 @@ pub struct ComputePeriodBackendServicesPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_backend_services_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodBackendServicesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -129,7 +129,7 @@ pub struct ComputePeriodBackendServicesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_backend_services_delete_signed_url_key`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodBackendServicesPeriodDeleteSignedUrlKeyParams {
     /// Project ID for this request.
     pub project: String,
@@ -166,7 +166,7 @@ pub struct ComputePeriodBackendServicesPeriodDeleteSignedUrlKeyParams {
 }
 
 /// struct for passing parameters to the method [`compute_backend_services_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodBackendServicesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -199,7 +199,7 @@ pub struct ComputePeriodBackendServicesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_backend_services_get_health`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodBackendServicesPeriodGetHealthParams {
     pub project: String,
     /// Name of the BackendService resource to which the queried instance belongs.
@@ -233,7 +233,7 @@ pub struct ComputePeriodBackendServicesPeriodGetHealthParams {
 }
 
 /// struct for passing parameters to the method [`compute_backend_services_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodBackendServicesPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -268,7 +268,7 @@ pub struct ComputePeriodBackendServicesPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_backend_services_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodBackendServicesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -302,7 +302,7 @@ pub struct ComputePeriodBackendServicesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_backend_services_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodBackendServicesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -343,7 +343,7 @@ pub struct ComputePeriodBackendServicesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_backend_services_list_usable`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodBackendServicesPeriodListUsableParams {
     /// Project ID for this request.
     pub project: String,
@@ -384,7 +384,7 @@ pub struct ComputePeriodBackendServicesPeriodListUsableParams {
 }
 
 /// struct for passing parameters to the method [`compute_backend_services_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodBackendServicesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -420,7 +420,7 @@ pub struct ComputePeriodBackendServicesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_backend_services_set_edge_security_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodBackendServicesPeriodSetEdgeSecurityPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -457,7 +457,7 @@ pub struct ComputePeriodBackendServicesPeriodSetEdgeSecurityPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_backend_services_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodBackendServicesPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -492,7 +492,7 @@ pub struct ComputePeriodBackendServicesPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_backend_services_set_security_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodBackendServicesPeriodSetSecurityPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -529,7 +529,7 @@ pub struct ComputePeriodBackendServicesPeriodSetSecurityPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_backend_services_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodBackendServicesPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,
@@ -564,7 +564,7 @@ pub struct ComputePeriodBackendServicesPeriodTestIamPermissionsParams {
 }
 
 /// struct for passing parameters to the method [`compute_backend_services_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodBackendServicesPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,

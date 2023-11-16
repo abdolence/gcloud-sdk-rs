@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BackupRunsListResponse : Backup run list results.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BackupRunsListResponse {
     /// A list of backup runs in reverse chronological order of the enqueued time.
     #[serde(rename = "items", skip_serializing_if = "Option::is_none")]

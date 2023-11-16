@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HttpQueryParameterMatch : HttpRouteRuleMatch criteria for a request's query parameter.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HttpQueryParameterMatch {
     /// The queryParameterMatch matches if the value of the parameter exactly matches the contents of exactMatch. Only one of presentMatch, exactMatch, or regexMatch must be set.
     #[serde(rename = "exactMatch", skip_serializing_if = "Option::is_none")]

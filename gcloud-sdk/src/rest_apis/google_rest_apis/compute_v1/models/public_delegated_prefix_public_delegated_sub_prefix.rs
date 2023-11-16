@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// PublicDelegatedPrefixPublicDelegatedSubPrefix : Represents a sub PublicDelegatedPrefix.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct PublicDelegatedPrefixPublicDelegatedSubPrefix {
     /// Name of the project scoping this PublicDelegatedSubPrefix.
     #[serde(rename = "delegateeProject", skip_serializing_if = "Option::is_none")]

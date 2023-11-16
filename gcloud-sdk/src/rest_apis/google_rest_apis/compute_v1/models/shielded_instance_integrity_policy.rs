@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ShieldedInstanceIntegrityPolicy : The policy describes the baseline against which Instance boot integrity is measured.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ShieldedInstanceIntegrityPolicy {
     /// Updates the integrity policy baseline using the measurements from the VM instance's most recent boot.
     #[serde(

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// TableListTablesInnerView : Additional details for a view.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct TableListTablesInnerView {
     /// True if view is defined in legacy SQL dialect, false if in standard SQL.
     #[serde(rename = "useLegacySql", skip_serializing_if = "Option::is_none")]

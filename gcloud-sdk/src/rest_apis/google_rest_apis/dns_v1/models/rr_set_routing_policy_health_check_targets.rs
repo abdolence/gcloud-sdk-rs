@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RrSetRoutingPolicyHealthCheckTargets : HealthCheckTargets describes endpoints to health-check when responding to Routing Policy queries. Only the healthy endpoints will be included in the response.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct RrSetRoutingPolicyHealthCheckTargets {
     #[serde(
         rename = "internalLoadBalancers",

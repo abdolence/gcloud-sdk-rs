@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SqlOutOfDiskReport : This message wraps up the information written by out-of-disk detection job.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SqlOutOfDiskReport {
     /// The minimum recommended increase size in GigaBytes This field is consumed by the frontend * Writers: * the proactive database wellness job for OOD. * Readers:
     #[serde(

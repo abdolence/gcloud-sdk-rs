@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// UsableSubnetworkSecondaryRange : Secondary IP range of a usable subnetwork.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct UsableSubnetworkSecondaryRange {
     /// The range of IP addresses belonging to this subnetwork secondary range.
     #[serde(rename = "ipCidrRange", skip_serializing_if = "Option::is_none")]

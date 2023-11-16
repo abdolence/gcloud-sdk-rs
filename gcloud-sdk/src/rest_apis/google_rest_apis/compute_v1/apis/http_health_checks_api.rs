@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_http_health_checks_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHttpHealthChecksPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodHttpHealthChecksPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_http_health_checks_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHttpHealthChecksPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -82,7 +82,7 @@ pub struct ComputePeriodHttpHealthChecksPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_http_health_checks_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHttpHealthChecksPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -116,7 +116,7 @@ pub struct ComputePeriodHttpHealthChecksPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_http_health_checks_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHttpHealthChecksPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -157,7 +157,7 @@ pub struct ComputePeriodHttpHealthChecksPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_http_health_checks_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHttpHealthChecksPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -193,7 +193,7 @@ pub struct ComputePeriodHttpHealthChecksPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_http_health_checks_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHttpHealthChecksPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,

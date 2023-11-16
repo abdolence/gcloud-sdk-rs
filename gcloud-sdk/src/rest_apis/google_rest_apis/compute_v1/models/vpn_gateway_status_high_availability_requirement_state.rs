@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// VpnGatewayStatusHighAvailabilityRequirementState : Describes the high availability requirement state for the VPN connection between this Cloud VPN gateway and a peer gateway.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct VpnGatewayStatusHighAvailabilityRequirementState {
     /// Indicates the high availability requirement state for the VPN connection. Valid values are CONNECTION_REDUNDANCY_MET, CONNECTION_REDUNDANCY_NOT_MET.
     #[serde(rename = "state", skip_serializing_if = "Option::is_none")]

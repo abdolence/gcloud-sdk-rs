@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BackendServiceAggregatedList : Contains a list of BackendServicesScopedList.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BackendServiceAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
     #[serde(rename = "id", skip_serializing_if = "Option::is_none")]

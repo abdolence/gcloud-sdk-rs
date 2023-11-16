@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_addresses_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAddressesPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodAddressesPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_addresses_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAddressesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodAddressesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_addresses_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAddressesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -130,7 +130,7 @@ pub struct ComputePeriodAddressesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_addresses_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAddressesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -166,7 +166,7 @@ pub struct ComputePeriodAddressesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_addresses_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAddressesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -209,7 +209,7 @@ pub struct ComputePeriodAddressesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_addresses_move`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAddressesPeriodMoveParams {
     /// Source project ID which the Address is moved from.
     pub project: String,
@@ -248,7 +248,7 @@ pub struct ComputePeriodAddressesPeriodMoveParams {
 }
 
 /// struct for passing parameters to the method [`compute_addresses_set_labels`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAddressesPeriodSetLabelsParams {
     /// Project ID for this request.
     pub project: String,

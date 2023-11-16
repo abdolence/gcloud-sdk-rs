@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::sqladmin_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`sql_databases_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodDatabasesPeriodDeleteParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -47,7 +47,7 @@ pub struct SqlPeriodDatabasesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`sql_databases_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodDatabasesPeriodGetParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -80,7 +80,7 @@ pub struct SqlPeriodDatabasesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`sql_databases_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodDatabasesPeriodInsertParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -112,7 +112,7 @@ pub struct SqlPeriodDatabasesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`sql_databases_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodDatabasesPeriodListParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -143,7 +143,7 @@ pub struct SqlPeriodDatabasesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`sql_databases_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodDatabasesPeriodPatchParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -177,7 +177,7 @@ pub struct SqlPeriodDatabasesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`sql_databases_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodDatabasesPeriodUpdateParams {
     /// Project ID of the project that contains the instance.
     pub project: String,

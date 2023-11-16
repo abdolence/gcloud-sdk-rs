@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::bigquery_v2::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`bigquery_projects_get_service_account`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodProjectsPeriodGetServiceAccountParams {
     /// Project ID for which the service account is requested.
     pub project_id: String,
@@ -35,7 +35,7 @@ pub struct BigqueryPeriodProjectsPeriodGetServiceAccountParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_projects_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodProjectsPeriodListParams {
     /// Data format for the response.
     pub alt: Option<String>,

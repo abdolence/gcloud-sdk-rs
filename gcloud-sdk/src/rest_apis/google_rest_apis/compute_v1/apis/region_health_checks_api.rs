@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_health_checks_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionHealthChecksPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -51,7 +51,7 @@ pub struct ComputePeriodRegionHealthChecksPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_health_checks_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionHealthChecksPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -86,7 +86,7 @@ pub struct ComputePeriodRegionHealthChecksPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_health_checks_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionHealthChecksPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -122,7 +122,7 @@ pub struct ComputePeriodRegionHealthChecksPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_health_checks_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionHealthChecksPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -165,7 +165,7 @@ pub struct ComputePeriodRegionHealthChecksPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_health_checks_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionHealthChecksPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -203,7 +203,7 @@ pub struct ComputePeriodRegionHealthChecksPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_health_checks_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionHealthChecksPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,

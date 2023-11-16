@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ComposeRequestSourceObjectsInnerObjectPreconditions : Conditions that must be met for this operation to execute.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ComposeRequestSourceObjectsInnerObjectPreconditions {
     /// Only perform the composition if the generation of the source object that would be used matches this value. If this value and a generation are both specified, they must be the same value or the call will fail.
     #[serde(rename = "ifGenerationMatch", skip_serializing_if = "Option::is_none")]

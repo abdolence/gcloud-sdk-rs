@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ShieldedInstanceConfig : A set of Shielded Instance options.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ShieldedInstanceConfig {
     /// Defines whether the instance has integrity monitoring enabled. Enabled by default.
     #[serde(

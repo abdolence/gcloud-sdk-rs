@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ResourcePolicyDailyCycle : Time window specified for daily operations.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ResourcePolicyDailyCycle {
     /// Defines a schedule with units measured in days. The value determines how many days pass between the start of each cycle.
     #[serde(rename = "daysInCycle", skip_serializing_if = "Option::is_none")]

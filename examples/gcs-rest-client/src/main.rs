@@ -54,25 +54,8 @@ async fn test_upload(
         &google_rest_client.create_google_storage_v1_config().await?,
         gcloud_sdk::google_rest_apis::storage_v1::objects_api::StoragePeriodObjectsPeriodInsertParams {
             bucket: bucket.to_string(),
-            alt: None,
-            fields: None,
-            key: None,
-            oauth_token: None,
-            pretty_print: None,
-            quota_user: None,
-            upload_type: None,
-            user_ip: None,
-            content_encoding: None,
-            if_generation_match: None,
-            if_generation_not_match: None,
-            if_metageneration_match: None,
-            if_metageneration_not_match: None,
-            kms_key_name: None,
             name: Some(filename.to_string()),
-            predefined_acl: None,
-            projection: None,
-            user_project: None,
-            object: None,
+            ..Default::default()
         },
         None,
         "Hello".as_bytes().to_vec()
@@ -94,23 +77,7 @@ async fn test_compute() {
         gcloud_sdk::google_rest_apis::compute_v1::instances_api::ComputePeriodInstancesPeriodListParams {
             project: google_project_id.to_string(),
             zone: "us-central1-a".to_string(),
-            dollar_xgafv: None,
-            access_token: None,
-            alt: None,
-            callback: None,
-            fields: None,
-            key: None,
-            oauth_token: None,
-            pretty_print: None,
-            quota_user: None,
-            upload_protocol: None,
-            upload_type: None,
-            user_ip: None,
-            filter: None,
-            max_results: None,
-            order_by: None,
-            page_token: None,
-            return_partial_success: None,
+            ..Default::default()
         }
     ).await.unwrap();
 

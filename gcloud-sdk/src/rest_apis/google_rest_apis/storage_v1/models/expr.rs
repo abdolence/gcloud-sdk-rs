@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Expr : Represents an expression text. Example: title: \"User account presence\" description: \"Determines whether the request has a user account\" expression: \"size(request.user) > 0\"
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Expr {
     /// An optional description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI.
     #[serde(rename = "description", skip_serializing_if = "Option::is_none")]

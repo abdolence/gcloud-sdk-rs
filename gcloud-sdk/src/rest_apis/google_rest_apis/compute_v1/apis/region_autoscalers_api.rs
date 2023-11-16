@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_autoscalers_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionAutoscalersPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -51,7 +51,7 @@ pub struct ComputePeriodRegionAutoscalersPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_autoscalers_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionAutoscalersPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -86,7 +86,7 @@ pub struct ComputePeriodRegionAutoscalersPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_autoscalers_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionAutoscalersPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -122,7 +122,7 @@ pub struct ComputePeriodRegionAutoscalersPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_autoscalers_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionAutoscalersPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -165,7 +165,7 @@ pub struct ComputePeriodRegionAutoscalersPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_autoscalers_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionAutoscalersPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -203,7 +203,7 @@ pub struct ComputePeriodRegionAutoscalersPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_autoscalers_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionAutoscalersPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Binding : Associates `members`, or principals, with a `role`.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Binding {
     /// This is deprecated and has no effect. Do not use.
     #[serde(rename = "bindingId", skip_serializing_if = "Option::is_none")]

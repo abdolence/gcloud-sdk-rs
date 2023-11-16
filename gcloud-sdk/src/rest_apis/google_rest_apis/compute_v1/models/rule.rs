@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Rule : This is deprecated and has no effect. Do not use.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Rule {
     /// This is deprecated and has no effect. Do not use.
     #[serde(rename = "action", skip_serializing_if = "Option::is_none")]

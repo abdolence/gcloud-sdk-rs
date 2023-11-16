@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InstancesCloneRequest : Database instance clone request.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InstancesCloneRequest {
     #[serde(rename = "cloneContext", skip_serializing_if = "Option::is_none")]
     pub clone_context: Option<Box<crate::google_rest_apis::sqladmin_v1::models::CloneContext>>,

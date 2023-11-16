@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Zone : Represents a Zone resource. A zone is a deployment area. These deployment areas are subsets of a region. For example the zone us-east1-a is located in the us-east1 region. For more information, read Regions and Zones.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Zone {
     /// [Output Only] Available cpu/platform selections for the zone.
     #[serde(

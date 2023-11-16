@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DataSplitResult : Data split result. This contains references to the training and evaluation data tables that were used to train the model.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct DataSplitResult {
     #[serde(rename = "evaluationTable", skip_serializing_if = "Option::is_none")]
     pub evaluation_table: Option<Box<crate::google_rest_apis::bigquery_v2::models::TableReference>>,

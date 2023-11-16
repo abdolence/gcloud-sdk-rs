@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SslCertificateSelfManagedSslCertificate : Configuration and status of a self-managed SSL certificate.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SslCertificateSelfManagedSslCertificate {
     /// A local certificate file. The certificate must be in PEM format. The certificate chain must be no greater than 5 certs long. The chain must include at least one intermediate cert.
     #[serde(rename = "certificate", skip_serializing_if = "Option::is_none")]

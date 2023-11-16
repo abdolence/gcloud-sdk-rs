@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_target_instances_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetInstancesPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodTargetInstancesPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_instances_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetInstancesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodTargetInstancesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_instances_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetInstancesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -130,7 +130,7 @@ pub struct ComputePeriodTargetInstancesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_instances_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetInstancesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -166,7 +166,7 @@ pub struct ComputePeriodTargetInstancesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_instances_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetInstancesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -209,7 +209,7 @@ pub struct ComputePeriodTargetInstancesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_instances_set_security_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetInstancesPeriodSetSecurityPolicyParams {
     /// Project ID for this request.
     pub project: String,

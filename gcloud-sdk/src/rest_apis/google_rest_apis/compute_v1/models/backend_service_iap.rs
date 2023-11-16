@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BackendServiceIap : Identity-Aware Proxy
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BackendServiceIap {
     /// Whether the serving infrastructure will authenticate and authorize all incoming requests.
     #[serde(rename = "enabled", skip_serializing_if = "Option::is_none")]

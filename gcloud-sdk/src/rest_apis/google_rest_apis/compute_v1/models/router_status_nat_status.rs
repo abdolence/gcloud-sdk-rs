@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RouterStatusNatStatus : Status of a NAT contained in this router.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct RouterStatusNatStatus {
     /// A list of IPs auto-allocated for NAT. Example: [\"1.1.1.1\", \"129.2.16.89\"]
     #[serde(

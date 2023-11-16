@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// NatIpInfoNatIpInfoMapping : Contains information of a NAT IP.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct NatIpInfoNatIpInfoMapping {
     /// Specifies whether NAT IP is auto or manual.
     #[serde(rename = "mode", skip_serializing_if = "Option::is_none")]

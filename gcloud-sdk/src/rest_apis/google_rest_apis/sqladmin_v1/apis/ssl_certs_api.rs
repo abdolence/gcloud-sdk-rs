@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::sqladmin_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`sql_ssl_certs_create_ephemeral`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodSslCertsPeriodCreateEphemeralParams {
     /// Project ID of the Cloud SQL project.
     pub project: String,
@@ -47,7 +47,7 @@ pub struct SqlPeriodSslCertsPeriodCreateEphemeralParams {
 }
 
 /// struct for passing parameters to the method [`sql_ssl_certs_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodSslCertsPeriodDeleteParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -80,7 +80,7 @@ pub struct SqlPeriodSslCertsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`sql_ssl_certs_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodSslCertsPeriodGetParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -113,7 +113,7 @@ pub struct SqlPeriodSslCertsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`sql_ssl_certs_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodSslCertsPeriodInsertParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -146,7 +146,7 @@ pub struct SqlPeriodSslCertsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`sql_ssl_certs_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodSslCertsPeriodListParams {
     /// Project ID of the project that contains the instance.
     pub project: String,

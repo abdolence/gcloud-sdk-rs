@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HttpRouteRule : The HttpRouteRule setting specifies how to match an HTTP request and the corresponding routing action that load balancing proxies perform.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HttpRouteRule {
     /// The short description conveying the intent of this routeRule. The description can have a maximum length of 1024 characters.
     #[serde(rename = "description", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HealthCheckService : Represents a Health-Check as a Service resource.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HealthCheckService {
     /// [Output Only] Creation timestamp in RFC3339 text format.
     #[serde(rename = "creationTimestamp", skip_serializing_if = "Option::is_none")]

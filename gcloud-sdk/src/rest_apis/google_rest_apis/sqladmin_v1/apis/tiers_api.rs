@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::sqladmin_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`sql_tiers_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodTiersPeriodListParams {
     /// Project ID of the project for which to list tiers.
     pub project: String,

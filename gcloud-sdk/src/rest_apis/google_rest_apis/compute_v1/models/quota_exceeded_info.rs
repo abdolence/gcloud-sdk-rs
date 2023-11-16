@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// QuotaExceededInfo : Additional details for quota exceeded error for resource quota.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct QuotaExceededInfo {
     /// The map holding related quota dimensions.
     #[serde(rename = "dimensions", skip_serializing_if = "Option::is_none")]

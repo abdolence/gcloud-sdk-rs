@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_instance_templates_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceTemplatesPeriodAggregatedListParams {
     /// Name of the project scoping this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodInstanceTemplatesPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_templates_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceTemplatesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -93,7 +93,7 @@ pub struct ComputePeriodInstanceTemplatesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_templates_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceTemplatesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -126,7 +126,7 @@ pub struct ComputePeriodInstanceTemplatesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_templates_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceTemplatesPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -161,7 +161,7 @@ pub struct ComputePeriodInstanceTemplatesPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_templates_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceTemplatesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -195,7 +195,7 @@ pub struct ComputePeriodInstanceTemplatesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_templates_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceTemplatesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -236,7 +236,7 @@ pub struct ComputePeriodInstanceTemplatesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_templates_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceTemplatesPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -271,7 +271,7 @@ pub struct ComputePeriodInstanceTemplatesPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_templates_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceTemplatesPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

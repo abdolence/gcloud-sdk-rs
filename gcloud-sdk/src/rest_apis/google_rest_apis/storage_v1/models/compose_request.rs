@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ComposeRequest : A Compose request.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ComposeRequest {
     #[serde(rename = "destination", skip_serializing_if = "Option::is_none")]
     pub destination: Option<Box<crate::google_rest_apis::storage_v1::models::Object>>,

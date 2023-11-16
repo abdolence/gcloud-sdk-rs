@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// NamedPort : The named port. For example: <\"http\", 80>.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct NamedPort {
     /// The name for this named port. The name must be 1-63 characters long, and comply with RFC1035.
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]

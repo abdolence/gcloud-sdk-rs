@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_ssl_certificates_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSslCertificatesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -51,7 +51,7 @@ pub struct ComputePeriodRegionSslCertificatesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_ssl_certificates_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSslCertificatesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -86,7 +86,7 @@ pub struct ComputePeriodRegionSslCertificatesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_ssl_certificates_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSslCertificatesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -122,7 +122,7 @@ pub struct ComputePeriodRegionSslCertificatesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_ssl_certificates_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSslCertificatesPeriodListParams {
     /// Project ID for this request.
     pub project: String,

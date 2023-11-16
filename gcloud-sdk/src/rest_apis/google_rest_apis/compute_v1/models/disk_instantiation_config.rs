@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DiskInstantiationConfig : A specification of the desired way to instantiate a disk in the instance template when its created from a source instance.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct DiskInstantiationConfig {
     /// Specifies whether the disk will be auto-deleted when the instance is deleted (but not when the disk is detached from the instance).
     #[serde(rename = "autoDelete", skip_serializing_if = "Option::is_none")]

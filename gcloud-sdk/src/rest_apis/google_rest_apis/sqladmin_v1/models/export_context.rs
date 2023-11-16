@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ExportContext : Database instance export context.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ExportContext {
     #[serde(rename = "bakExportOptions", skip_serializing_if = "Option::is_none")]
     pub bak_export_options:

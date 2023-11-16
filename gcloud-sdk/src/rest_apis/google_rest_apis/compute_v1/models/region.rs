@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Region : Represents a Region resource. A region is a geographical area where a resource is located. For more information, read Regions and Zones.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Region {
     /// [Output Only] Creation timestamp in RFC3339 text format.
     #[serde(rename = "creationTimestamp", skip_serializing_if = "Option::is_none")]

@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_target_grpc_proxies_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetGrpcProxiesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodTargetGrpcProxiesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_grpc_proxies_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetGrpcProxiesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -82,7 +82,7 @@ pub struct ComputePeriodTargetGrpcProxiesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_grpc_proxies_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetGrpcProxiesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -116,7 +116,7 @@ pub struct ComputePeriodTargetGrpcProxiesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_grpc_proxies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetGrpcProxiesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -157,7 +157,7 @@ pub struct ComputePeriodTargetGrpcProxiesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_grpc_proxies_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetGrpcProxiesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,

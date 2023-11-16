@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BucketVersioning : The bucket's versioning configuration.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BucketVersioning {
     /// While set to true, versioning is fully enabled for this bucket.
     #[serde(rename = "enabled", skip_serializing_if = "Option::is_none")]

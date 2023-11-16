@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Duration : A Duration represents a fixed-length span of time represented as a count of seconds and fractions of seconds at nanosecond resolution. It is independent of any calendar and concepts like \"day\" or \"month\". Range is approximately 10,000 years.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Duration {
     /// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
     #[serde(rename = "nanos", skip_serializing_if = "Option::is_none")]

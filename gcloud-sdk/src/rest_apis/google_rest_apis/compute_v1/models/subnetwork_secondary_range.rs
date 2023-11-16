@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SubnetworkSecondaryRange : Represents a secondary IP range of a subnetwork.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SubnetworkSecondaryRange {
     /// The range of IP addresses belonging to this subnetwork secondary range. Provide this property when you create the subnetwork. Ranges must be unique and non-overlapping with all primary and secondary IP ranges within a network. Only IPv4 is supported. The range can be any range listed in the Valid ranges list.
     #[serde(rename = "ipCidrRange", skip_serializing_if = "Option::is_none")]

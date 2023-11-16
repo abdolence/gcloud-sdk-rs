@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Settings : Database instance settings.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Settings {
     /// The activation policy specifies when the instance is activated; it is applicable only when the instance state is RUNNABLE. Valid values: * `ALWAYS`: The instance is on, and remains so even in the absence of connection requests. * `NEVER`: The instance is off; it is not activated, even if a connection request arrives.
     #[serde(rename = "activationPolicy", skip_serializing_if = "Option::is_none")]

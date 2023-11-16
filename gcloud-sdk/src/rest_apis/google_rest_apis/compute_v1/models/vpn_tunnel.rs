@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// VpnTunnel : Represents a Cloud VPN Tunnel resource. For more information about VPN, read the the Cloud VPN Overview.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct VpnTunnel {
     /// [Output Only] Creation timestamp in RFC3339 text format.
     #[serde(rename = "creationTimestamp", skip_serializing_if = "Option::is_none")]

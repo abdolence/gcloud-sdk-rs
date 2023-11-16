@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_interconnects_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodInterconnectsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_interconnects_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -82,7 +82,7 @@ pub struct ComputePeriodInterconnectsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_interconnects_get_diagnostics`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectsPeriodGetDiagnosticsParams {
     /// Project ID for this request.
     pub project: String,
@@ -115,7 +115,7 @@ pub struct ComputePeriodInterconnectsPeriodGetDiagnosticsParams {
 }
 
 /// struct for passing parameters to the method [`compute_interconnects_get_macsec_config`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectsPeriodGetMacsecConfigParams {
     /// Project ID for this request.
     pub project: String,
@@ -148,7 +148,7 @@ pub struct ComputePeriodInterconnectsPeriodGetMacsecConfigParams {
 }
 
 /// struct for passing parameters to the method [`compute_interconnects_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -182,7 +182,7 @@ pub struct ComputePeriodInterconnectsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_interconnects_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -223,7 +223,7 @@ pub struct ComputePeriodInterconnectsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_interconnects_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectsPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -259,7 +259,7 @@ pub struct ComputePeriodInterconnectsPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_interconnects_set_labels`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectsPeriodSetLabelsParams {
     /// Project ID for this request.
     pub project: String,

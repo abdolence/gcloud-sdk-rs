@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BulkInsertInstanceResource : A transient resource used in compute.instances.bulkInsert and compute.regionInstances.bulkInsert . This resource is not persisted anywhere, it is used only for processing the requests.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BulkInsertInstanceResource {
     /// The maximum number of instances to create.
     #[serde(rename = "count", skip_serializing_if = "Option::is_none")]

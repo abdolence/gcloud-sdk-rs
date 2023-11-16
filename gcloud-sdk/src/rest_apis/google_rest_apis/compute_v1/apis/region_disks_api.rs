@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_disks_add_resource_policies`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodAddResourcePoliciesParams {
     /// Project ID for this request.
     pub project: String,
@@ -53,7 +53,7 @@ pub struct ComputePeriodRegionDisksPeriodAddResourcePoliciesParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disks_bulk_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodBulkInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -90,7 +90,7 @@ pub struct ComputePeriodRegionDisksPeriodBulkInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disks_create_snapshot`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodCreateSnapshotParams {
     /// Project ID for this request.
     pub project: String,
@@ -128,7 +128,7 @@ pub struct ComputePeriodRegionDisksPeriodCreateSnapshotParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disks_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -165,7 +165,7 @@ pub struct ComputePeriodRegionDisksPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disks_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -200,7 +200,7 @@ pub struct ComputePeriodRegionDisksPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disks_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -237,7 +237,7 @@ pub struct ComputePeriodRegionDisksPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disks_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -275,7 +275,7 @@ pub struct ComputePeriodRegionDisksPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disks_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -318,7 +318,7 @@ pub struct ComputePeriodRegionDisksPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disks_remove_resource_policies`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodRemoveResourcePoliciesParams {
     /// Project ID for this request.
     pub project: String,
@@ -358,7 +358,7 @@ pub struct ComputePeriodRegionDisksPeriodRemoveResourcePoliciesParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disks_resize`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodResizeParams {
     /// The project ID for this request.
     pub project: String,
@@ -397,7 +397,7 @@ pub struct ComputePeriodRegionDisksPeriodResizeParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disks_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -434,7 +434,7 @@ pub struct ComputePeriodRegionDisksPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disks_set_labels`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodSetLabelsParams {
     /// Project ID for this request.
     pub project: String,
@@ -473,7 +473,7 @@ pub struct ComputePeriodRegionDisksPeriodSetLabelsParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disks_start_async_replication`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodStartAsyncReplicationParams {
     /// Project ID for this request.
     pub project: String,
@@ -513,7 +513,7 @@ pub struct ComputePeriodRegionDisksPeriodStartAsyncReplicationParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disks_stop_async_replication`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodStopAsyncReplicationParams {
     /// Project ID for this request.
     pub project: String,
@@ -550,7 +550,7 @@ pub struct ComputePeriodRegionDisksPeriodStopAsyncReplicationParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disks_stop_group_async_replication`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodStopGroupAsyncReplicationParams {
     /// Project ID for this request.
     pub project: String,
@@ -587,7 +587,7 @@ pub struct ComputePeriodRegionDisksPeriodStopGroupAsyncReplicationParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disks_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,
@@ -624,7 +624,7 @@ pub struct ComputePeriodRegionDisksPeriodTestIamPermissionsParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_disks_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionDisksPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,

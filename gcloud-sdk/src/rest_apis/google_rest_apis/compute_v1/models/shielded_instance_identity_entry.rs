@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ShieldedInstanceIdentityEntry : A Shielded Instance Identity Entry.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ShieldedInstanceIdentityEntry {
     /// A PEM-encoded X.509 certificate. This field can be empty.
     #[serde(rename = "ekCert", skip_serializing_if = "Option::is_none")]

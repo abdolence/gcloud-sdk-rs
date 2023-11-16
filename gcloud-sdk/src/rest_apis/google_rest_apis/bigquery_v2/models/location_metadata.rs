@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// LocationMetadata : BigQuery-specific metadata about a location. This will be set on google.cloud.location.Location.metadata in Cloud Location API responses.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct LocationMetadata {
     /// The legacy BigQuery location ID, e.g. “EU” for the “europe” location. This is for any API consumers that need the legacy “US” and “EU” locations.
     #[serde(rename = "legacyLocationId", skip_serializing_if = "Option::is_none")]

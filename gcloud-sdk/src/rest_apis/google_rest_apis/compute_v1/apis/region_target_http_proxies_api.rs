@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_target_http_proxies_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionTargetHttpProxiesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -51,7 +51,7 @@ pub struct ComputePeriodRegionTargetHttpProxiesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_target_http_proxies_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionTargetHttpProxiesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -86,7 +86,7 @@ pub struct ComputePeriodRegionTargetHttpProxiesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_target_http_proxies_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionTargetHttpProxiesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -122,7 +122,7 @@ pub struct ComputePeriodRegionTargetHttpProxiesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_target_http_proxies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionTargetHttpProxiesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -165,7 +165,7 @@ pub struct ComputePeriodRegionTargetHttpProxiesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_target_http_proxies_set_url_map`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionTargetHttpProxiesPeriodSetUrlMapParams {
     /// Project ID for this request.
     pub project: String,

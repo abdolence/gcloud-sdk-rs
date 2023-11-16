@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ManagedInstanceLastAttemptErrors : [Output Only] Encountered errors during the last attempt to create or delete the instance.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ManagedInstanceLastAttemptErrors {
     /// [Output Only] The array of errors encountered while processing this operation.
     #[serde(rename = "errors", skip_serializing_if = "Option::is_none")]

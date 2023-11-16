@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RrSetRoutingPolicyPrimaryBackupPolicy : Configures a RRSetRoutingPolicy such that all queries are responded with the primary_targets if they are healthy. And if all of them are unhealthy, then we fallback to a geo localized policy.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct RrSetRoutingPolicyPrimaryBackupPolicy {
     #[serde(rename = "backupGeoTargets", skip_serializing_if = "Option::is_none")]
     pub backup_geo_targets:

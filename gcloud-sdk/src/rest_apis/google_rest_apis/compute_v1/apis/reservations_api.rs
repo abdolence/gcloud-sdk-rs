@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_reservations_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodReservationsPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodReservationsPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_reservations_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodReservationsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodReservationsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_reservations_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodReservationsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -130,7 +130,7 @@ pub struct ComputePeriodReservationsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_reservations_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodReservationsPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -167,7 +167,7 @@ pub struct ComputePeriodReservationsPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_reservations_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodReservationsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -203,7 +203,7 @@ pub struct ComputePeriodReservationsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_reservations_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodReservationsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -246,7 +246,7 @@ pub struct ComputePeriodReservationsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_reservations_resize`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodReservationsPeriodResizeParams {
     /// Project ID for this request.
     pub project: String,
@@ -285,7 +285,7 @@ pub struct ComputePeriodReservationsPeriodResizeParams {
 }
 
 /// struct for passing parameters to the method [`compute_reservations_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodReservationsPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -322,7 +322,7 @@ pub struct ComputePeriodReservationsPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_reservations_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodReservationsPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,
@@ -359,7 +359,7 @@ pub struct ComputePeriodReservationsPeriodTestIamPermissionsParams {
 }
 
 /// struct for passing parameters to the method [`compute_reservations_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodReservationsPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,

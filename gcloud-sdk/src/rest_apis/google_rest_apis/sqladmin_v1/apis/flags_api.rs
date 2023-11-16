@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::sqladmin_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`sql_flags_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodFlagsPeriodListParams {
     /// V1 error format.
     pub dollar_xgafv: Option<String>,

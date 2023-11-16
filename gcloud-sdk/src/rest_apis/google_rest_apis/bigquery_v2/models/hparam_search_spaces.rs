@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HparamSearchSpaces : Hyperparameter search spaces. These should be a subset of training_options.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HparamSearchSpaces {
     #[serde(rename = "activationFn", skip_serializing_if = "Option::is_none")]
     pub activation_fn:

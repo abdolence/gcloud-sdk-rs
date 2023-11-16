@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_global_organization_operations_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalOrganizationOperationsPeriodDeleteParams {
     /// Name of the Operations resource to delete.
     pub operation: String,
@@ -47,7 +47,7 @@ pub struct ComputePeriodGlobalOrganizationOperationsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_organization_operations_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalOrganizationOperationsPeriodGetParams {
     /// Name of the Operations resource to return.
     pub operation: String,
@@ -80,7 +80,7 @@ pub struct ComputePeriodGlobalOrganizationOperationsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_organization_operations_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalOrganizationOperationsPeriodListParams {
     /// V1 error format.
     pub dollar_xgafv: Option<String>,

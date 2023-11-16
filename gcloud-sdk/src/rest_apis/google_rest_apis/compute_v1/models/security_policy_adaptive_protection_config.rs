@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SecurityPolicyAdaptiveProtectionConfig : Configuration options for Cloud Armor Adaptive Protection (CAAP).
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SecurityPolicyAdaptiveProtectionConfig {
     #[serde(rename = "layer7DdosDefenseConfig", skip_serializing_if = "Option::is_none")]
     pub layer7_ddos_defense_config: Option<Box<crate::google_rest_apis::compute_v1::models::SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig>>,

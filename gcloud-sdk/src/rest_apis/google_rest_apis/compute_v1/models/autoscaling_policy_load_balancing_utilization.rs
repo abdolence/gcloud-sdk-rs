@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// AutoscalingPolicyLoadBalancingUtilization : Configuration parameters of autoscaling based on load balancing.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct AutoscalingPolicyLoadBalancingUtilization {
     /// Fraction of backend capacity utilization (set in HTTP(S) load balancing configuration) that the autoscaler maintains. Must be a positive float value. If not defined, the default is 0.8.
     #[serde(rename = "utilizationTarget", skip_serializing_if = "Option::is_none")]

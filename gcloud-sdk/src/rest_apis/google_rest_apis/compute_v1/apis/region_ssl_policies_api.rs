@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_ssl_policies_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSslPoliciesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -51,7 +51,7 @@ pub struct ComputePeriodRegionSslPoliciesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_ssl_policies_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSslPoliciesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -86,7 +86,7 @@ pub struct ComputePeriodRegionSslPoliciesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_ssl_policies_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSslPoliciesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -122,7 +122,7 @@ pub struct ComputePeriodRegionSslPoliciesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_ssl_policies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSslPoliciesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -165,7 +165,7 @@ pub struct ComputePeriodRegionSslPoliciesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_ssl_policies_list_available_features`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSslPoliciesPeriodListAvailableFeaturesParams {
     /// Project ID for this request.
     pub project: String,
@@ -208,7 +208,7 @@ pub struct ComputePeriodRegionSslPoliciesPeriodListAvailableFeaturesParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_ssl_policies_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSslPoliciesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,

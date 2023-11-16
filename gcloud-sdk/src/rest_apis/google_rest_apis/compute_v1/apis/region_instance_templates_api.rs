@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_instance_templates_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionInstanceTemplatesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -51,7 +51,7 @@ pub struct ComputePeriodRegionInstanceTemplatesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_instance_templates_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionInstanceTemplatesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -86,7 +86,7 @@ pub struct ComputePeriodRegionInstanceTemplatesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_instance_templates_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionInstanceTemplatesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -122,7 +122,7 @@ pub struct ComputePeriodRegionInstanceTemplatesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_instance_templates_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionInstanceTemplatesPeriodListParams {
     /// Project ID for this request.
     pub project: String,

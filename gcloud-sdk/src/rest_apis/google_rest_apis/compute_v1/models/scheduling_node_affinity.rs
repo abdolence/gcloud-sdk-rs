@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SchedulingNodeAffinity : Node Affinity: the configuration of desired nodes onto which this Instance could be scheduled.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SchedulingNodeAffinity {
     /// Corresponds to the label key of Node resource.
     #[serde(rename = "key", skip_serializing_if = "Option::is_none")]

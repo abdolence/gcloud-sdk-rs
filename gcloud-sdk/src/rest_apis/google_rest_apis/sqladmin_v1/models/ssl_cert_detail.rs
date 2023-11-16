@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SslCertDetail : SslCertDetail.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SslCertDetail {
     #[serde(rename = "certInfo", skip_serializing_if = "Option::is_none")]
     pub cert_info: Option<Box<crate::google_rest_apis::sqladmin_v1::models::SslCert>>,

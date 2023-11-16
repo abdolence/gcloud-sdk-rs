@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InterconnectAttachmentPrivateInfo : Information for an interconnect attachment when this belongs to an interconnect of type DEDICATED.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InterconnectAttachmentPrivateInfo {
     /// [Output Only] 802.1q encapsulation tag to be used for traffic between Google and the customer, going to and from this network and region.
     #[serde(rename = "tag8021q", skip_serializing_if = "Option::is_none")]

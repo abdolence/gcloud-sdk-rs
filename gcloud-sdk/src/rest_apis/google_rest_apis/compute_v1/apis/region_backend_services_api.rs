@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_backend_services_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionBackendServicesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -51,7 +51,7 @@ pub struct ComputePeriodRegionBackendServicesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_backend_services_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionBackendServicesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -86,7 +86,7 @@ pub struct ComputePeriodRegionBackendServicesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_backend_services_get_health`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionBackendServicesPeriodGetHealthParams {
     pub project: String,
     /// Name of the region scoping this request.
@@ -122,7 +122,7 @@ pub struct ComputePeriodRegionBackendServicesPeriodGetHealthParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_backend_services_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionBackendServicesPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -159,7 +159,7 @@ pub struct ComputePeriodRegionBackendServicesPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_backend_services_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionBackendServicesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -195,7 +195,7 @@ pub struct ComputePeriodRegionBackendServicesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_backend_services_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionBackendServicesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -238,7 +238,7 @@ pub struct ComputePeriodRegionBackendServicesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_backend_services_list_usable`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionBackendServicesPeriodListUsableParams {
     /// Project ID for this request.
     pub project: String,
@@ -281,7 +281,7 @@ pub struct ComputePeriodRegionBackendServicesPeriodListUsableParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_backend_services_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionBackendServicesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -319,7 +319,7 @@ pub struct ComputePeriodRegionBackendServicesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_backend_services_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionBackendServicesPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -356,7 +356,7 @@ pub struct ComputePeriodRegionBackendServicesPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_backend_services_set_security_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionBackendServicesPeriodSetSecurityPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -395,7 +395,7 @@ pub struct ComputePeriodRegionBackendServicesPeriodSetSecurityPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_backend_services_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionBackendServicesPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,
@@ -432,7 +432,7 @@ pub struct ComputePeriodRegionBackendServicesPeriodTestIamPermissionsParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_backend_services_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionBackendServicesPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,

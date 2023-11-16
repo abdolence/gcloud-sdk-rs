@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// PreservedState : Preserved state for a given instance.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct PreservedState {
     /// Preserved disks defined for this instance. This map is keyed with the device names of the disks.
     #[serde(rename = "disks", skip_serializing_if = "Option::is_none")]

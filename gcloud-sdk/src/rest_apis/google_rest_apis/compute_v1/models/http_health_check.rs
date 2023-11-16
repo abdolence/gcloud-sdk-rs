@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HttpHealthCheck : Represents a legacy HTTP Health Check resource. Legacy HTTP health checks are now only required by target pool-based network load balancers. For all other load balancers, including backend service-based network load balancers, and for managed instance group auto-healing, you must use modern (non-legacy) health checks. For more information, see Health checks overview .
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HttpHealthCheck {
     /// How often (in seconds) to send a health check. The default value is 5 seconds.
     #[serde(rename = "checkIntervalSec", skip_serializing_if = "Option::is_none")]

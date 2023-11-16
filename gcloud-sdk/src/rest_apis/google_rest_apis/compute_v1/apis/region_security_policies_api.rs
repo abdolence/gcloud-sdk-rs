@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_security_policies_add_rule`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSecurityPoliciesPeriodAddRuleParams {
     /// Project ID for this request.
     pub project: String,
@@ -53,7 +53,7 @@ pub struct ComputePeriodRegionSecurityPoliciesPeriodAddRuleParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_security_policies_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSecurityPoliciesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -90,7 +90,7 @@ pub struct ComputePeriodRegionSecurityPoliciesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_security_policies_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSecurityPoliciesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -125,7 +125,7 @@ pub struct ComputePeriodRegionSecurityPoliciesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_security_policies_get_rule`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSecurityPoliciesPeriodGetRuleParams {
     /// Project ID for this request.
     pub project: String,
@@ -162,7 +162,7 @@ pub struct ComputePeriodRegionSecurityPoliciesPeriodGetRuleParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_security_policies_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSecurityPoliciesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -200,7 +200,7 @@ pub struct ComputePeriodRegionSecurityPoliciesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_security_policies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSecurityPoliciesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -243,7 +243,7 @@ pub struct ComputePeriodRegionSecurityPoliciesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_security_policies_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSecurityPoliciesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -283,7 +283,7 @@ pub struct ComputePeriodRegionSecurityPoliciesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_security_policies_patch_rule`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSecurityPoliciesPeriodPatchRuleParams {
     /// Project ID for this request.
     pub project: String,
@@ -326,7 +326,7 @@ pub struct ComputePeriodRegionSecurityPoliciesPeriodPatchRuleParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_security_policies_remove_rule`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionSecurityPoliciesPeriodRemoveRuleParams {
     /// Project ID for this request.
     pub project: String,

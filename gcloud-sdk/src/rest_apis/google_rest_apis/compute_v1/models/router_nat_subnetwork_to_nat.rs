@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RouterNatSubnetworkToNat : Defines the IP ranges that want to use NAT for a subnetwork.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct RouterNatSubnetworkToNat {
     /// URL for the subnetwork resource that will use NAT.
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]

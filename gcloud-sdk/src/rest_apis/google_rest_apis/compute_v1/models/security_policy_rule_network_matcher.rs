@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SecurityPolicyRuleNetworkMatcher : Represents a match condition that incoming network traffic is evaluated against.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SecurityPolicyRuleNetworkMatcher {
     /// Destination IPv4/IPv6 addresses or CIDR prefixes, in standard text format.
     #[serde(rename = "destIpRanges", skip_serializing_if = "Option::is_none")]

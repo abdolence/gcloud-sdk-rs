@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_health_check_services_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionHealthCheckServicesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -51,7 +51,7 @@ pub struct ComputePeriodRegionHealthCheckServicesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_health_check_services_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionHealthCheckServicesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -86,7 +86,7 @@ pub struct ComputePeriodRegionHealthCheckServicesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_health_check_services_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionHealthCheckServicesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -123,7 +123,7 @@ pub struct ComputePeriodRegionHealthCheckServicesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_health_check_services_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionHealthCheckServicesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -166,7 +166,7 @@ pub struct ComputePeriodRegionHealthCheckServicesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_health_check_services_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionHealthCheckServicesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,

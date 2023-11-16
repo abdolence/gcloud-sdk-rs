@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InitialStateConfig : Initial State for shielded instance, these are public keys which are safe to store in public
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InitialStateConfig {
     /// The Key Database (db).
     #[serde(rename = "dbs", skip_serializing_if = "Option::is_none")]

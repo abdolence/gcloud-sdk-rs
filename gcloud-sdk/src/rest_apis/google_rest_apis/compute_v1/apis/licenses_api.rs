@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_licenses_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodLicensesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodLicensesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_licenses_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodLicensesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -82,7 +82,7 @@ pub struct ComputePeriodLicensesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_licenses_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodLicensesPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -117,7 +117,7 @@ pub struct ComputePeriodLicensesPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_licenses_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodLicensesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -151,7 +151,7 @@ pub struct ComputePeriodLicensesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_licenses_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodLicensesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -192,7 +192,7 @@ pub struct ComputePeriodLicensesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_licenses_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodLicensesPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -227,7 +227,7 @@ pub struct ComputePeriodLicensesPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_licenses_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodLicensesPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

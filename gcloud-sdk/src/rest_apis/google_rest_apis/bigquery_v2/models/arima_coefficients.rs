@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ArimaCoefficients : Arima coefficients.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ArimaCoefficients {
     /// Auto-regressive coefficients, an array of double.
     #[serde(

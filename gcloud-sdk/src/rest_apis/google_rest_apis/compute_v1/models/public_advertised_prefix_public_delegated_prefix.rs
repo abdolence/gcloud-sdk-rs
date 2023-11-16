@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// PublicAdvertisedPrefixPublicDelegatedPrefix : Represents a CIDR range which can be used to assign addresses.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct PublicAdvertisedPrefixPublicDelegatedPrefix {
     /// The IP address range of the public delegated prefix
     #[serde(rename = "ipRange", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// UsableSubnetwork : Subnetwork which the current user has compute.subnetworks.use permission on.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct UsableSubnetwork {
     /// [Output Only] The external IPv6 address range that is assigned to this subnetwork.
     #[serde(rename = "externalIpv6Prefix", skip_serializing_if = "Option::is_none")]

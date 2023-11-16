@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ImportContext : Database instance import context.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ImportContext {
     #[serde(rename = "bakImportOptions", skip_serializing_if = "Option::is_none")]
     pub bak_import_options:

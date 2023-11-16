@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SourceInstanceParams : A specification of the parameters to use when creating the instance template from a source instance.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SourceInstanceParams {
     /// Attached disks configuration. If not provided, defaults are applied: For boot disk and any other R/W disks, the source images for each disk will be used. For read-only disks, they will be attached in read-only mode. Local SSD disks will be created as blank volumes.
     #[serde(rename = "diskConfigs", skip_serializing_if = "Option::is_none")]

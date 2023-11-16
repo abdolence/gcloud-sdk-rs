@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ChangesListResponse : The response to a request to enumerate Changes to a ResourceRecordSets collection.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ChangesListResponse {
     /// The requested changes.
     #[serde(rename = "changes", skip_serializing_if = "Option::is_none")]

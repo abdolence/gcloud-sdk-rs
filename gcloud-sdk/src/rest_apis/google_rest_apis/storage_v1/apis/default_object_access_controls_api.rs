@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::storage_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`storage_default_object_access_controls_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodDefaultObjectAccessControlsPeriodDeleteParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -41,7 +41,7 @@ pub struct StoragePeriodDefaultObjectAccessControlsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`storage_default_object_access_controls_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodDefaultObjectAccessControlsPeriodGetParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -68,7 +68,7 @@ pub struct StoragePeriodDefaultObjectAccessControlsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`storage_default_object_access_controls_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodDefaultObjectAccessControlsPeriodInsertParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -95,7 +95,7 @@ pub struct StoragePeriodDefaultObjectAccessControlsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`storage_default_object_access_controls_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodDefaultObjectAccessControlsPeriodListParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -124,7 +124,7 @@ pub struct StoragePeriodDefaultObjectAccessControlsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`storage_default_object_access_controls_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodDefaultObjectAccessControlsPeriodPatchParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -153,7 +153,7 @@ pub struct StoragePeriodDefaultObjectAccessControlsPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`storage_default_object_access_controls_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodDefaultObjectAccessControlsPeriodUpdateParams {
     /// Name of a bucket.
     pub bucket: String,

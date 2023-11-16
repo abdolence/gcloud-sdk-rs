@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_add_association`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodAddAssociationParams {
     /// Project ID for this request.
     pub project: String,
@@ -55,7 +55,7 @@ pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodAddAssociationParams 
 }
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_add_rule`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodAddRuleParams {
     /// Project ID for this request.
     pub project: String,
@@ -98,7 +98,7 @@ pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodAddRuleParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_clone_rules`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodCloneRulesParams {
     /// Project ID for this request.
     pub project: String,
@@ -137,7 +137,7 @@ pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodCloneRulesParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -174,7 +174,7 @@ pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -209,7 +209,7 @@ pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_get_association`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodGetAssociationParams {
     /// Project ID for this request.
     pub project: String,
@@ -246,7 +246,7 @@ pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodGetAssociationParams 
 }
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_get_effective_firewalls`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodGetEffectiveFirewallsParams {
     /// Project ID for this request.
     pub project: String,
@@ -281,7 +281,7 @@ pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodGetEffectiveFirewalls
 }
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -318,7 +318,7 @@ pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_get_rule`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodGetRuleParams {
     /// Project ID for this request.
     pub project: String,
@@ -355,7 +355,7 @@ pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodGetRuleParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -391,7 +391,7 @@ pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -434,7 +434,7 @@ pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -472,7 +472,7 @@ pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_patch_rule`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodPatchRuleParams {
     /// Project ID for this request.
     pub project: String,
@@ -513,7 +513,7 @@ pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodPatchRuleParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_remove_association`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodRemoveAssociationParams {
     /// Project ID for this request.
     pub project: String,
@@ -552,7 +552,7 @@ pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodRemoveAssociationPara
 }
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_remove_rule`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodRemoveRuleParams {
     /// Project ID for this request.
     pub project: String,
@@ -591,7 +591,7 @@ pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodRemoveRuleParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -628,7 +628,7 @@ pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_network_firewall_policies_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNetworkFirewallPoliciesPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

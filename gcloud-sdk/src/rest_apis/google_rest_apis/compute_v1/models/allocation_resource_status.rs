@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// AllocationResourceStatus : [Output Only] Contains output only fields.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct AllocationResourceStatus {
     #[serde(rename = "specificSkuAllocation", skip_serializing_if = "Option::is_none")]
     pub specific_sku_allocation: Option<Box<crate::google_rest_apis::compute_v1::models::AllocationResourceStatusSpecificSkuAllocation>>,

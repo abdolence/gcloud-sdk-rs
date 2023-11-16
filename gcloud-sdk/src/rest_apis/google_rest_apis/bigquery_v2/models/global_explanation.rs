@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// GlobalExplanation : Global explanations containing the top most important features after training.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct GlobalExplanation {
     /// Class label for this set of global explanations. Will be empty/null for binary logistic and linear regression models. Sorted alphabetically in descending order.
     #[serde(rename = "classLabel", skip_serializing_if = "Option::is_none")]

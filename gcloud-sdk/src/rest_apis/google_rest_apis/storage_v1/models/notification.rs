@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Notification : A subscription to receive Google PubSub notifications.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Notification {
     /// An optional list of additional attributes to attach to each Cloud PubSub message published for this notification subscription.
     #[serde(rename = "custom_attributes", skip_serializing_if = "Option::is_none")]

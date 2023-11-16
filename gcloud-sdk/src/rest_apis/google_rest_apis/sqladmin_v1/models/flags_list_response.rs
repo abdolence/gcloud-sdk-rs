@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// FlagsListResponse : Flags list response.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct FlagsListResponse {
     /// List of flags.
     #[serde(rename = "items", skip_serializing_if = "Option::is_none")]

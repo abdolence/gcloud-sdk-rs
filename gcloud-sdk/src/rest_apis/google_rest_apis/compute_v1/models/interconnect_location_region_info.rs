@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InterconnectLocationRegionInfo : Information about any potential InterconnectAttachments between an Interconnect at a specific InterconnectLocation, and a specific Cloud Region.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InterconnectLocationRegionInfo {
     /// Expected round-trip time in milliseconds, from this InterconnectLocation to a VM in this region.
     #[serde(rename = "expectedRttMs", skip_serializing_if = "Option::is_none")]

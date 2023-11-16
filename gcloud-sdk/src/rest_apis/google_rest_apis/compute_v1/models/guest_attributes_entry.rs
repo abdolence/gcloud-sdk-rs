@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// GuestAttributesEntry : A guest attributes namespace/key/value entry.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct GuestAttributesEntry {
     /// Key for the guest attribute entry.
     #[serde(rename = "key", skip_serializing_if = "Option::is_none")]

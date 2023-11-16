@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::dns_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`dns_projects_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct DnsPeriodProjectsPeriodGetParams {
     /// Identifies the project addressed by this request.
     pub project: String,

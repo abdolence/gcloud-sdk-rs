@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DenyMaintenancePeriod : Deny maintenance Periods. This specifies a date range during when all CSA rollout will be denied.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct DenyMaintenancePeriod {
     /// \"deny maintenance period\" end date. If the year of the end date is empty, the year of the start date also must be empty. In this case, it means the no maintenance interval recurs every year. The date is in format yyyy-mm-dd i.e., 2020-11-01, or mm-dd, i.e., 11-01
     #[serde(rename = "endDate", skip_serializing_if = "Option::is_none")]

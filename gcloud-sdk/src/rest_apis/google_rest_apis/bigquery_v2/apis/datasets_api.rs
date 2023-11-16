@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::bigquery_v2::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`bigquery_datasets_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodDatasetsPeriodDeleteParams {
     /// Project ID of the dataset being deleted
     pub project_id: String,
@@ -39,7 +39,7 @@ pub struct BigqueryPeriodDatasetsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_datasets_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodDatasetsPeriodGetParams {
     /// Project ID of the requested dataset
     pub project_id: String,
@@ -62,7 +62,7 @@ pub struct BigqueryPeriodDatasetsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_datasets_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodDatasetsPeriodInsertParams {
     /// Project ID of the new dataset
     pub project_id: String,
@@ -84,7 +84,7 @@ pub struct BigqueryPeriodDatasetsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_datasets_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodDatasetsPeriodListParams {
     /// Project ID of the datasets to be listed
     pub project_id: String,
@@ -113,7 +113,7 @@ pub struct BigqueryPeriodDatasetsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_datasets_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodDatasetsPeriodPatchParams {
     /// Project ID of the dataset being updated
     pub project_id: String,
@@ -137,7 +137,7 @@ pub struct BigqueryPeriodDatasetsPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_datasets_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodDatasetsPeriodUpdateParams {
     /// Project ID of the dataset being updated
     pub project_id: String,

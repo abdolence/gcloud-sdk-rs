@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ConfidentialInstanceConfig : A set of Confidential Instance options.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ConfidentialInstanceConfig {
     /// Defines whether the instance should have confidential compute enabled.
     #[serde(

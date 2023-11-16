@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_network_edge_security_services_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkEdgeSecurityServicesPeriodAggregatedListParams {
     /// Name of the project scoping this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodNetworkEdgeSecurityServicesPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_edge_security_services_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkEdgeSecurityServicesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodNetworkEdgeSecurityServicesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_edge_security_services_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkEdgeSecurityServicesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -130,7 +130,7 @@ pub struct ComputePeriodNetworkEdgeSecurityServicesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_edge_security_services_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkEdgeSecurityServicesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -169,7 +169,7 @@ pub struct ComputePeriodNetworkEdgeSecurityServicesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_edge_security_services_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkEdgeSecurityServicesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,

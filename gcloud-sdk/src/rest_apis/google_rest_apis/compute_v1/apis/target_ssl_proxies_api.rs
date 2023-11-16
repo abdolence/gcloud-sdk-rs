@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_target_ssl_proxies_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetSslProxiesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodTargetSslProxiesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_ssl_proxies_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetSslProxiesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -82,7 +82,7 @@ pub struct ComputePeriodTargetSslProxiesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_ssl_proxies_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetSslProxiesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -116,7 +116,7 @@ pub struct ComputePeriodTargetSslProxiesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_ssl_proxies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetSslProxiesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -157,7 +157,7 @@ pub struct ComputePeriodTargetSslProxiesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_ssl_proxies_set_backend_service`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetSslProxiesPeriodSetBackendServiceParams {
     /// Project ID for this request.
     pub project: String,
@@ -195,7 +195,7 @@ pub struct ComputePeriodTargetSslProxiesPeriodSetBackendServiceParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_ssl_proxies_set_certificate_map`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetSslProxiesPeriodSetCertificateMapParams {
     /// Project ID for this request.
     pub project: String,
@@ -233,7 +233,7 @@ pub struct ComputePeriodTargetSslProxiesPeriodSetCertificateMapParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_ssl_proxies_set_proxy_header`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetSslProxiesPeriodSetProxyHeaderParams {
     /// Project ID for this request.
     pub project: String,
@@ -270,7 +270,7 @@ pub struct ComputePeriodTargetSslProxiesPeriodSetProxyHeaderParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_ssl_proxies_set_ssl_certificates`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetSslProxiesPeriodSetSslCertificatesParams {
     /// Project ID for this request.
     pub project: String,
@@ -308,7 +308,7 @@ pub struct ComputePeriodTargetSslProxiesPeriodSetSslCertificatesParams {
 }
 
 /// struct for passing parameters to the method [`compute_target_ssl_proxies_set_ssl_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodTargetSslProxiesPeriodSetSslPolicyParams {
     /// Project ID for this request.
     pub project: String,

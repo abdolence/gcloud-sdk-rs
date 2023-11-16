@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ExportContextBakExportOptions : Options for exporting BAK files (SQL Server-only)
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ExportContextBakExportOptions {
     /// Option for specifying how many stripes to use for the export. If blank, and the value of the striped field is true, the number of stripes is automatically chosen.
     #[serde(rename = "stripeCount", skip_serializing_if = "Option::is_none")]

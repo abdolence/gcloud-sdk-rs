@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Flag : A flag resource.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Flag {
     /// Use this field if only certain integers are accepted. Can be combined with min_value and max_value to add additional values.
     #[serde(rename = "allowedIntValues", skip_serializing_if = "Option::is_none")]

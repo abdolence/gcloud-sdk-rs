@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// PublicAdvertisedPrefix : A public advertised prefix represents an aggregated IP prefix or netblock which customers bring to cloud. The IP prefix is a single unit of route advertisement and is announced globally to the internet.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct PublicAdvertisedPrefix {
     /// [Output Only] The version of BYOIP API.
     #[serde(rename = "byoipApiVersion", skip_serializing_if = "Option::is_none")]

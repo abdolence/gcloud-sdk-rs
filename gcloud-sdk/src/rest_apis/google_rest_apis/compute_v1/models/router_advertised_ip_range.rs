@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RouterAdvertisedIpRange : Description-tagged IP ranges for the router to advertise.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct RouterAdvertisedIpRange {
     /// User-specified description for the IP range.
     #[serde(rename = "description", skip_serializing_if = "Option::is_none")]

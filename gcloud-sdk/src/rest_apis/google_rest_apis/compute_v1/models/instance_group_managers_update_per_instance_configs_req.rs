@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InstanceGroupManagersUpdatePerInstanceConfigsReq : InstanceGroupManagers.updatePerInstanceConfigs
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InstanceGroupManagersUpdatePerInstanceConfigsReq {
     /// The list of per-instance configurations to insert or patch on this managed instance group.
     #[serde(rename = "perInstanceConfigs", skip_serializing_if = "Option::is_none")]

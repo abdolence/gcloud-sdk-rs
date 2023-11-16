@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// VmEndpointNatMappingsInterfaceNatMappings : Contain information of Nat mapping for an interface of this endpoint.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct VmEndpointNatMappingsInterfaceNatMappings {
     /// List of all drain IP:port-range mappings assigned to this interface. These ranges are inclusive, that is, both the first and the last ports can be used for NAT. Example: [\"2.2.2.2:12345-12355\", \"1.1.1.1:2234-2234\"].
     #[serde(rename = "drainNatIpPortRanges", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SubnetworkLogConfig : The available logging options for this subnetwork.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SubnetworkLogConfig {
     /// Can only be specified if VPC flow logging for this subnetwork is enabled. Toggles the aggregation interval for collecting flow logs. Increasing the interval time will reduce the amount of generated flow logs for long lasting connections. Default is an interval of 5 seconds per connection.
     #[serde(

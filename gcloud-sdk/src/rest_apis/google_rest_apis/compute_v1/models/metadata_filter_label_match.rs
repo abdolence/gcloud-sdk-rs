@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// MetadataFilterLabelMatch : MetadataFilter label name value pairs that are expected to match corresponding labels presented as metadata to the load balancer.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct MetadataFilterLabelMatch {
     /// Name of metadata label. The name can have a maximum length of 1024 characters and must be at least 1 character long.
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]

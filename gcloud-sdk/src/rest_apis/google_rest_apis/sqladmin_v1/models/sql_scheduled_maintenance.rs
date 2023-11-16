@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SqlScheduledMaintenance : Any scheduled maintenance for this instance.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SqlScheduledMaintenance {
     #[serde(rename = "canDefer", skip_serializing_if = "Option::is_none")]
     pub can_defer: Option<bool>,

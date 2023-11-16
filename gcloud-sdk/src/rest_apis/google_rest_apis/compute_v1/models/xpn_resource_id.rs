@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// XpnResourceId : Service resource (a.k.a service project) ID.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct XpnResourceId {
     /// The ID of the service resource. In the case of projects, this field supports project id (e.g., my-project-123) and project number (e.g. 12345678).
     #[serde(rename = "id", skip_serializing_if = "Option::is_none")]

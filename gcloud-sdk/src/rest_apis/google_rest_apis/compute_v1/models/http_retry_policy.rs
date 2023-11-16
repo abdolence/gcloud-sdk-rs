@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HttpRetryPolicy : The retry policy associates with HttpRouteRule
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HttpRetryPolicy {
     /// Specifies the allowed number retries. This number must be > 0. If not specified, defaults to 1.
     #[serde(rename = "numRetries", skip_serializing_if = "Option::is_none")]

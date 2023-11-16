@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// UrlMapTest : Message for the expected URL mappings.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct UrlMapTest {
     /// Description of this test case.
     #[serde(rename = "description", skip_serializing_if = "Option::is_none")]

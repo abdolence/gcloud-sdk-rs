@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_service_attachments_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodServiceAttachmentsPeriodAggregatedListParams {
     /// Name of the project scoping this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodServiceAttachmentsPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_service_attachments_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodServiceAttachmentsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodServiceAttachmentsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_service_attachments_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodServiceAttachmentsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -130,7 +130,7 @@ pub struct ComputePeriodServiceAttachmentsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_service_attachments_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodServiceAttachmentsPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -167,7 +167,7 @@ pub struct ComputePeriodServiceAttachmentsPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_service_attachments_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodServiceAttachmentsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -203,7 +203,7 @@ pub struct ComputePeriodServiceAttachmentsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_service_attachments_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodServiceAttachmentsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -246,7 +246,7 @@ pub struct ComputePeriodServiceAttachmentsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_service_attachments_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodServiceAttachmentsPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -284,7 +284,7 @@ pub struct ComputePeriodServiceAttachmentsPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_service_attachments_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodServiceAttachmentsPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -321,7 +321,7 @@ pub struct ComputePeriodServiceAttachmentsPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_service_attachments_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodServiceAttachmentsPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

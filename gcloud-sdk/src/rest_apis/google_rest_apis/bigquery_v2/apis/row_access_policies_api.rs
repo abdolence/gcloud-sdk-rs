@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::bigquery_v2::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`bigquery_row_access_policies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodRowAccessPoliciesPeriodListParams {
     /// Required. Project ID of the row access policies to list.
     pub project_id: String,

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// PacketIntervals : Next free: 7
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct PacketIntervals {
     /// Average observed inter-packet interval in milliseconds.
     #[serde(rename = "avgMs", skip_serializing_if = "Option::is_none")]

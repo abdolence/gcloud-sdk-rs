@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InterconnectDiagnosticsArpEntry : Describing the ARP neighbor entries seen on this link
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InterconnectDiagnosticsArpEntry {
     /// The IP address of this ARP neighbor.
     #[serde(rename = "ipAddress", skip_serializing_if = "Option::is_none")]

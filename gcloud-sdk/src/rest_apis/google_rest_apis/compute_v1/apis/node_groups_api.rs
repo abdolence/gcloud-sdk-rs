@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_node_groups_add_nodes`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeGroupsPeriodAddNodesParams {
     /// Project ID for this request.
     pub project: String,
@@ -53,7 +53,7 @@ pub struct ComputePeriodNodeGroupsPeriodAddNodesParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_groups_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeGroupsPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -97,7 +97,7 @@ pub struct ComputePeriodNodeGroupsPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_groups_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeGroupsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -134,7 +134,7 @@ pub struct ComputePeriodNodeGroupsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_groups_delete_nodes`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeGroupsPeriodDeleteNodesParams {
     /// Project ID for this request.
     pub project: String,
@@ -173,7 +173,7 @@ pub struct ComputePeriodNodeGroupsPeriodDeleteNodesParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_groups_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeGroupsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -208,7 +208,7 @@ pub struct ComputePeriodNodeGroupsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_groups_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeGroupsPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -245,7 +245,7 @@ pub struct ComputePeriodNodeGroupsPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_groups_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeGroupsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -283,7 +283,7 @@ pub struct ComputePeriodNodeGroupsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_groups_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeGroupsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -326,7 +326,7 @@ pub struct ComputePeriodNodeGroupsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_groups_list_nodes`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeGroupsPeriodListNodesParams {
     /// Project ID for this request.
     pub project: String,
@@ -371,7 +371,7 @@ pub struct ComputePeriodNodeGroupsPeriodListNodesParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_groups_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeGroupsPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -409,7 +409,7 @@ pub struct ComputePeriodNodeGroupsPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_groups_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeGroupsPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -446,7 +446,7 @@ pub struct ComputePeriodNodeGroupsPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_groups_set_node_template`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeGroupsPeriodSetNodeTemplateParams {
     /// Project ID for this request.
     pub project: String,
@@ -485,7 +485,7 @@ pub struct ComputePeriodNodeGroupsPeriodSetNodeTemplateParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_groups_simulate_maintenance_event`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeGroupsPeriodSimulateMaintenanceEventParams {
     /// Project ID for this request.
     pub project: String,
@@ -525,7 +525,7 @@ pub struct ComputePeriodNodeGroupsPeriodSimulateMaintenanceEventParams {
 }
 
 /// struct for passing parameters to the method [`compute_node_groups_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNodeGroupsPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

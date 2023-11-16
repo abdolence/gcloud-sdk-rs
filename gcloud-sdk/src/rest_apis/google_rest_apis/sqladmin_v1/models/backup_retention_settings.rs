@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BackupRetentionSettings : We currently only support backup retention by specifying the number of backups we will retain.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BackupRetentionSettings {
     /// Depending on the value of retention_unit, this is used to determine if a backup needs to be deleted. If retention_unit is 'COUNT', we will retain this many backups.
     #[serde(rename = "retainedBackups", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SecurityPolicyRuleMatcher : Represents a match condition that incoming traffic is evaluated against. Exactly one field must be specified.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SecurityPolicyRuleMatcher {
     #[serde(rename = "config", skip_serializing_if = "Option::is_none")]
     pub config:

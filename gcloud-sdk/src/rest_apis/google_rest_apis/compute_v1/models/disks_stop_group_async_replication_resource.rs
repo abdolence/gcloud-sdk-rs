@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DisksStopGroupAsyncReplicationResource : A transient resource used in compute.disks.stopGroupAsyncReplication and compute.regionDisks.stopGroupAsyncReplication. It is only used to process requests and is not persisted.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct DisksStopGroupAsyncReplicationResource {
     /// The URL of the DiskConsistencyGroupPolicy for the group of disks to stop. This may be a full or partial URL, such as: - https://www.googleapis.com/compute/v1/projects/project/regions/region /resourcePolicies/resourcePolicy - projects/project/regions/region/resourcePolicies/resourcePolicy - regions/region/resourcePolicies/resourcePolicy
     #[serde(rename = "resourcePolicy", skip_serializing_if = "Option::is_none")]

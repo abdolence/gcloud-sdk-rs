@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_networks_add_peering`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworksPeriodAddPeeringParams {
     /// Project ID for this request.
     pub project: String,
@@ -51,7 +51,7 @@ pub struct ComputePeriodNetworksPeriodAddPeeringParams {
 }
 
 /// struct for passing parameters to the method [`compute_networks_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworksPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -86,7 +86,7 @@ pub struct ComputePeriodNetworksPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_networks_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworksPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -119,7 +119,7 @@ pub struct ComputePeriodNetworksPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_networks_get_effective_firewalls`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworksPeriodGetEffectiveFirewallsParams {
     /// Project ID for this request.
     pub project: String,
@@ -152,7 +152,7 @@ pub struct ComputePeriodNetworksPeriodGetEffectiveFirewallsParams {
 }
 
 /// struct for passing parameters to the method [`compute_networks_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworksPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -186,7 +186,7 @@ pub struct ComputePeriodNetworksPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_networks_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworksPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -227,7 +227,7 @@ pub struct ComputePeriodNetworksPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_networks_list_peering_routes`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworksPeriodListPeeringRoutesParams {
     /// Project ID for this request.
     pub project: String,
@@ -276,7 +276,7 @@ pub struct ComputePeriodNetworksPeriodListPeeringRoutesParams {
 }
 
 /// struct for passing parameters to the method [`compute_networks_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworksPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -312,7 +312,7 @@ pub struct ComputePeriodNetworksPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_networks_remove_peering`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworksPeriodRemovePeeringParams {
     /// Project ID for this request.
     pub project: String,
@@ -349,7 +349,7 @@ pub struct ComputePeriodNetworksPeriodRemovePeeringParams {
 }
 
 /// struct for passing parameters to the method [`compute_networks_switch_to_custom_mode`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworksPeriodSwitchToCustomModeParams {
     /// Project ID for this request.
     pub project: String,
@@ -384,7 +384,7 @@ pub struct ComputePeriodNetworksPeriodSwitchToCustomModeParams {
 }
 
 /// struct for passing parameters to the method [`compute_networks_update_peering`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworksPeriodUpdatePeeringParams {
     /// Project ID for this request.
     pub project: String,

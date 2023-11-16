@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Operation : An operation represents a successful mutation performed on a Cloud DNS resource. Operations provide: - An audit log of server resource mutations. - A way to recover/retry API calls in the case where the response is never received by the caller. Use the caller specified client_operation_id.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Operation {
     #[serde(rename = "dnsKeyContext", skip_serializing_if = "Option::is_none")]
     pub dns_key_context:

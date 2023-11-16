@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SecurityPolicy : Represents a Google Cloud Armor security policy resource. Only external backend services that use load balancers can reference a security policy. For more information, see Google Cloud Armor security policy overview.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SecurityPolicy {
     #[serde(
         rename = "adaptiveProtectionConfig",

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HttpHeaderOption : Specification determining how headers are added to requests or responses.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HttpHeaderOption {
     /// The name of the header.
     #[serde(rename = "headerName", skip_serializing_if = "Option::is_none")]

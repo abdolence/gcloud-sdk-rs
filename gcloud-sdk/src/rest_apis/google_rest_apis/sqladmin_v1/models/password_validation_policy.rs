@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// PasswordValidationPolicy : Database instance local user password validation policy
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct PasswordValidationPolicy {
     /// The complexity of the password.
     #[serde(rename = "complexity", skip_serializing_if = "Option::is_none")]

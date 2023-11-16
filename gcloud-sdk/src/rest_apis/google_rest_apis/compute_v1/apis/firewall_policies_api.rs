@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_firewall_policies_add_association`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodAddAssociationParams {
     /// Name of the firewall policy to update.
     pub firewall_policy: String,
@@ -51,7 +51,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodAddAssociationParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_add_rule`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodAddRuleParams {
     /// Name of the firewall policy to update.
     pub firewall_policy: String,
@@ -86,7 +86,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodAddRuleParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_clone_rules`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodCloneRulesParams {
     /// Name of the firewall policy to update.
     pub firewall_policy: String,
@@ -121,7 +121,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodCloneRulesParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodDeleteParams {
     /// Name of the firewall policy to delete.
     pub firewall_policy: String,
@@ -154,7 +154,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodGetParams {
     /// Name of the firewall policy to get.
     pub firewall_policy: String,
@@ -185,7 +185,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_get_association`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodGetAssociationParams {
     /// Name of the firewall policy to which the queried rule belongs.
     pub firewall_policy: String,
@@ -218,7 +218,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodGetAssociationParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodGetIamPolicyParams {
     /// Name or id of the resource for this request.
     pub resource: String,
@@ -251,7 +251,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_get_rule`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodGetRuleParams {
     /// Name of the firewall policy to which the queried rule belongs.
     pub firewall_policy: String,
@@ -284,7 +284,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodGetRuleParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodInsertParams {
     /// V1 error format.
     pub dollar_xgafv: Option<String>,
@@ -318,7 +318,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodListParams {
     /// V1 error format.
     pub dollar_xgafv: Option<String>,
@@ -359,7 +359,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_list_associations`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodListAssociationsParams {
     /// V1 error format.
     pub dollar_xgafv: Option<String>,
@@ -390,7 +390,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodListAssociationsParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_move`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodMoveParams {
     /// Name of the firewall policy to update.
     pub firewall_policy: String,
@@ -425,7 +425,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodMoveParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodPatchParams {
     /// Name of the firewall policy to update.
     pub firewall_policy: String,
@@ -459,7 +459,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_patch_rule`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodPatchRuleParams {
     /// Name of the firewall policy to update.
     pub firewall_policy: String,
@@ -496,7 +496,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodPatchRuleParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_remove_association`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodRemoveAssociationParams {
     /// Name of the firewall policy to update.
     pub firewall_policy: String,
@@ -531,7 +531,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodRemoveAssociationParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_remove_rule`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodRemoveRuleParams {
     /// Name of the firewall policy to update.
     pub firewall_policy: String,
@@ -566,7 +566,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodRemoveRuleParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodSetIamPolicyParams {
     /// Name or id of the resource for this request.
     pub resource: String,
@@ -599,7 +599,7 @@ pub struct ComputePeriodFirewallPoliciesPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewall_policies_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallPoliciesPeriodTestIamPermissionsParams {
     /// Name or id of the resource for this request.
     pub resource: String,

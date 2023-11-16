@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// PathRule : A path-matching rule for a URL. If matched, will use the specified BackendService to handle the traffic arriving at this URL.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct PathRule {
     /// The list of path patterns to match. Each must start with / and the only place a * is allowed is at the end following a /. The string fed to the path matcher does not include any text after the first ? or #, and those chars are not allowed here.
     #[serde(rename = "paths", skip_serializing_if = "Option::is_none")]

@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_url_maps_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionUrlMapsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -51,7 +51,7 @@ pub struct ComputePeriodRegionUrlMapsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_url_maps_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionUrlMapsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -86,7 +86,7 @@ pub struct ComputePeriodRegionUrlMapsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_url_maps_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionUrlMapsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -122,7 +122,7 @@ pub struct ComputePeriodRegionUrlMapsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_url_maps_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionUrlMapsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -165,7 +165,7 @@ pub struct ComputePeriodRegionUrlMapsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_url_maps_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionUrlMapsPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -203,7 +203,7 @@ pub struct ComputePeriodRegionUrlMapsPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_url_maps_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionUrlMapsPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,
@@ -241,7 +241,7 @@ pub struct ComputePeriodRegionUrlMapsPeriodUpdateParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_url_maps_validate`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionUrlMapsPeriodValidateParams {
     /// Project ID for this request.
     pub project: String,

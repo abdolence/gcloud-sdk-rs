@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// NetworkAttachmentConnectedEndpoint : [Output Only] A connection connected to this network attachment.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct NetworkAttachmentConnectedEndpoint {
     /// The IPv4 address assigned to the producer instance network interface. This value will be a range in case of Serverless.
     #[serde(rename = "ipAddress", skip_serializing_if = "Option::is_none")]

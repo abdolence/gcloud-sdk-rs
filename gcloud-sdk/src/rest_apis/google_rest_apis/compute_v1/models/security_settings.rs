@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SecuritySettings : The authentication and authorization settings for a BackendService.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SecuritySettings {
     #[serde(
         rename = "awsV4Authentication",

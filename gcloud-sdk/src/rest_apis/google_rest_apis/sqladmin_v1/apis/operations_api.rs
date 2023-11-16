@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::sqladmin_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`sql_operations_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodOperationsPeriodGetParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -45,7 +45,7 @@ pub struct SqlPeriodOperationsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`sql_operations_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodOperationsPeriodListParams {
     /// Project ID of the project that contains the instance.
     pub project: String,

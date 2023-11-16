@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::bigquery_v2::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`bigquery_tabledata_insert_all`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodTabledataPeriodInsertAllParams {
     /// Project ID of the destination table.
     pub project_id: String,
@@ -41,7 +41,7 @@ pub struct BigqueryPeriodTabledataPeriodInsertAllParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_tabledata_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodTabledataPeriodListParams {
     /// Project ID of the table to read
     pub project_id: String,

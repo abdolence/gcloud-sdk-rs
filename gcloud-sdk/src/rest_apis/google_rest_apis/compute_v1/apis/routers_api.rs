@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_routers_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRoutersPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodRoutersPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_routers_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRoutersPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodRoutersPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_routers_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRoutersPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -130,7 +130,7 @@ pub struct ComputePeriodRoutersPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_routers_get_nat_ip_info`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRoutersPeriodGetNatIpInfoParams {
     /// Project ID for this request.
     pub project: String,
@@ -167,7 +167,7 @@ pub struct ComputePeriodRoutersPeriodGetNatIpInfoParams {
 }
 
 /// struct for passing parameters to the method [`compute_routers_get_nat_mapping_info`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRoutersPeriodGetNatMappingInfoParams {
     /// Project ID for this request.
     pub project: String,
@@ -214,7 +214,7 @@ pub struct ComputePeriodRoutersPeriodGetNatMappingInfoParams {
 }
 
 /// struct for passing parameters to the method [`compute_routers_get_router_status`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRoutersPeriodGetRouterStatusParams {
     /// Project ID for this request.
     pub project: String,
@@ -249,7 +249,7 @@ pub struct ComputePeriodRoutersPeriodGetRouterStatusParams {
 }
 
 /// struct for passing parameters to the method [`compute_routers_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRoutersPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -285,7 +285,7 @@ pub struct ComputePeriodRoutersPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_routers_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRoutersPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -328,7 +328,7 @@ pub struct ComputePeriodRoutersPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_routers_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRoutersPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -366,7 +366,7 @@ pub struct ComputePeriodRoutersPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_routers_preview`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRoutersPeriodPreviewParams {
     /// Project ID for this request.
     pub project: String,
@@ -402,7 +402,7 @@ pub struct ComputePeriodRoutersPeriodPreviewParams {
 }
 
 /// struct for passing parameters to the method [`compute_routers_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRoutersPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,

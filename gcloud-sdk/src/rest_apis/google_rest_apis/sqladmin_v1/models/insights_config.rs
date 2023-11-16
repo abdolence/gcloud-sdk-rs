@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InsightsConfig : Insights configuration. This specifies when Cloud SQL Insights feature is enabled and optional configuration.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InsightsConfig {
     /// Whether Query Insights feature is enabled.
     #[serde(

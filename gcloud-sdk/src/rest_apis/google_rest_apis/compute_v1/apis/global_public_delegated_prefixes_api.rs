@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_global_public_delegated_prefixes_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalPublicDelegatedPrefixesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodGlobalPublicDelegatedPrefixesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_public_delegated_prefixes_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalPublicDelegatedPrefixesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -82,7 +82,7 @@ pub struct ComputePeriodGlobalPublicDelegatedPrefixesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_public_delegated_prefixes_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalPublicDelegatedPrefixesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -117,7 +117,7 @@ pub struct ComputePeriodGlobalPublicDelegatedPrefixesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_public_delegated_prefixes_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalPublicDelegatedPrefixesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -158,7 +158,7 @@ pub struct ComputePeriodGlobalPublicDelegatedPrefixesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_global_public_delegated_prefixes_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodGlobalPublicDelegatedPrefixesPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ServiceAttachmentConnectedEndpoint : [Output Only] A connection connected to this service attachment.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ServiceAttachmentConnectedEndpoint {
     /// The url of the consumer network.
     #[serde(rename = "consumerNetwork", skip_serializing_if = "Option::is_none")]

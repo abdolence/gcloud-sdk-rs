@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_notification_endpoints_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNotificationEndpointsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -51,7 +51,7 @@ pub struct ComputePeriodRegionNotificationEndpointsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_notification_endpoints_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNotificationEndpointsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -86,7 +86,7 @@ pub struct ComputePeriodRegionNotificationEndpointsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_notification_endpoints_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNotificationEndpointsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -123,7 +123,7 @@ pub struct ComputePeriodRegionNotificationEndpointsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_notification_endpoints_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionNotificationEndpointsPeriodListParams {
     /// Project ID for this request.
     pub project: String,

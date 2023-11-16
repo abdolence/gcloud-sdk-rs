@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ResourcePolicyGroupPlacementPolicy : A GroupPlacementPolicy specifies resource placement configuration. It specifies the failure bucket separation as well as network locality
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ResourcePolicyGroupPlacementPolicy {
     /// The number of availability domains to spread instances across. If two instances are in different availability domain, they are not in the same low latency network.
     #[serde(

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Reservation : Represents a reservation resource. A reservation ensures that capacity is held in a specific zone even if the reserved VMs are not running. For more information, read Reserving zonal resources.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Reservation {
     /// [Output Only] Full or partial URL to a parent commitment. This field displays for reservations that are tied to a commitment.
     #[serde(rename = "commitment", skip_serializing_if = "Option::is_none")]

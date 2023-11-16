@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HttpFaultDelay : Specifies the delay introduced by the load balancer before forwarding the request to the backend service as part of fault injection.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HttpFaultDelay {
     #[serde(rename = "fixedDelay", skip_serializing_if = "Option::is_none")]
     pub fixed_delay: Option<Box<crate::google_rest_apis::compute_v1::models::Duration>>,

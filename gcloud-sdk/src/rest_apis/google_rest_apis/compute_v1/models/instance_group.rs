@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InstanceGroup : Represents an Instance Group resource. Instance Groups can be used to configure a target for load balancing. Instance groups can either be managed or unmanaged. To create managed instance groups, use the instanceGroupManager or regionInstanceGroupManager resource instead. Use zonal unmanaged instance groups if you need to apply load balancing to groups of heterogeneous instances or if you need to manage the instances yourself. You cannot create regional unmanaged instance groups. For more information, read Instance groups.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InstanceGroup {
     /// [Output Only] The creation timestamp for this instance group in RFC3339 text format.
     #[serde(rename = "creationTimestamp", skip_serializing_if = "Option::is_none")]

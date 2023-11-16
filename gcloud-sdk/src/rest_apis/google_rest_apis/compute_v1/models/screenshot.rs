@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Screenshot : An instance's screenshot.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Screenshot {
     /// [Output Only] The Base64-encoded screenshot data.
     #[serde(rename = "contents", skip_serializing_if = "Option::is_none")]

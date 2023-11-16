@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::bigquery_v2::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`bigquery_models_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodModelsPeriodDeleteParams {
     /// Required. Project ID of the model to delete.
     pub project_id: String,
@@ -39,7 +39,7 @@ pub struct BigqueryPeriodModelsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_models_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodModelsPeriodGetParams {
     /// Required. Project ID of the requested model.
     pub project_id: String,
@@ -64,7 +64,7 @@ pub struct BigqueryPeriodModelsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_models_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodModelsPeriodListParams {
     /// Required. Project ID of the models to list.
     pub project_id: String,
@@ -91,7 +91,7 @@ pub struct BigqueryPeriodModelsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_models_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct BigqueryPeriodModelsPeriodPatchParams {
     /// Required. Project ID of the model to patch.
     pub project_id: String,

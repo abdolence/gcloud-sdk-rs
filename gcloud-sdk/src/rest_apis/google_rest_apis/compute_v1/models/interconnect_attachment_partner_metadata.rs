@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InterconnectAttachmentPartnerMetadata : Informational metadata about Partner attachments from Partners to display to customers. These fields are propagated from PARTNER_PROVIDER attachments to their corresponding PARTNER attachments.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InterconnectAttachmentPartnerMetadata {
     /// Plain text name of the Interconnect this attachment is connected to, as displayed in the Partner's portal. For instance \"Chicago 1\". This value may be validated to match approved Partner values.
     #[serde(rename = "interconnectName", skip_serializing_if = "Option::is_none")]

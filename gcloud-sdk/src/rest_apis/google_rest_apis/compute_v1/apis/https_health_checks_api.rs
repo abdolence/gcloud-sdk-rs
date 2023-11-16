@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_https_health_checks_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHttpsHealthChecksPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodHttpsHealthChecksPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_https_health_checks_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHttpsHealthChecksPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -82,7 +82,7 @@ pub struct ComputePeriodHttpsHealthChecksPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_https_health_checks_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHttpsHealthChecksPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -116,7 +116,7 @@ pub struct ComputePeriodHttpsHealthChecksPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_https_health_checks_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHttpsHealthChecksPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -157,7 +157,7 @@ pub struct ComputePeriodHttpsHealthChecksPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_https_health_checks_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHttpsHealthChecksPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -193,7 +193,7 @@ pub struct ComputePeriodHttpsHealthChecksPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_https_health_checks_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodHttpsHealthChecksPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,

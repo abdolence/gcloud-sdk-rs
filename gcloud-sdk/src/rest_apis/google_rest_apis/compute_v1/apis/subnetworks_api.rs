@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_subnetworks_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSubnetworksPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodSubnetworksPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_subnetworks_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSubnetworksPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodSubnetworksPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_subnetworks_expand_ip_cidr_range`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSubnetworksPeriodExpandIpCidrRangeParams {
     /// Project ID for this request.
     pub project: String,
@@ -134,7 +134,7 @@ pub struct ComputePeriodSubnetworksPeriodExpandIpCidrRangeParams {
 }
 
 /// struct for passing parameters to the method [`compute_subnetworks_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSubnetworksPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -169,7 +169,7 @@ pub struct ComputePeriodSubnetworksPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_subnetworks_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSubnetworksPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -206,7 +206,7 @@ pub struct ComputePeriodSubnetworksPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_subnetworks_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSubnetworksPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -242,7 +242,7 @@ pub struct ComputePeriodSubnetworksPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_subnetworks_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSubnetworksPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -285,7 +285,7 @@ pub struct ComputePeriodSubnetworksPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_subnetworks_list_usable`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSubnetworksPeriodListUsableParams {
     /// Project ID for this request.
     pub project: String,
@@ -326,7 +326,7 @@ pub struct ComputePeriodSubnetworksPeriodListUsableParams {
 }
 
 /// struct for passing parameters to the method [`compute_subnetworks_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSubnetworksPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -366,7 +366,7 @@ pub struct ComputePeriodSubnetworksPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_subnetworks_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSubnetworksPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -403,7 +403,7 @@ pub struct ComputePeriodSubnetworksPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_subnetworks_set_private_ip_google_access`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSubnetworksPeriodSetPrivateIpGoogleAccessParams {
     /// Project ID for this request.
     pub project: String,
@@ -443,7 +443,7 @@ pub struct ComputePeriodSubnetworksPeriodSetPrivateIpGoogleAccessParams {
 }
 
 /// struct for passing parameters to the method [`compute_subnetworks_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodSubnetworksPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

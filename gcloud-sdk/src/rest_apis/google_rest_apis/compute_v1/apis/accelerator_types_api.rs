@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_accelerator_types_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAcceleratorTypesPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodAcceleratorTypesPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_accelerator_types_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAcceleratorTypesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -93,7 +93,7 @@ pub struct ComputePeriodAcceleratorTypesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_accelerator_types_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAcceleratorTypesPeriodListParams {
     /// Project ID for this request.
     pub project: String,

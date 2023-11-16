@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Reference : Represents a reference to a resource.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Reference {
     /// [Output Only] Type of the resource. Always compute#reference for references.
     #[serde(rename = "kind", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ResourcePolicyInstanceSchedulePolicy : An InstanceSchedulePolicy specifies when and how frequent certain operations are performed on the instance.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ResourcePolicyInstanceSchedulePolicy {
     /// The expiration time of the schedule. The timestamp is an RFC3339 string.
     #[serde(rename = "expirationTime", skip_serializing_if = "Option::is_none")]

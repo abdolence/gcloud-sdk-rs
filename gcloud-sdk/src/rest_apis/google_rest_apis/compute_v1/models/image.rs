@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Image : Represents an Image resource. You can use images to create boot disks for your VM instances. For more information, read Images.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Image {
     /// The architecture of the image. Valid values are ARM64 or X86_64.
     #[serde(rename = "architecture", skip_serializing_if = "Option::is_none")]

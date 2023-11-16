@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Awsv4Signature : Contains the configurations necessary to generate a signature for access to private storage buckets that support Signature Version 4 for authentication. The service name for generating the authentication header will always default to 's3'.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Awsv4Signature {
     /// The access key used for s3 bucket authentication. Required for updating or creating a backend that uses AWS v4 signature authentication, but will not be returned as part of the configuration when queried with a REST API GET request. @InputOnly
     #[serde(rename = "accessKey", skip_serializing_if = "Option::is_none")]

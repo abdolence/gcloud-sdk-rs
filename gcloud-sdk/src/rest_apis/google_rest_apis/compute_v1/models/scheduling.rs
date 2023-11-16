@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Scheduling : Sets the scheduling options for an Instance.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Scheduling {
     /// Specifies whether the instance should be automatically restarted if it is terminated by Compute Engine (not terminated by a user). You can only set the automatic restart option for standard instances. Preemptible instances cannot be automatically restarted. By default, this is set to true so an instance is automatically restarted if it is terminated by Compute Engine.
     #[serde(rename = "automaticRestart", skip_serializing_if = "Option::is_none")]

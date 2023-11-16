@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BucketLogging : The bucket's logging configuration, which defines the destination bucket and optional name prefix for the current bucket's logs.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BucketLogging {
     /// The destination bucket where the current bucket's logs should be placed.
     #[serde(rename = "logBucket", skip_serializing_if = "Option::is_none")]

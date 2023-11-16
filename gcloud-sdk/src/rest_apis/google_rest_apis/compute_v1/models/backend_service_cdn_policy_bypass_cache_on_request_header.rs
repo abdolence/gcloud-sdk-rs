@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BackendServiceCdnPolicyBypassCacheOnRequestHeader : Bypass the cache when the specified request headers are present, e.g. Pragma or Authorization headers. Values are case insensitive. The presence of such a header overrides the cache_mode setting.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BackendServiceCdnPolicyBypassCacheOnRequestHeader {
     /// The header field name to match on when bypassing cache. Values are case-insensitive.
     #[serde(rename = "headerName", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InterconnectsGetMacsecConfigResponse : Response for the InterconnectsGetMacsecConfigRequest.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InterconnectsGetMacsecConfigResponse {
     /// end_interface: MixerGetResponseWithEtagBuilder
     #[serde(rename = "etag", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InterconnectRemoteLocation : Represents a Cross-Cloud Interconnect Remote Location resource. You can use this resource to find remote location details about an Interconnect attachment (VLAN).
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InterconnectRemoteLocation {
     /// [Output Only] The postal address of the Point of Presence, each line in the address is separated by a newline character.
     #[serde(rename = "address", skip_serializing_if = "Option::is_none")]

@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::dns_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`dns_policies_create`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct DnsPeriodPoliciesPeriodCreateParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -46,7 +46,7 @@ pub struct DnsPeriodPoliciesPeriodCreateParams {
 }
 
 /// struct for passing parameters to the method [`dns_policies_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct DnsPeriodPoliciesPeriodDeleteParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -79,7 +79,7 @@ pub struct DnsPeriodPoliciesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`dns_policies_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct DnsPeriodPoliciesPeriodGetParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -112,7 +112,7 @@ pub struct DnsPeriodPoliciesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`dns_policies_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct DnsPeriodPoliciesPeriodListParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -145,7 +145,7 @@ pub struct DnsPeriodPoliciesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`dns_policies_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct DnsPeriodPoliciesPeriodPatchParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -179,7 +179,7 @@ pub struct DnsPeriodPoliciesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`dns_policies_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct DnsPeriodPoliciesPeriodUpdateParams {
     /// Identifies the project addressed by this request.
     pub project: String,

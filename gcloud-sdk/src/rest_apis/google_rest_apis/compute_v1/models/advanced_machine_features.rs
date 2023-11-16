@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// AdvancedMachineFeatures : Specifies options for controlling advanced machine features. Options that would traditionally be configured in a BIOS belong here. Features that require operating system support may have corresponding entries in the GuestOsFeatures of an Image (e.g., whether or not the OS in the Image supports nested virtualization being enabled or disabled).
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct AdvancedMachineFeatures {
     /// Whether to enable nested virtualization or not (default is false).
     #[serde(

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// MaintenanceWindow : Maintenance window. This specifies when a Cloud SQL instance is restarted for system maintenance purposes.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct MaintenanceWindow {
     /// day of week (1-7), starting on Monday.
     #[serde(rename = "day", skip_serializing_if = "Option::is_none")]

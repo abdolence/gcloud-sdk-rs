@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Route : Represents a Route resource. A route defines a path from VM instances in the VPC network to a specific destination. This destination can be inside or outside the VPC network. For more information, read the Routes overview.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Route {
     /// [Output Only] AS path.
     #[serde(rename = "asPaths", skip_serializing_if = "Option::is_none")]

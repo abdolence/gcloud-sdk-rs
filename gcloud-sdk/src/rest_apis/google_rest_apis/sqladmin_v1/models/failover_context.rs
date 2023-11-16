@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// FailoverContext : Database instance failover context.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct FailoverContext {
     /// This is always `sql#failoverContext`.
     #[serde(rename = "kind", skip_serializing_if = "Option::is_none")]

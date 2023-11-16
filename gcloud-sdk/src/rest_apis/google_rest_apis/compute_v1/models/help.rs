@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Help : Provides links to documentation or for performing an out of band action. For example, if a quota check failed with an error indicating the calling project hasn't enabled the accessed service, this can contain a URL pointing directly to the right place in the developer console to flip the bit.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Help {
     /// URL(s) pointing to additional information on handling the current error.
     #[serde(rename = "links", skip_serializing_if = "Option::is_none")]

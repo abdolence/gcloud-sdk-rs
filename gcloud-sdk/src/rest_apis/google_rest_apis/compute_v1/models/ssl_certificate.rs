@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SslCertificate : Represents an SSL certificate resource. Google Compute Engine has two SSL certificate resources: * [Global](/compute/docs/reference/rest/v1/sslCertificates) * [Regional](/compute/docs/reference/rest/v1/regionSslCertificates) The global SSL certificates (sslCertificates) are used by: - Global external Application Load Balancers - Classic Application Load Balancers - Proxy Network Load Balancers (with target SSL proxies) The regional SSL certificates (regionSslCertificates) are used by: - Regional external Application Load Balancers - Regional internal Application Load Balancers Optionally, certificate file contents that you upload can contain a set of up to five PEM-encoded certificates. The API call creates an object (sslCertificate) that holds this data. You can use SSL keys and certificates to secure connections to a load balancer. For more information, read Creating and using SSL certificates, SSL certificates quotas and limits, and Troubleshooting SSL certificates.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SslCertificate {
     /// A value read into memory from a certificate file. The certificate file must be in PEM format. The certificate chain must be no greater than 5 certs long. The chain must include at least one intermediate cert.
     #[serde(rename = "certificate", skip_serializing_if = "Option::is_none")]

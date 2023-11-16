@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_network_endpoint_groups_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkEndpointGroupsPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodNetworkEndpointGroupsPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_endpoint_groups_attach_network_endpoints`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkEndpointGroupsPeriodAttachNetworkEndpointsParams {
     /// Project ID for this request.
     pub project: String,
@@ -98,7 +98,7 @@ pub struct ComputePeriodNetworkEndpointGroupsPeriodAttachNetworkEndpointsParams 
 }
 
 /// struct for passing parameters to the method [`compute_network_endpoint_groups_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkEndpointGroupsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -135,7 +135,7 @@ pub struct ComputePeriodNetworkEndpointGroupsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_endpoint_groups_detach_network_endpoints`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkEndpointGroupsPeriodDetachNetworkEndpointsParams {
     /// Project ID for this request.
     pub project: String,
@@ -175,7 +175,7 @@ pub struct ComputePeriodNetworkEndpointGroupsPeriodDetachNetworkEndpointsParams 
 }
 
 /// struct for passing parameters to the method [`compute_network_endpoint_groups_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkEndpointGroupsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -210,7 +210,7 @@ pub struct ComputePeriodNetworkEndpointGroupsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_endpoint_groups_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkEndpointGroupsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -247,7 +247,7 @@ pub struct ComputePeriodNetworkEndpointGroupsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_endpoint_groups_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkEndpointGroupsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -290,7 +290,7 @@ pub struct ComputePeriodNetworkEndpointGroupsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_endpoint_groups_list_network_endpoints`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkEndpointGroupsPeriodListNetworkEndpointsParams {
     /// Project ID for this request.
     pub project: String,
@@ -338,7 +338,7 @@ pub struct ComputePeriodNetworkEndpointGroupsPeriodListNetworkEndpointsParams {
 }
 
 /// struct for passing parameters to the method [`compute_network_endpoint_groups_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodNetworkEndpointGroupsPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

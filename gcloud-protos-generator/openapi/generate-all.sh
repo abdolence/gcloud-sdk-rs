@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -oe pipefail
+
 SCRIPT_LOCATION=$( dirname -- "$0"; );
 SPEC_LOCATIONS="$SCRIPT_LOCATION/google"
 GENERATOR_LOCATION="$SCRIPT_LOCATION/generator/openapi-generator-cli-7.1.0.jar"
@@ -41,6 +43,14 @@ do
 
     sed -i '1s;^;use serde::{Serialize,Deserialize}\;;' "$TEMP_OUTPUT"/"$API_NAME"/src/apis/*.rs
     sed -i '1s;^;use serde::{Serialize,Deserialize}\;;' "$TEMP_OUTPUT"/"$API_NAME"/src/models/*.rs
+
+    # Version 7.1.0 of the generator does not generate Default trait for models and apis.
+    # Hopefully they will fix it with additional parameter, until then - hello sed!
+    sed -i "s/\#\[derive(Clone, Debug)\]/\#\[derive(Clone, Debug, Default)\]/g" "$TEMP_OUTPUT"/"$API_NAME"/src/apis/*.rs
+    sed -i "s/\#\[derive(Clone, Debug)\]/\#\[derive(Clone, Debug, Default)\]/g" "$TEMP_OUTPUT"/"$API_NAME"/src/models/*.rs
+
+    sed -i "s/\#\[derive(Clone, Debug, PartialEq, Serialize, Deserialize)\]/\#\[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)\]/g" "$TEMP_OUTPUT"/"$API_NAME"/src/apis/*.rs
+    sed -i "s/\#\[derive(Clone, Debug, PartialEq, Serialize, Deserialize)\]/\#\[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)\]/g" "$TEMP_OUTPUT"/"$API_NAME"/src/models/*.rs
 
     rm -fr "${GLOBAL_OUTPUT_DIR:?}/${API_NAME:?}"
     mkdir -p "$GLOBAL_OUTPUT_DIR/$API_NAME"

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BulkInsertDiskResource : A transient resource used in compute.disks.bulkInsert and compute.regionDisks.bulkInsert. It is only used to process requests and is not persisted.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BulkInsertDiskResource {
     /// The URL of the DiskConsistencyGroupPolicy for the group of disks to clone. This may be a full or partial URL, such as: - https://www.googleapis.com/compute/v1/projects/project/regions/region /resourcePolicies/resourcePolicy - projects/project/regions/region/resourcePolicies/resourcePolicy - regions/region/resourcePolicies/resourcePolicy
     #[serde(

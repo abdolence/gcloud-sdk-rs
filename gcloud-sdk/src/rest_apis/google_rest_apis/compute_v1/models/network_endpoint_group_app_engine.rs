@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// NetworkEndpointGroupAppEngine : Configuration for an App Engine network endpoint group (NEG). The service is optional, may be provided explicitly or in the URL mask. The version is optional and can only be provided explicitly or in the URL mask when service is present. Note: App Engine service must be in the same project and located in the same region as the Serverless NEG.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct NetworkEndpointGroupAppEngine {
     /// Optional serving service. The service name is case-sensitive and must be 1-63 characters long. Example value: \"default\", \"my-service\".
     #[serde(rename = "service", skip_serializing_if = "Option::is_none")]

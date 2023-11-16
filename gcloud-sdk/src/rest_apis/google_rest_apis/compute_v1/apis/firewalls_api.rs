@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_firewalls_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodFirewallsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewalls_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -82,7 +82,7 @@ pub struct ComputePeriodFirewallsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewalls_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -116,7 +116,7 @@ pub struct ComputePeriodFirewallsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewalls_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -157,7 +157,7 @@ pub struct ComputePeriodFirewallsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewalls_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallsPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -193,7 +193,7 @@ pub struct ComputePeriodFirewallsPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_firewalls_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodFirewallsPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,

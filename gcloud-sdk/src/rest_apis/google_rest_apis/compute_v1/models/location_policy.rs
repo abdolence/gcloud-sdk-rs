@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// LocationPolicy : Configuration for location policy among multiple possible locations (e.g. preferences for zone selection among zones in a single region).
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct LocationPolicy {
     /// Location configurations mapped by location name. Currently only zone names are supported and must be represented as valid internal URLs, such as zones/us-central1-a.
     #[serde(rename = "locations", skip_serializing_if = "Option::is_none")]

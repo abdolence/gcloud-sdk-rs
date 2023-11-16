@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig : Configuration options for L7 DDoS detection. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig {
     /// If set to true, enables CAAP for L7 DDoS detection. This field is only supported in Global Security Policies of type CLOUD_ARMOR.
     #[serde(rename = "enable", skip_serializing_if = "Option::is_none")]

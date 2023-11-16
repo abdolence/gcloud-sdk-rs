@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::sqladmin_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`sql_backup_runs_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodBackupRunsPeriodDeleteParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -47,7 +47,7 @@ pub struct SqlPeriodBackupRunsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`sql_backup_runs_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodBackupRunsPeriodGetParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -80,7 +80,7 @@ pub struct SqlPeriodBackupRunsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`sql_backup_runs_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodBackupRunsPeriodInsertParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -112,7 +112,7 @@ pub struct SqlPeriodBackupRunsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`sql_backup_runs_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct SqlPeriodBackupRunsPeriodListParams {
     /// Project ID of the project that contains the instance.
     pub project: String,

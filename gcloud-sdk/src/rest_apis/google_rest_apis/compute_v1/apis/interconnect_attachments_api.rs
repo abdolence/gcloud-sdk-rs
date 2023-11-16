@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_interconnect_attachments_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectAttachmentsPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodInterconnectAttachmentsPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_interconnect_attachments_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectAttachmentsPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodInterconnectAttachmentsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_interconnect_attachments_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectAttachmentsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -130,7 +130,7 @@ pub struct ComputePeriodInterconnectAttachmentsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_interconnect_attachments_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectAttachmentsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -169,7 +169,7 @@ pub struct ComputePeriodInterconnectAttachmentsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_interconnect_attachments_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectAttachmentsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -212,7 +212,7 @@ pub struct ComputePeriodInterconnectAttachmentsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_interconnect_attachments_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectAttachmentsPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -251,7 +251,7 @@ pub struct ComputePeriodInterconnectAttachmentsPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_interconnect_attachments_set_labels`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectAttachmentsPeriodSetLabelsParams {
     /// Project ID for this request.
     pub project: String,

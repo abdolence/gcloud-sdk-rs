@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// UsageExportLocation : The location in Cloud Storage and naming method of the daily usage report. Contains bucket_name and report_name prefix.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct UsageExportLocation {
     /// The name of an existing bucket in Cloud Storage where the usage report object is stored. The Google Service Account is granted write access to this bucket. This can either be the bucket name by itself, such as example-bucket, or the bucket name with gs:// or https://storage.googleapis.com/ in front of it, such as gs://example-bucket.
     #[serde(rename = "bucketName", skip_serializing_if = "Option::is_none")]

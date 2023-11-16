@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_instances_add_access_config`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodAddAccessConfigParams {
     /// Project ID for this request.
     pub project: String,
@@ -54,7 +54,7 @@ pub struct ComputePeriodInstancesPeriodAddAccessConfigParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_add_resource_policies`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodAddResourcePoliciesParams {
     /// Project ID for this request.
     pub project: String,
@@ -93,7 +93,7 @@ pub struct ComputePeriodInstancesPeriodAddResourcePoliciesParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -137,7 +137,7 @@ pub struct ComputePeriodInstancesPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_attach_disk`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodAttachDiskParams {
     /// Project ID for this request.
     pub project: String,
@@ -177,7 +177,7 @@ pub struct ComputePeriodInstancesPeriodAttachDiskParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_bulk_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodBulkInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -214,7 +214,7 @@ pub struct ComputePeriodInstancesPeriodBulkInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -251,7 +251,7 @@ pub struct ComputePeriodInstancesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_delete_access_config`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodDeleteAccessConfigParams {
     /// Project ID for this request.
     pub project: String,
@@ -292,7 +292,7 @@ pub struct ComputePeriodInstancesPeriodDeleteAccessConfigParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_detach_disk`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodDetachDiskParams {
     /// Project ID for this request.
     pub project: String,
@@ -331,7 +331,7 @@ pub struct ComputePeriodInstancesPeriodDetachDiskParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -366,7 +366,7 @@ pub struct ComputePeriodInstancesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_get_effective_firewalls`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodGetEffectiveFirewallsParams {
     /// Project ID for this request.
     pub project: String,
@@ -403,7 +403,7 @@ pub struct ComputePeriodInstancesPeriodGetEffectiveFirewallsParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_get_guest_attributes`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodGetGuestAttributesParams {
     /// Project ID for this request.
     pub project: String,
@@ -442,7 +442,7 @@ pub struct ComputePeriodInstancesPeriodGetGuestAttributesParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -479,7 +479,7 @@ pub struct ComputePeriodInstancesPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_get_screenshot`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodGetScreenshotParams {
     /// Project ID for this request.
     pub project: String,
@@ -514,7 +514,7 @@ pub struct ComputePeriodInstancesPeriodGetScreenshotParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_get_serial_port_output`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodGetSerialPortOutputParams {
     /// Project ID for this request.
     pub project: String,
@@ -553,7 +553,7 @@ pub struct ComputePeriodInstancesPeriodGetSerialPortOutputParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_get_shielded_instance_identity`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodGetShieldedInstanceIdentityParams {
     /// Project ID for this request.
     pub project: String,
@@ -588,7 +588,7 @@ pub struct ComputePeriodInstancesPeriodGetShieldedInstanceIdentityParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -628,7 +628,7 @@ pub struct ComputePeriodInstancesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -671,7 +671,7 @@ pub struct ComputePeriodInstancesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_list_referrers`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodListReferrersParams {
     /// Project ID for this request.
     pub project: String,
@@ -716,7 +716,7 @@ pub struct ComputePeriodInstancesPeriodListReferrersParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_remove_resource_policies`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodRemoveResourcePoliciesParams {
     /// Project ID for this request.
     pub project: String,
@@ -755,7 +755,7 @@ pub struct ComputePeriodInstancesPeriodRemoveResourcePoliciesParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_reset`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodResetParams {
     /// Project ID for this request.
     pub project: String,
@@ -792,7 +792,7 @@ pub struct ComputePeriodInstancesPeriodResetParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_resume`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodResumeParams {
     /// Project ID for this request.
     pub project: String,
@@ -829,7 +829,7 @@ pub struct ComputePeriodInstancesPeriodResumeParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_send_diagnostic_interrupt`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSendDiagnosticInterruptParams {
     /// Project ID for this request.
     pub project: String,
@@ -864,7 +864,7 @@ pub struct ComputePeriodInstancesPeriodSendDiagnosticInterruptParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_set_deletion_protection`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSetDeletionProtectionParams {
     /// Project ID for this request.
     pub project: String,
@@ -903,7 +903,7 @@ pub struct ComputePeriodInstancesPeriodSetDeletionProtectionParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_set_disk_auto_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSetDiskAutoDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -944,7 +944,7 @@ pub struct ComputePeriodInstancesPeriodSetDiskAutoDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -981,7 +981,7 @@ pub struct ComputePeriodInstancesPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_set_labels`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSetLabelsParams {
     /// Project ID for this request.
     pub project: String,
@@ -1020,7 +1020,7 @@ pub struct ComputePeriodInstancesPeriodSetLabelsParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_set_machine_resources`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSetMachineResourcesParams {
     /// Project ID for this request.
     pub project: String,
@@ -1059,7 +1059,7 @@ pub struct ComputePeriodInstancesPeriodSetMachineResourcesParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_set_machine_type`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSetMachineTypeParams {
     /// Project ID for this request.
     pub project: String,
@@ -1098,7 +1098,7 @@ pub struct ComputePeriodInstancesPeriodSetMachineTypeParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_set_metadata`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSetMetadataParams {
     /// Project ID for this request.
     pub project: String,
@@ -1136,7 +1136,7 @@ pub struct ComputePeriodInstancesPeriodSetMetadataParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_set_min_cpu_platform`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSetMinCpuPlatformParams {
     /// Project ID for this request.
     pub project: String,
@@ -1175,7 +1175,7 @@ pub struct ComputePeriodInstancesPeriodSetMinCpuPlatformParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_set_name`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSetNameParams {
     /// Project ID for this request.
     pub project: String,
@@ -1214,7 +1214,7 @@ pub struct ComputePeriodInstancesPeriodSetNameParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_set_scheduling`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSetSchedulingParams {
     /// Project ID for this request.
     pub project: String,
@@ -1252,7 +1252,7 @@ pub struct ComputePeriodInstancesPeriodSetSchedulingParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_set_security_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSetSecurityPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -1291,7 +1291,7 @@ pub struct ComputePeriodInstancesPeriodSetSecurityPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_set_service_account`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSetServiceAccountParams {
     /// Project ID for this request.
     pub project: String,
@@ -1330,7 +1330,7 @@ pub struct ComputePeriodInstancesPeriodSetServiceAccountParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_set_shielded_instance_integrity_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSetShieldedInstanceIntegrityPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -1369,7 +1369,7 @@ pub struct ComputePeriodInstancesPeriodSetShieldedInstanceIntegrityPolicyParams 
 }
 
 /// struct for passing parameters to the method [`compute_instances_set_tags`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSetTagsParams {
     /// Project ID for this request.
     pub project: String,
@@ -1407,7 +1407,7 @@ pub struct ComputePeriodInstancesPeriodSetTagsParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_simulate_maintenance_event`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSimulateMaintenanceEventParams {
     /// Project ID for this request.
     pub project: String,
@@ -1444,7 +1444,7 @@ pub struct ComputePeriodInstancesPeriodSimulateMaintenanceEventParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_start`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodStartParams {
     /// Project ID for this request.
     pub project: String,
@@ -1481,7 +1481,7 @@ pub struct ComputePeriodInstancesPeriodStartParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_start_with_encryption_key`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodStartWithEncryptionKeyParams {
     /// Project ID for this request.
     pub project: String,
@@ -1520,7 +1520,7 @@ pub struct ComputePeriodInstancesPeriodStartWithEncryptionKeyParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_stop`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodStopParams {
     /// Project ID for this request.
     pub project: String,
@@ -1559,7 +1559,7 @@ pub struct ComputePeriodInstancesPeriodStopParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_suspend`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodSuspendParams {
     /// Project ID for this request.
     pub project: String,
@@ -1598,7 +1598,7 @@ pub struct ComputePeriodInstancesPeriodSuspendParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,
@@ -1635,7 +1635,7 @@ pub struct ComputePeriodInstancesPeriodTestIamPermissionsParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,
@@ -1677,7 +1677,7 @@ pub struct ComputePeriodInstancesPeriodUpdateParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_update_access_config`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodUpdateAccessConfigParams {
     /// Project ID for this request.
     pub project: String,
@@ -1717,7 +1717,7 @@ pub struct ComputePeriodInstancesPeriodUpdateAccessConfigParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_update_display_device`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodUpdateDisplayDeviceParams {
     /// Project ID for this request.
     pub project: String,
@@ -1755,7 +1755,7 @@ pub struct ComputePeriodInstancesPeriodUpdateDisplayDeviceParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_update_network_interface`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodUpdateNetworkInterfaceParams {
     /// Project ID for this request.
     pub project: String,
@@ -1795,7 +1795,7 @@ pub struct ComputePeriodInstancesPeriodUpdateNetworkInterfaceParams {
 }
 
 /// struct for passing parameters to the method [`compute_instances_update_shielded_instance_config`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstancesPeriodUpdateShieldedInstanceConfigParams {
     /// Project ID for this request.
     pub project: String,

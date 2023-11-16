@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InterconnectDiagnostics : Diagnostics information about the Interconnect connection, which contains detailed and current technical information about Google's side of the connection.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InterconnectDiagnostics {
     /// A list of InterconnectDiagnostics.ARPEntry objects, describing individual neighbors currently seen by the Google router in the ARP cache for the Interconnect. This will be empty when the Interconnect is not bundled.
     #[serde(rename = "arpCaches", skip_serializing_if = "Option::is_none")]

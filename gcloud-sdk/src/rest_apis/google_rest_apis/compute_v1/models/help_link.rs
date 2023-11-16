@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HelpLink : Describes a URL link.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct HelpLink {
     /// Describes what the link offers.
     #[serde(rename = "description", skip_serializing_if = "Option::is_none")]

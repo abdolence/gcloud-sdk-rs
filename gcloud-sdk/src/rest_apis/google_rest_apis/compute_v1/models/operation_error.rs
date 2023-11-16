@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// OperationError : [Output Only] If errors are generated during processing of the operation, this field will be populated.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct OperationError {
     /// [Output Only] The array of errors encountered while processing this operation.
     #[serde(rename = "errors", skip_serializing_if = "Option::is_none")]

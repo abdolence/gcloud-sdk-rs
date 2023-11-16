@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::storage_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`storage_channels_stop`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct StoragePeriodChannelsPeriodStopParams {
     /// Data format for the response.
     pub alt: Option<String>,

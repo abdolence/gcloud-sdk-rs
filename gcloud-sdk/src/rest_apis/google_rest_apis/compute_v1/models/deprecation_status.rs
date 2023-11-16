@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DeprecationStatus : Deprecation status for a public resource.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct DeprecationStatus {
     /// An optional RFC3339 timestamp on or after which the state of this resource is intended to change to DELETED. This is only informational and the status will not change unless the client explicitly changes it.
     #[serde(rename = "deleted", skip_serializing_if = "Option::is_none")]

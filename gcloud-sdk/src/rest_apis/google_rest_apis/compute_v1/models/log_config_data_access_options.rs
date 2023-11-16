@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// LogConfigDataAccessOptions : This is deprecated and has no effect. Do not use.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct LogConfigDataAccessOptions {
     /// This is deprecated and has no effect. Do not use.
     #[serde(rename = "logMode", skip_serializing_if = "Option::is_none")]

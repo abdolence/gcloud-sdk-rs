@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// PrincipalComponentInfo : Principal component infos, used only for eigen decomposition based models, e.g., PCA. Ordered by explained_variance in the descending order.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct PrincipalComponentInfo {
     /// The explained_variance is pre-ordered in the descending order to compute the cumulative explained variance ratio.
     #[serde(

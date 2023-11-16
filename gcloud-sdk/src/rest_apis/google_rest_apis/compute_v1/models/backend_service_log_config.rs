@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BackendServiceLogConfig : The available logging options for the load balancer traffic served by this backend service.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BackendServiceLogConfig {
     /// Denotes whether to enable logging for the load balancer traffic served by this backend service. The default value is false.
     #[serde(rename = "enable", skip_serializing_if = "Option::is_none")]

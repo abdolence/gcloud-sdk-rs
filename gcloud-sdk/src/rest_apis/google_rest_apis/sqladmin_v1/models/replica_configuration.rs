@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ReplicaConfiguration : Read-replica configuration for connecting to the primary instance.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ReplicaConfiguration {
     /// Specifies if the replica is the failover target. If the field is set to `true`, the replica will be designated as a failover replica. In case the primary instance fails, the replica instance will be promoted as the new primary instance. Only one replica can be specified as failover target, and the replica has to be in different zone with the primary instance.
     #[serde(rename = "failoverTarget", skip_serializing_if = "Option::is_none")]

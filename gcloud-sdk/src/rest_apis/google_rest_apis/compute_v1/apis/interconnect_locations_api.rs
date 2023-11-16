@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_interconnect_locations_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectLocationsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -47,7 +47,7 @@ pub struct ComputePeriodInterconnectLocationsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_interconnect_locations_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInterconnectLocationsPeriodListParams {
     /// Project ID for this request.
     pub project: String,

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// LogConfigCloudAuditOptions : This is deprecated and has no effect. Do not use.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct LogConfigCloudAuditOptions {
     #[serde(
         rename = "authorizationLoggingOptions",

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Router : Represents a Cloud Router resource. For more information about Cloud Router, read the Cloud Router overview.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Router {
     #[serde(rename = "bgp", skip_serializing_if = "Option::is_none")]
     pub bgp: Option<Box<crate::google_rest_apis::compute_v1::models::RouterBgp>>,

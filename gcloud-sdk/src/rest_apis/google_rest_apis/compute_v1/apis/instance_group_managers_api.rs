@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_abandon_instances`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodAbandonInstancesParams {
     /// Project ID for this request.
     pub project: String,
@@ -54,7 +54,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodAbandonInstancesParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -98,7 +98,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_apply_updates_to_instances`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodApplyUpdatesToInstancesParams {
     /// Project ID for this request.
     pub project: String,
@@ -136,7 +136,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodApplyUpdatesToInstancesParams
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_create_instances`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodCreateInstancesParams {
     /// Project ID for this request.
     pub project: String,
@@ -176,7 +176,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodCreateInstancesParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -213,7 +213,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_delete_instances`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodDeleteInstancesParams {
     /// Project ID for this request.
     pub project: String,
@@ -253,7 +253,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodDeleteInstancesParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_delete_per_instance_configs`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodDeletePerInstanceConfigsParams {
     /// Project ID for this request.
     pub project: String,
@@ -289,7 +289,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodDeletePerInstanceConfigsParam
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -324,7 +324,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -361,7 +361,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -404,7 +404,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_list_errors`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodListErrorsParams {
     /// Project ID for this request.
     pub project: String,
@@ -449,7 +449,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodListErrorsParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_list_managed_instances`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodListManagedInstancesParams {
     /// Project ID for this request.
     pub project: String,
@@ -494,7 +494,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodListManagedInstancesParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_list_per_instance_configs`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodListPerInstanceConfigsParams {
     /// Project ID for this request.
     pub project: String,
@@ -539,7 +539,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodListPerInstanceConfigsParams 
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -578,7 +578,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_patch_per_instance_configs`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodPatchPerInstanceConfigsParams {
     /// Project ID for this request.
     pub project: String,
@@ -616,7 +616,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodPatchPerInstanceConfigsParams
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_recreate_instances`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodRecreateInstancesParams {
     /// Project ID for this request.
     pub project: String,
@@ -656,7 +656,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodRecreateInstancesParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_resize`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodResizeParams {
     /// Project ID for this request.
     pub project: String,
@@ -695,7 +695,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodResizeParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_set_instance_template`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodSetInstanceTemplateParams {
     /// Project ID for this request.
     pub project: String,
@@ -733,7 +733,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodSetInstanceTemplateParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_set_target_pools`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodSetTargetPoolsParams {
     /// Project ID for this request.
     pub project: String,
@@ -773,7 +773,7 @@ pub struct ComputePeriodInstanceGroupManagersPeriodSetTargetPoolsParams {
 }
 
 /// struct for passing parameters to the method [`compute_instance_group_managers_update_per_instance_configs`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodInstanceGroupManagersPeriodUpdatePerInstanceConfigsParams {
     /// Project ID for this request.
     pub project: String,

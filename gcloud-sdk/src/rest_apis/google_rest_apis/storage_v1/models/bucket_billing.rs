@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BucketBilling : The bucket's billing configuration.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BucketBilling {
     /// When set to true, Requester Pays is enabled for this bucket.
     #[serde(rename = "requesterPays", skip_serializing_if = "Option::is_none")]

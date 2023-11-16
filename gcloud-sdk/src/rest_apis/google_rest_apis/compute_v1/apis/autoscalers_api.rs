@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_autoscalers_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAutoscalersPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodAutoscalersPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_autoscalers_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAutoscalersPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -95,7 +95,7 @@ pub struct ComputePeriodAutoscalersPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_autoscalers_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAutoscalersPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -130,7 +130,7 @@ pub struct ComputePeriodAutoscalersPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_autoscalers_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAutoscalersPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -166,7 +166,7 @@ pub struct ComputePeriodAutoscalersPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_autoscalers_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAutoscalersPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -209,7 +209,7 @@ pub struct ComputePeriodAutoscalersPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_autoscalers_patch`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAutoscalersPeriodPatchParams {
     /// Project ID for this request.
     pub project: String,
@@ -247,7 +247,7 @@ pub struct ComputePeriodAutoscalersPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`compute_autoscalers_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodAutoscalersPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,

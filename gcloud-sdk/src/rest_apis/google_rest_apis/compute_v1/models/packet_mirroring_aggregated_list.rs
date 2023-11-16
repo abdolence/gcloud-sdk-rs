@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// PacketMirroringAggregatedList : Contains a list of packetMirrorings.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct PacketMirroringAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
     #[serde(rename = "id", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// FirewallPolicyRule : Represents a rule that describes one or more match conditions along with the action to be taken when traffic matches this condition (allow or deny).
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct FirewallPolicyRule {
     /// The Action to perform when the client connection triggers the rule. Valid actions are \"allow\", \"deny\" and \"goto_next\".
     #[serde(rename = "action", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// UrlMapValidationResult : Message representing the validation result for a UrlMap.
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct UrlMapValidationResult {
     #[serde(rename = "loadErrors", skip_serializing_if = "Option::is_none")]
     pub load_errors: Option<Vec<String>>,

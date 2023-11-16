@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_region_commitments_aggregated_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionCommitmentsPeriodAggregatedListParams {
     /// Project ID for this request.
     pub project: String,
@@ -58,7 +58,7 @@ pub struct ComputePeriodRegionCommitmentsPeriodAggregatedListParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_commitments_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionCommitmentsPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -93,7 +93,7 @@ pub struct ComputePeriodRegionCommitmentsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_commitments_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionCommitmentsPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -129,7 +129,7 @@ pub struct ComputePeriodRegionCommitmentsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_commitments_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionCommitmentsPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -172,7 +172,7 @@ pub struct ComputePeriodRegionCommitmentsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_region_commitments_update`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodRegionCommitmentsPeriodUpdateParams {
     /// Project ID for this request.
     pub project: String,

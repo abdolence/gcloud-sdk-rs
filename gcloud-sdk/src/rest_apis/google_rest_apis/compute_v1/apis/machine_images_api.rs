@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::compute_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`compute_machine_images_delete`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodMachineImagesPeriodDeleteParams {
     /// Project ID for this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct ComputePeriodMachineImagesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`compute_machine_images_get`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodMachineImagesPeriodGetParams {
     /// Project ID for this request.
     pub project: String,
@@ -82,7 +82,7 @@ pub struct ComputePeriodMachineImagesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`compute_machine_images_get_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodMachineImagesPeriodGetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -117,7 +117,7 @@ pub struct ComputePeriodMachineImagesPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_machine_images_insert`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodMachineImagesPeriodInsertParams {
     /// Project ID for this request.
     pub project: String,
@@ -153,7 +153,7 @@ pub struct ComputePeriodMachineImagesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`compute_machine_images_list`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodMachineImagesPeriodListParams {
     /// Project ID for this request.
     pub project: String,
@@ -194,7 +194,7 @@ pub struct ComputePeriodMachineImagesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`compute_machine_images_set_iam_policy`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodMachineImagesPeriodSetIamPolicyParams {
     /// Project ID for this request.
     pub project: String,
@@ -229,7 +229,7 @@ pub struct ComputePeriodMachineImagesPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`compute_machine_images_test_iam_permissions`]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ComputePeriodMachineImagesPeriodTestIamPermissionsParams {
     /// Project ID for this request.
     pub project: String,

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// MetadataItemsInner : Metadata
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct MetadataItemsInner {
     /// Key for the metadata entry. Keys must conform to the following regexp: [a-zA-Z0-9-_]+, and be less than 128 bytes in length. This is reflected as part of a URL in the metadata server. Additionally, to avoid ambiguity, keys must not conflict with any other metadata keys for the project.
     #[serde(rename = "key", skip_serializing_if = "Option::is_none")]
