@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DoubleHparamSearchSpace : Search space for a double hyperparameter.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DoubleHparamSearchSpace {
     #[serde(rename = "candidates", skip_serializing_if = "Option::is_none")]
     pub candidates: Option<Box<crate::google_rest_apis::bigquery_v2::models::DoubleCandidates>>,

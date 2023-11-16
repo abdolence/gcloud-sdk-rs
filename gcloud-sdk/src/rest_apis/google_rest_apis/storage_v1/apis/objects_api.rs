@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::storage_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`storage_objects_compose`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectsPeriodComposeParams {
     /// Name of the bucket containing the source objects. The destination object is stored in this bucket.
     pub destination_bucket: String,
@@ -50,7 +50,7 @@ pub struct StoragePeriodObjectsPeriodComposeParams {
 }
 
 /// struct for passing parameters to the method [`storage_objects_copy`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectsPeriodCopyParams {
     /// Name of the bucket in which to find the source object.
     pub source_bucket: String,
@@ -106,7 +106,7 @@ pub struct StoragePeriodObjectsPeriodCopyParams {
 }
 
 /// struct for passing parameters to the method [`storage_objects_delete`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectsPeriodDeleteParams {
     /// Name of the bucket in which the object resides.
     pub bucket: String,
@@ -143,7 +143,7 @@ pub struct StoragePeriodObjectsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`storage_objects_get`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectsPeriodGetParams {
     /// Name of the bucket in which the object resides.
     pub bucket: String,
@@ -182,7 +182,7 @@ pub struct StoragePeriodObjectsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`storage_objects_get_iam_policy`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectsPeriodGetIamPolicyParams {
     /// Name of the bucket in which the object resides.
     pub bucket: String,
@@ -211,7 +211,7 @@ pub struct StoragePeriodObjectsPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`storage_objects_insert`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectsPeriodInsertParams {
     /// Name of the bucket in which to store the new object. Overrides the provided object metadata's bucket value, if any.
     pub bucket: String,
@@ -255,7 +255,7 @@ pub struct StoragePeriodObjectsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`storage_objects_list`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectsPeriodListParams {
     /// Name of the bucket in which to look for objects.
     pub bucket: String,
@@ -298,7 +298,7 @@ pub struct StoragePeriodObjectsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`storage_objects_patch`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectsPeriodPatchParams {
     /// Name of the bucket in which the object resides.
     pub bucket: String,
@@ -340,7 +340,7 @@ pub struct StoragePeriodObjectsPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`storage_objects_rewrite`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectsPeriodRewriteParams {
     /// Name of the bucket in which to find the source object.
     pub source_bucket: String,
@@ -400,7 +400,7 @@ pub struct StoragePeriodObjectsPeriodRewriteParams {
 }
 
 /// struct for passing parameters to the method [`storage_objects_set_iam_policy`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectsPeriodSetIamPolicyParams {
     /// Name of the bucket in which the object resides.
     pub bucket: String,
@@ -430,7 +430,7 @@ pub struct StoragePeriodObjectsPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`storage_objects_test_iam_permissions`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectsPeriodTestIamPermissionsParams {
     /// Name of the bucket in which the object resides.
     pub bucket: String,
@@ -461,7 +461,7 @@ pub struct StoragePeriodObjectsPeriodTestIamPermissionsParams {
 }
 
 /// struct for passing parameters to the method [`storage_objects_update`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectsPeriodUpdateParams {
     /// Name of the bucket in which the object resides.
     pub bucket: String,
@@ -503,7 +503,7 @@ pub struct StoragePeriodObjectsPeriodUpdateParams {
 }
 
 /// struct for passing parameters to the method [`storage_objects_watch_all`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectsPeriodWatchAllParams {
     /// Name of the bucket in which to look for objects.
     pub bucket: String,
@@ -2047,7 +2047,7 @@ pub async fn storage_objects_test_iam_permissions(
         "multi" => local_var_req_builder.query(
             &permissions
                 .into_iter()
-                .map(|p| ("permissions".to_owned(), p))
+                .map(|p| ("permissions".to_owned(), p.to_string()))
                 .collect::<Vec<(std::string::String, std::string::String)>>(),
         ),
         _ => local_var_req_builder.query(&[(

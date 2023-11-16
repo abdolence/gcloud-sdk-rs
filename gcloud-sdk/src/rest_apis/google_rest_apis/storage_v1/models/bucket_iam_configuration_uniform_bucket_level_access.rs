@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BucketIamConfigurationUniformBucketLevelAccess : The bucket's uniform bucket-level access configuration.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct BucketIamConfigurationUniformBucketLevelAccess {
     /// If set, access is controlled only by bucket-level or above IAM policies.
     #[serde(rename = "enabled", skip_serializing_if = "Option::is_none")]

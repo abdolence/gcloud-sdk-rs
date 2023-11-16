@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::dns_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`dns_managed_zone_operations_get`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodManagedZoneOperationsPeriodGetParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct DnsPeriodManagedZoneOperationsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`dns_managed_zone_operations_list`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodManagedZoneOperationsPeriodListParams {
     /// Identifies the project addressed by this request.
     pub project: String,

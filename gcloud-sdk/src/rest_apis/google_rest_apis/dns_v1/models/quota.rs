@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Quota : Limits associated with a Project.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Quota {
     /// Maximum allowed number of DnsKeys per ManagedZone.
     #[serde(

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SqlServerAuditConfig : SQL Server specific audit configuration.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SqlServerAuditConfig {
     /// The name of the destination bucket (e.g., gs://mybucket).
     #[serde(rename = "bucket", skip_serializing_if = "Option::is_none")]

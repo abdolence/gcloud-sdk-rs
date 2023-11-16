@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::dns_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`dns_managed_zones_create`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodManagedZonesPeriodCreateParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -46,7 +46,7 @@ pub struct DnsPeriodManagedZonesPeriodCreateParams {
 }
 
 /// struct for passing parameters to the method [`dns_managed_zones_delete`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodManagedZonesPeriodDeleteParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -79,7 +79,7 @@ pub struct DnsPeriodManagedZonesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`dns_managed_zones_get`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodManagedZonesPeriodGetParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -112,7 +112,7 @@ pub struct DnsPeriodManagedZonesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`dns_managed_zones_get_iam_policy`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodManagedZonesPeriodGetIamPolicyParams {
     /// REQUIRED: The resource for which the policy is being requested. See [Resource names](https://cloud.google.com/apis/design/resource_names) for the appropriate value for this field.
     pub resource: String,
@@ -143,7 +143,7 @@ pub struct DnsPeriodManagedZonesPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`dns_managed_zones_list`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodManagedZonesPeriodListParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -178,7 +178,7 @@ pub struct DnsPeriodManagedZonesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`dns_managed_zones_patch`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodManagedZonesPeriodPatchParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -212,7 +212,7 @@ pub struct DnsPeriodManagedZonesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`dns_managed_zones_set_iam_policy`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodManagedZonesPeriodSetIamPolicyParams {
     /// REQUIRED: The resource for which the policy is being specified. See [Resource names](https://cloud.google.com/apis/design/resource_names) for the appropriate value for this field.
     pub resource: String,
@@ -243,7 +243,7 @@ pub struct DnsPeriodManagedZonesPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`dns_managed_zones_test_iam_permissions`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodManagedZonesPeriodTestIamPermissionsParams {
     /// REQUIRED: The resource for which the policy detail is being requested. See [Resource names](https://cloud.google.com/apis/design/resource_names) for the appropriate value for this field.
     pub resource: String,
@@ -274,7 +274,7 @@ pub struct DnsPeriodManagedZonesPeriodTestIamPermissionsParams {
 }
 
 /// struct for passing parameters to the method [`dns_managed_zones_update`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodManagedZonesPeriodUpdateParams {
     /// Identifies the project addressed by this request.
     pub project: String,

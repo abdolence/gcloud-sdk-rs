@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// IntArray : An array of int.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct IntArray {
     /// Elements in the int array.
     #[serde(rename = "elements", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SqlExternalSyncSettingError : External primary instance migration setting error/warning.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SqlExternalSyncSettingError {
     /// Additional information about the error encountered.
     #[serde(rename = "detail", skip_serializing_if = "Option::is_none")]
@@ -20,7 +20,7 @@ pub struct SqlExternalSyncSettingError {
     pub kind: Option<String>,
     /// Identifies the specific error that occurred.
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-    pub r#type: Option<RHashType>,
+    pub r#type: Option<Type>,
 }
 
 impl SqlExternalSyncSettingError {
@@ -36,7 +36,7 @@ impl SqlExternalSyncSettingError {
 
 /// Identifies the specific error that occurred.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum RHashType {
+pub enum Type {
     #[serde(rename = "SQL_EXTERNAL_SYNC_SETTING_ERROR_TYPE_UNSPECIFIED")]
     SqlExternalSyncSettingErrorTypeUnspecified,
     #[serde(rename = "CONNECTION_FAILURE")]
@@ -95,8 +95,8 @@ pub enum RHashType {
     LimitedSupportTables,
 }
 
-impl Default for RHashType {
-    fn default() -> RHashType {
+impl Default for Type {
+    fn default() -> Type {
         Self::SqlExternalSyncSettingErrorTypeUnspecified
     }
 }

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DatabaseInstance : A Cloud SQL instance resource.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DatabaseInstance {
     /// List all maintenance versions applicable on the instance
     #[serde(

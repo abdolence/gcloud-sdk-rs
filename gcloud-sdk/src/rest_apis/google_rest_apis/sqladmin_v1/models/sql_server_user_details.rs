@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SqlServerUserDetails : Represents a Sql Server user on the Cloud SQL instance.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SqlServerUserDetails {
     /// If the user has been disabled
     #[serde(rename = "disabled", skip_serializing_if = "Option::is_none")]

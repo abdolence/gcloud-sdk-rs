@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::dns_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`dns_resource_record_sets_create`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodResourceRecordSetsPeriodCreateParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -48,7 +48,7 @@ pub struct DnsPeriodResourceRecordSetsPeriodCreateParams {
 }
 
 /// struct for passing parameters to the method [`dns_resource_record_sets_delete`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodResourceRecordSetsPeriodDeleteParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -85,7 +85,7 @@ pub struct DnsPeriodResourceRecordSetsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`dns_resource_record_sets_get`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodResourceRecordSetsPeriodGetParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -122,7 +122,7 @@ pub struct DnsPeriodResourceRecordSetsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`dns_resource_record_sets_list`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodResourceRecordSetsPeriodListParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -161,7 +161,7 @@ pub struct DnsPeriodResourceRecordSetsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`dns_resource_record_sets_patch`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodResourceRecordSetsPeriodPatchParams {
     /// Identifies the project addressed by this request.
     pub project: String,

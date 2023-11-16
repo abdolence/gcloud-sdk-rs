@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ObjectOwner : The owner of the object. This will always be the uploader of the object.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ObjectOwner {
     /// The entity, in the form user-userId.
     #[serde(rename = "entity", skip_serializing_if = "Option::is_none")]

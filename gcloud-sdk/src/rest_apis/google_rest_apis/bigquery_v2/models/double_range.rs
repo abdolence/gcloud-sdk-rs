@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DoubleRange : Range of a double hyperparameter.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DoubleRange {
     /// Max value of the double parameter.
     #[serde(rename = "max", skip_serializing_if = "Option::is_none")]

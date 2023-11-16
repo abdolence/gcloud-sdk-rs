@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// StandardSqlField : A field or a column.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct StandardSqlField {
     /// Optional. The name of this field. Can be absent for struct fields.
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]

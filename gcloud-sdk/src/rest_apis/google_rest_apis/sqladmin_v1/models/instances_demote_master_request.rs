@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InstancesDemoteMasterRequest : Database demote primary instance request.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InstancesDemoteMasterRequest {
     #[serde(
         rename = "demoteMasterContext",

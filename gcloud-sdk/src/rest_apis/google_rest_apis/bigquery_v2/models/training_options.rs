@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// TrainingOptions : Options used in model training.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TrainingOptions {
     /// If true, detect step changes and make data adjustment in the input time series.
     #[serde(rename = "adjustStepChanges", skip_serializing_if = "Option::is_none")]

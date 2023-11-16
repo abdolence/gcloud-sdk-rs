@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ArimaOrder : Arima order, can be used for both non-seasonal and seasonal parts.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ArimaOrder {
     /// Order of the differencing part.
     #[serde(rename = "d", skip_serializing_if = "Option::is_none")]

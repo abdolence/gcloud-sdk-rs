@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SyncFlags : Initial sync flags for certain Cloud SQL APIs. Currently used for the MySQL external server initial dump.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SyncFlags {
     /// The name of the flag.
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RrSetRoutingPolicy : A RRSetRoutingPolicy represents ResourceRecordSet data that is returned dynamically with the response varying based on configured properties such as geolocation or by weighted random selection.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RrSetRoutingPolicy {
     #[serde(rename = "geo", skip_serializing_if = "Option::is_none")]
     pub geo: Option<Box<crate::google_rest_apis::dns_v1::models::RrSetRoutingPolicyGeoPolicy>>,

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// StringHparamSearchSpace : Search space for string and enum.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct StringHparamSearchSpace {
     /// Canididates for the string or enum parameter in lower case.
     #[serde(rename = "candidates", skip_serializing_if = "Option::is_none")]

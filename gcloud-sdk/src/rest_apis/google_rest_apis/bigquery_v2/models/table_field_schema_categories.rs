@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// TableFieldSchemaCategories : [Optional] The categories attached to this field, used for field-level access control.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TableFieldSchemaCategories {
     /// A list of category resource names. For example, \"projects/1/taxonomies/2/categories/3\". At most 5 categories are allowed.
     #[serde(rename = "names", skip_serializing_if = "Option::is_none")]

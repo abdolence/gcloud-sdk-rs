@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// TestIamPermissionsResponse : A storage.(buckets|objects).testIamPermissions response.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TestIamPermissionsResponse {
     /// The kind of item this is.
     #[serde(rename = "kind", skip_serializing_if = "Option::is_none")]

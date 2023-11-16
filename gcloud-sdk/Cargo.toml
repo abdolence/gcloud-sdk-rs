@@ -1,6 +1,6 @@
 [package]
 name = "gcloud-sdk"
-version = "0.21.3-alpha.0"
+version = "0.22.0-alpha.0"
 authors = ["Abdulla Abdurakhmanov <me@abdolence.dev>","mechiru <u9053u6d41@gmail.com>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -428,6 +428,7 @@ google-rest-bigquery-v2 = ["rest"]
 google-rest-storage-v1 = ["rest"]
 google-rest-sqladmin-v1 = ["rest"]
 google-rest-dns-v1 = ["rest"]
+google-rest-compute-v1 = ["rest"]
 
 [dependencies]
 tonic = { version = "0.10", features = ["tls"] }

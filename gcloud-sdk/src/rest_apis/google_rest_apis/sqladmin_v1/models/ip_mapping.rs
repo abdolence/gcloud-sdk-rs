@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// IpMapping : Database instance IP Mapping.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct IpMapping {
     /// The IP address assigned.
     #[serde(rename = "ipAddress", skip_serializing_if = "Option::is_none")]
@@ -20,7 +20,7 @@ pub struct IpMapping {
     pub time_to_retire: Option<String>,
     /// The type of this IP address. A `PRIMARY` address is a public address that can accept incoming connections. A `PRIVATE` address is a private address that can accept incoming connections. An `OUTGOING` address is the source address of connections originating from the instance, if supported.
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-    pub r#type: Option<RHashType>,
+    pub r#type: Option<Type>,
 }
 
 impl IpMapping {
@@ -36,7 +36,7 @@ impl IpMapping {
 
 /// The type of this IP address. A `PRIMARY` address is a public address that can accept incoming connections. A `PRIVATE` address is a private address that can accept incoming connections. An `OUTGOING` address is the source address of connections originating from the instance, if supported.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum RHashType {
+pub enum Type {
     #[serde(rename = "SQL_IP_ADDRESS_TYPE_UNSPECIFIED")]
     SqlIpAddressTypeUnspecified,
     #[serde(rename = "PRIMARY")]
@@ -49,8 +49,8 @@ pub enum RHashType {
     Migrated1StGen,
 }
 
-impl Default for RHashType {
-    fn default() -> RHashType {
+impl Default for Type {
+    fn default() -> Type {
         Self::SqlIpAddressTypeUnspecified
     }
 }

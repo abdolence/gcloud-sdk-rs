@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Entry : A single entry in the confusion matrix.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Entry {
     /// Number of items being predicted as this label.
     #[serde(rename = "itemCount", skip_serializing_if = "Option::is_none")]

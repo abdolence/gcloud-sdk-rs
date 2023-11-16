@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Operation : An Operation resource. For successful operations that return an Operation resource, only the fields relevant to the operation are populated in the resource.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Operation {
     #[serde(rename = "backupContext", skip_serializing_if = "Option::is_none")]
     pub backup_context: Option<Box<crate::google_rest_apis::sqladmin_v1::models::BackupContext>>,

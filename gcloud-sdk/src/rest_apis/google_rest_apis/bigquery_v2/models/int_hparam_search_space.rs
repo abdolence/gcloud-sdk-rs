@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// IntHparamSearchSpace : Search space for an int hyperparameter.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct IntHparamSearchSpace {
     #[serde(rename = "candidates", skip_serializing_if = "Option::is_none")]
     pub candidates: Option<Box<crate::google_rest_apis::bigquery_v2::models::IntCandidates>>,

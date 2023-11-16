@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ServiceAccount : A subscription to receive Google PubSub notifications.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ServiceAccount {
     /// The ID of the notification.
     #[serde(rename = "email_address", skip_serializing_if = "Option::is_none")]

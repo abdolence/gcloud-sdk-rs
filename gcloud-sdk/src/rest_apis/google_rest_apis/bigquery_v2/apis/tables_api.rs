@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::bigquery_v2::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`bigquery_tables_delete`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct BigqueryPeriodTablesPeriodDeleteParams {
     /// Project ID of the table to delete
     pub project_id: String,
@@ -39,7 +39,7 @@ pub struct BigqueryPeriodTablesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_tables_get`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct BigqueryPeriodTablesPeriodGetParams {
     /// Project ID of the requested table
     pub project_id: String,
@@ -68,7 +68,7 @@ pub struct BigqueryPeriodTablesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_tables_get_iam_policy`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct BigqueryPeriodTablesPeriodGetIamPolicyParams {
     /// REQUIRED: The resource for which the policy is being requested. See [Resource names](https://cloud.google.com/apis/design/resource_names) for the appropriate value for this field.
     pub resource: String,
@@ -91,7 +91,7 @@ pub struct BigqueryPeriodTablesPeriodGetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_tables_insert`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct BigqueryPeriodTablesPeriodInsertParams {
     /// Project ID of the new table
     pub project_id: String,
@@ -115,7 +115,7 @@ pub struct BigqueryPeriodTablesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_tables_list`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct BigqueryPeriodTablesPeriodListParams {
     /// Project ID of the tables to list
     pub project_id: String,
@@ -142,7 +142,7 @@ pub struct BigqueryPeriodTablesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_tables_patch`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct BigqueryPeriodTablesPeriodPatchParams {
     /// Project ID of the table to update
     pub project_id: String,
@@ -170,7 +170,7 @@ pub struct BigqueryPeriodTablesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_tables_set_iam_policy`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct BigqueryPeriodTablesPeriodSetIamPolicyParams {
     /// REQUIRED: The resource for which the policy is being specified. See [Resource names](https://cloud.google.com/apis/design/resource_names) for the appropriate value for this field.
     pub resource: String,
@@ -193,7 +193,7 @@ pub struct BigqueryPeriodTablesPeriodSetIamPolicyParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_tables_test_iam_permissions`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct BigqueryPeriodTablesPeriodTestIamPermissionsParams {
     /// REQUIRED: The resource for which the policy detail is being requested. See [Resource names](https://cloud.google.com/apis/design/resource_names) for the appropriate value for this field.
     pub resource: String,
@@ -216,7 +216,7 @@ pub struct BigqueryPeriodTablesPeriodTestIamPermissionsParams {
 }
 
 /// struct for passing parameters to the method [`bigquery_tables_update`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct BigqueryPeriodTablesPeriodUpdateParams {
     /// Project ID of the table to update
     pub project_id: String,

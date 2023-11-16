@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ExportContextCsvExportOptions : Options for exporting data as CSV. `MySQL` and `PostgreSQL` instances only.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ExportContextCsvExportOptions {
     /// Specifies the character that should appear before a data character that needs to be escaped.
     #[serde(rename = "escapeCharacter", skip_serializing_if = "Option::is_none")]

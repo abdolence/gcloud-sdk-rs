@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ConnectSettings : Connect settings retrieval response.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ConnectSettings {
     /// `SECOND_GEN`: Cloud SQL database instance. `EXTERNAL`: A database server that is not managed by Google. This property is read-only; use the `tier` property in the `settings` object to determine the database type.
     #[serde(rename = "backendType", skip_serializing_if = "Option::is_none")]

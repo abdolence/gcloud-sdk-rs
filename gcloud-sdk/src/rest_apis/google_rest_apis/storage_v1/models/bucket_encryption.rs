@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BucketEncryption : Encryption configuration for a bucket.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct BucketEncryption {
     /// A Cloud KMS key that will be used to encrypt objects inserted into this bucket, if no encryption method is specified.
     #[serde(rename = "defaultKmsKeyName", skip_serializing_if = "Option::is_none")]

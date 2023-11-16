@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::sqladmin_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`sql_connect_generate_ephemeral`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodConnectPeriodGenerateEphemeralParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -47,7 +47,7 @@ pub struct SqlPeriodConnectPeriodGenerateEphemeralParams {
 }
 
 /// struct for passing parameters to the method [`sql_connect_get`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodConnectPeriodGetParams {
     /// Project ID of the project that contains the instance.
     pub project: String,

@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::sqladmin_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`sql_instances_add_server_ca`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodAddServerCaParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -45,7 +45,7 @@ pub struct SqlPeriodInstancesPeriodAddServerCaParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_clone`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodCloneParams {
     /// Project ID of the source as well as the clone Cloud SQL instance.
     pub project: String,
@@ -78,7 +78,7 @@ pub struct SqlPeriodInstancesPeriodCloneParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_delete`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodDeleteParams {
     /// Project ID of the project that contains the instance to be deleted.
     pub project: String,
@@ -109,7 +109,7 @@ pub struct SqlPeriodInstancesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_demote_master`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodDemoteMasterParams {
     /// ID of the project that contains the instance.
     pub project: String,
@@ -142,7 +142,7 @@ pub struct SqlPeriodInstancesPeriodDemoteMasterParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_export`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodExportParams {
     /// Project ID of the project that contains the instance to be exported.
     pub project: String,
@@ -175,7 +175,7 @@ pub struct SqlPeriodInstancesPeriodExportParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_failover`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodFailoverParams {
     /// ID of the project that contains the read replica.
     pub project: String,
@@ -208,7 +208,7 @@ pub struct SqlPeriodInstancesPeriodFailoverParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_get`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodGetParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -239,7 +239,7 @@ pub struct SqlPeriodInstancesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_import`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodImportParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -272,7 +272,7 @@ pub struct SqlPeriodInstancesPeriodImportParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_insert`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodInsertParams {
     /// Project ID of the project to which the newly created Cloud SQL instances should belong.
     pub project: String,
@@ -302,7 +302,7 @@ pub struct SqlPeriodInstancesPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_list`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodListParams {
     /// Project ID of the project for which to list Cloud SQL instances.
     pub project: String,
@@ -337,7 +337,7 @@ pub struct SqlPeriodInstancesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_list_server_cas`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodListServerCasParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -368,7 +368,7 @@ pub struct SqlPeriodInstancesPeriodListServerCasParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_patch`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodPatchParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -400,7 +400,7 @@ pub struct SqlPeriodInstancesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_promote_replica`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodPromoteReplicaParams {
     /// ID of the project that contains the read replica.
     pub project: String,
@@ -431,7 +431,7 @@ pub struct SqlPeriodInstancesPeriodPromoteReplicaParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_reset_ssl_config`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodResetSslConfigParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -462,7 +462,7 @@ pub struct SqlPeriodInstancesPeriodResetSslConfigParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_restart`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodRestartParams {
     /// Project ID of the project that contains the instance to be restarted.
     pub project: String,
@@ -493,7 +493,7 @@ pub struct SqlPeriodInstancesPeriodRestartParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_restore_backup`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodRestoreBackupParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -526,7 +526,7 @@ pub struct SqlPeriodInstancesPeriodRestoreBackupParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_rotate_server_ca`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodRotateServerCaParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -559,7 +559,7 @@ pub struct SqlPeriodInstancesPeriodRotateServerCaParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_start_replica`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodStartReplicaParams {
     /// ID of the project that contains the read replica.
     pub project: String,
@@ -590,7 +590,7 @@ pub struct SqlPeriodInstancesPeriodStartReplicaParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_stop_replica`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodStopReplicaParams {
     /// ID of the project that contains the read replica.
     pub project: String,
@@ -621,7 +621,7 @@ pub struct SqlPeriodInstancesPeriodStopReplicaParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_truncate_log`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodTruncateLogParams {
     /// Project ID of the Cloud SQL project.
     pub project: String,
@@ -654,7 +654,7 @@ pub struct SqlPeriodInstancesPeriodTruncateLogParams {
 }
 
 /// struct for passing parameters to the method [`sql_instances_update`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodInstancesPeriodUpdateParams {
     /// Project ID of the project that contains the instance.
     pub project: String,

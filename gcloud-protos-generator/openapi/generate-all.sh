@@ -2,7 +2,7 @@
 
 SCRIPT_LOCATION=$( dirname -- "$0"; );
 SPEC_LOCATIONS="$SCRIPT_LOCATION/google"
-GENERATOR_LOCATION="$SCRIPT_LOCATION/generator/openapi-generator-cli-6.6.0.jar"
+GENERATOR_LOCATION="$SCRIPT_LOCATION/generator/openapi-generator-cli-7.1.0.jar"
 GCLOUD_SDK_DIR="$SCRIPT_LOCATION/../../gcloud-sdk"
 TEMPLATES_DIR="$SCRIPT_LOCATION/templates"
 
@@ -32,7 +32,7 @@ do
   do
     echo "Found spec: $API_DIR_FILE"
 
-    java -jar "$GENERATOR_LOCATION" generate -i "$API_DIR_FILE" -g rust -o "$TEMP_OUTPUT/$API_NAME" --additional-properties=useSingleRequestParameter=true --additional-properties=packageName="$API_DIR_NAME"
+    java -DmaxYamlCodePoints=99999999 -jar "$GENERATOR_LOCATION" generate -i "$API_DIR_FILE" -g rust -o "$TEMP_OUTPUT/$API_NAME" --additional-properties=useSingleRequestParameter=true --additional-properties=packageName="$API_DIR_NAME"
 
     sed -i "s/crate::apis/crate::google_rest_apis::$API_NAME::apis/g" "$TEMP_OUTPUT"/"$API_NAME"/src/apis/*.rs
     sed -i "s/_period_/_/g" "$TEMP_OUTPUT"/"$API_NAME"/src/apis/*.rs

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RrSetRoutingPolicyWrrPolicyWrrPolicyItem : A routing block which contains the routing information for one WRR item.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RrSetRoutingPolicyWrrPolicyWrrPolicyItem {
     #[serde(
         rename = "healthCheckedTargets",

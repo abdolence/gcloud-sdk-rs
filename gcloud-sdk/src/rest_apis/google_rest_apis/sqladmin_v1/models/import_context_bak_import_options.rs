@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ImportContextBakImportOptions : Import parameters specific to SQL Server .BAK files
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ImportContextBakImportOptions {
     #[serde(rename = "encryptionOptions", skip_serializing_if = "Option::is_none")]
     pub encryption_options: Option<Box<crate::google_rest_apis::sqladmin_v1::models::ImportContextBakImportOptionsEncryptionOptions>>,

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BucketAccessControls : An access-control list.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct BucketAccessControls {
     /// The list of items.
     #[serde(rename = "items", skip_serializing_if = "Option::is_none")]

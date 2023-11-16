@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RankingMetrics : Evaluation metrics used by weighted-ALS models specified by feedback_type=implicit.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RankingMetrics {
     /// Determines the goodness of a ranking by computing the percentile rank from the predicted confidence and dividing it by the original rank.
     #[serde(rename = "averageRank", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SslCertsCreateEphemeralRequest : SslCerts create ephemeral certificate request.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SslCertsCreateEphemeralRequest {
     /// Access token to include in the signed certificate.
     #[serde(rename = "access_token", skip_serializing_if = "Option::is_none")]

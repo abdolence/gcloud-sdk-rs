@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InstancesImportRequest : Database instance import request.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InstancesImportRequest {
     #[serde(rename = "importContext", skip_serializing_if = "Option::is_none")]
     pub import_context: Option<Box<crate::google_rest_apis::sqladmin_v1::models::ImportContext>>,

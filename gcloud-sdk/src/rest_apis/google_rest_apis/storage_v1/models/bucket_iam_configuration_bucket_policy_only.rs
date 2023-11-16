@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BucketIamConfigurationBucketPolicyOnly : The bucket's uniform bucket-level access configuration. The feature was formerly known as Bucket Policy Only. For backward compatibility, this field will be populated with identical information as the uniformBucketLevelAccess field. We recommend using the uniformBucketLevelAccess field to enable and disable the feature.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct BucketIamConfigurationBucketPolicyOnly {
     /// If set, access is controlled only by bucket-level or above IAM policies.
     #[serde(rename = "enabled", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Policy : A policy is a collection of DNS rules applied to one or more Virtual Private Cloud resources.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Policy {
     #[serde(
         rename = "alternativeNameServerConfig",

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ObjectCustomerEncryption : Metadata of customer-supplied encryption key, if the object is encrypted by such a key.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ObjectCustomerEncryption {
     /// The encryption algorithm.
     #[serde(

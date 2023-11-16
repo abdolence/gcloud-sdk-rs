@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DemoteMasterMySqlReplicaConfiguration : Read-replica configuration specific to MySQL databases.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DemoteMasterMySqlReplicaConfiguration {
     /// PEM representation of the trusted CA's x509 certificate.
     #[serde(rename = "caCertificate", skip_serializing_if = "Option::is_none")]

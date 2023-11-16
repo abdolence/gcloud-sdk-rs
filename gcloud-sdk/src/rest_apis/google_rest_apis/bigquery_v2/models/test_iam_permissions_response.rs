@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// TestIamPermissionsResponse : Response message for `TestIamPermissions` method.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TestIamPermissionsResponse {
     /// A subset of `TestPermissionsRequest.permissions` that the caller is allowed.
     #[serde(rename = "permissions", skip_serializing_if = "Option::is_none")]

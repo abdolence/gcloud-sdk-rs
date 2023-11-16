@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// CategoricalValue : Representative value of a categorical feature.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CategoricalValue {
     /// Counts of all categories for the categorical feature. If there are more than ten categories, we return top ten (by count) and return one more CategoryCount with category \"_OTHER_\" and count as aggregate counts of remaining categories.
     #[serde(rename = "categoryCounts", skip_serializing_if = "Option::is_none")]

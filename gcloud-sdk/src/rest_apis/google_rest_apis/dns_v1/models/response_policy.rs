@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ResponsePolicy : A Response Policy is a collection of selectors that apply to queries made against one or more Virtual Private Cloud networks.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ResponsePolicy {
     /// User-provided description for this Response Policy.
     #[serde(rename = "description", skip_serializing_if = "Option::is_none")]

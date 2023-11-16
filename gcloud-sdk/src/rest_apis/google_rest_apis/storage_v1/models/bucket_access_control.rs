@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BucketAccessControl : An access-control entry.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct BucketAccessControl {
     /// The name of the bucket.
     #[serde(rename = "bucket", skip_serializing_if = "Option::is_none")]

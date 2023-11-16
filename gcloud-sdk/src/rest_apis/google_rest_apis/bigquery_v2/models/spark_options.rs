@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SparkOptions : Options for a user-defined Spark routine.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SparkOptions {
     /// Archive files to be extracted into the working directory of each executor. For more information about Apache Spark, see [Apache Spark](https://spark.apache.org/docs/latest/index.html).
     #[serde(rename = "archiveUris", skip_serializing_if = "Option::is_none")]

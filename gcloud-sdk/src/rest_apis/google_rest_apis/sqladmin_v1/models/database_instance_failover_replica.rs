@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DatabaseInstanceFailoverReplica : The name and status of the failover replica.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DatabaseInstanceFailoverReplica {
     /// The availability status of the failover replica. A false status indicates that the failover replica is out of sync. The primary instance can only failover to the failover replica when the status is true.
     #[serde(rename = "available", skip_serializing_if = "Option::is_none")]

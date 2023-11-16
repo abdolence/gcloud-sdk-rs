@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DnsKey : A DNSSEC key pair.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DnsKey {
     /// String mnemonic specifying the DNSSEC algorithm of this key. Immutable after creation time.
     #[serde(rename = "algorithm", skip_serializing_if = "Option::is_none")]
@@ -43,7 +43,7 @@ pub struct DnsKey {
     pub public_key: Option<String>,
     /// One of \"KEY_SIGNING\" or \"ZONE_SIGNING\". Keys of type KEY_SIGNING have the Secure Entry Point flag set and, when active, are used to sign only resource record sets of type DNSKEY. Otherwise, the Secure Entry Point flag is cleared, and this key is used to sign only resource record sets of other types. Immutable after creation time.
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-    pub r#type: Option<RHashType>,
+    pub r#type: Option<Type>,
 }
 
 impl DnsKey {
@@ -87,15 +87,15 @@ impl Default for Algorithm {
 }
 /// One of \"KEY_SIGNING\" or \"ZONE_SIGNING\". Keys of type KEY_SIGNING have the Secure Entry Point flag set and, when active, are used to sign only resource record sets of type DNSKEY. Otherwise, the Secure Entry Point flag is cleared, and this key is used to sign only resource record sets of other types. Immutable after creation time.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum RHashType {
+pub enum Type {
     #[serde(rename = "keySigning")]
     KeySigning,
     #[serde(rename = "zoneSigning")]
     ZoneSigning,
 }
 
-impl Default for RHashType {
-    fn default() -> RHashType {
+impl Default for Type {
+    fn default() -> Type {
         Self::KeySigning
     }
 }

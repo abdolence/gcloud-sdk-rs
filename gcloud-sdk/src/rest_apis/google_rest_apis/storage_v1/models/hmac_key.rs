@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HmacKey : JSON template to produce a JSON-style HMAC Key resource for Create responses.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct HmacKey {
     /// The kind of item this is. For HMAC keys, this is always storage#hmacKey.
     #[serde(rename = "kind", skip_serializing_if = "Option::is_none")]

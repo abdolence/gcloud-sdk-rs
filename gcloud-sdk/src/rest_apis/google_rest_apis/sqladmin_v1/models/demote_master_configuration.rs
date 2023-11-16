@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DemoteMasterConfiguration : Read-replica configuration for connecting to the on-premises primary instance.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DemoteMasterConfiguration {
     /// This is always `sql#demoteMasterConfiguration`.
     #[serde(rename = "kind", skip_serializing_if = "Option::is_none")]

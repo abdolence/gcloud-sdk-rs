@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BinaryClassificationMetrics : Evaluation metrics for binary classification/classifier models.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct BinaryClassificationMetrics {
     #[serde(
         rename = "aggregateClassificationMetrics",

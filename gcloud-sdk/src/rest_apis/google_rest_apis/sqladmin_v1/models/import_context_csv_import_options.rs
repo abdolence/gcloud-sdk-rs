@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ImportContextCsvImportOptions : Options for importing data as CSV.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ImportContextCsvImportOptions {
     /// The columns to which CSV data is imported. If not specified, all columns of the database table are loaded with CSV data.
     #[serde(rename = "columns", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SslCert : SslCerts Resource
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SslCert {
     /// PEM representation.
     #[serde(rename = "cert", skip_serializing_if = "Option::is_none")]

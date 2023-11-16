@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// GetIamPolicyRequest : Request message for `GetIamPolicy` method.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GetIamPolicyRequest {
     #[serde(rename = "options", skip_serializing_if = "Option::is_none")]
     pub options: Option<Box<crate::google_rest_apis::bigquery_v2::models::GetPolicyOptions>>,

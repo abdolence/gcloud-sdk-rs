@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::storage_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`storage_object_access_controls_delete`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectAccessControlsPeriodDeleteParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -45,7 +45,7 @@ pub struct StoragePeriodObjectAccessControlsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`storage_object_access_controls_get`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectAccessControlsPeriodGetParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -76,7 +76,7 @@ pub struct StoragePeriodObjectAccessControlsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`storage_object_access_controls_insert`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectAccessControlsPeriodInsertParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -107,7 +107,7 @@ pub struct StoragePeriodObjectAccessControlsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`storage_object_access_controls_list`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectAccessControlsPeriodListParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -136,7 +136,7 @@ pub struct StoragePeriodObjectAccessControlsPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`storage_object_access_controls_patch`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectAccessControlsPeriodPatchParams {
     /// Name of a bucket.
     pub bucket: String,
@@ -169,7 +169,7 @@ pub struct StoragePeriodObjectAccessControlsPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`storage_object_access_controls_update`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodObjectAccessControlsPeriodUpdateParams {
     /// Name of a bucket.
     pub bucket: String,

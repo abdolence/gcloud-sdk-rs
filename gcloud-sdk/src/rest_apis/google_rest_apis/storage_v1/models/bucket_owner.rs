@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BucketOwner : The owner of the bucket. This is always the project team's owner group.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct BucketOwner {
     /// The entity, in the form project-owner-projectId.
     #[serde(rename = "entity", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ManagedZone : A zone is a subtree of the DNS namespace under one administrative responsibility. A ManagedZone is a resource that represents a DNS zone hosted by the Cloud DNS service.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ManagedZone {
     #[serde(rename = "cloudLoggingConfig", skip_serializing_if = "Option::is_none")]
     pub cloud_logging_config:

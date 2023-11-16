@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BinaryConfusionMatrix : Confusion matrix for binary classification models.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct BinaryConfusionMatrix {
     /// The fraction of predictions given the correct label.
     #[serde(rename = "accuracy", skip_serializing_if = "Option::is_none")]

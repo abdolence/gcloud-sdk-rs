@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// GoogleIamV1TestIamPermissionsRequest : Request message for `TestIamPermissions` method.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct GoogleIamV1TestIamPermissionsRequest {
     /// The set of permissions to check for the `resource`. Permissions with wildcards (such as `*` or `storage.*`) are not allowed. For more information see [IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).
     #[serde(rename = "permissions", skip_serializing_if = "Option::is_none")]

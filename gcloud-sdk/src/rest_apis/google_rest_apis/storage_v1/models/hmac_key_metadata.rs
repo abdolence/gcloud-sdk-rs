@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// HmacKeyMetadata : JSON template to produce a JSON-style HMAC Key metadata resource.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct HmacKeyMetadata {
     /// The ID of the HMAC Key.
     #[serde(rename = "accessId", skip_serializing_if = "Option::is_none")]

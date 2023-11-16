@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Row : A single row in the confusion matrix.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Row {
     /// The original label of this row.
     #[serde(rename = "actualLabel", skip_serializing_if = "Option::is_none")]

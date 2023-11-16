@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RegressionMetrics : Evaluation metrics for regression and explicit feedback type matrix factorization models.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RegressionMetrics {
     /// Mean absolute error.
     #[serde(rename = "meanAbsoluteError", skip_serializing_if = "Option::is_none")]

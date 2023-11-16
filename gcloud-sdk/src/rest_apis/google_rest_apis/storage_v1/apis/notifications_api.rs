@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::storage_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`storage_notifications_delete`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodNotificationsPeriodDeleteParams {
     /// The parent bucket of the notification.
     pub bucket: String,
@@ -41,7 +41,7 @@ pub struct StoragePeriodNotificationsPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`storage_notifications_get`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodNotificationsPeriodGetParams {
     /// The parent bucket of the notification.
     pub bucket: String,
@@ -68,7 +68,7 @@ pub struct StoragePeriodNotificationsPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`storage_notifications_insert`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodNotificationsPeriodInsertParams {
     /// The parent bucket of the notification.
     pub bucket: String,
@@ -94,7 +94,7 @@ pub struct StoragePeriodNotificationsPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`storage_notifications_list`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct StoragePeriodNotificationsPeriodListParams {
     /// Name of a Google Cloud Storage bucket.
     pub bucket: String,

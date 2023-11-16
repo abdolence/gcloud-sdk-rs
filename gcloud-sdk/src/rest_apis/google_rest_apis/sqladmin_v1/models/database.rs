@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Database : Represents a SQL database on the Cloud SQL instance.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Database {
     /// The Cloud SQL charset value.
     #[serde(rename = "charset", skip_serializing_if = "Option::is_none")]

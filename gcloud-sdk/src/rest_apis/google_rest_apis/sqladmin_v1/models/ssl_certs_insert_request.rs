@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SslCertsInsertRequest : SslCerts insert request.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SslCertsInsertRequest {
     /// User supplied name. Must be a distinct name from the other certificates for this instance.
     #[serde(rename = "commonName", skip_serializing_if = "Option::is_none")]

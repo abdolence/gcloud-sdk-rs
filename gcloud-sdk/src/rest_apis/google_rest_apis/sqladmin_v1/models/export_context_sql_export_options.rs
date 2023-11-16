@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ExportContextSqlExportOptions : Options for exporting data as SQL statements.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ExportContextSqlExportOptions {
     #[serde(rename = "mysqlExportOptions", skip_serializing_if = "Option::is_none")]
     pub mysql_export_options: Option<Box<crate::google_rest_apis::sqladmin_v1::models::ExportContextSqlExportOptionsMysqlExportOptions>>,

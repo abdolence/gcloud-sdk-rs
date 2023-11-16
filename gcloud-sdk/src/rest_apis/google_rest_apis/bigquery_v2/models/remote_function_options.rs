@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// RemoteFunctionOptions : Options for a remote user-defined function.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct RemoteFunctionOptions {
     /// Fully qualified name of the user-provided connection object which holds the authentication information to send requests to the remote service. Format: ```\"projects/{projectId}/locations/{locationId}/connections/{connectionId}\"```
     #[serde(rename = "connection", skip_serializing_if = "Option::is_none")]

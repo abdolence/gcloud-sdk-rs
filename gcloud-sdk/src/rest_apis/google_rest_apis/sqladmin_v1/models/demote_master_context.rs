@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DemoteMasterContext : Database instance demote primary instance context.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DemoteMasterContext {
     /// This is always `sql#demoteMasterContext`.
     #[serde(rename = "kind", skip_serializing_if = "Option::is_none")]

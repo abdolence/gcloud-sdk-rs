@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ArimaSingleModelForecastingMetrics : Model evaluation metrics for a single ARIMA forecasting model.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ArimaSingleModelForecastingMetrics {
     #[serde(
         rename = "arimaFittingMetrics",

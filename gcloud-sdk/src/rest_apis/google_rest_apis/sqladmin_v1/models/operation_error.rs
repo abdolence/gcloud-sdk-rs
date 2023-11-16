@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// OperationError : Database instance operation error.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct OperationError {
     /// Identifies the specific error that occurred.
     #[serde(rename = "code", skip_serializing_if = "Option::is_none")]

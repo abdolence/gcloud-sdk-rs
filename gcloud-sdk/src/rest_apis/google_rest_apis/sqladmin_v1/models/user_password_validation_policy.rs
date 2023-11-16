@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// UserPasswordValidationPolicy : User level password validation policy.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct UserPasswordValidationPolicy {
     /// Number of failed login attempts allowed before user get locked.
     #[serde(

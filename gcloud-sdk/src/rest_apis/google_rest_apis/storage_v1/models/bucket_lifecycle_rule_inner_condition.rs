@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BucketLifecycleRuleInnerCondition : The condition(s) under which the action will be taken.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct BucketLifecycleRuleInnerCondition {
     /// Age of an object (in days). This condition is satisfied when an object reaches the specified age.
     #[serde(rename = "age", skip_serializing_if = "Option::is_none")]

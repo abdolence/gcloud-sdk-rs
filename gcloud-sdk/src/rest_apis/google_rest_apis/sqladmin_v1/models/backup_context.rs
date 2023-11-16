@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BackupContext : Backup context.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct BackupContext {
     /// The identifier of the backup.
     #[serde(rename = "backupId", skip_serializing_if = "Option::is_none")]

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// AclEntry : An entry for an Access Control list.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AclEntry {
     /// The time when this access control entry expires in [RFC 3339](https://tools.ietf.org/html/rfc3339) format, for example `2012-11-15T16:19:00.094Z`.
     #[serde(rename = "expirationTime", skip_serializing_if = "Option::is_none")]

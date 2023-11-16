@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// FeatureValue : Representative value of a single feature within the cluster.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct FeatureValue {
     #[serde(rename = "categoricalValue", skip_serializing_if = "Option::is_none")]
     pub categorical_value:

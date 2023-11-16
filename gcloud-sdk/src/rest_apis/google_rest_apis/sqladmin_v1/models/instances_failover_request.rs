@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InstancesFailoverRequest : Instance failover request.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InstancesFailoverRequest {
     #[serde(rename = "failoverContext", skip_serializing_if = "Option::is_none")]
     pub failover_context:

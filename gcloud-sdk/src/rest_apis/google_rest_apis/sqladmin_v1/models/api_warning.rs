@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ApiWarning : An Admin API warning message.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ApiWarning {
     /// Code to uniquely identify the warning type.
     #[serde(rename = "code", skip_serializing_if = "Option::is_none")]

@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::sqladmin_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`sql_users_delete`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodUsersPeriodDeleteParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -49,7 +49,7 @@ pub struct SqlPeriodUsersPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`sql_users_get`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodUsersPeriodGetParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -84,7 +84,7 @@ pub struct SqlPeriodUsersPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`sql_users_insert`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodUsersPeriodInsertParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -116,7 +116,7 @@ pub struct SqlPeriodUsersPeriodInsertParams {
 }
 
 /// struct for passing parameters to the method [`sql_users_list`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodUsersPeriodListParams {
     /// Project ID of the project that contains the instance.
     pub project: String,
@@ -147,7 +147,7 @@ pub struct SqlPeriodUsersPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`sql_users_update`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct SqlPeriodUsersPeriodUpdateParams {
     /// Project ID of the project that contains the instance.
     pub project: String,

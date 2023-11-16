@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ManagedZoneCloudLoggingConfig : Cloud Logging configurations for publicly visible zones.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ManagedZoneCloudLoggingConfig {
     /// If set, enable query logging for this ManagedZone. False by default, making logging opt-in.
     #[serde(rename = "enableLogging", skip_serializing_if = "Option::is_none")]

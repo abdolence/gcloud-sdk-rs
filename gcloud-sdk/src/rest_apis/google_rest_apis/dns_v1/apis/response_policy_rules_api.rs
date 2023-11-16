@@ -14,7 +14,7 @@ use super::{configuration, Error};
 use crate::google_rest_apis::dns_v1::apis::ResponseContent;
 
 /// struct for passing parameters to the method [`dns_response_policy_rules_create`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodResponsePolicyRulesPeriodCreateParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -48,7 +48,7 @@ pub struct DnsPeriodResponsePolicyRulesPeriodCreateParams {
 }
 
 /// struct for passing parameters to the method [`dns_response_policy_rules_delete`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodResponsePolicyRulesPeriodDeleteParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -83,7 +83,7 @@ pub struct DnsPeriodResponsePolicyRulesPeriodDeleteParams {
 }
 
 /// struct for passing parameters to the method [`dns_response_policy_rules_get`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodResponsePolicyRulesPeriodGetParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -118,7 +118,7 @@ pub struct DnsPeriodResponsePolicyRulesPeriodGetParams {
 }
 
 /// struct for passing parameters to the method [`dns_response_policy_rules_list`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodResponsePolicyRulesPeriodListParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -153,7 +153,7 @@ pub struct DnsPeriodResponsePolicyRulesPeriodListParams {
 }
 
 /// struct for passing parameters to the method [`dns_response_policy_rules_patch`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodResponsePolicyRulesPeriodPatchParams {
     /// Identifies the project addressed by this request.
     pub project: String,
@@ -189,7 +189,7 @@ pub struct DnsPeriodResponsePolicyRulesPeriodPatchParams {
 }
 
 /// struct for passing parameters to the method [`dns_response_policy_rules_update`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct DnsPeriodResponsePolicyRulesPeriodUpdateParams {
     /// Identifies the project addressed by this request.
     pub project: String,

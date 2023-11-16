@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ArimaResult : (Auto-)arima fitting result. Wrap everything in ArimaResult for easier refactoring if we want to use model-specific iteration results.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ArimaResult {
     /// This message is repeated because there are multiple arima models fitted in auto-arima. For non-auto-arima model, its size is one.
     #[serde(rename = "arimaModelInfo", skip_serializing_if = "Option::is_none")]

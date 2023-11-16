@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SqlInstancesVerifyExternalSyncSettingsRequest : Instance verify external sync settings request.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SqlInstancesVerifyExternalSyncSettingsRequest {
     #[serde(rename = "mysqlSyncConfig", skip_serializing_if = "Option::is_none")]
     pub mysql_sync_config:

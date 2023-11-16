@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// EvaluationMetrics : Evaluation metrics of a model. These are either computed on all training data or just the eval data based on whether eval data was used during training. These are not present for imported models.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct EvaluationMetrics {
     #[serde(
         rename = "arimaForecastingMetrics",

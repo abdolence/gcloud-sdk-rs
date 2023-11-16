@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// AggregateClassificationMetrics : Aggregate metrics for classification/classifier models. For multi-class models, the metrics are either macro-averaged or micro-averaged. When macro-averaged, the metrics are calculated for each label and then an unweighted average is taken of those values. When micro-averaged, the metric is calculated globally by counting the total number of correctly predicted rows.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AggregateClassificationMetrics {
     /// Accuracy is the fraction of predictions given the correct label. For multiclass this is a micro-averaged metric.
     #[serde(rename = "accuracy", skip_serializing_if = "Option::is_none")]

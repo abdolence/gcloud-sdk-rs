@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// InstancesRotateServerCaRequest : Rotate server CA request.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct InstancesRotateServerCaRequest {
     #[serde(
         rename = "rotateServerCaContext",

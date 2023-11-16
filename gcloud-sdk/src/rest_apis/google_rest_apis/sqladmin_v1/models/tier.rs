@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// Tier : A Google Cloud SQL service tier resource.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Tier {
     /// The maximum disk size of this tier in bytes.
     #[serde(rename = "DiskQuota", skip_serializing_if = "Option::is_none")]

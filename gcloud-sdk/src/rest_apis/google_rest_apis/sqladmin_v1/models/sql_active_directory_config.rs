@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// SqlActiveDirectoryConfig : Active Directory configuration, relevant only for Cloud SQL for SQL Server.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SqlActiveDirectoryConfig {
     /// The name of the domain (e.g., mydomain.com).
     #[serde(rename = "domain", skip_serializing_if = "Option::is_none")]

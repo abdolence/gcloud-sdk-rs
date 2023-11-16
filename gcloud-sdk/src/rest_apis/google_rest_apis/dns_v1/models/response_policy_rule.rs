@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// ResponsePolicyRule : A Response Policy Rule is a selector that applies its behavior to queries that match the selector. Selectors are DNS names, which may be wildcards or exact matches. Each DNS query subject to a Response Policy matches at most one ResponsePolicyRule, as identified by the dns_name field with the longest matching suffix.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct ResponsePolicyRule {
     /// Answer this query with a behavior rather than DNS data.
     #[serde(rename = "behavior", skip_serializing_if = "Option::is_none")]

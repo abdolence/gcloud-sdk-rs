@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// BucketAutoclass : The bucket's Autoclass configuration.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct BucketAutoclass {
     /// Whether or not Autoclass is enabled on this bucket
     #[serde(rename = "enabled", skip_serializing_if = "Option::is_none")]

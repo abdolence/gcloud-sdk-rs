@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize}; /*
 
 /// DnsKeysListResponse : The response to a request to enumerate DnsKeys in a ManagedZone.
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct DnsKeysListResponse {
     /// The requested resources.
     #[serde(rename = "dnsKeys", skip_serializing_if = "Option::is_none")]
