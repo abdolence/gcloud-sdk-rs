@@ -17,8 +17,8 @@ doctest = false
 
 [features]
 default = ["tls-roots"]
-tls-roots = ["tonic/tls-roots"]
-tls-webpki-roots = ["tonic/tls-webpki-roots"]
+tls-roots = ["tonic/tls-roots", "reqwest/rustls-tls-native-roots"]
+tls-webpki-roots = ["tonic/tls-webpki-roots", "reqwest/rustls-tls"]
 rest = ["bytes", "serde_with"]
 ccc-hosted-marketplace-v2 = []
 google-actions-sdk-v2 = []
@@ -449,7 +449,7 @@ tokio= { version =  "1" }
 tracing = "0.1"
 secret-vault-value = { version="0.3", features=["proto", "serde"] }
 once_cell = "1.18"
-reqwest = { version="0.11", features=["rustls-tls", "multipart", "json", "gzip", "stream"], default-features = false  }
+reqwest = { version="0.11", features=["multipart", "json", "gzip", "stream"], default-features = false  }
 bytes = { version = "1", optional = true }
 serde_with = { version = "3", optional = true }
 
