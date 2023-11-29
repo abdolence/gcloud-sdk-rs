@@ -64,7 +64,7 @@ pub struct BackupRun {
     pub time_zone: Option<String>,
     /// The type of this run; can be either \"AUTOMATED\" or \"ON_DEMAND\" or \"FINAL\". This field defaults to \"ON_DEMAND\" and is ignored, when specified for insert requests.
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-    pub r#type: Option<RHashType>,
+    pub r#type: Option<Type>,
     /// The start time of the backup window during which this the backup was attempted in [RFC 3339](https://tools.ietf.org/html/rfc3339) format, for example `2012-11-15T16:19:00.094Z`.
     #[serde(rename = "windowStartTime", skip_serializing_if = "Option::is_none")]
     pub window_start_time: Option<String>,
@@ -143,7 +143,7 @@ impl Default for Status {
 }
 /// The type of this run; can be either \"AUTOMATED\" or \"ON_DEMAND\" or \"FINAL\". This field defaults to \"ON_DEMAND\" and is ignored, when specified for insert requests.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum RHashType {
+pub enum Type {
     #[serde(rename = "SQL_BACKUP_RUN_TYPE_UNSPECIFIED")]
     SqlBackupRunTypeUnspecified,
     #[serde(rename = "AUTOMATED")]
@@ -152,8 +152,8 @@ pub enum RHashType {
     OnDemand,
 }
 
-impl Default for RHashType {
-    fn default() -> RHashType {
+impl Default for Type {
+    fn default() -> Type {
         Self::SqlBackupRunTypeUnspecified
     }
 }

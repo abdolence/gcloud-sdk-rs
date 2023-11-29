@@ -15,7 +15,7 @@ pub struct DnsKeyDigest {
     pub digest: Option<String>,
     /// Specifies the algorithm used to calculate this digest.
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-    pub r#type: Option<RHashType>,
+    pub r#type: Option<Type>,
 }
 
 impl DnsKeyDigest {
@@ -29,7 +29,7 @@ impl DnsKeyDigest {
 
 /// Specifies the algorithm used to calculate this digest.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum RHashType {
+pub enum Type {
     #[serde(rename = "sha1")]
     Sha1,
     #[serde(rename = "sha256")]
@@ -38,8 +38,8 @@ pub enum RHashType {
     Sha384,
 }
 
-impl Default for RHashType {
-    fn default() -> RHashType {
+impl Default for Type {
+    fn default() -> Type {
         Self::Sha1
     }
 }

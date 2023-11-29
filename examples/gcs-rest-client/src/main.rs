@@ -21,11 +21,25 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         &google_rest_client.create_google_storage_v1_config().await?,
         gcloud_sdk::google_rest_apis::storage_v1::buckets_api::StoragePeriodBucketsPeriodListParams {
             project: google_project_id,
-            ..Default::default()
+            alt: None,
+            fields: None,
+            key: None,
+            oauth_token: None,
+            pretty_print: None,
+            quota_user: None,
+            upload_type: None,
+            user_ip: None,
+            max_results: None,
+            page_token: None,
+            prefix: None,
+            projection: None,
+            user_project: None,
         }
     ).await?;
 
     println!("{:?}", response);
+
+    test_compute().await;
 
     Ok(())
 }
@@ -50,4 +64,22 @@ async fn test_upload(
     println!("{:?}", response);
 
     Ok(())
+}
+
+async fn test_compute() {
+    let google_project_id = gcloud_sdk::GoogleEnvironment::detect_google_project_id().await
+        .expect("No Google Project ID detected. Please specify it explicitly using env variable: PROJECT_ID");
+
+    let google_rest_client = gcloud_sdk::GoogleRestApi::new().await.unwrap();
+
+    let response = gcloud_sdk::google_rest_apis::compute_v1::instances_api::compute_instances_list(
+        &google_rest_client.create_google_compute_v1_config().await.unwrap(),
+        gcloud_sdk::google_rest_apis::compute_v1::instances_api::ComputePeriodInstancesPeriodListParams {
+            project: google_project_id.to_string(),
+            zone: "us-central1-a".to_string(),
+            ..Default::default()
+        }
+    ).await.unwrap();
+
+    println!("{:?}", response);
 }

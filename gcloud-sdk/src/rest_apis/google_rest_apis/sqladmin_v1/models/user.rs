@@ -47,7 +47,7 @@ pub struct User {
         Option<Box<crate::google_rest_apis::sqladmin_v1::models::SqlServerUserDetails>>,
     /// The user type. It determines the method to authenticate the user during login. The default is the database's built-in user type.
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-    pub r#type: Option<RHashType>,
+    pub r#type: Option<Type>,
 }
 
 impl User {
@@ -89,7 +89,7 @@ impl Default for DualPasswordType {
 }
 /// The user type. It determines the method to authenticate the user during login. The default is the database's built-in user type.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum RHashType {
+pub enum Type {
     #[serde(rename = "BUILT_IN")]
     BuiltIn,
     #[serde(rename = "CLOUD_IAM_USER")]
@@ -98,8 +98,8 @@ pub enum RHashType {
     CloudIamServiceAccount,
 }
 
-impl Default for RHashType {
-    fn default() -> RHashType {
+impl Default for Type {
+    fn default() -> Type {
         Self::BuiltIn
     }
 }

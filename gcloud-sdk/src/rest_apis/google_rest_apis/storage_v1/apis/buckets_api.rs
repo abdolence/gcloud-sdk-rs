@@ -1322,7 +1322,7 @@ pub async fn storage_buckets_test_iam_permissions(
         "multi" => local_var_req_builder.query(
             &permissions
                 .into_iter()
-                .map(|p| ("permissions".to_owned(), p))
+                .map(|p| ("permissions".to_owned(), p.to_string()))
                 .collect::<Vec<(std::string::String, std::string::String)>>(),
         ),
         _ => local_var_req_builder.query(&[(

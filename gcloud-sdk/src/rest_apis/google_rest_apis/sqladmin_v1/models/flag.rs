@@ -44,7 +44,7 @@ pub struct Flag {
     pub requires_restart: Option<bool>,
     /// The type of the flag. Flags are typed to being `BOOLEAN`, `STRING`, `INTEGER` or `NONE`. `NONE` is used for flags that do not take a value, such as `skip_grant_tables`.
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-    pub r#type: Option<RHashType>,
+    pub r#type: Option<Type>,
 }
 
 impl Flag {
@@ -131,7 +131,7 @@ impl Default for AppliesTo {
 }
 /// The type of the flag. Flags are typed to being `BOOLEAN`, `STRING`, `INTEGER` or `NONE`. `NONE` is used for flags that do not take a value, such as `skip_grant_tables`.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum RHashType {
+pub enum Type {
     #[serde(rename = "SQL_FLAG_TYPE_UNSPECIFIED")]
     SqlFlagTypeUnspecified,
     #[serde(rename = "BOOLEAN")]
@@ -150,8 +150,8 @@ pub enum RHashType {
     RepeatedString,
 }
 
-impl Default for RHashType {
-    fn default() -> RHashType {
+impl Default for Type {
+    fn default() -> Type {
         Self::SqlFlagTypeUnspecified
     }
 }
