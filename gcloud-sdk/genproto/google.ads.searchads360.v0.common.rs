@@ -275,6 +275,62 @@ pub struct LocationGroupInfo {
     #[prost(string, repeated, tag = "8")]
     pub feed_item_sets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// An audience criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudienceInfo {
+    /// The Audience resource name.
+    #[prost(string, tag = "1")]
+    pub audience: ::prost::alloc::string::String,
+}
+/// A YouTube asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct YoutubeVideoAsset {
+    /// YouTube video id. This is the 11 character string value used in the
+    /// YouTube video URL.
+    #[prost(string, optional, tag = "2")]
+    pub youtube_video_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// YouTube video title.
+    #[prost(string, tag = "3")]
+    pub youtube_video_title: ::prost::alloc::string::String,
+}
+/// An Image asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImageAsset {
+    /// File size of the image asset in bytes.
+    #[prost(int64, optional, tag = "6")]
+    pub file_size: ::core::option::Option<i64>,
+    /// MIME type of the image asset.
+    #[prost(enumeration = "super::enums::mime_type_enum::MimeType", tag = "3")]
+    pub mime_type: i32,
+    /// Metadata for this image at its original size.
+    #[prost(message, optional, tag = "4")]
+    pub full_size: ::core::option::Option<ImageDimension>,
+}
+/// Metadata for an image at a certain size, either original or resized.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImageDimension {
+    /// Height of the image.
+    #[prost(int64, optional, tag = "4")]
+    pub height_pixels: ::core::option::Option<i64>,
+    /// Width of the image.
+    #[prost(int64, optional, tag = "5")]
+    pub width_pixels: ::core::option::Option<i64>,
+    /// A URL that returns the image with this height and width.
+    #[prost(string, optional, tag = "6")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// A Text asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TextAsset {
+    /// Text content of the text asset.
+    #[prost(string, optional, tag = "2")]
+    pub text: ::core::option::Option<::prost::alloc::string::String>,
+}
 /// A unified callout asset.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -422,6 +478,17 @@ pub struct UnifiedCallAsset {
     #[prost(string, tag = "11")]
     pub end_date: ::prost::alloc::string::String,
 }
+/// A call to action asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CallToActionAsset {
+    /// Call to action.
+    #[prost(
+        enumeration = "super::enums::call_to_action_type_enum::CallToActionType",
+        tag = "1"
+    )]
+    pub call_to_action: i32,
+}
 /// A unified location asset.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -465,6 +532,20 @@ pub struct BusinessProfileLocation {
     /// linked Business Profile account.
     #[prost(int64, tag = "3")]
     pub listing_id: i64,
+}
+/// Contains the usage information of the asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetUsage {
+    /// Resource name of the asset.
+    #[prost(string, tag = "1")]
+    pub asset: ::prost::alloc::string::String,
+    /// The served field type of the asset.
+    #[prost(
+        enumeration = "super::enums::served_asset_field_type_enum::ServedAssetFieldType",
+        tag = "2"
+    )]
+    pub served_asset_field_type: i32,
 }
 /// An automated bidding strategy that raises bids for clicks
 /// that seem more likely to lead to a conversion and lowers
@@ -1032,6 +1113,272 @@ pub struct Metrics {
     /// clicking on) another ad.
     #[prost(int64, optional, tag = "155")]
     pub client_account_view_through_conversions: ::core::option::Option<i64>,
+    /// Client account cross-sell cost of goods sold (COGS) is the total cost
+    /// of products sold as a result of advertising a different product.
+    /// How it works: You report conversions with cart data for
+    /// completed purchases on your website. If the ad that was interacted with
+    /// before the purchase has an associated product (see Shopping Ads) then this
+    /// product is considered the advertised product. Any product included in the
+    /// order the customer places is a sold product. If these products don't match
+    /// then this is considered cross-sell. Cross-sell cost of goods sold is the
+    /// total cost of the products sold that weren't advertised. Example: Someone
+    /// clicked on a Shopping ad for a hat then bought the same hat and a shirt.
+    /// The hat has a cost of goods sold value of $3, the shirt has a cost of goods
+    /// sold value of $5. The cross-sell cost of goods sold for this order is $5.
+    /// This metric is only available if you report conversions with cart data.
+    /// This metric is a monetary value and returned in the customer's currency by
+    /// default. See the metrics_currency parameter at
+    /// <https://developers.google.com/search-ads/reporting/query/query-structure#parameters_clause>
+    #[prost(int64, optional, tag = "321")]
+    pub client_account_cross_sell_cost_of_goods_sold_micros: ::core::option::Option<i64>,
+    /// Cross-sell cost of goods sold (COGS) is the total cost of products sold as
+    /// a result of advertising a different product.
+    /// How it works: You report conversions with cart data for
+    /// completed purchases on your website. If the ad that was interacted with
+    /// before the purchase has an associated product (see Shopping Ads) then this
+    /// product is considered the advertised product. Any product included in the
+    /// order the customer places is a sold product. If these products don't match
+    /// then this is considered cross-sell. Cross-sell cost of goods sold is the
+    /// total cost of the products sold that weren't advertised. Example: Someone
+    /// clicked on a Shopping ad for a hat then bought the same hat and a shirt.
+    /// The hat has a cost of goods sold value of $3, the shirt has a cost of goods
+    /// sold value of $5. The cross-sell cost of goods sold for this order is $5.
+    /// This metric is only available if you report conversions with cart data.
+    /// This metric is a monetary value and returned in the customer's currency by
+    /// default. See the metrics_currency parameter at
+    /// <https://developers.google.com/search-ads/reporting/query/query-structure#parameters_clause>
+    #[prost(int64, optional, tag = "327")]
+    pub cross_sell_cost_of_goods_sold_micros: ::core::option::Option<i64>,
+    /// Client account cross-sell gross profit is the profit you made from
+    /// products sold as a result of advertising a different product, minus cost of
+    /// goods sold (COGS).
+    /// How it works: You report conversions with cart data for completed purchases
+    /// on your website. If the ad that was interacted with before the purchase has
+    /// an associated product (see Shopping Ads) then this product is considered
+    /// the advertised product. Any product included in the purchase is a sold
+    /// product. If these products don't match then this is considered cross-sell.
+    /// Cross-sell gross profit is the revenue you made from cross-sell attributed
+    /// to your ads minus the cost of the goods sold. Example: Someone clicked on a
+    /// Shopping ad for a hat then bought the same hat and a shirt. The shirt is
+    /// priced $20 and has a cost of goods sold value of $5. The cross-sell gross
+    /// profit of this order is $15 = $20 - $5. This metric is only available if
+    /// you report conversions with cart data. This metric is a monetary value and
+    /// returned in the customer's currency by default. See the metrics_currency
+    /// parameter at
+    /// <https://developers.google.com/search-ads/reporting/query/query-structure#parameters_clause>
+    #[prost(int64, optional, tag = "322")]
+    pub client_account_cross_sell_gross_profit_micros: ::core::option::Option<i64>,
+    /// Cross-sell gross profit is the profit you made from products sold as a
+    /// result of advertising a different product, minus cost of goods sold (COGS).
+    /// How it works: You report conversions with cart data for completed purchases
+    /// on your website. If the ad that was interacted with before the purchase has
+    /// an associated product (see Shopping Ads) then this product is considered
+    /// the advertised product. Any product included in the purchase is a sold
+    /// product. If these products don't match then this is considered cross-sell.
+    /// Cross-sell gross profit is the revenue you made from cross-sell attributed
+    /// to your ads minus the cost of the goods sold.
+    /// Example: Someone clicked on a Shopping ad for a hat then bought the same
+    /// hat and a shirt. The shirt is priced $20 and has a cost of goods sold value
+    /// of $5. The cross-sell gross profit of this order is $15 = $20 - $5.
+    /// This metric is only available if you report conversions with cart data.
+    /// This metric is a monetary value and returned in the customer's currency by
+    /// default. See the metrics_currency parameter at
+    /// <https://developers.google.com/search-ads/reporting/query/query-structure#parameters_clause>
+    #[prost(int64, optional, tag = "328")]
+    pub cross_sell_gross_profit_micros: ::core::option::Option<i64>,
+    /// Client account cross-sell revenue is the total amount you made from
+    /// products sold as a result of advertising a different product.
+    /// How it works: You report conversions with cart data for completed purchases
+    /// on your website. If the ad that was interacted with before the purchase has
+    /// an associated product (see Shopping Ads) then this product is considered
+    /// the advertised product. Any product included in the order the customer
+    /// places is a sold product. If these products don't match then this is
+    /// considered cross-sell. Cross-sell revenue is the total value you made from
+    /// cross-sell attributed to your ads. Example: Someone clicked on a Shopping
+    /// ad for a hat then bought the same hat and a shirt. The hat is priced $10
+    /// and the shirt is priced $20. The cross-sell revenue of this order is $20.
+    /// This metric is only available if you report conversions with cart data.
+    /// This metric is a monetary value and returned in the customer's currency by
+    /// default. See the metrics_currency parameter at
+    /// <https://developers.google.com/search-ads/reporting/query/query-structure#parameters_clause>
+    #[prost(int64, optional, tag = "323")]
+    pub client_account_cross_sell_revenue_micros: ::core::option::Option<i64>,
+    /// Cross-sell revenue is the total amount you made from products sold as a
+    /// result of advertising a different product.
+    /// How it works: You report conversions with cart data for completed purchases
+    /// on your website. If the ad that was interacted with before the purchase has
+    /// an associated product (see Shopping Ads) then this product is considered
+    /// the advertised product. Any product included in the order the customer
+    /// places is a sold product. If these products don't match then this is
+    /// considered cross-sell. Cross-sell revenue is the total value you made from
+    /// cross-sell attributed to your ads. Example: Someone clicked on a Shopping
+    /// ad for a hat then bought the same hat and a shirt. The hat is priced $10
+    /// and the shirt is priced $20. The cross-sell revenue of this order is $20.
+    /// This metric is only available if you report conversions with cart data.
+    /// This metric is a monetary value and returned in the customer's currency by
+    /// default. See the metrics_currency parameter at
+    /// <https://developers.google.com/search-ads/reporting/query/query-structure#parameters_clause>
+    #[prost(int64, optional, tag = "329")]
+    pub cross_sell_revenue_micros: ::core::option::Option<i64>,
+    /// Client account cross-sell units sold is
+    /// the total number of products sold as a result of advertising a different
+    /// product.
+    /// How it works: You report conversions with cart data for completed purchases
+    /// on your website. If the ad that was interacted with before the purchase has
+    /// an associated product (see Shopping Ads) then this product is considered
+    /// the advertised product. Any product included in the order the customer
+    /// places is a sold product. If these products don't match then this is
+    /// considered cross-sell. Cross-sell units sold is the total number of
+    /// cross-sold products from all orders attributed to your ads.
+    /// Example: Someone clicked on a Shopping ad for a hat then bought the same
+    /// hat, a shirt and a jacket. The cross-sell units sold in this order is 2.
+    /// This metric is only available if you report conversions with cart data.
+    #[prost(double, optional, tag = "307")]
+    pub client_account_cross_sell_units_sold: ::core::option::Option<f64>,
+    /// Cross-sell units sold is the total number of products sold as a result of
+    /// advertising a different product.
+    /// How it works: You report conversions with cart data for completed purchases
+    /// on your website. If the ad that was interacted with before the purchase has
+    /// an associated product (see Shopping Ads) then this product is considered
+    /// the advertised product. Any product included in the order the customer
+    /// places is a sold product. If these products don't match then this is
+    /// considered cross-sell. Cross-sell units sold is the total number of
+    /// cross-sold products from all orders attributed to your ads.
+    /// Example: Someone clicked on a Shopping ad for a hat then bought the same
+    /// hat, a shirt and a jacket. The cross-sell units sold in this order is 2.
+    /// This metric is only available if you report conversions with cart data.
+    #[prost(double, optional, tag = "330")]
+    pub cross_sell_units_sold: ::core::option::Option<f64>,
+    /// Client account lead cost of goods sold (COGS) is the total cost of
+    /// products sold as a result of advertising the same product.
+    /// How it works: You report conversions with cart data for completed purchases
+    /// on your website. If the ad that was interacted with has an associated
+    /// product (see Shopping Ads) then this product is considered the advertised
+    /// product. Any product included in the order the customer places is a sold
+    /// product. If the advertised and sold products match, then the cost of these
+    /// goods is counted under lead cost of goods sold. Example: Someone clicked on
+    /// a Shopping ad for a hat then bought the same hat and a shirt. The hat has a
+    /// cost of goods sold value of $3, the shirt has a cost of goods sold value of
+    /// $5. The lead cost of goods sold for this order is $3. This metric is only
+    /// available if you report conversions with cart data. This metric is a
+    /// monetary value and returned in the customer's currency by default. See the
+    /// metrics_currency parameter at
+    /// <https://developers.google.com/search-ads/reporting/query/query-structure#parameters_clause>
+    #[prost(int64, optional, tag = "324")]
+    pub client_account_lead_cost_of_goods_sold_micros: ::core::option::Option<i64>,
+    /// Lead cost of goods sold (COGS) is the total cost of products sold as a
+    /// result of advertising the same product.
+    /// How it works: You report conversions with cart data for completed purchases
+    /// on your website. If the ad that was interacted with has an associated
+    /// product (see Shopping Ads) then this product is considered the advertised
+    /// product. Any product included in the order the customer places is a sold
+    /// product. If the advertised and sold products match, then the cost of these
+    /// goods is counted under lead cost of goods sold. Example: Someone clicked on
+    /// a Shopping ad for a hat then bought the same hat and a shirt. The hat has a
+    /// cost of goods sold value of $3, the shirt has a cost of goods sold value of
+    /// $5. The lead cost of goods sold for this order is $3. This metric is only
+    /// available if you report conversions with cart data. This metric is a
+    /// monetary value and returned in the customer's currency by default. See the
+    /// metrics_currency parameter at
+    /// <https://developers.google.com/search-ads/reporting/query/query-structure#parameters_clause>
+    #[prost(int64, optional, tag = "332")]
+    pub lead_cost_of_goods_sold_micros: ::core::option::Option<i64>,
+    /// Client account lead gross profit is the profit you made from products
+    /// sold as a result of advertising the same product, minus cost of goods sold
+    /// (COGS).
+    /// How it works: You report conversions with cart data for completed purchases
+    /// on your website. If the ad that was interacted with before the purchase has
+    /// an associated product (see Shopping Ads) then this product is considered
+    /// the advertised product. Any product included in the order the customer
+    /// places is a sold product. If the advertised and sold products match, then
+    /// the revenue you made from these sales minus the cost of goods sold is your
+    /// lead gross profit. Example: Someone clicked on a Shopping ad for a hat then
+    /// bought the same hat and a shirt. The hat is priced $10 and has a cost of
+    /// goods sold value of $3. The lead gross profit of this order is $7 = $10 -
+    /// $3. This metric is only available if you report conversions with cart data.
+    /// This metric is a monetary value and returned in the customer's currency by
+    /// default. See the metrics_currency parameter at
+    /// <https://developers.google.com/search-ads/reporting/query/query-structure#parameters_clause>
+    #[prost(int64, optional, tag = "325")]
+    pub client_account_lead_gross_profit_micros: ::core::option::Option<i64>,
+    /// Lead gross profit is the profit you made from products sold as a result of
+    /// advertising the same product, minus cost of goods sold (COGS).
+    /// How it works: You report conversions with cart data for completed purchases
+    /// on your website. If the ad that was interacted with before the purchase has
+    /// an associated product (see Shopping Ads) then this product is considered
+    /// the advertised product. Any product included in the order the customer
+    /// places is a sold product. If the advertised and sold products match, then
+    /// the revenue you made from these sales minus the cost of goods sold is your
+    /// lead gross profit. Example: Someone clicked on a Shopping ad for a hat then
+    /// bought the same hat and a shirt. The hat is priced $10 and has a cost of
+    /// goods sold value of $3. The lead gross profit of this order is $7 = $10 -
+    /// $3. This metric is only available if you report conversions with cart data.
+    /// This metric is a monetary value and returned in the customer's currency by
+    /// default. See the metrics_currency parameter at
+    /// <https://developers.google.com/search-ads/reporting/query/query-structure#parameters_clause>
+    #[prost(int64, optional, tag = "333")]
+    pub lead_gross_profit_micros: ::core::option::Option<i64>,
+    /// Client account lead revenue is the total amount you made from
+    /// products sold as a result of advertising the same product.
+    /// How it works: You report conversions with cart data for completed purchases
+    /// on your website. If the ad that was interacted with before the purchase has
+    /// an associated product (see Shopping Ads) then this product is considered
+    /// the advertised product. Any product included in the order the customer
+    /// places is a sold product. If the advertised and sold products match, then
+    /// the total value you made from the sales of these products is shown under
+    /// lead revenue. Example: Someone clicked on a Shopping ad for a hat then
+    /// bought the same hat and a shirt. The hat is priced $10 and the shirt is
+    /// priced $20. The lead revenue of this order is $10. This metric is only
+    /// available if you report conversions with cart data. This metric is a
+    /// monetary value and returned in the customer's currency by default. See the
+    /// metrics_currency parameter at
+    /// <https://developers.google.com/search-ads/reporting/query/query-structure#parameters_clause>
+    #[prost(int64, optional, tag = "326")]
+    pub client_account_lead_revenue_micros: ::core::option::Option<i64>,
+    /// Lead revenue is the total amount you made from products sold as a result of
+    /// advertising the same product.
+    /// How it works: You report conversions with cart data for completed purchases
+    /// on your website. If the ad that was interacted with before the purchase has
+    /// an associated product (see Shopping Ads) then this product is considered
+    /// the advertised product. Any product included in the order the customer
+    /// places is a sold product. If the advertised and sold products match, then
+    /// the total value you made from the sales of these products is shown under
+    /// lead revenue.
+    /// Example: Someone clicked on a Shopping ad for a hat then bought the same
+    /// hat and a shirt. The hat is priced $10 and the shirt is priced $20. The
+    /// lead revenue of this order is $10.
+    /// This metric is only available if you report conversions with cart data.
+    /// This metric is a monetary value and returned in the customer's currency by
+    /// default. See the metrics_currency parameter at
+    /// <https://developers.google.com/search-ads/reporting/query/query-structure#parameters_clause>
+    #[prost(int64, optional, tag = "334")]
+    pub lead_revenue_micros: ::core::option::Option<i64>,
+    /// Client account lead units sold is the total number of
+    /// products sold as a result of advertising the same product.
+    /// How it works: You report conversions with cart data for completed purchases
+    /// on your website. If the ad that was interacted with before the purchase has
+    /// an associated product (see Shopping Ads) then this product is considered
+    /// the advertised product. Any product included in the order the customer
+    /// places is a sold product. If the advertised and sold products match, then
+    /// the total number of these products sold is shown under lead units sold.
+    /// Example: Someone clicked on a Shopping ad for a hat then bought the same
+    /// hat, a shirt and a jacket. The lead units sold in this order is 1.
+    /// This metric is only available if you report conversions with cart data.
+    #[prost(double, optional, tag = "311")]
+    pub client_account_lead_units_sold: ::core::option::Option<f64>,
+    /// Lead units sold is the total number of products sold as a result of
+    /// advertising the same product.
+    /// How it works: You report conversions with cart data for completed purchases
+    /// on your website. If the ad that was interacted with before the purchase has
+    /// an associated product (see Shopping Ads) then this product is considered
+    /// the advertised product. Any product included in the order the customer
+    /// places is a sold product. If the advertised and sold products match, then
+    /// the total number of these products sold is shown under lead units sold.
+    /// Example: Someone clicked on a Shopping ad for a hat then bought the same
+    /// hat, a shirt and a jacket. The lead units sold in this order is 1.
+    /// This metric is only available if you report conversions with cart data.
+    #[prost(double, optional, tag = "335")]
+    pub lead_units_sold: ::core::option::Option<f64>,
 }
 /// Settings for Real-Time Bidding, a feature only available for campaigns
 /// targeting the Ad Exchange network.
@@ -1081,6 +1428,188 @@ pub struct Segments {
     /// yyyy-MM-dd.
     #[prost(string, optional, tag = "90")]
     pub month: ::core::option::Option<::prost::alloc::string::String>,
+    /// Bidding category (level 1) of the product.
+    #[prost(string, optional, tag = "92")]
+    pub product_bidding_category_level1: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Bidding category (level 2) of the product.
+    #[prost(string, optional, tag = "93")]
+    pub product_bidding_category_level2: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Bidding category (level 3) of the product.
+    #[prost(string, optional, tag = "94")]
+    pub product_bidding_category_level3: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Bidding category (level 4) of the product.
+    #[prost(string, optional, tag = "95")]
+    pub product_bidding_category_level4: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Bidding category (level 5) of the product.
+    #[prost(string, optional, tag = "96")]
+    pub product_bidding_category_level5: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Brand of the product.
+    #[prost(string, optional, tag = "97")]
+    pub product_brand: ::core::option::Option<::prost::alloc::string::String>,
+    /// Channel of the product.
+    #[prost(
+        enumeration = "super::enums::product_channel_enum::ProductChannel",
+        tag = "30"
+    )]
+    pub product_channel: i32,
+    /// Channel exclusivity of the product.
+    #[prost(
+        enumeration = "super::enums::product_channel_exclusivity_enum::ProductChannelExclusivity",
+        tag = "31"
+    )]
+    pub product_channel_exclusivity: i32,
+    /// Condition of the product.
+    #[prost(
+        enumeration = "super::enums::product_condition_enum::ProductCondition",
+        tag = "32"
+    )]
+    pub product_condition: i32,
+    /// Resource name of the geo target constant for the country of sale of the
+    /// product.
+    #[prost(string, optional, tag = "98")]
+    pub product_country: ::core::option::Option<::prost::alloc::string::String>,
+    /// Custom attribute 0 of the product.
+    #[prost(string, optional, tag = "99")]
+    pub product_custom_attribute0: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Custom attribute 1 of the product.
+    #[prost(string, optional, tag = "100")]
+    pub product_custom_attribute1: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Custom attribute 2 of the product.
+    #[prost(string, optional, tag = "101")]
+    pub product_custom_attribute2: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Custom attribute 3 of the product.
+    #[prost(string, optional, tag = "102")]
+    pub product_custom_attribute3: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Custom attribute 4 of the product.
+    #[prost(string, optional, tag = "103")]
+    pub product_custom_attribute4: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Item ID of the product.
+    #[prost(string, optional, tag = "104")]
+    pub product_item_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Resource name of the language constant for the language of the product.
+    #[prost(string, optional, tag = "105")]
+    pub product_language: ::core::option::Option<::prost::alloc::string::String>,
+    /// Bidding category (level 1) of the product sold.
+    #[prost(string, optional, tag = "166")]
+    pub product_sold_bidding_category_level1: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Bidding category (level 2) of the product sold.
+    #[prost(string, optional, tag = "167")]
+    pub product_sold_bidding_category_level2: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Bidding category (level 3) of the product sold.
+    #[prost(string, optional, tag = "168")]
+    pub product_sold_bidding_category_level3: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Bidding category (level 4) of the product sold.
+    #[prost(string, optional, tag = "169")]
+    pub product_sold_bidding_category_level4: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Bidding category (level 5) of the product sold.
+    #[prost(string, optional, tag = "170")]
+    pub product_sold_bidding_category_level5: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Brand of the product sold.
+    #[prost(string, optional, tag = "171")]
+    pub product_sold_brand: ::core::option::Option<::prost::alloc::string::String>,
+    /// Condition of the product sold.
+    #[prost(
+        enumeration = "super::enums::product_condition_enum::ProductCondition",
+        tag = "172"
+    )]
+    pub product_sold_condition: i32,
+    /// Custom attribute 0 of the product sold.
+    #[prost(string, optional, tag = "173")]
+    pub product_sold_custom_attribute0: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Custom attribute 1 of the product sold.
+    #[prost(string, optional, tag = "174")]
+    pub product_sold_custom_attribute1: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Custom attribute 2 of the product sold.
+    #[prost(string, optional, tag = "175")]
+    pub product_sold_custom_attribute2: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Custom attribute 3 of the product sold.
+    #[prost(string, optional, tag = "176")]
+    pub product_sold_custom_attribute3: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Custom attribute 4 of the product sold.
+    #[prost(string, optional, tag = "177")]
+    pub product_sold_custom_attribute4: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Item ID of the product sold.
+    #[prost(string, optional, tag = "178")]
+    pub product_sold_item_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Title of the product sold.
+    #[prost(string, optional, tag = "179")]
+    pub product_sold_title: ::core::option::Option<::prost::alloc::string::String>,
+    /// Type (level 1) of the product sold.
+    #[prost(string, optional, tag = "180")]
+    pub product_sold_type_l1: ::core::option::Option<::prost::alloc::string::String>,
+    /// Type (level 2) of the product sold.
+    #[prost(string, optional, tag = "181")]
+    pub product_sold_type_l2: ::core::option::Option<::prost::alloc::string::String>,
+    /// Type (level 3) of the product sold.
+    #[prost(string, optional, tag = "182")]
+    pub product_sold_type_l3: ::core::option::Option<::prost::alloc::string::String>,
+    /// Type (level 4) of the product sold.
+    #[prost(string, optional, tag = "183")]
+    pub product_sold_type_l4: ::core::option::Option<::prost::alloc::string::String>,
+    /// Type (level 5) of the product sold.
+    #[prost(string, optional, tag = "184")]
+    pub product_sold_type_l5: ::core::option::Option<::prost::alloc::string::String>,
+    /// Store ID of the product.
+    #[prost(string, optional, tag = "106")]
+    pub product_store_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Title of the product.
+    #[prost(string, optional, tag = "107")]
+    pub product_title: ::core::option::Option<::prost::alloc::string::String>,
+    /// Type (level 1) of the product.
+    #[prost(string, optional, tag = "108")]
+    pub product_type_l1: ::core::option::Option<::prost::alloc::string::String>,
+    /// Type (level 2) of the product.
+    #[prost(string, optional, tag = "109")]
+    pub product_type_l2: ::core::option::Option<::prost::alloc::string::String>,
+    /// Type (level 3) of the product.
+    #[prost(string, optional, tag = "110")]
+    pub product_type_l3: ::core::option::Option<::prost::alloc::string::String>,
+    /// Type (level 4) of the product.
+    #[prost(string, optional, tag = "111")]
+    pub product_type_l4: ::core::option::Option<::prost::alloc::string::String>,
+    /// Type (level 5) of the product.
+    #[prost(string, optional, tag = "112")]
+    pub product_type_l5: ::core::option::Option<::prost::alloc::string::String>,
     /// Quarter as represented by the date of the first day of a quarter.
     /// Uses the calendar year for quarters, for example, the second quarter of
     /// 2018 starts on 2018-04-01. Formatted as yyyy-MM-dd.

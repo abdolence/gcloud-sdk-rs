@@ -118,6 +118,41 @@ pub struct DoubleList {
     #[prost(double, repeated, tag = "1")]
     pub values: ::prost::alloc::vec::Vec<f64>,
 }
+/// The industry vertical associated with the
+/// [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum IndustryVertical {
+    /// Value used when unset.
+    Unspecified = 0,
+    /// The generic vertical for documents that are not specific to any industry
+    /// vertical.
+    Generic = 1,
+    /// The media industry vertical.
+    Media = 2,
+}
+impl IndustryVertical {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            IndustryVertical::Unspecified => "INDUSTRY_VERTICAL_UNSPECIFIED",
+            IndustryVertical::Generic => "GENERIC",
+            IndustryVertical::Media => "MEDIA",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "INDUSTRY_VERTICAL_UNSPECIFIED" => Some(Self::Unspecified),
+            "GENERIC" => Some(Self::Generic),
+            "MEDIA" => Some(Self::Media),
+            _ => None,
+        }
+    }
+}
 /// The type of solution.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -151,6 +186,69 @@ impl SolutionType {
             "SOLUTION_TYPE_RECOMMENDATION" => Some(Self::Recommendation),
             "SOLUTION_TYPE_SEARCH" => Some(Self::Search),
             "SOLUTION_TYPE_CHAT" => Some(Self::Chat),
+            _ => None,
+        }
+    }
+}
+/// Tiers of search features. Different tiers might have different
+/// pricing. To learn more, please check the pricing documentation.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SearchTier {
+    /// Default value when the enum is unspecified. This is invalid to use.
+    Unspecified = 0,
+    /// Standard tier.
+    Standard = 1,
+    /// Enterprise tier.
+    Enterprise = 2,
+}
+impl SearchTier {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            SearchTier::Unspecified => "SEARCH_TIER_UNSPECIFIED",
+            SearchTier::Standard => "SEARCH_TIER_STANDARD",
+            SearchTier::Enterprise => "SEARCH_TIER_ENTERPRISE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SEARCH_TIER_UNSPECIFIED" => Some(Self::Unspecified),
+            "SEARCH_TIER_STANDARD" => Some(Self::Standard),
+            "SEARCH_TIER_ENTERPRISE" => Some(Self::Enterprise),
+            _ => None,
+        }
+    }
+}
+/// Add-on that provides additional functionality for search.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SearchAddOn {
+    /// Default value when the enum is unspecified. This is invalid to use.
+    Unspecified = 0,
+    /// Large language model add-on.
+    Llm = 1,
+}
+impl SearchAddOn {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            SearchAddOn::Unspecified => "SEARCH_ADD_ON_UNSPECIFIED",
+            SearchAddOn::Llm => "SEARCH_ADD_ON_LLM",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SEARCH_ADD_ON_UNSPECIFIED" => Some(Self::Unspecified),
+            "SEARCH_ADD_ON_LLM" => Some(Self::Llm),
             _ => None,
         }
     }
@@ -481,6 +579,8 @@ pub mod document {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchRequest {
     /// Required. The resource name of the Search serving config, such as
+    /// `projects/*/locations/global/collections/default_collection/engines/*/servingConfigs/default_serving_config`,
+    /// or
     /// `projects/*/locations/global/collections/default_collection/dataStores/default_data_store/servingConfigs/default_serving_config`.
     /// This field is used to identify the serving configuration name, set
     /// of models used to make the search.
@@ -532,12 +632,23 @@ pub struct SearchRequest {
     /// expression is case-sensitive.
     ///
     /// If this field is unrecognizable, an  `INVALID_ARGUMENT`  is returned.
+    ///
+    /// Filtering in Vertex AI Search is done by mapping the LHS filter key to a
+    /// key property defined in the Vertex AI Search backend -- this mapping is
+    /// defined by the customer in their schema. For example a media customer might
+    /// have a field 'name' in their schema. In this case the filter would look
+    /// like this: filter --> name:'ANY("king kong")'
+    ///
+    /// For more information about filtering including syntax and filter
+    /// operators, see
+    /// [Filter](<https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>)
     #[prost(string, tag = "7")]
     pub filter: ::prost::alloc::string::String,
     /// The order in which documents are returned. Documents can be ordered by
     /// a field in an [Document][google.cloud.discoveryengine.v1alpha.Document]
     /// object. Leave it unset if ordered by relevance. `order_by` expression is
-    /// case-sensitive.
+    /// case-sensitive. For more information on ordering, see
+    /// [Ordering](<https://cloud.google.com/retail/docs/filter-and-order#order>)
     ///
     /// If this field is unrecognizable, an `INVALID_ARGUMENT` is returned.
     #[prost(string, tag = "8")]
@@ -555,6 +666,8 @@ pub struct SearchRequest {
     #[prost(message, repeated, tag = "9")]
     pub facet_specs: ::prost::alloc::vec::Vec<search_request::FacetSpec>,
     /// Boost specification to boost certain documents.
+    /// For more information on boosting, see
+    /// [Boosting](<https://cloud.google.com/retail/docs/boosting#boost>)
     #[prost(message, optional, tag = "10")]
     pub boost_spec: ::core::option::Option<search_request::BoostSpec>,
     /// Additional search parameters.
@@ -563,9 +676,17 @@ pub struct SearchRequest {
     ///
     /// * `user_country_code`: string. Default empty. If set to non-empty, results
     ///     are restricted or boosted based on the location provided.
+    ///     Example:
+    ///     user_country_code: "au"
+    ///
+    ///     For available codes see [Country
+    ///     Codes](<https://developers.google.com/custom-search/docs/json_api_reference#countryCodes>)
+    ///
     /// * `search_type`: double. Default empty. Enables non-webpage searching
-    ///    depending on the value. The only valid non-default value is 1,
-    ///    which enables image searching.
+    ///     depending on the value. The only valid non-default value is 1,
+    ///     which enables image searching.
+    ///     Example:
+    ///     search_type: 1
     #[prost(map = "string, message", tag = "11")]
     pub params: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2213,6 +2334,530 @@ pub mod conversational_search_service_client {
         }
     }
 }
+/// DataStore captures global settings and configs at the DataStore level.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataStore {
+    /// Immutable. The full resource name of the data store.
+    /// Format:
+    /// `projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}`.
+    ///
+    /// This field must be a UTF-8 encoded string with a length limit of 1024
+    /// characters.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The data store display name.
+    ///
+    /// This field must be a UTF-8 encoded string with a length limit of 128
+    /// characters. Otherwise, an INVALID_ARGUMENT error is returned.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Immutable. The industry vertical that the data store registers.
+    #[prost(enumeration = "IndustryVertical", tag = "3")]
+    pub industry_vertical: i32,
+    /// The solutions that the data store enrolls. Available solutions for each
+    /// [industry_vertical][google.cloud.discoveryengine.v1alpha.DataStore.industry_vertical]:
+    ///
+    /// * `MEDIA`: `SOLUTION_TYPE_RECOMMENDATION` and `SOLUTION_TYPE_SEARCH`.
+    /// * `SITE_SEARCH`: `SOLUTION_TYPE_SEARCH` is automatically enrolled. Other
+    ///    solutions cannot be enrolled.
+    #[prost(enumeration = "SolutionType", repeated, tag = "5")]
+    pub solution_types: ::prost::alloc::vec::Vec<i32>,
+    /// Output only. The id of the default
+    /// [Schema][google.cloud.discoveryengine.v1alpha.Schema] asscociated to this
+    /// data store.
+    #[prost(string, tag = "7")]
+    pub default_schema_id: ::prost::alloc::string::String,
+    /// Immutable. The content config of the data store. If this field is unset,
+    /// the server behavior defaults to
+    /// [ContentConfig.NO_CONTENT][google.cloud.discoveryengine.v1alpha.DataStore.ContentConfig.NO_CONTENT].
+    #[prost(enumeration = "data_store::ContentConfig", tag = "6")]
+    pub content_config: i32,
+    /// Output only. Timestamp the
+    /// [DataStore][google.cloud.discoveryengine.v1alpha.DataStore] was created at.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `DataStore`.
+pub mod data_store {
+    /// Content config of the data store.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ContentConfig {
+        /// Default value.
+        Unspecified = 0,
+        /// Only contains documents without any
+        /// [Document.content][google.cloud.discoveryengine.v1alpha.Document.content].
+        NoContent = 1,
+        /// Only contains documents with
+        /// [Document.content][google.cloud.discoveryengine.v1alpha.Document.content].
+        ContentRequired = 2,
+        /// The data store is used for public website search.
+        PublicWebsite = 3,
+    }
+    impl ContentConfig {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ContentConfig::Unspecified => "CONTENT_CONFIG_UNSPECIFIED",
+                ContentConfig::NoContent => "NO_CONTENT",
+                ContentConfig::ContentRequired => "CONTENT_REQUIRED",
+                ContentConfig::PublicWebsite => "PUBLIC_WEBSITE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONTENT_CONFIG_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_CONTENT" => Some(Self::NoContent),
+                "CONTENT_REQUIRED" => Some(Self::ContentRequired),
+                "PUBLIC_WEBSITE" => Some(Self::PublicWebsite),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request for
+/// [DataStoreService.CreateDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.CreateDataStore]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDataStoreRequest {
+    /// Required. The parent resource name, such as
+    /// `projects/{project}/locations/{location}/collections/{collection}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+    /// to create.
+    #[prost(message, optional, tag = "2")]
+    pub data_store: ::core::option::Option<DataStore>,
+    /// Required. The ID to use for the
+    /// [DataStore][google.cloud.discoveryengine.v1alpha.DataStore], which will
+    /// become the final component of the
+    /// [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]'s resource
+    /// name.
+    ///
+    /// This field must conform to [RFC-1034](<https://tools.ietf.org/html/rfc1034>)
+    /// standard with a length limit of 63 characters. Otherwise, an
+    /// INVALID_ARGUMENT error is returned.
+    #[prost(string, tag = "3")]
+    pub data_store_id: ::prost::alloc::string::String,
+    /// A boolean flag indicating whether user want to directly create an advanced
+    /// data store for site search.
+    /// If the data store is not configured as site
+    /// search (GENERIC vertical and PUBLIC_WEBSITE content_config), this flag will
+    /// be ignored.
+    #[prost(bool, tag = "4")]
+    pub create_advanced_site_search: bool,
+}
+/// Request message for
+/// [DataStoreService.GetDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.GetDataStore]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetDataStoreRequest {
+    /// Required. Full resource name of
+    /// [DataStore][google.cloud.discoveryengine.v1alpha.DataStore], such as
+    /// `projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}`.
+    ///
+    /// If the caller does not have permission to access the
+    /// [DataStore][google.cloud.discoveryengine.v1alpha.DataStore], regardless of
+    /// whether or not it exists, a PERMISSION_DENIED error is returned.
+    ///
+    /// If the requested
+    /// [DataStore][google.cloud.discoveryengine.v1alpha.DataStore] does not exist,
+    /// a NOT_FOUND error is returned.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Metadata related to the progress of the
+/// [DataStoreService.CreateDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.CreateDataStore]
+/// operation. This will be returned by the google.longrunning.Operation.metadata
+/// field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDataStoreMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for
+/// [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDataStoresRequest {
+    /// Required. The parent branch resource name, such as
+    /// `projects/{project}/locations/{location}/collections/{collection_id}`.
+    ///
+    /// If the caller does not have permission to list [DataStores][]s under this
+    /// location, regardless of whether or not this data store exists, a
+    /// PERMISSION_DENIED error is returned.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Maximum number of
+    /// [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]s to return. If
+    /// unspecified, defaults to 10. The maximum allowed value is 50. Values above
+    /// 50 will be coerced to 50.
+    ///
+    /// If this field is negative, an INVALID_ARGUMENT is returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token
+    /// [ListDataStoresResponse.next_page_token][google.cloud.discoveryengine.v1alpha.ListDataStoresResponse.next_page_token],
+    /// received from a previous
+    /// [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores]
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores]
+    /// must match the call that provided the page token. Otherwise, an
+    /// INVALID_ARGUMENT error is returned.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Filter by solution type. For example: filter =
+    /// 'solution_type:SOLUTION_TYPE_SEARCH'
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDataStoresResponse {
+    /// All the customer's
+    /// [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]s.
+    #[prost(message, repeated, tag = "1")]
+    pub data_stores: ::prost::alloc::vec::Vec<DataStore>,
+    /// A token that can be sent as
+    /// [ListDataStoresRequest.page_token][google.cloud.discoveryengine.v1alpha.ListDataStoresRequest.page_token]
+    /// to retrieve the next page. If this field is omitted, there are no
+    /// subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [DataStoreService.DeleteDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.DeleteDataStore]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteDataStoreRequest {
+    /// Required. Full resource name of
+    /// [DataStore][google.cloud.discoveryengine.v1alpha.DataStore], such as
+    /// `projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}`.
+    ///
+    /// If the caller does not have permission to delete the
+    /// [DataStore][google.cloud.discoveryengine.v1alpha.DataStore], regardless of
+    /// whether or not it exists, a PERMISSION_DENIED error is returned.
+    ///
+    /// If the [DataStore][google.cloud.discoveryengine.v1alpha.DataStore] to
+    /// delete does not exist, a NOT_FOUND error is returned.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [DataStoreService.UpdateDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDataStore]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDataStoreRequest {
+    /// Required. The [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+    /// to update.
+    ///
+    /// If the caller does not have permission to update the
+    /// [DataStore][google.cloud.discoveryengine.v1alpha.DataStore], regardless of
+    /// whether or not it exists, a PERMISSION_DENIED error is returned.
+    ///
+    /// If the [DataStore][google.cloud.discoveryengine.v1alpha.DataStore] to
+    /// update does not exist, a NOT_FOUND error is returned.
+    #[prost(message, optional, tag = "1")]
+    pub data_store: ::core::option::Option<DataStore>,
+    /// Indicates which fields in the provided
+    /// [DataStore][google.cloud.discoveryengine.v1alpha.DataStore] to update.
+    ///
+    /// If an unsupported or unknown field is provided, an INVALID_ARGUMENT error
+    /// is returned.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Metadata related to the progress of the
+/// [DataStoreService.DeleteDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.DeleteDataStore]
+/// operation. This will be returned by the google.longrunning.Operation.metadata
+/// field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteDataStoreMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Generated client implementations.
+pub mod data_store_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for managing
+    /// [DataStore][google.cloud.discoveryengine.v1alpha.DataStore] configuration.
+    #[derive(Debug, Clone)]
+    pub struct DataStoreServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl DataStoreServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> DataStoreServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> DataStoreServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            DataStoreServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+        ///
+        /// DataStore is for storing
+        /// [Documents][google.cloud.discoveryengine.v1alpha.Document]. To serve these
+        /// documents for Search, or Recommendation use case, an
+        /// [Engine][google.cloud.discoveryengine.v1alpha.Engine] needs to be created
+        /// separately.
+        pub async fn create_data_store(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDataStoreRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.DataStoreService/CreateDataStore",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.DataStoreService",
+                        "CreateDataStore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+        pub async fn get_data_store(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDataStoreRequest>,
+        ) -> std::result::Result<tonic::Response<super::DataStore>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.DataStoreService/GetDataStore",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.DataStoreService",
+                        "GetDataStore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]s
+        /// associated with the project.
+        pub async fn list_data_stores(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDataStoresRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDataStoresResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.DataStoreService/ListDataStores",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.DataStoreService",
+                        "ListDataStores",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+        pub async fn delete_data_store(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteDataStoreRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.DataStoreService/DeleteDataStore",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.DataStoreService",
+                        "DeleteDataStore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+        pub async fn update_data_store(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDataStoreRequest>,
+        ) -> std::result::Result<tonic::Response<super::DataStore>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.DataStoreService/UpdateDataStore",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.DataStoreService",
+                        "UpdateDataStore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// UserEvent captures all metadata information Discovery Engine API needs to
 /// know about how end users interact with customers' website.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3674,15 +4319,1012 @@ pub mod document_service_client {
         }
     }
 }
+/// Metadata that describes the training and serving parameters of an
+/// [Engine][google.cloud.discoveryengine.v1alpha.Engine].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Engine {
+    /// Immutable. The fully qualified resource name of the engine.
+    ///
+    /// This field must be a UTF-8 encoded string with a length limit of 1024
+    /// characters.
+    ///
+    /// Format:
+    /// `projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}`
+    /// engine should be 1-63 characters, and valid characters are
+    /// /[a-z0-9][a-z0-9-_]*/. Otherwise, an INVALID_ARGUMENT error is returned.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The display name of the engine. Should be human readable. UTF-8
+    /// encoded string with limit of 1024 characters.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. Timestamp the Recommendation Engine was created at.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp the Recommendation Engine was last updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The data stores associated with this engine.
+    ///
+    /// For
+    /// [SOLUTION_TYPE_SEARCH][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_SEARCH]
+    /// and
+    /// [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
+    /// type of engines, they can only associate with at most one data store.
+    ///
+    /// If
+    /// [solution_type][google.cloud.discoveryengine.v1alpha.Engine.solution_type]
+    /// is
+    /// [SOLUTION_TYPE_CHAT][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_CHAT],
+    /// multiple [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]s in
+    /// the same [Collection][google.cloud.discoveryengine.v1alpha.Collection] can
+    /// be associated here.
+    ///
+    /// Note that when used in
+    /// [CreateEngineRequest][google.cloud.discoveryengine.v1alpha.CreateEngineRequest],
+    /// one DataStore id must be provided as the system will use it for necessary
+    /// intializations.
+    #[prost(string, repeated, tag = "5")]
+    pub data_store_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Required. The solutions of the engine.
+    #[prost(enumeration = "SolutionType", tag = "6")]
+    pub solution_type: i32,
+    /// The industry vertical that the engine registers.
+    /// The restriction of the Engine industry vertical is based on
+    /// [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]: If
+    /// unspecified, default to `GENERIC`. Vertical on Engine has to match vertical
+    /// of the DataStore liniked to the engine.
+    #[prost(enumeration = "IndustryVertical", tag = "16")]
+    pub industry_vertical: i32,
+    /// Common config spec that specifies the metadata of the engine.
+    #[prost(message, optional, tag = "15")]
+    pub common_config: ::core::option::Option<engine::CommonConfig>,
+    /// Additional config specs that defines the behavior of the engine.
+    #[prost(oneof = "engine::EngineConfig", tags = "9, 11, 13, 14")]
+    pub engine_config: ::core::option::Option<engine::EngineConfig>,
+    /// Engine metadata to monitor the status of the engine.
+    #[prost(oneof = "engine::EngineMetadata", tags = "10, 12")]
+    pub engine_metadata: ::core::option::Option<engine::EngineMetadata>,
+}
+/// Nested message and enum types in `Engine`.
+pub mod engine {
+    /// Configurations for a Search Engine.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SearchEngineConfig {
+        /// The search feature tier of this engine.
+        ///
+        /// Different tiers might have different
+        /// pricing. To learn more, please check the pricing documentation.
+        ///
+        /// Defaults to
+        /// [SearchTier.SEARCH_TIER_STANDARD][google.cloud.discoveryengine.v1alpha.SearchTier.SEARCH_TIER_STANDARD]
+        /// if not specified.
+        #[prost(enumeration = "super::SearchTier", tag = "1")]
+        pub search_tier: i32,
+        /// The add-on that this search engine enables.
+        #[prost(enumeration = "super::SearchAddOn", repeated, tag = "2")]
+        pub search_add_ons: ::prost::alloc::vec::Vec<i32>,
+    }
+    /// Additional config specs for a `similar-items` engine.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SimilarDocumentsEngineConfig {}
+    /// Additional config specs for a Media Recommendation engine.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MediaRecommendationEngineConfig {
+        /// Required. The type of engine e.g. `recommended-for-you`.
+        ///
+        /// This field together with
+        /// [optimization_objective][Engine.optimization_objective] describe engine
+        /// metadata to use to control engine training and serving.
+        ///
+        /// Currently supported values: `recommended-for-you`, `others-you-may-like`,
+        /// `more-like-this`, `most-popular-items`.
+        #[prost(string, tag = "1")]
+        pub r#type: ::prost::alloc::string::String,
+        /// The optimization objective e.g. `cvr`.
+        ///
+        /// This field together with
+        /// [optimization_objective][google.cloud.discoveryengine.v1alpha.Engine.MediaRecommendationEngineConfig.type]
+        /// describe engine metadata to use to control engine training and serving.
+        ///
+        /// Currently supported
+        /// values: `ctr`, `cvr`.
+        ///
+        ///   If not specified, we choose default based on engine type.
+        /// Default depends on type of recommendation:
+        ///
+        /// `recommended-for-you` => `ctr`
+        ///
+        /// `others-you-may-like` => `ctr`
+        #[prost(string, tag = "2")]
+        pub optimization_objective: ::prost::alloc::string::String,
+        /// Name and value of the custom threshold for cvr optimization_objective.
+        /// For target_field `watch-time`, target_field_value must be an integer
+        /// value indicating the media progress time in seconds between (0, 86400]
+        /// (excludes 0, includes 86400) (e.g., 90).
+        /// For target_field `watch-percentage`, the target_field_value must be a
+        /// valid float value between (0, 1.0] (excludes 0, includes 1.0) (e.g.,
+        /// 0.5).
+        #[prost(message, optional, tag = "3")]
+        pub optimization_objective_config: ::core::option::Option<
+            media_recommendation_engine_config::OptimizationObjectiveConfig,
+        >,
+        /// The training state that the engine is in (e.g.
+        /// `TRAINING` or `PAUSED`).
+        ///
+        /// Since part of the cost of running the service
+        /// is frequency of training - this can be used to determine when to train
+        /// engine in order to control cost. If not specified: the default value for
+        /// `CreateEngine` method is `TRAINING`. The default value for
+        /// `UpdateEngine` method is to keep the state the same as before.
+        #[prost(
+            enumeration = "media_recommendation_engine_config::TrainingState",
+            tag = "4"
+        )]
+        pub training_state: i32,
+    }
+    /// Nested message and enum types in `MediaRecommendationEngineConfig`.
+    pub mod media_recommendation_engine_config {
+        /// Custom threshold for `cvr` optimization_objective.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct OptimizationObjectiveConfig {
+            /// Required. The name of the field to target. Currently supported
+            /// values: `watch-percentage`, `watch-time`.
+            #[prost(string, tag = "1")]
+            pub target_field: ::prost::alloc::string::String,
+            /// Required. The threshold to be applied to the target (e.g., 0.5).
+            #[prost(float, tag = "2")]
+            pub target_field_value_float: f32,
+        }
+        /// The training state of the engine.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum TrainingState {
+            /// Unspecified training state.
+            Unspecified = 0,
+            /// The engine training is paused.
+            Paused = 1,
+            /// The engine is training.
+            Training = 2,
+        }
+        impl TrainingState {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    TrainingState::Unspecified => "TRAINING_STATE_UNSPECIFIED",
+                    TrainingState::Paused => "PAUSED",
+                    TrainingState::Training => "TRAINING",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TRAINING_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PAUSED" => Some(Self::Paused),
+                    "TRAINING" => Some(Self::Training),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Configurations for a Chat Engine.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ChatEngineConfig {
+        /// The configurationt generate the Dialogflow agent that is associated to
+        /// this Engine.
+        ///
+        /// Note that these configurations are one-time consumed by
+        /// and passed to Dialogflow service. It means they cannot be retrieved using
+        /// [EngineService.GetEngine][google.cloud.discoveryengine.v1alpha.EngineService.GetEngine]
+        /// or
+        /// [EngineService.ListEngines][google.cloud.discoveryengine.v1alpha.EngineService.ListEngines]
+        /// API after engine creation.
+        #[prost(message, optional, tag = "1")]
+        pub agent_creation_config: ::core::option::Option<
+            chat_engine_config::AgentCreationConfig,
+        >,
+        /// The resource name of an exist Dialogflow agent to link to this Chat
+        /// Engine. Customers can either provide `agent_creation_config` to create
+        /// agent or provide an agent name that links the agent with the Chat engine.
+        ///
+        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+        /// ID>`.
+        ///
+        /// Note that the `dialogflow_agent_to_link` are one-time consumed by and
+        /// passed to Dialogflow service. It means they cannot be retrieved using
+        /// [EngineService.GetEngine][google.cloud.discoveryengine.v1alpha.EngineService.GetEngine]
+        /// or
+        /// [EngineService.ListEngines][google.cloud.discoveryengine.v1alpha.EngineService.ListEngines]
+        /// API after engine creation. Please use
+        /// [chat_engine_metadata.dialogflow_agent][] for actual agent
+        /// association after Engine is created.
+        #[prost(string, tag = "2")]
+        pub dialogflow_agent_to_link: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `ChatEngineConfig`.
+    pub mod chat_engine_config {
+        /// Configurations for generating a Dialogflow agent.
+        ///
+        /// Note that these configurations are one-time consumed by
+        /// and passed to Dialogflow service. It means they cannot be retrieved using
+        /// [EngineService.GetEngine][google.cloud.discoveryengine.v1alpha.EngineService.GetEngine]
+        /// or
+        /// [EngineService.ListEngines][google.cloud.discoveryengine.v1alpha.EngineService.ListEngines]
+        /// API after engine creation.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct AgentCreationConfig {
+            /// Name of the company, organization or other entity that the agent
+            /// represents. Used for knowledge connector LLM prompt and for knowledge
+            /// search.
+            #[prost(string, tag = "1")]
+            pub business: ::prost::alloc::string::String,
+            /// Required. The default language of the agent as a language tag.
+            /// See [Language
+            /// Support](<https://cloud.google.com/dialogflow/docs/reference/language>)
+            /// for a list of the currently supported language codes.
+            #[prost(string, tag = "2")]
+            pub default_language_code: ::prost::alloc::string::String,
+            /// Required. The time zone of the agent from the [time zone
+            /// database](<https://www.iana.org/time-zones>), e.g., America/New_York,
+            /// Europe/Paris.
+            #[prost(string, tag = "3")]
+            pub time_zone: ::prost::alloc::string::String,
+        }
+    }
+    /// Common configurations for an Engine.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CommonConfig {
+        /// The name of the company, business or entity that is associated with the
+        /// engine. Setting this may help improve LLM related features.
+        #[prost(string, tag = "1")]
+        pub company_name: ::prost::alloc::string::String,
+    }
+    /// Additional information of a recommendation engine.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RecommendationMetadata {
+        /// Output only. The serving state of the engine: `ACTIVE`, `NOT_ACTIVE`.
+        #[prost(enumeration = "recommendation_metadata::ServingState", tag = "1")]
+        pub serving_state: i32,
+        /// Output only. The state of data requirements for this engine: `DATA_OK`
+        /// and `DATA_ERROR`.
+        ///
+        /// Engine cannot be trained if the data is in
+        /// `DATA_ERROR` state. Engine can have `DATA_ERROR` state even
+        /// if serving state is `ACTIVE`: engines were trained successfully before,
+        /// but cannot be refreshed because the underlying engine no longer has
+        /// sufficient data for training.
+        #[prost(enumeration = "recommendation_metadata::DataState", tag = "2")]
+        pub data_state: i32,
+        /// Output only. The timestamp when the latest successful tune finished. Only
+        /// applicable on Media Recommendation engines.
+        #[prost(message, optional, tag = "3")]
+        pub last_tune_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. The latest tune operation id associated with the engine.
+        /// Only applicable on Media Recommendation engines.
+        ///
+        /// If present, this operation id can be used to determine if there is an
+        /// ongoing tune for this engine. To check the operation status, send the
+        /// GetOperation request with this operation id in the engine resource
+        /// format. If no tuning has happened for this engine, the string is empty.
+        #[prost(string, tag = "4")]
+        pub tuning_operation: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `RecommendationMetadata`.
+    pub mod recommendation_metadata {
+        /// The serving state of the recommendation engine.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ServingState {
+            /// Unspecified serving state.
+            Unspecified = 0,
+            /// The engine is not serving.
+            Inactive = 1,
+            /// The engine is serving and can be queried.
+            Active = 2,
+            /// The engine is trained on tuned hyperparameters and can be
+            /// queried.
+            Tuned = 3,
+        }
+        impl ServingState {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    ServingState::Unspecified => "SERVING_STATE_UNSPECIFIED",
+                    ServingState::Inactive => "INACTIVE",
+                    ServingState::Active => "ACTIVE",
+                    ServingState::Tuned => "TUNED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SERVING_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "INACTIVE" => Some(Self::Inactive),
+                    "ACTIVE" => Some(Self::Active),
+                    "TUNED" => Some(Self::Tuned),
+                    _ => None,
+                }
+            }
+        }
+        /// Describes whether this engine have sufficient training data
+        /// to be continuously trained.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum DataState {
+            /// Unspecified default value, should never be explicitly set.
+            Unspecified = 0,
+            /// The engine has sufficient training data.
+            DataOk = 1,
+            /// The engine does not have sufficient training data. Error
+            /// messages can be queried via Stackdriver.
+            DataError = 2,
+        }
+        impl DataState {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    DataState::Unspecified => "DATA_STATE_UNSPECIFIED",
+                    DataState::DataOk => "DATA_OK",
+                    DataState::DataError => "DATA_ERROR",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "DATA_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DATA_OK" => Some(Self::DataOk),
+                    "DATA_ERROR" => Some(Self::DataError),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Additional information of a Chat Engine.
+    /// Fields in this message are output only.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ChatEngineMetadata {
+        /// The resource name of a Dialogflow agent, that this Chat Engine refers
+        /// to.
+        ///
+        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+        /// ID>`.
+        #[prost(string, tag = "1")]
+        pub dialogflow_agent: ::prost::alloc::string::String,
+    }
+    /// Additional config specs that defines the behavior of the engine.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum EngineConfig {
+        /// Additional config specs for a `similar-items` engine.
+        #[prost(message, tag = "9")]
+        SimilarDocumentsConfig(SimilarDocumentsEngineConfig),
+        /// Configurations for the Chat Engine. Only applicable if
+        /// [solution_type][google.cloud.discoveryengine.v1alpha.Engine.solution_type]
+        /// is
+        /// [SOLUTION_TYPE_CHAT][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_CHAT].
+        #[prost(message, tag = "11")]
+        ChatEngineConfig(ChatEngineConfig),
+        /// Configurations for the Search Engine. Only applicable if
+        /// [solution_type][google.cloud.discoveryengine.v1alpha.Engine.solution_type]
+        /// is
+        /// [SOLUTION_TYPE_SEARCH][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_SEARCH].
+        #[prost(message, tag = "13")]
+        SearchEngineConfig(SearchEngineConfig),
+        /// Configurations for the Media Engine. Only applicable on the data
+        /// stores with
+        /// [solution_type][google.cloud.discoveryengine.v1alpha.Engine.solution_type]
+        /// [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
+        /// and
+        /// [IndustryVertical.MEDIA][google.cloud.discoveryengine.v1alpha.IndustryVertical.MEDIA]
+        /// vertical.
+        #[prost(message, tag = "14")]
+        MediaRecommendationEngineConfig(MediaRecommendationEngineConfig),
+    }
+    /// Engine metadata to monitor the status of the engine.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum EngineMetadata {
+        /// Output only. Additional information of a recommendation engine. Only
+        /// applicable if
+        /// [solution_type][google.cloud.discoveryengine.v1alpha.Engine.solution_type]
+        /// is
+        /// [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        #[prost(message, tag = "10")]
+        RecommendationMetadata(RecommendationMetadata),
+        /// Output only. Additional information of the Chat Engine. Only applicable
+        /// if
+        /// [solution_type][google.cloud.discoveryengine.v1alpha.Engine.solution_type]
+        /// is
+        /// [SOLUTION_TYPE_CHAT][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_CHAT].
+        #[prost(message, tag = "12")]
+        ChatEngineMetadata(ChatEngineMetadata),
+    }
+}
+/// Request for
+/// [EngineService.CreateEngine][google.cloud.discoveryengine.v1alpha.EngineService.CreateEngine]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateEngineRequest {
+    /// Required. The parent resource name, such as
+    /// `projects/{project}/locations/{location}/collections/{collection}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The [Engine][google.cloud.discoveryengine.v1alpha.Engine] to
+    /// create.
+    #[prost(message, optional, tag = "2")]
+    pub engine: ::core::option::Option<Engine>,
+    /// Required. The ID to use for the
+    /// [Engine][google.cloud.discoveryengine.v1alpha.Engine], which will become
+    /// the final component of the
+    /// [Engine][google.cloud.discoveryengine.v1alpha.Engine]'s resource name.
+    ///
+    /// This field must conform to [RFC-1034](<https://tools.ietf.org/html/rfc1034>)
+    /// standard with a length limit of 63 characters. Otherwise, an
+    /// INVALID_ARGUMENT error is returned.
+    #[prost(string, tag = "3")]
+    pub engine_id: ::prost::alloc::string::String,
+}
+/// Metadata related to the progress of the
+/// [EngineService.CreateEngine][google.cloud.discoveryengine.v1alpha.EngineService.CreateEngine]
+/// operation. This will be returned by the google.longrunning.Operation.metadata
+/// field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateEngineMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for
+/// [EngineService.DeleteEngine][google.cloud.discoveryengine.v1alpha.EngineService.DeleteEngine]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteEngineRequest {
+    /// Required. Full resource name of
+    /// [Engine][google.cloud.discoveryengine.v1alpha.Engine], such as
+    /// `projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}`.
+    ///
+    /// If the caller does not have permission to delete the
+    /// [Engine][google.cloud.discoveryengine.v1alpha.Engine], regardless of
+    /// whether or not it exists, a PERMISSION_DENIED error is returned.
+    ///
+    /// If the [Engine][google.cloud.discoveryengine.v1alpha.Engine] to delete does
+    /// not exist, a NOT_FOUND error is returned.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Metadata related to the progress of the
+/// [EngineService.DeleteEngine][google.cloud.discoveryengine.v1alpha.EngineService.DeleteEngine]
+/// operation. This will be returned by the google.longrunning.Operation.metadata
+/// field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteEngineMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for
+/// [EngineService.GetEngine][google.cloud.discoveryengine.v1alpha.EngineService.GetEngine]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetEngineRequest {
+    /// Required. Full resource name of
+    /// [Engine][google.cloud.discoveryengine.v1alpha.Engine], such as
+    /// `projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [EngineService.ListEngines][google.cloud.discoveryengine.v1alpha.EngineService.ListEngines]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEnginesRequest {
+    /// Required. The parent resource name, such as
+    /// `projects/{project}/locations/{location}/collections/{collection_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Not supported.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Not supported.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter by solution type. For example:
+    /// solution_type=SOLUTION_TYPE_SEARCH
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [EngineService.ListEngines][google.cloud.discoveryengine.v1alpha.EngineService.ListEngines]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEnginesResponse {
+    /// All the customer's [Engine][google.cloud.discoveryengine.v1alpha.Engine]s.
+    #[prost(message, repeated, tag = "1")]
+    pub engines: ::prost::alloc::vec::Vec<Engine>,
+    /// Not supported.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [EngineService.UpdateEngine][google.cloud.discoveryengine.v1alpha.EngineService.UpdateEngine]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateEngineRequest {
+    /// Required. The [Engine][google.cloud.discoveryengine.v1alpha.Engine] to
+    /// update.
+    ///
+    /// If the caller does not have permission to update the
+    /// [Engine][google.cloud.discoveryengine.v1alpha.Engine], regardless of
+    /// whether or not it exists, a PERMISSION_DENIED error is returned.
+    ///
+    /// If the [Engine][google.cloud.discoveryengine.v1alpha.Engine] to update does
+    /// not exist, a NOT_FOUND error is returned.
+    #[prost(message, optional, tag = "1")]
+    pub engine: ::core::option::Option<Engine>,
+    /// Indicates which fields in the provided
+    /// [Engine][google.cloud.discoveryengine.v1alpha.Engine] to update.
+    ///
+    /// If an unsupported or unknown field is provided, an INVALID_ARGUMENT error
+    /// is returned.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request for pausing training of an engine.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PauseEngineRequest {
+    /// Required. The name of the engine to pause.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for resuming training of an engine.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResumeEngineRequest {
+    /// Required. The name of the engine to resume.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request to manually start a tuning process now (instead of waiting for
+/// the periodically scheduled tuning to happen).
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TuneEngineRequest {
+    /// Required. The resource name of the engine to tune.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Metadata associated with a tune operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TuneEngineMetadata {
+    /// Required. The resource name of the engine that this tune applies to.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}`
+    #[prost(string, tag = "1")]
+    pub engine: ::prost::alloc::string::String,
+}
+/// Response associated with a tune operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TuneEngineResponse {}
+/// Generated client implementations.
+pub mod engine_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for managing [Engine][google.cloud.discoveryengine.v1alpha.Engine]
+    /// configuration.
+    #[derive(Debug, Clone)]
+    pub struct EngineServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl EngineServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> EngineServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> EngineServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            EngineServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a [Engine][google.cloud.discoveryengine.v1alpha.Engine].
+        pub async fn create_engine(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateEngineRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.EngineService/CreateEngine",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.EngineService",
+                        "CreateEngine",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a [Engine][google.cloud.discoveryengine.v1alpha.Engine].
+        pub async fn delete_engine(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteEngineRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.EngineService/DeleteEngine",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.EngineService",
+                        "DeleteEngine",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an [Engine][google.cloud.discoveryengine.v1alpha.Engine]
+        pub async fn update_engine(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateEngineRequest>,
+        ) -> std::result::Result<tonic::Response<super::Engine>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.EngineService/UpdateEngine",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.EngineService",
+                        "UpdateEngine",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a [Engine][google.cloud.discoveryengine.v1alpha.Engine].
+        pub async fn get_engine(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetEngineRequest>,
+        ) -> std::result::Result<tonic::Response<super::Engine>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.EngineService/GetEngine",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.EngineService",
+                        "GetEngine",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the [Engine][google.cloud.discoveryengine.v1alpha.Engine]s
+        /// associated with the project.
+        pub async fn list_engines(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListEnginesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListEnginesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.EngineService/ListEngines",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.EngineService",
+                        "ListEngines",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Pauses the training of an existing engine. Only applicable if
+        /// [solution_type][] is
+        /// [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        pub async fn pause_engine(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PauseEngineRequest>,
+        ) -> std::result::Result<tonic::Response<super::Engine>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.EngineService/PauseEngine",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.EngineService",
+                        "PauseEngine",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Resumes the training of an existing engine. Only applicable if
+        /// [solution_type][] is
+        /// [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        pub async fn resume_engine(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ResumeEngineRequest>,
+        ) -> std::result::Result<tonic::Response<super::Engine>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.EngineService/ResumeEngine",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.EngineService",
+                        "ResumeEngine",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Tunes an existing engine. Only applicable if [solution_type][] is
+        /// [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        pub async fn tune_engine(
+            &mut self,
+            request: impl tonic::IntoRequest<super::TuneEngineRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.EngineService/TuneEngine",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.EngineService",
+                        "TuneEngine",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// Request message for Recommend method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecommendRequest {
-    /// Required. Full resource name of the format:
+    /// Required. Full resource name of a
+    /// [ServingConfig][google.cloud.discoveryengine.v1alpha.ServingConfig]:
+    /// `projects/*/locations/global/collections/*/engines/*/servingConfigs/*`, or
     /// `projects/*/locations/global/collections/*/dataStores/*/servingConfigs/*`
     ///
-    /// Before you can request recommendations from your model, you must create at
-    /// least one serving config  for it.
+    /// One default serving config is created along with your recommendation engine
+    /// creation. The engine ID will be used as the ID of the default serving
+    /// config. For example, for Engine
+    /// `projects/*/locations/global/collections/*/engines/my-engine`, you can use
+    /// `projects/*/locations/global/collections/*/engines/my-engine/servingConfigs/my-engine`
+    /// for your [Recommend][] requests.
     #[prost(string, tag = "1")]
     pub serving_config: ::prost::alloc::string::String,
     /// Required. Context about the user, what they are looking at and what action

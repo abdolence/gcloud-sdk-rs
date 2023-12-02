@@ -133,9 +133,10 @@ pub mod network_config {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileShareConfig {
-    /// The name of the file share (must be 32 characters or less for
-    /// Enterprise and High Scale SSD tiers and 16 characters or less for all other
-    /// tiers).
+    /// Required. The name of the file share. Must use 1-16 characters for the
+    /// basic service tier and 1-63 characters for all other service tiers.
+    /// Must use lowercase letters, numbers, or underscores `\[a-z0-9_\]`. Must
+    /// start with a letter. Immutable.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// File share capacity in gigabytes (GB).
@@ -427,6 +428,9 @@ pub struct Instance {
     /// Output only. Reserved for future use.
     #[prost(message, optional, tag = "13")]
     pub satisfies_pzs: ::core::option::Option<bool>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "26")]
+    pub satisfies_pzi: bool,
     /// KMS key name used for data encryption.
     #[prost(string, tag = "14")]
     pub kms_key_name: ::prost::alloc::string::String,
@@ -587,6 +591,9 @@ pub mod instance {
         /// ZONAL instances offer expanded capacity and performance scaling
         /// capabilities.
         Zonal = 8,
+        /// REGIONAL instances offer the features and availability needed for
+        /// mission-critical workloads.
+        Regional = 9,
     }
     impl Tier {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -603,6 +610,7 @@ pub mod instance {
                 Tier::HighScaleSsd => "HIGH_SCALE_SSD",
                 Tier::Enterprise => "ENTERPRISE",
                 Tier::Zonal => "ZONAL",
+                Tier::Regional => "REGIONAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -616,6 +624,7 @@ pub mod instance {
                 "HIGH_SCALE_SSD" => Some(Self::HighScaleSsd),
                 "ENTERPRISE" => Some(Self::Enterprise),
                 "ZONAL" => Some(Self::Zonal),
+                "REGIONAL" => Some(Self::Regional),
                 _ => None,
             }
         }
@@ -787,13 +796,13 @@ pub mod restore_instance_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RevertInstanceRequest {
     /// Required.
-    /// projects/{project_id}/locations/{location_id}/instances/{instance_id}. The
-    /// resource name of the instance, in the format
+    /// `projects/{project_id}/locations/{location_id}/instances/{instance_id}`.
+    /// The resource name of the instance, in the format
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The snapshot resource ID, in the format 'my-snapshot', where the
     /// specified ID is the {snapshot_id} of the fully qualified name like
-    /// projects/{project_id}/locations/{location_id}/instances/{instance_id}/snapshots/{snapshot_id}
+    /// `projects/{project_id}/locations/{location_id}/instances/{instance_id}/snapshots/{snapshot_id}`
     #[prost(string, tag = "2")]
     pub target_snapshot_id: ::prost::alloc::string::String,
 }
@@ -1070,6 +1079,9 @@ pub struct Backup {
     /// Output only. Reserved for future use.
     #[prost(message, optional, tag = "12")]
     pub satisfies_pzs: ::core::option::Option<bool>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "14")]
+    pub satisfies_pzi: bool,
     /// Immutable. KMS key name used for data encryption.
     #[prost(string, tag = "13")]
     pub kms_key_name: ::prost::alloc::string::String,

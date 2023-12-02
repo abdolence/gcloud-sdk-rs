@@ -8757,7 +8757,8 @@ pub mod streams_service_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAssetRequest {
     /// Required. The parent resource where this asset will be created.
-    /// Format: projects/*/locations/*/corpora/*
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The asset to create.
@@ -8789,7 +8790,7 @@ pub struct GetAssetRequest {
 pub struct ListAssetsRequest {
     /// Required. The parent, which owns this collection of assets.
     /// Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of assets to return. The service may return fewer than
@@ -8805,6 +8806,12 @@ pub struct ListAssetsRequest {
     /// the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// The filter applied to the returned list.
+    /// Only the following filterings are supported:
+    /// "assets_with_contents = true", which returns assets with contents uploaded;
+    /// "assets_with_contents = false", which returns assets without contents.
+    #[prost(string, tag = "5")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for ListAssets.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8826,7 +8833,7 @@ pub struct UpdateAssetRequest {
     ///
     /// The asset's `name` field is used to identify the asset to be updated.
     /// Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}`
     #[prost(message, optional, tag = "1")]
     pub asset: ::core::option::Option<Asset>,
     /// The list of fields to be updated.
@@ -8839,9 +8846,90 @@ pub struct UpdateAssetRequest {
 pub struct DeleteAssetRequest {
     /// Required. The name of the asset to delete.
     /// Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// The source of the asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetSource {
+    #[prost(oneof = "asset_source::SourceForm", tags = "1, 2")]
+    pub source_form: ::core::option::Option<asset_source::SourceForm>,
+}
+/// Nested message and enum types in `AssetSource`.
+pub mod asset_source {
+    /// The asset source is from Cloud Storage.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AssetGcsSource {
+        /// Cloud storage uri.
+        #[prost(string, tag = "1")]
+        pub gcs_uri: ::prost::alloc::string::String,
+    }
+    /// The content of the asset.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AssetContentData {
+        #[prost(bytes = "vec", tag = "1")]
+        pub asset_content_data: ::prost::alloc::vec::Vec<u8>,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SourceForm {
+        /// The source of the asset is from Cloud Storage.
+        #[prost(message, tag = "1")]
+        AssetGcsSource(AssetGcsSource),
+        /// The source of the asset is from content bytes.
+        #[prost(message, tag = "2")]
+        AssetContentData(AssetContentData),
+    }
+}
+/// Request message for UploadAsset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UploadAssetRequest {
+    /// Required. The resource name of the asset to upload.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The source of the asset.
+    #[prost(message, optional, tag = "2")]
+    pub asset_source: ::core::option::Option<AssetSource>,
+}
+/// Response message for UploadAsset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UploadAssetResponse {}
+/// Metadata for UploadAsset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UploadAssetMetadata {
+    /// The start time of the operation.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The update time of the operation.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for GenerateRetrievalUrl API.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateRetrievalUrlRequest {
+    /// Required. The resource name of the asset to request signed url for.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response message for GenerateRetrievalUrl API.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateRetrievalUrlResponse {
+    /// A signed url to download the content of the asset.
+    #[prost(string, tag = "1")]
+    pub signed_uri: ::prost::alloc::string::String,
 }
 /// An asset is a resource in corpus. It represents a media object inside corpus,
 /// contains metadata and another resource annotation. Different feature could be
@@ -8851,7 +8939,7 @@ pub struct DeleteAssetRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Asset {
     /// Resource name of the asset.
-    /// Form:
+    /// Format:
     /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -8860,6 +8948,294 @@ pub struct Asset {
     /// parent corpus resource.
     #[prost(message, optional, tag = "2")]
     pub ttl: ::core::option::Option<::prost_types::Duration>,
+    /// Output only. The original cloud storage source uri that is associated with
+    /// this asset.
+    #[prost(message, optional, tag = "4")]
+    pub asset_gcs_source: ::core::option::Option<asset_source::AssetGcsSource>,
+}
+/// Request message for AnalyzeAsset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AnalyzeAssetRequest {
+    /// Required. The resource name of the asset to analyze.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Metadata for AnalyzeAsset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AnalyzeAssetMetadata {
+    /// The status of analysis on all search capabilities.
+    #[prost(message, repeated, tag = "1")]
+    pub analysis_status: ::prost::alloc::vec::Vec<
+        analyze_asset_metadata::AnalysisStatus,
+    >,
+    /// The start time of the operation.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The update time of the operation.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `AnalyzeAssetMetadata`.
+pub mod analyze_asset_metadata {
+    /// The status of analysis on each search capability.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AnalysisStatus {
+        #[prost(enumeration = "analysis_status::State", tag = "2")]
+        pub state: i32,
+        #[prost(string, tag = "3")]
+        pub status_message: ::prost::alloc::string::String,
+        /// The search capability requested.
+        #[prost(message, optional, tag = "4")]
+        pub search_capability: ::core::option::Option<super::SearchCapability>,
+    }
+    /// Nested message and enum types in `AnalysisStatus`.
+    pub mod analysis_status {
+        /// The state of the search capability.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum State {
+            /// The default process state should never happen.
+            Unspecified = 0,
+            /// The feature is in progress.
+            InProgress = 1,
+            /// The process is successfully done.
+            Succeeded = 2,
+            /// The process failed.
+            Failed = 3,
+        }
+        impl State {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    State::Unspecified => "STATE_UNSPECIFIED",
+                    State::InProgress => "IN_PROGRESS",
+                    State::Succeeded => "SUCCEEDED",
+                    State::Failed => "FAILED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "IN_PROGRESS" => Some(Self::InProgress),
+                    "SUCCEEDED" => Some(Self::Succeeded),
+                    "FAILED" => Some(Self::Failed),
+                    _ => None,
+                }
+            }
+        }
+    }
+}
+/// Response message for AnalyzeAsset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AnalyzeAssetResponse {}
+/// The status of indexing for the asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IndexingStatus {
+    /// Output only. State of this asset's indexing.
+    #[prost(enumeration = "indexing_status::State", tag = "2")]
+    pub state: i32,
+    /// Detailed message describing the state.
+    #[prost(string, tag = "3")]
+    pub status_message: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `IndexingStatus`.
+pub mod indexing_status {
+    /// State enum for this asset's indexing.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The default process state should never happen.
+        Unspecified = 0,
+        /// The indexing is in progress.
+        InProgress = 1,
+        /// The process is successfully done.
+        Succeeded = 2,
+        /// The process failed.
+        Failed = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::InProgress => "IN_PROGRESS",
+                State::Succeeded => "SUCCEEDED",
+                State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message for IndexAsset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IndexAssetRequest {
+    /// Required. The resource name of the asset to index.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The name of the index.
+    /// Format:
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/indexes/{index}`
+    #[prost(string, tag = "2")]
+    pub index: ::prost::alloc::string::String,
+}
+/// Metadata for IndexAsset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IndexAssetMetadata {
+    /// The status of indexing this asset.
+    #[prost(message, optional, tag = "4")]
+    pub status: ::core::option::Option<IndexingStatus>,
+    /// The start time of the operation.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The update time of the operation.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Response message for IndexAsset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IndexAssetResponse {}
+/// Request message for RemoveIndexAsset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveIndexAssetRequest {
+    /// Required. The resource name of the asset to index.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The name of the index.
+    /// Format:
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/indexes/{index}`
+    #[prost(string, tag = "2")]
+    pub index: ::prost::alloc::string::String,
+}
+/// Metadata for RemoveIndexAsset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveIndexAssetMetadata {
+    /// The status of indexing this asset.
+    #[prost(message, optional, tag = "1")]
+    pub indexing_status: ::core::option::Option<IndexingStatus>,
+    /// The start time of the operation.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The update time of the operation.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Response message for RemoveIndexAsset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveIndexAssetResponse {}
+/// An IndexedAsset is an asset that the index is built upon.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IndexedAsset {
+    /// Required. The index that this indexed asset belongs to.
+    /// Format:
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/indexes/{index}`
+    #[prost(string, tag = "1")]
+    pub index: ::prost::alloc::string::String,
+    /// Required. The resource name of the asset.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}`
+    #[prost(string, tag = "2")]
+    pub asset: ::prost::alloc::string::String,
+    /// Output only. The create timestamp.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The update timestamp.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for ViewIndexedAssets.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ViewIndexedAssetsRequest {
+    /// Required. The index that owns this collection of assets.
+    /// Format:
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/indexes/{index}`
+    #[prost(string, tag = "1")]
+    pub index: ::prost::alloc::string::String,
+    /// The maximum number of assets to return. The service may return fewer than
+    /// this value.
+    /// If unspecified, at most 50 assets will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ViewIndexedAssets` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ViewIndexedAssets` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// The filter applied to the returned list.
+    /// Only the following filterings are supported:
+    /// "asset_id = xxxx", which returns asset with specified id.
+    /// "asset_id = xxxx, yyyy, zzzz", which returns assets with specified ids.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response message for ViewIndexedAssets.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ViewIndexedAssetsResponse {
+    /// The assets from the specified index.
+    #[prost(message, repeated, tag = "1")]
+    pub indexed_assets: ::prost::alloc::vec::Vec<IndexedAsset>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message of CreateCorpus API.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8875,7 +9251,546 @@ pub struct CreateCorpusRequest {
 /// Metadata for CreateCorpus API.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateCorpusMetadata {}
+pub struct CreateCorpusMetadata {
+    /// The create time of the create corpus operation.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The update time of the create corpus operation.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// The capability and metadata of search capability.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchCapability {
+    /// The search capability to enable.
+    #[prost(enumeration = "search_capability::Type", tag = "1")]
+    pub r#type: i32,
+}
+/// Nested message and enum types in `SearchCapability`.
+pub mod search_capability {
+    /// Capability to perform different search on assets.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Unspecified search capability, should never be used.
+        Unspecified = 0,
+        /// Embedding search.
+        EmbeddingSearch = 1,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Type::Unspecified => "TYPE_UNSPECIFIED",
+                Type::EmbeddingSearch => "EMBEDDING_SEARCH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EMBEDDING_SEARCH" => Some(Self::EmbeddingSearch),
+                _ => None,
+            }
+        }
+    }
+}
+/// Setting for search capability to enable.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchCapabilitySetting {
+    /// The metadata of search capability to enable.
+    #[prost(message, repeated, tag = "1")]
+    pub search_capabilities: ::prost::alloc::vec::Vec<SearchCapability>,
+}
+/// Metadata message for CreateCollectionRequest
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateCollectionMetadata {
+    /// Common metadata of the long-running operation.
+    #[prost(message, optional, tag = "1")]
+    pub operation_metadata: ::core::option::Option<OperationMetadata>,
+}
+/// Request message for CreateCollection.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateCollectionRequest {
+    /// Required. The parent resource where this collection will be created.
+    /// Format: `projects/{project_number}/locations/{location}/corpora/{corpus}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The collection resource to be created.
+    #[prost(message, optional, tag = "2")]
+    pub collection: ::core::option::Option<Collection>,
+    /// Optional. The ID to use for the collection, which will become the final
+    /// component of the resource name if user choose to specify. Otherwise,
+    /// collection id will be generated by system.
+    ///
+    /// This value should be up to 55 characters, and valid characters
+    /// are /[a-z][0-9]-/. The first character must be a letter, the last could be
+    /// a letter or a number.
+    #[prost(string, optional, tag = "3")]
+    pub collection_id: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Metadata message for DeleteCollectionRequest
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteCollectionMetadata {
+    /// Common metadata of the long-running operation.
+    #[prost(message, optional, tag = "1")]
+    pub operation_metadata: ::core::option::Option<OperationMetadata>,
+}
+/// Request message for DeleteCollectionRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteCollectionRequest {
+    /// Required. The name of the collection to delete. Format:
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/collections/{collection}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for GetCollectionRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetCollectionRequest {
+    /// Required. The name of the collection to retrieve. Format:
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/collections/{collection}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for UpdateCollectionRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateCollectionRequest {
+    /// Required. The collection to update.
+    ///
+    /// The collection's `name` field is used to identify the collection to be
+    /// updated. Format:
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/collections/{collection}`
+    #[prost(message, optional, tag = "1")]
+    pub collection: ::core::option::Option<Collection>,
+    /// The list of fields to be updated.
+    /// - Unset `update_mask` or set `update_mask` to be a single "*" only will
+    ///    update all updatable fields with the value provided in `collection`.
+    /// - To update `display_name` value to empty string, set it in the
+    /// `collection`
+    ///    to empty string, and set `update_mask` with "display_name". Same applies
+    ///    to other updatable string fields in the `collection`.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for ListCollections.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCollectionsRequest {
+    /// Required. The parent corpus. Format:
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of collections to return. The service may return fewer
+    /// than this value. If unspecified, at most 50 collections will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListCollectionsRequest` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListCollectionsRequest`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListCollections.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCollectionsResponse {
+    /// The collections from the specified corpus.
+    #[prost(message, repeated, tag = "1")]
+    pub collections: ::prost::alloc::vec::Vec<Collection>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for AddCollectionItem.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AddCollectionItemRequest {
+    /// Required. The item to be added.
+    #[prost(message, optional, tag = "1")]
+    pub item: ::core::option::Option<CollectionItem>,
+}
+/// Response message for AddCollectionItem.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AddCollectionItemResponse {
+    /// The item that has already been added.
+    #[prost(message, optional, tag = "1")]
+    pub item: ::core::option::Option<CollectionItem>,
+}
+/// Request message for RemoveCollectionItem.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveCollectionItemRequest {
+    /// Required. The item to be removed.
+    #[prost(message, optional, tag = "1")]
+    pub item: ::core::option::Option<CollectionItem>,
+}
+/// Request message for RemoveCollectionItem.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveCollectionItemResponse {
+    /// The item that has already been removed.
+    #[prost(message, optional, tag = "1")]
+    pub item: ::core::option::Option<CollectionItem>,
+}
+/// Request message for ViewCollectionItems.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ViewCollectionItemsRequest {
+    /// Required. The collection to view. Format:
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/collections/{collection}`
+    #[prost(string, tag = "1")]
+    pub collection: ::prost::alloc::string::String,
+    /// The maximum number of collections to return. The service may return fewer
+    /// than this value. If unspecified, at most 50 collections will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ViewCollectionItemsRequest` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ViewCollectionItemsRequest` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ViewCollectionItems.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ViewCollectionItemsResponse {
+    /// The items from the specified collection.
+    #[prost(message, repeated, tag = "1")]
+    pub items: ::prost::alloc::vec::Vec<CollectionItem>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// A collection is a resource in a corpus. It serves as a container of
+/// references to original resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Collection {
+    /// Output only. Resource name of the collection. Format:
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/collections/{collection}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The collection name for displaying.
+    /// The name can be up to 256 characters long.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. Description of the collection. Can be up to 25000 characters
+    /// long.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+}
+/// A CollectionItem is an item in a collection.
+/// Each item is a reference to the original resource in a collection.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CollectionItem {
+    /// Required. The collection name that this item belongs to. Format:
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/collections/{collection}`
+    #[prost(string, tag = "1")]
+    pub collection: ::prost::alloc::string::String,
+    /// Required. The type of item.
+    #[prost(enumeration = "collection_item::Type", tag = "2")]
+    pub r#type: i32,
+    /// Required. The name of the CollectionItem. Its format depends on the `type`
+    /// above. For ASSET:
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}`
+    #[prost(string, tag = "3")]
+    pub item_resource: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `CollectionItem`.
+pub mod collection_item {
+    /// CollectionItem types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// The default type of item should never happen.
+        Unspecified = 0,
+        /// Asset type item.
+        Asset = 1,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Type::Unspecified => "TYPE_UNSPECIFIED",
+                Type::Asset => "ASSET",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ASSET" => Some(Self::Asset),
+                _ => None,
+            }
+        }
+    }
+}
+/// Message for creating an Index.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateIndexRequest {
+    /// Required. Value for the parent. The resource name of the Corpus under which
+    /// this index is created. Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The ID for the index. This will become the final resource name
+    /// for the index. If the user does not specify this value, it will be
+    /// generated by system.
+    ///
+    /// This value should be up to 63 characters, and valid characters
+    /// are /[a-z][0-9]-/. The first character must be a letter, the last could be
+    /// a letter or a number.
+    #[prost(string, tag = "2")]
+    pub index_id: ::prost::alloc::string::String,
+    /// Required. The index being created.
+    #[prost(message, optional, tag = "3")]
+    pub index: ::core::option::Option<Index>,
+}
+/// Metadata message for CreateIndexRequest
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateIndexMetadata {
+    /// Common metadata of the long-running operation.
+    #[prost(message, optional, tag = "1")]
+    pub operation_metadata: ::core::option::Option<OperationMetadata>,
+}
+/// Request message for UpdateIndex.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateIndexRequest {
+    /// Required. The resource being updated.
+    #[prost(message, optional, tag = "1")]
+    pub index: ::core::option::Option<Index>,
+    /// Required. Field mask is used to specify the fields to be overwritten in the
+    /// Index resource by the update. The fields specified in the update_mask are
+    /// relative to the resource, not the full request. A field of the resource
+    /// will be overwritten if it is in the mask. Empty field mask is not allowed.
+    /// If the mask is "*", it triggers a full update of the index, and also a
+    /// whole rebuild of index data.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Metadata message for UpdateIndexRequest
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateIndexMetadata {
+    /// Common metadata of the long-running operation.
+    #[prost(message, optional, tag = "1")]
+    pub operation_metadata: ::core::option::Option<OperationMetadata>,
+}
+/// Request message for getting an Index.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetIndexRequest {
+    /// Required. Name of the Index resource.
+    /// Format:
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/indexes/{index}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for listing Indexes.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIndexesRequest {
+    /// Required. The parent corpus that owns this collection of indexes.
+    /// Format:
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of indexes to return. The service may return fewer than
+    /// this value.
+    /// If unspecified, at most 50 indexes will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListIndexes` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListIndexes` must match
+    /// the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListIndexes.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIndexesResponse {
+    /// The indexes under the specified corpus.
+    #[prost(message, repeated, tag = "1")]
+    pub indexes: ::prost::alloc::vec::Vec<Index>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for DeleteIndex.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteIndexRequest {
+    /// Required. The name of the index to delete.
+    /// Format:
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/indexes/{index}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Metadata message for DeleteIndexRequest
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteIndexMetadata {}
+/// An Index is a resource in Corpus. It contains an indexed version of the
+/// assets and annotations. When deployed to an endpoint, it will allow users to
+/// search the Index.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Index {
+    /// Output only. Resource name of the Index resource.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/indexes/{index_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Optional user-specified display name of the index.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. Optional description of the index.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. State of the index.
+    #[prost(enumeration = "index::State", tag = "4")]
+    pub state: i32,
+    /// Output only. The create timestamp.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The update timestamp.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. References to the deployed index instance.
+    /// Index of VIDEO_ON_DEMAND corpus can have at most one deployed index.
+    /// Index of IMAGE corpus can have multiple deployed indexes.
+    #[prost(message, repeated, tag = "8")]
+    pub deployed_indexes: ::prost::alloc::vec::Vec<DeployedIndexReference>,
+    /// Specifies how assets are selected for this index. Default to
+    /// entire_corpus if unspecified. Behavior in UpdateIndex: if update_mask
+    /// includes one of the asset_filter field paths, the index will be rebuilt
+    /// with latest assets, including their analyzed data and annotations.
+    #[prost(oneof = "index::AssetFilter", tags = "9")]
+    pub asset_filter: ::core::option::Option<index::AssetFilter>,
+}
+/// Nested message and enum types in `Index`.
+pub mod index {
+    /// Enum representing the different states through which an Index might cycle
+    /// during its lifetime.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The default value. Should not be used.
+        Unspecified = 0,
+        /// State CREATING.
+        Creating = 1,
+        /// State CREATED.
+        Created = 2,
+        /// State UPDATING.
+        Updating = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Creating => "CREATING",
+                State::Created => "CREATED",
+                State::Updating => "UPDATING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "CREATED" => Some(Self::Created),
+                "UPDATING" => Some(Self::Updating),
+                _ => None,
+            }
+        }
+    }
+    /// Specifies how assets are selected for this index. Default to
+    /// entire_corpus if unspecified. Behavior in UpdateIndex: if update_mask
+    /// includes one of the asset_filter field paths, the index will be rebuilt
+    /// with latest assets, including their analyzed data and annotations.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AssetFilter {
+        /// Include all assets under the corpus.
+        #[prost(bool, tag = "9")]
+        EntireCorpus(bool),
+    }
+}
+/// Points to a DeployedIndex.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployedIndexReference {
+    /// Immutable. A resource name of the IndexEndpoint.
+    #[prost(string, tag = "1")]
+    pub index_endpoint: ::prost::alloc::string::String,
+}
 /// Corpus is a set of media contents for management.
 /// Within a corpus, media shares the same data schema. Search is also restricted
 /// within a single corpus.
@@ -8883,7 +9798,7 @@ pub struct CreateCorpusMetadata {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Corpus {
     /// Resource name of the corpus.
-    /// Form:
+    /// Format:
     /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -8903,6 +9818,9 @@ pub struct Corpus {
     /// Optional. Type of the asset inside corpus.
     #[prost(enumeration = "corpus::Type", tag = "7")]
     pub r#type: i32,
+    /// Default search capability setting on corpus level.
+    #[prost(message, optional, tag = "8")]
+    pub search_capability_setting: ::core::option::Option<SearchCapabilitySetting>,
 }
 /// Nested message and enum types in `Corpus`.
 pub mod corpus {
@@ -8923,8 +9841,12 @@ pub mod corpus {
         /// The default type, not supposed to be used. If this default type is used,
         /// the corpus will be created as STREAM_VIDEO corpus.
         Unspecified = 0,
-        /// Asset is a live streaming video asset.
+        /// Asset is a live streaming video.
         StreamVideo = 1,
+        /// Asset is an image.
+        Image = 2,
+        /// Asset is a batch video.
+        VideoOnDemand = 3,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -8935,6 +9857,8 @@ pub mod corpus {
             match self {
                 Type::Unspecified => "TYPE_UNSPECIFIED",
                 Type::StreamVideo => "STREAM_VIDEO",
+                Type::Image => "IMAGE",
+                Type::VideoOnDemand => "VIDEO_ON_DEMAND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8942,6 +9866,8 @@ pub mod corpus {
             match value {
                 "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "STREAM_VIDEO" => Some(Self::StreamVideo),
+                "IMAGE" => Some(Self::Image),
+                "VIDEO_ON_DEMAND" => Some(Self::VideoOnDemand),
                 _ => None,
             }
         }
@@ -8981,11 +9907,19 @@ pub struct ListCorporaRequest {
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A token identifying a page of results for the server to return.
-    /// Typically obtained via [ListCorpora.next_page_token][] of the previous
+    /// Typically obtained via
+    /// [ListCorporaResponse.next_page_token][google.cloud.visionai.v1.ListCorporaResponse.next_page_token]
+    /// of the previous
     /// [Warehouse.ListCorpora][google.cloud.visionai.v1.Warehouse.ListCorpora]
     /// call.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// The filter applied to the returned corpora list.
+    /// Only the following restrictions are supported:
+    /// `type=<Corpus.Type>`,
+    /// `type!=<Corpus.Type>`.
+    #[prost(string, tag = "5")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for ListCorpora.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -9009,12 +9943,35 @@ pub struct DeleteCorpusRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Request message for AnalyzeCorpus.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AnalyzeCorpusRequest {
+    /// Required. The parent corpus resource where the assets will be analyzed.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The metadata message for AnalyzeCorpus LRO.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AnalyzeCorpusMetadata {
+    /// The metadata of the operation.
+    #[prost(message, optional, tag = "1")]
+    pub metadata: ::core::option::Option<OperationMetadata>,
+}
+/// The response message for AnalyzeCorpus LRO.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AnalyzeCorpusResponse {}
 /// Request message for CreateDataSchema.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDataSchemaRequest {
     /// Required. The parent resource where this data schema will be created.
-    /// Format: projects/*/locations/*/corpora/*
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The data schema to create.
@@ -9343,7 +10300,7 @@ pub mod data_schema_details {
 pub struct UpdateDataSchemaRequest {
     /// Required. The data schema's `name` field is used to identify the data
     /// schema to be updated. Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}/dataSchemas/{data_schema}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/dataSchemas/{data_schema}`
     #[prost(message, optional, tag = "1")]
     pub data_schema: ::core::option::Option<DataSchema>,
     /// The list of fields to be updated.
@@ -9356,7 +10313,7 @@ pub struct UpdateDataSchemaRequest {
 pub struct GetDataSchemaRequest {
     /// Required. The name of the data schema to retrieve.
     /// Format:
-    /// projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/dataSchemas/{data_schema_id}
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/dataSchemas/{data_schema_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -9366,7 +10323,7 @@ pub struct GetDataSchemaRequest {
 pub struct DeleteDataSchemaRequest {
     /// Required. The name of the data schema to delete.
     /// Format:
-    /// projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/dataSchemas/{data_schema_id}
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/dataSchemas/{data_schema_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -9376,7 +10333,7 @@ pub struct DeleteDataSchemaRequest {
 pub struct ListDataSchemasRequest {
     /// Required. The parent, which owns this collection of data schemas.
     /// Format:
-    /// projects/{project_number}/locations/{location_id}/corpora/{corpus_id}
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of data schemas to return. The service may return fewer
@@ -9409,7 +10366,8 @@ pub struct ListDataSchemasResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAnnotationRequest {
     /// Required. The parent resource where this annotation will be created.
-    /// Format: projects/*/locations/*/corpora/*/assets/*
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The annotation to create.
@@ -9431,7 +10389,7 @@ pub struct CreateAnnotationRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Annotation {
     /// Resource name of the annotation.
-    /// Form:
+    /// Format:
     /// `projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -9499,7 +10457,8 @@ pub mod annotation_value {
         /// Value of boolean type annotation.
         #[prost(bool, tag = "9")]
         BoolValue(bool),
-        /// Value of customized struct annotation.
+        /// Value of customized struct annotation. This field does not have effects.
+        /// Use customized_struct_value instead for customized struct annotation.
         #[prost(message, tag = "10")]
         CustomizedStructDataValue(::prost_types::Struct),
         /// Value of list type annotation.
@@ -9535,7 +10494,7 @@ pub struct AnnotationCustomizedStruct {
 pub struct ListAnnotationsRequest {
     /// The parent, which owns this collection of annotations.
     /// Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of annotations to return. The service may return fewer
@@ -9582,7 +10541,7 @@ pub struct ListAnnotationsResponse {
 pub struct GetAnnotationRequest {
     /// Required. The name of the annotation to retrieve.
     /// Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -9593,7 +10552,7 @@ pub struct UpdateAnnotationRequest {
     /// Required. The annotation to update.
     /// The annotation's `name` field is used to identify the annotation to be
     /// updated. Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}`
     #[prost(message, optional, tag = "1")]
     pub annotation: ::core::option::Option<Annotation>,
     /// The list of fields to be updated.
@@ -9606,16 +10565,56 @@ pub struct UpdateAnnotationRequest {
 pub struct DeleteAnnotationRequest {
     /// Required. The name of the annotation to delete.
     /// Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// The request message for ImportAssets.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportAssetsRequest {
+    /// Required. The parent corpus resource where the assets will be imported.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The source.
+    #[prost(oneof = "import_assets_request::Source", tags = "2")]
+    pub source: ::core::option::Option<import_assets_request::Source>,
+}
+/// Nested message and enum types in `ImportAssetsRequest`.
+pub mod import_assets_request {
+    /// The source.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// The file contains all assets information to be imported.
+        /// * The file is in JSONL format.
+        /// * Each line corresponding to one asset.
+        /// * Each line will be converted into InputImageAsset proto.
+        #[prost(string, tag = "2")]
+        AssetsGcsUri(::prost::alloc::string::String),
+    }
+}
+/// The metadata message for ImportAssets LRO.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportAssetsMetadata {
+    /// The metadata of the operation.
+    #[prost(message, optional, tag = "1")]
+    pub metadata: ::core::option::Option<OperationMetadata>,
+}
+/// The response message for ImportAssets LRO.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportAssetsResponse {}
 /// Request message for CreateSearchConfig.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSearchConfigRequest {
     /// Required. The parent resource where this search configuration will be
-    /// created. Format: projects/*/locations/*/corpora/*
+    /// created. Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The search config to create.
@@ -9636,7 +10635,7 @@ pub struct UpdateSearchConfigRequest {
     ///
     /// The search configuration's `name` field is used to identify the resource to
     /// be updated. Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}`
     #[prost(message, optional, tag = "1")]
     pub search_config: ::core::option::Option<SearchConfig>,
     /// The list of fields to be updated. If left unset, all field paths will be
@@ -9650,7 +10649,7 @@ pub struct UpdateSearchConfigRequest {
 pub struct GetSearchConfigRequest {
     /// Required. The name of the search configuration to retrieve.
     /// Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -9660,7 +10659,7 @@ pub struct GetSearchConfigRequest {
 pub struct DeleteSearchConfigRequest {
     /// Required. The name of the search configuration to delete.
     /// Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -9670,7 +10669,7 @@ pub struct DeleteSearchConfigRequest {
 pub struct ListSearchConfigsRequest {
     /// Required. The parent, which owns this collection of search configurations.
     /// Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of search configurations to return. The service may
@@ -9708,7 +10707,7 @@ pub struct SearchConfig {
     /// For CustomSearchCriteria, search_config would be the search
     /// operator name. For Facets, search_config would be the facet
     /// dimension name.
-    /// Form:
+    /// Format:
     /// `projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -9718,6 +10717,294 @@ pub struct SearchConfig {
     /// Creates a mapping between a custom SearchCriteria and one or more UGA keys.
     #[prost(message, optional, tag = "3")]
     pub search_criteria_property: ::core::option::Option<SearchCriteriaProperty>,
+}
+/// Message representing IndexEndpoint resource. Indexes are deployed into it.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IndexEndpoint {
+    /// Output only. Resource name of the IndexEndpoint.
+    /// Format:
+    /// `projects/{project}/locations/{location}/indexEndpoints/{index_endpoint_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Display name of the IndexEndpoint. Can be up to 32 characters
+    /// long.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. Description of the IndexEndpoint. Can be up to 25000 characters
+    /// long.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. The Index deployed in this IndexEndpoint.
+    #[prost(message, optional, tag = "9")]
+    pub deployed_index: ::core::option::Option<DeployedIndex>,
+    /// Output only. IndexEndpoint state.
+    #[prost(enumeration = "index_endpoint::State", tag = "5")]
+    pub state: i32,
+    /// Optional. The labels applied to a resource must meet the following
+    /// requirements:
+    ///
+    /// * Each resource can have multiple labels, up to a maximum of 64.
+    /// * Each label must be a key-value pair.
+    /// * Keys have a minimum length of 1 character and a maximum length of 63
+    ///    characters and cannot be empty. Values can be empty and have a maximum
+    ///    length of 63 characters.
+    /// * Keys and values can contain only lowercase letters, numeric characters,
+    ///    underscores, and dashes. All characters must use UTF-8 encoding, and
+    ///    international characters are allowed.
+    /// * The key portion of a label must be unique. However, you can use the same
+    ///    key with multiple resources.
+    /// * Keys must start with a lowercase letter or international character.
+    ///
+    /// See [Google Cloud
+    /// Document](<https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>)
+    /// for more details.
+    #[prost(map = "string, string", tag = "6")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. Create timestamp.
+    #[prost(message, optional, tag = "7")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Update timestamp.
+    #[prost(message, optional, tag = "8")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `IndexEndpoint`.
+pub mod index_endpoint {
+    /// IndexEndpoint stage.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The default value. Should not be used.
+        Unspecified = 0,
+        /// State CREATING.
+        Creating = 1,
+        /// State CREATED.
+        Created = 2,
+        /// State UPDATING.
+        Updating = 3,
+        /// State FAILED.
+        Failed = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Creating => "CREATING",
+                State::Created => "CREATED",
+                State::Updating => "UPDATING",
+                State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "CREATED" => Some(Self::Created),
+                "UPDATING" => Some(Self::Updating),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message for CreateIndexEndpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateIndexEndpointRequest {
+    /// Required. Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The ID to use for the IndexEndpoint, which will become the final
+    /// component of the IndexEndpoint's resource name if the user specifies it.
+    /// Otherwise, IndexEndpoint id will be autogenerated.
+    ///
+    /// This value should be up to 63 characters, and valid characters
+    /// are a-z, 0-9 and dash (-). The first character must be a letter, the last
+    /// must be a letter or a number.
+    #[prost(string, tag = "2")]
+    pub index_endpoint_id: ::prost::alloc::string::String,
+    /// Required. The resource being created.
+    #[prost(message, optional, tag = "3")]
+    pub index_endpoint: ::core::option::Option<IndexEndpoint>,
+}
+/// Metadata message for CreateIndexEndpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateIndexEndpointMetadata {
+    /// Common metadata of the long-running operation.
+    #[prost(message, optional, tag = "1")]
+    pub operation_metadata: ::core::option::Option<OperationMetadata>,
+}
+/// Request message for GetIndexEndpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetIndexEndpointRequest {
+    /// Required. Name of the IndexEndpoint resource.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListIndexEndpoints.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIndexEndpointsRequest {
+    /// Required. Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. Server may return fewer items than
+    /// requested. The service may return fewer than this value. If unspecified, a
+    /// page size of 50 will be used. The maximum value is 1000; values above 1000
+    /// will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. The filter applied to the returned list.
+    /// We only support filtering for the `deployed_image_index.image_index` field.
+    /// However, to filter by a corpus instead of an image index, simply use
+    /// `deployed_image_index.corpus`, which will return all endpoints with
+    /// `deployed_image_index.image_index` inside of the given corpus.
+    /// A basic filter on image index would look like:
+    ///    deployed_image_index.image_index =
+    ///      "projects/123/locations/us-central1/corpora/my_corpus/imageIndexes/my_image_index"
+    /// A basic filter on corpus would look like:
+    ///    deployed_image_index.corpus =
+    ///      "projects/123/locations/us-central1/corpora/my_corpus"
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response message for ListIndexEndpoints.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIndexEndpointsResponse {
+    /// The list of IndexEndpoints.
+    #[prost(message, repeated, tag = "1")]
+    pub index_endpoints: ::prost::alloc::vec::Vec<IndexEndpoint>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for UpdateIndexEndpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateIndexEndpointRequest {
+    /// Required. The resource being updated.
+    #[prost(message, optional, tag = "1")]
+    pub index_endpoint: ::core::option::Option<IndexEndpoint>,
+    /// Required. Field mask is used to specify the fields to be overwritten in the
+    /// IndexEndpoint resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request.
+    /// A field of the resource will be overwritten if it is in the mask.
+    /// Empty field mask is not allowed.
+    /// If the mask is "*", then this is a full replacement of the resource.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Metadata message for UpdateIndexEndpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateIndexEndpointMetadata {
+    /// Common metadata of the long-running operation.
+    #[prost(message, optional, tag = "1")]
+    pub operation_metadata: ::core::option::Option<OperationMetadata>,
+}
+/// Request message for DeleteIndexEndpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteIndexEndpointRequest {
+    /// Required. Name of the resource.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Metadata message for DeleteIndexEndpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteIndexEndpointMetadata {
+    /// Common metadata of the long-running operation.
+    #[prost(message, optional, tag = "1")]
+    pub operation_metadata: ::core::option::Option<OperationMetadata>,
+}
+/// Request message for DeployIndex.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployIndexRequest {
+    /// Required. IndexEndpoint the index is deployed to.
+    /// Format:
+    /// `projects/{project}/locations/{location}/indexEndpoints/{index_endpoint}`
+    #[prost(string, tag = "1")]
+    pub index_endpoint: ::prost::alloc::string::String,
+    /// Required. Index to deploy.
+    #[prost(message, optional, tag = "3")]
+    pub deployed_index: ::core::option::Option<DeployedIndex>,
+}
+/// DeployIndex response once the operation is done.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployIndexResponse {}
+/// Metadata message for DeployIndex.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployIndexMetadata {
+    /// Common metadata of the long-running operation.
+    #[prost(message, optional, tag = "1")]
+    pub operation_metadata: ::core::option::Option<OperationMetadata>,
+    /// Output only. The index being deployed.
+    #[prost(string, tag = "2")]
+    pub deployed_index: ::prost::alloc::string::String,
+}
+/// Metadata message for UndeployIndex.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UndeployIndexMetadata {
+    /// Common metadata of the long-running operation.
+    #[prost(message, optional, tag = "1")]
+    pub operation_metadata: ::core::option::Option<OperationMetadata>,
+    /// Output only. The index being undeployed.
+    #[prost(string, tag = "2")]
+    pub deployed_index: ::prost::alloc::string::String,
+}
+/// Request message for UndeployIndexEndpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UndeployIndexRequest {
+    /// Required. Resource name of the IndexEndpoint resource on which the
+    /// undeployment will act. Format:
+    /// `projects/{project}/locations/{location}/indexEndpoints/{index_endpoint}`
+    #[prost(string, tag = "1")]
+    pub index_endpoint: ::prost::alloc::string::String,
+}
+/// UndeployIndex response once the operation is done.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UndeployIndexResponse {}
+/// A deployment of an Index.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployedIndex {
+    /// Required. Name of the deployed Index.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/indexes/{index_id}`
+    #[prost(string, tag = "1")]
+    pub index: ::prost::alloc::string::String,
 }
 /// Central configuration for a facet.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -9875,7 +11162,7 @@ pub mod facet_property {
 pub struct SearchHypernym {
     /// Resource name of the SearchHypernym.
     /// Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}/searchHypernyms/{search_hypernym}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/searchHypernyms/{search_hypernym}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The hypernym.
@@ -9890,7 +11177,7 @@ pub struct SearchHypernym {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSearchHypernymRequest {
     /// Required. The parent resource where this SearchHypernym will be created.
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}
+    /// Format: `projects/{project_number}/locations/{location}/corpora/{corpus}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The SearchHypernym to create.
@@ -9908,7 +11195,7 @@ pub struct UpdateSearchHypernymRequest {
     /// Required. The SearchHypernym to update.
     /// The search hypernym's `name` field is used to identify the search hypernym
     /// to be updated. Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}/searchHypernyms/{search_hypernym}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/searchHypernyms/{search_hypernym}`
     #[prost(message, optional, tag = "1")]
     pub search_hypernym: ::core::option::Option<SearchHypernym>,
     /// The list of fields to be updated. If left unset, all field paths will be
@@ -9922,7 +11209,7 @@ pub struct UpdateSearchHypernymRequest {
 pub struct GetSearchHypernymRequest {
     /// Required. The name of the SearchHypernym to retrieve.
     /// Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}/searchHypernyms/{search_hypernym}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/searchHypernyms/{search_hypernym}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -9932,7 +11219,7 @@ pub struct GetSearchHypernymRequest {
 pub struct DeleteSearchHypernymRequest {
     /// Required. The name of the SearchHypernym to delete.
     /// Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}/searchHypernyms/{search_hypernym}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}/searchHypernyms/{search_hypernym}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -9942,7 +11229,7 @@ pub struct DeleteSearchHypernymRequest {
 pub struct ListSearchHypernymsRequest {
     /// Required. The parent, which owns this collection of SearchHypernyms.
     /// Format:
-    /// projects/{project_number}/locations/{location}/corpora/{corpus}
+    /// `projects/{project_number}/locations/{location}/corpora/{corpus}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of SearchHypernyms returned. The service may
@@ -10213,8 +11500,8 @@ pub struct IngestAssetResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClipAssetRequest {
     /// Required. The resource name of the asset to request clips for.
-    /// Form:
-    /// 'projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}'
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The time range to request clips for.
@@ -10251,8 +11538,8 @@ pub mod clip_asset_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateHlsUriRequest {
     /// Required. The resource name of the asset to request clips for.
-    /// Form:
-    /// 'projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}'
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The time range to request clips for. Will be ignored if `get_live_view` is
@@ -10282,7 +11569,7 @@ pub struct GenerateHlsUriResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAssetsRequest {
     /// Required. The parent corpus to search.
-    /// Form: `projects/{project_id}/locations/{location_id}/corpora/{corpus_id}'
+    /// Format: `projects/{project_id}/locations/{location_id}/corpora/{corpus_id}'
     #[prost(string, tag = "1")]
     pub corpus: ::prost::alloc::string::String,
     /// The number of results to be returned in this page. If it's 0, the server
@@ -10333,6 +11620,73 @@ pub mod search_assets_request {
         /// Sort by the value under the data schema key.
         #[prost(message, tag = "9")]
         SchemaKeySortingStrategy(super::SchemaKeySortingStrategy),
+    }
+}
+/// Request message for SearchIndexEndpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchIndexEndpointRequest {
+    /// Required. The index endpoint to search.
+    /// Format:
+    /// `projects/{project_id}/locations/{location_id}/indexEndpoints/{index_endpoint_id}'
+    #[prost(string, tag = "1")]
+    pub index_endpoint: ::prost::alloc::string::String,
+    /// Criteria applied to search results.
+    #[prost(message, repeated, tag = "4")]
+    pub criteria: ::prost::alloc::vec::Vec<Criteria>,
+    /// Criteria to exclude from search results.
+    /// Note that `fetch_matched_annotations` will be ignored.
+    #[prost(message, repeated, tag = "7")]
+    pub exclusion_criteria: ::prost::alloc::vec::Vec<Criteria>,
+    /// Requested page size. API may return fewer results than requested.
+    /// If negative, INVALID_ARGUMENT error will be returned.
+    /// If unspecified or 0, API will pick a default size, which is 10.
+    /// If the requested page size is larger than the maximum size, API will pick
+    /// the maximum size, which is 100.
+    #[prost(int32, tag = "5")]
+    pub page_size: i32,
+    /// The continuation token to fetch the next page. If empty, it means it is
+    /// fetching the first page.
+    #[prost(string, tag = "6")]
+    pub page_token: ::prost::alloc::string::String,
+    /// The oneof global search query.
+    #[prost(oneof = "search_index_endpoint_request::Query", tags = "2, 3")]
+    pub query: ::core::option::Option<search_index_endpoint_request::Query>,
+}
+/// Nested message and enum types in `SearchIndexEndpointRequest`.
+pub mod search_index_endpoint_request {
+    /// The oneof global search query.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Query {
+        /// An image-only query.
+        #[prost(message, tag = "2")]
+        ImageQuery(super::ImageQuery),
+        /// A text-only query.
+        #[prost(string, tag = "3")]
+        TextQuery(::prost::alloc::string::String),
+    }
+}
+/// Image query for search endpoint request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImageQuery {
+    #[prost(oneof = "image_query::Image", tags = "1, 2")]
+    pub image: ::core::option::Option<image_query::Image>,
+}
+/// Nested message and enum types in `ImageQuery`.
+pub mod image_query {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Image {
+        /// Input image in raw bytes.
+        #[prost(bytes, tag = "1")]
+        InputImage(::prost::alloc::vec::Vec<u8>),
+        /// Resource name of the asset. Only supported in IMAGE corpus type.
+        /// Format:
+        /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}`
+        #[prost(string, tag = "2")]
+        Asset(::prost::alloc::string::String),
     }
 }
 /// A strategy to specify how to sort by data schema key.
@@ -10439,8 +11793,8 @@ pub struct AnnotationMatchingResult {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchResultItem {
     /// The resource name of the asset.
-    /// Form:
-    /// 'projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}'
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}`
     #[prost(string, tag = "1")]
     pub asset: ::prost::alloc::string::String,
     /// The matched asset segments.
@@ -10451,6 +11805,12 @@ pub struct SearchResultItem {
     /// The matched asset segment.
     #[prost(message, optional, tag = "5")]
     pub segment: ::core::option::Option<partition::TemporalPartition>,
+    /// Relevance of this `SearchResultItem` to user search request.
+    /// Currently available only in Image Warehouse, and by default represents
+    /// cosine similarity.  In the future can be other measures such as "dot
+    /// product" or "topicality" requested in the search request.
+    #[prost(double, tag = "6")]
+    pub relevance: f64,
     /// Search result annotations specified by result_annotation_keys in search
     /// request.
     #[prost(message, repeated, tag = "3")]
@@ -10475,6 +11835,18 @@ pub struct SearchAssetsResponse {
     /// already-selected facet values and updated facet search results.
     #[prost(message, repeated, tag = "3")]
     pub facet_results: ::prost::alloc::vec::Vec<FacetGroup>,
+}
+/// Response message for SearchIndexEndpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchIndexEndpointResponse {
+    /// Returned search results.
+    #[prost(message, repeated, tag = "1")]
+    pub search_result_items: ::prost::alloc::vec::Vec<SearchResultItem>,
+    /// The next-page continuation token.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Integer range type.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -10933,6 +12305,336 @@ pub mod warehouse_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Upload asset by specifing the asset Cloud Storage uri.
+        /// For video warehouse, it requires users who call this API have read access
+        /// to the cloud storage file. Once it is uploaded, it can be retrieved by
+        /// GenerateRetrievalUrl API which by default, only can retrieve cloud storage
+        /// files from the same project of the warehouse. To allow retrieval cloud
+        /// storage files that are in a separate project, it requires to find the
+        /// vision ai service account (Go to IAM, check checkbox to show "Include
+        /// Google-provided role grants", search for "Cloud Vision AI Service Agent")
+        /// and grant the read access of the cloud storage files to that service
+        /// account.
+        pub async fn upload_asset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UploadAssetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/UploadAsset",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.visionai.v1.Warehouse", "UploadAsset"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Generates a signed url for downloading the asset.
+        /// For video warehouse, please see comment of UploadAsset about how to allow
+        /// retrieval of cloud storage files in a different project.
+        pub async fn generate_retrieval_url(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GenerateRetrievalUrlRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerateRetrievalUrlResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/GenerateRetrievalUrl",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "GenerateRetrievalUrl",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Analyze asset to power search capability.
+        pub async fn analyze_asset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AnalyzeAssetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/AnalyzeAsset",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.visionai.v1.Warehouse", "AnalyzeAsset"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Index one asset for search.
+        /// Supported corpus type: Corpus.Type.VIDEO_ON_DEMAND
+        pub async fn index_asset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::IndexAssetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/IndexAsset",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.visionai.v1.Warehouse", "IndexAsset"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Remove one asset's index data for search.
+        /// Supported corpus type: Corpus.Type.VIDEO_ON_DEMAND
+        pub async fn remove_index_asset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RemoveIndexAssetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/RemoveIndexAsset",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "RemoveIndexAsset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists assets inside an index.
+        pub async fn view_indexed_assets(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ViewIndexedAssetsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ViewIndexedAssetsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/ViewIndexedAssets",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "ViewIndexedAssets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates an Index under the corpus.
+        pub async fn create_index(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateIndexRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/CreateIndex",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.visionai.v1.Warehouse", "CreateIndex"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an Index under the corpus.
+        /// Users can perform a metadata-only update or trigger a full index rebuild
+        /// with different update_mask values.
+        pub async fn update_index(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateIndexRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/UpdateIndex",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.visionai.v1.Warehouse", "UpdateIndex"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the details of a single Index under a Corpus.
+        pub async fn get_index(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetIndexRequest>,
+        ) -> std::result::Result<tonic::Response<super::Index>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/GetIndex",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.visionai.v1.Warehouse", "GetIndex"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List all Indexes in a given Corpus.
+        pub async fn list_indexes(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListIndexesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListIndexesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/ListIndexes",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.visionai.v1.Warehouse", "ListIndexes"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Delete a single Index. In order to delete an index, the caller must
+        /// make sure that it is not deployed to any index endpoint.
+        pub async fn delete_index(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteIndexRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/DeleteIndex",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.visionai.v1.Warehouse", "DeleteIndex"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Creates a corpus inside a project.
         pub async fn create_corpus(
             &mut self,
@@ -11062,6 +12764,37 @@ pub mod warehouse_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.cloud.visionai.v1.Warehouse", "DeleteCorpus"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Analyzes a corpus.
+        pub async fn analyze_corpus(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AnalyzeCorpusRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/AnalyzeCorpus",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "AnalyzeCorpus",
+                    ),
                 );
             self.inner.unary(req, path, codec).await
         }
@@ -11449,6 +13182,36 @@ pub mod warehouse_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Imports assets (images plus annotations) from a meta file on cloud storage.
+        /// Each row in the meta file is corresponding to an image (specified by a
+        /// cloud storage uri) and its annotations.
+        pub async fn import_assets(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ImportAssetsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/ImportAssets",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.visionai.v1.Warehouse", "ImportAssets"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Creates a search configuration inside a corpus.
         ///
         /// Please follow the rules below to create a valid CreateSearchConfigRequest.
@@ -11790,6 +13553,490 @@ pub mod warehouse_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.cloud.visionai.v1.Warehouse", "SearchAssets"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Search a deployed index endpoint (IMAGE corpus type only).
+        pub async fn search_index_endpoint(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SearchIndexEndpointRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SearchIndexEndpointResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/SearchIndexEndpoint",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "SearchIndexEndpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates an IndexEndpoint.
+        pub async fn create_index_endpoint(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateIndexEndpointRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/CreateIndexEndpoint",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "CreateIndexEndpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets an IndexEndpoint.
+        pub async fn get_index_endpoint(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetIndexEndpointRequest>,
+        ) -> std::result::Result<tonic::Response<super::IndexEndpoint>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/GetIndexEndpoint",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "GetIndexEndpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all IndexEndpoints in a project.
+        pub async fn list_index_endpoints(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListIndexEndpointsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListIndexEndpointsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/ListIndexEndpoints",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "ListIndexEndpoints",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an IndexEndpoint.
+        pub async fn update_index_endpoint(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateIndexEndpointRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/UpdateIndexEndpoint",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "UpdateIndexEndpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes an IndexEndpoint.
+        pub async fn delete_index_endpoint(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteIndexEndpointRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/DeleteIndexEndpoint",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "DeleteIndexEndpoint",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deploys an Index to IndexEndpoint.
+        pub async fn deploy_index(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeployIndexRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/DeployIndex",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.visionai.v1.Warehouse", "DeployIndex"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Undeploys an Index from IndexEndpoint.
+        pub async fn undeploy_index(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UndeployIndexRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/UndeployIndex",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "UndeployIndex",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a collection.
+        pub async fn create_collection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateCollectionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/CreateCollection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "CreateCollection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a collection.
+        pub async fn delete_collection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteCollectionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/DeleteCollection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "DeleteCollection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a collection.
+        pub async fn get_collection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetCollectionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Collection>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/GetCollection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "GetCollection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a collection.
+        pub async fn update_collection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateCollectionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Collection>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/UpdateCollection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "UpdateCollection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists collections inside a corpus.
+        pub async fn list_collections(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListCollectionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListCollectionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/ListCollections",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "ListCollections",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Adds an item into a Collection.
+        pub async fn add_collection_item(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AddCollectionItemRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AddCollectionItemResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/AddCollectionItem",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "AddCollectionItem",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Removes an item from a collection.
+        pub async fn remove_collection_item(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RemoveCollectionItemRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RemoveCollectionItemResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/RemoveCollectionItem",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "RemoveCollectionItem",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// View items inside a collection.
+        pub async fn view_collection_items(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ViewCollectionItemsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ViewCollectionItemsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.visionai.v1.Warehouse/ViewCollectionItems",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.visionai.v1.Warehouse",
+                        "ViewCollectionItems",
+                    ),
                 );
             self.inner.unary(req, path, codec).await
         }

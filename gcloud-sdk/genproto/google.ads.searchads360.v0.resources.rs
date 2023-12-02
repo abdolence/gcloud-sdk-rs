@@ -527,6 +527,9 @@ pub struct Asset {
     /// Output only. The ID of the asset.
     #[prost(int64, optional, tag = "11")]
     pub id: ::core::option::Option<i64>,
+    /// Optional name of the asset.
+    #[prost(string, optional, tag = "12")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
     /// Output only. Type of the asset.
     #[prost(enumeration = "super::enums::asset_type_enum::AssetType", tag = "4")]
     pub r#type: i32,
@@ -555,7 +558,7 @@ pub struct Asset {
     )]
     pub engine_status: ::core::option::Option<i32>,
     /// The specific type of the asset.
-    #[prost(oneof = "asset::AssetData", tags = "48, 45, 46, 25, 47, 49")]
+    #[prost(oneof = "asset::AssetData", tags = "5, 7, 8, 48, 45, 46, 25, 47, 29, 49")]
     pub asset_data: ::core::option::Option<asset::AssetData>,
 }
 /// Nested message and enum types in `Asset`.
@@ -564,6 +567,15 @@ pub mod asset {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AssetData {
+        /// Immutable. A YouTube video asset.
+        #[prost(message, tag = "5")]
+        YoutubeVideoAsset(super::super::common::YoutubeVideoAsset),
+        /// Output only. An image asset.
+        #[prost(message, tag = "7")]
+        ImageAsset(super::super::common::ImageAsset),
+        /// Output only. A text asset.
+        #[prost(message, tag = "8")]
+        TextAsset(super::super::common::TextAsset),
         /// Output only. A unified callout asset.
         #[prost(message, tag = "48")]
         CalloutAsset(super::super::common::UnifiedCalloutAsset),
@@ -579,10 +591,330 @@ pub mod asset {
         /// Output only. A unified call asset.
         #[prost(message, tag = "47")]
         CallAsset(super::super::common::UnifiedCallAsset),
+        /// Immutable. A call to action asset.
+        #[prost(message, tag = "29")]
+        CallToActionAsset(super::super::common::CallToActionAsset),
         /// Output only. A unified location asset.
         #[prost(message, tag = "49")]
         LocationAsset(super::super::common::UnifiedLocationAsset),
     }
+}
+/// An asset group.
+/// AssetGroupAsset is used to link an asset to the asset group.
+/// AssetGroupSignal is used to associate a signal to an asset group.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetGroup {
+    /// Immutable. The resource name of the asset group.
+    /// Asset group resource names have the form:
+    ///
+    /// `customers/{customer_id}/assetGroups/{asset_group_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. The ID of the asset group.
+    #[prost(int64, tag = "9")]
+    pub id: i64,
+    /// Immutable. The campaign with which this asset group is associated.
+    /// The asset which is linked to the asset group.
+    #[prost(string, tag = "2")]
+    pub campaign: ::prost::alloc::string::String,
+    /// Required. Name of the asset group. Required. It must have a minimum length
+    /// of 1 and maximum length of 128. It must be unique under a campaign.
+    #[prost(string, tag = "3")]
+    pub name: ::prost::alloc::string::String,
+    /// A list of final URLs after all cross domain redirects. In performance max,
+    /// by default, the urls are eligible for expansion unless opted out.
+    #[prost(string, repeated, tag = "4")]
+    pub final_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// A list of final mobile URLs after all cross domain redirects. In
+    /// performance max, by default, the urls are eligible for expansion
+    /// unless opted out.
+    #[prost(string, repeated, tag = "5")]
+    pub final_mobile_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The status of the asset group.
+    #[prost(
+        enumeration = "super::enums::asset_group_status_enum::AssetGroupStatus",
+        tag = "6"
+    )]
+    pub status: i32,
+    /// First part of text that may appear appended to the url displayed in
+    /// the ad.
+    #[prost(string, tag = "7")]
+    pub path1: ::prost::alloc::string::String,
+    /// Second part of text that may appear appended to the url displayed in
+    /// the ad. This field can only be set when path1 is set.
+    #[prost(string, tag = "8")]
+    pub path2: ::prost::alloc::string::String,
+    /// Output only. Overall ad strength of this asset group.
+    #[prost(enumeration = "super::enums::ad_strength_enum::AdStrength", tag = "10")]
+    pub ad_strength: i32,
+}
+/// AssetGroupAsset is the link between an asset and an asset group.
+/// Adding an AssetGroupAsset links an asset with an asset group.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetGroupAsset {
+    /// Immutable. The resource name of the asset group asset.
+    /// Asset group asset resource name have the form:
+    ///
+    /// `customers/{customer_id}/assetGroupAssets/{asset_group_id}~{asset_id}~{field_type}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Immutable. The asset group which this asset group asset is linking.
+    #[prost(string, tag = "2")]
+    pub asset_group: ::prost::alloc::string::String,
+    /// Immutable. The asset which this asset group asset is linking.
+    #[prost(string, tag = "3")]
+    pub asset: ::prost::alloc::string::String,
+    /// The description of the placement of the asset within the asset group. For
+    /// example: HEADLINE, YOUTUBE_VIDEO etc
+    #[prost(
+        enumeration = "super::enums::asset_field_type_enum::AssetFieldType",
+        tag = "4"
+    )]
+    pub field_type: i32,
+    /// The status of the link between an asset and asset group.
+    #[prost(
+        enumeration = "super::enums::asset_link_status_enum::AssetLinkStatus",
+        tag = "5"
+    )]
+    pub status: i32,
+}
+/// AssetGroupListingGroupFilter represents a listing group filter tree node in
+/// an asset group.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetGroupListingGroupFilter {
+    /// Immutable. The resource name of the asset group listing group filter.
+    /// Asset group listing group filter resource name have the form:
+    ///
+    /// `customers/{customer_id}/assetGroupListingGroupFilters/{asset_group_id}~{listing_group_filter_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Immutable. The asset group which this asset group listing group filter is
+    /// part of.
+    #[prost(string, tag = "2")]
+    pub asset_group: ::prost::alloc::string::String,
+    /// Output only. The ID of the ListingGroupFilter.
+    #[prost(int64, tag = "3")]
+    pub id: i64,
+    /// Immutable. Type of a listing group filter node.
+    #[prost(
+        enumeration = "super::enums::listing_group_filter_type_enum::ListingGroupFilterType",
+        tag = "4"
+    )]
+    pub r#type: i32,
+    /// Immutable. The vertical the current node tree represents. All nodes in the
+    /// same tree must belong to the same vertical.
+    #[prost(
+        enumeration = "super::enums::listing_group_filter_vertical_enum::ListingGroupFilterVertical",
+        tag = "5"
+    )]
+    pub vertical: i32,
+    /// Dimension value with which this listing group is refining its parent.
+    /// Undefined for the root group.
+    #[prost(message, optional, tag = "6")]
+    pub case_value: ::core::option::Option<ListingGroupFilterDimension>,
+    /// Immutable. Resource name of the parent listing group subdivision. Null for
+    /// the root listing group filter node.
+    #[prost(string, tag = "7")]
+    pub parent_listing_group_filter: ::prost::alloc::string::String,
+    /// Output only. The path of dimensions defining this listing group filter.
+    #[prost(message, optional, tag = "8")]
+    pub path: ::core::option::Option<ListingGroupFilterDimensionPath>,
+}
+/// The path defining of dimensions defining a listing group filter.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListingGroupFilterDimensionPath {
+    /// Output only. The complete path of dimensions through the listing group
+    /// filter hierarchy (excluding the root node) to this listing group filter.
+    #[prost(message, repeated, tag = "1")]
+    pub dimensions: ::prost::alloc::vec::Vec<ListingGroupFilterDimension>,
+}
+/// Listing dimensions for the asset group listing group filter.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListingGroupFilterDimension {
+    /// Dimension of one of the types below is always present.
+    #[prost(
+        oneof = "listing_group_filter_dimension::Dimension",
+        tags = "1, 2, 3, 4, 5, 6, 7"
+    )]
+    pub dimension: ::core::option::Option<listing_group_filter_dimension::Dimension>,
+}
+/// Nested message and enum types in `ListingGroupFilterDimension`.
+pub mod listing_group_filter_dimension {
+    /// One element of a bidding category at a certain level. Top-level categories
+    /// are at level 1, their children at level 2, and so on. We currently support
+    /// up to 5 levels. The user must specify a dimension type that indicates the
+    /// level of the category. All cases of the same subdivision must have the same
+    /// dimension type (category level).
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ProductBiddingCategory {
+        /// ID of the product bidding category.
+        ///
+        /// This ID is equivalent to the google_product_category ID as described in
+        /// this article: <https://support.google.com/merchants/answer/6324436>
+        #[prost(int64, optional, tag = "1")]
+        pub id: ::core::option::Option<i64>,
+        /// Indicates the level of the category in the taxonomy.
+        #[prost(
+            enumeration = "super::super::enums::listing_group_filter_bidding_category_level_enum::ListingGroupFilterBiddingCategoryLevel",
+            tag = "2"
+        )]
+        pub level: i32,
+    }
+    /// Brand of the product.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ProductBrand {
+        /// String value of the product brand.
+        #[prost(string, optional, tag = "1")]
+        pub value: ::core::option::Option<::prost::alloc::string::String>,
+    }
+    /// Locality of a product offer.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ProductChannel {
+        /// Value of the locality.
+        #[prost(
+            enumeration = "super::super::enums::listing_group_filter_product_channel_enum::ListingGroupFilterProductChannel",
+            tag = "1"
+        )]
+        pub channel: i32,
+    }
+    /// Condition of a product offer.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ProductCondition {
+        /// Value of the condition.
+        #[prost(
+            enumeration = "super::super::enums::listing_group_filter_product_condition_enum::ListingGroupFilterProductCondition",
+            tag = "1"
+        )]
+        pub condition: i32,
+    }
+    /// Custom attribute of a product offer.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ProductCustomAttribute {
+        /// String value of the product custom attribute.
+        #[prost(string, optional, tag = "1")]
+        pub value: ::core::option::Option<::prost::alloc::string::String>,
+        /// Indicates the index of the custom attribute.
+        #[prost(
+            enumeration = "super::super::enums::listing_group_filter_custom_attribute_index_enum::ListingGroupFilterCustomAttributeIndex",
+            tag = "2"
+        )]
+        pub index: i32,
+    }
+    /// Item id of a product offer.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ProductItemId {
+        /// Value of the id.
+        #[prost(string, optional, tag = "1")]
+        pub value: ::core::option::Option<::prost::alloc::string::String>,
+    }
+    /// Type of a product offer.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ProductType {
+        /// Value of the type.
+        #[prost(string, optional, tag = "1")]
+        pub value: ::core::option::Option<::prost::alloc::string::String>,
+        /// Level of the type.
+        #[prost(
+            enumeration = "super::super::enums::listing_group_filter_product_type_level_enum::ListingGroupFilterProductTypeLevel",
+            tag = "2"
+        )]
+        pub level: i32,
+    }
+    /// Dimension of one of the types below is always present.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Dimension {
+        /// Bidding category of a product offer.
+        #[prost(message, tag = "1")]
+        ProductBiddingCategory(ProductBiddingCategory),
+        /// Brand of a product offer.
+        #[prost(message, tag = "2")]
+        ProductBrand(ProductBrand),
+        /// Locality of a product offer.
+        #[prost(message, tag = "3")]
+        ProductChannel(ProductChannel),
+        /// Condition of a product offer.
+        #[prost(message, tag = "4")]
+        ProductCondition(ProductCondition),
+        /// Custom attribute of a product offer.
+        #[prost(message, tag = "5")]
+        ProductCustomAttribute(ProductCustomAttribute),
+        /// Item id of a product offer.
+        #[prost(message, tag = "6")]
+        ProductItemId(ProductItemId),
+        /// Type of a product offer.
+        #[prost(message, tag = "7")]
+        ProductType(ProductType),
+    }
+}
+/// AssetGroupSignal represents a signal in an asset group. The existence of a
+/// signal tells the performance max campaign who's most likely to convert.
+/// Performance Max uses the signal to look for new people with similar or
+/// stronger intent to find conversions across Search, Display, Video, and more.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetGroupSignal {
+    /// Immutable. The resource name of the asset group signal.
+    /// Asset group signal resource name have the form:
+    ///
+    /// `customers/{customer_id}/assetGroupSignals/{asset_group_id}~{signal_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Immutable. The asset group which this asset group signal belongs to.
+    #[prost(string, tag = "2")]
+    pub asset_group: ::prost::alloc::string::String,
+    /// The signal of the asset group.
+    #[prost(oneof = "asset_group_signal::Signal", tags = "4")]
+    pub signal: ::core::option::Option<asset_group_signal::Signal>,
+}
+/// Nested message and enum types in `AssetGroupSignal`.
+pub mod asset_group_signal {
+    /// The signal of the asset group.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Signal {
+        /// Immutable. The audience signal to be used by the performance max
+        /// campaign.
+        #[prost(message, tag = "4")]
+        Audience(super::super::common::AudienceInfo),
+    }
+}
+/// A view on the usage of ad group ad asset combination.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetGroupTopCombinationView {
+    /// Output only. The resource name of the asset group top combination view.
+    /// AssetGroup Top Combination view resource names have the form:
+    /// `"customers/{customer_id}/assetGroupTopCombinationViews/{asset_group_id}~{asset_combination_category}"
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. The top combinations of assets that served together.
+    #[prost(message, repeated, tag = "2")]
+    pub asset_group_top_combinations: ::prost::alloc::vec::Vec<
+        AssetGroupAssetCombinationData,
+    >,
+}
+/// Asset group asset combination data
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetGroupAssetCombinationData {
+    /// Output only. Served assets.
+    #[prost(message, repeated, tag = "1")]
+    pub asset_combination_served_assets: ::prost::alloc::vec::Vec<
+        super::common::AssetUsage,
+    >,
 }
 /// An asset set representing a collection of assets.
 /// Use AssetSetAsset to link an asset to the asset set.
@@ -622,6 +954,31 @@ pub struct AssetSetAsset {
         tag = "4"
     )]
     pub status: i32,
+}
+/// Audience is an effective targeting option that lets you
+/// intersect different segment attributes, such as detailed demographics and
+/// affinities, to create audiences that represent sections of your target
+/// segments.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Audience {
+    /// Immutable. The resource name of the audience.
+    /// Audience names have the form:
+    ///
+    /// `customers/{customer_id}/audiences/{audience_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. ID of the audience.
+    #[prost(int64, tag = "2")]
+    pub id: i64,
+    /// Required. Name of the audience. It should be unique across all
+    /// audiences. It must have a minimum length of 1 and
+    /// maximum length of 255.
+    #[prost(string, tag = "4")]
+    pub name: ::prost::alloc::string::String,
+    /// Description of this audience.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
 }
 /// A bidding strategy.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1326,6 +1683,139 @@ pub struct CampaignLabel {
     #[prost(string, optional, tag = "5")]
     pub label: ::core::option::Option<::prost::alloc::string::String>,
 }
+/// Cart data sales view.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CartDataSalesView {
+    /// Output only. The resource name of the Cart data sales view.
+    /// Cart data sales view resource names have the form:
+    /// `customers/{customer_id}/cartDataSalesView`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+}
+/// A conversion.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Conversion {
+    /// Output only. The resource name of the conversion.
+    /// Conversion resource names have the form:
+    ///
+    /// `customers/{customer_id}/conversions/{ad_group_id}~{criterion_id}~{ds_conversion_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. The ID of the conversion
+    #[prost(int64, optional, tag = "2")]
+    pub id: ::core::option::Option<i64>,
+    /// Output only. Search Ads 360 criterion ID. A value of 0 indicates that the
+    /// criterion is unattributed.
+    #[prost(int64, optional, tag = "3")]
+    pub criterion_id: ::core::option::Option<i64>,
+    /// Output only. The SearchAds360 inventory account ID containing the product
+    /// that was clicked on. SearchAds360 generates this ID when you link an
+    /// inventory account in SearchAds360.
+    #[prost(int64, optional, tag = "4")]
+    pub merchant_id: ::core::option::Option<i64>,
+    /// Output only. Ad ID. A value of 0 indicates that the ad is unattributed.
+    #[prost(int64, optional, tag = "5")]
+    pub ad_id: ::core::option::Option<i64>,
+    /// Output only. A unique string, for the visit that the conversion is
+    /// attributed to, that is passed to the landing page as the click id URL
+    /// parameter.
+    #[prost(string, optional, tag = "6")]
+    pub click_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The SearchAds360 visit ID that the conversion is attributed
+    /// to.
+    #[prost(int64, optional, tag = "7")]
+    pub visit_id: ::core::option::Option<i64>,
+    /// Output only. For offline conversions, this is an ID provided by
+    /// advertisers. If an advertiser doesn't specify such an ID, Search Ads 360
+    /// generates one. For online conversions, this is equal to the id column or
+    /// the floodlight_order_id column depending on the advertiser's Floodlight
+    /// instructions.
+    #[prost(string, optional, tag = "8")]
+    pub advertiser_conversion_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The ID of the product clicked on.
+    #[prost(string, optional, tag = "9")]
+    pub product_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The sales channel of the product that was clicked on: Online
+    /// or Local.
+    #[prost(
+        enumeration = "super::enums::product_channel_enum::ProductChannel",
+        optional,
+        tag = "10"
+    )]
+    pub product_channel: ::core::option::Option<i32>,
+    /// Output only. The language (ISO-639-1) that has been set for the Merchant
+    /// Center feed containing data about the product.
+    #[prost(string, optional, tag = "11")]
+    pub product_language_code: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The store in the Local Inventory Ad that was clicked on. This
+    /// should match the store IDs used in your local products feed.
+    #[prost(string, optional, tag = "12")]
+    pub product_store_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The country (ISO-3166-format) registered for the inventory
+    /// feed that contains the product clicked on.
+    #[prost(string, optional, tag = "13")]
+    pub product_country_code: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. What the conversion is attributed to: Visit or Keyword+Ad.
+    #[prost(
+        enumeration = "super::enums::attribution_type_enum::AttributionType",
+        optional,
+        tag = "14"
+    )]
+    pub attribution_type: ::core::option::Option<i32>,
+    /// Output only. The timestamp of the conversion event.
+    #[prost(string, optional, tag = "15")]
+    pub conversion_date_time: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The timestamp of the last time the conversion was modified.
+    #[prost(string, optional, tag = "16")]
+    pub conversion_last_modified_date_time: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The timestamp of the visit that the conversion is attributed
+    /// to.
+    #[prost(string, optional, tag = "17")]
+    pub conversion_visit_date_time: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The quantity of items recorded by the conversion, as
+    /// determined by the qty url parameter. The advertiser is responsible for
+    /// dynamically populating the parameter (such as number of items sold in the
+    /// conversion), otherwise it defaults to 1.
+    #[prost(int64, optional, tag = "18")]
+    pub conversion_quantity: ::core::option::Option<i64>,
+    /// Output only. The adjusted revenue in micros for the conversion event. This
+    /// will always be in the currency of the serving account.
+    #[prost(int64, optional, tag = "19")]
+    pub conversion_revenue_micros: ::core::option::Option<i64>,
+    /// Output only. The original, unchanged revenue associated with the Floodlight
+    /// event (in the currency of the current report), before Floodlight currency
+    /// instruction modifications.
+    #[prost(int64, optional, tag = "20")]
+    pub floodlight_original_revenue: ::core::option::Option<i64>,
+    /// Output only. The Floodlight order ID provided by the advertiser for the
+    /// conversion.
+    #[prost(string, optional, tag = "21")]
+    pub floodlight_order_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The status of the conversion, either ENABLED or REMOVED..
+    #[prost(
+        enumeration = "super::enums::conversion_status_enum::ConversionStatus",
+        optional,
+        tag = "22"
+    )]
+    pub status: ::core::option::Option<i32>,
+    /// Output only. ID of the asset which was interacted with during the
+    /// conversion event.
+    #[prost(int64, optional, tag = "23")]
+    pub asset_id: ::core::option::Option<i64>,
+    /// Output only. Asset field type of the conversion event.
+    #[prost(
+        enumeration = "super::enums::asset_field_type_enum::AssetFieldType",
+        optional,
+        tag = "24"
+    )]
+    pub asset_field_type: ::core::option::Option<i32>,
+}
 /// A conversion action.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1887,6 +2377,31 @@ pub struct Label {
     #[prost(message, optional, tag = "5")]
     pub text_label: ::core::option::Option<super::common::TextLabel>,
 }
+/// A language.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LanguageConstant {
+    /// Output only. The resource name of the language constant.
+    /// Language constant resource names have the form:
+    ///
+    /// `languageConstants/{criterion_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. The ID of the language constant.
+    #[prost(int64, optional, tag = "6")]
+    pub id: ::core::option::Option<i64>,
+    /// Output only. The language code, for example, "en_US", "en_AU", "es", "fr",
+    /// etc.
+    #[prost(string, optional, tag = "7")]
+    pub code: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The full name of the language in English, for example,
+    /// "English (US)", "Spanish", etc.
+    #[prost(string, optional, tag = "8")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. Whether the language is targetable.
+    #[prost(bool, optional, tag = "9")]
+    pub targetable: ::core::option::Option<bool>,
+}
 /// A location view summarizes the performance of campaigns by
 /// Location criteria.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1898,6 +2413,51 @@ pub struct LocationView {
     /// `customers/{customer_id}/locationViews/{campaign_id}~{criterion_id}`
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
+}
+/// A Product Bidding Category.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProductBiddingCategoryConstant {
+    /// Output only. The resource name of the product bidding category.
+    /// Product bidding category resource names have the form:
+    ///
+    /// `productBiddingCategoryConstants/{country_code}~{level}~{id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. ID of the product bidding category.
+    ///
+    /// This ID is equivalent to the google_product_category ID as described in
+    /// this article: <https://support.google.com/merchants/answer/6324436.>
+    #[prost(int64, optional, tag = "10")]
+    pub id: ::core::option::Option<i64>,
+    /// Output only. Two-letter upper-case country code of the product bidding
+    /// category.
+    #[prost(string, optional, tag = "11")]
+    pub country_code: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. Resource name of the parent product bidding category.
+    #[prost(string, optional, tag = "12")]
+    pub product_bidding_category_constant_parent: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. Level of the product bidding category.
+    #[prost(
+        enumeration = "super::enums::product_bidding_category_level_enum::ProductBiddingCategoryLevel",
+        tag = "5"
+    )]
+    pub level: i32,
+    /// Output only. Status of the product bidding category.
+    #[prost(
+        enumeration = "super::enums::product_bidding_category_status_enum::ProductBiddingCategoryStatus",
+        tag = "6"
+    )]
+    pub status: i32,
+    /// Output only. Language code of the product bidding category.
+    #[prost(string, optional, tag = "13")]
+    pub language_code: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. Display value of the product bidding category localized
+    /// according to language_code.
+    #[prost(string, optional, tag = "14")]
+    pub localized_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A product group view.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1982,6 +2542,21 @@ pub struct SearchAds360Field {
     #[prost(bool, optional, tag = "31")]
     pub is_repeated: ::core::option::Option<bool>,
 }
+/// Shopping performance view.
+/// Provides Shopping campaign statistics aggregated at several product dimension
+/// levels. Product dimension values from Merchant Center such as brand,
+/// category, custom attributes, product condition and product type will reflect
+/// the state of each dimension as of the date and time when the corresponding
+/// event was recorded.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ShoppingPerformanceView {
+    /// Output only. The resource name of the Shopping performance view.
+    /// Shopping performance view resource names have the form:
+    /// `customers/{customer_id}/shoppingPerformanceView`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+}
 /// A user list. This is a list of users a customer may target.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2004,6 +2579,74 @@ pub struct UserList {
     /// This field is read-only.
     #[prost(enumeration = "super::enums::user_list_type_enum::UserListType", tag = "13")]
     pub r#type: i32,
+}
+/// A visit.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Visit {
+    /// Output only. The resource name of the visit.
+    /// Visit resource names have the form:
+    ///
+    /// `customers/{customer_id}/visits/{ad_group_id}~{criterion_id}~{ds_visit_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. The ID of the visit.
+    #[prost(int64, optional, tag = "2")]
+    pub id: ::core::option::Option<i64>,
+    /// Output only. Search Ads 360 keyword ID. A value of 0 indicates that the
+    /// keyword is unattributed.
+    #[prost(int64, optional, tag = "3")]
+    pub criterion_id: ::core::option::Option<i64>,
+    /// Output only. The Search Ads 360 inventory account ID containing the product
+    /// that was clicked on. Search Ads 360 generates this ID when you link an
+    /// inventory account in Search Ads 360.
+    #[prost(int64, optional, tag = "4")]
+    pub merchant_id: ::core::option::Option<i64>,
+    /// Output only. Ad ID. A value of 0 indicates that the ad is unattributed.
+    #[prost(int64, optional, tag = "5")]
+    pub ad_id: ::core::option::Option<i64>,
+    /// Output only. A unique string for each visit that is passed to the landing
+    /// page as the click id URL parameter.
+    #[prost(string, optional, tag = "6")]
+    pub click_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The timestamp of the visit event. The timestamp is in the
+    /// customer's time zone and in "yyyy-MM-dd HH:mm:ss" format.
+    #[prost(string, optional, tag = "7")]
+    pub visit_date_time: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The ID of the product clicked on.
+    #[prost(string, optional, tag = "8")]
+    pub product_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The sales channel of the product that was clicked on: Online
+    /// or Local.
+    #[prost(
+        enumeration = "super::enums::product_channel_enum::ProductChannel",
+        optional,
+        tag = "9"
+    )]
+    pub product_channel: ::core::option::Option<i32>,
+    /// Output only. The language (ISO-639-1) that has been set for the Merchant
+    /// Center feed containing data about the product.
+    #[prost(string, optional, tag = "10")]
+    pub product_language_code: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The store in the Local Inventory Ad that was clicked on. This
+    /// should match the store IDs used in your local products feed.
+    #[prost(string, optional, tag = "11")]
+    pub product_store_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The country (ISO-3166 format) registered for the inventory
+    /// feed that contains the product clicked on.
+    #[prost(string, optional, tag = "12")]
+    pub product_country_code: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. ID of the asset which was interacted with during the visit
+    /// event.
+    #[prost(int64, optional, tag = "13")]
+    pub asset_id: ::core::option::Option<i64>,
+    /// Output only. Asset field type of the visit event.
+    #[prost(
+        enumeration = "super::enums::asset_field_type_enum::AssetFieldType",
+        optional,
+        tag = "14"
+    )]
+    pub asset_field_type: ::core::option::Option<i32>,
 }
 /// A webpage view.
 #[allow(clippy::derive_partial_eq_without_eq)]

@@ -1,5 +1,5 @@
-/// A contiguous set of days: startDate, startDate + 1, ..., endDate. Requests
-/// are allowed up to 4 date ranges.
+/// A contiguous set of days: `startDate`, `startDate + 1`, ..., `endDate`.
+/// Requests are allowed up to 4 date ranges.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateRange {
@@ -30,7 +30,16 @@ pub struct DateRange {
 pub struct Dimension {
     /// The name of the dimension. See the [API
     /// Dimensions](<https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#dimensions>)
-    /// for the list of dimension names.
+    /// for the list of dimension names supported by core reporting methods such
+    /// as `runReport` and `batchRunReports`. See
+    /// [Realtime
+    /// Dimensions](<https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-api-schema#dimensions>)
+    /// for the list of dimension names supported by the `runRealtimeReport`
+    /// method. See
+    /// [Funnel
+    /// Dimensions](<https://developers.google.com/analytics/devguides/reporting/data/v1/exploration-api-schema#dimensions>)
+    /// for the list of dimension names supported by the `runFunnelReport`
+    /// method.
     ///
     /// If `dimensionExpression` is specified, `name` can be any string that you
     /// would like within the allowed character set. For example if a
@@ -1382,7 +1391,7 @@ pub mod funnel_parameter_filter {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunnelResponseMetadata {
     /// If funnel report results are
-    /// [sampled](<https://support.google.com/analytics/answer/2637192>), this
+    /// [sampled](<https://support.google.com/analytics/answer/13331292>), this
     /// describes what percentage of events were used in this funnel report. One
     /// `samplingMetadatas` is populated for each date range. Each
     /// `samplingMetadatas` corresponds to a date range in order that date ranges
@@ -1393,7 +1402,7 @@ pub struct FunnelResponseMetadata {
     pub sampling_metadatas: ::prost::alloc::vec::Vec<SamplingMetadata>,
 }
 /// If funnel report results are
-/// [sampled](<https://support.google.com/analytics/answer/2637192>), this
+/// [sampled](<https://support.google.com/analytics/answer/13331292>), this
 /// metadata describes what percentage of events were used in this funnel
 /// report for a date range. Sampling is the practice of analyzing a subset of
 /// all data in order to uncover the meaningful information in the larger data
@@ -1730,12 +1739,121 @@ impl MetricType {
         }
     }
 }
+/// A request to create a new recurring audience list.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateRecurringAudienceListRequest {
+    /// Required. The parent resource where this recurring audience list will be
+    /// created. Format: `properties/{property}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The recurring audience list to create.
+    #[prost(message, optional, tag = "2")]
+    pub recurring_audience_list: ::core::option::Option<RecurringAudienceList>,
+}
+/// A recurring audience list produces new audience lists each day. Audience
+/// lists are users in an audience at the time of the list's creation. A
+/// recurring audience list ensures that you have audience list based on the most
+/// recent data available for use each day.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RecurringAudienceList {
+    /// Output only. Identifier. The recurring audience list resource name assigned
+    /// during creation. This resource name identifies this
+    /// `RecurringAudienceList`.
+    ///
+    /// Format:
+    /// `properties/{property}/recurringAudienceLists/{recurring_audience_list}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The audience resource name. This resource name identifies the
+    /// audience being listed and is shared between the Analytics Data & Admin
+    /// APIs.
+    ///
+    /// Format: `properties/{property}/audiences/{audience}`
+    #[prost(string, tag = "2")]
+    pub audience: ::prost::alloc::string::String,
+    /// Output only. The descriptive display name for this audience. For example,
+    /// "Purchasers".
+    #[prost(string, tag = "3")]
+    pub audience_display_name: ::prost::alloc::string::String,
+    /// Required. The dimensions requested and displayed in the audience list
+    /// response.
+    #[prost(message, repeated, tag = "4")]
+    pub dimensions: ::prost::alloc::vec::Vec<AudienceDimension>,
+    /// Optional. The number of remaining days that a recurring audience export
+    /// will produce an audience list instance. This counter decreases by one each
+    /// day, and when it reaches zero, no new audience lists will be created.
+    ///
+    /// Recurring audience list request for Analytics 360 properties default to 180
+    /// days and have a maximum of 365 days. Requests for standard Analytics
+    /// properties default to 14 days and have a maximum of 30 days.
+    ///
+    /// The minimum value allowed during creation is 1. Requests above their
+    /// respective maximum will be coerced to their maximum.
+    #[prost(int32, optional, tag = "5")]
+    pub active_days_remaining: ::core::option::Option<i32>,
+    /// Output only. Audience list resource names for audience list instances
+    /// created for this recurring audience list. One audience list is created for
+    /// each day, and the audience list will be listed here.
+    ///
+    /// This list is ordered with the most recently created audience list first.
+    #[prost(string, repeated, tag = "6")]
+    pub audience_lists: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A request to retrieve configuration metadata about a specific recurring
+/// audience list.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetRecurringAudienceListRequest {
+    /// Required. The recurring audience list resource name.
+    /// Format:
+    /// `properties/{property}/recurringAudienceLists/{recurring_audience_list}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A request to list all recurring audience lists for a property.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListRecurringAudienceListsRequest {
+    /// Required. All recurring audience lists for this property will be listed in
+    /// the response. Format: `properties/{property}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of recurring audience lists to return. The
+    /// service may return fewer than this value. If unspecified, at most 200
+    /// recurring audience lists will be returned. The maximum value is 1000
+    /// (higher values will be coerced to the maximum).
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous
+    /// `ListRecurringAudienceLists` call. Provide this to retrieve the subsequent
+    /// page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListRecurringAudienceLists` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// A list of all recurring audience lists for a property.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListRecurringAudienceListsResponse {
+    /// Each recurring audience list for a property.
+    #[prost(message, repeated, tag = "1")]
+    pub recurring_audience_lists: ::prost::alloc::vec::Vec<RecurringAudienceList>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, optional, tag = "2")]
+    pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
+}
 /// A request to retrieve configuration metadata about a specific audience list.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAudienceListRequest {
     /// Required. The audience list resource name.
-    /// Format: `properties/{propertyId}/audienceLists/{audienceListId}`
+    /// Format: `properties/{property}/audienceLists/{audience_list}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1744,17 +1862,17 @@ pub struct GetAudienceListRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAudienceListsRequest {
     /// Required. All audience lists for this property will be listed in the
-    /// response. Format: `properties/{propertyId}`
+    /// response. Format: `properties/{property}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of audience lists to return. The service may return
-    /// fewer than this value. If unspecified, at most 200 audience lists will be
-    /// returned. The maximum value is 1000 (higher values will be coerced to the
-    /// maximum).
+    /// Optional. The maximum number of audience lists to return. The service may
+    /// return fewer than this value. If unspecified, at most 200 audience lists
+    /// will be returned. The maximum value is 1000 (higher values will be coerced
+    /// to the maximum).
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// A page token, received from a previous `ListAudienceLists` call. Provide
-    /// this to retrieve the subsequent page.
+    /// Optional. A page token, received from a previous `ListAudienceLists` call.
+    /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListAudienceLists` must
     /// match the call that provided the page token.
@@ -1778,7 +1896,7 @@ pub struct ListAudienceListsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAudienceListRequest {
     /// Required. The parent resource where this audience list will be created.
-    /// Format: `properties/{propertyId}`
+    /// Format: `properties/{property}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The audience list to create.
@@ -1791,24 +1909,24 @@ pub struct CreateAudienceListRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceList {
-    /// Output only. The audience list resource name assigned during creation. This
-    /// resource name identifies this `AudienceList`.
+    /// Output only. Identifier. The audience list resource name assigned during
+    /// creation. This resource name identifies this `AudienceList`.
     ///
-    /// Format: `properties/{propertyId}/audienceLists/{audienceListId}`
+    /// Format: `properties/{property}/audienceLists/{audience_list}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The audience resource name. This resource name identifies the
     /// audience being listed and is shared between the Analytics Data & Admin
     /// APIs.
     ///
-    /// Format: `properties/{propertyId}/audiences/{audienceId}`
+    /// Format: `properties/{property}/audiences/{audience}`
     #[prost(string, tag = "2")]
     pub audience: ::prost::alloc::string::String,
     /// Output only. The descriptive display name for this audience. For example,
     /// "Purchasers".
     #[prost(string, tag = "3")]
     pub audience_display_name: ::prost::alloc::string::String,
-    /// Required. The dimensions requested and displayed in the report response.
+    /// Required. The dimensions requested and displayed in the query response.
     #[prost(message, repeated, tag = "4")]
     pub dimensions: ::prost::alloc::vec::Vec<AudienceDimension>,
     /// Output only. The current state for this AudienceList.
@@ -1818,6 +1936,30 @@ pub struct AudienceList {
     /// AudienceList began the `CREATING` state.
     #[prost(message, optional, tag = "6")]
     pub begin_creating_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The total quota tokens charged during creation of the
+    /// AudienceList. Because this token count is based on activity from the
+    /// `CREATING` state, this tokens charged will be fixed once an AudienceList
+    /// enters the `ACTIVE` or `FAILED` states.
+    #[prost(int32, tag = "7")]
+    pub creation_quota_tokens_charged: i32,
+    /// Output only. The total number of rows in the AudienceList result.
+    #[prost(int32, optional, tag = "8")]
+    pub row_count: ::core::option::Option<i32>,
+    /// Output only. Error message is populated when an audience list fails during
+    /// creation. A common reason for such a failure is quota exhaustion.
+    #[prost(string, optional, tag = "9")]
+    pub error_message: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The percentage completed for this audience export ranging
+    /// between 0 to 100.
+    #[prost(double, optional, tag = "11")]
+    pub percentage_completed: ::core::option::Option<f64>,
+    /// Output only. The recurring audience list that created this audience list.
+    /// Recurring audience lists create audience lists daily.
+    ///
+    /// If audience lists are created directly, they will have no associated
+    /// recurring audience list, and this field will be blank.
+    #[prost(string, optional, tag = "12")]
+    pub recurring_audience_list: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `AudienceList`.
 pub mod audience_list {
@@ -1881,11 +2023,12 @@ pub struct AudienceListMetadata {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryAudienceListRequest {
-    /// The name of the audience list to retrieve users from.
-    /// Format: `properties/{propertyId}/audienceLists/{audienceListId}`
+    /// Required. The name of the audience list to retrieve users from.
+    /// Format: `properties/{property}/audienceLists/{audience_list}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The row count of the start row. The first row is counted as row 0.
+    /// Optional. The row count of the start row. The first row is counted as row
+    /// 0.
     ///
     /// When paging, the first request does not specify offset; or equivalently,
     /// sets offset to 0; the first request returns the first `limit` of rows. The
@@ -1896,9 +2039,9 @@ pub struct QueryAudienceListRequest {
     /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
     #[prost(int64, tag = "2")]
     pub offset: i64,
-    /// The number of rows to return. If unspecified, 10,000 rows are returned. The
-    /// API returns a maximum of 250,000 rows per request, no matter how many you
-    /// ask for. `limit` must be positive.
+    /// Optional. The number of rows to return. If unspecified, 10,000 rows are
+    /// returned. The API returns a maximum of 250,000 rows per request, no matter
+    /// how many you ask for. `limit` must be positive.
     ///
     /// The API can also return fewer rows than the requested `limit`, if there
     /// aren't as many dimension values as the `limit`.
@@ -1921,16 +2064,78 @@ pub struct QueryAudienceListResponse {
     /// response will be less than or equal to request's page size.
     #[prost(message, repeated, tag = "2")]
     pub audience_rows: ::prost::alloc::vec::Vec<AudienceRow>,
-    /// The total number of rows in the query result. `rowCount` is independent of
-    /// the number of rows returned in the response, the `limit` request
-    /// parameter, and the `offset` request parameter. For example if a query
-    /// returns 175 rows and includes `limit` of 50 in the API request, the
+    /// The total number of rows in the AudienceList result. `rowCount` is
+    /// independent of the number of rows returned in the response, the `limit`
+    /// request parameter, and the `offset` request parameter. For example if a
+    /// query returns 175 rows and includes `limit` of 50 in the API request, the
     /// response will contain `rowCount` of 175 but only 50 rows.
     ///
     /// To learn more about this pagination parameter, see
     /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
     #[prost(int32, optional, tag = "3")]
     pub row_count: ::core::option::Option<i32>,
+}
+/// A request to export users in an audience list to a Google Sheet.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SheetExportAudienceListRequest {
+    /// Required. The name of the audience list to retrieve users from.
+    /// Format: `properties/{property}/audienceLists/{audience_list}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The row count of the start row. The first row is counted as row
+    /// 0.
+    ///
+    /// When paging, the first request does not specify offset; or equivalently,
+    /// sets offset to 0; the first request returns the first `limit` of rows. The
+    /// second request sets offset to the `limit` of the first request; the second
+    /// request returns the second `limit` of rows.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int64, tag = "2")]
+    pub offset: i64,
+    /// Optional. The number of rows to return. If unspecified, 10,000 rows are
+    /// returned. The API returns a maximum of 250,000 rows per request, no matter
+    /// how many you ask for. `limit` must be positive.
+    ///
+    /// The API can also return fewer rows than the requested `limit`, if there
+    /// aren't as many dimension values as the `limit`.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int64, tag = "3")]
+    pub limit: i64,
+}
+/// The created Google Sheet with the list of users in an audience list.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SheetExportAudienceListResponse {
+    /// A uri for you to visit in your browser to view the Google Sheet.
+    #[prost(string, optional, tag = "1")]
+    pub spreadsheet_uri: ::core::option::Option<::prost::alloc::string::String>,
+    /// An ID that identifies the created Google Sheet resource.
+    #[prost(string, optional, tag = "2")]
+    pub spreadsheet_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// The total number of rows in the AudienceList result. `rowCount` is
+    /// independent of the number of rows returned in the response, the `limit`
+    /// request parameter, and the `offset` request parameter. For example if a
+    /// query returns 175 rows and includes `limit` of 50 in the API request, the
+    /// response will contain `rowCount` of 175 but only 50 rows.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int32, optional, tag = "3")]
+    pub row_count: ::core::option::Option<i32>,
+    /// Configuration data about AudienceList being exported. Returned to help
+    /// interpret the AudienceList in the Google Sheet of this response.
+    ///
+    /// For example, the AudienceList may have more rows than are present in the
+    /// Google Sheet, and in that case, you may want to send an additional sheet
+    /// export request with a different `offset` value to retrieve the next page of
+    /// rows in an additional Google Sheet.
+    #[prost(message, optional, tag = "4")]
+    pub audience_list: ::core::option::Option<AudienceList>,
 }
 /// Dimension value attributes for the audience user row.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1946,7 +2151,7 @@ pub struct AudienceRow {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceDimension {
-    /// The API name of the dimension. See the [API
+    /// Optional. The API name of the dimension. See the [API
     /// Dimensions](<https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-api-schema#dimensions>)
     /// for the list of dimension names.
     #[prost(string, tag = "1")]
@@ -1975,9 +2180,9 @@ pub mod audience_dimension_value {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunFunnelReportRequest {
-    /// A Google Analytics GA4 property identifier whose events are tracked.
-    /// Specified in the URL path and not the body. To learn more, see [where to
-    /// find your Property
+    /// Optional. A Google Analytics GA4 property identifier whose events are
+    /// tracked. Specified in the URL path and not the body. To learn more, see
+    /// [where to find your Property
     /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
     /// Within a batch request, this property should either be unspecified or
     /// consistent with the batch-level property.
@@ -1985,43 +2190,44 @@ pub struct RunFunnelReportRequest {
     /// Example: properties/1234
     #[prost(string, tag = "1")]
     pub property: ::prost::alloc::string::String,
-    /// Date ranges of data to read. If multiple date ranges are requested, each
-    /// response row will contain a zero based date range index. If two date
-    /// ranges overlap, the event data for the overlapping days is included in the
-    /// response rows for both date ranges.
+    /// Optional. Date ranges of data to read. If multiple date ranges are
+    /// requested, each response row will contain a zero based date range index. If
+    /// two date ranges overlap, the event data for the overlapping days is
+    /// included in the response rows for both date ranges.
     #[prost(message, repeated, tag = "2")]
     pub date_ranges: ::prost::alloc::vec::Vec<DateRange>,
-    /// The configuration of this request's funnel. This funnel configuration is
-    /// required.
+    /// Optional. The configuration of this request's funnel. This funnel
+    /// configuration is required.
     #[prost(message, optional, tag = "3")]
     pub funnel: ::core::option::Option<Funnel>,
-    /// If specified, this breakdown adds a dimension to the funnel table sub
-    /// report response. This breakdown dimension expands each funnel step to the
-    /// unique values of the breakdown dimension. For example, a breakdown by the
-    /// `deviceCategory` dimension will create rows for `mobile`, `tablet`,
+    /// Optional. If specified, this breakdown adds a dimension to the funnel table
+    /// sub report response. This breakdown dimension expands each funnel step to
+    /// the unique values of the breakdown dimension. For example, a breakdown by
+    /// the `deviceCategory` dimension will create rows for `mobile`, `tablet`,
     /// `desktop`, and the total.
     #[prost(message, optional, tag = "4")]
     pub funnel_breakdown: ::core::option::Option<FunnelBreakdown>,
-    /// If specified, next action adds a dimension to the funnel visualization sub
-    /// report response. This next action dimension expands each funnel step to the
-    /// unique values of the next action. For example a next action of the
-    /// `eventName` dimension will create rows for several events (for example
-    /// `session_start` & `click`) and the total.
+    /// Optional. If specified, next action adds a dimension to the funnel
+    /// visualization sub report response. This next action dimension expands each
+    /// funnel step to the unique values of the next action. For example a next
+    /// action of the `eventName` dimension will create rows for several events
+    /// (for example `session_start` & `click`) and the total.
     ///
     /// Next action only supports `eventName` and most Page / Screen dimensions
     /// like `pageTitle` and `pagePath`.
     #[prost(message, optional, tag = "5")]
     pub funnel_next_action: ::core::option::Option<FunnelNextAction>,
-    /// The funnel visualization type controls the dimensions present in the funnel
-    /// visualization sub report response. If not specified, `STANDARD_FUNNEL` is
-    /// used.
+    /// Optional. The funnel visualization type controls the dimensions present in
+    /// the funnel visualization sub report response. If not specified,
+    /// `STANDARD_FUNNEL` is used.
     #[prost(
         enumeration = "run_funnel_report_request::FunnelVisualizationType",
         tag = "6"
     )]
     pub funnel_visualization_type: i32,
-    /// The configurations of segments. Segments are subsets of a property's data.
-    /// In a funnel report with segments, the funnel is evaluated in each segment.
+    /// Optional. The configurations of segments. Segments are subsets of a
+    /// property's data. In a funnel report with segments, the funnel is evaluated
+    /// in each segment.
     ///
     /// Each segment specified in this request
     /// produces a separate row in the response; in the response, each segment
@@ -2030,22 +2236,22 @@ pub struct RunFunnelReportRequest {
     /// The segments parameter is optional. Requests are limited to 4 segments.
     #[prost(message, repeated, tag = "7")]
     pub segments: ::prost::alloc::vec::Vec<Segment>,
-    /// The number of rows to return. If unspecified, 10,000 rows are returned. The
-    /// API returns a maximum of 250,000 rows per request, no matter how many you
-    /// ask for. `limit` must be positive.
+    /// Optional. The number of rows to return. If unspecified, 10,000 rows are
+    /// returned. The API returns a maximum of 250,000 rows per request, no matter
+    /// how many you ask for. `limit` must be positive.
     ///
     /// The API can also return fewer rows than the requested `limit`, if there
     /// aren't as many dimension values as the `limit`.
     #[prost(int64, tag = "9")]
     pub limit: i64,
-    /// Dimension filters allow you to ask for only specific dimension values in
-    /// the report. To learn more, see [Creating a Report: Dimension
+    /// Optional. Dimension filters allow you to ask for only specific dimension
+    /// values in the report. To learn more, see [Creating a Report: Dimension
     /// Filters](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>)
     /// for examples. Metrics cannot be used in this filter.
     #[prost(message, optional, tag = "10")]
     pub dimension_filter: ::core::option::Option<FilterExpression>,
-    /// Toggles whether to return the current state of this Analytics Property's
-    /// quota. Quota is returned in [PropertyQuota](#PropertyQuota).
+    /// Optional. Toggles whether to return the current state of this Analytics
+    /// Property's quota. Quota is returned in [PropertyQuota](#PropertyQuota).
     #[prost(bool, tag = "12")]
     pub return_property_quota: bool,
 }
@@ -2270,6 +2476,10 @@ pub mod alpha_analytics_data_client {
         /// first create the audience list through this method and then send the
         /// audience resource name to the `QueryAudienceList` method.
         ///
+        /// See [Creating an Audience
+        /// List](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics)
+        /// for an introduction to Audience Lists with examples.
+        ///
         /// An audience list is a snapshot of the users currently in the audience at
         /// the time of audience list creation. Creating audience lists for one
         /// audience on different days will return different results as users enter and
@@ -2279,6 +2489,12 @@ pub mod alpha_analytics_data_client {
         /// that are important to your business. To learn more, see
         /// https://support.google.com/analytics/answer/9267572. Audience lists contain
         /// the users in each audience.
+        ///
+        /// This method is introduced at alpha stability with the intention of
+        /// gathering feedback on syntax and capabilities before entering beta. To give
+        /// your feedback on this API, complete the
+        /// [Google Analytics Audience Export API
+        /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
         pub async fn create_audience_list(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAudienceListRequest>,
@@ -2312,11 +2528,22 @@ pub mod alpha_analytics_data_client {
         /// Retrieves an audience list of users. After creating an audience, the users
         /// are not immediately available for listing. First, a request to
         /// `CreateAudienceList` is necessary to create an audience list of users, and
-        /// then second, this method is used to retrieve the users in the audience.
+        /// then second, this method is used to retrieve the users in the audience
+        /// list.
+        ///
+        /// See [Creating an Audience
+        /// List](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics)
+        /// for an introduction to Audience Lists with examples.
         ///
         /// Audiences in Google Analytics 4 allow you to segment your users in the ways
         /// that are important to your business. To learn more, see
         /// https://support.google.com/analytics/answer/9267572.
+        ///
+        /// This method is introduced at alpha stability with the intention of
+        /// gathering feedback on syntax and capabilities before entering beta. To give
+        /// your feedback on this API, complete the
+        /// [Google Analytics Audience Export API
+        /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
         pub async fn query_audience_list(
             &mut self,
             request: impl tonic::IntoRequest<super::QueryAudienceListRequest>,
@@ -2347,8 +2574,67 @@ pub mod alpha_analytics_data_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Exports an audience list of users to a Google Sheet. After creating an
+        /// audience, the users are not immediately available for listing. First, a
+        /// request to `CreateAudienceList` is necessary to create an audience list of
+        /// users, and then second, this method is used to export those users in the
+        /// audience list to a Google Sheet.
+        ///
+        /// See [Creating an Audience
+        /// List](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics)
+        /// for an introduction to Audience Lists with examples.
+        ///
+        /// Audiences in Google Analytics 4 allow you to segment your users in the ways
+        /// that are important to your business. To learn more, see
+        /// https://support.google.com/analytics/answer/9267572.
+        ///
+        /// This method is introduced at alpha stability with the intention of
+        /// gathering feedback on syntax and capabilities before entering beta. To give
+        /// your feedback on this API, complete the
+        /// [Google Analytics Audience Export API
+        /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        pub async fn sheet_export_audience_list(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SheetExportAudienceListRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SheetExportAudienceListResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/SheetExportAudienceList",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1alpha.AlphaAnalyticsData",
+                        "SheetExportAudienceList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Gets configuration metadata about a specific audience list. This method
         /// can be used to understand an audience list after it has been created.
+        ///
+        /// See [Creating an Audience
+        /// List](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics)
+        /// for an introduction to Audience Lists with examples.
+        ///
+        /// This method is introduced at alpha stability with the intention of
+        /// gathering feedback on syntax and capabilities before entering beta. To give
+        /// your feedback on this API, complete the
+        /// [Google Analytics Audience Export API
+        /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
         pub async fn get_audience_list(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAudienceListRequest>,
@@ -2380,6 +2666,16 @@ pub mod alpha_analytics_data_client {
         /// find and reuse existing audience lists rather than creating unnecessary new
         /// audience lists. The same audience can have multiple audience lists that
         /// represent the list of users that were in an audience on different days.
+        ///
+        /// See [Creating an Audience
+        /// List](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics)
+        /// for an introduction to Audience Lists with examples.
+        ///
+        /// This method is introduced at alpha stability with the intention of
+        /// gathering feedback on syntax and capabilities before entering beta. To give
+        /// your feedback on this API, complete the
+        /// [Google Analytics Audience Export API
+        /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
         pub async fn list_audience_lists(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAudienceListsRequest>,
@@ -2406,6 +2702,137 @@ pub mod alpha_analytics_data_client {
                     GrpcMethod::new(
                         "google.analytics.data.v1alpha.AlphaAnalyticsData",
                         "ListAudienceLists",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a recurring audience list. Recurring audience lists produces new
+        /// audience lists each day. Audience lists are users in an audience at the
+        /// time of the list's creation.
+        ///
+        /// A recurring audience list ensures that you have audience list based on the
+        /// most recent data available for use each day. If you manually create
+        /// audience list, you don't know when an audience list based on an additional
+        /// day's data is available. This recurring audience list automates the
+        /// creation of an audience list when an additional day's data is available.
+        /// You will consume fewer quota tokens by using recurring audience list versus
+        /// manually creating audience list at various times of day trying to guess
+        /// when an additional day's data is ready.
+        ///
+        /// This method is introduced at alpha stability with the intention of
+        /// gathering feedback on syntax and capabilities before entering beta. To give
+        /// your feedback on this API, complete the
+        /// [Google Analytics Audience Export API
+        /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        pub async fn create_recurring_audience_list(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateRecurringAudienceListRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RecurringAudienceList>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/CreateRecurringAudienceList",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1alpha.AlphaAnalyticsData",
+                        "CreateRecurringAudienceList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets configuration metadata about a specific recurring audience list. This
+        /// method can be used to understand a recurring audience list's state after it
+        /// has been created. For example, a recurring audience list resource will
+        /// generate audience list instances for each day, and this method can be used
+        /// to get the resource name of the most recent audience list instance.
+        ///
+        /// This method is introduced at alpha stability with the intention of
+        /// gathering feedback on syntax and capabilities before entering beta. To give
+        /// your feedback on this API, complete the
+        /// [Google Analytics Audience Export API
+        /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        pub async fn get_recurring_audience_list(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetRecurringAudienceListRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RecurringAudienceList>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetRecurringAudienceList",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1alpha.AlphaAnalyticsData",
+                        "GetRecurringAudienceList",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all recurring audience lists for a property. This method can be used
+        /// for you to find and reuse existing recurring audience lists rather than
+        /// creating unnecessary new recurring audience lists. The same audience can
+        /// have multiple recurring audience lists that represent different dimension
+        /// combinations; for example, just the dimension `deviceId` or both the
+        /// dimensions `deviceId` and `userId`.
+        ///
+        /// This method is introduced at alpha stability with the intention of
+        /// gathering feedback on syntax and capabilities before entering beta. To give
+        /// your feedback on this API, complete the
+        /// [Google Analytics Audience Export API
+        /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        pub async fn list_recurring_audience_lists(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListRecurringAudienceListsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListRecurringAudienceListsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/ListRecurringAudienceLists",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1alpha.AlphaAnalyticsData",
+                        "ListRecurringAudienceLists",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -643,12 +643,15 @@ pub mod import_context {
         /// Type of the bak content, FULL or DIFF
         #[prost(enumeration = "super::BakType", tag = "6")]
         pub bak_type: i32,
-        /// Optional. StopAt keyword for transaction log import, Applies to Cloud SQL
-        /// for SQL Server only
+        /// Optional. The timestamp when the import should stop. This timestamp is in
+        /// the [RFC 3339](<https://tools.ietf.org/html/rfc3339>) format (for example,
+        /// `2023-10-01T16:19:00.094`). This field is equivalent to the STOPAT
+        /// keyword and applies to Cloud SQL for SQL Server only.
         #[prost(message, optional, tag = "7")]
         pub stop_at: ::core::option::Option<::prost_types::Timestamp>,
-        /// Optional. StopAtMark keyword for transaction log import, Applies to Cloud
-        /// SQL for SQL Server only
+        /// Optional. The marked transaction where the import should stop. This field
+        /// is equivalent to the STOPATMARK keyword and applies to Cloud SQL for SQL
+        /// Server only.
         #[prost(string, tag = "8")]
         pub stop_at_mark: ::prost::alloc::string::String,
     }
@@ -686,7 +689,13 @@ pub struct IpConfiguration {
     /// be updated, but it cannot be removed after it is set.
     #[prost(string, tag = "2")]
     pub private_network: ::prost::alloc::string::String,
-    /// Whether SSL connections over IP are enforced or not.
+    /// Whether SSL/TLS connections over IP are enforced.
+    /// If set to false, then allow both non-SSL/non-TLS and SSL/TLS connections.
+    /// For SSL/TLS connections, the client certificate won't be verified. If
+    /// set to true, then only allow connections encrypted with SSL/TLS and with
+    /// valid client certificates. If you want to enforce SSL/TLS without enforcing
+    /// the requirement for valid client certificates, then use the `ssl_mode` flag
+    /// instead of the legacy `require_ssl` flag.
     #[prost(message, optional, tag = "3")]
     pub require_ssl: ::core::option::Option<bool>,
     /// The list of external networks that are allowed to connect to the instance
@@ -706,9 +715,94 @@ pub struct IpConfiguration {
     /// such as BigQuery.
     #[prost(message, optional, tag = "7")]
     pub enable_private_path_for_google_cloud_services: ::core::option::Option<bool>,
+    /// Specify how SSL/TLS is enforced in database connections. This flag is
+    /// supported only for PostgreSQL. Use the legacy `require_ssl` flag for
+    /// enforcing SSL/TLS in MySQL and SQL Server. But, for PostgreSQL, use the
+    /// `ssl_mode` flag instead of the legacy `require_ssl` flag. To avoid the
+    /// conflict between those flags in PostgreSQL, only the following value pairs
+    /// are valid:
+    ///
+    /// * `ssl_mode=ALLOW_UNENCRYPTED_AND_ENCRYPTED` and `require_ssl=false`
+    /// * `ssl_mode=ENCRYPTED_ONLY` and `require_ssl=false`
+    /// * `ssl_mode=TRUSTED_CLIENT_CERTIFICATE_REQUIRED` and `require_ssl=true`
+    ///
+    /// Note that the value of `ssl_mode` gets priority over the value of the
+    /// legacy `require_ssl`. For example, for the pair `ssl_mode=ENCRYPTED_ONLY,
+    /// require_ssl=false`, the `ssl_mode=ENCRYPTED_ONLY` means "only accepts SSL
+    /// connection", while the `require_ssl=false` means "both non-SSL and SSL
+    /// connections are allowed". The database respects `ssl_mode` in this case
+    /// and only accepts SSL connections.
+    #[prost(enumeration = "ip_configuration::SslMode", tag = "8")]
+    pub ssl_mode: i32,
     /// PSC settings for this instance.
     #[prost(message, optional, tag = "9")]
     pub psc_config: ::core::option::Option<PscConfig>,
+}
+/// Nested message and enum types in `IpConfiguration`.
+pub mod ip_configuration {
+    /// The SSL options for database connections.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SslMode {
+        /// The SSL mode is unknown.
+        Unspecified = 0,
+        /// Allow non-SSL/non-TLS and SSL/TLS connections. For SSL/TLS connections,
+        /// the client certificate won't be verified.
+        /// When this value is used, the legacy `require_ssl` flag must be false or
+        /// cleared to avoid the conflict between values of two flags.
+        AllowUnencryptedAndEncrypted = 1,
+        /// Only allow connections encrypted with SSL/TLS.
+        /// When this value is used, the legacy `require_ssl` flag must be false or
+        /// cleared to avoid the conflict between values of two flags.
+        EncryptedOnly = 2,
+        /// Only allow connections encrypted with SSL/TLS and with valid
+        /// client certificates.
+        /// When this value is used, the legacy `require_ssl` flag must be true or
+        /// cleared to avoid the conflict between values of two flags.
+        TrustedClientCertificateRequired = 3,
+    }
+    impl SslMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                SslMode::Unspecified => "SSL_MODE_UNSPECIFIED",
+                SslMode::AllowUnencryptedAndEncrypted => {
+                    "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+                }
+                SslMode::EncryptedOnly => "ENCRYPTED_ONLY",
+                SslMode::TrustedClientCertificateRequired => {
+                    "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SSL_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALLOW_UNENCRYPTED_AND_ENCRYPTED" => {
+                    Some(Self::AllowUnencryptedAndEncrypted)
+                }
+                "ENCRYPTED_ONLY" => Some(Self::EncryptedOnly),
+                "TRUSTED_CLIENT_CERTIFICATE_REQUIRED" => {
+                    Some(Self::TrustedClientCertificateRequired)
+                }
+                _ => None,
+            }
+        }
+    }
 }
 /// PSC settings for a Cloud SQL instance.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -717,9 +811,9 @@ pub struct PscConfig {
     /// Whether PSC connectivity is enabled for this instance.
     #[prost(bool, optional, tag = "1")]
     pub psc_enabled: ::core::option::Option<bool>,
-    /// The list of consumer projects that are allow-listed for PSC connections to
-    /// this instance. This instance can be connected to with PSC from any network
-    /// in these projects.
+    /// Optional. The list of consumer projects that are allow-listed for PSC
+    /// connections to this instance. This instance can be connected to with PSC
+    /// from any network in these projects.
     ///
     /// Each consumer project in this list may be represented by a project number
     /// (numeric) or by a project id (alphanumeric).
@@ -888,7 +982,7 @@ pub struct DiskEncryptionStatus {
     #[prost(string, tag = "2")]
     pub kind: ::prost::alloc::string::String,
 }
-/// Database instance IP Mapping.
+/// Database instance IP mapping
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IpMapping {
@@ -1851,6 +1945,7 @@ impl SqlIpAddressType {
     }
 }
 /// The database engine type and version.
+/// The next tag is 325.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum SqlDatabaseVersion {
@@ -3788,6 +3883,20 @@ pub struct SqlInstancesDemoteMasterRequest {
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<InstancesDemoteMasterRequest>,
 }
+/// Instance demote request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SqlInstancesDemoteRequest {
+    /// Required. Cloud SQL instance name.
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// Required. ID of the project that contains the instance.
+    #[prost(string, tag = "2")]
+    pub project: ::prost::alloc::string::String,
+    /// Required. The request body.
+    #[prost(message, optional, tag = "100")]
+    pub body: ::core::option::Option<InstancesDemoteRequest>,
+}
 /// Instance export request.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3912,6 +4021,27 @@ pub struct SqlInstancesPromoteReplicaRequest {
     /// ID of the project that contains the read replica.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
+    /// Set to true if the promote operation should attempt to re-add the original
+    /// primary as a replica when it comes back online. Otherwise, if this value is
+    /// false or not set, the original primary will be a standalone instance.
+    #[prost(bool, tag = "3")]
+    pub failover: bool,
+}
+/// Instance switchover request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SqlInstancesSwitchoverRequest {
+    /// Cloud SQL read replica instance name.
+    #[prost(string, tag = "1")]
+    pub instance: ::prost::alloc::string::String,
+    /// ID of the project that contains the replica.
+    #[prost(string, tag = "2")]
+    pub project: ::prost::alloc::string::String,
+    /// Optional. (MySQL only) Cloud SQL instance operations timeout, which is a
+    /// sum of all database operations. Default value is 10 minutes and can be
+    /// modified to a maximum value of 24 hours.
+    #[prost(message, optional, tag = "3")]
+    pub db_timeout: ::core::option::Option<::prost_types::Duration>,
 }
 /// Instance reset SSL config request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -4288,6 +4418,15 @@ pub struct InstancesDemoteMasterRequest {
     #[prost(message, optional, tag = "1")]
     pub demote_master_context: ::core::option::Option<DemoteMasterContext>,
 }
+/// This request is used to demote an existing standalone instance to be a
+/// Cloud SQL read replica for an external database server.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InstancesDemoteRequest {
+    /// Required. Contains details about the demote operation.
+    #[prost(message, optional, tag = "1")]
+    pub demote_context: ::core::option::Option<DemoteContext>,
+}
 /// Database instance export request.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4653,9 +4792,13 @@ pub struct DatabaseInstance {
     /// Output only. The dns name of the instance.
     #[prost(string, optional, tag = "49")]
     pub dns_name: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. The dns name of the primary instance in a replication group.
+    /// Output only. DEPRECATED: please use write_endpoint instead.
+    #[deprecated]
     #[prost(string, optional, tag = "51")]
     pub primary_dns_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The dns name of the primary instance in a replication group.
+    #[prost(string, optional, tag = "52")]
+    pub write_endpoint: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `DatabaseInstance`.
 pub mod database_instance {
@@ -4926,6 +5069,19 @@ pub struct DemoteMasterContext {
     #[prost(bool, tag = "5")]
     pub skip_replication_setup: bool,
 }
+/// This context is used to demote an existing standalone instance to be
+/// a Cloud SQL read replica for an external database server.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DemoteContext {
+    /// This is always `sql#demoteContext`.
+    #[prost(string, tag = "1")]
+    pub kind: ::prost::alloc::string::String,
+    /// Required. The name of the instance which acts as the on-premises primary
+    /// instance in the replication setup.
+    #[prost(string, tag = "2")]
+    pub source_representative_instance_name: ::prost::alloc::string::String,
+}
 /// Database instance failover context.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5087,6 +5243,9 @@ pub mod sql_external_sync_setting_error {
         MysqlParallelImportInsufficientPrivilege = 34,
         /// The global variable local_infile is off on external server replica.
         LocalInfileOff = 35,
+        /// This code instructs customers to turn on point-in-time recovery manually
+        /// for the instance after promoting the Cloud SQL for PostgreSQL instance.
+        TurnOnPitrAfterPromote = 36,
     }
     impl SqlExternalSyncSettingErrorType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -5193,6 +5352,9 @@ pub mod sql_external_sync_setting_error {
                     "MYSQL_PARALLEL_IMPORT_INSUFFICIENT_PRIVILEGE"
                 }
                 SqlExternalSyncSettingErrorType::LocalInfileOff => "LOCAL_INFILE_OFF",
+                SqlExternalSyncSettingErrorType::TurnOnPitrAfterPromote => {
+                    "TURN_ON_PITR_AFTER_PROMOTE"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5252,6 +5414,7 @@ pub mod sql_external_sync_setting_error {
                     Some(Self::MysqlParallelImportInsufficientPrivilege)
                 }
                 "LOCAL_INFILE_OFF" => Some(Self::LocalInfileOff),
+                "TURN_ON_PITR_AFTER_PROMOTE" => Some(Self::TurnOnPitrAfterPromote),
                 _ => None,
             }
         }
@@ -5312,6 +5475,11 @@ pub struct ReplicaConfiguration {
     /// the replica has to be in different zone with the primary instance.
     #[prost(message, optional, tag = "3")]
     pub failover_target: ::core::option::Option<bool>,
+    /// Optional. Specifies if a SQL Server replica is a cascadable replica. A
+    /// cascadable replica is a SQL Server cross region replica that supports
+    /// replica(s) under it.
+    #[prost(message, optional, tag = "5")]
+    pub cascadable_replica: ::core::option::Option<bool>,
 }
 /// External Sync parallel level.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -5632,6 +5800,32 @@ pub mod sql_instances_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Demotes an existing standalone instance to be a Cloud SQL read replica
+        /// for an external database server.
+        pub async fn demote(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SqlInstancesDemoteRequest>,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1.SqlInstancesService/Demote",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.sql.v1.SqlInstancesService", "Demote"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Exports data from a Cloud SQL instance to a Cloud Storage bucket as a SQL
         /// dump or CSV file.
         pub async fn export(
@@ -5914,6 +6108,34 @@ pub mod sql_instances_service_client {
                     GrpcMethod::new(
                         "google.cloud.sql.v1.SqlInstancesService",
                         "PromoteReplica",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Switches over from the primary instance to the replica instance.
+        pub async fn switchover(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SqlInstancesSwitchoverRequest>,
+        ) -> std::result::Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.sql.v1.SqlInstancesService/Switchover",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.sql.v1.SqlInstancesService",
+                        "Switchover",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -7318,6 +7540,12 @@ pub mod user {
         CloudIamUser = 1,
         /// Cloud IAM service account.
         CloudIamServiceAccount = 2,
+        /// Cloud IAM Group non-login user.
+        CloudIamGroup = 3,
+        /// Cloud IAM Group login user.
+        CloudIamGroupUser = 4,
+        /// Cloud IAM Group login service account.
+        CloudIamGroupServiceAccount = 5,
     }
     impl SqlUserType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -7329,6 +7557,11 @@ pub mod user {
                 SqlUserType::BuiltIn => "BUILT_IN",
                 SqlUserType::CloudIamUser => "CLOUD_IAM_USER",
                 SqlUserType::CloudIamServiceAccount => "CLOUD_IAM_SERVICE_ACCOUNT",
+                SqlUserType::CloudIamGroup => "CLOUD_IAM_GROUP",
+                SqlUserType::CloudIamGroupUser => "CLOUD_IAM_GROUP_USER",
+                SqlUserType::CloudIamGroupServiceAccount => {
+                    "CLOUD_IAM_GROUP_SERVICE_ACCOUNT"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7337,6 +7570,11 @@ pub mod user {
                 "BUILT_IN" => Some(Self::BuiltIn),
                 "CLOUD_IAM_USER" => Some(Self::CloudIamUser),
                 "CLOUD_IAM_SERVICE_ACCOUNT" => Some(Self::CloudIamServiceAccount),
+                "CLOUD_IAM_GROUP" => Some(Self::CloudIamGroup),
+                "CLOUD_IAM_GROUP_USER" => Some(Self::CloudIamGroupUser),
+                "CLOUD_IAM_GROUP_SERVICE_ACCOUNT" => {
+                    Some(Self::CloudIamGroupServiceAccount)
+                }
                 _ => None,
             }
         }

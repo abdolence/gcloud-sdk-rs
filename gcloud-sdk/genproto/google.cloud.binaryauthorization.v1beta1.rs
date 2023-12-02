@@ -48,6 +48,12 @@ pub mod continuous_validation_event {
             /// The name of the image.
             #[prost(string, tag = "1")]
             pub image: ::prost::alloc::string::String,
+            /// The name of the container.
+            #[prost(string, tag = "5")]
+            pub container_name: ::prost::alloc::string::String,
+            /// The container type that this image belongs to.
+            #[prost(enumeration = "image_details::ContainerType", tag = "6")]
+            pub container_type: i32,
             /// The result of the audit for this image.
             #[prost(enumeration = "image_details::AuditResult", tag = "2")]
             pub result: i32,
@@ -153,6 +159,55 @@ pub mod continuous_validation_event {
                             "NON_CONFORMANT" => Some(Self::NonConformant),
                             _ => None,
                         }
+                    }
+                }
+            }
+            /// The container type.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum ContainerType {
+                /// The container type should always be specified. This is an error.
+                Unspecified = 0,
+                /// A regular deployment.
+                Container = 1,
+                /// Init container defined as specified at
+                /// <https://kubernetes.io/docs/concepts/workloads/pods/init-containers/>
+                InitContainer = 2,
+                /// Ephemeral container defined as specified at
+                /// <https://kubernetes.io/docs/concepts/workloads/pods/ephemeral-containers/>
+                EphemeralContainer = 3,
+            }
+            impl ContainerType {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        ContainerType::Unspecified => "CONTAINER_TYPE_UNSPECIFIED",
+                        ContainerType::Container => "CONTAINER",
+                        ContainerType::InitContainer => "INIT_CONTAINER",
+                        ContainerType::EphemeralContainer => "EPHEMERAL_CONTAINER",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "CONTAINER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "CONTAINER" => Some(Self::Container),
+                        "INIT_CONTAINER" => Some(Self::InitContainer),
+                        "EPHEMERAL_CONTAINER" => Some(Self::EphemeralContainer),
+                        _ => None,
                     }
                 }
             }

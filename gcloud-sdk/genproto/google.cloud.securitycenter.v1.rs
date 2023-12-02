@@ -4341,13 +4341,13 @@ pub struct RunAssetDiscoveryRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SimulateSecurityHealthAnalyticsCustomModuleRequest {
     /// Required. The relative resource name of the organization, project, or
-    /// folder. See:
-    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
-    /// An example is:
-    /// "organizations/{organization_id}".
+    /// folder. For more information about relative resource names, see [Relative
+    /// Resource
+    /// Name](<https://cloud.google.com/apis/design/resource_names#relative_resource_name>)
+    /// Example: `organizations/{organization_id}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. The user specified custom configuration to test.
+    /// Required. The custom configuration that you need to test.
     #[prost(message, optional, tag = "2")]
     pub custom_config: ::core::option::Option<CustomConfig>,
     /// Required. Resource data to simulate custom module against.
@@ -4358,17 +4358,18 @@ pub struct SimulateSecurityHealthAnalyticsCustomModuleRequest {
 }
 /// Nested message and enum types in `SimulateSecurityHealthAnalyticsCustomModuleRequest`.
 pub mod simulate_security_health_analytics_custom_module_request {
-    /// Manually constructed resource. If the custom module only evaluates against
-    /// the resource data, the iam_policy_data field can be omitted, and vice
-    /// versa.
+    /// Manually constructed resource name. If the custom module evaluates against
+    /// only the resource data, you can omit the `iam_policy_data` field. If it
+    /// evaluates only the `iam_policy_data` field, you can omit the resource data.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SimulatedResource {
-        /// Required. The type of the resource, e.g. `compute.googleapis.com/Disk`.
+        /// Required. The type of the resource, for example,
+        /// `compute.googleapis.com/Disk`.
         #[prost(string, tag = "1")]
         pub resource_type: ::prost::alloc::string::String,
-        /// Optional. A representation of the GCP resource. Should match the GCP
-        /// resource JSON format.
+        /// Optional. A representation of the Google Cloud resource. Should match the
+        /// Google Cloud resource JSON format.
         #[prost(message, optional, tag = "2")]
         pub resource_data: ::core::option::Option<::prost_types::Struct>,
         /// Optional. A representation of the IAM policy.
@@ -4378,8 +4379,8 @@ pub mod simulate_security_health_analytics_custom_module_request {
         >,
     }
 }
-/// Response message for simulating a SecurityHealthAnalyticsCustomModule against
-/// a given resource.
+/// Response message for simulating a `SecurityHealthAnalyticsCustomModule`
+/// against a given resource.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SimulateSecurityHealthAnalyticsCustomModuleResponse {
