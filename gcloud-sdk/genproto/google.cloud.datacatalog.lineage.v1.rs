@@ -14,8 +14,11 @@ pub struct Process {
     /// or numbers, spaces or characters like `_-:&.`
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Optional. The attributes of the process. Can be anything, for example,
-    /// "author". Up to 100 attributes are allowed.
+    /// Optional. The attributes of the process. Should only be used for the
+    /// purpose of non-semantic management (classifying, describing or labeling the
+    /// process).
+    ///
+    /// Up to 100 attributes are allowed.
     #[prost(map = "string, message", tag = "3")]
     pub attributes: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -42,8 +45,10 @@ pub struct Run {
     /// or numbers, spaces or characters like `_-:&.`
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Optional. The attributes of the run. Can be anything, for example, a string
-    /// with an SQL request. Up to 100 attributes are allowed.
+    /// Optional. The attributes of the run. Should only be used for the purpose of
+    /// non-semantic management (classifying, describing or labeling the run).
+    ///
+    /// Up to 100 attributes are allowed.
     #[prost(map = "string, message", tag = "3")]
     pub attributes: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -130,7 +135,7 @@ pub struct LineageEvent {
     /// Optional. List of source-target pairs. Can't contain more than 100 tuples.
     #[prost(message, repeated, tag = "8")]
     pub links: ::prost::alloc::vec::Vec<EventLink>,
-    /// Optional. The beginning of the transformation which resulted in this
+    /// Required. The beginning of the transformation which resulted in this
     /// lineage event. For streaming scenarios, it should be the beginning of the
     /// period from which the lineage is being reported.
     #[prost(message, optional, tag = "6")]
@@ -156,16 +161,9 @@ pub struct EventLink {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityReference {
-    /// Required. Fully Qualified Name of the entity. Useful for referencing
-    /// entities that aren't represented as GCP resources, for example, tables in
-    /// Dataproc Metastore API.
-    ///
-    /// Examples:
-    ///
-    ///    * `bigquery:dataset.project_id.dataset_id`
-    ///    * `bigquery:table.project_id.dataset_id.table_id`
-    ///    * `pubsub:project_id.topic_id`
-    ///    * `dataproc_metastore:projectId.locationId.instanceId.databaseId.tableId`
+    /// Required. [Fully Qualified Name
+    /// (FQN)](<https://cloud.google.com/data-catalog/docs/fully-qualified-names>)
+    /// of the entity.
     #[prost(string, tag = "1")]
     pub fully_qualified_name: ::prost::alloc::string::String,
 }
@@ -266,6 +264,8 @@ pub mod operation_metadata {
         Unspecified = 0,
         /// The resource deletion operation.
         Delete = 1,
+        /// The resource creation operation.
+        Create = 2,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -276,6 +276,7 @@ pub mod operation_metadata {
             match self {
                 Type::Unspecified => "TYPE_UNSPECIFIED",
                 Type::Delete => "DELETE",
+                Type::Create => "CREATE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -283,10 +284,50 @@ pub mod operation_metadata {
             match value {
                 "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "DELETE" => Some(Self::Delete),
+                "CREATE" => Some(Self::Create),
                 _ => None,
             }
         }
     }
+}
+/// Request message for
+/// [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProcessOpenLineageRunEventRequest {
+    /// Required. The name of the project and its location that should own the
+    /// process, run, and lineage event.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. OpenLineage message following OpenLineage format:
+    /// <https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json>
+    #[prost(message, optional, tag = "2")]
+    pub open_lineage: ::core::option::Option<::prost_types::Struct>,
+    /// A unique identifier for this request. Restricted to 36 ASCII characters.
+    /// A random UUID is recommended. This request is idempotent only if a
+    /// `request_id` is provided.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProcessOpenLineageRunEventResponse {
+    /// Created process name.
+    /// Format: `projects/{project}/locations/{location}/processes/{process}`.
+    #[prost(string, tag = "1")]
+    pub process: ::prost::alloc::string::String,
+    /// Created run name.
+    /// Format:
+    /// `projects/{project}/locations/{location}/processes/{process}/runs/{run}`.
+    #[prost(string, tag = "2")]
+    pub run: ::prost::alloc::string::String,
+    /// Created lineage event names.
+    /// Format:
+    /// `projects/{project}/locations/{location}/processes/{process}/runs/{run}/lineageEvents/{lineage_event}`.
+    #[prost(string, repeated, tag = "3")]
+    pub lineage_events: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
 /// [CreateProcess][google.cloud.datacatalog.lineage.v1.CreateProcess].
@@ -416,6 +457,9 @@ pub struct UpdateRunRequest {
     /// updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// If set to true and the run is not found, the request creates it.
+    #[prost(bool, tag = "3")]
+    pub allow_missing: bool,
 }
 /// Request message for
 /// [GetRun][google.cloud.datacatalog.lineage.v1.GetRun].
@@ -555,7 +599,7 @@ pub struct DeleteLineageEventRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchLinksRequest {
-    /// Required. The project and location you want search in the format `projects/*/locations/*`
+    /// Required. The project and location you want search in.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of links to return in a single page of the
@@ -637,7 +681,7 @@ pub struct Link {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchSearchLinkProcessesRequest {
-    /// Required. The project and location you want search in the format `projects/*/locations/*`
+    /// Required. The project and location where you want to search.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. An array of links to check for their associated LineageProcesses.
@@ -712,6 +756,10 @@ pub struct ProcessLinkInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Origin {
     /// Type of the source.
+    ///
+    /// Use of a source_type other than `CUSTOM` for process creation
+    /// or updating is highly discouraged, and may be restricted in the future
+    /// without notice.
     #[prost(enumeration = "origin::SourceType", tag = "1")]
     pub source_type: i32,
     /// If the source_type isn't CUSTOM, the value of this field should be a GCP
@@ -754,6 +802,8 @@ pub mod origin {
         Composer = 4,
         /// Looker Studio
         LookerStudio = 5,
+        /// Dataproc
+        Dataproc = 6,
     }
     impl SourceType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -768,6 +818,7 @@ pub mod origin {
                 SourceType::DataFusion => "DATA_FUSION",
                 SourceType::Composer => "COMPOSER",
                 SourceType::LookerStudio => "LOOKER_STUDIO",
+                SourceType::Dataproc => "DATAPROC",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -779,6 +830,7 @@ pub mod origin {
                 "DATA_FUSION" => Some(Self::DataFusion),
                 "COMPOSER" => Some(Self::Composer),
                 "LOOKER_STUDIO" => Some(Self::LookerStudio),
+                "DATAPROC" => Some(Self::Dataproc),
                 _ => None,
             }
         }
@@ -872,6 +924,40 @@ pub mod lineage_client {
         pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
+        }
+        /// Creates new lineage events together with their parents: process and run.
+        /// Updates the process and run if they already exist.
+        /// Mapped from Open Lineage specification:
+        /// https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+        pub async fn process_open_lineage_run_event(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ProcessOpenLineageRunEventRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ProcessOpenLineageRunEventResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.datacatalog.lineage.v1.Lineage/ProcessOpenLineageRunEvent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "ProcessOpenLineageRunEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
         /// Creates a new process.
         pub async fn create_process(

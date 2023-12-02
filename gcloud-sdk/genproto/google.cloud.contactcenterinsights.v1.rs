@@ -1770,7 +1770,7 @@ pub mod annotator_selector {
         pub enum SummarizationModel {
             /// Unspecified summarization model.
             Unspecified = 0,
-            /// The Insights baseline model.
+            /// The CCAI baseline model.
             BaselineModel = 1,
         }
         impl SummarizationModel {
@@ -1954,12 +1954,12 @@ pub struct UploadConversationRequest {
     /// expression `^\[a-z0-9-\]{4,64}$`. Valid characters are `[a-z][0-9]-`
     #[prost(string, tag = "3")]
     pub conversation_id: ::prost::alloc::string::String,
-    /// Optional. DLP settings for transcript redaction. Optional, will default to
-    /// the config specified in Settings.
+    /// Optional. DLP settings for transcript redaction. Will default to the config
+    /// specified in Settings.
     #[prost(message, optional, tag = "4")]
     pub redaction_config: ::core::option::Option<RedactionConfig>,
-    /// Optional. Default Speech-to-Text configuration. Optional, will default to
-    /// the config specified in Settings.
+    /// Optional. Speech-to-Text configuration. Will default to the config
+    /// specified in Settings.
     #[prost(message, optional, tag = "11")]
     pub speech_config: ::core::option::Option<SpeechConfig>,
 }
@@ -2070,6 +2070,14 @@ pub struct IngestConversationsRequest {
     pub conversation_config: ::core::option::Option<
         ingest_conversations_request::ConversationConfig,
     >,
+    /// Optional. DLP settings for transcript redaction. Optional, will default to
+    /// the config specified in Settings.
+    #[prost(message, optional, tag = "5")]
+    pub redaction_config: ::core::option::Option<RedactionConfig>,
+    /// Optional. Default Speech-to-Text configuration. Optional, will default to
+    /// the config specified in Settings.
+    #[prost(message, optional, tag = "6")]
+    pub speech_config: ::core::option::Option<SpeechConfig>,
     /// Configuration for an external data store containing objects that will
     /// be converted to conversations.
     #[prost(oneof = "ingest_conversations_request::Source", tags = "2")]
@@ -2089,6 +2097,54 @@ pub mod ingest_conversations_request {
         /// Required. The Cloud Storage bucket containing source objects.
         #[prost(string, tag = "1")]
         pub bucket_uri: ::prost::alloc::string::String,
+        /// Optional. Specifies the type of the objects in `bucket_uri`.
+        #[prost(enumeration = "gcs_source::BucketObjectType", tag = "2")]
+        pub bucket_object_type: i32,
+    }
+    /// Nested message and enum types in `GcsSource`.
+    pub mod gcs_source {
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum BucketObjectType {
+            /// The object type is unspecified and will default to `TRANSCRIPT`.
+            Unspecified = 0,
+            /// The object is a transcript.
+            Transcript = 1,
+            /// The object is an audio file.
+            Audio = 2,
+        }
+        impl BucketObjectType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    BucketObjectType::Unspecified => "BUCKET_OBJECT_TYPE_UNSPECIFIED",
+                    BucketObjectType::Transcript => "TRANSCRIPT",
+                    BucketObjectType::Audio => "AUDIO",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "BUCKET_OBJECT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "TRANSCRIPT" => Some(Self::Transcript),
+                    "AUDIO" => Some(Self::Audio),
+                    _ => None,
+                }
+            }
+        }
     }
     /// Configuration for processing transcript objects.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2106,6 +2162,16 @@ pub mod ingest_conversations_request {
         /// the conversations.
         #[prost(string, tag = "1")]
         pub agent_id: ::prost::alloc::string::String,
+        /// Optional. For audio conversations, this field indicates which of the
+        /// channels, 1 or 2, contains the agent. Note that this must be set for
+        /// audio conversations to be properly displayed and analyzed.
+        #[prost(int32, tag = "2")]
+        pub agent_channel: i32,
+        /// Optional. For audio conversations, this field indicates which of the
+        /// channels, 1 or 2, contains the customer. Note that this must be set for
+        /// audio conversations to be properly displayed and analyzed.
+        #[prost(int32, tag = "3")]
+        pub customer_channel: i32,
     }
     /// Configuration for an external data store containing objects that will
     /// be converted to conversations.
@@ -2280,6 +2346,10 @@ pub struct BulkAnalyzeConversationsMetadata {
     /// returned by `filter` multiplied by `analysis_percentage` in the request.
     #[prost(int32, tag = "6")]
     pub total_requested_analyses_count: i32,
+    /// Output only. Partial errors during bulk analyze operation that might cause
+    /// the operation output to be incomplete.
+    #[prost(message, repeated, tag = "7")]
+    pub partial_errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
 }
 /// The response for a bulk analyze conversations operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2292,6 +2362,49 @@ pub struct BulkAnalyzeConversationsResponse {
     #[prost(int32, tag = "2")]
     pub failed_analysis_count: i32,
 }
+/// The request to delete conversations in bulk.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BulkDeleteConversationsRequest {
+    /// Required. The parent resource to delete conversations from.
+    /// Format:
+    /// projects/{project}/locations/{location}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Filter used to select the subset of conversations to delete.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Maximum number of conversations to delete.
+    #[prost(int32, tag = "3")]
+    pub max_delete_count: i32,
+    /// If set to true, all of this conversation's analyses will also be deleted.
+    /// Otherwise, the request will only succeed if the conversation has no
+    /// analyses.
+    #[prost(bool, tag = "4")]
+    pub force: bool,
+}
+/// The metadata for a bulk delete conversations operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BulkDeleteConversationsMetadata {
+    /// The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The original request for bulk delete.
+    #[prost(message, optional, tag = "3")]
+    pub request: ::core::option::Option<BulkDeleteConversationsRequest>,
+    /// Partial errors during bulk delete conversations operation that might cause
+    /// the operation output to be incomplete.
+    #[prost(message, repeated, tag = "4")]
+    pub partial_errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+}
+/// The response for a bulk delete conversations operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BulkDeleteConversationsResponse {}
 /// The request to export insights.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3217,6 +3330,37 @@ pub mod contact_center_insights_client {
                     GrpcMethod::new(
                         "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
                         "BulkAnalyzeConversations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes multiple conversations in a single request.
+        pub async fn bulk_delete_conversations(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BulkDeleteConversationsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/BulkDeleteConversations",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "BulkDeleteConversations",
                     ),
                 );
             self.inner.unary(req, path, codec).await

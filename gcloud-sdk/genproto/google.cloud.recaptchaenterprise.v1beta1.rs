@@ -195,8 +195,7 @@ pub struct AnnotateAssessmentRequest {
     /// whether the event is legitimate or fraudulent.
     #[prost(enumeration = "annotate_assessment_request::Annotation", tag = "2")]
     pub annotation: i32,
-    /// Optional. Optional reasons for the annotation that will be assigned to the
-    /// Event.
+    /// Optional. Reasons for the annotation that are assigned to the event.
     #[prost(
         enumeration = "annotate_assessment_request::Reason",
         repeated,
@@ -204,11 +203,11 @@ pub struct AnnotateAssessmentRequest {
         tag = "3"
     )]
     pub reasons: ::prost::alloc::vec::Vec<i32>,
-    /// Optional. Optional unique stable hashed user identifier to apply to the
-    /// assessment. This is an alternative to setting the hashed_account_id in
-    /// CreateAssessment, for example when the account identifier is not yet known
-    /// in the initial request. It is recommended that the identifier is hashed
-    /// using hmac-sha256 with stable secret.
+    /// Optional. Unique stable hashed user identifier to apply to the assessment.
+    /// This is an alternative to setting the `hashed_account_id` in
+    /// `CreateAssessment`, for example, when the account identifier is not yet
+    /// known in the initial request. It is recommended that the identifier is
+    /// hashed using hmac-sha256 with stable secret.
     #[prost(bytes = "vec", tag = "4")]
     pub hashed_account_id: ::prost::alloc::vec::Vec<u8>,
     /// Optional. If the assessment is part of a payment transaction, provide
@@ -550,7 +549,6 @@ pub struct Event {
     pub transaction_data: ::core::option::Option<TransactionData>,
 }
 /// Transaction data associated with a payment protected by reCAPTCHA Enterprise.
-/// All fields are optional.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionData {

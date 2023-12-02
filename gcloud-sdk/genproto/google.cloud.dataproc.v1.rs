@@ -1692,6 +1692,273 @@ pub mod batch_controller_client {
         }
     }
 }
+/// Metadata describing the Batch operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchOperationMetadata {
+    /// Name of the batch for the operation.
+    #[prost(string, tag = "1")]
+    pub batch: ::prost::alloc::string::String,
+    /// Batch UUID for the operation.
+    #[prost(string, tag = "2")]
+    pub batch_uuid: ::prost::alloc::string::String,
+    /// The time when the operation was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time when the operation finished.
+    #[prost(message, optional, tag = "4")]
+    pub done_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The operation type.
+    #[prost(enumeration = "batch_operation_metadata::BatchOperationType", tag = "6")]
+    pub operation_type: i32,
+    /// Short description of the operation.
+    #[prost(string, tag = "7")]
+    pub description: ::prost::alloc::string::String,
+    /// Labels associated with the operation.
+    #[prost(map = "string, string", tag = "8")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Warnings encountered during operation execution.
+    #[prost(string, repeated, tag = "9")]
+    pub warnings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `BatchOperationMetadata`.
+pub mod batch_operation_metadata {
+    /// Operation type for Batch resources
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BatchOperationType {
+        /// Batch operation type is unknown.
+        Unspecified = 0,
+        /// Batch operation type.
+        Batch = 1,
+    }
+    impl BatchOperationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                BatchOperationType::Unspecified => "BATCH_OPERATION_TYPE_UNSPECIFIED",
+                BatchOperationType::Batch => "BATCH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BATCH_OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BATCH" => Some(Self::Batch),
+                _ => None,
+            }
+        }
+    }
+}
+/// The status of the operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClusterOperationStatus {
+    /// Output only. A message containing the operation state.
+    #[prost(enumeration = "cluster_operation_status::State", tag = "1")]
+    pub state: i32,
+    /// Output only. A message containing the detailed operation state.
+    #[prost(string, tag = "2")]
+    pub inner_state: ::prost::alloc::string::String,
+    /// Output only. A message containing any operation metadata details.
+    #[prost(string, tag = "3")]
+    pub details: ::prost::alloc::string::String,
+    /// Output only. The time this state was entered.
+    #[prost(message, optional, tag = "4")]
+    pub state_start_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `ClusterOperationStatus`.
+pub mod cluster_operation_status {
+    /// The operation state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unused.
+        Unknown = 0,
+        /// The operation has been created.
+        Pending = 1,
+        /// The operation is running.
+        Running = 2,
+        /// The operation is done; either cancelled or completed.
+        Done = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unknown => "UNKNOWN",
+                State::Pending => "PENDING",
+                State::Running => "RUNNING",
+                State::Done => "DONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "DONE" => Some(Self::Done),
+                _ => None,
+            }
+        }
+    }
+}
+/// Metadata describing the operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClusterOperationMetadata {
+    /// Output only. Name of the cluster for the operation.
+    #[prost(string, tag = "7")]
+    pub cluster_name: ::prost::alloc::string::String,
+    /// Output only. Cluster UUID for the operation.
+    #[prost(string, tag = "8")]
+    pub cluster_uuid: ::prost::alloc::string::String,
+    /// Output only. Current operation status.
+    #[prost(message, optional, tag = "9")]
+    pub status: ::core::option::Option<ClusterOperationStatus>,
+    /// Output only. The previous operation status.
+    #[prost(message, repeated, tag = "10")]
+    pub status_history: ::prost::alloc::vec::Vec<ClusterOperationStatus>,
+    /// Output only. The operation type.
+    #[prost(string, tag = "11")]
+    pub operation_type: ::prost::alloc::string::String,
+    /// Output only. Short description of operation.
+    #[prost(string, tag = "12")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. Labels associated with the operation
+    #[prost(map = "string, string", tag = "13")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. Errors encountered during operation execution.
+    #[prost(string, repeated, tag = "14")]
+    pub warnings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Child operation ids
+    #[prost(string, repeated, tag = "15")]
+    pub child_operation_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Metadata describing the node group operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NodeGroupOperationMetadata {
+    /// Output only. Node group ID for the operation.
+    #[prost(string, tag = "1")]
+    pub node_group_id: ::prost::alloc::string::String,
+    /// Output only. Cluster UUID associated with the node group operation.
+    #[prost(string, tag = "2")]
+    pub cluster_uuid: ::prost::alloc::string::String,
+    /// Output only. Current operation status.
+    #[prost(message, optional, tag = "3")]
+    pub status: ::core::option::Option<ClusterOperationStatus>,
+    /// Output only. The previous operation status.
+    #[prost(message, repeated, tag = "4")]
+    pub status_history: ::prost::alloc::vec::Vec<ClusterOperationStatus>,
+    /// The operation type.
+    #[prost(
+        enumeration = "node_group_operation_metadata::NodeGroupOperationType",
+        tag = "5"
+    )]
+    pub operation_type: i32,
+    /// Output only. Short description of operation.
+    #[prost(string, tag = "6")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. Labels associated with the operation.
+    #[prost(map = "string, string", tag = "7")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. Errors encountered during operation execution.
+    #[prost(string, repeated, tag = "8")]
+    pub warnings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `NodeGroupOperationMetadata`.
+pub mod node_group_operation_metadata {
+    /// Operation type for node group resources.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum NodeGroupOperationType {
+        /// Node group operation type is unknown.
+        Unspecified = 0,
+        /// Create node group operation type.
+        Create = 1,
+        /// Update node group operation type.
+        Update = 2,
+        /// Delete node group operation type.
+        Delete = 3,
+        /// Resize node group operation type.
+        Resize = 4,
+    }
+    impl NodeGroupOperationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                NodeGroupOperationType::Unspecified => {
+                    "NODE_GROUP_OPERATION_TYPE_UNSPECIFIED"
+                }
+                NodeGroupOperationType::Create => "CREATE",
+                NodeGroupOperationType::Update => "UPDATE",
+                NodeGroupOperationType::Delete => "DELETE",
+                NodeGroupOperationType::Resize => "RESIZE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NODE_GROUP_OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATE" => Some(Self::Create),
+                "UPDATE" => Some(Self::Update),
+                "DELETE" => Some(Self::Delete),
+                "RESIZE" => Some(Self::Resize),
+                _ => None,
+            }
+        }
+    }
+}
 /// Describes the identifying information, config, and status of
 /// a Dataproc cluster
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2254,6 +2521,10 @@ pub struct InstanceGroupConfig {
     /// provisioning models.
     #[prost(message, optional, tag = "13")]
     pub instance_flexibility_policy: ::core::option::Option<InstanceFlexibilityPolicy>,
+    /// Optional. Configuration to handle the startup of instances during cluster
+    /// create and update process.
+    #[prost(message, optional, tag = "14")]
+    pub startup_config: ::core::option::Option<StartupConfig>,
 }
 /// Nested message and enum types in `InstanceGroupConfig`.
 pub mod instance_group_config {
@@ -2320,6 +2591,20 @@ pub mod instance_group_config {
             }
         }
     }
+}
+/// Configuration to handle the startup of instances during cluster create and
+/// update process.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StartupConfig {
+    /// Optional. The config setting to enable cluster creation/ updation to be
+    /// successful only after required_registration_fraction of instances are up
+    /// and running. This configuration is applicable to only secondary workers for
+    /// now. The cluster will fail if required_registration_fraction of instances
+    /// are not available. This will include instance creation, agent registration,
+    /// and service registration (if enabled).
+    #[prost(double, optional, tag = "1")]
+    pub required_registration_fraction: ::core::option::Option<f64>,
 }
 /// A reference to a Compute Engine instance.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5581,273 +5866,6 @@ pub mod node_group_controller_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
-        }
-    }
-}
-/// Metadata describing the Batch operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BatchOperationMetadata {
-    /// Name of the batch for the operation.
-    #[prost(string, tag = "1")]
-    pub batch: ::prost::alloc::string::String,
-    /// Batch UUID for the operation.
-    #[prost(string, tag = "2")]
-    pub batch_uuid: ::prost::alloc::string::String,
-    /// The time when the operation was created.
-    #[prost(message, optional, tag = "3")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The time when the operation finished.
-    #[prost(message, optional, tag = "4")]
-    pub done_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The operation type.
-    #[prost(enumeration = "batch_operation_metadata::BatchOperationType", tag = "6")]
-    pub operation_type: i32,
-    /// Short description of the operation.
-    #[prost(string, tag = "7")]
-    pub description: ::prost::alloc::string::String,
-    /// Labels associated with the operation.
-    #[prost(map = "string, string", tag = "8")]
-    pub labels: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
-    /// Warnings encountered during operation execution.
-    #[prost(string, repeated, tag = "9")]
-    pub warnings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// Nested message and enum types in `BatchOperationMetadata`.
-pub mod batch_operation_metadata {
-    /// Operation type for Batch resources
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum BatchOperationType {
-        /// Batch operation type is unknown.
-        Unspecified = 0,
-        /// Batch operation type.
-        Batch = 1,
-    }
-    impl BatchOperationType {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                BatchOperationType::Unspecified => "BATCH_OPERATION_TYPE_UNSPECIFIED",
-                BatchOperationType::Batch => "BATCH",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "BATCH_OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                "BATCH" => Some(Self::Batch),
-                _ => None,
-            }
-        }
-    }
-}
-/// The status of the operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ClusterOperationStatus {
-    /// Output only. A message containing the operation state.
-    #[prost(enumeration = "cluster_operation_status::State", tag = "1")]
-    pub state: i32,
-    /// Output only. A message containing the detailed operation state.
-    #[prost(string, tag = "2")]
-    pub inner_state: ::prost::alloc::string::String,
-    /// Output only. A message containing any operation metadata details.
-    #[prost(string, tag = "3")]
-    pub details: ::prost::alloc::string::String,
-    /// Output only. The time this state was entered.
-    #[prost(message, optional, tag = "4")]
-    pub state_start_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// Nested message and enum types in `ClusterOperationStatus`.
-pub mod cluster_operation_status {
-    /// The operation state.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum State {
-        /// Unused.
-        Unknown = 0,
-        /// The operation has been created.
-        Pending = 1,
-        /// The operation is running.
-        Running = 2,
-        /// The operation is done; either cancelled or completed.
-        Done = 3,
-    }
-    impl State {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                State::Unknown => "UNKNOWN",
-                State::Pending => "PENDING",
-                State::Running => "RUNNING",
-                State::Done => "DONE",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "UNKNOWN" => Some(Self::Unknown),
-                "PENDING" => Some(Self::Pending),
-                "RUNNING" => Some(Self::Running),
-                "DONE" => Some(Self::Done),
-                _ => None,
-            }
-        }
-    }
-}
-/// Metadata describing the operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ClusterOperationMetadata {
-    /// Output only. Name of the cluster for the operation.
-    #[prost(string, tag = "7")]
-    pub cluster_name: ::prost::alloc::string::String,
-    /// Output only. Cluster UUID for the operation.
-    #[prost(string, tag = "8")]
-    pub cluster_uuid: ::prost::alloc::string::String,
-    /// Output only. Current operation status.
-    #[prost(message, optional, tag = "9")]
-    pub status: ::core::option::Option<ClusterOperationStatus>,
-    /// Output only. The previous operation status.
-    #[prost(message, repeated, tag = "10")]
-    pub status_history: ::prost::alloc::vec::Vec<ClusterOperationStatus>,
-    /// Output only. The operation type.
-    #[prost(string, tag = "11")]
-    pub operation_type: ::prost::alloc::string::String,
-    /// Output only. Short description of operation.
-    #[prost(string, tag = "12")]
-    pub description: ::prost::alloc::string::String,
-    /// Output only. Labels associated with the operation
-    #[prost(map = "string, string", tag = "13")]
-    pub labels: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
-    /// Output only. Errors encountered during operation execution.
-    #[prost(string, repeated, tag = "14")]
-    pub warnings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Output only. Child operation ids
-    #[prost(string, repeated, tag = "15")]
-    pub child_operation_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// Metadata describing the node group operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct NodeGroupOperationMetadata {
-    /// Output only. Node group ID for the operation.
-    #[prost(string, tag = "1")]
-    pub node_group_id: ::prost::alloc::string::String,
-    /// Output only. Cluster UUID associated with the node group operation.
-    #[prost(string, tag = "2")]
-    pub cluster_uuid: ::prost::alloc::string::String,
-    /// Output only. Current operation status.
-    #[prost(message, optional, tag = "3")]
-    pub status: ::core::option::Option<ClusterOperationStatus>,
-    /// Output only. The previous operation status.
-    #[prost(message, repeated, tag = "4")]
-    pub status_history: ::prost::alloc::vec::Vec<ClusterOperationStatus>,
-    /// The operation type.
-    #[prost(
-        enumeration = "node_group_operation_metadata::NodeGroupOperationType",
-        tag = "5"
-    )]
-    pub operation_type: i32,
-    /// Output only. Short description of operation.
-    #[prost(string, tag = "6")]
-    pub description: ::prost::alloc::string::String,
-    /// Output only. Labels associated with the operation.
-    #[prost(map = "string, string", tag = "7")]
-    pub labels: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
-    /// Output only. Errors encountered during operation execution.
-    #[prost(string, repeated, tag = "8")]
-    pub warnings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// Nested message and enum types in `NodeGroupOperationMetadata`.
-pub mod node_group_operation_metadata {
-    /// Operation type for node group resources.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum NodeGroupOperationType {
-        /// Node group operation type is unknown.
-        Unspecified = 0,
-        /// Create node group operation type.
-        Create = 1,
-        /// Update node group operation type.
-        Update = 2,
-        /// Delete node group operation type.
-        Delete = 3,
-        /// Resize node group operation type.
-        Resize = 4,
-    }
-    impl NodeGroupOperationType {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                NodeGroupOperationType::Unspecified => {
-                    "NODE_GROUP_OPERATION_TYPE_UNSPECIFIED"
-                }
-                NodeGroupOperationType::Create => "CREATE",
-                NodeGroupOperationType::Update => "UPDATE",
-                NodeGroupOperationType::Delete => "DELETE",
-                NodeGroupOperationType::Resize => "RESIZE",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "NODE_GROUP_OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                "CREATE" => Some(Self::Create),
-                "UPDATE" => Some(Self::Update),
-                "DELETE" => Some(Self::Delete),
-                "RESIZE" => Some(Self::Resize),
-                _ => None,
-            }
         }
     }
 }

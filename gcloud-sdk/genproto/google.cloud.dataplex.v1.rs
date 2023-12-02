@@ -2561,9 +2561,23 @@ pub struct DataQualityResult {
     /// Overall data quality result -- `true` if all rules passed.
     #[prost(bool, tag = "5")]
     pub passed: bool,
+    /// Output only. The overall data quality score.
+    ///
+    /// The score ranges between \[0, 100\] (up to two decimal points).
+    #[prost(float, optional, tag = "9")]
+    pub score: ::core::option::Option<f32>,
     /// A list of results at the dimension level.
+    ///
+    /// A dimension will have a corresponding `DataQualityDimensionResult` if and
+    /// only if there is at least one rule with the 'dimension' field set to it.
     #[prost(message, repeated, tag = "2")]
     pub dimensions: ::prost::alloc::vec::Vec<DataQualityDimensionResult>,
+    /// Output only. A list of results at the column level.
+    ///
+    /// A column will have a corresponding `DataQualityColumnResult` if and only if
+    /// there is at least one rule with the 'column' field set to it.
+    #[prost(message, repeated, tag = "10")]
+    pub columns: ::prost::alloc::vec::Vec<DataQualityColumnResult>,
     /// A list of all the rules in a job, and their results.
     #[prost(message, repeated, tag = "3")]
     pub rules: ::prost::alloc::vec::Vec<DataQualityRuleResult>,
@@ -2709,6 +2723,13 @@ pub struct DataQualityDimensionResult {
     /// Whether the dimension passed or failed.
     #[prost(bool, tag = "3")]
     pub passed: bool,
+    /// Output only. The dimension-level data quality score for this data scan job
+    /// if and only if the 'dimension' field is set.
+    ///
+    /// The score ranges between \[0, 100\] (up to two decimal
+    /// points).
+    #[prost(float, optional, tag = "4")]
+    pub score: ::core::option::Option<f32>,
 }
 /// A dimension captures data quality intent about a defined subset of the rules
 /// specified.
@@ -2966,6 +2987,22 @@ pub mod data_quality_rule {
         #[prost(message, tag = "201")]
         TableConditionExpectation(TableConditionExpectation),
     }
+}
+/// DataQualityColumnResult provides a more detailed, per-column view of
+/// the results.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataQualityColumnResult {
+    /// Output only. The column specified in the DataQualityRule.
+    #[prost(string, tag = "1")]
+    pub column: ::prost::alloc::string::String,
+    /// Output only. The column-level data quality score for this data scan job if
+    /// and only if the 'column' field is set.
+    ///
+    /// The score ranges between between \[0, 100\] (up to two decimal
+    /// points).
+    #[prost(float, optional, tag = "2")]
+    pub score: ::core::option::Option<f32>,
 }
 /// ResourceAccessSpec holds the access control configuration to be enforced
 /// on the resources, for example, Cloud Storage bucket, BigQuery dataset,
@@ -8091,6 +8128,12 @@ pub mod governance_event {
         BigqueryPolicyTagSetIamPolicy = 13,
         /// Access policy update event.
         AccessPolicyUpdate = 14,
+        /// Number of resources matched with particular Query.
+        GovernanceRuleMatchedResources = 15,
+        /// Rule processing exceeds the allowed limit.
+        GovernanceRuleSearchLimitExceeds = 16,
+        /// Rule processing errors.
+        GovernanceRuleErrors = 17,
     }
     impl EventType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -8114,6 +8157,13 @@ pub mod governance_event {
                     "BIGQUERY_POLICY_TAG_SET_IAM_POLICY"
                 }
                 EventType::AccessPolicyUpdate => "ACCESS_POLICY_UPDATE",
+                EventType::GovernanceRuleMatchedResources => {
+                    "GOVERNANCE_RULE_MATCHED_RESOURCES"
+                }
+                EventType::GovernanceRuleSearchLimitExceeds => {
+                    "GOVERNANCE_RULE_SEARCH_LIMIT_EXCEEDS"
+                }
+                EventType::GovernanceRuleErrors => "GOVERNANCE_RULE_ERRORS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8134,6 +8184,13 @@ pub mod governance_event {
                     Some(Self::BigqueryPolicyTagSetIamPolicy)
                 }
                 "ACCESS_POLICY_UPDATE" => Some(Self::AccessPolicyUpdate),
+                "GOVERNANCE_RULE_MATCHED_RESOURCES" => {
+                    Some(Self::GovernanceRuleMatchedResources)
+                }
+                "GOVERNANCE_RULE_SEARCH_LIMIT_EXCEEDS" => {
+                    Some(Self::GovernanceRuleSearchLimitExceeds)
+                }
+                "GOVERNANCE_RULE_ERRORS" => Some(Self::GovernanceRuleErrors),
                 _ => None,
             }
         }
@@ -8218,6 +8275,34 @@ pub mod data_scan_event {
         pub dimension_passed: ::std::collections::HashMap<
             ::prost::alloc::string::String,
             bool,
+        >,
+        /// The table-level data quality score for the data scan job.
+        ///
+        /// The data quality score ranges between \[0, 100\] (up to two decimal
+        /// points).
+        #[prost(float, tag = "4")]
+        pub score: f32,
+        /// The score of each dimension for data quality result.
+        /// The key of the map is the name of the dimension.
+        /// The value is the data quality score for the dimension.
+        ///
+        /// The score ranges between \[0, 100\] (up to two decimal
+        /// points).
+        #[prost(map = "string, float", tag = "5")]
+        pub dimension_score: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            f32,
+        >,
+        /// The score of each column scanned in the data scan job.
+        /// The key of the map is the name of the column.
+        /// The value is the data quality score for the column.
+        ///
+        /// The score ranges between \[0, 100\] (up to two decimal
+        /// points).
+        #[prost(map = "string, float", tag = "6")]
+        pub column_score: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            f32,
         >,
     }
     /// Applied configs for data profile type data scan job.

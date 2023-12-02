@@ -1058,6 +1058,19 @@ pub struct MethodSettings {
     ///              seconds: 54000 # 90 minutes
     #[prost(message, optional, tag = "2")]
     pub long_running: ::core::option::Option<method_settings::LongRunning>,
+    /// List of top-level fields of the request message, that should be
+    /// automatically populated by the client libraries based on their
+    /// (google.api.field_info).format. Currently supported format: UUID4.
+    ///
+    /// Example of a YAML configuration:
+    ///
+    ///   publishing:
+    ///     method_settings:
+    ///       - selector: google.example.v1.ExampleService.CreateExample
+    ///         auto_populated_fields:
+    ///         - request_id
+    #[prost(string, repeated, tag = "3")]
+    pub auto_populated_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `MethodSettings`.
 pub mod method_settings {

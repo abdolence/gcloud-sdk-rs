@@ -2083,6 +2083,9 @@ pub mod security_posture_config {
         VulnerabilityDisabled = 1,
         /// Applies basic vulnerability scanning on the cluster.
         VulnerabilityBasic = 2,
+        /// Applies the Security Posture's vulnerability on cluster Enterprise level
+        /// features.
+        VulnerabilityEnterprise = 3,
     }
     impl VulnerabilityMode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2094,6 +2097,7 @@ pub mod security_posture_config {
                 VulnerabilityMode::Unspecified => "VULNERABILITY_MODE_UNSPECIFIED",
                 VulnerabilityMode::VulnerabilityDisabled => "VULNERABILITY_DISABLED",
                 VulnerabilityMode::VulnerabilityBasic => "VULNERABILITY_BASIC",
+                VulnerabilityMode::VulnerabilityEnterprise => "VULNERABILITY_ENTERPRISE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2102,6 +2106,7 @@ pub mod security_posture_config {
                 "VULNERABILITY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
                 "VULNERABILITY_DISABLED" => Some(Self::VulnerabilityDisabled),
                 "VULNERABILITY_BASIC" => Some(Self::VulnerabilityBasic),
+                "VULNERABILITY_ENTERPRISE" => Some(Self::VulnerabilityEnterprise),
                 _ => None,
             }
         }
@@ -3778,6 +3783,9 @@ pub struct NodePool {
     /// up-to-date value before proceeding.
     #[prost(string, tag = "110")]
     pub etag: ::prost::alloc::string::String,
+    /// Specifies the configuration of queued provisioning.
+    #[prost(message, optional, tag = "112")]
+    pub queued_provisioning: ::core::option::Option<node_pool::QueuedProvisioning>,
     /// Enable best effort provisioning for nodes
     #[prost(message, optional, tag = "113")]
     pub best_effort_provisioning: ::core::option::Option<BestEffortProvisioning>,
@@ -4016,6 +4024,16 @@ pub mod node_pool {
                 }
             }
         }
+    }
+    /// QueuedProvisioning defines the queued provisioning used by the node pool.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct QueuedProvisioning {
+        /// Denotes that this nodepool is QRM specific, meaning nodes can be only
+        /// obtained through queuing via the Cluster Autoscaler ProvisioningRequest
+        /// API.
+        #[prost(bool, tag = "1")]
+        pub enabled: bool,
     }
     /// The current status of the node pool instance.
     #[derive(
@@ -6384,6 +6402,9 @@ pub struct AdvancedDatapathObservabilityConfig {
         tag = "2"
     )]
     pub relay_mode: i32,
+    /// Enable Relay component
+    #[prost(bool, optional, tag = "3")]
+    pub enable_relay: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `AdvancedDatapathObservabilityConfig`.
 pub mod advanced_datapath_observability_config {

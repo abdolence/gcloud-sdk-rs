@@ -133,7 +133,10 @@ pub mod network_config {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileShareConfig {
-    /// The name of the file share (must be 16 characters or less).
+    /// Required. The name of the file share. Must use 1-16 characters for the
+    /// basic service tier and 1-63 characters for all other service tiers.
+    /// Must use lowercase letters, numbers, or underscores `\[a-z0-9_\]`. Must
+    /// start with a letter. Immutable.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// File share capacity in gigabytes (GB).
@@ -333,6 +336,9 @@ pub struct Instance {
     /// Output only. Reserved for future use.
     #[prost(message, optional, tag = "13")]
     pub satisfies_pzs: ::core::option::Option<bool>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "18")]
+    pub satisfies_pzi: bool,
     /// KMS key name used for data encryption.
     #[prost(string, tag = "14")]
     pub kms_key_name: ::prost::alloc::string::String,
@@ -387,6 +393,8 @@ pub mod instance {
         Suspending = 9,
         /// The instance is in the process of becoming active.
         Resuming = 10,
+        /// The instance is reverting to a snapshot.
+        Reverting = 12,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -405,6 +413,7 @@ pub mod instance {
                 State::Suspended => "SUSPENDED",
                 State::Suspending => "SUSPENDING",
                 State::Resuming => "RESUMING",
+                State::Reverting => "REVERTING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -420,6 +429,7 @@ pub mod instance {
                 "SUSPENDED" => Some(Self::Suspended),
                 "SUSPENDING" => Some(Self::Suspending),
                 "RESUMING" => Some(Self::Resuming),
+                "REVERTING" => Some(Self::Reverting),
                 _ => None,
             }
         }
@@ -458,6 +468,12 @@ pub mod instance {
         /// ENTERPRISE instances offer the features and availability needed for
         /// mission-critical workloads.
         Enterprise = 6,
+        /// ZONAL instances offer expanded capacity and performance scaling
+        /// capabilities.
+        Zonal = 7,
+        /// REGIONAL instances offer the features and availability needed for
+        /// mission-critical workloads.
+        Regional = 8,
     }
     impl Tier {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -473,6 +489,8 @@ pub mod instance {
                 Tier::BasicSsd => "BASIC_SSD",
                 Tier::HighScaleSsd => "HIGH_SCALE_SSD",
                 Tier::Enterprise => "ENTERPRISE",
+                Tier::Zonal => "ZONAL",
+                Tier::Regional => "REGIONAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -485,6 +503,8 @@ pub mod instance {
                 "BASIC_SSD" => Some(Self::BasicSsd),
                 "HIGH_SCALE_SSD" => Some(Self::HighScaleSsd),
                 "ENTERPRISE" => Some(Self::Enterprise),
+                "ZONAL" => Some(Self::Zonal),
+                "REGIONAL" => Some(Self::Regional),
                 _ => None,
             }
         }
@@ -598,6 +618,22 @@ pub mod restore_instance_request {
         #[prost(string, tag = "3")]
         SourceBackup(::prost::alloc::string::String),
     }
+}
+/// RevertInstanceRequest reverts the given instance's file share to the
+/// specified snapshot.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RevertInstanceRequest {
+    /// Required.
+    /// `projects/{project_id}/locations/{location_id}/instances/{instance_id}`.
+    /// The resource name of the instance, in the format
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The snapshot resource ID, in the format 'my-snapshot', where the
+    /// specified ID is the {snapshot_id} of the fully qualified name like
+    /// `projects/{project_id}/locations/{location_id}/instances/{instance_id}/snapshots/{snapshot_id}`
+    #[prost(string, tag = "2")]
+    pub target_snapshot_id: ::prost::alloc::string::String,
 }
 /// DeleteInstanceRequest deletes an instance.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -873,6 +909,9 @@ pub struct Backup {
     /// Output only. Reserved for future use.
     #[prost(message, optional, tag = "12")]
     pub satisfies_pzs: ::core::option::Option<bool>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "14")]
+    pub satisfies_pzi: bool,
     /// Immutable. KMS key name used for data encryption.
     #[prost(string, tag = "13")]
     pub kms_key: ::prost::alloc::string::String,
@@ -904,6 +943,9 @@ pub mod backup {
         Ready = 3,
         /// Backup is being deleted.
         Deleting = 4,
+        /// Backup is not valid and cannot be used for creating new instances or
+        /// restoring existing instances.
+        Invalid = 5,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -917,6 +959,7 @@ pub mod backup {
                 State::Finalizing => "FINALIZING",
                 State::Ready => "READY",
                 State::Deleting => "DELETING",
+                State::Invalid => "INVALID",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -927,6 +970,7 @@ pub mod backup {
                 "FINALIZING" => Some(Self::Finalizing),
                 "READY" => Some(Self::Ready),
                 "DELETING" => Some(Self::Deleting),
+                "INVALID" => Some(Self::Invalid),
                 _ => None,
             }
         }
@@ -1291,6 +1335,37 @@ pub mod cloud_filestore_manager_client {
                     GrpcMethod::new(
                         "google.cloud.filestore.v1.CloudFilestoreManager",
                         "RestoreInstance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Revert an existing instance's file system to a specified snapshot.
+        pub async fn revert_instance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RevertInstanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.filestore.v1.CloudFilestoreManager/RevertInstance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "RevertInstance",
                     ),
                 );
             self.inner.unary(req, path, codec).await

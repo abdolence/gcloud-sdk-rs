@@ -1902,6 +1902,10 @@ pub struct MachineSpec {
     /// The number of accelerators to attach to the machine.
     #[prost(int32, tag = "3")]
     pub accelerator_count: i32,
+    /// Immutable. The topology of the TPUs. Corresponds to the TPU topologies
+    /// available from GKE. (Example: tpu_topology: "2x2x1").
+    #[prost(string, tag = "4")]
+    pub tpu_topology: ::prost::alloc::string::String,
 }
 /// A description of resources that are dedicated to a DeployedModel, and
 /// that need a higher degree of manual configuration.
@@ -2845,6 +2849,31 @@ pub struct ModelContainerSpec {
     ///    variable](<https://cloud.google.com/vertex-ai/docs/predictions/custom-container-requirements#aip-variables>).)
     #[prost(string, tag = "7")]
     pub health_route: ::prost::alloc::string::String,
+    /// Immutable. List of ports to expose from the container. Vertex AI sends gRPC
+    /// prediction requests that it receives to the first port on this list. Vertex
+    /// AI also sends liveness and health checks to this port.
+    ///
+    /// If you do not specify this field, gRPC requests to the container will be
+    /// disabled.
+    ///
+    /// Vertex AI does not use ports other than the first one listed. This field
+    /// corresponds to the `ports` field of the Kubernetes Containers v1 core API.
+    #[prost(message, repeated, tag = "9")]
+    pub grpc_ports: ::prost::alloc::vec::Vec<Port>,
+    /// Immutable. Deployment timeout.
+    /// Limit for deployment timeout is 2 hours.
+    #[prost(message, optional, tag = "10")]
+    pub deployment_timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Immutable. The amount of the VM memory to reserve as the shared memory for
+    /// the model in megabytes.
+    #[prost(int64, tag = "11")]
+    pub shared_memory_size_mb: i64,
+    /// Immutable. Specification for Kubernetes startup probe.
+    #[prost(message, optional, tag = "12")]
+    pub startup_probe: ::core::option::Option<Probe>,
+    /// Immutable. Specification for Kubernetes readiness probe.
+    #[prost(message, optional, tag = "13")]
+    pub health_probe: ::core::option::Option<Probe>,
 }
 /// Represents a network port in a container.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2924,6 +2953,49 @@ pub mod model_source_info {
                 _ => None,
             }
         }
+    }
+}
+/// Probe describes a health check to be performed against a container to
+/// determine whether it is alive or ready to receive traffic.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Probe {
+    /// How often (in seconds) to perform the probe. Default to 10 seconds.
+    /// Minimum value is 1. Must be less than timeout_seconds.
+    ///
+    /// Maps to Kubernetes probe argument 'periodSeconds'.
+    #[prost(int32, tag = "2")]
+    pub period_seconds: i32,
+    /// Number of seconds after which the probe times out. Defaults to 1 second.
+    /// Minimum value is 1. Must be greater or equal to period_seconds.
+    ///
+    /// Maps to Kubernetes probe argument 'timeoutSeconds'.
+    #[prost(int32, tag = "3")]
+    pub timeout_seconds: i32,
+    #[prost(oneof = "probe::ProbeType", tags = "1")]
+    pub probe_type: ::core::option::Option<probe::ProbeType>,
+}
+/// Nested message and enum types in `Probe`.
+pub mod probe {
+    /// ExecAction specifies a command to execute.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ExecAction {
+        /// Command is the command line to execute inside the container, the working
+        /// directory for the command is root ('/') in the container's filesystem.
+        /// The command is simply exec'd, it is not run inside a shell, so
+        /// traditional shell instructions ('|', etc) won't work. To use a shell, you
+        /// need to explicitly call out to that shell. Exit status of 0 is treated as
+        /// live/healthy and non-zero is unhealthy.
+        #[prost(string, repeated, tag = "1")]
+        pub command: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ProbeType {
+        /// Exec specifies the action to take.
+        #[prost(message, tag = "1")]
+        Exec(ExecAction),
     }
 }
 /// Contains model information necessary to perform batch prediction without
@@ -3589,6 +3661,12 @@ pub struct CustomJobSpec {
     ///    * AIP_TENSORBOARD_LOG_DIR = `<base_output_directory>/<trial_id>/logs/`
     #[prost(message, optional, tag = "6")]
     pub base_output_directory: ::core::option::Option<GcsDestination>,
+    /// The ID of the location to store protected artifacts. e.g. us-central1.
+    /// Populate only when the location is different than CustomJob location.
+    /// List of supported locations:
+    /// <https://cloud.google.com/vertex-ai/docs/general/locations>
+    #[prost(string, tag = "19")]
+    pub protected_artifact_location_id: ::prost::alloc::string::String,
     /// Optional. The name of a Vertex AI
     /// [Tensorboard][google.cloud.aiplatform.v1.Tensorboard] resource to which
     /// this CustomJob will upload Tensorboard logs. Format:
@@ -7192,15 +7270,15 @@ pub struct FeatureStatsAnomaly {
     #[prost(message, optional, tag = "8")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// Feature Metadata information that describes an attribute of an entity type.
-/// For example, apple is an entity type, and color is a feature that describes
-/// apple.
+/// Feature Metadata information.
+/// For example, color is a feature that describes an apple.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Feature {
     /// Immutable. Name of the Feature.
     /// Format:
     /// `projects/{project}/locations/{location}/featurestores/{featurestore}/entityTypes/{entity_type}/features/{feature}`
+    /// `projects/{project}/locations/{location}/featureGroups/{feature_group}/features/{feature}`
     ///
     /// The last part feature is assigned by the client. The feature can be up to
     /// 64 characters long and can consist only of ASCII Latin letters A-Z and a-z,
@@ -7211,13 +7289,16 @@ pub struct Feature {
     /// Description of the Feature.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
-    /// Required. Immutable. Type of Feature value.
+    /// Immutable. Only applicable for Vertex AI Feature Store (Legacy).
+    /// Type of Feature value.
     #[prost(enumeration = "feature::ValueType", tag = "3")]
     pub value_type: i32,
-    /// Output only. Timestamp when this EntityType was created.
+    /// Output only. Only applicable for Vertex AI Feature Store (Legacy).
+    /// Timestamp when this EntityType was created.
     #[prost(message, optional, tag = "4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Timestamp when this EntityType was most recently updated.
+    /// Output only. Only applicable for Vertex AI Feature Store (Legacy).
+    /// Timestamp when this EntityType was most recently updated.
     #[prost(message, optional, tag = "5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. The labels with user-defined metadata to organize your Features.
@@ -7240,8 +7321,10 @@ pub struct Feature {
     /// "overwrite" update happens.
     #[prost(string, tag = "7")]
     pub etag: ::prost::alloc::string::String,
-    /// Optional. If not set, use the monitoring_config defined for the EntityType
-    /// this Feature belongs to. Only Features with type
+    /// Optional. Only applicable for Vertex AI Feature Store (Legacy).
+    /// If not set, use the monitoring_config defined for the EntityType this
+    /// Feature belongs to.
+    /// Only Features with type
     /// ([Feature.ValueType][google.cloud.aiplatform.v1.Feature.ValueType]) BOOL,
     /// STRING, DOUBLE or INT64 can enable monitoring.
     ///
@@ -7249,12 +7332,17 @@ pub struct Feature {
     /// config on EntityType.
     #[prost(bool, tag = "12")]
     pub disable_monitoring: bool,
-    /// Output only. The list of historical stats and anomalies with specified
-    /// objectives.
+    /// Output only. Only applicable for Vertex AI Feature Store (Legacy).
+    /// The list of historical stats and anomalies with specified objectives.
     #[prost(message, repeated, tag = "11")]
     pub monitoring_stats_anomalies: ::prost::alloc::vec::Vec<
         feature::MonitoringStatsAnomaly,
     >,
+    /// Only applicable for Vertex AI Feature Store.
+    /// The name of the BigQuery Table/View columnn hosting data for this version.
+    /// If no value is provided, will use feature_id.
+    #[prost(string, tag = "106")]
+    pub version_column_name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Feature`.
 pub mod feature {
@@ -7324,6 +7412,7 @@ pub mod feature {
             }
         }
     }
+    /// Only applicable for Vertex AI Legacy Feature Store.
     /// An enum representing the value type of a feature.
     #[derive(
         Clone,
@@ -7396,41 +7485,86 @@ pub mod feature {
         }
     }
 }
-/// Matcher for Features of an EntityType by Feature ID.
+/// Vertex AI Feature Group.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct IdMatcher {
-    /// Required. The following are accepted as `ids`:
-    ///
-    ///   * A single-element list containing only `*`, which selects all Features
-    ///   in the target EntityType, or
-    ///   * A list containing only Feature IDs, which selects only Features with
-    ///   those IDs in the target EntityType.
-    #[prost(string, repeated, tag = "1")]
-    pub ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// Selector for Features of an EntityType.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeatureSelector {
-    /// Required. Matches Features based on ID.
-    #[prost(message, optional, tag = "1")]
-    pub id_matcher: ::core::option::Option<IdMatcher>,
-}
-/// Vertex AI Feature Store provides a centralized repository for organizing,
-/// storing, and serving ML features. The Featurestore is a top-level container
-/// for your features and their values.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Featurestore {
-    /// Output only. Name of the Featurestore. Format:
-    /// `projects/{project}/locations/{location}/featurestores/{featurestore}`
+pub struct FeatureGroup {
+    /// Output only. Name of the FeatureGroup. Format:
+    /// `projects/{project}/locations/{location}/featureGroups/{featureGroup}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. Timestamp when this Featurestore was created.
+    /// Output only. Timestamp when this FeatureGroup was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this FeatureGroup was last updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Used to perform consistent read-modify-write updates. If not set,
+    /// a blind "overwrite" update happens.
+    #[prost(string, tag = "4")]
+    pub etag: ::prost::alloc::string::String,
+    /// Optional. The labels with user-defined metadata to organize your
+    /// FeatureGroup.
+    ///
+    /// Label keys and values can be no longer than 64 characters
+    /// (Unicode codepoints), can only contain lowercase letters, numeric
+    /// characters, underscores and dashes. International characters are allowed.
+    ///
+    /// See <https://goo.gl/xmQnxf> for more information on and examples of labels.
+    /// No more than 64 user labels can be associated with one
+    /// FeatureGroup(System labels are excluded)." System reserved label keys
+    /// are prefixed with "aiplatform.googleapis.com/" and are immutable.
+    #[prost(map = "string, string", tag = "5")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Description of the FeatureGroup.
+    #[prost(string, tag = "6")]
+    pub description: ::prost::alloc::string::String,
+    #[prost(oneof = "feature_group::Source", tags = "7")]
+    pub source: ::core::option::Option<feature_group::Source>,
+}
+/// Nested message and enum types in `FeatureGroup`.
+pub mod feature_group {
+    /// Input source type for BigQuery Tables and Views.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct BigQuery {
+        /// Required. Immutable. The BigQuery source URI that points to either a
+        /// BigQuery Table or View.
+        #[prost(message, optional, tag = "1")]
+        pub big_query_source: ::core::option::Option<super::BigQuerySource>,
+        /// Optional. Columns to construct entity_id / row keys. Currently only
+        /// supports 1 entity_id_column. If not provided defaults to `entity_id`.
+        #[prost(string, repeated, tag = "2")]
+        pub entity_id_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Indicates that features for this group come from BigQuery Table/View.
+        /// By default treats the source as a sparse time series source, which is
+        /// required to have an entity_id and a feature_timestamp column in the
+        /// source.
+        #[prost(message, tag = "7")]
+        BigQuery(BigQuery),
+    }
+}
+/// Vertex AI Feature Online Store provides a centralized repository for serving
+/// ML features and embedding indexes at low latency. The Feature Online Store is
+/// a top-level container.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FeatureOnlineStore {
+    /// Output only. Name of the FeatureOnlineStore. Format:
+    /// `projects/{project}/locations/{location}/featureOnlineStores/{featureOnlineStore}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Timestamp when this FeatureOnlineStore was created.
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Timestamp when this Featurestore was last updated.
+    /// Output only. Timestamp when this FeatureOnlineStore was last updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Used to perform consistent read-modify-write updates. If not set,
@@ -7438,91 +7572,60 @@ pub struct Featurestore {
     #[prost(string, tag = "5")]
     pub etag: ::prost::alloc::string::String,
     /// Optional. The labels with user-defined metadata to organize your
-    /// Featurestore.
+    /// FeatureOnlineStore.
     ///
     /// Label keys and values can be no longer than 64 characters
     /// (Unicode codepoints), can only contain lowercase letters, numeric
     /// characters, underscores and dashes. International characters are allowed.
     ///
     /// See <https://goo.gl/xmQnxf> for more information on and examples of labels.
-    /// No more than 64 user labels can be associated with one Featurestore(System
-    /// labels are excluded)."
-    /// System reserved label keys are prefixed with "aiplatform.googleapis.com/"
-    /// and are immutable.
+    /// No more than 64 user labels can be associated with one
+    /// FeatureOnlineStore(System labels are excluded)." System reserved label keys
+    /// are prefixed with "aiplatform.googleapis.com/" and are immutable.
     #[prost(map = "string, string", tag = "6")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Optional. Config for online storage resources. The field should not
-    /// co-exist with the field of `OnlineStoreReplicationConfig`. If both of it
-    /// and OnlineStoreReplicationConfig are unset, the feature store will not have
-    /// an online store and cannot be used for online serving.
-    #[prost(message, optional, tag = "7")]
-    pub online_serving_config: ::core::option::Option<featurestore::OnlineServingConfig>,
-    /// Output only. State of the featurestore.
-    #[prost(enumeration = "featurestore::State", tag = "8")]
+    /// Output only. State of the featureOnlineStore.
+    #[prost(enumeration = "feature_online_store::State", tag = "7")]
     pub state: i32,
-    /// Optional. TTL in days for feature values that will be stored in online
-    /// serving storage. The Feature Store online storage periodically removes
-    /// obsolete feature values older than `online_storage_ttl_days` since the
-    /// feature generation time. Note that `online_storage_ttl_days` should be less
-    /// than or equal to `offline_storage_ttl_days` for each EntityType under a
-    /// featurestore. If not set, default to 4000 days
-    #[prost(int32, tag = "13")]
-    pub online_storage_ttl_days: i32,
-    /// Optional. Customer-managed encryption key spec for data storage. If set,
-    /// both of the online and offline data storage will be secured by this key.
-    #[prost(message, optional, tag = "10")]
-    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+    #[prost(oneof = "feature_online_store::StorageType", tags = "8")]
+    pub storage_type: ::core::option::Option<feature_online_store::StorageType>,
 }
-/// Nested message and enum types in `Featurestore`.
-pub mod featurestore {
-    /// OnlineServingConfig specifies the details for provisioning online serving
-    /// resources.
+/// Nested message and enum types in `FeatureOnlineStore`.
+pub mod feature_online_store {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct OnlineServingConfig {
-        /// The number of nodes for the online store. The number of nodes doesn't
-        /// scale automatically, but you can manually update the number of
-        /// nodes. If set to 0, the featurestore will not have an
-        /// online store and cannot be used for online serving.
-        #[prost(int32, tag = "2")]
-        pub fixed_node_count: i32,
-        /// Online serving scaling configuration.
-        /// Only one of `fixed_node_count` and `scaling` can be set. Setting one will
-        /// reset the other.
-        #[prost(message, optional, tag = "4")]
-        pub scaling: ::core::option::Option<online_serving_config::Scaling>,
+    pub struct Bigtable {
+        /// Required. Autoscaling config applied to Bigtable Instance.
+        #[prost(message, optional, tag = "1")]
+        pub auto_scaling: ::core::option::Option<bigtable::AutoScaling>,
     }
-    /// Nested message and enum types in `OnlineServingConfig`.
-    pub mod online_serving_config {
-        /// Online serving scaling configuration. If min_node_count and
-        /// max_node_count are set to the same value, the cluster will be configured
-        /// with the fixed number of node (no auto-scaling).
+    /// Nested message and enum types in `Bigtable`.
+    pub mod bigtable {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct Scaling {
+        pub struct AutoScaling {
             /// Required. The minimum number of nodes to scale down to. Must be greater
             /// than or equal to 1.
             #[prost(int32, tag = "1")]
             pub min_node_count: i32,
-            /// The maximum number of nodes to scale up to. Must be greater than
-            /// min_node_count, and less than or equal to 10 times of 'min_node_count'.
+            /// Required. The maximum number of nodes to scale up to. Must be greater
+            /// than or equal to min_node_count, and less than or equal to 10 times of
+            /// 'min_node_count'.
             #[prost(int32, tag = "2")]
             pub max_node_count: i32,
-            /// Optional. The cpu utilization that the Autoscaler should be trying to
-            /// achieve. This number is on a scale from 0 (no utilization) to 100
-            /// (total utilization), and is limited between 10 and 80. When a cluster's
-            /// CPU utilization exceeds the target that you have set, Bigtable
-            /// immediately adds nodes to the cluster. When CPU utilization is
-            /// substantially lower than the target, Bigtable removes nodes. If not set
-            /// or set to 0, default to 50.
+            /// Optional. A percentage of the cluster's CPU capacity. Can be from 10%
+            /// to 80%. When a cluster's CPU utilization exceeds the target that you
+            /// have set, Bigtable immediately adds nodes to the cluster. When CPU
+            /// utilization is substantially lower than the target, Bigtable removes
+            /// nodes. If not set will default to 50%.
             #[prost(int32, tag = "3")]
             pub cpu_utilization_target: i32,
         }
     }
-    /// Possible states a featurestore can have.
+    /// Possible states a featureOnlineStore can have.
     #[derive(
         Clone,
         Copy,
@@ -7538,20 +7641,14 @@ pub mod featurestore {
     pub enum State {
         /// Default value. This value is unused.
         Unspecified = 0,
-        /// State when the featurestore configuration is not being updated and the
-        /// fields reflect the current configuration of the featurestore. The
-        /// featurestore is usable in this state.
+        /// State when the featureOnlineStore configuration is not being updated and
+        /// the fields reflect the current configuration of the featureOnlineStore.
+        /// The featureOnlineStore is usable in this state.
         Stable = 1,
-        /// The state of the featurestore configuration when it is being updated.
-        /// During an update, the fields reflect either the original configuration
-        /// or the updated configuration of the featurestore. For example,
-        /// `online_serving_config.fixed_node_count` can take minutes to update.
-        /// While the update is in progress, the featurestore is in the UPDATING
-        /// state, and the value of `fixed_node_count` can be the original value or
-        /// the updated value, depending on the progress of the operation. Until the
-        /// update completes, the actual number of nodes can still be the original
-        /// value of `fixed_node_count`. The featurestore is still usable in this
-        /// state.
+        /// The state of the featureOnlineStore configuration when it is being
+        /// updated. During an update, the fields reflect either the original
+        /// configuration or the updated configuration of the featureOnlineStore. The
+        /// featureOnlineStore is still usable in this state.
         Updating = 2,
     }
     impl State {
@@ -7576,6 +7673,1068 @@ pub mod featurestore {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum StorageType {
+        /// Contains settings for the Cloud Bigtable instance that will be created
+        /// to serve featureValues for all FeatureViews under this
+        /// FeatureOnlineStore.
+        #[prost(message, tag = "8")]
+        Bigtable(Bigtable),
+    }
+}
+/// FeatureView is representation of values that the FeatureOnlineStore will
+/// serve based on its syncConfig.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FeatureView {
+    /// Output only. Name of the FeatureView. Format:
+    /// `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Timestamp when this FeatureView was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this FeatureView was last updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Used to perform consistent read-modify-write updates. If not set,
+    /// a blind "overwrite" update happens.
+    #[prost(string, tag = "4")]
+    pub etag: ::prost::alloc::string::String,
+    /// Optional. The labels with user-defined metadata to organize your
+    /// FeatureViews.
+    ///
+    /// Label keys and values can be no longer than 64 characters
+    /// (Unicode codepoints), can only contain lowercase letters, numeric
+    /// characters, underscores and dashes. International characters are allowed.
+    ///
+    /// See <https://goo.gl/xmQnxf> for more information on and examples of labels.
+    /// No more than 64 user labels can be associated with one
+    /// FeatureOnlineStore(System labels are excluded)." System reserved label keys
+    /// are prefixed with "aiplatform.googleapis.com/" and are immutable.
+    #[prost(map = "string, string", tag = "5")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Configures when data is to be synced/updated for this FeatureView. At the
+    /// end of the sync the latest featureValues for each entityId of this
+    /// FeatureView are made ready for online serving.
+    #[prost(message, optional, tag = "7")]
+    pub sync_config: ::core::option::Option<feature_view::SyncConfig>,
+    #[prost(oneof = "feature_view::Source", tags = "6, 9")]
+    pub source: ::core::option::Option<feature_view::Source>,
+}
+/// Nested message and enum types in `FeatureView`.
+pub mod feature_view {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct BigQuerySource {
+        /// Required. The BigQuery view URI that will be materialized on each sync
+        /// trigger based on FeatureView.SyncConfig.
+        #[prost(string, tag = "1")]
+        pub uri: ::prost::alloc::string::String,
+        /// Required. Columns to construct entity_id / row keys. Start by supporting
+        /// 1 only.
+        #[prost(string, repeated, tag = "2")]
+        pub entity_id_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SyncConfig {
+        /// Cron schedule (<https://en.wikipedia.org/wiki/Cron>) to launch scheduled
+        /// runs. To explicitly set a timezone to the cron tab, apply a prefix in
+        /// the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or "TZ=${IANA_TIME_ZONE}".
+        /// The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
+        /// database. For example, "CRON_TZ=America/New_York 1 * * * *", or
+        /// "TZ=America/New_York 1 * * * *".
+        #[prost(string, tag = "1")]
+        pub cron: ::prost::alloc::string::String,
+    }
+    /// A Feature Registry source for features that need to be synced to Online
+    /// Store.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FeatureRegistrySource {
+        /// Required. List of features that need to be synced to Online Store.
+        #[prost(message, repeated, tag = "1")]
+        pub feature_groups: ::prost::alloc::vec::Vec<
+            feature_registry_source::FeatureGroup,
+        >,
+    }
+    /// Nested message and enum types in `FeatureRegistrySource`.
+    pub mod feature_registry_source {
+        /// Features belonging to a single feature group that will be
+        /// synced to Online Store.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct FeatureGroup {
+            /// Required. Identifier of the feature group.
+            #[prost(string, tag = "1")]
+            pub feature_group_id: ::prost::alloc::string::String,
+            /// Required. Identifiers of features under the feature group.
+            #[prost(string, repeated, tag = "2")]
+            pub feature_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Optional. Configures how data is supposed to be extracted from a BigQuery
+        /// source to be loaded onto the FeatureOnlineStore.
+        #[prost(message, tag = "6")]
+        BigQuerySource(BigQuerySource),
+        /// Optional. Configures the features from a Feature Registry source that
+        /// need to be loaded onto the FeatureOnlineStore.
+        #[prost(message, tag = "9")]
+        FeatureRegistrySource(FeatureRegistrySource),
+    }
+}
+/// FeatureViewSync is a representation of sync operation which copies data from
+/// data source to Feature View in Online Store.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FeatureViewSync {
+    /// Output only. Name of the FeatureViewSync. Format:
+    /// `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}/featureViewSyncs/{feature_view_sync}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Time when this FeatureViewSync is created. Creation of a
+    /// FeatureViewSync means that the job is pending / waiting for sufficient
+    /// resources but may not have started the actual data transfer yet.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when this FeatureViewSync is finished.
+    #[prost(message, optional, tag = "5")]
+    pub run_time: ::core::option::Option<super::super::super::r#type::Interval>,
+    /// Output only. Final status of the FeatureViewSync.
+    #[prost(message, optional, tag = "4")]
+    pub final_status: ::core::option::Option<super::super::super::rpc::Status>,
+}
+/// Request message for
+/// [FeatureOnlineStoreAdminService.CreateFeatureOnlineStore][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.CreateFeatureOnlineStore].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateFeatureOnlineStoreRequest {
+    /// Required. The resource name of the Location to create FeatureOnlineStores.
+    /// Format:
+    /// `projects/{project}/locations/{location}'`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The FeatureOnlineStore to create.
+    #[prost(message, optional, tag = "2")]
+    pub feature_online_store: ::core::option::Option<FeatureOnlineStore>,
+    /// Required. The ID to use for this FeatureOnlineStore, which will become the
+    /// final component of the FeatureOnlineStore's resource name.
+    ///
+    /// This value may be up to 60 characters, and valid characters are
+    /// `\[a-z0-9_\]`. The first character cannot be a number.
+    ///
+    /// The value must be unique within the project and location.
+    #[prost(string, tag = "3")]
+    pub feature_online_store_id: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [FeatureOnlineStoreAdminService.GetFeatureOnlineStore][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.GetFeatureOnlineStore].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetFeatureOnlineStoreRequest {
+    /// Required. The name of the FeatureOnlineStore resource.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [FeatureOnlineStoreAdminService.ListFeatureOnlineStores][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureOnlineStores].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFeatureOnlineStoresRequest {
+    /// Required. The resource name of the Location to list FeatureOnlineStores.
+    /// Format:
+    /// `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Lists the FeatureOnlineStores that match the filter expression. The
+    /// following fields are supported:
+    ///
+    /// * `create_time`: Supports `=`, `!=`, `<`, `>`, `<=`, and `>=` comparisons.
+    /// Values must be
+    ///    in RFC 3339 format.
+    /// * `update_time`: Supports `=`, `!=`, `<`, `>`, `<=`, and `>=` comparisons.
+    /// Values must be
+    ///    in RFC 3339 format.
+    /// * `labels`: Supports key-value equality and key presence.
+    ///
+    /// Examples:
+    ///
+    /// * `create_time > "2020-01-01" OR update_time > "2020-01-01"`
+    ///     FeatureOnlineStores created or updated after 2020-01-01.
+    /// * `labels.env = "prod"`
+    ///     FeatureOnlineStores with label "env" set to "prod".
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// The maximum number of FeatureOnlineStores to return. The service may return
+    /// fewer than this value. If unspecified, at most 100 FeatureOnlineStores will
+    /// be returned. The maximum value is 100; any value greater than 100 will be
+    /// coerced to 100.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// A page token, received from a previous
+    /// [FeatureOnlineStoreAdminService.ListFeatureOnlineStores][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureOnlineStores]
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// [FeatureOnlineStoreAdminService.ListFeatureOnlineStores][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureOnlineStores]
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A comma-separated list of fields to order by, sorted in ascending order.
+    /// Use "desc" after a field name for descending.
+    /// Supported Fields:
+    ///
+    ///    * `create_time`
+    ///    * `update_time`
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [FeatureOnlineStoreAdminService.ListFeatureOnlineStores][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureOnlineStores].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFeatureOnlineStoresResponse {
+    /// The FeatureOnlineStores matching the request.
+    #[prost(message, repeated, tag = "1")]
+    pub feature_online_stores: ::prost::alloc::vec::Vec<FeatureOnlineStore>,
+    /// A token, which can be sent as
+    /// [ListFeatureOnlineStoresRequest.page_token][google.cloud.aiplatform.v1.ListFeatureOnlineStoresRequest.page_token]
+    /// to retrieve the next page. If this field is omitted, there are no
+    /// subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [FeatureOnlineStoreAdminService.UpdateFeatureOnlineStore][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.UpdateFeatureOnlineStore].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateFeatureOnlineStoreRequest {
+    /// Required. The FeatureOnlineStore's `name` field is used to identify the
+    /// FeatureOnlineStore to be updated. Format:
+    /// `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}`
+    #[prost(message, optional, tag = "1")]
+    pub feature_online_store: ::core::option::Option<FeatureOnlineStore>,
+    /// Field mask is used to specify the fields to be overwritten in the
+    /// FeatureOnlineStore resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then only the non-empty fields present in the
+    /// request will be overwritten. Set the update_mask to `*` to override all
+    /// fields.
+    ///
+    /// Updatable fields:
+    ///
+    ///    * `big_query_source`
+    ///    * `labels`
+    ///    * `sync_config`
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for
+/// [FeatureOnlineStoreAdminService.DeleteFeatureOnlineStore][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.DeleteFeatureOnlineStore].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteFeatureOnlineStoreRequest {
+    /// Required. The name of the FeatureOnlineStore to be deleted.
+    /// Format:
+    /// `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// If set to true, any FeatureViews and Features for this FeatureOnlineStore
+    /// will also be deleted. (Otherwise, the request will only work if the
+    /// FeatureOnlineStore has no FeatureViews.)
+    #[prost(bool, tag = "2")]
+    pub force: bool,
+}
+/// Request message for
+/// [FeatureOnlineStoreAdminService.CreateFeatureView][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.CreateFeatureView].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateFeatureViewRequest {
+    /// Required. The resource name of the FeatureOnlineStore to create
+    /// FeatureViews. Format:
+    /// `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The FeatureView to create.
+    #[prost(message, optional, tag = "2")]
+    pub feature_view: ::core::option::Option<FeatureView>,
+    /// Required. The ID to use for the FeatureView, which will become the final
+    /// component of the FeatureView's resource name.
+    ///
+    /// This value may be up to 60 characters, and valid characters are
+    /// `\[a-z0-9_\]`. The first character cannot be a number.
+    ///
+    /// The value must be unique within a FeatureOnlineStore.
+    #[prost(string, tag = "3")]
+    pub feature_view_id: ::prost::alloc::string::String,
+    /// Immutable. If set to true, one on demand sync will be run immediately,
+    /// regardless whether the
+    /// [FeatureView.sync_config][google.cloud.aiplatform.v1.FeatureView.sync_config]
+    /// is configured or not.
+    #[prost(bool, tag = "4")]
+    pub run_sync_immediately: bool,
+}
+/// Request message for
+/// [FeatureOnlineStoreAdminService.GetFeatureView][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.GetFeatureView].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetFeatureViewRequest {
+    /// Required. The name of the FeatureView resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [FeatureOnlineStoreAdminService.ListFeatureViews][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureViews].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFeatureViewsRequest {
+    /// Required. The resource name of the FeatureOnlineStore to list FeatureViews.
+    /// Format:
+    /// `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Lists the FeatureViews that match the filter expression. The following
+    /// filters are supported:
+    ///
+    /// * `create_time`: Supports `=`, `!=`, `<`, `>`, `>=`, and `<=` comparisons.
+    /// Values must be in RFC 3339 format.
+    /// * `update_time`: Supports `=`, `!=`, `<`, `>`, `>=`, and `<=` comparisons.
+    /// Values must be in RFC 3339 format.
+    /// * `labels`: Supports key-value equality as well as key presence.
+    ///
+    /// Examples:
+    ///
+    /// * `create_time > \"2020-01-31T15:30:00.000000Z\" OR
+    ///       update_time > \"2020-01-31T15:30:00.000000Z\"` --> FeatureViews
+    ///       created or updated after 2020-01-31T15:30:00.000000Z.
+    /// * `labels.active = yes AND labels.env = prod` --> FeatureViews having both
+    ///      (active: yes) and (env: prod) labels.
+    /// * `labels.env: *` --> Any FeatureView which has a label with 'env' as the
+    ///    key.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// The maximum number of FeatureViews to return. The service may return fewer
+    /// than this value. If unspecified, at most 1000 FeatureViews will be
+    /// returned. The maximum value is 1000; any value greater than 1000 will be
+    /// coerced to 1000.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// A page token, received from a previous
+    /// [FeatureOnlineStoreAdminService.ListFeatureViews][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureViews]
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// [FeatureOnlineStoreAdminService.ListFeatureViews][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureViews]
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A comma-separated list of fields to order by, sorted in ascending order.
+    /// Use "desc" after a field name for descending.
+    ///
+    /// Supported fields:
+    ///
+    ///    * `feature_view_id`
+    ///    * `create_time`
+    ///    * `update_time`
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [FeatureOnlineStoreAdminService.ListFeatureViews][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureViews].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFeatureViewsResponse {
+    /// The FeatureViews matching the request.
+    #[prost(message, repeated, tag = "1")]
+    pub feature_views: ::prost::alloc::vec::Vec<FeatureView>,
+    /// A token, which can be sent as
+    /// [ListFeatureViewsRequest.page_token][google.cloud.aiplatform.v1.ListFeatureViewsRequest.page_token]
+    /// to retrieve the next page. If this field is omitted, there are no
+    /// subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [FeatureOnlineStoreAdminService.UpdateFeatureView][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.UpdateFeatureView].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateFeatureViewRequest {
+    /// Required. The FeatureView's `name` field is used to identify the
+    /// FeatureView to be updated. Format:
+    /// `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}`
+    #[prost(message, optional, tag = "1")]
+    pub feature_view: ::core::option::Option<FeatureView>,
+    /// Field mask is used to specify the fields to be overwritten in the
+    /// FeatureView resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then only the non-empty fields present in the
+    /// request will be overwritten. Set the update_mask to `*` to override all
+    /// fields.
+    ///
+    /// Updatable fields:
+    ///
+    ///    * `labels`
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for [FeatureOnlineStoreAdminService.DeleteFeatureViews][].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteFeatureViewRequest {
+    /// Required. The name of the FeatureView to be deleted.
+    /// Format:
+    /// `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Details of operations that perform create FeatureOnlineStore.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateFeatureOnlineStoreOperationMetadata {
+    /// Operation metadata for FeatureOnlineStore.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Details of operations that perform update FeatureOnlineStore.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateFeatureOnlineStoreOperationMetadata {
+    /// Operation metadata for FeatureOnlineStore.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Details of operations that perform create FeatureView.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateFeatureViewOperationMetadata {
+    /// Operation metadata for FeatureView Create.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Details of operations that perform update FeatureView.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateFeatureViewOperationMetadata {
+    /// Operation metadata for FeatureView Update.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Request message for
+/// [FeatureOnlineStoreAdminService.SyncFeatureView][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.SyncFeatureView].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SyncFeatureViewRequest {
+    /// Required. Format:
+    /// `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}`
+    #[prost(string, tag = "1")]
+    pub feature_view: ::prost::alloc::string::String,
+}
+/// Respose message for
+/// [FeatureOnlineStoreAdminService.SyncFeatureView][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.SyncFeatureView].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SyncFeatureViewResponse {
+    /// Format:
+    /// `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}/featureViewSyncs/{feature_view_sync}`
+    #[prost(string, tag = "1")]
+    pub feature_view_sync: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [FeatureOnlineStoreAdminService.GetFeatureViewSync][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.GetFeatureViewSync].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetFeatureViewSyncRequest {
+    /// Required. The name of the FeatureViewSync resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}/featureViewSyncs/{feature_view_sync}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [FeatureOnlineStoreAdminService.ListFeatureViewSyncs][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureViewSyncs].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFeatureViewSyncsRequest {
+    /// Required. The resource name of the FeatureView to list FeatureViewSyncs.
+    /// Format:
+    /// `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Lists the FeatureViewSyncs that match the filter expression. The following
+    /// filters are supported:
+    ///
+    /// * `create_time`: Supports `=`, `!=`, `<`, `>`, `>=`, and `<=` comparisons.
+    /// Values must be in RFC 3339 format.
+    ///
+    /// Examples:
+    ///
+    /// * `create_time > \"2020-01-31T15:30:00.000000Z\"` --> FeatureViewSyncs
+    ///       created after 2020-01-31T15:30:00.000000Z.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// The maximum number of FeatureViewSyncs to return. The service may return
+    /// fewer than this value. If unspecified, at most 1000 FeatureViewSyncs will
+    /// be returned. The maximum value is 1000; any value greater than 1000 will be
+    /// coerced to 1000.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// A page token, received from a previous
+    /// [FeatureOnlineStoreAdminService.ListFeatureViewSyncs][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureViewSyncs]
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// [FeatureOnlineStoreAdminService.ListFeatureViewSyncs][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureViewSyncs]
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A comma-separated list of fields to order by, sorted in ascending order.
+    /// Use "desc" after a field name for descending.
+    ///
+    /// Supported fields:
+    ///
+    ///    * `create_time`
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [FeatureOnlineStoreAdminService.ListFeatureViewSyncs][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureViewSyncs].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFeatureViewSyncsResponse {
+    /// The FeatureViewSyncs matching the request.
+    #[prost(message, repeated, tag = "1")]
+    pub feature_view_syncs: ::prost::alloc::vec::Vec<FeatureViewSync>,
+    /// A token, which can be sent as
+    /// [ListFeatureViewSyncsRequest.page_token][google.cloud.aiplatform.v1.ListFeatureViewSyncsRequest.page_token]
+    /// to retrieve the next page. If this field is omitted, there are no
+    /// subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod feature_online_store_admin_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The service that handles CRUD and List for resources for
+    /// FeatureOnlineStore.
+    #[derive(Debug, Clone)]
+    pub struct FeatureOnlineStoreAdminServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl FeatureOnlineStoreAdminServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> FeatureOnlineStoreAdminServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> FeatureOnlineStoreAdminServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            FeatureOnlineStoreAdminServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a new FeatureOnlineStore in a given project and location.
+        pub async fn create_feature_online_store(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateFeatureOnlineStoreRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/CreateFeatureOnlineStore",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService",
+                        "CreateFeatureOnlineStore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single FeatureOnlineStore.
+        pub async fn get_feature_online_store(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetFeatureOnlineStoreRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FeatureOnlineStore>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService",
+                        "GetFeatureOnlineStore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists FeatureOnlineStores in a given project and location.
+        pub async fn list_feature_online_stores(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListFeatureOnlineStoresRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListFeatureOnlineStoresResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/ListFeatureOnlineStores",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService",
+                        "ListFeatureOnlineStores",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single FeatureOnlineStore.
+        pub async fn update_feature_online_store(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateFeatureOnlineStoreRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/UpdateFeatureOnlineStore",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService",
+                        "UpdateFeatureOnlineStore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single FeatureOnlineStore. The FeatureOnlineStore must not
+        /// contain any FeatureViews.
+        pub async fn delete_feature_online_store(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteFeatureOnlineStoreRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/DeleteFeatureOnlineStore",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService",
+                        "DeleteFeatureOnlineStore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new FeatureView in a given FeatureOnlineStore.
+        pub async fn create_feature_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateFeatureViewRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/CreateFeatureView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService",
+                        "CreateFeatureView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single FeatureView.
+        pub async fn get_feature_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetFeatureViewRequest>,
+        ) -> std::result::Result<tonic::Response<super::FeatureView>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService",
+                        "GetFeatureView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists FeatureViews in a given FeatureOnlineStore.
+        pub async fn list_feature_views(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListFeatureViewsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListFeatureViewsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/ListFeatureViews",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService",
+                        "ListFeatureViews",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single FeatureView.
+        pub async fn update_feature_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateFeatureViewRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/UpdateFeatureView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService",
+                        "UpdateFeatureView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single FeatureView.
+        pub async fn delete_feature_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteFeatureViewRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/DeleteFeatureView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService",
+                        "DeleteFeatureView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Triggers on-demand sync for the FeatureView.
+        pub async fn sync_feature_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SyncFeatureViewRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SyncFeatureViewResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/SyncFeatureView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService",
+                        "SyncFeatureView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single FeatureViewSync.
+        pub async fn get_feature_view_sync(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetFeatureViewSyncRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FeatureViewSync>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureViewSync",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService",
+                        "GetFeatureViewSync",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists FeatureViewSyncs in a given FeatureView.
+        pub async fn list_feature_view_syncs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListFeatureViewSyncsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListFeatureViewSyncsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/ListFeatureViewSyncs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService",
+                        "ListFeatureViewSyncs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Matcher for Features of an EntityType by Feature ID.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IdMatcher {
+    /// Required. The following are accepted as `ids`:
+    ///
+    ///   * A single-element list containing only `*`, which selects all Features
+    ///   in the target EntityType, or
+    ///   * A list containing only Feature IDs, which selects only Features with
+    ///   those IDs in the target EntityType.
+    #[prost(string, repeated, tag = "1")]
+    pub ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Selector for Features of an EntityType.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FeatureSelector {
+    /// Required. Matches Features based on ID.
+    #[prost(message, optional, tag = "1")]
+    pub id_matcher: ::core::option::Option<IdMatcher>,
 }
 /// A list of boolean values.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8167,6 +9326,410 @@ pub mod featurestore_online_serving_service_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Lookup key for a feature view.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FeatureViewDataKey {
+    #[prost(oneof = "feature_view_data_key::KeyOneof", tags = "1")]
+    pub key_oneof: ::core::option::Option<feature_view_data_key::KeyOneof>,
+}
+/// Nested message and enum types in `FeatureViewDataKey`.
+pub mod feature_view_data_key {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum KeyOneof {
+        /// String key to use for lookup.
+        #[prost(string, tag = "1")]
+        Key(::prost::alloc::string::String),
+    }
+}
+/// Request message for
+/// [FeatureOnlineStoreService.FetchFeatureValues][google.cloud.aiplatform.v1.FeatureOnlineStoreService.FetchFeatureValues].
+/// All the features under the requested feature view will be returned.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchFeatureValuesRequest {
+    /// Required. FeatureView resource format
+    /// `projects/{project}/locations/{location}/featureOnlineStores/{featureOnlineStore}/featureViews/{featureView}`
+    #[prost(string, tag = "1")]
+    pub feature_view: ::prost::alloc::string::String,
+    /// Optional. The request key to fetch feature values for.
+    #[prost(message, optional, tag = "6")]
+    pub data_key: ::core::option::Option<FeatureViewDataKey>,
+    /// Optional. Response data format. If not set,
+    /// [FeatureViewDataFormat.KEY_VALUE][google.cloud.aiplatform.v1.FeatureViewDataFormat.KEY_VALUE]
+    /// will be used.
+    #[prost(enumeration = "FeatureViewDataFormat", tag = "7")]
+    pub data_format: i32,
+}
+/// Response message for
+/// [FeatureOnlineStoreService.FetchFeatureValues][google.cloud.aiplatform.v1.FeatureOnlineStoreService.FetchFeatureValues]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchFeatureValuesResponse {
+    #[prost(oneof = "fetch_feature_values_response::Format", tags = "3, 2")]
+    pub format: ::core::option::Option<fetch_feature_values_response::Format>,
+}
+/// Nested message and enum types in `FetchFeatureValuesResponse`.
+pub mod fetch_feature_values_response {
+    /// Response structure in the format of key (feature name) and (feature) value
+    /// pair.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FeatureNameValuePairList {
+        /// List of feature names and values.
+        #[prost(message, repeated, tag = "1")]
+        pub features: ::prost::alloc::vec::Vec<
+            feature_name_value_pair_list::FeatureNameValuePair,
+        >,
+    }
+    /// Nested message and enum types in `FeatureNameValuePairList`.
+    pub mod feature_name_value_pair_list {
+        /// Feature name & value pair.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct FeatureNameValuePair {
+            /// Feature short name.
+            #[prost(string, tag = "1")]
+            pub name: ::prost::alloc::string::String,
+            #[prost(oneof = "feature_name_value_pair::Data", tags = "2")]
+            pub data: ::core::option::Option<feature_name_value_pair::Data>,
+        }
+        /// Nested message and enum types in `FeatureNameValuePair`.
+        pub mod feature_name_value_pair {
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum Data {
+                /// Feature value.
+                #[prost(message, tag = "2")]
+                Value(super::super::super::FeatureValue),
+            }
+        }
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Format {
+        /// Feature values in KeyValue format.
+        #[prost(message, tag = "3")]
+        KeyValues(FeatureNameValuePairList),
+        /// Feature values in proto Struct format.
+        #[prost(message, tag = "2")]
+        ProtoStruct(::prost_types::Struct),
+    }
+}
+/// Format of the data in the Feature View.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum FeatureViewDataFormat {
+    /// Not set. Will be treated as the KeyValue format.
+    Unspecified = 0,
+    /// Return response data in key-value format.
+    KeyValue = 1,
+    /// Return response data in proto Struct format.
+    ProtoStruct = 2,
+}
+impl FeatureViewDataFormat {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            FeatureViewDataFormat::Unspecified => "FEATURE_VIEW_DATA_FORMAT_UNSPECIFIED",
+            FeatureViewDataFormat::KeyValue => "KEY_VALUE",
+            FeatureViewDataFormat::ProtoStruct => "PROTO_STRUCT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FEATURE_VIEW_DATA_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+            "KEY_VALUE" => Some(Self::KeyValue),
+            "PROTO_STRUCT" => Some(Self::ProtoStruct),
+            _ => None,
+        }
+    }
+}
+/// Generated client implementations.
+pub mod feature_online_store_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    #[derive(Debug, Clone)]
+    pub struct FeatureOnlineStoreServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl FeatureOnlineStoreServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> FeatureOnlineStoreServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> FeatureOnlineStoreServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            FeatureOnlineStoreServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Fetch feature values under a FeatureView.
+        pub async fn fetch_feature_values(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchFeatureValuesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FetchFeatureValuesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureOnlineStoreService/FetchFeatureValues",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureOnlineStoreService",
+                        "FetchFeatureValues",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Vertex AI Feature Store provides a centralized repository for organizing,
+/// storing, and serving ML features. The Featurestore is a top-level container
+/// for your features and their values.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Featurestore {
+    /// Output only. Name of the Featurestore. Format:
+    /// `projects/{project}/locations/{location}/featurestores/{featurestore}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Timestamp when this Featurestore was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this Featurestore was last updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Used to perform consistent read-modify-write updates. If not set,
+    /// a blind "overwrite" update happens.
+    #[prost(string, tag = "5")]
+    pub etag: ::prost::alloc::string::String,
+    /// Optional. The labels with user-defined metadata to organize your
+    /// Featurestore.
+    ///
+    /// Label keys and values can be no longer than 64 characters
+    /// (Unicode codepoints), can only contain lowercase letters, numeric
+    /// characters, underscores and dashes. International characters are allowed.
+    ///
+    /// See <https://goo.gl/xmQnxf> for more information on and examples of labels.
+    /// No more than 64 user labels can be associated with one Featurestore(System
+    /// labels are excluded)."
+    /// System reserved label keys are prefixed with "aiplatform.googleapis.com/"
+    /// and are immutable.
+    #[prost(map = "string, string", tag = "6")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Config for online storage resources. The field should not
+    /// co-exist with the field of `OnlineStoreReplicationConfig`. If both of it
+    /// and OnlineStoreReplicationConfig are unset, the feature store will not have
+    /// an online store and cannot be used for online serving.
+    #[prost(message, optional, tag = "7")]
+    pub online_serving_config: ::core::option::Option<featurestore::OnlineServingConfig>,
+    /// Output only. State of the featurestore.
+    #[prost(enumeration = "featurestore::State", tag = "8")]
+    pub state: i32,
+    /// Optional. TTL in days for feature values that will be stored in online
+    /// serving storage. The Feature Store online storage periodically removes
+    /// obsolete feature values older than `online_storage_ttl_days` since the
+    /// feature generation time. Note that `online_storage_ttl_days` should be less
+    /// than or equal to `offline_storage_ttl_days` for each EntityType under a
+    /// featurestore. If not set, default to 4000 days
+    #[prost(int32, tag = "13")]
+    pub online_storage_ttl_days: i32,
+    /// Optional. Customer-managed encryption key spec for data storage. If set,
+    /// both of the online and offline data storage will be secured by this key.
+    #[prost(message, optional, tag = "10")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+}
+/// Nested message and enum types in `Featurestore`.
+pub mod featurestore {
+    /// OnlineServingConfig specifies the details for provisioning online serving
+    /// resources.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct OnlineServingConfig {
+        /// The number of nodes for the online store. The number of nodes doesn't
+        /// scale automatically, but you can manually update the number of
+        /// nodes. If set to 0, the featurestore will not have an
+        /// online store and cannot be used for online serving.
+        #[prost(int32, tag = "2")]
+        pub fixed_node_count: i32,
+        /// Online serving scaling configuration.
+        /// Only one of `fixed_node_count` and `scaling` can be set. Setting one will
+        /// reset the other.
+        #[prost(message, optional, tag = "4")]
+        pub scaling: ::core::option::Option<online_serving_config::Scaling>,
+    }
+    /// Nested message and enum types in `OnlineServingConfig`.
+    pub mod online_serving_config {
+        /// Online serving scaling configuration. If min_node_count and
+        /// max_node_count are set to the same value, the cluster will be configured
+        /// with the fixed number of node (no auto-scaling).
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Scaling {
+            /// Required. The minimum number of nodes to scale down to. Must be greater
+            /// than or equal to 1.
+            #[prost(int32, tag = "1")]
+            pub min_node_count: i32,
+            /// The maximum number of nodes to scale up to. Must be greater than
+            /// min_node_count, and less than or equal to 10 times of 'min_node_count'.
+            #[prost(int32, tag = "2")]
+            pub max_node_count: i32,
+            /// Optional. The cpu utilization that the Autoscaler should be trying to
+            /// achieve. This number is on a scale from 0 (no utilization) to 100
+            /// (total utilization), and is limited between 10 and 80. When a cluster's
+            /// CPU utilization exceeds the target that you have set, Bigtable
+            /// immediately adds nodes to the cluster. When CPU utilization is
+            /// substantially lower than the target, Bigtable removes nodes. If not set
+            /// or set to 0, default to 50.
+            #[prost(int32, tag = "3")]
+            pub cpu_utilization_target: i32,
+        }
+    }
+    /// Possible states a featurestore can have.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// State when the featurestore configuration is not being updated and the
+        /// fields reflect the current configuration of the featurestore. The
+        /// featurestore is usable in this state.
+        Stable = 1,
+        /// The state of the featurestore configuration when it is being updated.
+        /// During an update, the fields reflect either the original configuration
+        /// or the updated configuration of the featurestore. For example,
+        /// `online_serving_config.fixed_node_count` can take minutes to update.
+        /// While the update is in progress, the featurestore is in the UPDATING
+        /// state, and the value of `fixed_node_count` can be the original value or
+        /// the updated value, depending on the progress of the operation. Until the
+        /// update completes, the actual number of nodes can still be the original
+        /// value of `fixed_node_count`. The featurestore is still usable in this
+        /// state.
+        Updating = 2,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Stable => "STABLE",
+                State::Updating => "UPDATING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STABLE" => Some(Self::Stable),
+                "UPDATING" => Some(Self::Updating),
+                _ => None,
+            }
         }
     }
 }
@@ -8824,12 +10387,16 @@ pub struct DeleteEntityTypeRequest {
 }
 /// Request message for
 /// [FeaturestoreService.CreateFeature][google.cloud.aiplatform.v1.FeaturestoreService.CreateFeature].
+/// Request message for
+/// [FeatureRegistryService.CreateFeature][google.cloud.aiplatform.v1.FeatureRegistryService.CreateFeature].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeatureRequest {
-    /// Required. The resource name of the EntityType to create a Feature.
-    /// Format:
+    /// Required. The resource name of the EntityType or FeatureGroup to create a
+    /// Feature. Format for entity_type as parent:
     /// `projects/{project}/locations/{location}/featurestores/{featurestore}/entityTypes/{entity_type}`
+    /// Format for feature_group as parent:
+    /// `projects/{project}/locations/{location}/featureGroups/{feature_group}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Feature to create.
@@ -8841,7 +10408,7 @@ pub struct CreateFeatureRequest {
     /// This value may be up to 128 characters, and valid characters are
     /// `\[a-z0-9_\]`. The first character cannot be a number.
     ///
-    /// The value must be unique within an EntityType.
+    /// The value must be unique within an EntityType/FeatureGroup.
     #[prost(string, tag = "3")]
     pub feature_id: ::prost::alloc::string::String,
 }
@@ -8874,23 +10441,31 @@ pub struct BatchCreateFeaturesResponse {
 }
 /// Request message for
 /// [FeaturestoreService.GetFeature][google.cloud.aiplatform.v1.FeaturestoreService.GetFeature].
+/// Request message for
+/// [FeatureRegistryService.GetFeature][google.cloud.aiplatform.v1.FeatureRegistryService.GetFeature].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeatureRequest {
     /// Required. The name of the Feature resource.
-    /// Format:
+    /// Format for entity_type as parent:
     /// `projects/{project}/locations/{location}/featurestores/{featurestore}/entityTypes/{entity_type}`
+    /// Format for feature_group as parent:
+    /// `projects/{project}/locations/{location}/featureGroups/{feature_group}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
 /// [FeaturestoreService.ListFeatures][google.cloud.aiplatform.v1.FeaturestoreService.ListFeatures].
+/// Request message for
+/// [FeatureRegistryService.ListFeatures][google.cloud.aiplatform.v1.FeatureRegistryService.ListFeatures].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeaturesRequest {
     /// Required. The resource name of the Location to list Features.
-    /// Format:
+    /// Format for entity_type as parent:
     /// `projects/{project}/locations/{location}/featurestores/{featurestore}/entityTypes/{entity_type}`
+    /// Format for feature_group as parent:
+    /// `projects/{project}/locations/{location}/featureGroups/{feature_group}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Lists the Features that match the filter expression. The following
@@ -8923,10 +10498,14 @@ pub struct ListFeaturesRequest {
     pub page_size: i32,
     /// A page token, received from a previous
     /// [FeaturestoreService.ListFeatures][google.cloud.aiplatform.v1.FeaturestoreService.ListFeatures]
+    /// call or
+    /// [FeatureRegistryService.ListFeatures][google.cloud.aiplatform.v1.FeatureRegistryService.ListFeatures]
     /// call. Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to
     /// [FeaturestoreService.ListFeatures][google.cloud.aiplatform.v1.FeaturestoreService.ListFeatures]
+    /// or or
+    /// [FeatureRegistryService.ListFeatures][google.cloud.aiplatform.v1.FeatureRegistryService.ListFeatures]
     /// must match the call that provided the page token.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
@@ -8935,7 +10514,7 @@ pub struct ListFeaturesRequest {
     /// Supported fields:
     ///
     ///    * `feature_id`
-    ///    * `value_type`
+    ///    * `value_type` (Not supported for FeatureRegistry Feature)
     ///    * `create_time`
     ///    * `update_time`
     #[prost(string, tag = "5")]
@@ -8943,6 +10522,7 @@ pub struct ListFeaturesRequest {
     /// Mask specifying which fields to read.
     #[prost(message, optional, tag = "6")]
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Only applicable for Vertex AI Feature Store (Legacy).
     /// If set, return the most recent
     /// [ListFeaturesRequest.latest_stats_count][google.cloud.aiplatform.v1.ListFeaturesRequest.latest_stats_count]
     /// of stats for each Feature in response. Valid value is \[0, 10\]. If number of
@@ -8954,6 +10534,8 @@ pub struct ListFeaturesRequest {
 }
 /// Response message for
 /// [FeaturestoreService.ListFeatures][google.cloud.aiplatform.v1.FeaturestoreService.ListFeatures].
+/// Response message for
+/// [FeatureRegistryService.ListFeatures][google.cloud.aiplatform.v1.FeatureRegistryService.ListFeatures].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeaturesResponse {
@@ -9080,6 +10662,8 @@ pub struct SearchFeaturesResponse {
 }
 /// Request message for
 /// [FeaturestoreService.UpdateFeature][google.cloud.aiplatform.v1.FeaturestoreService.UpdateFeature].
+/// Request message for
+/// [FeatureRegistryService.UpdateFeature][google.cloud.aiplatform.v1.FeatureRegistryService.UpdateFeature].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeatureRequest {
@@ -9087,6 +10671,7 @@ pub struct UpdateFeatureRequest {
     /// updated.
     /// Format:
     /// `projects/{project}/locations/{location}/featurestores/{featurestore}/entityTypes/{entity_type}/features/{feature}`
+    /// `projects/{project}/locations/{location}/featureGroups/{feature_group}/features/{feature}`
     #[prost(message, optional, tag = "1")]
     pub feature: ::core::option::Option<Feature>,
     /// Field mask is used to specify the fields to be overwritten in the
@@ -9101,18 +10686,21 @@ pub struct UpdateFeatureRequest {
     ///
     ///    * `description`
     ///    * `labels`
-    ///    * `disable_monitoring`
+    ///    * `disable_monitoring` (Not supported for FeatureRegistry Feature)
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
 /// [FeaturestoreService.DeleteFeature][google.cloud.aiplatform.v1.FeaturestoreService.DeleteFeature].
+/// Request message for
+/// [FeatureRegistryService.DeleteFeature][google.cloud.aiplatform.v1.FeatureRegistryService.DeleteFeature].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFeatureRequest {
     /// Required. The name of the Features to be deleted.
     /// Format:
     /// `projects/{project}/locations/{location}/featurestores/{featurestore}/entityTypes/{entity_type}/features/{feature}`
+    /// `projects/{project}/locations/{location}/featureGroups/{feature_group}/features/{feature}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -10124,6 +11712,573 @@ pub mod featurestore_service_client {
         }
     }
 }
+/// Request message for
+/// [FeatureRegistryService.CreateFeatureGroup][google.cloud.aiplatform.v1.FeatureRegistryService.CreateFeatureGroup].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateFeatureGroupRequest {
+    /// Required. The resource name of the Location to create FeatureGroups.
+    /// Format:
+    /// `projects/{project}/locations/{location}'`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The FeatureGroup to create.
+    #[prost(message, optional, tag = "2")]
+    pub feature_group: ::core::option::Option<FeatureGroup>,
+    /// Required. The ID to use for this FeatureGroup, which will become the final
+    /// component of the FeatureGroup's resource name.
+    ///
+    /// This value may be up to 60 characters, and valid characters are
+    /// `\[a-z0-9_\]`. The first character cannot be a number.
+    ///
+    /// The value must be unique within the project and location.
+    #[prost(string, tag = "3")]
+    pub feature_group_id: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [FeatureRegistryService.GetFeatureGroup][google.cloud.aiplatform.v1.FeatureRegistryService.GetFeatureGroup].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetFeatureGroupRequest {
+    /// Required. The name of the FeatureGroup resource.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [FeatureRegistryService.ListFeatureGroups][google.cloud.aiplatform.v1.FeatureRegistryService.ListFeatureGroups].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFeatureGroupsRequest {
+    /// Required. The resource name of the Location to list FeatureGroups.
+    /// Format:
+    /// `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Lists the FeatureGroups that match the filter expression. The
+    /// following fields are supported:
+    ///
+    /// * `create_time`: Supports `=`, `!=`, `<`, `>`, `<=`, and `>=` comparisons.
+    /// Values must be
+    ///    in RFC 3339 format.
+    /// * `update_time`: Supports `=`, `!=`, `<`, `>`, `<=`, and `>=` comparisons.
+    /// Values must be
+    ///    in RFC 3339 format.
+    /// * `labels`: Supports key-value equality and key presence.
+    ///
+    /// Examples:
+    ///
+    /// * `create_time > "2020-01-01" OR update_time > "2020-01-01"`
+    ///     FeatureGroups created or updated after 2020-01-01.
+    /// * `labels.env = "prod"`
+    ///     FeatureGroups with label "env" set to "prod".
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// The maximum number of FeatureGroups to return. The service may return
+    /// fewer than this value. If unspecified, at most 100 FeatureGroups will
+    /// be returned. The maximum value is 100; any value greater than 100 will be
+    /// coerced to 100.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// A page token, received from a previous
+    /// [FeatureGroupAdminService.ListFeatureGroups][] call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// [FeatureGroupAdminService.ListFeatureGroups][] must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A comma-separated list of fields to order by, sorted in ascending order.
+    /// Use "desc" after a field name for descending.
+    /// Supported Fields:
+    ///
+    ///    * `create_time`
+    ///    * `update_time`
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [FeatureRegistryService.ListFeatureGroups][google.cloud.aiplatform.v1.FeatureRegistryService.ListFeatureGroups].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFeatureGroupsResponse {
+    /// The FeatureGroups matching the request.
+    #[prost(message, repeated, tag = "1")]
+    pub feature_groups: ::prost::alloc::vec::Vec<FeatureGroup>,
+    /// A token, which can be sent as
+    /// [ListFeatureGroupsRequest.page_token][google.cloud.aiplatform.v1.ListFeatureGroupsRequest.page_token]
+    /// to retrieve the next page. If this field is omitted, there are no
+    /// subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [FeatureRegistryService.UpdateFeatureGroup][google.cloud.aiplatform.v1.FeatureRegistryService.UpdateFeatureGroup].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateFeatureGroupRequest {
+    /// Required. The FeatureGroup's `name` field is used to identify the
+    /// FeatureGroup to be updated. Format:
+    /// `projects/{project}/locations/{location}/featureGroups/{feature_group}`
+    #[prost(message, optional, tag = "1")]
+    pub feature_group: ::core::option::Option<FeatureGroup>,
+    /// Field mask is used to specify the fields to be overwritten in the
+    /// FeatureGroup resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then only the non-empty fields present in the
+    /// request will be overwritten. Set the update_mask to `*` to override all
+    /// fields.
+    ///
+    /// Updatable fields:
+    ///
+    ///    * `labels`
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for
+/// [FeatureRegistryService.DeleteFeatureGroup][google.cloud.aiplatform.v1.FeatureRegistryService.DeleteFeatureGroup].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteFeatureGroupRequest {
+    /// Required. The name of the FeatureGroup to be deleted.
+    /// Format:
+    /// `projects/{project}/locations/{location}/featureGroups/{feature_group}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// If set to true, any Features under this FeatureGroup
+    /// will also be deleted. (Otherwise, the request will only work if the
+    /// FeatureGroup has no Features.)
+    #[prost(bool, tag = "2")]
+    pub force: bool,
+}
+/// Details of operations that perform create FeatureGroup.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateFeatureGroupOperationMetadata {
+    /// Operation metadata for FeatureGroup.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Details of operations that perform update FeatureGroup.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateFeatureGroupOperationMetadata {
+    /// Operation metadata for FeatureGroup.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Details of operations that perform create FeatureGroup.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateRegistryFeatureOperationMetadata {
+    /// Operation metadata for Feature.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Details of operations that perform update Feature.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateFeatureOperationMetadata {
+    /// Operation metadata for Feature Update.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Generated client implementations.
+pub mod feature_registry_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The service that handles CRUD and List for resources for
+    /// FeatureRegistry.
+    #[derive(Debug, Clone)]
+    pub struct FeatureRegistryServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl FeatureRegistryServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> FeatureRegistryServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> FeatureRegistryServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            FeatureRegistryServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a new FeatureGroup in a given project and location.
+        pub async fn create_feature_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateFeatureGroupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureRegistryService/CreateFeatureGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureRegistryService",
+                        "CreateFeatureGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single FeatureGroup.
+        pub async fn get_feature_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetFeatureGroupRequest>,
+        ) -> std::result::Result<tonic::Response<super::FeatureGroup>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureRegistryService/GetFeatureGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureRegistryService",
+                        "GetFeatureGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists FeatureGroups in a given project and location.
+        pub async fn list_feature_groups(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListFeatureGroupsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListFeatureGroupsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureRegistryService/ListFeatureGroups",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureRegistryService",
+                        "ListFeatureGroups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single FeatureGroup.
+        pub async fn update_feature_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateFeatureGroupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureRegistryService/UpdateFeatureGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureRegistryService",
+                        "UpdateFeatureGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single FeatureGroup.
+        pub async fn delete_feature_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteFeatureGroupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureRegistryService/DeleteFeatureGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureRegistryService",
+                        "DeleteFeatureGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new Feature in a given FeatureGroup.
+        pub async fn create_feature(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateFeatureRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureRegistryService/CreateFeature",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureRegistryService",
+                        "CreateFeature",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single Feature.
+        pub async fn get_feature(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetFeatureRequest>,
+        ) -> std::result::Result<tonic::Response<super::Feature>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureRegistryService/GetFeature",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureRegistryService",
+                        "GetFeature",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists Features in a given FeatureGroup.
+        pub async fn list_features(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListFeaturesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListFeaturesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureRegistryService/ListFeatures",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureRegistryService",
+                        "ListFeatures",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single Feature.
+        pub async fn update_feature(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateFeatureRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureRegistryService/UpdateFeature",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureRegistryService",
+                        "UpdateFeature",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single Feature.
+        pub async fn delete_feature(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteFeatureRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureRegistryService/DeleteFeature",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureRegistryService",
+                        "DeleteFeature",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// A message representing a Study.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -10370,6 +12525,26 @@ pub struct TrialContext {
     #[prost(message, repeated, tag = "2")]
     pub parameters: ::prost::alloc::vec::Vec<trial::Parameter>,
 }
+/// Time-based Constraint for Study
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StudyTimeConstraint {
+    #[prost(oneof = "study_time_constraint::Constraint", tags = "1, 2")]
+    pub constraint: ::core::option::Option<study_time_constraint::Constraint>,
+}
+/// Nested message and enum types in `StudyTimeConstraint`.
+pub mod study_time_constraint {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Constraint {
+        /// Counts the wallclock time passed since the creation of this Study.
+        #[prost(message, tag = "1")]
+        MaxDuration(::prost_types::Duration),
+        /// Compares the wallclock time to this time. Must use UTC timezone.
+        #[prost(message, tag = "2")]
+        EndTime(::prost_types::Timestamp),
+    }
+}
 /// Represents specification of a Study.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -10391,6 +12566,10 @@ pub struct StudySpec {
     /// Describe which measurement selection type will be used
     #[prost(enumeration = "study_spec::MeasurementSelectionType", tag = "7")]
     pub measurement_selection_type: i32,
+    /// Conditions for automated stopping of a Study. Enable automated stopping by
+    /// configuring at least one condition.
+    #[prost(message, optional, tag = "11")]
+    pub study_stopping_config: ::core::option::Option<study_spec::StudyStoppingConfig>,
     #[prost(oneof = "study_spec::AutomatedStoppingSpec", tags = "4, 5, 9")]
     pub automated_stopping_spec: ::core::option::Option<
         study_spec::AutomatedStoppingSpec,
@@ -10805,6 +12984,68 @@ pub mod study_spec {
         /// default option in the future.
         #[prost(bool, optional, tag = "6")]
         pub update_all_stopped_trials: ::core::option::Option<bool>,
+    }
+    /// The configuration (stopping conditions) for automated stopping of a Study.
+    /// Conditions include trial budgets, time budgets, and convergence detection.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct StudyStoppingConfig {
+        /// If true, a Study enters STOPPING_ASAP whenever it would normally enters
+        /// STOPPING state.
+        ///
+        /// The bottom line is: set to true if you want to interrupt on-going
+        /// evaluations of Trials as soon as the study stopping condition is met.
+        /// (Please see Study.State documentation for the source of truth).
+        #[prost(message, optional, tag = "1")]
+        pub should_stop_asap: ::core::option::Option<bool>,
+        /// Each "stopping rule" in this proto specifies an "if" condition. Before
+        /// Vizier would generate a new suggestion, it first checks each specified
+        /// stopping rule, from top to bottom in this list.
+        /// Note that the first few rules (e.g. minimum_runtime_constraint,
+        /// min_num_trials) will prevent other stopping rules from being evaluated
+        /// until they are met. For example, setting `min_num_trials=5` and
+        /// `always_stop_after= 1 hour` means that the Study will ONLY stop after it
+        /// has 5 COMPLETED trials, even if more than an hour has passed since its
+        /// creation. It follows the first applicable rule (whose "if" condition is
+        /// satisfied) to make a stopping decision. If none of the specified rules
+        /// are applicable, then Vizier decides that the study should not stop.
+        /// If Vizier decides that the study should stop, the study enters
+        /// STOPPING state (or STOPPING_ASAP if should_stop_asap = true).
+        /// IMPORTANT: The automatic study state transition happens precisely as
+        /// described above; that is, deleting trials or updating StudyConfig NEVER
+        /// automatically moves the study state back to ACTIVE. If you want to
+        /// _resume_ a Study that was stopped, 1) change the stopping conditions if
+        /// necessary, 2) activate the study, and then 3) ask for suggestions.
+        /// If the specified time or duration has not passed, do not stop the
+        /// study.
+        #[prost(message, optional, tag = "2")]
+        pub minimum_runtime_constraint: ::core::option::Option<
+            super::StudyTimeConstraint,
+        >,
+        /// If the specified time or duration has passed, stop the study.
+        #[prost(message, optional, tag = "3")]
+        pub maximum_runtime_constraint: ::core::option::Option<
+            super::StudyTimeConstraint,
+        >,
+        /// If there are fewer than this many COMPLETED trials, do not stop the
+        /// study.
+        #[prost(message, optional, tag = "4")]
+        pub min_num_trials: ::core::option::Option<i32>,
+        /// If there are more than this many trials, stop the study.
+        #[prost(message, optional, tag = "5")]
+        pub max_num_trials: ::core::option::Option<i32>,
+        /// If the objective value has not improved for this many consecutive
+        /// trials, stop the study.
+        ///
+        /// WARNING: Effective only for single-objective studies.
+        #[prost(message, optional, tag = "6")]
+        pub max_num_trials_no_progress: ::core::option::Option<i32>,
+        /// If the objective value has not improved for this much time, stop the
+        /// study.
+        ///
+        /// WARNING: Effective only for single-objective studies.
+        #[prost(message, optional, tag = "7")]
+        pub max_duration_no_progress: ::core::option::Option<::prost_types::Duration>,
     }
     /// The available search algorithms for the Study.
     #[derive(
@@ -11227,6 +13468,11 @@ pub struct IndexDatapoint {
     /// <https://cloud.google.com/vertex-ai/docs/matching-engine/filtering>
     #[prost(message, repeated, tag = "4")]
     pub restricts: ::prost::alloc::vec::Vec<index_datapoint::Restriction>,
+    /// Optional. List of Restrict of the datapoint, used to perform "restricted
+    /// searches" where boolean rule are used to filter the subset of the database
+    /// eligible for matching. This uses numeric comparisons.
+    #[prost(message, repeated, tag = "6")]
+    pub numeric_restricts: ::prost::alloc::vec::Vec<index_datapoint::NumericRestriction>,
     /// Optional. CrowdingTag of the datapoint, the number of neighbors to return
     /// in each crowding can be configured during query.
     #[prost(message, optional, tag = "5")]
@@ -11248,6 +13494,100 @@ pub mod index_datapoint {
         /// The attributes to deny in this namespace. e.g.: 'blue'
         #[prost(string, repeated, tag = "3")]
         pub deny_list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// This field allows restricts to be based on numeric comparisons rather
+    /// than categorical tokens.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NumericRestriction {
+        /// The namespace of this restriction. e.g.: cost.
+        #[prost(string, tag = "1")]
+        pub namespace: ::prost::alloc::string::String,
+        /// This MUST be specified for queries and must NOT be specified for
+        /// datapoints.
+        #[prost(enumeration = "numeric_restriction::Operator", tag = "5")]
+        pub op: i32,
+        /// The type of Value must be consistent for all datapoints with a given
+        /// namespace name. This is verified at runtime.
+        #[prost(oneof = "numeric_restriction::Value", tags = "2, 3, 4")]
+        pub value: ::core::option::Option<numeric_restriction::Value>,
+    }
+    /// Nested message and enum types in `NumericRestriction`.
+    pub mod numeric_restriction {
+        /// Which comparison operator to use.  Should be specified for queries only;
+        /// specifying this for a datapoint is an error.
+        ///
+        /// Datapoints for which Operator is true relative to the query's Value
+        /// field will be allowlisted.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Operator {
+            /// Default value of the enum.
+            Unspecified = 0,
+            /// Datapoints are eligible iff their value is < the query's.
+            Less = 1,
+            /// Datapoints are eligible iff their value is <= the query's.
+            LessEqual = 2,
+            /// Datapoints are eligible iff their value is == the query's.
+            Equal = 3,
+            /// Datapoints are eligible iff their value is >= the query's.
+            GreaterEqual = 4,
+            /// Datapoints are eligible iff their value is > the query's.
+            Greater = 5,
+        }
+        impl Operator {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Operator::Unspecified => "OPERATOR_UNSPECIFIED",
+                    Operator::Less => "LESS",
+                    Operator::LessEqual => "LESS_EQUAL",
+                    Operator::Equal => "EQUAL",
+                    Operator::GreaterEqual => "GREATER_EQUAL",
+                    Operator::Greater => "GREATER",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                    "LESS" => Some(Self::Less),
+                    "LESS_EQUAL" => Some(Self::LessEqual),
+                    "EQUAL" => Some(Self::Equal),
+                    "GREATER_EQUAL" => Some(Self::GreaterEqual),
+                    "GREATER" => Some(Self::Greater),
+                    _ => None,
+                }
+            }
+        }
+        /// The type of Value must be consistent for all datapoints with a given
+        /// namespace name. This is verified at runtime.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Value {
+            /// Represents 64 bit integer.
+            #[prost(int64, tag = "2")]
+            ValueInt(i64),
+            /// Represents 32 bit float.
+            #[prost(float, tag = "3")]
+            ValueFloat(f32),
+            /// Represents 64 bit float.
+            #[prost(double, tag = "4")]
+            ValueDouble(f64),
+        }
     }
     /// Crowding tag is a constraint on a neighbor list produced by nearest
     /// neighbor search requiring that no more than some value k' of the k
@@ -11436,10 +13776,11 @@ pub struct DeployedIndex {
     #[prost(message, optional, tag = "7")]
     pub automatic_resources: ::core::option::Option<AutomaticResources>,
     /// Optional. A description of resources that are dedicated to the
-    /// DeployedIndex, and that need a higher degree of manual configuration. If
-    /// min_replica_count is not set, the default value is 2 (we don't provide SLA
-    /// when min_replica_count=1). If max_replica_count is not set, the default
-    /// value is min_replica_count. The max allowed replica count is 1000.
+    /// DeployedIndex, and that need a higher degree of manual configuration. The
+    /// field min_replica_count must be set to a value strictly greater than 0, or
+    /// else validation will fail. We don't provide SLA when min_replica_count=1.
+    /// If max_replica_count is not set, the default value is min_replica_count.
+    /// The max allowed replica count is 1000.
     ///
     /// Available machine types for SMALL shard:
     /// e2-standard-2 and all machine types available for MEDIUM and LARGE shard.
@@ -15896,6 +18237,873 @@ pub struct LineageSubgraph {
     /// The Event edges between Artifacts and Executions in the subgraph.
     #[prost(message, repeated, tag = "3")]
     pub events: ::prost::alloc::vec::Vec<Event>,
+}
+/// Request message for
+/// [PredictionService.Predict][google.cloud.aiplatform.v1.PredictionService.Predict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PredictRequest {
+    /// Required. The name of the Endpoint requested to serve the prediction.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Required. The instances that are the input to the prediction call.
+    /// A DeployedModel may have an upper limit on the number of instances it
+    /// supports per request, and when it is exceeded the prediction call errors
+    /// in case of AutoML Models, or, in case of customer created Models, the
+    /// behaviour is as documented by that Model.
+    /// The schema of any single instance may be specified via Endpoint's
+    /// DeployedModels' [Model's][google.cloud.aiplatform.v1.DeployedModel.model]
+    /// [PredictSchemata's][google.cloud.aiplatform.v1.Model.predict_schemata]
+    /// [instance_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.instance_schema_uri].
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
+    /// The parameters that govern the prediction. The schema of the parameters may
+    /// be specified via Endpoint's DeployedModels' [Model's
+    /// ][google.cloud.aiplatform.v1.DeployedModel.model]
+    /// [PredictSchemata's][google.cloud.aiplatform.v1.Model.predict_schemata]
+    /// [parameters_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.parameters_schema_uri].
+    #[prost(message, optional, tag = "3")]
+    pub parameters: ::core::option::Option<::prost_types::Value>,
+}
+/// Response message for
+/// [PredictionService.Predict][google.cloud.aiplatform.v1.PredictionService.Predict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PredictResponse {
+    /// The predictions that are the output of the predictions call.
+    /// The schema of any single prediction may be specified via Endpoint's
+    /// DeployedModels' [Model's ][google.cloud.aiplatform.v1.DeployedModel.model]
+    /// [PredictSchemata's][google.cloud.aiplatform.v1.Model.predict_schemata]
+    /// [prediction_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.prediction_schema_uri].
+    #[prost(message, repeated, tag = "1")]
+    pub predictions: ::prost::alloc::vec::Vec<::prost_types::Value>,
+    /// ID of the Endpoint's DeployedModel that served this prediction.
+    #[prost(string, tag = "2")]
+    pub deployed_model_id: ::prost::alloc::string::String,
+    /// Output only. The resource name of the Model which is deployed as the
+    /// DeployedModel that this prediction hits.
+    #[prost(string, tag = "3")]
+    pub model: ::prost::alloc::string::String,
+    /// Output only. The version ID of the Model which is deployed as the
+    /// DeployedModel that this prediction hits.
+    #[prost(string, tag = "5")]
+    pub model_version_id: ::prost::alloc::string::String,
+    /// Output only. The [display
+    /// name][google.cloud.aiplatform.v1.Model.display_name] of the Model which is
+    /// deployed as the DeployedModel that this prediction hits.
+    #[prost(string, tag = "4")]
+    pub model_display_name: ::prost::alloc::string::String,
+    /// Output only. Request-level metadata returned by the model. The metadata
+    /// type will be dependent upon the model implementation.
+    #[prost(message, optional, tag = "6")]
+    pub metadata: ::core::option::Option<::prost_types::Value>,
+}
+/// Request message for
+/// [PredictionService.RawPredict][google.cloud.aiplatform.v1.PredictionService.RawPredict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RawPredictRequest {
+    /// Required. The name of the Endpoint requested to serve the prediction.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// The prediction input. Supports HTTP headers and arbitrary data payload.
+    ///
+    /// A [DeployedModel][google.cloud.aiplatform.v1.DeployedModel] may have an
+    /// upper limit on the number of instances it supports per request. When this
+    /// limit it is exceeded for an AutoML model, the
+    /// [RawPredict][google.cloud.aiplatform.v1.PredictionService.RawPredict]
+    /// method returns an error. When this limit is exceeded for a custom-trained
+    /// model, the behavior varies depending on the model.
+    ///
+    /// You can specify the schema for each instance in the
+    /// [predict_schemata.instance_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.instance_schema_uri]
+    /// field when you create a [Model][google.cloud.aiplatform.v1.Model]. This
+    /// schema applies when you deploy the `Model` as a `DeployedModel` to an
+    /// [Endpoint][google.cloud.aiplatform.v1.Endpoint] and use the `RawPredict`
+    /// method.
+    #[prost(message, optional, tag = "2")]
+    pub http_body: ::core::option::Option<super::super::super::api::HttpBody>,
+}
+/// Request message for
+/// [PredictionService.DirectPredict][google.cloud.aiplatform.v1.PredictionService.DirectPredict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DirectPredictRequest {
+    /// Required. The name of the Endpoint requested to serve the prediction.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// The prediction input.
+    #[prost(message, repeated, tag = "2")]
+    pub inputs: ::prost::alloc::vec::Vec<Tensor>,
+    /// The parameters that govern the prediction.
+    #[prost(message, optional, tag = "3")]
+    pub parameters: ::core::option::Option<Tensor>,
+}
+/// Response message for
+/// [PredictionService.DirectPredict][google.cloud.aiplatform.v1.PredictionService.DirectPredict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DirectPredictResponse {
+    /// The prediction output.
+    #[prost(message, repeated, tag = "1")]
+    pub outputs: ::prost::alloc::vec::Vec<Tensor>,
+    /// The parameters that govern the prediction.
+    #[prost(message, optional, tag = "2")]
+    pub parameters: ::core::option::Option<Tensor>,
+}
+/// Request message for
+/// [PredictionService.DirectRawPredict][google.cloud.aiplatform.v1.PredictionService.DirectRawPredict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DirectRawPredictRequest {
+    /// Required. The name of the Endpoint requested to serve the prediction.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Fully qualified name of the API method being invoked to perform
+    /// predictions.
+    ///
+    /// Format:
+    /// `/namespace.Service/Method/`
+    /// Example:
+    /// `/tensorflow.serving.PredictionService/Predict`
+    #[prost(string, tag = "2")]
+    pub method_name: ::prost::alloc::string::String,
+    /// The prediction input.
+    #[prost(bytes = "vec", tag = "3")]
+    pub input: ::prost::alloc::vec::Vec<u8>,
+}
+/// Response message for
+/// [PredictionService.DirectRawPredict][google.cloud.aiplatform.v1.PredictionService.DirectRawPredict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DirectRawPredictResponse {
+    /// The prediction output.
+    #[prost(bytes = "vec", tag = "1")]
+    pub output: ::prost::alloc::vec::Vec<u8>,
+}
+/// Request message for
+/// [PredictionService.StreamingPredict][google.cloud.aiplatform.v1.PredictionService.StreamingPredict].
+///
+/// The first message must contain
+/// [endpoint][google.cloud.aiplatform.v1.StreamingPredictRequest.endpoint] field
+/// and optionally [input][]. The subsequent messages must contain [input][].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingPredictRequest {
+    /// Required. The name of the Endpoint requested to serve the prediction.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// The prediction input.
+    #[prost(message, repeated, tag = "2")]
+    pub inputs: ::prost::alloc::vec::Vec<Tensor>,
+    /// The parameters that govern the prediction.
+    #[prost(message, optional, tag = "3")]
+    pub parameters: ::core::option::Option<Tensor>,
+}
+/// Response message for
+/// [PredictionService.StreamingPredict][google.cloud.aiplatform.v1.PredictionService.StreamingPredict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingPredictResponse {
+    /// The prediction output.
+    #[prost(message, repeated, tag = "1")]
+    pub outputs: ::prost::alloc::vec::Vec<Tensor>,
+    /// The parameters that govern the prediction.
+    #[prost(message, optional, tag = "2")]
+    pub parameters: ::core::option::Option<Tensor>,
+}
+/// Request message for
+/// [PredictionService.StreamingRawPredict][google.cloud.aiplatform.v1.PredictionService.StreamingRawPredict].
+///
+/// The first message must contain
+/// [endpoint][google.cloud.aiplatform.v1.StreamingRawPredictRequest.endpoint]
+/// and
+/// [method_name][google.cloud.aiplatform.v1.StreamingRawPredictRequest.method_name]
+/// fields and optionally
+/// [input][google.cloud.aiplatform.v1.StreamingRawPredictRequest.input]. The
+/// subsequent messages must contain
+/// [input][google.cloud.aiplatform.v1.StreamingRawPredictRequest.input].
+/// [method_name][google.cloud.aiplatform.v1.StreamingRawPredictRequest.method_name]
+/// in the subsequent messages have no effect.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingRawPredictRequest {
+    /// Required. The name of the Endpoint requested to serve the prediction.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Fully qualified name of the API method being invoked to perform
+    /// predictions.
+    ///
+    /// Format:
+    /// `/namespace.Service/Method/`
+    /// Example:
+    /// `/tensorflow.serving.PredictionService/Predict`
+    #[prost(string, tag = "2")]
+    pub method_name: ::prost::alloc::string::String,
+    /// The prediction input.
+    #[prost(bytes = "vec", tag = "3")]
+    pub input: ::prost::alloc::vec::Vec<u8>,
+}
+/// Response message for
+/// [PredictionService.StreamingRawPredict][google.cloud.aiplatform.v1.PredictionService.StreamingRawPredict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingRawPredictResponse {
+    /// The prediction output.
+    #[prost(bytes = "vec", tag = "1")]
+    pub output: ::prost::alloc::vec::Vec<u8>,
+}
+/// Request message for
+/// [PredictionService.Explain][google.cloud.aiplatform.v1.PredictionService.Explain].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExplainRequest {
+    /// Required. The name of the Endpoint requested to serve the explanation.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Required. The instances that are the input to the explanation call.
+    /// A DeployedModel may have an upper limit on the number of instances it
+    /// supports per request, and when it is exceeded the explanation call errors
+    /// in case of AutoML Models, or, in case of customer created Models, the
+    /// behaviour is as documented by that Model.
+    /// The schema of any single instance may be specified via Endpoint's
+    /// DeployedModels' [Model's][google.cloud.aiplatform.v1.DeployedModel.model]
+    /// [PredictSchemata's][google.cloud.aiplatform.v1.Model.predict_schemata]
+    /// [instance_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.instance_schema_uri].
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
+    /// The parameters that govern the prediction. The schema of the parameters may
+    /// be specified via Endpoint's DeployedModels' [Model's
+    /// ][google.cloud.aiplatform.v1.DeployedModel.model]
+    /// [PredictSchemata's][google.cloud.aiplatform.v1.Model.predict_schemata]
+    /// [parameters_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.parameters_schema_uri].
+    #[prost(message, optional, tag = "4")]
+    pub parameters: ::core::option::Option<::prost_types::Value>,
+    /// If specified, overrides the
+    /// [explanation_spec][google.cloud.aiplatform.v1.DeployedModel.explanation_spec]
+    /// of the DeployedModel. Can be used for explaining prediction results with
+    /// different configurations, such as:
+    ///   - Explaining top-5 predictions results as opposed to top-1;
+    ///   - Increasing path count or step count of the attribution methods to reduce
+    ///     approximate errors;
+    ///   - Using different baselines for explaining the prediction results.
+    #[prost(message, optional, tag = "5")]
+    pub explanation_spec_override: ::core::option::Option<ExplanationSpecOverride>,
+    /// If specified, this ExplainRequest will be served by the chosen
+    /// DeployedModel, overriding
+    /// [Endpoint.traffic_split][google.cloud.aiplatform.v1.Endpoint.traffic_split].
+    #[prost(string, tag = "3")]
+    pub deployed_model_id: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [PredictionService.Explain][google.cloud.aiplatform.v1.PredictionService.Explain].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExplainResponse {
+    /// The explanations of the Model's
+    /// [PredictResponse.predictions][google.cloud.aiplatform.v1.PredictResponse.predictions].
+    ///
+    /// It has the same number of elements as
+    /// [instances][google.cloud.aiplatform.v1.ExplainRequest.instances] to be
+    /// explained.
+    #[prost(message, repeated, tag = "1")]
+    pub explanations: ::prost::alloc::vec::Vec<Explanation>,
+    /// ID of the Endpoint's DeployedModel that served this explanation.
+    #[prost(string, tag = "2")]
+    pub deployed_model_id: ::prost::alloc::string::String,
+    /// The predictions that are the output of the predictions call.
+    /// Same as
+    /// [PredictResponse.predictions][google.cloud.aiplatform.v1.PredictResponse.predictions].
+    #[prost(message, repeated, tag = "3")]
+    pub predictions: ::prost::alloc::vec::Vec<::prost_types::Value>,
+}
+/// Request message for [PredictionService.CountTokens][].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CountTokensRequest {
+    /// Required. The name of the Endpoint requested to perform token counting.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Required. The instances that are the input to token counting call.
+    /// Schema is identical to the prediction schema of the underlying model.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
+}
+/// Response message for [PredictionService.CountTokens][].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CountTokensResponse {
+    /// The total number of tokens counted across all instances from the request.
+    #[prost(int32, tag = "1")]
+    pub total_tokens: i32,
+    /// The total number of billable characters counted across all instances from
+    /// the request.
+    #[prost(int32, tag = "2")]
+    pub total_billable_characters: i32,
+}
+/// Generated client implementations.
+pub mod prediction_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// A service for online predictions and explanations.
+    #[derive(Debug, Clone)]
+    pub struct PredictionServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl PredictionServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> PredictionServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> PredictionServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            PredictionServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Perform an online prediction.
+        pub async fn predict(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PredictRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::PredictResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PredictionService/Predict",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PredictionService",
+                        "Predict",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Perform an online prediction with an arbitrary HTTP payload.
+        ///
+        /// The response includes the following HTTP headers:
+        ///
+        /// * `X-Vertex-AI-Endpoint-Id`: ID of the
+        /// [Endpoint][google.cloud.aiplatform.v1.Endpoint] that served this
+        /// prediction.
+        ///
+        /// * `X-Vertex-AI-Deployed-Model-Id`: ID of the Endpoint's
+        /// [DeployedModel][google.cloud.aiplatform.v1.DeployedModel] that served this
+        /// prediction.
+        pub async fn raw_predict(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RawPredictRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::api::HttpBody>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PredictionService/RawPredict",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PredictionService",
+                        "RawPredict",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Perform an unary online prediction request for Vertex first-party products
+        /// and frameworks.
+        pub async fn direct_predict(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DirectPredictRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DirectPredictResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PredictionService/DirectPredict",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PredictionService",
+                        "DirectPredict",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Perform an online prediction request through gRPC.
+        pub async fn direct_raw_predict(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DirectRawPredictRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DirectRawPredictResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PredictionService/DirectRawPredict",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PredictionService",
+                        "DirectRawPredict",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Perform a streaming online prediction request for Vertex first-party
+        /// products and frameworks.
+        pub async fn streaming_predict(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::StreamingPredictRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::StreamingPredictResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PredictionService/StreamingPredict",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PredictionService",
+                        "StreamingPredict",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
+        }
+        /// Perform a server-side streaming online prediction request for Vertex
+        /// LLM streaming.
+        pub async fn server_streaming_predict(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StreamingPredictRequest>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::StreamingPredictResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PredictionService/ServerStreamingPredict",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PredictionService",
+                        "ServerStreamingPredict",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
+        }
+        /// Perform a streaming online prediction request through gRPC.
+        pub async fn streaming_raw_predict(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::StreamingRawPredictRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::StreamingRawPredictResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PredictionService/StreamingRawPredict",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PredictionService",
+                        "StreamingRawPredict",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
+        }
+        /// Perform an online explanation.
+        ///
+        /// If
+        /// [deployed_model_id][google.cloud.aiplatform.v1.ExplainRequest.deployed_model_id]
+        /// is specified, the corresponding DeployModel must have
+        /// [explanation_spec][google.cloud.aiplatform.v1.DeployedModel.explanation_spec]
+        /// populated. If
+        /// [deployed_model_id][google.cloud.aiplatform.v1.ExplainRequest.deployed_model_id]
+        /// is not specified, all DeployedModels must have
+        /// [explanation_spec][google.cloud.aiplatform.v1.DeployedModel.explanation_spec]
+        /// populated.
+        pub async fn explain(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExplainRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ExplainResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PredictionService/Explain",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PredictionService",
+                        "Explain",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Request message for ComputeTokens RPC call.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComputeTokensRequest {
+    /// Required. The name of the Endpoint requested to get lists of tokens and
+    /// token ids.
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Required. The instances that are the input to token computing API call.
+    /// Schema is identical to the prediction schema of the text model, even for
+    /// the non-text models, like chat models, or Codey models.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
+}
+/// Tokens info with a list of tokens and the corresponding list of token ids.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TokensInfo {
+    /// A list of tokens from the input.
+    #[prost(bytes = "vec", repeated, tag = "1")]
+    pub tokens: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
+    /// A list of token ids from the input.
+    #[prost(int64, repeated, tag = "2")]
+    pub token_ids: ::prost::alloc::vec::Vec<i64>,
+}
+/// Response message for ComputeTokens RPC call.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComputeTokensResponse {
+    /// Lists of tokens info from the input. A ComputeTokensRequest could have
+    /// multiple instances with a prompt in each instance. We also need to return
+    /// lists of tokens info for the request with multiple instances.
+    #[prost(message, repeated, tag = "1")]
+    pub tokens_info: ::prost::alloc::vec::Vec<TokensInfo>,
+}
+/// Generated client implementations.
+pub mod llm_utility_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for LLM related utility functions.
+    #[derive(Debug, Clone)]
+    pub struct LlmUtilityServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl LlmUtilityServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> LlmUtilityServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> LlmUtilityServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            LlmUtilityServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Perform a token counting.
+        pub async fn count_tokens(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CountTokensRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CountTokensResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.LlmUtilityService/CountTokens",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.LlmUtilityService",
+                        "CountTokens",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Return a list of tokens based on the input text.
+        pub async fn compute_tokens(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ComputeTokensRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ComputeTokensResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.LlmUtilityService/ComputeTokens",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.LlmUtilityService",
+                        "ComputeTokens",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
 }
 /// The request message for
 /// [MatchService.FindNeighbors][google.cloud.aiplatform.v1.MatchService.FindNeighbors].
@@ -22612,428 +25820,6 @@ pub mod pipeline_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1.PipelineService",
                         "CancelPipelineJob",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-    }
-}
-/// Request message for
-/// [PredictionService.Predict][google.cloud.aiplatform.v1.PredictionService.Predict].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PredictRequest {
-    /// Required. The name of the Endpoint requested to serve the prediction.
-    /// Format:
-    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
-    /// Required. The instances that are the input to the prediction call.
-    /// A DeployedModel may have an upper limit on the number of instances it
-    /// supports per request, and when it is exceeded the prediction call errors
-    /// in case of AutoML Models, or, in case of customer created Models, the
-    /// behaviour is as documented by that Model.
-    /// The schema of any single instance may be specified via Endpoint's
-    /// DeployedModels' [Model's][google.cloud.aiplatform.v1.DeployedModel.model]
-    /// [PredictSchemata's][google.cloud.aiplatform.v1.Model.predict_schemata]
-    /// [instance_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.instance_schema_uri].
-    #[prost(message, repeated, tag = "2")]
-    pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
-    /// The parameters that govern the prediction. The schema of the parameters may
-    /// be specified via Endpoint's DeployedModels' [Model's
-    /// ][google.cloud.aiplatform.v1.DeployedModel.model]
-    /// [PredictSchemata's][google.cloud.aiplatform.v1.Model.predict_schemata]
-    /// [parameters_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.parameters_schema_uri].
-    #[prost(message, optional, tag = "3")]
-    pub parameters: ::core::option::Option<::prost_types::Value>,
-}
-/// Response message for
-/// [PredictionService.Predict][google.cloud.aiplatform.v1.PredictionService.Predict].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PredictResponse {
-    /// The predictions that are the output of the predictions call.
-    /// The schema of any single prediction may be specified via Endpoint's
-    /// DeployedModels' [Model's ][google.cloud.aiplatform.v1.DeployedModel.model]
-    /// [PredictSchemata's][google.cloud.aiplatform.v1.Model.predict_schemata]
-    /// [prediction_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.prediction_schema_uri].
-    #[prost(message, repeated, tag = "1")]
-    pub predictions: ::prost::alloc::vec::Vec<::prost_types::Value>,
-    /// ID of the Endpoint's DeployedModel that served this prediction.
-    #[prost(string, tag = "2")]
-    pub deployed_model_id: ::prost::alloc::string::String,
-    /// Output only. The resource name of the Model which is deployed as the
-    /// DeployedModel that this prediction hits.
-    #[prost(string, tag = "3")]
-    pub model: ::prost::alloc::string::String,
-    /// Output only. The version ID of the Model which is deployed as the
-    /// DeployedModel that this prediction hits.
-    #[prost(string, tag = "5")]
-    pub model_version_id: ::prost::alloc::string::String,
-    /// Output only. The [display
-    /// name][google.cloud.aiplatform.v1.Model.display_name] of the Model which is
-    /// deployed as the DeployedModel that this prediction hits.
-    #[prost(string, tag = "4")]
-    pub model_display_name: ::prost::alloc::string::String,
-    /// Output only. Request-level metadata returned by the model. The metadata
-    /// type will be dependent upon the model implementation.
-    #[prost(message, optional, tag = "6")]
-    pub metadata: ::core::option::Option<::prost_types::Value>,
-}
-/// Request message for
-/// [PredictionService.RawPredict][google.cloud.aiplatform.v1.PredictionService.RawPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RawPredictRequest {
-    /// Required. The name of the Endpoint requested to serve the prediction.
-    /// Format:
-    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
-    /// The prediction input. Supports HTTP headers and arbitrary data payload.
-    ///
-    /// A [DeployedModel][google.cloud.aiplatform.v1.DeployedModel] may have an
-    /// upper limit on the number of instances it supports per request. When this
-    /// limit it is exceeded for an AutoML model, the
-    /// [RawPredict][google.cloud.aiplatform.v1.PredictionService.RawPredict]
-    /// method returns an error. When this limit is exceeded for a custom-trained
-    /// model, the behavior varies depending on the model.
-    ///
-    /// You can specify the schema for each instance in the
-    /// [predict_schemata.instance_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.instance_schema_uri]
-    /// field when you create a [Model][google.cloud.aiplatform.v1.Model]. This
-    /// schema applies when you deploy the `Model` as a `DeployedModel` to an
-    /// [Endpoint][google.cloud.aiplatform.v1.Endpoint] and use the `RawPredict`
-    /// method.
-    #[prost(message, optional, tag = "2")]
-    pub http_body: ::core::option::Option<super::super::super::api::HttpBody>,
-}
-/// Request message for
-/// [PredictionService.StreamingPredict][google.cloud.aiplatform.v1.PredictionService.StreamingPredict].
-///
-/// The first message must contain
-/// [endpoint][google.cloud.aiplatform.v1.StreamingPredictRequest.endpoint] field
-/// and optionally [input][]. The subsequent messages must contain [input][].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingPredictRequest {
-    /// Required. The name of the Endpoint requested to serve the prediction.
-    /// Format:
-    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
-    /// The prediction input.
-    #[prost(message, repeated, tag = "2")]
-    pub inputs: ::prost::alloc::vec::Vec<Tensor>,
-    /// The parameters that govern the prediction.
-    #[prost(message, optional, tag = "3")]
-    pub parameters: ::core::option::Option<Tensor>,
-}
-/// Response message for
-/// [PredictionService.StreamingPredict][google.cloud.aiplatform.v1.PredictionService.StreamingPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingPredictResponse {
-    /// The prediction output.
-    #[prost(message, repeated, tag = "1")]
-    pub outputs: ::prost::alloc::vec::Vec<Tensor>,
-    /// The parameters that govern the prediction.
-    #[prost(message, optional, tag = "2")]
-    pub parameters: ::core::option::Option<Tensor>,
-}
-/// Request message for
-/// [PredictionService.Explain][google.cloud.aiplatform.v1.PredictionService.Explain].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExplainRequest {
-    /// Required. The name of the Endpoint requested to serve the explanation.
-    /// Format:
-    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
-    /// Required. The instances that are the input to the explanation call.
-    /// A DeployedModel may have an upper limit on the number of instances it
-    /// supports per request, and when it is exceeded the explanation call errors
-    /// in case of AutoML Models, or, in case of customer created Models, the
-    /// behaviour is as documented by that Model.
-    /// The schema of any single instance may be specified via Endpoint's
-    /// DeployedModels' [Model's][google.cloud.aiplatform.v1.DeployedModel.model]
-    /// [PredictSchemata's][google.cloud.aiplatform.v1.Model.predict_schemata]
-    /// [instance_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.instance_schema_uri].
-    #[prost(message, repeated, tag = "2")]
-    pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
-    /// The parameters that govern the prediction. The schema of the parameters may
-    /// be specified via Endpoint's DeployedModels' [Model's
-    /// ][google.cloud.aiplatform.v1.DeployedModel.model]
-    /// [PredictSchemata's][google.cloud.aiplatform.v1.Model.predict_schemata]
-    /// [parameters_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.parameters_schema_uri].
-    #[prost(message, optional, tag = "4")]
-    pub parameters: ::core::option::Option<::prost_types::Value>,
-    /// If specified, overrides the
-    /// [explanation_spec][google.cloud.aiplatform.v1.DeployedModel.explanation_spec]
-    /// of the DeployedModel. Can be used for explaining prediction results with
-    /// different configurations, such as:
-    ///   - Explaining top-5 predictions results as opposed to top-1;
-    ///   - Increasing path count or step count of the attribution methods to reduce
-    ///     approximate errors;
-    ///   - Using different baselines for explaining the prediction results.
-    #[prost(message, optional, tag = "5")]
-    pub explanation_spec_override: ::core::option::Option<ExplanationSpecOverride>,
-    /// If specified, this ExplainRequest will be served by the chosen
-    /// DeployedModel, overriding
-    /// [Endpoint.traffic_split][google.cloud.aiplatform.v1.Endpoint.traffic_split].
-    #[prost(string, tag = "3")]
-    pub deployed_model_id: ::prost::alloc::string::String,
-}
-/// Response message for
-/// [PredictionService.Explain][google.cloud.aiplatform.v1.PredictionService.Explain].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExplainResponse {
-    /// The explanations of the Model's
-    /// [PredictResponse.predictions][google.cloud.aiplatform.v1.PredictResponse.predictions].
-    ///
-    /// It has the same number of elements as
-    /// [instances][google.cloud.aiplatform.v1.ExplainRequest.instances] to be
-    /// explained.
-    #[prost(message, repeated, tag = "1")]
-    pub explanations: ::prost::alloc::vec::Vec<Explanation>,
-    /// ID of the Endpoint's DeployedModel that served this explanation.
-    #[prost(string, tag = "2")]
-    pub deployed_model_id: ::prost::alloc::string::String,
-    /// The predictions that are the output of the predictions call.
-    /// Same as
-    /// [PredictResponse.predictions][google.cloud.aiplatform.v1.PredictResponse.predictions].
-    #[prost(message, repeated, tag = "3")]
-    pub predictions: ::prost::alloc::vec::Vec<::prost_types::Value>,
-}
-/// Generated client implementations.
-pub mod prediction_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
-    use tonic::codegen::*;
-    use tonic::codegen::http::Uri;
-    /// A service for online predictions and explanations.
-    #[derive(Debug, Clone)]
-    pub struct PredictionServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl PredictionServiceClient<tonic::transport::Channel> {
-        /// Attempt to create a new client by connecting to a given endpoint.
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
-    impl<T> PredictionServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_origin(inner: T, origin: Uri) -> Self {
-            let inner = tonic::client::Grpc::with_origin(inner, origin);
-            Self { inner }
-        }
-        pub fn with_interceptor<F>(
-            inner: T,
-            interceptor: F,
-        ) -> PredictionServiceClient<InterceptedService<T, F>>
-        where
-            F: tonic::service::Interceptor,
-            T::ResponseBody: Default,
-            T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-                Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
-                >,
-            >,
-            <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
-        {
-            PredictionServiceClient::new(InterceptedService::new(inner, interceptor))
-        }
-        /// Compress requests with the given encoding.
-        ///
-        /// This requires the server to support it otherwise it might respond with an
-        /// error.
-        #[must_use]
-        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.send_compressed(encoding);
-            self
-        }
-        /// Enable decompressing responses.
-        #[must_use]
-        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.accept_compressed(encoding);
-            self
-        }
-        /// Limits the maximum size of a decoded message.
-        ///
-        /// Default: `4MB`
-        #[must_use]
-        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_decoding_message_size(limit);
-            self
-        }
-        /// Limits the maximum size of an encoded message.
-        ///
-        /// Default: `usize::MAX`
-        #[must_use]
-        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_encoding_message_size(limit);
-            self
-        }
-        /// Perform an online prediction.
-        pub async fn predict(
-            &mut self,
-            request: impl tonic::IntoRequest<super::PredictRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::PredictResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1.PredictionService/Predict",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1.PredictionService",
-                        "Predict",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Perform an online prediction with an arbitrary HTTP payload.
-        ///
-        /// The response includes the following HTTP headers:
-        ///
-        /// * `X-Vertex-AI-Endpoint-Id`: ID of the
-        /// [Endpoint][google.cloud.aiplatform.v1.Endpoint] that served this
-        /// prediction.
-        ///
-        /// * `X-Vertex-AI-Deployed-Model-Id`: ID of the Endpoint's
-        /// [DeployedModel][google.cloud.aiplatform.v1.DeployedModel] that served this
-        /// prediction.
-        pub async fn raw_predict(
-            &mut self,
-            request: impl tonic::IntoRequest<super::RawPredictRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::api::HttpBody>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1.PredictionService/RawPredict",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1.PredictionService",
-                        "RawPredict",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Perform a server-side streaming online prediction request for Vertex
-        /// LLM streaming.
-        pub async fn server_streaming_predict(
-            &mut self,
-            request: impl tonic::IntoRequest<super::StreamingPredictRequest>,
-        ) -> std::result::Result<
-            tonic::Response<tonic::codec::Streaming<super::StreamingPredictResponse>>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1.PredictionService/ServerStreamingPredict",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1.PredictionService",
-                        "ServerStreamingPredict",
-                    ),
-                );
-            self.inner.server_streaming(req, path, codec).await
-        }
-        /// Perform an online explanation.
-        ///
-        /// If
-        /// [deployed_model_id][google.cloud.aiplatform.v1.ExplainRequest.deployed_model_id]
-        /// is specified, the corresponding DeployModel must have
-        /// [explanation_spec][google.cloud.aiplatform.v1.DeployedModel.explanation_spec]
-        /// populated. If
-        /// [deployed_model_id][google.cloud.aiplatform.v1.ExplainRequest.deployed_model_id]
-        /// is not specified, all DeployedModels must have
-        /// [explanation_spec][google.cloud.aiplatform.v1.DeployedModel.explanation_spec]
-        /// populated.
-        pub async fn explain(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ExplainRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ExplainResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1.PredictionService/Explain",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1.PredictionService",
-                        "Explain",
                     ),
                 );
             self.inner.unary(req, path, codec).await

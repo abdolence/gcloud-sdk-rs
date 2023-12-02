@@ -616,9 +616,18 @@ pub struct LogsPolicy {
     /// Filestore, or a Cloud Storage path.
     #[prost(string, tag = "2")]
     pub logs_path: ::prost::alloc::string::String,
+    /// Optional. Additional settings for Cloud Logging. It will only take effect
+    /// when the destination of LogsPolicy is set to CLOUD_LOGGING.
+    #[prost(message, optional, tag = "3")]
+    pub cloud_logging_option: ::core::option::Option<logs_policy::CloudLoggingOption>,
 }
 /// Nested message and enum types in `LogsPolicy`.
 pub mod logs_policy {
+    /// CloudLoggingOption contains additional settings for cloud logging generated
+    /// by Batch job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CloudLoggingOption {}
     /// The destination (if any) for logs.
     #[derive(
         Clone,
@@ -889,6 +898,10 @@ pub struct AllocationPolicy {
         ::prost::alloc::string::String,
     >,
     /// The network policy.
+    ///
+    /// If you define an instance template in the InstancePolicyOrTemplate field,
+    /// Batch will use the network settings in the instance template instead of
+    /// this field.
     #[prost(message, optional, tag = "7")]
     pub network: ::core::option::Option<allocation_policy::NetworkPolicy>,
     /// The placement policy.

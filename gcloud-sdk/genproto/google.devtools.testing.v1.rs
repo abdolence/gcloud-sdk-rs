@@ -395,6 +395,10 @@ pub struct TestSetup {
     /// storage path prefix for that device.
     #[prost(string, repeated, tag = "2")]
     pub directories_to_pull: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Initial setup APKs to install before the app under test is
+    /// installed. Currently capped at 100.
+    #[prost(message, repeated, tag = "29")]
+    pub initial_setup_apks: ::prost::alloc::vec::Vec<Apk>,
     /// APKs to install in addition to those being directly tested. These will be
     /// installed after the app under test.
     /// Currently capped at 100.
@@ -1236,6 +1240,8 @@ pub mod invalid_request_detail {
         Unsupported = 4,
         /// This request is not currently implemented.
         NotImplemented = 5,
+        /// The caller has no permission for storing the test results
+        ResultStoragePermissionDenied = 6,
     }
     impl Reason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1250,6 +1256,9 @@ pub mod invalid_request_detail {
                 Reason::ResourceNotFound => "RESOURCE_NOT_FOUND",
                 Reason::Unsupported => "UNSUPPORTED",
                 Reason::NotImplemented => "NOT_IMPLEMENTED",
+                Reason::ResultStoragePermissionDenied => {
+                    "RESULT_STORAGE_PERMISSION_DENIED"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1261,6 +1270,9 @@ pub mod invalid_request_detail {
                 "RESOURCE_NOT_FOUND" => Some(Self::ResourceNotFound),
                 "UNSUPPORTED" => Some(Self::Unsupported),
                 "NOT_IMPLEMENTED" => Some(Self::NotImplemented),
+                "RESULT_STORAGE_PERMISSION_DENIED" => {
+                    Some(Self::ResultStoragePermissionDenied)
+                }
                 _ => None,
             }
         }
@@ -1305,7 +1317,7 @@ pub struct UniformSharding {
     /// Required. The total number of shards to create. This must always be a
     /// positive number that is no greater than the total number of test cases.
     /// When you select one or more physical devices, the number of shards must be
-    /// <= 50. When you select one or more ARM virtual devices, it must be <= 100.
+    /// <= 50. When you select one or more ARM virtual devices, it must be <= 200.
     /// When you select only x86 virtual devices, it must be <= 500.
     #[prost(int32, tag = "1")]
     pub num_shards: i32,
@@ -1322,7 +1334,7 @@ pub struct ManualSharding {
     /// each manually-created shard. You must specify at least one shard if this
     /// field is present. When you select one or more physical devices, the number
     /// of repeated test_targets_for_shard must be <= 50. When you select one or
-    /// more ARM virtual devices, it must be <= 100. When you select only x86
+    /// more ARM virtual devices, it must be <= 200. When you select only x86
     /// virtual devices, it must be <= 500.
     #[prost(message, repeated, tag = "1")]
     pub test_targets_for_shard: ::prost::alloc::vec::Vec<TestTargetsForShard>,
@@ -1378,7 +1390,7 @@ pub struct SmartSharding {
     ///
     /// Note that there is a limit for maximum number of shards. When you select
     /// one or more physical devices, the number of shards must be <= 50. When you
-    /// select one or more ARM virtual devices, it must be <= 100. When you select
+    /// select one or more ARM virtual devices, it must be <= 200. When you select
     /// only x86 virtual devices, it must be <= 500. To guarantee at least one test
     /// case for per shard, the number of shards will not exceed the number of test
     /// cases. Each shard created counts toward daily test quota.
@@ -2497,11 +2509,6 @@ pub struct DeviceSession {
     /// Output only. The timestamp that the session first became ACTIVE.
     #[prost(message, optional, tag = "9")]
     pub active_start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. The list of requested devices. At most two devices may be
-    /// simultaneously requested.
-    #[deprecated]
-    #[prost(message, optional, tag = "12")]
-    pub android_device_list: ::core::option::Option<AndroidDeviceList>,
     /// Required. The requested device
     #[prost(message, optional, tag = "15")]
     pub android_device: ::core::option::Option<AndroidDevice>,
@@ -2602,7 +2609,7 @@ pub mod device_session {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expiration {
         /// Optional. The amount of time that a device will be initially allocated
-        /// for. This can eventually be extended with the ExtendDeviceSession RPC.
+        /// for. This can eventually be extended with the UpdateDeviceSession RPC.
         /// Default: 30 minutes.
         #[prost(message, tag = "13")]
         Ttl(::prost_types::Duration),

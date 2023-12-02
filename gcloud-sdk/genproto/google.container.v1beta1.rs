@@ -1936,10 +1936,12 @@ pub mod binary_authorization {
         /// project's singleton policy. This is equivalent to setting the
         /// enabled boolean to true.
         ProjectSingletonPolicyEnforce = 2,
-        /// Use Binary Authorization with the policies specified in policy_bindings.
+        /// Use Binary Authorization Continuous Validation with the policies
+        /// specified in policy_bindings.
         PolicyBindings = 5,
-        /// Use Binary Authorization with the policies specified in policy_bindings,
-        /// and also with the project's singleton policy in enforcement mode.
+        /// Use Binary Authorization Continuous Validation with the policies
+        /// specified in policy_bindings and enforce Kubernetes admission requests
+        /// with Binary Authorization using the project's singleton policy.
         PolicyBindingsAndProjectSingletonPolicyEnforce = 6,
     }
     impl EvaluationMode {
@@ -4454,29 +4456,6 @@ pub mod blue_green_settings {
 /// of Kubernetes labels applied to them, which may be used to reference them
 /// during pod scheduling. They may also be resized up or down, to accommodate
 /// the workload.
-/// These upgrade settings control the level of parallelism and the level of
-/// disruption caused by an upgrade.
-///
-/// maxUnavailable controls the number of nodes that can be simultaneously
-/// unavailable.
-///
-/// maxSurge controls the number of additional nodes that can be added to the
-/// node pool temporarily for the time of the upgrade to increase the number of
-/// available nodes.
-///
-/// (maxUnavailable + maxSurge) determines the level of parallelism (how many
-/// nodes are being upgraded at the same time).
-///
-/// Note: upgrades inevitably introduce some disruption since workloads need to
-/// be moved from old nodes to new, upgraded ones. Even if maxUnavailable=0,
-/// this holds true. (Disruption stays within the limits of
-/// PodDisruptionBudget, if it is configured.)
-///
-/// Consider a hypothetical node pool with 5 nodes having maxSurge=2,
-/// maxUnavailable=1. This means the upgrade process upgrades 3 nodes
-/// simultaneously. It creates 2 additional (upgraded) nodes, then it brings
-/// down 3 old (not yet upgraded) nodes at the same time. This ensures that
-/// there are always at least 4 nodes available.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodePool {
@@ -4564,12 +4543,39 @@ pub struct NodePool {
     /// up-to-date value before proceeding.
     #[prost(string, tag = "110")]
     pub etag: ::prost::alloc::string::String,
+    /// Specifies the configuration of queued provisioning.
+    #[prost(message, optional, tag = "112")]
+    pub queued_provisioning: ::core::option::Option<node_pool::QueuedProvisioning>,
     /// Enable best effort provisioning for nodes
     #[prost(message, optional, tag = "113")]
     pub best_effort_provisioning: ::core::option::Option<BestEffortProvisioning>,
 }
 /// Nested message and enum types in `NodePool`.
 pub mod node_pool {
+    /// These upgrade settings control the level of parallelism and the level of
+    /// disruption caused by an upgrade.
+    ///
+    /// maxUnavailable controls the number of nodes that can be simultaneously
+    /// unavailable.
+    ///
+    /// maxSurge controls the number of additional nodes that can be added to the
+    /// node pool temporarily for the time of the upgrade to increase the number of
+    /// available nodes.
+    ///
+    /// (maxUnavailable + maxSurge) determines the level of parallelism (how many
+    /// nodes are being upgraded at the same time).
+    ///
+    /// Note: upgrades inevitably introduce some disruption since workloads need to
+    /// be moved from old nodes to new, upgraded ones. Even if maxUnavailable=0,
+    /// this holds true. (Disruption stays within the limits of
+    /// PodDisruptionBudget, if it is configured.)
+    ///
+    /// Consider a hypothetical node pool with 5 nodes having maxSurge=2,
+    /// maxUnavailable=1. This means the upgrade process upgrades 3 nodes
+    /// simultaneously. It creates 2 additional (upgraded) nodes, then it brings
+    /// down 3 old (not yet upgraded) nodes at the same time. This ensures that
+    /// there are always at least 4 nodes available.
+    ///
     /// These upgrade settings configure the upgrade strategy for the node pool.
     /// Use strategy to switch between the strategies applied to the node pool.
     ///
@@ -4784,6 +4790,16 @@ pub mod node_pool {
                 }
             }
         }
+    }
+    /// QueuedProvisioning defines the queued provisioning used by the node pool.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct QueuedProvisioning {
+        /// Denotes that this nodepool is QRM specific, meaning nodes can be only
+        /// obtained through queuing via the Cluster Autoscaler ProvisioningRequest
+        /// API.
+        #[prost(bool, tag = "1")]
+        pub enabled: bool,
     }
     /// The current status of the node pool instance.
     #[derive(
@@ -7050,6 +7066,57 @@ pub struct TpuConfig {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Master {}
+/// AutopilotConversionStatus represents conversion status.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutopilotConversionStatus {
+    /// Output only. The current state of the conversion.
+    #[prost(enumeration = "autopilot_conversion_status::State", tag = "2")]
+    pub state: i32,
+}
+/// Nested message and enum types in `AutopilotConversionStatus`.
+pub mod autopilot_conversion_status {
+    /// The current state of the conversion.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// STATE_UNSPECIFIED indicates the state is unspecified.
+        Unspecified = 0,
+        /// DONE indicates the conversion has been completed. Old node pools will
+        /// continue being deleted in the background.
+        Done = 5,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Done => "DONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DONE" => Some(Self::Done),
+                _ => None,
+            }
+        }
+    }
+}
 /// Autopilot is the configuration for Autopilot settings on the cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7060,6 +7127,9 @@ pub struct Autopilot {
     /// Workload policy configuration for Autopilot.
     #[prost(message, optional, tag = "2")]
     pub workload_policy_config: ::core::option::Option<WorkloadPolicyConfig>,
+    /// ConversionStatus shows conversion status.
+    #[prost(message, optional, tag = "3")]
+    pub conversion_status: ::core::option::Option<AutopilotConversionStatus>,
 }
 /// WorkloadPolicyConfig is the configuration of workload policy for autopilot
 /// clusters.
@@ -7374,6 +7444,9 @@ pub struct AdvancedDatapathObservabilityConfig {
         tag = "2"
     )]
     pub relay_mode: i32,
+    /// Enable Relay component
+    #[prost(bool, optional, tag = "3")]
+    pub enable_relay: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `AdvancedDatapathObservabilityConfig`.
 pub mod advanced_datapath_observability_config {

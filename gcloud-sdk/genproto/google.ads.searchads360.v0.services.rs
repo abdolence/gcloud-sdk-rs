@@ -695,6 +695,25 @@ pub struct SearchAds360Row {
     /// The asset referenced in the query.
     #[prost(message, optional, tag = "105")]
     pub asset: ::core::option::Option<super::resources::Asset>,
+    /// The asset group asset referenced in the query.
+    #[prost(message, optional, tag = "173")]
+    pub asset_group_asset: ::core::option::Option<super::resources::AssetGroupAsset>,
+    /// The asset group signal referenced in the query.
+    #[prost(message, optional, tag = "191")]
+    pub asset_group_signal: ::core::option::Option<super::resources::AssetGroupSignal>,
+    /// The asset group listing group filter referenced in the query.
+    #[prost(message, optional, tag = "182")]
+    pub asset_group_listing_group_filter: ::core::option::Option<
+        super::resources::AssetGroupListingGroupFilter,
+    >,
+    /// The asset group top combination view referenced in the query.
+    #[prost(message, optional, tag = "199")]
+    pub asset_group_top_combination_view: ::core::option::Option<
+        super::resources::AssetGroupTopCombinationView,
+    >,
+    /// The asset group referenced in the query.
+    #[prost(message, optional, tag = "172")]
+    pub asset_group: ::core::option::Option<super::resources::AssetGroup>,
     /// The asset set asset referenced in the query.
     #[prost(message, optional, tag = "180")]
     pub asset_set_asset: ::core::option::Option<super::resources::AssetSetAsset>,
@@ -727,6 +746,14 @@ pub struct SearchAds360Row {
     /// The campaign label referenced in the query.
     #[prost(message, optional, tag = "108")]
     pub campaign_label: ::core::option::Option<super::resources::CampaignLabel>,
+    /// The cart data sales view referenced in the query.
+    #[prost(message, optional, tag = "221")]
+    pub cart_data_sales_view: ::core::option::Option<
+        super::resources::CartDataSalesView,
+    >,
+    /// The Audience referenced in the query.
+    #[prost(message, optional, tag = "190")]
+    pub audience: ::core::option::Option<super::resources::Audience>,
     /// The conversion action referenced in the query.
     #[prost(message, optional, tag = "103")]
     pub conversion_action: ::core::option::Option<super::resources::ConversionAction>,
@@ -764,18 +791,37 @@ pub struct SearchAds360Row {
     /// The label referenced in the query.
     #[prost(message, optional, tag = "52")]
     pub label: ::core::option::Option<super::resources::Label>,
+    /// The language constant referenced in the query.
+    #[prost(message, optional, tag = "55")]
+    pub language_constant: ::core::option::Option<super::resources::LanguageConstant>,
     /// The location view referenced in the query.
     #[prost(message, optional, tag = "123")]
     pub location_view: ::core::option::Option<super::resources::LocationView>,
+    /// The Product Bidding Category referenced in the query.
+    #[prost(message, optional, tag = "109")]
+    pub product_bidding_category_constant: ::core::option::Option<
+        super::resources::ProductBiddingCategoryConstant,
+    >,
     /// The product group view referenced in the query.
     #[prost(message, optional, tag = "54")]
     pub product_group_view: ::core::option::Option<super::resources::ProductGroupView>,
+    /// The shopping performance view referenced in the query.
+    #[prost(message, optional, tag = "117")]
+    pub shopping_performance_view: ::core::option::Option<
+        super::resources::ShoppingPerformanceView,
+    >,
     /// The user list referenced in the query.
     #[prost(message, optional, tag = "38")]
     pub user_list: ::core::option::Option<super::resources::UserList>,
     /// The webpage view referenced in the query.
     #[prost(message, optional, tag = "162")]
     pub webpage_view: ::core::option::Option<super::resources::WebpageView>,
+    /// The event level visit referenced in the query.
+    #[prost(message, optional, tag = "203")]
+    pub visit: ::core::option::Option<super::resources::Visit>,
+    /// The event level conversion referenced in the query.
+    #[prost(message, optional, tag = "206")]
+    pub conversion: ::core::option::Option<super::resources::Conversion>,
     /// The metrics.
     #[prost(message, optional, tag = "4")]
     pub metrics: ::core::option::Option<super::common::Metrics>,

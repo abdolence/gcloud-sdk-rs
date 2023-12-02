@@ -106,6 +106,41 @@ pub struct SpeechWordInfo {
     #[prost(float, tag = "4")]
     pub confidence: f32,
 }
+/// Configuration of the barge-in behavior. Barge-in instructs the API to return
+/// a detected utterance at a proper time while the client is playing back the
+/// response audio from a previous request. When the client sees the
+/// utterance, it should stop the playback and immediately get ready for
+/// receiving the responses for the current request.
+///
+/// The barge-in handling requires the client to start streaming audio input
+/// as soon as it starts playing back the audio from the previous response. The
+/// playback is modeled into two phases:
+///
+/// * No barge-in phase: which goes first and during which speech detection
+///    should not be carried out.
+///
+/// * Barge-in phase: which follows the no barge-in phase and during which
+///    the API starts speech detection and may inform the client that an utterance
+///    has been detected. Note that no-speech event is not expected in this
+///    phase.
+///
+/// The client provides this configuration in terms of the durations of those
+/// two phases. The durations are measured in terms of the audio length from the
+/// the start of the input audio.
+///
+/// No-speech event is a response with END_OF_UTTERANCE without any transcript
+/// following up.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BargeInConfig {
+    /// Duration that is not eligible for barge-in at the beginning of the input
+    /// audio.
+    #[prost(message, optional, tag = "1")]
+    pub no_barge_in_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Total duration for the playback at the beginning of the input audio.
+    #[prost(message, optional, tag = "2")]
+    pub total_duration: ::core::option::Option<::prost_types::Duration>,
+}
 /// Instructs the speech recognizer on how to process the audio content.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -138,8 +173,8 @@ pub struct InputAudioConfig {
     pub phrase_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. Which Speech model to select for the given request. Select the
     /// model best suited to your domain to get best results. If a model is not
-    /// explicitly specified, then we auto-select a model based on the parameters
-    /// in the InputAudioConfig.
+    /// explicitly specified, then Dialogflow auto-selects a model based on other
+    /// parameters in the InputAudioConfig and Agent settings.
     /// If enhanced speech model is enabled for the agent and an enhanced
     /// version of the specified model for the language does not exist, then the
     /// speech is recognized using the standard version of the specified model.
@@ -152,7 +187,12 @@ pub struct InputAudioConfig {
     ///
     /// - phone_call (best for Agent Assist and telephony)
     /// - latest_short (best for Dialogflow non-telephony)
-    /// - command_and_search (best for very short utterances and commands)
+    /// - command_and_search
+    ///
+    /// Leave this field unspecified to use
+    /// [Agent Speech
+    /// settings](<https://cloud.google.com/dialogflow/cx/docs/concept/agent#settings-speech>)
+    /// for model selection.
     #[prost(string, tag = "7")]
     pub model: ::prost::alloc::string::String,
     /// Optional. Which variant of the [Speech
@@ -169,6 +209,9 @@ pub struct InputAudioConfig {
     /// Note: This setting is relevant only for streaming methods.
     #[prost(bool, tag = "8")]
     pub single_utterance: bool,
+    /// Configuration of barge-in behavior during the streaming of input audio.
+    #[prost(message, optional, tag = "15")]
+    pub barge_in_config: ::core::option::Option<BargeInConfig>,
 }
 /// Description of which voice to use for speech synthesis.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3244,6 +3287,9 @@ pub struct Agent {
     /// Gen App Builder-related agent-level settings.
     #[prost(message, optional, tag = "33")]
     pub gen_app_builder_settings: ::core::option::Option<agent::GenAppBuilderSettings>,
+    /// Optional. Answer feedback collection settings.
+    #[prost(message, optional, tag = "38")]
+    pub answer_feedback_settings: ::core::option::Option<agent::AnswerFeedbackSettings>,
 }
 /// Nested message and enum types in `Agent`.
 pub mod agent {
@@ -3296,6 +3342,17 @@ pub mod agent {
         /// ID}/collections/{Collection ID}/engines/{Engine ID}`
         #[prost(string, tag = "1")]
         pub engine: ::prost::alloc::string::String,
+    }
+    /// Settings for answer feedback collection.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AnswerFeedbackSettings {
+        /// Optional. If enabled, end users will be able to provide
+        /// [answer feedback][google.cloud.dialogflow.cx.v3.AnswerFeedback] to
+        /// Dialogflow responses. Feature works only if interaction logging is
+        /// enabled in the Dialogflow agent.
+        #[prost(bool, tag = "1")]
+        pub enable_answer_feedback: bool,
     }
 }
 /// The request message for
@@ -5077,37 +5134,6 @@ pub mod entity_types_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Returns the list of all entity types in the specified agent.
-        pub async fn list_entity_types(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListEntityTypesRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListEntityTypesResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.cx.v3.EntityTypes/ListEntityTypes",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dialogflow.cx.v3.EntityTypes",
-                        "ListEntityTypes",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
         /// Retrieves the specified entity type.
         pub async fn get_entity_type(
             &mut self,
@@ -5228,6 +5254,37 @@ pub mod entity_types_client {
                     GrpcMethod::new(
                         "google.cloud.dialogflow.cx.v3.EntityTypes",
                         "DeleteEntityType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the list of all entity types in the specified agent.
+        pub async fn list_entity_types(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListEntityTypesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListEntityTypesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3.EntityTypes/ListEntityTypes",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3.EntityTypes",
+                        "ListEntityTypes",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -6592,6 +6649,102 @@ pub mod session_entity_types_client {
         }
     }
 }
+/// Stores information about feedback provided by users about a response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AnswerFeedback {
+    /// Optional. Rating from user for the specific Dialogflow response.
+    #[prost(enumeration = "answer_feedback::Rating", tag = "1")]
+    pub rating: i32,
+    /// Optional. In case of thumbs down rating provided, users can optionally
+    /// provide context about the rating.
+    #[prost(message, optional, tag = "2")]
+    pub rating_reason: ::core::option::Option<answer_feedback::RatingReason>,
+    /// Optional. Custom rating from the user about the provided answer, with
+    /// maximum length of 1024 characters. For example, client could use a
+    /// customized JSON object to indicate the rating.
+    #[prost(string, tag = "3")]
+    pub custom_rating: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `AnswerFeedback`.
+pub mod answer_feedback {
+    /// Stores extra information about why users provided thumbs down rating.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RatingReason {
+        /// Optional. Custom reason labels for thumbs down rating provided by the
+        /// user. The maximum number of labels allowed is 10 and the maximum length
+        /// of a single label is 128 characters.
+        #[prost(string, repeated, tag = "3")]
+        pub reason_labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. Additional feedback about the rating.
+        /// This field can be populated without choosing a predefined `reason`.
+        #[prost(string, tag = "2")]
+        pub feedback: ::prost::alloc::string::String,
+    }
+    /// Represents thumbs up/down rating provided by user about a response.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Rating {
+        /// Rating not specified.
+        Unspecified = 0,
+        /// Thumbs up feedback from user.
+        ThumbsUp = 1,
+        /// Thumbs down feedback from user.
+        ThumbsDown = 2,
+    }
+    impl Rating {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Rating::Unspecified => "RATING_UNSPECIFIED",
+                Rating::ThumbsUp => "THUMBS_UP",
+                Rating::ThumbsDown => "THUMBS_DOWN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RATING_UNSPECIFIED" => Some(Self::Unspecified),
+                "THUMBS_UP" => Some(Self::ThumbsUp),
+                "THUMBS_DOWN" => Some(Self::ThumbsDown),
+                _ => None,
+            }
+        }
+    }
+}
+/// The request to set the feedback for a bot answer.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SubmitAnswerFeedbackRequest {
+    /// Required. The name of the session the feedback was sent to.
+    #[prost(string, tag = "1")]
+    pub session: ::prost::alloc::string::String,
+    /// Required. ID of the response to update its feedback. This is the same as
+    /// DetectIntentResponse.response_id.
+    #[prost(string, tag = "2")]
+    pub response_id: ::prost::alloc::string::String,
+    /// Required. Feedback provided for a bot answer.
+    #[prost(message, optional, tag = "3")]
+    pub answer_feedback: ::core::option::Option<AnswerFeedback>,
+    /// Optional. The mask to control which fields to update. If the mask is not
+    /// present, all fields will be updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
 /// The request to detect user's intent.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7173,6 +7326,120 @@ pub struct QueryParameters {
     /// This value should be no longer than 1 day.
     #[prost(message, optional, tag = "16")]
     pub session_ttl: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. Information about the end-user to improve the relevance and
+    /// accuracy of generative answers.
+    ///
+    /// This will be interpreted and used by a language model, so, for good
+    /// results, the data should be self-descriptive, and in a simple structure.
+    ///
+    /// Example:
+    ///
+    /// ```json
+    /// {
+    ///    "subscription plan": "Business Premium Plus",
+    ///    "devices owned": [
+    ///      {"model": "Google Pixel 7"},
+    ///      {"model": "Google Pixel Tablet"}
+    ///    ]
+    /// }
+    /// ```
+    #[prost(message, optional, tag = "18")]
+    pub end_user_metadata: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Search configuration for UCS search queries.
+    #[prost(message, optional, tag = "20")]
+    pub search_config: ::core::option::Option<SearchConfig>,
+}
+/// Search configuration for UCS search queries.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchConfig {
+    /// Optional. Boosting configuration for the datastores.
+    #[prost(message, repeated, tag = "1")]
+    pub boost_specs: ::prost::alloc::vec::Vec<BoostSpecs>,
+    /// Optional. Filter configuration for the datastores.
+    #[prost(message, repeated, tag = "2")]
+    pub filter_specs: ::prost::alloc::vec::Vec<FilterSpecs>,
+}
+/// Boost specification to boost certain documents.
+/// A copy of google.cloud.discoveryengine.v1main.BoostSpec, field documentation
+/// is available at
+/// <https://cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1alpha/BoostSpec>
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BoostSpec {
+    /// Optional. Condition boost specifications. If a document matches multiple
+    /// conditions in the specifictions, boost scores from these specifications are
+    /// all applied and combined in a non-linear way. Maximum number of
+    /// specifications is 20.
+    #[prost(message, repeated, tag = "1")]
+    pub condition_boost_specs: ::prost::alloc::vec::Vec<boost_spec::ConditionBoostSpec>,
+}
+/// Nested message and enum types in `BoostSpec`.
+pub mod boost_spec {
+    /// Boost applies to documents which match a condition.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConditionBoostSpec {
+        /// Optional. An expression which specifies a boost condition. The syntax and
+        /// supported fields are the same as a filter expression.
+        /// Examples:
+        ///
+        /// * To boost documents with document ID "doc_1" or "doc_2", and
+        /// color
+        ///    "Red" or "Blue":
+        ///      * (id: ANY("doc_1", "doc_2")) AND (color: ANY("Red","Blue"))
+        #[prost(string, tag = "1")]
+        pub condition: ::prost::alloc::string::String,
+        /// Optional. Strength of the condition boost, which should be in \[-1, 1\].
+        /// Negative boost means demotion. Default is 0.0.
+        ///
+        /// Setting to 1.0 gives the document a big promotion. However, it does not
+        /// necessarily mean that the boosted document will be the top result at
+        /// all times, nor that other documents will be excluded. Results could
+        /// still be shown even when none of them matches the condition. And
+        /// results that are significantly more relevant to the search query can
+        /// still trump your heavily favored but irrelevant documents.
+        ///
+        /// Setting to -1.0 gives the document a big demotion. However, results
+        /// that are deeply relevant might still be shown. The document will have
+        /// an upstream battle to get a fairly high ranking, but it is not blocked
+        /// out completely.
+        ///
+        /// Setting to 0.0 means no boost applied. The boosting condition is
+        /// ignored.
+        #[prost(float, tag = "2")]
+        pub boost: f32,
+    }
+}
+/// Boost specifications for data stores.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BoostSpecs {
+    /// Optional. Data Stores where the boosting configuration is applied. The full
+    /// names of the referenced data stores. Formats:
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}`
+    /// `projects/{project}/locations/{location}/dataStores/{data_store}
+    #[prost(string, repeated, tag = "1")]
+    pub data_stores: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. A list of boosting specifications.
+    #[prost(message, repeated, tag = "2")]
+    pub spec: ::prost::alloc::vec::Vec<BoostSpec>,
+}
+/// Filter specifications for data stores.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FilterSpecs {
+    /// Optional. Data Stores where the boosting configuration is applied. The full
+    /// names of the referenced data stores. Formats:
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}`
+    /// `projects/{project}/locations/{location}/dataStores/{data_store}
+    #[prost(string, repeated, tag = "1")]
+    pub data_stores: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The filter expression to be applied.
+    /// Expression syntax is documented at
+    /// <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata#filter-expression-syntax>
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// Represents the query input. It can contain one of:
 ///
@@ -7325,6 +7592,10 @@ pub struct QueryResult {
     /// to wait for the resulting object to appear in the bucket before proceeding.
     #[prost(message, optional, tag = "21")]
     pub advanced_settings: ::core::option::Option<AdvancedSettings>,
+    /// Indicates whether the Thumbs up/Thumbs down rating controls are need to be
+    /// shown for the response in the Dialogflow Messenger widget.
+    #[prost(bool, tag = "32")]
+    pub allow_answer_feedback: bool,
     /// The original conversational query.
     #[prost(oneof = "query_result::Query", tags = "1, 11, 12, 14, 23")]
     pub query: ::core::option::Option<query_result::Query>,
@@ -7894,6 +8165,35 @@ pub mod sessions_client {
                     GrpcMethod::new(
                         "google.cloud.dialogflow.cx.v3.Sessions",
                         "FulfillIntent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the feedback received from the user for a single turn of the bot
+        /// response.
+        pub async fn submit_answer_feedback(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SubmitAnswerFeedbackRequest>,
+        ) -> std::result::Result<tonic::Response<super::AnswerFeedback>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3.Sessions/SubmitAnswerFeedback",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3.Sessions",
+                        "SubmitAnswerFeedback",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -12408,6 +12708,390 @@ pub mod experiments_client {
                     GrpcMethod::new(
                         "google.cloud.dialogflow.cx.v3.Experiments",
                         "StopExperiment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Generators contain prompt to be sent to the LLM model to generate text. The
+/// prompt can contain parameters which will be resolved before calling the
+/// model. It can optionally contain banned phrases to ensure the model responses
+/// are safe.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Generator {
+    /// The unique identifier of the generator.
+    /// Must be set for the
+    /// [Generators.UpdateGenerator][google.cloud.dialogflow.cx.v3.Generators.UpdateGenerator]
+    /// method. [Generators.CreateGenerate][] populates the name automatically.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/generators/<Generator ID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The human-readable name of the generator, unique within the
+    /// agent. The prompt contains pre-defined parameters such as $conversation,
+    /// $last-user-utterance, etc. populated by Dialogflow. It can also contain
+    /// custom placeholders which will be resolved during fulfillment.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Required. Prompt for the LLM model.
+    #[prost(message, optional, tag = "3")]
+    pub prompt_text: ::core::option::Option<Phrase>,
+    /// Optional. List of custom placeholders in the prompt text.
+    #[prost(message, repeated, tag = "5")]
+    pub placeholders: ::prost::alloc::vec::Vec<generator::Placeholder>,
+}
+/// Nested message and enum types in `Generator`.
+pub mod generator {
+    /// Represents a custom placeholder in the prompt text.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Placeholder {
+        /// Unique ID used to map custom placeholder to parameters in fulfillment.
+        #[prost(string, tag = "1")]
+        pub id: ::prost::alloc::string::String,
+        /// Custom placeholder value in the prompt text.
+        #[prost(string, tag = "2")]
+        pub name: ::prost::alloc::string::String,
+    }
+}
+/// Text input which can be used for prompt or banned phrases.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Phrase {
+    /// Required. Text input which can be used for prompt or banned phrases.
+    #[prost(string, tag = "1")]
+    pub text: ::prost::alloc::string::String,
+}
+/// The request message for
+/// [Generators.ListGenerators][google.cloud.dialogflow.cx.v3.Generators.ListGenerators].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGeneratorsRequest {
+    /// Required. The agent to list all generators for.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The language to list generators for.
+    #[prost(string, tag = "2")]
+    pub language_code: ::prost::alloc::string::String,
+    /// The maximum number of items to return in a single page. By default 100 and
+    /// at most 1000.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// The next_page_token value returned from a previous list request.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response message for
+/// [Generators.ListGenerators][google.cloud.dialogflow.cx.v3.Generators.ListGenerators].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGeneratorsResponse {
+    /// The list of generators. There will be a maximum number of items returned
+    /// based on the page_size field in the request.
+    #[prost(message, repeated, tag = "1")]
+    pub generators: ::prost::alloc::vec::Vec<Generator>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request message for
+/// [Generators.GetGenerator][google.cloud.dialogflow.cx.v3.Generators.GetGenerator].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetGeneratorRequest {
+    /// Required. The name of the generator.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/generators/<Generator ID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The language to list generators for.
+    #[prost(string, tag = "2")]
+    pub language_code: ::prost::alloc::string::String,
+}
+/// The request message for
+/// [Generators.CreateGenerator][google.cloud.dialogflow.cx.v3.Generators.CreateGenerator].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateGeneratorRequest {
+    /// Required. The agent to create a generator for.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The generator to create.
+    #[prost(message, optional, tag = "2")]
+    pub generator: ::core::option::Option<Generator>,
+    /// The language to create generators for the following fields:
+    /// *  `Generator.prompt_text.text`
+    /// If not specified, the agent's default language is used.
+    #[prost(string, tag = "3")]
+    pub language_code: ::prost::alloc::string::String,
+}
+/// The request message for
+/// [Generators.UpdateGenerator][google.cloud.dialogflow.cx.v3.Generators.UpdateGenerator].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateGeneratorRequest {
+    /// Required. The generator to update.
+    #[prost(message, optional, tag = "1")]
+    pub generator: ::core::option::Option<Generator>,
+    /// The language to list generators for.
+    #[prost(string, tag = "2")]
+    pub language_code: ::prost::alloc::string::String,
+    /// The mask to control which fields get updated. If the mask is not present,
+    /// all fields will be updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The request message for
+/// [Generators.DeleteGenerator][google.cloud.dialogflow.cx.v3.Generators.DeleteGenerator].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteGeneratorRequest {
+    /// Required. The name of the generator to delete.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/generators/<Generator ID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// This field has no effect for generators not being used.
+    /// For generators that are used by pages/flows/transition route groups:
+    ///
+    /// *  If `force` is set to false, an error will be returned with message
+    ///     indicating the referenced resources.
+    /// *  If `force` is set to true, Dialogflow will remove the generator, as well
+    ///     as any references to the generator (i.e.
+    ///     [Generator][Fulfillment.generator]) in fulfillments.
+    #[prost(bool, tag = "2")]
+    pub force: bool,
+}
+/// Generated client implementations.
+pub mod generators_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for managing [Generators][google.cloud.dialogflow.cx.v3.Generator]
+    #[derive(Debug, Clone)]
+    pub struct GeneratorsClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl GeneratorsClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> GeneratorsClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> GeneratorsClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            GeneratorsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Returns the list of all generators in the specified agent.
+        pub async fn list_generators(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListGeneratorsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListGeneratorsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3.Generators/ListGenerators",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3.Generators",
+                        "ListGenerators",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves the specified generator.
+        pub async fn get_generator(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetGeneratorRequest>,
+        ) -> std::result::Result<tonic::Response<super::Generator>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3.Generators/GetGenerator",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3.Generators",
+                        "GetGenerator",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a generator in the specified agent.
+        pub async fn create_generator(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateGeneratorRequest>,
+        ) -> std::result::Result<tonic::Response<super::Generator>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3.Generators/CreateGenerator",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3.Generators",
+                        "CreateGenerator",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update the specified generator.
+        pub async fn update_generator(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateGeneratorRequest>,
+        ) -> std::result::Result<tonic::Response<super::Generator>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3.Generators/UpdateGenerator",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3.Generators",
+                        "UpdateGenerator",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the specified generators.
+        pub async fn delete_generator(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteGeneratorRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3.Generators/DeleteGenerator",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3.Generators",
+                        "DeleteGenerator",
                     ),
                 );
             self.inner.unary(req, path, codec).await

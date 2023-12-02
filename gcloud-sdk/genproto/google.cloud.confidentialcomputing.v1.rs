@@ -96,6 +96,9 @@ pub struct TokenOptions {
     /// bytes and the maximum size is 74 bytes.
     #[prost(string, repeated, tag = "2")]
     pub nonce: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Optional token type to select what type of token to return.
+    #[prost(enumeration = "TokenType", tag = "3")]
+    pub token_type: i32,
 }
 /// TPM2 data containing everything necessary to validate any platform state
 /// measured into the TPM.
@@ -224,6 +227,36 @@ impl SigningAlgorithm {
             "RSASSA_PSS_SHA256" => Some(Self::RsassaPssSha256),
             "RSASSA_PKCS1V15_SHA256" => Some(Self::RsassaPkcs1v15Sha256),
             "ECDSA_P256_SHA256" => Some(Self::EcdsaP256Sha256),
+            _ => None,
+        }
+    }
+}
+/// Token type enum contains the different types of token responses Confidential
+/// Space supports
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum TokenType {
+    /// Unspecified token type
+    Unspecified = 0,
+    /// OpenID Connect (OIDC) token type
+    Oidc = 1,
+}
+impl TokenType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            TokenType::Unspecified => "TOKEN_TYPE_UNSPECIFIED",
+            TokenType::Oidc => "TOKEN_TYPE_OIDC",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TOKEN_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "TOKEN_TYPE_OIDC" => Some(Self::Oidc),
             _ => None,
         }
     }

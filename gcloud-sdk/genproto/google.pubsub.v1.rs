@@ -1381,8 +1381,9 @@ pub struct BigQueryConfig {
     /// {projectId}.{datasetId}.{tableId}
     #[prost(string, tag = "1")]
     pub table: ::prost::alloc::string::String,
-    /// When true, use the topic's schema as the columns to write to in BigQuery,
-    /// if it exists.
+    /// Optional. When true, use the topic's schema as the columns to write to in
+    /// BigQuery, if it exists. `use_topic_schema` and `use_table_schema` cannot be
+    /// enabled at the same time.
     #[prost(bool, tag = "2")]
     pub use_topic_schema: bool,
     /// When true, write the subscription name, message_id, publish_time,
@@ -1403,6 +1404,11 @@ pub struct BigQueryConfig {
     /// subscription can receive messages.
     #[prost(enumeration = "big_query_config::State", tag = "5")]
     pub state: i32,
+    /// Optional. When true, use the BigQuery table's schema as the columns to
+    /// write to in BigQuery. `use_table_schema` and `use_topic_schema` cannot be
+    /// enabled at the same time.
+    #[prost(bool, tag = "6")]
+    pub use_table_schema: bool,
 }
 /// Nested message and enum types in `BigQueryConfig`.
 pub mod big_query_config {
