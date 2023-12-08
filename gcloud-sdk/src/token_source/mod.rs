@@ -18,6 +18,7 @@ pub use credentials::{from_file, from_json};
 use tracing::*;
 
 mod ext_creds_source;
+mod gce;
 
 pub type BoxSource = Box<dyn Source + Send + Sync + 'static>;
 
