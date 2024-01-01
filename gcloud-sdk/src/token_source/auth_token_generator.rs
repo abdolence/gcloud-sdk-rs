@@ -7,7 +7,6 @@ use crate::token_source::*;
 use tracing::*;
 
 pub struct GoogleAuthTokenGenerator {
-    token_source_type: TokenSourceType,
     token_source: BoxSource,
     cached_token: Arc<RwLock<Option<Token>>>,
 }
@@ -17,11 +16,9 @@ impl GoogleAuthTokenGenerator {
         token_source_type: TokenSourceType,
         token_scopes: Vec<String>,
     ) -> crate::error::Result<GoogleAuthTokenGenerator> {
-        let token_source: BoxSource =
-            create_source(token_source_type.clone(), token_scopes).await?;
+        let token_source: BoxSource = create_source(token_source_type, token_scopes).await?;
 
         Ok(GoogleAuthTokenGenerator {
-            token_source_type,
             token_source,
             cached_token: Arc::new(RwLock::new(None)),
         })
@@ -55,9 +52,8 @@ impl GoogleAuthTokenGenerator {
                             let new_token = self.token_source.token().await?;
                             *write_token = Some(new_token.clone());
                             debug!(
-                                "Created a new Google OAuth token. Type: {}. Expiring: {}. Source: {:?}",
-                                new_token.type_,
-                                new_token.expiry, self.token_source_type
+                                "Created a new Google OAuth token. Type: {}. Expiring: {}.",
+                                new_token.token_type, new_token.expiry,
                             );
                             new_token
                         }

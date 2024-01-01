@@ -53,7 +53,7 @@ pub mod error;
 mod token_source;
 pub use token_source::auth_token_generator::GoogleAuthTokenGenerator;
 pub use token_source::metadata::Metadata as GceMetadataClient;
-pub use token_source::{Token, TokenSourceType};
+pub use token_source::{ExternalJwtFunctionSource, Token, TokenSourceType};
 
 mod api_client;
 pub use api_client::*;
@@ -70,6 +70,8 @@ pub use rest_apis::*;
 
 pub const GCLOUD_SDK_USER_AGENT: &str = concat!("gcloud-sdk-rs/v", env!("CARGO_PKG_VERSION"));
 
+// Re-exports
 pub use prost;
 pub use prost_types;
+pub use secret_vault_value::SecretValue;
 pub use tonic;

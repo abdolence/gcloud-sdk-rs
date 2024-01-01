@@ -82,12 +82,12 @@ impl Source for Metadata {
 
 pub async fn from_metadata(
     scopes: &[String],
-    account: String,
+    account: &str,
 ) -> crate::error::Result<Option<Metadata>> {
     let gcemeta_client = gcemeta::Client::new();
 
     if gcemeta_client.on_gce().await? {
-        Ok(Some(Metadata::with_account(scopes, account)))
+        Ok(Some(Metadata::with_account(scopes, account.to_string())))
     } else {
         Ok(None)
     }
