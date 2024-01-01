@@ -35,19 +35,20 @@ pub async fn create_source(
         TokenSourceType::Json(json) => Ok(from_json(json.as_bytes(), &token_scopes)?.into()),
         TokenSourceType::File(path) => Ok(from_file(path, &token_scopes)?.into()),
         TokenSourceType::MetadataServer => {
-            if let Some(src) = from_metadata(&token_scopes, "default".to_string()).await? {
+            if let Some(src) = from_metadata(&token_scopes, "default").await? {
                 Ok(src.into())
             } else {
                 Err(crate::error::ErrorKind::TokenSource.into())
             }
         }
         TokenSourceType::MetadataServerWithAccount(account) => {
-            if let Some(src) = from_metadata(&token_scopes, account).await? {
+            if let Some(src) = from_metadata(&token_scopes, &account).await? {
                 Ok(src.into())
             } else {
                 Err(crate::error::ErrorKind::TokenSource.into())
             }
         }
+        TokenSourceType::ExternalSource(token_source) => Ok(token_source),
     }
 }
 
@@ -66,7 +67,7 @@ pub async fn find_default(token_scopes: &[String]) -> crate::error::Result<BoxSo
         debug!("Creating token based on standard config files such as application_default_credentials.json");
         return Ok(src.into());
     }
-    if let Some(src) = from_metadata(token_scopes, "default".to_string()).await? {
+    if let Some(src) = from_metadata(token_scopes, "default").await? {
         debug!("Creating token based on metadata server");
         return Ok(src.into());
     }
@@ -76,28 +77,21 @@ pub async fn find_default(token_scopes: &[String]) -> crate::error::Result<BoxSo
 
 #[derive(Debug, Clone)]
 pub struct Token {
-    pub type_: String,
+    pub token_type: String,
     pub token: SecretValue,
     pub expiry: DateTime<Utc>,
 }
 
 impl Token {
-    pub async fn generate() -> crate::error::Result<Token> {
-        let token_source: BoxSource =
-            create_source(TokenSourceType::Default, crate::GCP_DEFAULT_SCOPES.clone()).await?;
-        token_source.token().await
+    pub fn new(token_type: String, token: SecretValue, expiry: DateTime<Utc>) -> Self {
+        Self {
+            token_type,
+            token,
+            expiry,
+        }
     }
-
-    pub async fn generate_for_scopes(
-        token_source_type: TokenSourceType,
-        token_scopes: Vec<String>,
-    ) -> crate::error::Result<Token> {
-        let token_source: BoxSource = create_source(token_source_type, token_scopes).await?;
-        token_source.token().await
-    }
-
     pub fn header_value(&self) -> String {
-        format!("{} {}", self.type_, self.token.as_sensitive_str())
+        format!("{} {}", self.token_type, self.token.as_sensitive_str())
     }
 }
 
@@ -112,7 +106,7 @@ impl TryFrom<TokenResponse> for Token {
             Err(crate::error::ErrorKind::TokenData.into())
         } else {
             Ok(Token {
-                type_: v.token_type,
+                token_type: v.token_type,
                 token: v.access_token,
                 expiry: Utc::now().add(chrono::Duration::seconds(v.expires_in.try_into().unwrap())),
             })
@@ -133,6 +127,58 @@ impl TryFrom<&str> for TokenResponse {
     fn try_from(v: &str) -> Result<Self, Self::Error> {
         let resp = serde_json::from_str(v).map_err(crate::error::ErrorKind::TokenJson)?;
         Ok(resp)
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct ExternalJwtFunctionSource<F, FN>
+where
+    F: std::future::Future<Output = crate::error::Result<Token>> + Send + Sync + 'static,
+    FN: Fn() -> F + Send + Sync,
+{
+    token_fn: FN,
+}
+
+impl<F, FN> ExternalJwtFunctionSource<F, FN>
+where
+    F: std::future::Future<Output = crate::error::Result<Token>> + Send + Sync + 'static,
+    FN: Fn() -> F + Send + Sync,
+{
+    pub fn new(token_fn: FN) -> Self {
+        Self { token_fn }
+    }
+}
+
+#[async_trait]
+impl<F, FN> Source for ExternalJwtFunctionSource<F, FN>
+where
+    F: std::future::Future<Output = crate::error::Result<Token>> + Send + Sync,
+    FN: Fn() -> F + Send + Sync,
+{
+    async fn token(&self) -> crate::error::Result<Token> {
+        (self.token_fn)().await
+    }
+}
+
+pub enum TokenSourceType {
+    Default,
+    Json(String),
+    File(PathBuf),
+    MetadataServer,
+    MetadataServerWithAccount(String),
+    ExternalSource(Box<dyn Source + Send + Sync>),
+}
+
+impl Debug for TokenSourceType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            TokenSourceType::Default => write!(f, "Default"),
+            TokenSourceType::Json(_) => write!(f, "Json"),
+            TokenSourceType::File(_) => write!(f, "File"),
+            TokenSourceType::MetadataServer => write!(f, "MetadataServer"),
+            TokenSourceType::MetadataServerWithAccount(_) => write!(f, "MetadataServerWithAccount"),
+            TokenSourceType::ExternalSource(_) => write!(f, "ExternalSource"),
+        }
     }
 }
 
@@ -184,13 +230,4 @@ mod test {
         },
         true;
     );
-}
-
-#[derive(Clone, Debug)]
-pub enum TokenSourceType {
-    Default,
-    Json(String),
-    File(PathBuf),
-    MetadataServer,
-    MetadataServerWithAccount(String),
 }
