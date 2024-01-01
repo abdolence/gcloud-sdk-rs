@@ -93,6 +93,14 @@ impl Token {
     pub fn header_value(&self) -> String {
         format!("{} {}", self.token_type, self.token.as_sensitive_str())
     }
+
+    pub async fn generate_for_scopes(
+        token_source_type: TokenSourceType,
+        token_scopes: Vec<String>,
+    ) -> crate::error::Result<Token> {
+        let token_source: BoxSource = create_source(token_source_type, token_scopes).await?;
+        token_source.token().await
+    }
 }
 
 impl TryFrom<TokenResponse> for Token {
@@ -166,7 +174,7 @@ pub enum TokenSourceType {
     File(PathBuf),
     MetadataServer,
     MetadataServerWithAccount(String),
-    ExternalSource(Box<dyn Source + Send + Sync>),
+    ExternalSource(BoxSource),
 }
 
 impl Debug for TokenSourceType {
