@@ -1898,6 +1898,14 @@ pub struct FeatureFlags {
     /// in ReadRowsResponse for long-running scans.
     #[prost(bool, tag = "4")]
     pub last_scanned_row_responses: bool,
+    /// Notify the server that the client supports using encoded routing cookie
+    /// strings to retry requests with.
+    #[prost(bool, tag = "6")]
+    pub routing_cookie: bool,
+    /// Notify the server that the client supports using retry info back off
+    /// durations to retry requests with.
+    #[prost(bool, tag = "7")]
+    pub retry_info: bool,
 }
 /// Response metadata proto
 /// This is an experimental feature that will be used to get zone_id and

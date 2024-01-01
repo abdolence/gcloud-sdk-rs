@@ -548,7 +548,7 @@ pub mod document {
             RawBytes(::prost::alloc::vec::Vec<u8>),
             /// The URI of the content. Only Cloud Storage URIs (e.g.
             /// `gs://bucket-name/path/to/file`) are supported. The maximum file size
-            /// is 100 MB.
+            /// is 2.5 MB for text-based formats, 100 MB for other formats.
             #[prost(string, tag = "3")]
             Uri(::prost::alloc::string::String),
         }
@@ -644,6 +644,20 @@ pub struct SearchRequest {
     /// [Filter](<https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>)
     #[prost(string, tag = "7")]
     pub filter: ::prost::alloc::string::String,
+    /// The default filter that is applied when a user performs a search without
+    /// checking any filters on the search page.
+    ///
+    /// The filter applied to every search request when quality improvement such as
+    /// query expansion is needed. In the case a query does not have a sufficient
+    /// amount of results this filter will be used to determine whether or not to
+    /// enable the query expansion flow. The original filter will still be used for
+    /// the query expanded search.
+    /// This field is strongly recommended to achieve high search quality.
+    ///
+    /// For more information about filter syntax, see
+    /// [SearchRequest.filter][google.cloud.discoveryengine.v1alpha.SearchRequest.filter].
+    #[prost(string, tag = "29")]
+    pub canonical_filter: ::prost::alloc::string::String,
     /// The order in which documents are returned. Documents can be ordered by
     /// a field in an [Document][google.cloud.discoveryengine.v1alpha.Document]
     /// object. Leave it unset if ordered by relevance. `order_by` expression is
@@ -1220,11 +1234,40 @@ pub mod search_request {
             /// fallback messages instead.
             #[prost(bool, tag = "4")]
             pub ignore_non_summary_seeking_query: bool,
+            /// If specified, the spec will be used to modify the prompt provided to
+            /// the LLM.
+            #[prost(message, optional, tag = "5")]
+            pub model_prompt_spec: ::core::option::Option<summary_spec::ModelPromptSpec>,
             /// Language code for Summary. Use language tags defined by
             /// [BCP47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>).
             /// Note: This is an experimental feature.
             #[prost(string, tag = "6")]
             pub language_code: ::prost::alloc::string::String,
+            /// If specified, the spec will be used to modify the model specification
+            /// provided to the LLM.
+            #[prost(message, optional, tag = "7")]
+            pub model_spec: ::core::option::Option<summary_spec::ModelSpec>,
+        }
+        /// Nested message and enum types in `SummarySpec`.
+        pub mod summary_spec {
+            /// Specification of the prompt to use with the model.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct ModelPromptSpec {
+                /// Text at the beginning of the prompt that instructs the assistant.
+                /// Examples are available in the user guide.
+                #[prost(string, tag = "1")]
+                pub preamble: ::prost::alloc::string::String,
+            }
+            /// Specification of the model.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct ModelSpec {
+                /// The string format of the model version.
+                /// e.g. stable, preview, etc.
+                #[prost(string, tag = "1")]
+                pub version: ::prost::alloc::string::String,
+            }
         }
         /// A specification for configuring the extractive content in a search
         /// response.
@@ -1488,6 +1531,8 @@ pub mod search_response {
         /// confidence scores.
         #[prost(message, optional, tag = "3")]
         pub safety_attributes: ::core::option::Option<summary::SafetyAttributes>,
+        #[prost(message, optional, tag = "4")]
+        pub summary_with_metadata: ::core::option::Option<summary::SummaryWithMetadata>,
     }
     /// Nested message and enum types in `Summary`.
     pub mod summary {
@@ -1503,6 +1548,70 @@ pub mod search_response {
             /// value means higher confidence. Order matches the Categories.
             #[prost(float, repeated, tag = "2")]
             pub scores: ::prost::alloc::vec::Vec<f32>,
+        }
+        /// Citation metadata.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct CitationMetadata {
+            /// Citations for segments.
+            #[prost(message, repeated, tag = "1")]
+            pub citations: ::prost::alloc::vec::Vec<Citation>,
+        }
+        /// Citation info for a segment.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Citation {
+            /// Index indicates the start of the segment, measured in bytes/unicode.
+            #[prost(int64, tag = "1")]
+            pub start_index: i64,
+            /// End of the attributed segment, exclusive.
+            #[prost(int64, tag = "2")]
+            pub end_index: i64,
+            /// Citation sources for the attributed segment.
+            #[prost(message, repeated, tag = "3")]
+            pub sources: ::prost::alloc::vec::Vec<CitationSource>,
+        }
+        /// Citation source.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct CitationSource {
+            /// Document reference index from SummaryWithMetadata.references.
+            /// It is 0-indexed and the value will be zero if the reference_index is
+            /// not set explicitly.
+            #[prost(int64, tag = "4")]
+            pub reference_index: i64,
+        }
+        /// Document reference.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Reference {
+            /// Title of the document.
+            #[prost(string, tag = "1")]
+            pub title: ::prost::alloc::string::String,
+            /// Required.
+            /// [Document.name][google.cloud.discoveryengine.v1alpha.Document.name] of
+            /// the document. Full resource name of the referenced document, in the
+            /// format
+            /// `projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*`.
+            #[prost(string, tag = "2")]
+            pub document: ::prost::alloc::string::String,
+            /// GCS or HTTP uri for the document.
+            #[prost(string, tag = "3")]
+            pub uri: ::prost::alloc::string::String,
+        }
+        /// Summary with metadata information.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct SummaryWithMetadata {
+            /// Summary text with no citation information.
+            #[prost(string, tag = "1")]
+            pub summary: ::prost::alloc::string::String,
+            /// Citation metadata for given summary.
+            #[prost(message, optional, tag = "2")]
+            pub citation_metadata: ::core::option::Option<CitationMetadata>,
+            /// Document References.
+            #[prost(message, repeated, tag = "3")]
+            pub references: ::prost::alloc::vec::Vec<Reference>,
         }
         /// An Enum for summary-skipped reasons.
         #[derive(
@@ -1739,6 +1848,8 @@ pub mod search_service_client {
 pub struct Conversation {
     /// Immutable. Fully qualified name
     /// `project/*/locations/global/collections/{collection}/dataStore/*/conversations/*`
+    /// or
+    /// `project/*/locations/global/collections/{collection}/engines/*/conversations/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The state of the Conversation.
@@ -1944,6 +2055,24 @@ pub struct ConverseConversationRequest {
     pub summary_spec: ::core::option::Option<
         search_request::content_search_spec::SummarySpec,
     >,
+    /// The filter syntax consists of an expression language for constructing a
+    /// predicate from one or more fields of the documents being filtered. Filter
+    /// expression is case-sensitive. This will be used to filter search results
+    /// which may affect the summary response.
+    ///
+    /// If this field is unrecognizable, an  `INVALID_ARGUMENT`  is returned.
+    ///
+    /// Filtering in Vertex AI Search is done by mapping the LHS filter key to a
+    /// key property defined in the Vertex AI Search backend -- this mapping is
+    /// defined by the customer in their schema. For example a media customer might
+    /// have a field 'name' in their schema. In this case the filter would look
+    /// like this: filter --> name:'ANY("king kong")'
+    ///
+    /// For more information about filtering including syntax and filter
+    /// operators, see
+    /// [Filter](<https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>)
+    #[prost(string, tag = "9")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for
 /// [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.ConverseConversation]
@@ -5247,7 +5376,7 @@ pub mod engine_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Resumes the training of an existing engine. Only applicable if
-        /// [solution_type][] is
+        /// [SolutionType][google.cloud.discoveryengine.v1alpha.SolutionType] is
         /// [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
         pub async fn resume_engine(
             &mut self,
@@ -6519,6 +6648,755 @@ pub mod schema_service_client {
     }
 }
 /// Request message for
+/// [SearchTuningService.TrainCustomModel][google.cloud.discoveryengine.v1alpha.SearchTuningService.TrainCustomModel]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrainCustomModelRequest {
+    /// Required. The resource name of the Data Store, such as
+    /// `projects/*/locations/global/collections/default_collection/dataStores/default_data_store`.
+    /// This field is used to identify the data store where to train the models.
+    #[prost(string, tag = "1")]
+    pub data_store: ::prost::alloc::string::String,
+    /// Model to be trained. Supported values are:
+    ///
+    ///   * **search-tuning**: Fine tuning the search system based on data provided.
+    #[prost(string, tag = "3")]
+    pub model_type: ::prost::alloc::string::String,
+    /// The desired location of errors incurred during the data ingestion and
+    /// training.
+    #[prost(message, optional, tag = "4")]
+    pub error_config: ::core::option::Option<ImportErrorConfig>,
+    /// Model training input.
+    #[prost(oneof = "train_custom_model_request::TrainingInput", tags = "2")]
+    pub training_input: ::core::option::Option<
+        train_custom_model_request::TrainingInput,
+    >,
+}
+/// Nested message and enum types in `TrainCustomModelRequest`.
+pub mod train_custom_model_request {
+    /// Gcs training data input.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GcsTrainingInput {
+        /// The gcs corpus data which could be associated in train data.
+        /// The data path format is gs://<bucket_to_data>/<jsonl_file_name>.
+        /// A newline delimited jsonl/ndjson file.
+        ///   * For search-tuning model, each line should have the _id, title
+        ///   and text. Example: {"_id": "doc1", title: "relevant doc", "text":
+        ///   "relevant text"}
+        #[prost(string, tag = "1")]
+        pub corpus_data_path: ::prost::alloc::string::String,
+        /// The gcs query data which could be associated in train data.
+        /// The data path format is gs://<bucket_to_data>/<jsonl_file_name>.
+        /// A newline delimited jsonl/ndjson file.
+        ///   * For search-tuning model, each line should have the _id
+        ///   and text. Example: {"_id": "query1",  "text": "example query"}
+        #[prost(string, tag = "2")]
+        pub query_data_path: ::prost::alloc::string::String,
+        /// Gcs training data path whose format should be
+        /// gs://<bucket_to_data>/<tsv_file_name>. The file should be in tsv format.
+        /// Each line should have the doc_id and query_id and score (number).
+        ///   * For search-tuning model, it should have the query-id corpus-id
+        ///   score as tsv file header. The score should be a number in [0, inf+). The
+        ///   larger the number is, the more relevant the pair is. Example:
+        ///   query-id\tcorpus-id\tscore
+        ///   query1\tdoc1\t1
+        #[prost(string, tag = "3")]
+        pub train_data_path: ::prost::alloc::string::String,
+        /// Gcs test data. Same format as train_data_path. If not provided, a
+        /// random 80/20 train/test split will be performed on train_data_path.
+        #[prost(string, tag = "4")]
+        pub test_data_path: ::prost::alloc::string::String,
+    }
+    /// Model training input.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TrainingInput {
+        /// Gcs training input.
+        #[prost(message, tag = "2")]
+        GcsTrainingInput(GcsTrainingInput),
+    }
+}
+/// Response of the
+/// [TrainCustomModelRequest][google.cloud.discoveryengine.v1alpha.TrainCustomModelRequest].
+/// This message is returned by the google.longrunning.Operations.response field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrainCustomModelResponse {
+    /// A sample of errors encountered while processing the data.
+    #[prost(message, repeated, tag = "1")]
+    pub error_samples: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+    /// Echoes the destination for the complete errors in the request if set.
+    #[prost(message, optional, tag = "2")]
+    pub error_config: ::core::option::Option<ImportErrorConfig>,
+    /// The trained model status. Possible values are:
+    ///
+    ///   * **bad-data**: The training data quality is bad.
+    ///   * **no-improvement**: Tuning didn't improve performance. Won't deploy.
+    ///   * **in-progress**: Model training is in progress.
+    ///   * **ready**: The model is ready for serving.
+    #[prost(string, tag = "3")]
+    pub model_status: ::prost::alloc::string::String,
+}
+/// Metadata related to the progress of the TrainCustomModel operation. This is
+/// returned by the google.longrunning.Operation.metadata field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrainCustomModelMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Generated client implementations.
+pub mod search_tuning_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for search tuning.
+    #[derive(Debug, Clone)]
+    pub struct SearchTuningServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl SearchTuningServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> SearchTuningServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SearchTuningServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            SearchTuningServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Trains a custom model.
+        pub async fn train_custom_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::TrainCustomModelRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.SearchTuningService/TrainCustomModel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.SearchTuningService",
+                        "TrainCustomModel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// SiteSearchEngine captures DataStore level site search persisting
+/// configurations. It is a singleton value per data store.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SiteSearchEngine {
+    /// The fully qualified resource name of the site search engine.
+    /// Format: `projects/*/locations/*/dataStores/*/siteSearchEngine`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A target site for the SiteSearchEngine.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetSite {
+    /// Output only. The fully qualified resource name of the target site.
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}`
+    /// The `target_site_id` is system-generated.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Input only. The user provided URI pattern from which the
+    /// `generated_uri_pattern` is generated.
+    #[prost(string, tag = "2")]
+    pub provided_uri_pattern: ::prost::alloc::string::String,
+    /// The type of the target site, e.g. whether the site is to be included or
+    /// excluded.
+    #[prost(enumeration = "target_site::Type", tag = "3")]
+    pub r#type: i32,
+    /// Input only. If set to false, a uri_pattern is generated to include all
+    /// pages whose address contains the provided_uri_pattern. If set to true, an
+    /// uri_pattern is generated to try to be an exact match of the
+    /// provided_uri_pattern or just the specific page if the provided_uri_pattern
+    /// is a specific one. provided_uri_pattern is always normalized to
+    /// generate the URI pattern to be used by the search engine.
+    #[prost(bool, tag = "6")]
+    pub exact_match: bool,
+    /// Output only. This is system-generated based on the provided_uri_pattern.
+    #[prost(string, tag = "4")]
+    pub generated_uri_pattern: ::prost::alloc::string::String,
+    /// Output only. Site ownership and validity verification status.
+    #[prost(message, optional, tag = "7")]
+    pub site_verification_info: ::core::option::Option<SiteVerificationInfo>,
+    /// Output only. Indexing status.
+    #[prost(enumeration = "target_site::IndexingStatus", tag = "8")]
+    pub indexing_status: i32,
+    /// Output only. The target site's last updated time.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Failure reason.
+    #[prost(message, optional, tag = "9")]
+    pub failure_reason: ::core::option::Option<target_site::FailureReason>,
+}
+/// Nested message and enum types in `TargetSite`.
+pub mod target_site {
+    /// Site search indexing failure reasons.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FailureReason {
+        #[prost(oneof = "failure_reason::Failure", tags = "1")]
+        pub failure: ::core::option::Option<failure_reason::Failure>,
+    }
+    /// Nested message and enum types in `FailureReason`.
+    pub mod failure_reason {
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct QuotaFailure {}
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Failure {
+            /// Failed due to insufficient quota.
+            #[prost(message, tag = "1")]
+            QuotaFailure(QuotaFailure),
+        }
+    }
+    /// Possible target site types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// This value is unused. In this case, server behavior defaults to
+        /// [Type.INCLUDE][google.cloud.discoveryengine.v1alpha.TargetSite.Type.INCLUDE].
+        Unspecified = 0,
+        /// Include the target site.
+        Include = 1,
+        /// Exclude the target site.
+        Exclude = 2,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Type::Unspecified => "TYPE_UNSPECIFIED",
+                Type::Include => "INCLUDE",
+                Type::Exclude => "EXCLUDE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INCLUDE" => Some(Self::Include),
+                "EXCLUDE" => Some(Self::Exclude),
+                _ => None,
+            }
+        }
+    }
+    /// Target site indexing status enumeration.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum IndexingStatus {
+        /// Defaults to SUCCEEDED.
+        Unspecified = 0,
+        /// The target site is in the update queue and will be picked up by indexing
+        /// pipeline.
+        Pending = 1,
+        /// The target site fails to be indexed.
+        Failed = 2,
+        /// The target site has been indexed.
+        Succeeded = 3,
+        /// The previously indexed target site has been marked to be deleted. This is
+        /// a transitioning state which will resulted in either:
+        /// 1. target site deleted if unindexing is successful;
+        /// 2. state reverts to SUCCEEDED if the unindexing fails.
+        Deleting = 4,
+    }
+    impl IndexingStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                IndexingStatus::Unspecified => "INDEXING_STATUS_UNSPECIFIED",
+                IndexingStatus::Pending => "PENDING",
+                IndexingStatus::Failed => "FAILED",
+                IndexingStatus::Succeeded => "SUCCEEDED",
+                IndexingStatus::Deleting => "DELETING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INDEXING_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "FAILED" => Some(Self::Failed),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
+            }
+        }
+    }
+}
+/// Verification information for target sites in advanced site search.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SiteVerificationInfo {
+    /// Site verification state indicating the ownership and validity.
+    #[prost(enumeration = "site_verification_info::SiteVerificationState", tag = "1")]
+    pub site_verification_state: i32,
+    /// Latest site verification time.
+    #[prost(message, optional, tag = "2")]
+    pub verify_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `SiteVerificationInfo`.
+pub mod site_verification_info {
+    /// Site verification state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SiteVerificationState {
+        /// Defaults to VERIFIED.
+        Unspecified = 0,
+        /// Site ownership verified.
+        Verified = 1,
+        /// Site ownership pending verification or verification failed.
+        Unverified = 2,
+        /// Site exempt from verification, e.g. a public website that opens to all.
+        Exempted = 3,
+    }
+    impl SiteVerificationState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                SiteVerificationState::Unspecified => {
+                    "SITE_VERIFICATION_STATE_UNSPECIFIED"
+                }
+                SiteVerificationState::Verified => "VERIFIED",
+                SiteVerificationState::Unverified => "UNVERIFIED",
+                SiteVerificationState::Exempted => "EXEMPTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SITE_VERIFICATION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VERIFIED" => Some(Self::Verified),
+                "UNVERIFIED" => Some(Self::Unverified),
+                "EXEMPTED" => Some(Self::Exempted),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message for
+/// [SiteSearchEngineService.GetSiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetSiteSearchEngine]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetSiteSearchEngineRequest {
+    /// Required. Resource name of
+    /// [SiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngine],
+    /// such as
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine`.
+    ///
+    /// If the caller does not have permission to access the \[SiteSearchEngine\],
+    /// regardless of whether or not it exists, a PERMISSION_DENIED error is
+    /// returned.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [SiteSearchEngineService.CreateTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.CreateTargetSite]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateTargetSiteRequest {
+    /// Required. Parent resource name of
+    /// [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite], such as
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]
+    /// to create.
+    #[prost(message, optional, tag = "2")]
+    pub target_site: ::core::option::Option<TargetSite>,
+}
+/// Metadata related to the progress of the
+/// [SiteSearchEngineService.CreateTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.CreateTargetSite]
+/// operation. This will be returned by the google.longrunning.Operation.metadata
+/// field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateTargetSiteMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for [SiteSearchEngineService.s][] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCreateTargetSitesRequest {
+    /// Required. The parent resource shared by all TargetSites being created.
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine`.
+    /// The parent field in the CreateBookRequest messages must either be empty or
+    /// match this field.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The request message specifying the resources to create.
+    /// A maximum of 20 TargetSites can be created in a batch.
+    #[prost(message, repeated, tag = "2")]
+    pub requests: ::prost::alloc::vec::Vec<CreateTargetSiteRequest>,
+}
+/// Request message for
+/// [SiteSearchEngineService.GetTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetTargetSite]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetTargetSiteRequest {
+    /// Required. Full resource name of
+    /// [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite], such as
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}`.
+    ///
+    /// If the caller does not have permission to access the
+    /// [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite], regardless
+    /// of whether or not it exists, a PERMISSION_DENIED error is returned.
+    ///
+    /// If the requested
+    /// [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite] does not
+    /// exist, a NOT_FOUND error is returned.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [SiteSearchEngineService.UpdateTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.UpdateTargetSite]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateTargetSiteRequest {
+    /// Required. The target site to update.
+    /// If the caller does not have permission to update the
+    /// [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite], regardless
+    /// of whether or not it exists, a PERMISSION_DENIED error is returned.
+    ///
+    /// If the [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite] to
+    /// update does not exist, a NOT_FOUND error is returned.
+    #[prost(message, optional, tag = "1")]
+    pub target_site: ::core::option::Option<TargetSite>,
+}
+/// Metadata related to the progress of the
+/// [SiteSearchEngineService.UpdateTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.UpdateTargetSite]
+/// operation. This will be returned by the google.longrunning.Operation.metadata
+/// field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateTargetSiteMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for
+/// [SiteSearchEngineService.DeleteTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DeleteTargetSite]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteTargetSiteRequest {
+    /// Required. Full resource name of
+    /// [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite], such as
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}`.
+    ///
+    /// If the caller does not have permission to access the
+    /// [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite], regardless
+    /// of whether or not it exists, a PERMISSION_DENIED error is returned.
+    ///
+    /// If the requested
+    /// [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite] does not
+    /// exist, a NOT_FOUND error is returned.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Metadata related to the progress of the
+/// [SiteSearchEngineService.DeleteTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DeleteTargetSite]
+/// operation. This will be returned by the google.longrunning.Operation.metadata
+/// field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteTargetSiteMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for
+/// [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.ListTargetSites]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTargetSitesRequest {
+    /// Required. The parent site search engine resource name, such as
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine`.
+    ///
+    /// If the caller does not have permission to list
+    /// [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]s under this
+    /// site search engine, regardless of whether or not this branch exists, a
+    /// PERMISSION_DENIED error is returned.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Requested page size. Server may return fewer items than requested. If
+    /// unspecified, server will pick an appropriate default. The maximum value is
+    /// 1000; values above 1000 will be coerced to 1000.
+    ///
+    /// If this field is negative, an INVALID_ARGUMENT error is returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListTargetSites` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListTargetSites`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.ListTargetSites]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTargetSitesResponse {
+    /// List of TargetSites.
+    #[prost(message, repeated, tag = "1")]
+    pub target_sites: ::prost::alloc::vec::Vec<TargetSite>,
+    /// A token that can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// The total number of items matching the request.
+    /// This will always be populated in the response.
+    #[prost(int32, tag = "3")]
+    pub total_size: i32,
+}
+/// Metadata related to the progress of the
+/// [SiteSearchEngineService.BatchCreateTargetSite][] operation. This will be
+/// returned by the google.longrunning.Operation.metadata field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCreateTargetSiteMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Response message for
+/// [SiteSearchEngineService.BatchCreateTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchCreateTargetSites]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCreateTargetSitesResponse {
+    /// TargetSites created.
+    #[prost(message, repeated, tag = "1")]
+    pub target_sites: ::prost::alloc::vec::Vec<TargetSite>,
+}
+/// Request message for
+/// [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.EnableAdvancedSiteSearch]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnableAdvancedSiteSearchRequest {
+    /// Required. Full resource name of the
+    /// [SiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngine],
+    /// such as
+    /// `projects/{project}/locations/{location}/dataStores/{data_store_id}/siteSearchEngine`.
+    #[prost(string, tag = "1")]
+    pub site_search_engine: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.EnableAdvancedSiteSearch]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnableAdvancedSiteSearchResponse {}
+/// Metadata related to the progress of the
+/// [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.EnableAdvancedSiteSearch]
+/// operation. This will be returned by the google.longrunning.Operation.metadata
+/// field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnableAdvancedSiteSearchMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for
+/// [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DisableAdvancedSiteSearch]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisableAdvancedSiteSearchRequest {
+    /// Required. Full resource name of the
+    /// [SiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngine],
+    /// such as
+    /// `projects/{project}/locations/{location}/dataStores/{data_store_id}/siteSearchEngine`.
+    #[prost(string, tag = "1")]
+    pub site_search_engine: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DisableAdvancedSiteSearch]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisableAdvancedSiteSearchResponse {}
+/// Metadata related to the progress of the
+/// [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DisableAdvancedSiteSearch]
+/// operation. This will be returned by the google.longrunning.Operation.metadata
+/// field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisableAdvancedSiteSearchMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for
 /// [SiteSearchEngineService.RecrawlUris][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.RecrawlUris]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6659,6 +7537,83 @@ pub struct RecrawlUrisMetadata {
     #[prost(int32, tag = "7")]
     pub quota_exceeded_count: i32,
 }
+/// Request message for
+/// [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchVerifyTargetSites]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchVerifyTargetSitesRequest {
+    /// Required. The parent resource shared by all TargetSites being verified.
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchVerifyTargetSites]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchVerifyTargetSitesResponse {}
+/// Metadata related to the progress of the
+/// [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchVerifyTargetSites]
+/// operation. This will be returned by the google.longrunning.Operation.metadata
+/// field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchVerifyTargetSitesMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for
+/// [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.FetchDomainVerificationStatus]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchDomainVerificationStatusRequest {
+    /// Required. The site search engine resource under which we fetch all the
+    /// domain verification status.
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine`.
+    #[prost(string, tag = "1")]
+    pub site_search_engine: ::prost::alloc::string::String,
+    /// Requested page size. Server may return fewer items than requested. If
+    /// unspecified, server will pick an appropriate default. The maximum value is
+    /// 1000; values above 1000 will be coerced to 1000.
+    ///
+    /// If this field is negative, an INVALID_ARGUMENT error is returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `FetchDomainVerificationStatus`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `FetchDomainVerificationStatus` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.FetchDomainVerificationStatus]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchDomainVerificationStatusResponse {
+    /// List of TargetSites containing the site verification status.
+    #[prost(message, repeated, tag = "1")]
+    pub target_sites: ::prost::alloc::vec::Vec<TargetSite>,
+    /// A token that can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// The total number of items matching the request.
+    /// This will always be populated in the response.
+    #[prost(int32, tag = "3")]
+    pub total_size: i32,
+}
 /// Generated client implementations.
 pub mod site_search_engine_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -6747,6 +7702,285 @@ pub mod site_search_engine_service_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
+        /// Gets the
+        /// [SiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngine].
+        pub async fn get_site_search_engine(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSiteSearchEngineRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SiteSearchEngine>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/GetSiteSearchEngine",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
+                        "GetSiteSearchEngine",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+        pub async fn create_target_site(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateTargetSiteRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/CreateTargetSite",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
+                        "CreateTargetSite",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite] in a
+        /// batch.
+        pub async fn batch_create_target_sites(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchCreateTargetSitesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/BatchCreateTargetSites",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
+                        "BatchCreateTargetSites",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+        pub async fn get_target_site(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetTargetSiteRequest>,
+        ) -> std::result::Result<tonic::Response<super::TargetSite>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/GetTargetSite",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
+                        "GetTargetSite",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+        pub async fn update_target_site(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateTargetSiteRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/UpdateTargetSite",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
+                        "UpdateTargetSite",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+        pub async fn delete_target_site(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteTargetSiteRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/DeleteTargetSite",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
+                        "DeleteTargetSite",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a list of
+        /// [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]s.
+        pub async fn list_target_sites(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListTargetSitesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListTargetSitesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/ListTargetSites",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
+                        "ListTargetSites",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Upgrade from basic site search to advanced site search.
+        pub async fn enable_advanced_site_search(
+            &mut self,
+            request: impl tonic::IntoRequest<super::EnableAdvancedSiteSearchRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/EnableAdvancedSiteSearch",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
+                        "EnableAdvancedSiteSearch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Downgrade from advanced site search to basic site search.
+        pub async fn disable_advanced_site_search(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DisableAdvancedSiteSearchRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/DisableAdvancedSiteSearch",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
+                        "DisableAdvancedSiteSearch",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Request on-demand recrawl for a list of URIs.
         pub async fn recrawl_uris(
             &mut self,
@@ -6774,6 +8008,72 @@ pub mod site_search_engine_service_client {
                     GrpcMethod::new(
                         "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
                         "RecrawlUris",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Verify target sites' ownership and validity.
+        /// This API sends all the target sites under site search engine for
+        /// verification.
+        pub async fn batch_verify_target_sites(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchVerifyTargetSitesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/BatchVerifyTargetSites",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
+                        "BatchVerifyTargetSites",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns list of target sites with its domain verification status.
+        /// This method can only be called under data store with BASIC_SITE_SEARCH
+        /// state at the moment.
+        pub async fn fetch_domain_verification_status(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchDomainVerificationStatusRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FetchDomainVerificationStatusResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/FetchDomainVerificationStatus",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1alpha.SiteSearchEngineService",
+                        "FetchDomainVerificationStatus",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -145,6 +145,12 @@ pub mod api_warning {
         /// Warning when user provided maxResults parameter exceeds the limit.  The
         /// returned result set may be incomplete.
         MaxResultsExceedsLimit = 2,
+        /// Warning when user tries to create/update a user with credentials that
+        /// have previously been compromised by a public data breach.
+        CompromisedCredentials = 3,
+        /// Warning when the operation succeeds but some non-critical workflow state
+        /// failed.
+        InternalStateFailure = 4,
     }
     impl SqlApiWarningCode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -156,6 +162,8 @@ pub mod api_warning {
                 SqlApiWarningCode::Unspecified => "SQL_API_WARNING_CODE_UNSPECIFIED",
                 SqlApiWarningCode::RegionUnreachable => "REGION_UNREACHABLE",
                 SqlApiWarningCode::MaxResultsExceedsLimit => "MAX_RESULTS_EXCEEDS_LIMIT",
+                SqlApiWarningCode::CompromisedCredentials => "COMPROMISED_CREDENTIALS",
+                SqlApiWarningCode::InternalStateFailure => "INTERNAL_STATE_FAILURE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -164,6 +172,8 @@ pub mod api_warning {
                 "SQL_API_WARNING_CODE_UNSPECIFIED" => Some(Self::Unspecified),
                 "REGION_UNREACHABLE" => Some(Self::RegionUnreachable),
                 "MAX_RESULTS_EXCEEDS_LIMIT" => Some(Self::MaxResultsExceedsLimit),
+                "COMPROMISED_CREDENTIALS" => Some(Self::CompromisedCredentials),
+                "INTERNAL_STATE_FAILURE" => Some(Self::InternalStateFailure),
                 _ => None,
             }
         }
@@ -1038,6 +1048,9 @@ pub struct Operation {
     /// populated.
     #[prost(message, optional, tag = "8")]
     pub error: ::core::option::Option<OperationErrors>,
+    /// An Admin API warning message.
+    #[prost(message, optional, tag = "19")]
+    pub api_warning: ::core::option::Option<ApiWarning>,
     /// The type of the operation. Valid values are:
     /// *  `CREATE`
     /// *  `DELETE`
@@ -1364,6 +1377,10 @@ pub struct PasswordValidationPolicy {
     /// Whether the password policy is enabled or not.
     #[prost(message, optional, tag = "6")]
     pub enable_password_policy: ::core::option::Option<bool>,
+    /// Disallow credentials that have been previously compromised by a public data
+    /// breach.
+    #[prost(message, optional, tag = "7")]
+    pub disallow_compromised_credentials: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `PasswordValidationPolicy`.
 pub mod password_validation_policy {
@@ -2267,6 +2284,11 @@ pub enum SqlUpdateTrack {
     /// your instance prefer to let Cloud SQL choose the timing of restart (within
     /// its Maintenance window, if applicable).
     Stable = 2,
+    /// For instance update that requires a restart, this update track indicates
+    /// your instance prefer to let Cloud SQL choose the timing of restart (within
+    /// its Maintenance window, if applicable) to be at least 5 weeks after the
+    /// notification.
+    Week5 = 3,
 }
 impl SqlUpdateTrack {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -2278,6 +2300,7 @@ impl SqlUpdateTrack {
             SqlUpdateTrack::Unspecified => "SQL_UPDATE_TRACK_UNSPECIFIED",
             SqlUpdateTrack::Canary => "canary",
             SqlUpdateTrack::Stable => "stable",
+            SqlUpdateTrack::Week5 => "week5",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2286,6 +2309,7 @@ impl SqlUpdateTrack {
             "SQL_UPDATE_TRACK_UNSPECIFIED" => Some(Self::Unspecified),
             "canary" => Some(Self::Canary),
             "stable" => Some(Self::Stable),
+            "week5" => Some(Self::Week5),
             _ => None,
         }
     }
@@ -4784,6 +4808,12 @@ pub struct DatabaseInstance {
     /// The current software version on the instance.
     #[prost(string, tag = "42")]
     pub maintenance_version: ::prost::alloc::string::String,
+    #[prost(
+        enumeration = "database_instance::SqlNetworkArchitecture",
+        optional,
+        tag = "47"
+    )]
+    pub sql_network_architecture: ::core::option::Option<i32>,
     /// Output only. The link to service attachment of PSC instance.
     #[prost(string, optional, tag = "48")]
     pub psc_service_attachment_link: ::core::option::Option<
@@ -4964,6 +4994,54 @@ pub mod database_instance {
                 "MAINTENANCE" => Some(Self::Maintenance),
                 "FAILED" => Some(Self::Failed),
                 "ONLINE_MAINTENANCE" => Some(Self::OnlineMaintenance),
+                _ => None,
+            }
+        }
+    }
+    /// The current SQL network architecture for the instance.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SqlNetworkArchitecture {
+        Unspecified = 0,
+        /// Instance is a Tenancy Unit (TU) instance.
+        NewNetworkArchitecture = 1,
+        /// Instance is an Umbrella instance.
+        OldNetworkArchitecture = 2,
+    }
+    impl SqlNetworkArchitecture {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                SqlNetworkArchitecture::Unspecified => {
+                    "SQL_NETWORK_ARCHITECTURE_UNSPECIFIED"
+                }
+                SqlNetworkArchitecture::NewNetworkArchitecture => {
+                    "NEW_NETWORK_ARCHITECTURE"
+                }
+                SqlNetworkArchitecture::OldNetworkArchitecture => {
+                    "OLD_NETWORK_ARCHITECTURE"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQL_NETWORK_ARCHITECTURE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NEW_NETWORK_ARCHITECTURE" => Some(Self::NewNetworkArchitecture),
+                "OLD_NETWORK_ARCHITECTURE" => Some(Self::OldNetworkArchitecture),
                 _ => None,
             }
         }

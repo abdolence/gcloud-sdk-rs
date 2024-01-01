@@ -446,6 +446,18 @@ pub struct CloudRunConfig {
     /// CustomCanaryDeployments.
     #[prost(bool, tag = "1")]
     pub automatic_traffic_control: bool,
+    /// Optional. A list of tags that are added to the canary revision while the
+    /// canary deployment is in progress.
+    #[prost(string, repeated, tag = "2")]
+    pub canary_revision_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. A list of tags that are added to the prior revision while the
+    /// canary deployment is in progress.
+    #[prost(string, repeated, tag = "3")]
+    pub prior_revision_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. A list of tags that are added to the final stable revision after
+    /// the canary deployment is completed.
+    #[prost(string, repeated, tag = "4")]
+    pub stable_revision_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// RuntimeConfig contains the runtime specific configurations for a deployment
 /// strategy.
@@ -485,7 +497,7 @@ pub struct PipelineReadyCondition {
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// TargetsPresentCondition contains information on any Targets defined in
+/// `TargetsPresentCondition` contains information on any Targets referenced in
 /// the Delivery Pipeline that do not actually exist.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -826,7 +838,7 @@ pub struct Target {
     >,
     /// Destination to which the Skaffold configuration is applied during a
     /// rollout.
-    #[prost(oneof = "target::DeploymentTarget", tags = "15, 17, 18, 19")]
+    #[prost(oneof = "target::DeploymentTarget", tags = "15, 17, 18, 19, 21")]
     pub deployment_target: ::core::option::Option<target::DeploymentTarget>,
 }
 /// Nested message and enum types in `Target`.
@@ -848,6 +860,9 @@ pub mod target {
         /// Optional. Information specifying a multiTarget.
         #[prost(message, tag = "19")]
         MultiTarget(super::MultiTarget),
+        /// Optional. Information specifying a Custom Target.
+        #[prost(message, tag = "21")]
+        CustomTarget(super::CustomTarget),
     }
 }
 /// Configuration of the environment to use when calling Skaffold.
@@ -1043,6 +1058,15 @@ pub struct MultiTarget {
     #[prost(string, repeated, tag = "1")]
     pub target_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Information specifying a Custom Target.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomTarget {
+    /// Required. The name of the CustomTargetType. Format must be
+    /// `projects/{project}/locations/{location}/customTargetTypes/{custom_target_type}`.
+    #[prost(string, tag = "1")]
+    pub custom_target_type: ::prost::alloc::string::String,
+}
 /// The request object for `ListTargets`.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1207,6 +1231,314 @@ pub struct DeleteTargetRequest {
     #[prost(string, tag = "5")]
     pub etag: ::prost::alloc::string::String,
 }
+/// A `CustomTargetType` resource in the Cloud Deploy API.
+///
+/// A `CustomTargetType` defines a type of custom target that can be referenced
+/// in a `Target` in order to facilitate deploying to a runtime that does not
+/// have a 1P integration with Cloud Deploy.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomTargetType {
+    /// Optional. Name of the `CustomTargetType`. Format is
+    /// `projects/{project}/locations/{location}/customTargetTypes/[a-z][a-z0-9\-]{0,62}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Resource id of the `CustomTargetType`.
+    #[prost(string, tag = "2")]
+    pub custom_target_type_id: ::prost::alloc::string::String,
+    /// Output only. Unique identifier of the `CustomTargetType`.
+    #[prost(string, tag = "3")]
+    pub uid: ::prost::alloc::string::String,
+    /// Optional. Description of the `CustomTargetType`. Max length is 255
+    /// characters.
+    #[prost(string, tag = "4")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. User annotations. These attributes can only be set and used by
+    /// the user, and not by Cloud Deploy. See
+    /// <https://google.aip.dev/128#annotations> for more details such as format and
+    /// size limitations.
+    #[prost(map = "string, string", tag = "5")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Labels are attributes that can be set and used by both the
+    /// user and by Cloud Deploy. Labels must meet the following constraints:
+    ///
+    /// * Keys and values can contain only lowercase letters, numeric characters,
+    /// underscores, and dashes.
+    /// * All characters must use UTF-8 encoding, and international characters are
+    /// allowed.
+    /// * Keys must start with a lowercase letter or international character.
+    /// * Each resource is limited to a maximum of 64 labels.
+    ///
+    /// Both keys and values are additionally constrained to be <= 128 bytes.
+    #[prost(map = "string, string", tag = "6")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. Time at which the `CustomTargetType` was created.
+    #[prost(message, optional, tag = "7")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Most recent time at which the `CustomTargetType` was updated.
+    #[prost(message, optional, tag = "8")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. This checksum is computed by the server based on the value of
+    /// other fields, and may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding.
+    #[prost(string, tag = "9")]
+    pub etag: ::prost::alloc::string::String,
+    /// Defines the `CustomTargetType` renderer and deployer.
+    #[prost(oneof = "custom_target_type::Definition", tags = "10")]
+    pub definition: ::core::option::Option<custom_target_type::Definition>,
+}
+/// Nested message and enum types in `CustomTargetType`.
+pub mod custom_target_type {
+    /// Defines the `CustomTargetType` renderer and deployer.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Definition {
+        /// Configures render and deploy for the `CustomTargetType` using Skaffold
+        /// custom actions.
+        #[prost(message, tag = "10")]
+        CustomActions(super::CustomTargetSkaffoldActions),
+    }
+}
+/// CustomTargetSkaffoldActions represents the `CustomTargetType` configuration
+/// using Skaffold custom actions.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomTargetSkaffoldActions {
+    /// Optional. The Skaffold custom action responsible for render operations. If
+    /// not provided then Cloud Deploy will perform the render operations via
+    /// `skaffold render`.
+    #[prost(string, tag = "1")]
+    pub render_action: ::prost::alloc::string::String,
+    /// Required. The Skaffold custom action responsible for deploy operations.
+    #[prost(string, tag = "2")]
+    pub deploy_action: ::prost::alloc::string::String,
+    /// Optional. List of Skaffold modules Cloud Deploy will include in the
+    /// Skaffold Config as required before performing diagnose.
+    #[prost(message, repeated, tag = "3")]
+    pub include_skaffold_modules: ::prost::alloc::vec::Vec<SkaffoldModules>,
+}
+/// Skaffold Config modules and their remote source.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SkaffoldModules {
+    /// Optional. The Skaffold Config modules to use from the specified source.
+    #[prost(string, repeated, tag = "1")]
+    pub configs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The source that contains the Skaffold Config modules.
+    #[prost(oneof = "skaffold_modules::Source", tags = "2, 3")]
+    pub source: ::core::option::Option<skaffold_modules::Source>,
+}
+/// Nested message and enum types in `SkaffoldModules`.
+pub mod skaffold_modules {
+    /// Git repository containing Skaffold Config modules.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SkaffoldGitSource {
+        /// Required. Git repository the package should be cloned from.
+        #[prost(string, tag = "1")]
+        pub repo: ::prost::alloc::string::String,
+        /// Optional. Relative path from the repository root to the Skaffold file.
+        #[prost(string, tag = "2")]
+        pub path: ::prost::alloc::string::String,
+        /// Optional. Git ref the package should be cloned from.
+        #[prost(string, tag = "3")]
+        pub r#ref: ::prost::alloc::string::String,
+    }
+    /// Cloud Storage bucket containing Skaffold Config modules.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SkaffoldGcsSource {
+        /// Required. Cloud Storage source paths to copy recursively. For example,
+        /// providing "gs://my-bucket/dir/configs/*" will result in Skaffold copying
+        /// all files within the "dir/configs" directory in the bucket "my-bucket".
+        #[prost(string, tag = "1")]
+        pub source: ::prost::alloc::string::String,
+        /// Optional. Relative path from the source to the Skaffold file.
+        #[prost(string, tag = "2")]
+        pub path: ::prost::alloc::string::String,
+    }
+    /// The source that contains the Skaffold Config modules.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Remote git repository containing the Skaffold Config modules.
+        #[prost(message, tag = "2")]
+        Git(SkaffoldGitSource),
+        /// Cloud Storage bucket containing the Skaffold Config modules.
+        #[prost(message, tag = "3")]
+        GoogleCloudStorage(SkaffoldGcsSource),
+    }
+}
+/// The request object for `ListCustomTargetTypes`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCustomTargetTypesRequest {
+    /// Required. The parent that owns this collection of custom target types.
+    /// Format must be `projects/{project_id}/locations/{location_name}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of `CustomTargetType` objects to return. The
+    /// service may return fewer than this value. If unspecified, at most 50
+    /// `CustomTargetType` objects will be returned. The maximum value is 1000;
+    /// values above 1000 will be set to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListCustomTargetTypes`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other provided parameters match
+    /// the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter custom target types to be returned. See
+    /// <https://google.aip.dev/160> for more details.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Field to sort by. See <https://google.aip.dev/132#ordering> for
+    /// more details.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// The response object from `ListCustomTargetTypes.`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCustomTargetTypesResponse {
+    /// The `CustomTargetType` objects.
+    #[prost(message, repeated, tag = "1")]
+    pub custom_target_types: ::prost::alloc::vec::Vec<CustomTargetType>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The request object for `GetCustomTargetType`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetCustomTargetTypeRequest {
+    /// Required. Name of the `CustomTargetType`. Format must be
+    /// `projects/{project_id}/locations/{location_name}/customTargetTypes/{custom_target_type}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request object for `CreateCustomTargetType`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateCustomTargetTypeRequest {
+    /// Required. The parent collection in which the `CustomTargetType` should be
+    /// created in. Format should be
+    /// `projects/{project_id}/locations/{location_name}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. ID of the `CustomTargetType`.
+    #[prost(string, tag = "2")]
+    pub custom_target_type_id: ::prost::alloc::string::String,
+    /// Required. The `CustomTargetType` to create.
+    #[prost(message, optional, tag = "3")]
+    pub custom_target_type: ::core::option::Option<CustomTargetType>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request ID,
+    /// the server can check if original operation with the same request ID was
+    /// received, and if so, will ignore the second request. This prevents clients
+    /// from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set to true, the request is validated and the user is provided
+    /// with an expected result, but no actual change is made.
+    #[prost(bool, tag = "5")]
+    pub validate_only: bool,
+}
+/// The request object for `UpdateCustomTargetType`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateCustomTargetTypeRequest {
+    /// Required. Field mask is used to specify the fields to be overwritten in the
+    /// `CustomTargetType` resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The `CustomTargetType` to update.
+    #[prost(message, optional, tag = "2")]
+    pub custom_target_type: ::core::option::Option<CustomTargetType>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request ID,
+    /// the server can check if original operation with the same request ID was
+    /// received, and if so, will ignore the second request. This prevents clients
+    /// from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set to true, updating a `CustomTargetType` that does not exist
+    /// will result in the creation of a new `CustomTargetType`.
+    #[prost(bool, tag = "4")]
+    pub allow_missing: bool,
+    /// Optional. If set to true, the request is validated and the user is provided
+    /// with an expected result, but no actual change is made.
+    #[prost(bool, tag = "5")]
+    pub validate_only: bool,
+}
+/// The request object for `DeleteCustomTargetType`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteCustomTargetTypeRequest {
+    /// Required. The name of the `CustomTargetType` to delete. Format must be
+    /// `projects/{project_id}/locations/{location_name}/customTargetTypes/{custom_target_type}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request ID,
+    /// the server can check if original operation with the same request ID was
+    /// received, and if so, will ignore the second request. This prevents clients
+    /// from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set to true, then deleting an already deleted or non-existing
+    /// `CustomTargetType` will succeed.
+    #[prost(bool, tag = "3")]
+    pub allow_missing: bool,
+    /// Optional. If set to true, the request is validated but no actual change is
+    /// made.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+    /// Optional. This checksum is computed by the server based on the value of
+    /// other fields, and may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding.
+    #[prost(string, tag = "5")]
+    pub etag: ::prost::alloc::string::String,
+}
 /// Contains criteria for selecting Targets. Attributes provided must match the
 /// target resource in order for policy restrictions to apply. E.g. if id "prod"
 /// and labels "foo: bar" are given the target resource must match both that id
@@ -1297,6 +1629,10 @@ pub struct Release {
     /// Output only. Snapshot of the targets taken at release creation time.
     #[prost(message, repeated, tag = "12")]
     pub target_snapshots: ::prost::alloc::vec::Vec<Target>,
+    /// Output only. Snapshot of the custom target types referenced by the targets
+    /// taken at release creation time.
+    #[prost(message, repeated, tag = "27")]
+    pub custom_target_type_snapshots: ::prost::alloc::vec::Vec<CustomTargetType>,
     /// Output only. Current state of the render operation.
     #[prost(enumeration = "release::RenderState", tag = "13")]
     pub render_state: i32,
@@ -1438,13 +1774,18 @@ pub mod release {
             /// failure_message for additional details.
             CloudBuildRequestFailed = 3,
             /// The render operation did not complete successfully because the
-            /// verification stanza required for verify was not found on the skaffold
+            /// verification stanza required for verify was not found on the Skaffold
             /// configuration.
             VerificationConfigNotFound = 4,
             /// The render operation did not complete successfully because the custom
             /// action required for predeploy or postdeploy was not found in the
-            /// skaffold configuration. See failure_message for additional details.
+            /// Skaffold configuration. See failure_message for additional details.
             CustomActionNotFound = 5,
+            /// Release failed during rendering because the release configuration is
+            /// not supported with the specified deployment strategy.
+            DeploymentStrategyNotSupported = 6,
+            /// The render operation had a feature configured that is not supported.
+            RenderFeatureNotSupported = 7,
         }
         impl FailureCause {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -1461,6 +1802,12 @@ pub mod release {
                         "VERIFICATION_CONFIG_NOT_FOUND"
                     }
                     FailureCause::CustomActionNotFound => "CUSTOM_ACTION_NOT_FOUND",
+                    FailureCause::DeploymentStrategyNotSupported => {
+                        "DEPLOYMENT_STRATEGY_NOT_SUPPORTED"
+                    }
+                    FailureCause::RenderFeatureNotSupported => {
+                        "RENDER_FEATURE_NOT_SUPPORTED"
+                    }
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1474,6 +1821,12 @@ pub mod release {
                         Some(Self::VerificationConfigNotFound)
                     }
                     "CUSTOM_ACTION_NOT_FOUND" => Some(Self::CustomActionNotFound),
+                    "DEPLOYMENT_STRATEGY_NOT_SUPPORTED" => {
+                        Some(Self::DeploymentStrategyNotSupported)
+                    }
+                    "RENDER_FEATURE_NOT_SUPPORTED" => {
+                        Some(Self::RenderFeatureNotSupported)
+                    }
                     _ => None,
                 }
             }
@@ -1493,21 +1846,21 @@ pub mod release {
         pub status: bool,
     }
     /// SkaffoldSupportedCondition contains information about when support for the
-    /// release's version of skaffold ends.
+    /// release's version of Skaffold ends.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SkaffoldSupportedCondition {
-        /// True if the version of skaffold used by this release is supported.
+        /// True if the version of Skaffold used by this release is supported.
         #[prost(bool, tag = "1")]
         pub status: bool,
-        /// The skaffold support state for this release's version of skaffold.
+        /// The Skaffold support state for this release's version of Skaffold.
         #[prost(enumeration = "super::SkaffoldSupportState", tag = "2")]
         pub skaffold_support_state: i32,
-        /// The time at which this release's version of skaffold will enter
+        /// The time at which this release's version of Skaffold will enter
         /// maintenance mode.
         #[prost(message, optional, tag = "3")]
         pub maintenance_mode_time: ::core::option::Option<::prost_types::Timestamp>,
-        /// The time at which this release's version of skaffold will no longer be
+        /// The time at which this release's version of Skaffold will no longer be
         /// supported.
         #[prost(message, optional, tag = "4")]
         pub support_expiration_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -1519,7 +1872,7 @@ pub mod release {
         /// Details around the Releases's overall status.
         #[prost(message, optional, tag = "1")]
         pub release_ready_condition: ::core::option::Option<ReleaseReadyCondition>,
-        /// Details around the support state of the release's skaffold
+        /// Details around the support state of the release's Skaffold
         /// version.
         #[prost(message, optional, tag = "2")]
         pub skaffold_supported_condition: ::core::option::Option<
@@ -1665,6 +2018,9 @@ pub struct RenderMetadata {
     /// Output only. Metadata associated with rendering for Cloud Run.
     #[prost(message, optional, tag = "1")]
     pub cloud_run: ::core::option::Option<CloudRunRenderMetadata>,
+    /// Output only. Custom metadata provided by user defined render operation.
+    #[prost(message, optional, tag = "2")]
+    pub custom: ::core::option::Option<CustomMetadata>,
 }
 /// The request object for `ListReleases`.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2016,11 +2372,13 @@ pub mod rollout {
         ReleaseFailed = 4,
         /// Release is abandoned.
         ReleaseAbandoned = 5,
-        /// No skaffold verify configuration was found.
+        /// No Skaffold verify configuration was found.
         VerificationConfigNotFound = 6,
         /// Cloud Build failed to fulfill Cloud Deploy's request. See failure_message
         /// for additional details.
         CloudBuildRequestFailed = 7,
+        /// A Rollout operation had a feature configured that is not supported.
+        OperationFeatureNotSupported = 8,
     }
     impl FailureCause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2039,6 +2397,9 @@ pub mod rollout {
                     "VERIFICATION_CONFIG_NOT_FOUND"
                 }
                 FailureCause::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
+                FailureCause::OperationFeatureNotSupported => {
+                    "OPERATION_FEATURE_NOT_SUPPORTED"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2052,6 +2413,9 @@ pub mod rollout {
                 "RELEASE_ABANDONED" => Some(Self::ReleaseAbandoned),
                 "VERIFICATION_CONFIG_NOT_FOUND" => Some(Self::VerificationConfigNotFound),
                 "CLOUD_BUILD_REQUEST_FAILED" => Some(Self::CloudBuildRequestFailed),
+                "OPERATION_FEATURE_NOT_SUPPORTED" => {
+                    Some(Self::OperationFeatureNotSupported)
+                }
                 _ => None,
             }
         }
@@ -2069,6 +2433,9 @@ pub struct Metadata {
     /// interactions between Automation service and this rollout.
     #[prost(message, optional, tag = "2")]
     pub automation: ::core::option::Option<AutomationRolloutMetadata>,
+    /// Output only. Custom metadata provided by user defined `Rollout` operations.
+    #[prost(message, optional, tag = "3")]
+    pub custom: ::core::option::Option<CustomMetadata>,
 }
 /// DeployJobRunMetadata surfaces information associated with a `DeployJobRun` to
 /// the user.
@@ -2079,6 +2446,12 @@ pub struct DeployJobRunMetadata {
     /// `DeployJobRun`.
     #[prost(message, optional, tag = "1")]
     pub cloud_run: ::core::option::Option<CloudRunMetadata>,
+    /// Output only. Custom Target metadata associated with a `DeployJobRun`.
+    #[prost(message, optional, tag = "2")]
+    pub custom_target: ::core::option::Option<CustomTargetDeployMetadata>,
+    /// Output only. Custom metadata provided by user defined deploy operation.
+    #[prost(message, optional, tag = "3")]
+    pub custom: ::core::option::Option<CustomMetadata>,
 }
 /// CloudRunMetadata contains information from a Cloud Run deployment.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2102,6 +2475,16 @@ pub struct CloudRunMetadata {
     #[prost(string, tag = "4")]
     pub job: ::prost::alloc::string::String,
 }
+/// CustomTargetDeployMetadata contains information from a Custom Target
+/// deploy operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomTargetDeployMetadata {
+    /// Output only. Skip message provided in the results of a custom deploy
+    /// operation.
+    #[prost(string, tag = "1")]
+    pub skip_message: ::prost::alloc::string::String,
+}
 /// AutomationRolloutMetadata contains Automation-related actions that
 /// were performed on a rollout.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2121,6 +2504,17 @@ pub struct AutomationRolloutMetadata {
     /// rule.
     #[prost(string, repeated, tag = "3")]
     pub repair_automation_runs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// CustomMetadata contains information from a user defined operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomMetadata {
+    /// Output only. Key-value pairs provided by the user defined operation.
+    #[prost(map = "string, string", tag = "1")]
+    pub values: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Phase represents a collection of jobs that are logically grouped together
 /// for a `Rollout`.
@@ -2784,6 +3178,8 @@ pub mod deploy_job_run {
         /// Cloud Build failed to fulfill Cloud Deploy's request. See failure_message
         /// for additional details.
         CloudBuildRequestFailed = 5,
+        /// The deploy operation had a feature configured that is not supported.
+        DeployFeatureNotSupported = 6,
     }
     impl FailureCause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2798,6 +3194,7 @@ pub mod deploy_job_run {
                 FailureCause::DeadlineExceeded => "DEADLINE_EXCEEDED",
                 FailureCause::MissingResourcesForCanary => "MISSING_RESOURCES_FOR_CANARY",
                 FailureCause::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
+                FailureCause::DeployFeatureNotSupported => "DEPLOY_FEATURE_NOT_SUPPORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2809,6 +3206,7 @@ pub mod deploy_job_run {
                 "DEADLINE_EXCEEDED" => Some(Self::DeadlineExceeded),
                 "MISSING_RESOURCES_FOR_CANARY" => Some(Self::MissingResourcesForCanary),
                 "CLOUD_BUILD_REQUEST_FAILED" => Some(Self::CloudBuildRequestFailed),
+                "DEPLOY_FEATURE_NOT_SUPPORTED" => Some(Self::DeployFeatureNotSupported),
                 _ => None,
             }
         }
@@ -3169,10 +3567,10 @@ pub struct SkaffoldVersion {
     /// Release version number. For example, "1.20.3".
     #[prost(string, tag = "1")]
     pub version: ::prost::alloc::string::String,
-    /// The time at which this version of skaffold will enter maintenance mode.
+    /// The time at which this version of Skaffold will enter maintenance mode.
     #[prost(message, optional, tag = "3")]
     pub maintenance_mode_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The time at which this version of skaffold will no longer be supported.
+    /// The time at which this version of Skaffold will no longer be supported.
     #[prost(message, optional, tag = "4")]
     pub support_expiration_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Date when this version is expected to no longer be supported.
@@ -3190,7 +3588,7 @@ pub struct GetConfigRequest {
 /// An `Automation` resource in the Cloud Deploy API.
 ///
 /// An `Automation` enables the automation of manually driven actions for
-/// a Delivery Pipeline, which includes Release promotion amongst Targets,
+/// a Delivery Pipeline, which includes Release promotion among Targets,
 /// Rollout repair and Rollout deployment strategy advancement. The intention
 /// of Automation is to reduce manual intervention in the continuous delivery
 /// process.
@@ -3327,6 +3725,7 @@ pub struct PromoteReleaseRule {
     /// Optional. The ID of the stage in the pipeline to which this `Release` is
     /// deploying. If unspecified, default it to the next stage in the promotion
     /// flow. The value of this field could be one of the following:
+    ///
     /// * The last segment of a target name. It only needs the ID to determine
     /// if the target is one of the stages in the promotion sequence defined
     /// in the pipeline.
@@ -3423,7 +3822,7 @@ pub mod repair_mode {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Retry {
-    /// Required. Total number of retries. Retry will skipped if set to 0; The
+    /// Required. Total number of retries. Retry is skipped if set to 0; The
     /// minimum value is 1, and the maximum value is 10.
     #[prost(int64, tag = "1")]
     pub attempts: i64,
@@ -3569,8 +3968,8 @@ pub struct DeleteAutomationRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAutomationsRequest {
-    /// Required. The parent, which owns this collection of automations. Format
-    /// must be
+    /// Required. The parent `Delivery Pipeline`, which owns this collection of
+    /// automations. Format must be
     /// `projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -3599,7 +3998,7 @@ pub struct ListAutomationsRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAutomationsResponse {
-    /// The `Automations` objects.
+    /// The `Automation` objects.
     #[prost(message, repeated, tag = "1")]
     pub automations: ::prost::alloc::vec::Vec<Automation>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
@@ -3621,7 +4020,7 @@ pub struct GetAutomationRequest {
 }
 /// An `AutomationRun` resource in the Cloud Deploy API.
 ///
-/// An `AutomationRun` represents an automation execution instance of an
+/// An `AutomationRun` represents an execution instance of an
 /// automation rule.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3659,11 +4058,11 @@ pub struct AutomationRun {
     #[prost(enumeration = "automation_run::State", tag = "8")]
     pub state: i32,
     /// Output only. Explains the current state of the `AutomationRun`. Present
-    /// only an explanation is needed.
+    /// only when an explanation is needed.
     #[prost(string, tag = "9")]
     pub state_description: ::prost::alloc::string::String,
-    /// Output only. Time the `AutomationRun` will expire. An `AutomationRun` will
-    /// expire after 14 days from its creation date.
+    /// Output only. Time the `AutomationRun` expires. An `AutomationRun` expires
+    /// after 14 days from its creation date.
     #[prost(message, optional, tag = "11")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The ID of the automation rule that initiated the operation.
@@ -3784,7 +4183,7 @@ pub struct AdvanceRolloutOperation {
     /// Output only. The name of the rollout that initiates the `AutomationRun`.
     #[prost(string, tag = "3")]
     pub rollout: ::prost::alloc::string::String,
-    /// Output only. The phase to which the rollout will be advanced to.
+    /// Output only. The phase the rollout will be advanced to.
     #[prost(string, tag = "4")]
     pub destination_phase: ::prost::alloc::string::String,
 }
@@ -3884,8 +4283,8 @@ pub struct RollbackAttempt {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAutomationRunsRequest {
-    /// Required. The parent, which owns this collection of automationRuns. Format
-    /// must be
+    /// Required. The parent `Delivery Pipeline`, which owns this collection of
+    /// automationRuns. Format must be
     /// `projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -3953,11 +4352,11 @@ pub struct CancelAutomationRunResponse {}
 pub enum SkaffoldSupportState {
     /// Default value. This value is unused.
     Unspecified = 0,
-    /// This skaffold version is currently supported.
+    /// This Skaffold version is currently supported.
     Supported = 1,
-    /// This skaffold version is in maintenance mode.
+    /// This Skaffold version is in maintenance mode.
     MaintenanceMode = 2,
-    /// This skaffold version is no longer supported.
+    /// This Skaffold version is no longer supported.
     Unsupported = 3,
 }
 impl SkaffoldSupportState {
@@ -4475,6 +4874,161 @@ pub mod cloud_deploy_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.cloud.deploy.v1.CloudDeploy", "DeleteTarget"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists CustomTargetTypes in a given project and location.
+        pub async fn list_custom_target_types(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListCustomTargetTypesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListCustomTargetTypesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.deploy.v1.CloudDeploy/ListCustomTargetTypes",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "ListCustomTargetTypes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single CustomTargetType.
+        pub async fn get_custom_target_type(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetCustomTargetTypeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CustomTargetType>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.deploy.v1.CloudDeploy/GetCustomTargetType",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "GetCustomTargetType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new CustomTargetType in a given project and location.
+        pub async fn create_custom_target_type(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateCustomTargetTypeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.deploy.v1.CloudDeploy/CreateCustomTargetType",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "CreateCustomTargetType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a single CustomTargetType.
+        pub async fn update_custom_target_type(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateCustomTargetTypeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.deploy.v1.CloudDeploy/UpdateCustomTargetType",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "UpdateCustomTargetType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single CustomTargetType.
+        pub async fn delete_custom_target_type(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteCustomTargetTypeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.deploy.v1.CloudDeploy/DeleteCustomTargetType",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "DeleteCustomTargetType",
+                    ),
                 );
             self.inner.unary(req, path, codec).await
         }

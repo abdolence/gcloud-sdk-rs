@@ -64,7 +64,16 @@ pub struct MinuteRange {
 pub struct Dimension {
     /// The name of the dimension. See the [API
     /// Dimensions](<https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#dimensions>)
-    /// for the list of dimension names.
+    /// for the list of dimension names supported by core reporting methods such
+    /// as `runReport` and `batchRunReports`. See
+    /// [Realtime
+    /// Dimensions](<https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-api-schema#dimensions>)
+    /// for the list of dimension names supported by the `runRealtimeReport`
+    /// method. See
+    /// [Funnel
+    /// Dimensions](<https://developers.google.com/analytics/devguides/reporting/data/v1/exploration-api-schema#dimensions>)
+    /// for the list of dimension names supported by the `runFunnelReport`
+    /// method.
     ///
     /// If `dimensionExpression` is specified, `name` can be any string that you
     /// would like within the allowed character set. For example if a
@@ -145,7 +154,16 @@ pub mod dimension_expression {
 pub struct Metric {
     /// The name of the metric. See the [API
     /// Metrics](<https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#metrics>)
-    /// for the list of metric names.
+    /// for the list of metric names supported by core reporting methods such
+    /// as `runReport` and `batchRunReports`. See
+    /// [Realtime
+    /// Metrics](<https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-api-schema#metrics>)
+    /// for the list of metric names supported by the `runRealtimeReport`
+    /// method. See
+    /// [Funnel
+    /// Metrics](<https://developers.google.com/analytics/devguides/reporting/data/v1/exploration-api-schema#metrics>)
+    /// for the list of metric names supported by the `runFunnelReport`
+    /// method.
     ///
     /// If `expression` is specified, `name` can be any string that you would like
     /// within the allowed character set. For example if `expression` is
@@ -819,11 +837,19 @@ pub struct ResponseMetaData {
     /// possible for a request to be subject to thresholding thresholding and no
     /// data is absent from the report, and this happens when all data is above the
     /// thresholds. To learn more, see [Data
-    /// thresholds](<https://support.google.com/analytics/answer/9383630>) and [About
-    /// Demographics and
-    /// Interests](<https://support.google.com/analytics/answer/2799357>).
+    /// thresholds](<https://support.google.com/analytics/answer/9383630>).
     #[prost(bool, optional, tag = "8")]
     pub subject_to_thresholding: ::core::option::Option<bool>,
+    /// If this report results is
+    /// [sampled](<https://support.google.com/analytics/answer/13331292>), this
+    /// describes the percentage of events used in this report. One
+    /// `samplingMetadatas` is populated for each date range. Each
+    /// `samplingMetadatas` corresponds to a date range in order that date ranges
+    /// were specified in the request.
+    ///
+    /// However if the results are not sampled, this field will not be defined.
+    #[prost(message, repeated, tag = "9")]
+    pub sampling_metadatas: ::prost::alloc::vec::Vec<SamplingMetadata>,
 }
 /// Nested message and enum types in `ResponseMetaData`.
 pub mod response_meta_data {
@@ -860,6 +886,29 @@ pub mod response_meta_data {
             pub restricted_metric_types: ::prost::alloc::vec::Vec<i32>,
         }
     }
+}
+/// If this report results is
+/// [sampled](<https://support.google.com/analytics/answer/13331292>), this
+/// describes the percentage of events used in this report. Sampling is the
+/// practice of analyzing a subset of all data in order to uncover the meaningful
+/// information in the larger data set.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SamplingMetadata {
+    /// The total number of events read in this sampled report for a date range.
+    /// This is the size of the subset this property's data that was analyzed in
+    /// this report.
+    #[prost(int64, tag = "1")]
+    pub samples_read_count: i64,
+    /// The total number of events present in this property's data that could
+    /// have been analyzed in this report for a date range. Sampling
+    /// uncovers the meaningful information about the larger data set, and this
+    /// is the size of the larger data set.
+    ///
+    /// To calculate the percentage of available data that was used in this
+    /// report, compute `samplesReadCount/samplingSpaceSize`.
+    #[prost(int64, tag = "2")]
+    pub sampling_space_size: i64,
 }
 /// Describes a dimension column in the report. Dimensions requested in a report
 /// produce column entries within rows and DimensionHeaders. However, dimensions
@@ -1062,11 +1111,11 @@ pub struct PropertyQuota {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaStatus {
     /// Quota consumed by this request.
-    #[prost(int32, tag = "1")]
-    pub consumed: i32,
+    #[prost(int32, optional, tag = "1")]
+    pub consumed: ::core::option::Option<i32>,
     /// Quota remaining after this request.
-    #[prost(int32, tag = "2")]
-    pub remaining: i32,
+    #[prost(int32, optional, tag = "2")]
+    pub remaining: ::core::option::Option<i32>,
 }
 /// Explains a dimension.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1451,7 +1500,8 @@ pub struct CheckCompatibilityResponse {
     #[prost(message, repeated, tag = "2")]
     pub metric_compatibilities: ::prost::alloc::vec::Vec<MetricCompatibility>,
 }
-/// The dimensions and metrics currently accepted in reporting methods.
+/// The dimensions, metrics and comparisons currently accepted in reporting
+/// methods.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Metadata {
@@ -1925,6 +1975,266 @@ pub struct RunRealtimeReportResponse {
     #[prost(string, tag = "9")]
     pub kind: ::prost::alloc::string::String,
 }
+/// A request to retrieve configuration metadata about a specific audience
+/// export.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAudienceExportRequest {
+    /// Required. The audience export resource name.
+    /// Format: `properties/{property}/audienceExports/{audience_export}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A request to list all audience exports for a property.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAudienceExportsRequest {
+    /// Required. All audience exports for this property will be listed in the
+    /// response. Format: `properties/{property}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of audience exports to return. The service may
+    /// return fewer than this value. If unspecified, at most 200 audience exports
+    /// will be returned. The maximum value is 1000 (higher values will be coerced
+    /// to the maximum).
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListAudienceExports`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListAudienceExports`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// A list of all audience exports for a property.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAudienceExportsResponse {
+    /// Each audience export for a property.
+    #[prost(message, repeated, tag = "1")]
+    pub audience_exports: ::prost::alloc::vec::Vec<AudienceExport>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, optional, tag = "2")]
+    pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// A request to create a new audience export.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateAudienceExportRequest {
+    /// Required. The parent resource where this audience export will be created.
+    /// Format: `properties/{property}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The audience export to create.
+    #[prost(message, optional, tag = "2")]
+    pub audience_export: ::core::option::Option<AudienceExport>,
+}
+/// An audience export is a list of users in an audience at the time of the
+/// list's creation. One audience may have multiple audience exports created for
+/// different days.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudienceExport {
+    /// Output only. Identifier. The audience export resource name assigned during
+    /// creation. This resource name identifies this `AudienceExport`.
+    ///
+    /// Format: `properties/{property}/audienceExports/{audience_export}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The audience resource name. This resource name identifies the
+    /// audience being listed and is shared between the Analytics Data & Admin
+    /// APIs.
+    ///
+    /// Format: `properties/{property}/audiences/{audience}`
+    #[prost(string, tag = "2")]
+    pub audience: ::prost::alloc::string::String,
+    /// Output only. The descriptive display name for this audience. For example,
+    /// "Purchasers".
+    #[prost(string, tag = "3")]
+    pub audience_display_name: ::prost::alloc::string::String,
+    /// Required. The dimensions requested and displayed in the query response.
+    #[prost(message, repeated, tag = "4")]
+    pub dimensions: ::prost::alloc::vec::Vec<AudienceDimension>,
+    /// Output only. The current state for this AudienceExport.
+    #[prost(enumeration = "audience_export::State", optional, tag = "5")]
+    pub state: ::core::option::Option<i32>,
+    /// Output only. The time when CreateAudienceExport was called and the
+    /// AudienceExport began the `CREATING` state.
+    #[prost(message, optional, tag = "6")]
+    pub begin_creating_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The total quota tokens charged during creation of the
+    /// AudienceExport. Because this token count is based on activity from the
+    /// `CREATING` state, this tokens charged will be fixed once an AudienceExport
+    /// enters the `ACTIVE` or `FAILED` states.
+    #[prost(int32, tag = "7")]
+    pub creation_quota_tokens_charged: i32,
+    /// Output only. The total number of rows in the AudienceExport result.
+    #[prost(int32, optional, tag = "8")]
+    pub row_count: ::core::option::Option<i32>,
+    /// Output only. Error message is populated when an audience export fails
+    /// during creation. A common reason for such a failure is quota exhaustion.
+    #[prost(string, optional, tag = "9")]
+    pub error_message: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The percentage completed for this audience export ranging
+    /// between 0 to 100.
+    #[prost(double, optional, tag = "10")]
+    pub percentage_completed: ::core::option::Option<f64>,
+}
+/// Nested message and enum types in `AudienceExport`.
+pub mod audience_export {
+    /// The AudienceExport currently exists in this state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified state will never be used.
+        Unspecified = 0,
+        /// The AudienceExport is currently creating and will be available in the
+        /// future. Creating occurs immediately after the CreateAudienceExport call.
+        Creating = 1,
+        /// The AudienceExport is fully created and ready for querying. An
+        /// AudienceExport is updated to active asynchronously from a request; this
+        /// occurs some time (for example 15 minutes) after the initial create call.
+        Active = 2,
+        /// The AudienceExport failed to be created. It is possible that
+        /// re-requesting this audience export will succeed.
+        Failed = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Creating => "CREATING",
+                State::Active => "ACTIVE",
+                State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "ACTIVE" => Some(Self::Active),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
+/// This metadata is currently blank.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudienceExportMetadata {}
+/// A request to list users in an audience export.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryAudienceExportRequest {
+    /// Required. The name of the audience export to retrieve users from.
+    /// Format: `properties/{property}/audienceExports/{audience_export}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The row count of the start row. The first row is counted as row
+    /// 0.
+    ///
+    /// When paging, the first request does not specify offset; or equivalently,
+    /// sets offset to 0; the first request returns the first `limit` of rows. The
+    /// second request sets offset to the `limit` of the first request; the second
+    /// request returns the second `limit` of rows.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int64, tag = "2")]
+    pub offset: i64,
+    /// Optional. The number of rows to return. If unspecified, 10,000 rows are
+    /// returned. The API returns a maximum of 250,000 rows per request, no matter
+    /// how many you ask for. `limit` must be positive.
+    ///
+    /// The API can also return fewer rows than the requested `limit`, if there
+    /// aren't as many dimension values as the `limit`.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int64, tag = "3")]
+    pub limit: i64,
+}
+/// A list of users in an audience export.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryAudienceExportResponse {
+    /// Configuration data about AudienceExport being queried. Returned to help
+    /// interpret the audience rows in this response. For example, the dimensions
+    /// in this AudienceExport correspond to the columns in the AudienceRows.
+    #[prost(message, optional, tag = "1")]
+    pub audience_export: ::core::option::Option<AudienceExport>,
+    /// Rows for each user in an audience export. The number of rows in this
+    /// response will be less than or equal to request's page size.
+    #[prost(message, repeated, tag = "2")]
+    pub audience_rows: ::prost::alloc::vec::Vec<AudienceRow>,
+    /// The total number of rows in the AudienceExport result. `rowCount` is
+    /// independent of the number of rows returned in the response, the `limit`
+    /// request parameter, and the `offset` request parameter. For example if a
+    /// query returns 175 rows and includes `limit` of 50 in the API request, the
+    /// response will contain `rowCount` of 175 but only 50 rows.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int32, optional, tag = "3")]
+    pub row_count: ::core::option::Option<i32>,
+}
+/// Dimension value attributes for the audience user row.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudienceRow {
+    /// Each dimension value attribute for an audience user. One dimension value
+    /// will be added for each dimension column requested.
+    #[prost(message, repeated, tag = "1")]
+    pub dimension_values: ::prost::alloc::vec::Vec<AudienceDimensionValue>,
+}
+/// An audience dimension is a user attribute. Specific user attributed are
+/// requested and then later returned in the `QueryAudienceExportResponse`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudienceDimension {
+    /// Optional. The API name of the dimension. See the [API
+    /// Dimensions](<https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-api-schema#dimensions>)
+    /// for the list of dimension names.
+    #[prost(string, tag = "1")]
+    pub dimension_name: ::prost::alloc::string::String,
+}
+/// The value of a dimension.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudienceDimensionValue {
+    /// One kind of dimension value.
+    #[prost(oneof = "audience_dimension_value::OneValue", tags = "1")]
+    pub one_value: ::core::option::Option<audience_dimension_value::OneValue>,
+}
+/// Nested message and enum types in `AudienceDimensionValue`.
+pub mod audience_dimension_value {
+    /// One kind of dimension value.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum OneValue {
+        /// Value as a string if the dimension type is a string.
+        #[prost(string, tag = "1")]
+        Value(::prost::alloc::string::String),
+    }
+}
 /// Generated client implementations.
 pub mod beta_analytics_data_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -2263,6 +2573,194 @@ pub mod beta_analytics_data_client {
                     GrpcMethod::new(
                         "google.analytics.data.v1beta.BetaAnalyticsData",
                         "CheckCompatibility",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates an audience export for later retrieval. This method quickly returns
+        /// the audience export's resource name and initiates a long running
+        /// asynchronous request to form an audience export. To export the users in an
+        /// audience export, first create the audience export through this method and
+        /// then send the audience resource name to the `QueryAudienceExport` method.
+        ///
+        /// See [Creating an Audience
+        /// Export](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics)
+        /// for an introduction to Audience Exports with examples.
+        ///
+        /// An audience export is a snapshot of the users currently in the audience at
+        /// the time of audience export creation. Creating audience exports for one
+        /// audience on different days will return different results as users enter and
+        /// exit the audience.
+        ///
+        /// Audiences in Google Analytics 4 allow you to segment your users in the ways
+        /// that are important to your business. To learn more, see
+        /// https://support.google.com/analytics/answer/9267572. Audience exports
+        /// contain the users in each audience.
+        ///
+        /// Audience Export APIs have some methods at alpha and other methods at beta
+        /// stability. The intention is to advance methods to beta stability after some
+        /// feedback and adoption. To give your feedback on this API, complete the
+        /// [Google Analytics Audience Export API
+        /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        pub async fn create_audience_export(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateAudienceExportRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1beta.BetaAnalyticsData/CreateAudienceExport",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1beta.BetaAnalyticsData",
+                        "CreateAudienceExport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves an audience export of users. After creating an audience, the
+        /// users are not immediately available for exporting. First, a request to
+        /// `CreateAudienceExport` is necessary to create an audience export of users,
+        /// and then second, this method is used to retrieve the users in the audience
+        /// export.
+        ///
+        /// See [Creating an Audience
+        /// Export](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics)
+        /// for an introduction to Audience Exports with examples.
+        ///
+        /// Audiences in Google Analytics 4 allow you to segment your users in the ways
+        /// that are important to your business. To learn more, see
+        /// https://support.google.com/analytics/answer/9267572.
+        ///
+        /// Audience Export APIs have some methods at alpha and other methods at beta
+        /// stability. The intention is to advance methods to beta stability after some
+        /// feedback and adoption. To give your feedback on this API, complete the
+        /// [Google Analytics Audience Export API
+        /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        pub async fn query_audience_export(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryAudienceExportRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryAudienceExportResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1beta.BetaAnalyticsData/QueryAudienceExport",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1beta.BetaAnalyticsData",
+                        "QueryAudienceExport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets configuration metadata about a specific audience export. This method
+        /// can be used to understand an audience export after it has been created.
+        ///
+        /// See [Creating an Audience
+        /// Export](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics)
+        /// for an introduction to Audience Exports with examples.
+        ///
+        /// Audience Export APIs have some methods at alpha and other methods at beta
+        /// stability. The intention is to advance methods to beta stability after some
+        /// feedback and adoption. To give your feedback on this API, complete the
+        /// [Google Analytics Audience Export API
+        /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        pub async fn get_audience_export(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAudienceExportRequest>,
+        ) -> std::result::Result<tonic::Response<super::AudienceExport>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1beta.BetaAnalyticsData/GetAudienceExport",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1beta.BetaAnalyticsData",
+                        "GetAudienceExport",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all audience exports for a property. This method can be used for you
+        /// to find and reuse existing audience exports rather than creating
+        /// unnecessary new audience exports. The same audience can have multiple
+        /// audience exports that represent the export of users that were in an
+        /// audience on different days.
+        ///
+        /// See [Creating an Audience
+        /// Export](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics)
+        /// for an introduction to Audience Exports with examples.
+        ///
+        /// Audience Export APIs have some methods at alpha and other methods at beta
+        /// stability. The intention is to advance methods to beta stability after some
+        /// feedback and adoption. To give your feedback on this API, complete the
+        /// [Google Analytics Audience Export API
+        /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        pub async fn list_audience_exports(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAudienceExportsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAudienceExportsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1beta.BetaAnalyticsData/ListAudienceExports",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1beta.BetaAnalyticsData",
+                        "ListAudienceExports",
                     ),
                 );
             self.inner.unary(req, path, codec).await

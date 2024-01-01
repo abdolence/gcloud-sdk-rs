@@ -97,10 +97,10 @@ pub struct BackupRecoveryJobReportLog {
     /// associated with this job.
     #[prost(string, tag = "17")]
     pub backup_rule_policy_name: ::prost::alloc::string::String,
-    /// The backup_template field displays the name of the backup template for
-    /// this application.
+    /// The backup_plan_policy_template field displays the name of the backup plan
+    /// for this application.
     #[prost(string, tag = "18")]
-    pub backup_template: ::prost::alloc::string::String,
+    pub backup_plan_policy_template: ::prost::alloc::string::String,
     /// The backup_type field displays the type of backup taken: Log, Incremental
     /// or Full Copy.
     #[prost(string, tag = "19")]
@@ -108,8 +108,8 @@ pub struct BackupRecoveryJobReportLog {
     /// The recovery_point field displays the timestamp of recovery point.
     #[prost(string, tag = "20")]
     pub recovery_point: ::prost::alloc::string::String,
-    /// The backup_consistency field displays whether the backup is crash consistent
-    /// or application consistent.
+    /// The backup_consistency field displays whether the backup is crash
+    /// consistent or application consistent.
     #[prost(string, tag = "21")]
     pub backup_consistency: ::prost::alloc::string::String,
     /// The target_host_name field displays the target host name.
@@ -143,9 +143,9 @@ pub struct BackupRecoveryJobReportLog {
     /// backup to application size.
     #[prost(double, tag = "30")]
     pub data_change_rate: f64,
-    /// The resource_volume_size_in_gib field displays the virtual size in Gib.
+    /// The snapshot_disk_size_in_gib field displays the snapshot disk size in Gib.
     #[prost(double, tag = "31")]
-    pub resource_volume_size_in_gib: f64,
+    pub snapshot_disk_size_in_gib: f64,
     /// The data_written_in_gib field displays the amount of
     /// remote data written in Gib.
     #[prost(double, tag = "32")]

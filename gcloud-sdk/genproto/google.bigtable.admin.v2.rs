@@ -2763,6 +2763,9 @@ pub struct ModifyColumnFamiliesRequest {
     pub modifications: ::prost::alloc::vec::Vec<
         modify_column_families_request::Modification,
     >,
+    /// Optional. If true, ignore safety checks when modifying the column families.
+    #[prost(bool, tag = "3")]
+    pub ignore_warnings: bool,
 }
 /// Nested message and enum types in `ModifyColumnFamiliesRequest`.
 pub mod modify_column_families_request {

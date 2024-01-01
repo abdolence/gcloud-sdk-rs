@@ -791,6 +791,13 @@ pub struct CreateCloudInstanceAction {
     /// Number of processing units (node_count should be set to 0 if used).
     #[prost(int32, optional, tag = "6")]
     pub processing_units: ::core::option::Option<i32>,
+    /// The autoscaling config for this instance. If non-empty, an autoscaling
+    /// instance will be created (processing_units and node_count should be set to
+    /// 0 if used).
+    #[prost(message, optional, tag = "7")]
+    pub autoscaling_config: ::core::option::Option<
+        super::super::admin::instance::v1::AutoscalingConfig,
+    >,
     /// labels.
     #[prost(map = "string, string", tag = "5")]
     pub labels: ::std::collections::HashMap<
@@ -820,6 +827,13 @@ pub struct UpdateCloudInstanceAction {
     /// processing_units or node_count should be present in the message.
     #[prost(int32, optional, tag = "5")]
     pub processing_units: ::core::option::Option<i32>,
+    /// The autoscaling config for this instance. If non-empty, this instance is
+    /// using autoscaling (processing_units and node_count should be set to
+    /// 0 if used).
+    #[prost(message, optional, tag = "7")]
+    pub autoscaling_config: ::core::option::Option<
+        super::super::admin::instance::v1::AutoscalingConfig,
+    >,
     /// labels.
     #[prost(map = "string, string", tag = "6")]
     pub labels: ::std::collections::HashMap<

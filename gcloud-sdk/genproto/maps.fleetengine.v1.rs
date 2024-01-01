@@ -589,6 +589,10 @@ pub struct RequestHeader {
     /// Field value example: `23`.
     #[prost(int32, tag = "11")]
     pub android_api_level: i32,
+    /// Optional ID that can be provided for logging purposes in order to identify
+    /// the request.
+    #[prost(string, tag = "12")]
+    pub trace_id: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `RequestHeader`.
 pub mod request_header {
