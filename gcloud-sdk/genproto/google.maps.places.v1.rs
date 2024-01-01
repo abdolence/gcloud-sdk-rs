@@ -4,15 +4,15 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorAttribution {
-    /// Output only. Name of the author of the [Photo][google.maps.places.v1.Photo]
-    /// or [Review][google.maps.places.v1.Review].
+    /// Name of the author of the [Photo][google.maps.places.v1.Photo] or
+    /// [Review][google.maps.places.v1.Review].
     #[prost(string, tag = "1")]
     pub display_name: ::prost::alloc::string::String,
-    /// Output only. URI of the author of the [Photo][google.maps.places.v1.Photo]
-    /// or [Review][google.maps.places.v1.Review].
+    /// URI of the author of the [Photo][google.maps.places.v1.Photo] or
+    /// [Review][google.maps.places.v1.Review].
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
-    /// Output only. Profile photo URI of the author of the
+    /// Profile photo URI of the author of the
     /// [Photo][google.maps.places.v1.Photo] or
     /// [Review][google.maps.places.v1.Review].
     #[prost(string, tag = "3")]
@@ -300,18 +300,18 @@ pub struct Circle {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Photo {
-    /// Output only. A reference representing this place photo which may be used to
-    /// look up this place photo again (a.k.a. the API "resource" name:
-    /// places/{place_id}/photos/{photo}).
+    /// Identifier. A reference representing this place photo which may be used to
+    /// look up this place photo again (also called the API "resource" name:
+    /// `places/{place_id}/photos/{photo}`).
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. The maximum available width, in pixels.
+    /// The maximum available width, in pixels.
     #[prost(int32, tag = "2")]
     pub width_px: i32,
-    /// Output only. The maximum available height, in pixels.
+    /// The maximum available height, in pixels.
     #[prost(int32, tag = "3")]
     pub height_px: i32,
-    /// Output only. This photo's authors.
+    /// This photo's authors.
     #[prost(message, repeated, tag = "4")]
     pub author_attributions: ::prost::alloc::vec::Vec<AuthorAttribution>,
 }
@@ -319,31 +319,30 @@ pub struct Photo {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Review {
-    /// Output only. A reference representing this place review which may be used
-    /// to look up this place review again (a.k.a. the API "resource" name:
-    /// places/{place_id}/reviews/{review}).
+    /// A reference representing this place review which may be used to look up
+    /// this place review again (also called the API "resource" name:
+    /// `places/{place_id}/reviews/{review}`).
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. A string of formatted recent time, expressing the review time
-    /// relative to the current time in a form appropriate for the language and
-    /// country.
+    /// A string of formatted recent time, expressing the review time relative
+    /// to the current time in a form appropriate for the language and country.
     #[prost(string, tag = "2")]
     pub relative_publish_time_description: ::prost::alloc::string::String,
-    /// Output only. The localized text of the review.
+    /// The localized text of the review.
     #[prost(message, optional, tag = "9")]
     pub text: ::core::option::Option<super::super::super::r#type::LocalizedText>,
-    /// Output only. The review text in its original language.
+    /// The review text in its original language.
     #[prost(message, optional, tag = "12")]
     pub original_text: ::core::option::Option<
         super::super::super::r#type::LocalizedText,
     >,
-    /// Output only. A number between 1.0 and 5.0, a.k.a. the number of stars.
+    /// A number between 1.0 and 5.0, also called the number of stars.
     #[prost(double, tag = "7")]
     pub rating: f64,
-    /// Output only. This review's author.
+    /// This review's author.
     #[prost(message, optional, tag = "13")]
     pub author_attribution: ::core::option::Option<AuthorAttribution>,
-    /// Output only. Timestamp for the review.
+    /// Timestamp for the review.
     #[prost(message, optional, tag = "14")]
     pub publish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
@@ -351,216 +350,241 @@ pub struct Review {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Place {
-    /// Output only. An ID representing this place which may be used to look up
-    /// this place again (a.k.a. the API "resource" name: places/<place_id>).
+    /// An ID representing this place which may be used to look up this place
+    /// again (a.k.a. the API "resource" name: places/place_id).
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. The unique identifier of a place.
+    /// The unique identifier of a place.
     #[prost(string, tag = "2")]
     pub id: ::prost::alloc::string::String,
-    /// Output only. The localized name of the place, suitable as a short
-    /// human-readable description. For example, "Google Sydney", "Starbucks",
-    /// "Pyrmont", etc.
+    /// The localized name of the place, suitable as a short human-readable
+    /// description. For example, "Google Sydney", "Starbucks", "Pyrmont", etc.
     #[prost(message, optional, tag = "31")]
     pub display_name: ::core::option::Option<super::super::super::r#type::LocalizedText>,
-    /// Output only. A set of type tags for this result. For example, "political"
-    /// and "locality".
+    /// A set of type tags for this result. For example, "political" and
+    /// "locality".  For the complete list of possible values, see Table A and
+    /// Table B at
+    /// <https://developers.google.com/maps/documentation/places/web-service/place-types>
     #[prost(string, repeated, tag = "5")]
     pub types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Output only. A human-readable phone number for the place, in national
-    /// format.
+    /// The primary type of the given result. This type must one of the Places API
+    /// supported types. For example, "restaurant", "cafe", "airport", etc.  A
+    /// place can only have a single primary type.  For the complete list of
+    /// possible values, see Table A and Table B at
+    /// <https://developers.google.com/maps/documentation/places/web-service/place-types>
+    #[prost(string, tag = "50")]
+    pub primary_type: ::prost::alloc::string::String,
+    /// The display name of the primary type, localized to the request language if
+    /// applicable.  For the complete list of possible values, see Table A and
+    /// Table B at
+    /// <https://developers.google.com/maps/documentation/places/web-service/place-types>
+    #[prost(message, optional, tag = "32")]
+    pub primary_type_display_name: ::core::option::Option<
+        super::super::super::r#type::LocalizedText,
+    >,
+    /// A human-readable phone number for the place, in national format.
     #[prost(string, tag = "7")]
     pub national_phone_number: ::prost::alloc::string::String,
-    /// Output only. A human-readable phone number for the place, in international
-    /// format.
+    /// A human-readable phone number for the place, in international format.
     #[prost(string, tag = "8")]
     pub international_phone_number: ::prost::alloc::string::String,
-    /// Output only. A full, human-readable address for this place.
+    /// A full, human-readable address for this place.
     #[prost(string, tag = "9")]
     pub formatted_address: ::prost::alloc::string::String,
-    /// Output only. Repeated components for each locality level.
+    /// A short, human-readable address for this place.
+    #[prost(string, tag = "51")]
+    pub short_formatted_address: ::prost::alloc::string::String,
+    /// Repeated components for each locality level.
+    /// Note the following facts about the address_components\[\] array:
+    /// - The array of address components may contain more components than the
+    /// formatted_address.
+    /// - The array does not necessarily include all the political entities that
+    /// contain an address, apart from those included in the formatted_address. To
+    /// retrieve all the political entities that contain a specific address, you
+    /// should use reverse geocoding, passing the latitude/longitude of the address
+    /// as a parameter to the request.
+    /// - The format of the response is not guaranteed to remain the same between
+    /// requests. In particular, the number of address_components varies based on
+    /// the address requested and can change over time for the same address. A
+    /// component can change position in the array. The type of the component can
+    /// change. A particular component may be missing in a later response.
     #[prost(message, repeated, tag = "10")]
     pub address_components: ::prost::alloc::vec::Vec<place::AddressComponent>,
-    /// Output only. Plus code of the place location lat/long.
+    /// Plus code of the place location lat/long.
     #[prost(message, optional, tag = "11")]
     pub plus_code: ::core::option::Option<place::PlusCode>,
-    /// Output only. The position of this place.
+    /// The position of this place.
     #[prost(message, optional, tag = "12")]
     pub location: ::core::option::Option<super::super::super::r#type::LatLng>,
-    /// Output only. A viewport suitable for displaying the place on an
-    /// average-sized map.
+    /// A viewport suitable for displaying the place on an average-sized map.
     #[prost(message, optional, tag = "13")]
     pub viewport: ::core::option::Option<super::super::super::geo::r#type::Viewport>,
-    /// Output only. A rating between 1.0 and 5.0, based on user reviews of this
-    /// place.
+    /// A rating between 1.0 and 5.0, based on user reviews of this place.
     #[prost(double, tag = "14")]
     pub rating: f64,
-    /// Output only. A URL providing more information about this place.
+    /// A URL providing more information about this place.
     #[prost(string, tag = "15")]
     pub google_maps_uri: ::prost::alloc::string::String,
-    /// Output only. The authoritative website for this place, e.g. a business'
-    /// homepage. Note that for places that are part of a chain (e.g. an IKEA
-    /// store), this will usually be the website for the individual store, not the
-    /// overall chain.
+    /// The authoritative website for this place, e.g. a business' homepage.
+    /// Note that for places that are part of a chain (e.g. an IKEA store), this
+    /// will usually be the website for the individual store, not the overall
+    /// chain.
     #[prost(string, tag = "16")]
     pub website_uri: ::prost::alloc::string::String,
-    /// Output only. List of reviews about this place.
+    /// List of reviews about this place, sorted by relevance.
     #[prost(message, repeated, tag = "53")]
     pub reviews: ::prost::alloc::vec::Vec<Review>,
-    /// Output only. The regular hours of operation.
+    /// The regular hours of operation.
     #[prost(message, optional, tag = "21")]
     pub regular_opening_hours: ::core::option::Option<place::OpeningHours>,
-    /// Output only. Number of minutes this place's timezone is currently offset
-    /// from UTC. This is expressed in minutes to support timezones that are offset
-    /// by fractions of an hour, e.g. X hours and 15 minutes.
+    /// Number of minutes this place's timezone is currently offset from UTC.
+    /// This is expressed in minutes to support timezones that are offset by
+    /// fractions of an hour, e.g. X hours and 15 minutes.
     #[prost(int32, optional, tag = "22")]
     pub utc_offset_minutes: ::core::option::Option<i32>,
-    /// Output only. Information (including references) about photos of this place.
+    /// Information (including references) about photos of this place.
     #[prost(message, repeated, tag = "54")]
     pub photos: ::prost::alloc::vec::Vec<Photo>,
-    /// Output only. The place's address in adr microformat:
-    /// <http://microformats.org/wiki/adr.>
+    /// The place's address in adr microformat: <http://microformats.org/wiki/adr.>
     #[prost(string, tag = "24")]
     pub adr_format_address: ::prost::alloc::string::String,
-    /// Output only. The business status for the place.
+    /// The business status for the place.
     #[prost(enumeration = "place::BusinessStatus", tag = "25")]
     pub business_status: i32,
-    /// Output only. Price level of the place.
+    /// Price level of the place.
     #[prost(enumeration = "PriceLevel", tag = "26")]
     pub price_level: i32,
-    /// Output only. A set of data provider that must be shown with this result.
+    /// A set of data provider that must be shown with this result.
     #[prost(message, repeated, tag = "27")]
     pub attributions: ::prost::alloc::vec::Vec<place::Attribution>,
-    /// Output only. The total number of reviews (with or without text) for this
-    /// place.
+    /// The total number of reviews (with or without text) for this place.
     #[prost(int32, optional, tag = "28")]
     pub user_rating_count: ::core::option::Option<i32>,
-    /// Output only. A truncated URL to an v2 icon mask. User can access different
-    /// icon type by appending type suffix to the end (eg, ".svg" or ".png").
+    /// A truncated URL to an icon mask. User can access different icon type by
+    /// appending type suffix to the end (eg, ".svg" or ".png").
     #[prost(string, tag = "29")]
     pub icon_mask_base_uri: ::prost::alloc::string::String,
-    /// Output only. Background color for icon_mask in hex format, e.g. #909CE1.
+    /// Background color for icon_mask in hex format, e.g. #909CE1.
     #[prost(string, tag = "30")]
     pub icon_background_color: ::prost::alloc::string::String,
-    /// Output only. Specifies if the business supports takeout.
+    /// Specifies if the business supports takeout.
     #[prost(bool, optional, tag = "33")]
     pub takeout: ::core::option::Option<bool>,
-    /// Output only. Specifies if the business supports delivery.
+    /// Specifies if the business supports delivery.
     #[prost(bool, optional, tag = "34")]
     pub delivery: ::core::option::Option<bool>,
-    /// Output only. Specifies if the business supports indoor or outdoor seating
-    /// options.
+    /// Specifies if the business supports indoor or outdoor seating options.
     #[prost(bool, optional, tag = "35")]
     pub dine_in: ::core::option::Option<bool>,
-    /// Output only. Specifies if the business supports curbside pickup.
+    /// Specifies if the business supports curbside pickup.
     #[prost(bool, optional, tag = "36")]
     pub curbside_pickup: ::core::option::Option<bool>,
-    /// Output only. Specifies if the place supports reservations.
+    /// Specifies if the place supports reservations.
     #[prost(bool, optional, tag = "38")]
     pub reservable: ::core::option::Option<bool>,
-    /// Output only. Specifies if the place serves breakfast.
+    /// Specifies if the place serves breakfast.
     #[prost(bool, optional, tag = "39")]
     pub serves_breakfast: ::core::option::Option<bool>,
-    /// Output only. Specifies if the place serves lunch.
+    /// Specifies if the place serves lunch.
     #[prost(bool, optional, tag = "40")]
     pub serves_lunch: ::core::option::Option<bool>,
-    /// Output only. Specifies if the place serves dinner.
+    /// Specifies if the place serves dinner.
     #[prost(bool, optional, tag = "41")]
     pub serves_dinner: ::core::option::Option<bool>,
-    /// Output only. Specifies if the place serves beer.
+    /// Specifies if the place serves beer.
     #[prost(bool, optional, tag = "42")]
     pub serves_beer: ::core::option::Option<bool>,
-    /// Output only. Specifies if the place serves wine.
+    /// Specifies if the place serves wine.
     #[prost(bool, optional, tag = "43")]
     pub serves_wine: ::core::option::Option<bool>,
-    /// Output only. Specifies if the place serves brunch.
+    /// Specifies if the place serves brunch.
     #[prost(bool, optional, tag = "44")]
     pub serves_brunch: ::core::option::Option<bool>,
-    /// Output only. Specifies if the place serves vegetarian food.
+    /// Specifies if the place serves vegetarian food.
     #[prost(bool, optional, tag = "45")]
     pub serves_vegetarian_food: ::core::option::Option<bool>,
-    /// Output only. The hours of operation for the next seven days (including
-    /// today). The time period starts at midnight on the date of the request and
-    /// ends at 11:59 pm six days later. This field includes the special_days
-    /// subfield of all hours, set for dates that have exceptional hours.
+    /// The hours of operation for the next seven days (including today). The time
+    /// period starts at midnight on the date of the request and ends at 11:59 pm
+    /// six days later. This field includes the special_days subfield of all hours,
+    /// set for dates that have exceptional hours.
     #[prost(message, optional, tag = "46")]
     pub current_opening_hours: ::core::option::Option<place::OpeningHours>,
-    /// Output only. Contains an array of entries for the next seven days including
-    /// information about secondary hours of a business. Secondary hours are
-    /// different from a business's main hours. For example, a restaurant can
-    /// specify drive through hours or delivery hours as its secondary hours. This
-    /// field populates the type subfield, which draws from a predefined list of
-    /// opening hours types (such as DRIVE_THROUGH, PICKUP, or TAKEOUT) based on
-    /// the types of the place. This field includes the special_days subfield of
-    /// all hours, set for dates that have exceptional hours.
-    #[prost(message, repeated, tag = "47")]
-    pub current_secondary_opening_hours: ::prost::alloc::vec::Vec<place::OpeningHours>,
-    /// Output only. Contains an array of entries for information about regular
-    /// secondary hours of a business. Secondary hours are different from a
+    /// Contains an array of entries for the next seven days including information
+    /// about secondary hours of a business. Secondary hours are different from a
     /// business's main hours. For example, a restaurant can specify drive through
     /// hours or delivery hours as its secondary hours. This field populates the
     /// type subfield, which draws from a predefined list of opening hours types
     /// (such as DRIVE_THROUGH, PICKUP, or TAKEOUT) based on the types of the
-    /// place.
+    /// place. This field includes the special_days subfield of all hours, set for
+    /// dates that have exceptional hours.
+    #[prost(message, repeated, tag = "47")]
+    pub current_secondary_opening_hours: ::prost::alloc::vec::Vec<place::OpeningHours>,
+    /// Contains an array of entries for information about regular secondary hours
+    /// of a business. Secondary hours are different from a business's main hours.
+    /// For example, a restaurant can specify drive through hours or delivery hours
+    /// as its secondary hours. This field populates the type subfield, which draws
+    /// from a predefined list of opening hours types (such as DRIVE_THROUGH,
+    /// PICKUP, or TAKEOUT) based on the types of the place.
     #[prost(message, repeated, tag = "49")]
     pub regular_secondary_opening_hours: ::prost::alloc::vec::Vec<place::OpeningHours>,
-    /// Output only. Contains a summary of the place. A summary is comprised of a
-    /// textual overview, and also includes the language code for these if
-    /// applicable. Summary text must be presented as-is and can not be modified or
-    /// altered.
+    /// Contains a summary of the place. A summary is comprised of a textual
+    /// overview, and also includes the language code for these if applicable.
+    /// Summary text must be presented as-is and can not be modified or altered.
     #[prost(message, optional, tag = "52")]
     pub editorial_summary: ::core::option::Option<
         super::super::super::r#type::LocalizedText,
     >,
-    /// Output only. Place provides outdoor seating.
+    /// Place provides outdoor seating.
     #[prost(bool, optional, tag = "55")]
     pub outdoor_seating: ::core::option::Option<bool>,
-    /// Output only. Place provides live music.
+    /// Place provides live music.
     #[prost(bool, optional, tag = "56")]
     pub live_music: ::core::option::Option<bool>,
-    /// Output only. Place has a children's menu.
+    /// Place has a children's menu.
     #[prost(bool, optional, tag = "57")]
     pub menu_for_children: ::core::option::Option<bool>,
-    /// Output only. Place serves cocktails.
+    /// Place serves cocktails.
     #[prost(bool, optional, tag = "58")]
     pub serves_cocktails: ::core::option::Option<bool>,
-    /// Output only. Place serves dessert.
+    /// Place serves dessert.
     #[prost(bool, optional, tag = "59")]
     pub serves_dessert: ::core::option::Option<bool>,
-    /// Output only. Place serves coffee.
+    /// Place serves coffee.
     #[prost(bool, optional, tag = "60")]
     pub serves_coffee: ::core::option::Option<bool>,
-    /// Output only. Place is good for children.
+    /// Place is good for children.
     #[prost(bool, optional, tag = "62")]
     pub good_for_children: ::core::option::Option<bool>,
-    /// Output only. Place allows dogs.
+    /// Place allows dogs.
     #[prost(bool, optional, tag = "63")]
     pub allows_dogs: ::core::option::Option<bool>,
-    /// Output only. Place has restroom.
+    /// Place has restroom.
     #[prost(bool, optional, tag = "64")]
     pub restroom: ::core::option::Option<bool>,
-    /// Output only. Place accommodates groups.
+    /// Place accommodates groups.
     #[prost(bool, optional, tag = "65")]
     pub good_for_groups: ::core::option::Option<bool>,
-    /// Output only. Place is suitable for watching sports.
+    /// Place is suitable for watching sports.
     #[prost(bool, optional, tag = "66")]
     pub good_for_watching_sports: ::core::option::Option<bool>,
+    /// Payment options the place accepts. If a payment option data is not
+    /// available, the payment option field will be unset.
     #[prost(message, optional, tag = "67")]
     pub payment_options: ::core::option::Option<place::PaymentOptions>,
-    /// Output only. Options of parking provided by the place.
+    /// Options of parking provided by the place.
     #[prost(message, optional, tag = "70")]
     pub parking_options: ::core::option::Option<place::ParkingOptions>,
-    /// Output only. A list of sub destinations related to the place.
+    /// A list of sub destinations related to the place.
     #[prost(message, repeated, tag = "71")]
     pub sub_destinations: ::prost::alloc::vec::Vec<place::SubDestination>,
-    /// Output only. Information about the accessibility options a place offers.
+    /// Information about the accessibility options a place offers.
     #[prost(message, optional, tag = "72")]
     pub accessibility_options: ::core::option::Option<place::AccessibilityOptions>,
-    /// Output only. The most recent information about fuel options in a gas
-    /// station. This information is updated regularly.
+    /// The most recent information about fuel options in a gas station. This
+    /// information is updated regularly.
     #[prost(message, optional, tag = "78")]
     pub fuel_options: ::core::option::Option<FuelOptions>,
-    /// Output only. Information of ev charging options.
+    /// Information of ev charging options.
     #[prost(message, optional, tag = "79")]
     pub ev_charge_options: ::core::option::Option<EvChargeOptions>,
 }
@@ -571,21 +595,20 @@ pub mod place {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AddressComponent {
-        /// Output only. The full text description or name of the address component.
-        /// For example, an address component for the country Australia may have a
-        /// long_name of "Australia".
+        /// The full text description or name of the address component. For example,
+        /// an address component for the country Australia may have a long_name of
+        /// "Australia".
         #[prost(string, tag = "1")]
         pub long_text: ::prost::alloc::string::String,
-        /// Output only. An abbreviated textual name for the address component, if
-        /// available. For example, an address component for the country of Australia
-        /// may have a short_name of "AU".
+        /// An abbreviated textual name for the address component, if available. For
+        /// example, an address component for the country of Australia may have a
+        /// short_name of "AU".
         #[prost(string, tag = "2")]
         pub short_text: ::prost::alloc::string::String,
-        /// Output only. An array indicating the type(s) of the address component.
+        /// An array indicating the type(s) of the address component.
         #[prost(string, repeated, tag = "3")]
         pub types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Output only. The language used to format this components, in CLDR
-        /// notation.
+        /// The language used to format this components, in CLDR notation.
         #[prost(string, tag = "4")]
         pub language_code: ::prost::alloc::string::String,
     }
@@ -595,13 +618,13 @@ pub mod place {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PlusCode {
-        /// Output only. Place's global (full) code, such as "9FWM33GV+HQ",
-        /// representing an 1/8000 by 1/8000 degree area (~14 by 14 meters).
+        /// Place's global (full) code, such as "9FWM33GV+HQ", representing an
+        /// 1/8000 by 1/8000 degree area (~14 by 14 meters).
         #[prost(string, tag = "1")]
         pub global_code: ::prost::alloc::string::String,
-        /// Output only. Place's compound code, such as "33GV+HQ, Ramberg, Norway",
-        /// containing the suffix of the global code and replacing the prefix with a
-        /// formatted name of a reference entity.
+        /// Place's compound code, such as "33GV+HQ, Ramberg, Norway", containing
+        /// the suffix of the global code and replacing the prefix with a formatted
+        /// name of a reference entity.
         #[prost(string, tag = "2")]
         pub compound_code: ::prost::alloc::string::String,
     }
@@ -609,31 +632,29 @@ pub mod place {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct OpeningHours {
-        /// Output only. Is this place open right now?  Always present unless we lack
-        /// time-of-day or timezone data for these opening hours.
+        /// Is this place open right now?  Always present unless we lack time-of-day
+        /// or timezone data for these opening hours.
         #[prost(bool, optional, tag = "1")]
         pub open_now: ::core::option::Option<bool>,
-        /// Output only. The periods that this place is open during the week. The
-        /// periods are in chronological order, starting with Sunday in the
-        /// place-local timezone. An empty (but not absent) value indicates a place
-        /// that is never open, e.g. because it is closed temporarily for
-        /// renovations.
+        /// The periods that this place is open during the week. The periods are in
+        /// chronological order, starting with Sunday in the place-local timezone. An
+        /// empty (but not absent) value indicates a place that is never open, e.g.
+        /// because it is closed temporarily for renovations.
         #[prost(message, repeated, tag = "2")]
         pub periods: ::prost::alloc::vec::Vec<opening_hours::Period>,
-        /// Output only. Localized strings describing the opening hours of this
-        /// place, one string for each day of the week.  Will be empty if the hours
-        /// are unknown or could not be converted to localized text. Example: "Sun:
-        /// 18:00–06:00"
+        /// Localized strings describing the opening hours of this place, one string
+        /// for each day of the week.  Will be empty if the hours are unknown or
+        /// could not be converted to localized text. Example: "Sun: 18:00–06:00"
         #[prost(string, repeated, tag = "3")]
         pub weekday_descriptions: ::prost::alloc::vec::Vec<
             ::prost::alloc::string::String,
         >,
-        /// Output only. A type string used to identify the type of secondary hours.
+        /// A type string used to identify the type of secondary hours.
         #[prost(enumeration = "opening_hours::SecondaryHoursType", tag = "4")]
         pub secondary_hours_type: i32,
-        /// Output only. Structured information for special days that fall within the
-        /// period that the returned opening hours cover. Special days are days that
-        /// could impact the business hours of a place, e.g. Christmas day. Set for
+        /// Structured information for special days that fall within the period that
+        /// the returned opening hours cover. Special days are days that could impact
+        /// the business hours of a place, e.g. Christmas day. Set for
         /// current_opening_hours and current_secondary_opening_hours if there are
         /// exceptional hours.
         #[prost(message, repeated, tag = "5")]
@@ -645,10 +666,10 @@ pub mod place {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Period {
-            /// Output only. The time that the place starts to be open.
+            /// The time that the place starts to be open.
             #[prost(message, optional, tag = "1")]
             pub open: ::core::option::Option<period::Point>,
-            /// Output only. The time that the place starts to be closed.
+            /// The time that the place starts to be closed.
             #[prost(message, optional, tag = "2")]
             pub close: ::core::option::Option<period::Point>,
         }
@@ -658,26 +679,26 @@ pub mod place {
             #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Point {
-                /// Output only. A day of the week, as an integer in the range 0-6.  0 is
-                /// Sunday, 1 is Monday, etc.
+                /// A day of the week, as an integer in the range 0-6.  0 is Sunday, 1 is
+                /// Monday, etc.
                 #[prost(int32, optional, tag = "1")]
                 pub day: ::core::option::Option<i32>,
-                /// Output only. The hour in 2 digits. Ranges from 00 to 23.
+                /// The hour in 2 digits. Ranges from 00 to 23.
                 #[prost(int32, optional, tag = "2")]
                 pub hour: ::core::option::Option<i32>,
-                /// Output only. The minute in 2 digits. Ranges from 00 to 59.
+                /// The minute in 2 digits. Ranges from 00 to 59.
                 #[prost(int32, optional, tag = "3")]
                 pub minute: ::core::option::Option<i32>,
-                /// Output only. Date in the local timezone for the place.
+                /// Date in the local timezone for the place.
                 #[prost(message, optional, tag = "6")]
                 pub date: ::core::option::Option<
                     super::super::super::super::super::super::r#type::Date,
                 >,
-                /// Output only. Whether or not this endpoint was truncated. Truncation
-                /// occurs when the real hours are outside the times we are willing to
-                /// return hours between, so we truncate the hours back to these
-                /// boundaries. This ensures that at most 24 * 7 hours from midnight of
-                /// the day of the request are returned.
+                /// Whether or not this endpoint was truncated. Truncation occurs when
+                /// the real hours are outside the times we are willing to return hours
+                /// between, so we truncate the hours back to these boundaries. This
+                /// ensures that at most 24 * 7 hours from midnight of the day of the
+                /// request are returned.
                 #[prost(bool, tag = "5")]
                 pub truncated: bool,
             }
@@ -688,7 +709,7 @@ pub mod place {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct SpecialDay {
-            /// Output only. The date of this special day.
+            /// The date of this special day.
             #[prost(message, optional, tag = "1")]
             pub date: ::core::option::Option<
                 super::super::super::super::super::r#type::Date,
@@ -786,10 +807,10 @@ pub mod place {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Attribution {
-        /// Output only. Name of the Place's data provider.
+        /// Name of the Place's data provider.
         #[prost(string, tag = "1")]
         pub provider: ::prost::alloc::string::String,
-        /// Output only. URI to the Place's data provider.
+        /// URI to the Place's data provider.
         #[prost(string, tag = "2")]
         pub provider_uri: ::prost::alloc::string::String,
     }
@@ -854,9 +875,18 @@ pub mod place {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AccessibilityOptions {
+        /// Place offers wheelchair accessible parking.
+        #[prost(bool, optional, tag = "1")]
+        pub wheelchair_accessible_parking: ::core::option::Option<bool>,
         /// Places has wheelchair accessible entrance.
         #[prost(bool, optional, tag = "2")]
         pub wheelchair_accessible_entrance: ::core::option::Option<bool>,
+        /// Place has wheelchair accessible restroom.
+        #[prost(bool, optional, tag = "3")]
+        pub wheelchair_accessible_restroom: ::core::option::Option<bool>,
+        /// Place has wheelchair accessible seating.
+        #[prost(bool, optional, tag = "4")]
+        pub wheelchair_accessible_seating: ::core::option::Option<bool>,
     }
     /// Business status for the place.
     #[derive(
@@ -952,6 +982,8 @@ impl PriceLevel {
     }
 }
 /// Request proto for Search Nearby.
+///
+///
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchNearbyRequest {
@@ -970,14 +1002,18 @@ pub struct SearchNearbyRequest {
     /// affect results based on applicable law.
     ///
     /// For more information, see
-    /// <http://www.unicode.org/reports/tr35/#unicode_region_subtag.>
+    /// <https://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html.>
     ///
     ///
     /// Note that 3-digit region codes are not currently supported.
     #[prost(string, tag = "2")]
     pub region_code: ::prost::alloc::string::String,
     /// Included Place type (eg, "restaurant" or "gas_station") from
-    /// <https://developers.google.com/places/supported_types.>
+    /// <https://developers.google.com/maps/documentation/places/web-service/place-types.>
+    ///
+    /// Up to 50 types from [Table
+    /// A](<https://developers.google.com/maps/documentation/places/web-service/place-types#table-a>)
+    /// may be specified.
     ///
     /// If there are any conflicting types, i.e. a type appears in both
     /// included_types and excluded_types, an INVALID_ARGUMENT error is
@@ -986,12 +1022,16 @@ pub struct SearchNearbyRequest {
     /// If a Place type is specified with multiple type restrictions, only places
     /// that satisfy all of the restrictions are returned. For example, if we
     /// have {included_types = \["restaurant"\], excluded_primary_types =
-    /// \["restaurant"\]}, the returned places are POIs that provide "restaurant"
+    /// \["restaurant"\]}, the returned places provide "restaurant"
     /// related services but do not operate primarily as "restaurants".
     #[prost(string, repeated, tag = "3")]
     pub included_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Excluded Place type (eg, "restaurant" or "gas_station") from
-    /// <https://developers.google.com/places/supported_types.>
+    /// <https://developers.google.com/maps/documentation/places/web-service/place-types.>
+    ///
+    /// Up to 50 types from [Table
+    /// A](<https://developers.google.com/maps/documentation/places/web-service/place-types#table-a>)
+    /// may be specified.
     ///
     /// If the client provides both included_types (e.g. restaurant) and
     /// excluded_types (e.g. cafe), then the response should include places that
@@ -1004,12 +1044,18 @@ pub struct SearchNearbyRequest {
     /// If a Place type is specified with multiple type restrictions, only places
     /// that satisfy all of the restrictions are returned. For example, if we
     /// have {included_types = \["restaurant"\], excluded_primary_types =
-    /// \["restaurant"\]}, the returned places are POIs that provide "restaurant"
+    /// \["restaurant"\]}, the returned places provide "restaurant"
     /// related services but do not operate primarily as "restaurants".
     #[prost(string, repeated, tag = "4")]
     pub excluded_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Included primary Place type (e.g. "restaurant" or "gas_station") from
-    /// <https://developers.google.com/places/supported_types.>
+    /// <https://developers.google.com/maps/documentation/places/web-service/place-types.>
+    /// A place can only have a single primary type from the supported types table
+    /// associated with it.
+    ///
+    /// Up to 50 types from [Table
+    /// A](<https://developers.google.com/maps/documentation/places/web-service/place-types#table-a>)
+    /// may be specified.
     ///
     /// If there are any conflicting primary types, i.e. a type appears in both
     /// included_primary_types and excluded_primary_types, an INVALID_ARGUMENT
@@ -1018,12 +1064,16 @@ pub struct SearchNearbyRequest {
     /// If a Place type is specified with multiple type restrictions, only places
     /// that satisfy all of the restrictions are returned. For example, if we
     /// have {included_types = \["restaurant"\], excluded_primary_types =
-    /// \["restaurant"\]}, the returned places are POIs that provide "restaurant"
+    /// \["restaurant"\]}, the returned places provide "restaurant"
     /// related services but do not operate primarily as "restaurants".
     #[prost(string, repeated, tag = "5")]
     pub included_primary_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Excluded primary Place type (e.g. "restaurant" or "gas_station") from
-    /// <https://developers.google.com/places/supported_types.>
+    /// <https://developers.google.com/maps/documentation/places/web-service/place-types.>
+    ///
+    /// Up to 50 types from [Table
+    /// A](<https://developers.google.com/maps/documentation/places/web-service/place-types#table-a>)
+    /// may be specified.
     ///
     /// If there are any conflicting primary types, i.e. a type appears in both
     /// included_primary_types and excluded_primary_types, an INVALID_ARGUMENT
@@ -1032,11 +1082,11 @@ pub struct SearchNearbyRequest {
     /// If a Place type is specified with multiple type restrictions, only places
     /// that satisfy all of the restrictions are returned. For example, if we
     /// have {included_types = \["restaurant"\], excluded_primary_types =
-    /// \["restaurant"\]}, the returned places are POIs that provide "restaurant"
+    /// \["restaurant"\]}, the returned places provide "restaurant"
     /// related services but do not operate primarily as "restaurants".
     #[prost(string, repeated, tag = "6")]
     pub excluded_primary_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Maximum number of results to return. It must be between 1 and 20,
+    /// Maximum number of results to return. It must be between 1 and 20 (default),
     /// inclusively. If the number is unset, it falls back to the upper limit. If
     /// the number is set to negative or exceeds the upper limit, an
     /// INVALID_ARGUMENT error is returned.
@@ -1120,7 +1170,7 @@ pub mod search_nearby_request {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchNearbyResponse {
-    /// A list of interesting places that meets user's requirements like places
+    /// A list of places that meets user's requirements like places
     /// types, number of places and specific location restriction.
     #[prost(message, repeated, tag = "1")]
     pub places: ::prost::alloc::vec::Vec<Place>,
@@ -1149,7 +1199,7 @@ pub struct SearchTextRequest {
     /// affect results based on applicable law.
     ///
     /// For more information, see
-    /// <http://www.unicode.org/reports/tr35/#unicode_region_subtag.>
+    /// <https://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html.>
     ///
     ///
     /// Note that 3-digit region codes are not currently supported.
@@ -1159,26 +1209,25 @@ pub struct SearchTextRequest {
     #[prost(enumeration = "search_text_request::RankPreference", tag = "4")]
     pub rank_preference: i32,
     /// The requested place type. Full list of types supported:
-    /// <https://developers.google.com/places/supported_types.> Only support one
-    /// included type.
+    /// <https://developers.google.com/maps/documentation/places/web-service/place-types.>
+    /// Only support one included type.
     #[prost(string, tag = "6")]
     pub included_type: ::prost::alloc::string::String,
-    /// Used to restrict the search to places that are open at a specific time.
-    /// open_now marks if a business is currently open.
+    /// Used to restrict the search to places that are currently open.  The default
+    /// is false.
     #[prost(bool, tag = "7")]
     pub open_now: bool,
     /// Filter out results whose average user rating is strictly less than this
-    /// limit. A valid value must be an float between 0 and 5 (inclusively) at a
-    /// 0.5 cadence i.e. \[0, 0.5, 1.0, ... , 5.0\] inclusively. This is to keep
-    /// parity with LocalRefinement_UserRating. The input rating will round up to
-    /// the nearest 0.5(ceiling). For instance, a rating of 0.6 will eliminate all
-    /// results with a less than 1.0 rating.
+    /// limit. A valid value must be a float between 0 and 5 (inclusively) at a
+    /// 0.5 cadence i.e. \[0, 0.5, 1.0, ... , 5.0\] inclusively. The input rating
+    /// will round up to the nearest 0.5(ceiling). For instance, a rating of 0.6
+    /// will eliminate all results with a less than 1.0 rating.
     #[prost(double, tag = "9")]
     pub min_rating: f64,
     /// Maximum number of results to return. It must be between 1 and 20,
-    /// inclusively. If the number is unset, it falls back to the upper limit. If
-    /// the number is set to negative or exceeds the upper limit, an
-    /// INVALID_ARGUMENT error is returned.
+    /// inclusively. The default is 20.  If the number is unset, it falls back to
+    /// the upper limit. If the number is set to negative or exceeds the upper
+    /// limit, an INVALID_ARGUMENT error is returned.
     #[prost(int32, tag = "10")]
     pub max_result_count: i32,
     /// Used to restrict the search to places that are marked as certain price
@@ -1219,6 +1268,11 @@ pub mod search_text_request {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// A rectangle box defined by northeast and southwest corner.
+            /// `rectangle.high()` must be the northeast point of the rectangle
+            /// viewport. `rectangle.low()` must be the southwest point of the
+            /// rectangle viewport. `rectangle.low().latitude()` cannot be greater than
+            /// `rectangle.high().latitude()`. This will result in an empty latitude
+            /// range. A rectangle viewport cannot be wider than 180 degrees.
             #[prost(message, tag = "1")]
             Rectangle(super::super::super::super::super::geo::r#type::Viewport),
             /// A circle defined by center point and radius.
@@ -1240,6 +1294,11 @@ pub mod search_text_request {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// A rectangle box defined by northeast and southwest corner.
+            /// `rectangle.high()` must be the northeast point of the rectangle
+            /// viewport. `rectangle.low()` must be the southwest point of the
+            /// rectangle viewport. `rectangle.low().latitude()` cannot be greater than
+            /// `rectangle.high().latitude()`. This will result in an empty latitude
+            /// range. A rectangle viewport cannot be wider than 180 degrees.
             #[prost(message, tag = "1")]
             Rectangle(super::super::super::super::super::geo::r#type::Viewport),
         }
@@ -1263,7 +1322,7 @@ pub mod search_text_request {
         /// Ranks results by distance.
         Distance = 1,
         /// Ranks results by relevance. Sort order determined by normal ranking
-        /// stack. See SortRefinement::RELEVANCE.
+        /// stack.
         Relevance = 2,
     }
     impl RankPreference {
@@ -1302,9 +1361,13 @@ pub struct SearchTextResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPhotoMediaRequest {
-    /// Required. The resource name of a photo. It is returned in Place's
-    /// photos.name field. Format:
-    /// places/<place_id>/photos/<photo_reference>/media.
+    /// Required. The resource name of a photo media in the format:
+    /// `places/{place_id}/photos/{photo_reference}/media`.
+    ///
+    /// The resource name of a photo as returned in a Place object's `photos.name`
+    /// field comes with the format
+    /// `places/{place_id}/photos/{photo_reference}`. You need to append `/media`
+    /// at the end of the photo resource to get the photo media resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Specifies the maximum desired width, in pixels, of the image. If
@@ -1336,7 +1399,7 @@ pub struct GetPhotoMediaRequest {
     /// Optional. If set, skip the default HTTP redirect behavior and render a text
     /// format (for example, in JSON format for HTTP use case) response. If not
     /// set, an HTTP redirect will be issued to redirect the call to the image
-    /// midea. This option is ignored for non-HTTP requests.
+    /// media. This option is ignored for non-HTTP requests.
     #[prost(bool, tag = "4")]
     pub skip_http_redirect: bool,
 }
@@ -1344,8 +1407,8 @@ pub struct GetPhotoMediaRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhotoMedia {
-    /// The resource name of a photo. It is returned in Place's photos.name field.
-    /// Format: places/<place_id>/photos/<photo_reference>/media.
+    /// The resource name of a photo media in the format:
+    /// `places/{place_id}/photos/{photo_reference}/media`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A short-lived uri that can be used to render the photo.
@@ -1356,8 +1419,9 @@ pub struct PhotoMedia {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPlaceRequest {
-    /// Required. A place_id returned in a Place (with "places/" prefix), or
-    /// equivalently the name in the same Place. Format: places/<place_id>.
+    /// Required. A place ID returned in a Place (with "places/" prefix), or
+    /// equivalently the name in the same Place. Format:
+    /// `places/{place_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Place details will be displayed with the preferred language if
@@ -1372,7 +1436,7 @@ pub struct GetPlaceRequest {
     /// details, like region-specific place name, if available. The parameter can
     /// affect results based on applicable law.
     /// For more information, see
-    /// <http://www.unicode.org/reports/tr35/#unicode_region_subtag.>
+    /// <https://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html.>
     ///
     ///
     /// Note that 3-digit region codes are not currently supported.
@@ -1385,10 +1449,11 @@ pub mod places_client {
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service definition for the Places API.
-    /// Note: every request actually requires a field mask set outside of the request
-    /// proto (all/'*' is not assumed).  That can be set via either a side channel
-    /// (SystemParameterContext) over RPC, or a header (X-Goog-FieldMask) over HTTP.
-    /// See: https://cloud.google.com/apis/docs/system-parameters
+    /// Note: every request actually requires a field mask set outside of
+    /// the request proto (all/'*', is not assumed).  That can be set via either a
+    /// side channel (SystemParameterContext) over RPC, or a header
+    /// (X-Goog-FieldMask) over HTTP. See:
+    /// https://cloud.google.com/apis/docs/system-parameters
     #[derive(Debug, Clone)]
     pub struct PlacesClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -1546,7 +1611,7 @@ pub mod places_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Get a Place with a place id (in a name) string.
+        /// Get place details with a place id (in a name) string.
         pub async fn get_place(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPlaceRequest>,

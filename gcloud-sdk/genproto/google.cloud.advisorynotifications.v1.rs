@@ -5,7 +5,8 @@
 pub struct Notification {
     /// The resource name of the notification.
     /// Format:
-    /// organizations/{organization}/locations/{location}/notifications/{notification}.
+    /// organizations/{organization}/locations/{location}/notifications/{notification}
+    /// or projects/{project}/locations/{location}/notifications/{notification}.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The subject line of the notification.
@@ -123,7 +124,8 @@ pub mod csv {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotificationsRequest {
     /// Required. The parent, which owns this collection of notifications.
-    /// Must be of the form "organizations/{organization}/locations/{location}".
+    /// Must be of the form "organizations/{organization}/locations/{location}"
+    /// or "projects/{project}/locations/{location}"
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of notifications to return. The service may return
@@ -170,7 +172,8 @@ pub struct ListNotificationsResponse {
 pub struct GetNotificationRequest {
     /// Required. A name of the notification to retrieve.
     /// Format:
-    /// organizations/{organization}/locations/{location}/notifications/{notification}.
+    /// organizations/{organization}/locations/{location}/notifications/{notification}
+    /// or projects/{projects}/locations/{location}/notifications/{notification}.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// ISO code for requested localization language. If unset, will be

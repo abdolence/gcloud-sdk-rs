@@ -1033,23 +1033,9 @@ pub struct InputAudioConfig {
     /// for more details.
     #[prost(message, repeated, tag = "11")]
     pub speech_contexts: ::prost::alloc::vec::Vec<SpeechContext>,
-    /// Which Speech model to select for the given request. Select the
-    /// model best suited to your domain to get best results. If a model is not
-    /// explicitly specified, then we auto-select a model based on the parameters
-    /// in the InputAudioConfig.
-    /// If enhanced speech model is enabled for the agent and an enhanced
-    /// version of the specified model for the language does not exist, then the
-    /// speech is recognized using the standard version of the specified model.
-    /// Refer to
-    /// [Cloud Speech API
-    /// documentation](<https://cloud.google.com/speech-to-text/docs/basics#select-model>)
-    /// for more details.
-    /// If you specify a model, the following models typically have the best
-    /// performance:
-    ///
-    /// - phone_call (best for Agent Assist and telephony)
-    /// - latest_short (best for Dialogflow non-telephony)
-    /// - command_and_search (best for very short utterances and commands)
+    /// Optional. Which Speech model to select for the given request.
+    /// For more information, see
+    /// [Speech models](<https://cloud.google.com/dialogflow/es/docs/speech-models>).
     #[prost(string, tag = "7")]
     pub model: ::prost::alloc::string::String,
     /// Which variant of the [Speech
@@ -1176,13 +1162,28 @@ pub struct SpeechToTextConfig {
     /// error.
     #[prost(enumeration = "SpeechModelVariant", tag = "1")]
     pub speech_model_variant: i32,
-    /// Which Speech model to select. Select the model best suited to your domain
-    /// to get best results. If a model is not explicitly specified, then a default
-    /// model is used.
+    /// Which Speech model to select. Select the
+    /// model best suited to your domain to get best results. If a model is not
+    /// explicitly specified, then Dialogflow auto-selects a model based on other
+    /// parameters in the SpeechToTextConfig and Agent settings.
+    /// If enhanced speech model is enabled for the agent and an enhanced
+    /// version of the specified model for the language does not exist, then the
+    /// speech is recognized using the standard version of the specified model.
     /// Refer to
     /// [Cloud Speech API
     /// documentation](<https://cloud.google.com/speech-to-text/docs/basics#select-model>)
     /// for more details.
+    /// If you specify a model, the following models typically have the best
+    /// performance:
+    ///
+    /// - phone_call (best for Agent Assist and telephony)
+    /// - latest_short (best for Dialogflow non-telephony)
+    /// - command_and_search
+    ///
+    /// Leave this field unspecified to use
+    /// [Agent Speech
+    /// settings](<https://cloud.google.com/dialogflow/cx/docs/concept/agent#settings-speech>)
+    /// for model selection.
     #[prost(string, tag = "2")]
     pub model: ::prost::alloc::string::String,
     /// Use timeout based endpointing, interpreting endpointer sensitivy as
@@ -8073,10 +8074,10 @@ pub struct AutomatedAgentConfig {
     /// is used.
     #[prost(string, tag = "1")]
     pub agent: ::prost::alloc::string::String,
-    /// Optional. Sets Dialogflow CX session life time.
+    /// Optional. Configure lifetime of the Dialogflow session.
     /// By default, a Dialogflow CX session remains active and its data is stored
-    /// for 30 minutes after the last request is sent for the session. This value
-    /// should be no longer than 1 day.
+    /// for 30 minutes after the last request is sent for the session.
+    /// This value should be no longer than 1 day.
     #[prost(message, optional, tag = "3")]
     pub session_ttl: ::core::option::Option<::prost_types::Duration>,
 }
@@ -8140,6 +8141,10 @@ pub mod human_agent_assistant_config {
         /// Supported features: KNOWLEDGE_SEARCH.
         #[prost(bool, tag = "14")]
         pub disable_agent_query_logging: bool,
+        /// Optional. Enable including conversation context during query answer
+        /// generation. Supported features: KNOWLEDGE_SEARCH.
+        #[prost(bool, tag = "16")]
+        pub enable_conversation_augmented_query: bool,
         /// Settings of suggestion trigger.
         ///
         /// Currently, only ARTICLE_SUGGESTION and FAQ will use this field.
@@ -8216,6 +8221,10 @@ pub mod human_agent_assistant_config {
         pub context_filter_settings: ::core::option::Option<
             suggestion_query_config::ContextFilterSettings,
         >,
+        /// Optional. The customized sections chosen to return when requesting a
+        /// summary of a conversation.
+        #[prost(message, optional, tag = "8")]
+        pub sections: ::core::option::Option<suggestion_query_config::Sections>,
         /// Source of query.
         #[prost(oneof = "suggestion_query_config::QuerySource", tags = "1, 2, 3")]
         pub query_source: ::core::option::Option<suggestion_query_config::QuerySource>,
@@ -8297,6 +8306,94 @@ pub mod human_agent_assistant_config {
             /// If set to true, all messages from ivr stage are dropped.
             #[prost(bool, tag = "3")]
             pub drop_ivr_messages: bool,
+        }
+        /// Custom sections to return when requesting a summary of a conversation.
+        /// This is only supported when `baseline_model_version` == '2.0'.
+        ///
+        /// Supported features: CONVERSATION_SUMMARIZATION,
+        /// CONVERSATION_SUMMARIZATION_VOICE.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Sections {
+            /// The selected sections chosen to return when requesting a summary of a
+            /// conversation. A duplicate selected section will be treated as a single
+            /// selected section. If section types are not provided, the default will
+            /// be {SITUATION, ACTION, RESULT}.
+            #[prost(enumeration = "sections::SectionType", repeated, tag = "1")]
+            pub section_types: ::prost::alloc::vec::Vec<i32>,
+        }
+        /// Nested message and enum types in `Sections`.
+        pub mod sections {
+            /// Selectable sections to return when requesting a summary of a
+            /// conversation.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum SectionType {
+                /// Undefined section type, does not return anything.
+                Unspecified = 0,
+                /// What the customer needs help with or has question about.
+                /// Section name: "situation".
+                Situation = 1,
+                /// What the agent does to help the customer.
+                /// Section name: "action".
+                Action = 2,
+                /// Result of the customer service. A single word describing the result
+                /// of the conversation.
+                /// Section name: "resolution".
+                Resolution = 3,
+                /// Reason for cancellation if the customer requests for a cancellation.
+                /// "N/A" otherwise.
+                /// Section name: "reason_for_cancellation".
+                ReasonForCancellation = 4,
+                /// "Unsatisfied" or "Satisfied" depending on the customer's feelings at
+                /// the end of the conversation.
+                /// Section name: "customer_satisfaction".
+                CustomerSatisfaction = 5,
+                /// Key entities extracted from the conversation, such as ticket number,
+                /// order number, dollar amount, etc.
+                /// Section names are prefixed by "entities/".
+                Entities = 6,
+            }
+            impl SectionType {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        SectionType::Unspecified => "SECTION_TYPE_UNSPECIFIED",
+                        SectionType::Situation => "SITUATION",
+                        SectionType::Action => "ACTION",
+                        SectionType::Resolution => "RESOLUTION",
+                        SectionType::ReasonForCancellation => "REASON_FOR_CANCELLATION",
+                        SectionType::CustomerSatisfaction => "CUSTOMER_SATISFACTION",
+                        SectionType::Entities => "ENTITIES",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "SECTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "SITUATION" => Some(Self::Situation),
+                        "ACTION" => Some(Self::Action),
+                        "RESOLUTION" => Some(Self::Resolution),
+                        "REASON_FOR_CANCELLATION" => Some(Self::ReasonForCancellation),
+                        "CUSTOMER_SATISFACTION" => Some(Self::CustomerSatisfaction),
+                        "ENTITIES" => Some(Self::Entities),
+                        _ => None,
+                    }
+                }
+            }
         }
         /// Source of query.
         #[allow(clippy::derive_partial_eq_without_eq)]
@@ -9511,6 +9608,9 @@ pub struct SearchKnowledgeResponse {
     /// ordered by confidence.
     #[prost(message, repeated, tag = "2")]
     pub answers: ::prost::alloc::vec::Vec<SearchKnowledgeAnswer>,
+    /// The rewritten query used to search knowledge.
+    #[prost(string, tag = "3")]
+    pub rewritten_query: ::prost::alloc::string::String,
 }
 /// Represents a SearchKnowledge answer.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -9564,10 +9664,12 @@ pub mod search_knowledge_answer {
     pub enum AnswerType {
         /// The answer has a unspecified type.
         Unspecified = 0,
-        /// The answer is from FAQ doucments.
+        /// The answer is from FAQ documents.
         Faq = 1,
         /// The answer is from generative model.
         Generative = 2,
+        /// The answer is from intent matching.
+        Intent = 3,
     }
     impl AnswerType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -9579,6 +9681,7 @@ pub mod search_knowledge_answer {
                 AnswerType::Unspecified => "ANSWER_TYPE_UNSPECIFIED",
                 AnswerType::Faq => "FAQ",
                 AnswerType::Generative => "GENERATIVE",
+                AnswerType::Intent => "INTENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9587,6 +9690,7 @@ pub mod search_knowledge_answer {
                 "ANSWER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "FAQ" => Some(Self::Faq),
                 "GENERATIVE" => Some(Self::Generative),
+                "INTENT" => Some(Self::Intent),
                 _ => None,
             }
         }

@@ -2394,6 +2394,12 @@ pub struct Model {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Stats of data used for training or evaluating the Model.
+    ///
+    /// Only populated when the Model is trained by a TrainingPipeline with
+    /// [data_input_config][TrainingPipeline.data_input_config].
+    #[prost(message, optional, tag = "21")]
+    pub data_stats: ::core::option::Option<model::DataStats>,
     /// Customer-managed encryption key spec for a Model. If set, this
     /// Model and all sub-resources of this Model will be secured by this key.
     #[prost(message, optional, tag = "24")]
@@ -2505,6 +2511,37 @@ pub mod model {
             }
         }
     }
+    /// Stats of data used for train or evaluate the Model.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataStats {
+        /// Number of DataItems that were used for training this Model.
+        #[prost(int64, tag = "1")]
+        pub training_data_items_count: i64,
+        /// Number of DataItems that were used for validating this Model during
+        /// training.
+        #[prost(int64, tag = "2")]
+        pub validation_data_items_count: i64,
+        /// Number of DataItems that were used for evaluating this Model. If the
+        /// Model is evaluated multiple times, this will be the number of test
+        /// DataItems used by the first evaluation. If the Model is not evaluated,
+        /// the number is 0.
+        #[prost(int64, tag = "3")]
+        pub test_data_items_count: i64,
+        /// Number of Annotations that are used for training this Model.
+        #[prost(int64, tag = "4")]
+        pub training_annotations_count: i64,
+        /// Number of Annotations that are used for validating this Model during
+        /// training.
+        #[prost(int64, tag = "5")]
+        pub validation_annotations_count: i64,
+        /// Number of Annotations that are used for evaluating this Model. If the
+        /// Model is evaluated multiple times, this will be the number of test
+        /// Annotations used by the first evaluation. If the Model is not evaluated,
+        /// the number is 0.
+        #[prost(int64, tag = "6")]
+        pub test_annotations_count: i64,
+    }
     /// Contains information about the original Model if this Model is a copy.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2540,7 +2577,9 @@ pub mod model {
         AutomaticResources = 2,
         /// Resources that can be shared by multiple
         /// [DeployedModels][google.cloud.aiplatform.v1.DeployedModel]. A
-        /// pre-configured [DeploymentResourcePool][] is required.
+        /// pre-configured
+        /// [DeploymentResourcePool][google.cloud.aiplatform.v1.DeploymentResourcePool]
+        /// is required.
         SharedResources = 3,
     }
     impl DeploymentResourcesType {
@@ -2925,6 +2964,8 @@ pub mod model_source_info {
         ModelGarden = 4,
         /// The Model is saved or tuned from Genie.
         Genie = 5,
+        /// The Model is uploaded by text embedding finetuning pipeline.
+        CustomTextEmbedding = 6,
     }
     impl ModelSourceType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2939,6 +2980,7 @@ pub mod model_source_info {
                 ModelSourceType::Bqml => "BQML",
                 ModelSourceType::ModelGarden => "MODEL_GARDEN",
                 ModelSourceType::Genie => "GENIE",
+                ModelSourceType::CustomTextEmbedding => "CUSTOM_TEXT_EMBEDDING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2950,6 +2992,7 @@ pub mod model_source_info {
                 "BQML" => Some(Self::Bqml),
                 "MODEL_GARDEN" => Some(Self::ModelGarden),
                 "GENIE" => Some(Self::Genie),
+                "CUSTOM_TEXT_EMBEDDING" => Some(Self::CustomTextEmbedding),
                 _ => None,
             }
         }
@@ -3335,7 +3378,7 @@ pub mod batch_prediction_job {
         /// [excluded_fields][google.cloud.aiplatform.v1.BatchPredictionJob.InstanceConfig.excluded_fields]
         /// must be empty.
         ///
-        /// The input must be JSONL with objects at each line, CSV, BigQuery
+        /// The input must be JSONL with objects at each line, BigQuery
         /// or TfRecord.
         #[prost(string, repeated, tag = "3")]
         pub included_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -3350,7 +3393,7 @@ pub mod batch_prediction_job {
         /// [included_fields][google.cloud.aiplatform.v1.BatchPredictionJob.InstanceConfig.included_fields]
         /// must be empty.
         ///
-        /// The input must be JSONL with objects at each line, CSV, BigQuery
+        /// The input must be JSONL with objects at each line, BigQuery
         /// or TfRecord.
         #[prost(string, repeated, tag = "4")]
         pub excluded_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -3457,6 +3500,601 @@ pub mod batch_prediction_job {
             /// format, into which the prediction output is written.
             #[prost(string, tag = "2")]
             BigqueryOutputDataset(::prost::alloc::string::String),
+        }
+    }
+}
+/// Schema is used to define the format of input/output data. Represents a select
+/// subset of an [OpenAPI 3.0 schema
+/// object](<https://spec.openapis.org/oas/v3.0.3#schema>). More fields may be
+/// added in the future as needed.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Schema {
+    /// Optional. The type of the data.
+    #[prost(enumeration = "Type", tag = "1")]
+    pub r#type: i32,
+    /// Optional. The format of the data.
+    /// Supported formats:
+    ///   for NUMBER type: float, double
+    ///   for INTEGER type: int32, int64
+    #[prost(string, tag = "7")]
+    pub format: ::prost::alloc::string::String,
+    /// Optional. The description of the data.
+    #[prost(string, tag = "8")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Indicates if the value may be null.
+    #[prost(bool, tag = "6")]
+    pub nullable: bool,
+    /// Optional. Schema of the elements of Type.ARRAY.
+    #[prost(message, optional, boxed, tag = "2")]
+    pub items: ::core::option::Option<::prost::alloc::boxed::Box<Schema>>,
+    /// Optional. Possible values of the element of Type.STRING with enum format.
+    /// For example we can define an Enum Direction as :
+    /// {type:STRING, format:enum, enum:\["EAST", NORTH", "SOUTH", "WEST"\]}
+    #[prost(string, repeated, tag = "9")]
+    pub r#enum: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Properties of Type.OBJECT.
+    #[prost(map = "string, message", tag = "3")]
+    pub properties: ::std::collections::HashMap<::prost::alloc::string::String, Schema>,
+    /// Optional. Required properties of Type.OBJECT.
+    #[prost(string, repeated, tag = "5")]
+    pub required: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Example of the object. Will only populated when the object is the
+    /// root.
+    #[prost(message, optional, tag = "4")]
+    pub example: ::core::option::Option<::prost_types::Value>,
+}
+/// Type contains the list of OpenAPI data types as defined by
+/// <https://swagger.io/docs/specification/data-models/data-types/>
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Type {
+    /// Not specified, should not be used.
+    Unspecified = 0,
+    /// OpenAPI string type
+    String = 1,
+    /// OpenAPI number type
+    Number = 2,
+    /// OpenAPI integer type
+    Integer = 3,
+    /// OpenAPI boolean type
+    Boolean = 4,
+    /// OpenAPI array type
+    Array = 5,
+    /// OpenAPI object type
+    Object = 6,
+}
+impl Type {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Type::Unspecified => "TYPE_UNSPECIFIED",
+            Type::String => "STRING",
+            Type::Number => "NUMBER",
+            Type::Integer => "INTEGER",
+            Type::Boolean => "BOOLEAN",
+            Type::Array => "ARRAY",
+            Type::Object => "OBJECT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "STRING" => Some(Self::String),
+            "NUMBER" => Some(Self::Number),
+            "INTEGER" => Some(Self::Integer),
+            "BOOLEAN" => Some(Self::Boolean),
+            "ARRAY" => Some(Self::Array),
+            "OBJECT" => Some(Self::Object),
+            _ => None,
+        }
+    }
+}
+/// Tool details that the model may use to generate response.
+///
+/// A `Tool` is a piece of code that enables the system to interact with
+/// external systems to perform an action, or set of actions, outside of
+/// knowledge and scope of the model.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Tool {
+    /// Optional. One or more function declarations to be passed to the model along
+    /// with the current user query. Model may decide to call a subset of these
+    /// functions by populating [FunctionCall][content.part.function_call] in the
+    /// response. User should provide a
+    /// [FunctionResponse][content.part.function_response] for each function call
+    /// in the next turn. Based on the function responses, Model will generate the
+    /// final response back to the user. Maximum 64 function declarations can be
+    /// provided.
+    #[prost(message, repeated, tag = "1")]
+    pub function_declarations: ::prost::alloc::vec::Vec<FunctionDeclaration>,
+}
+/// Structured representation of a function declaration as defined by the
+/// [OpenAPI 3.0 specification](<https://spec.openapis.org/oas/v3.0.3>). Included
+/// in this declaration are the function name and parameters. This
+/// FunctionDeclaration is a representation of a block of code that can be used
+/// as a `Tool` by the model and executed by the client.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FunctionDeclaration {
+    /// Required. The name of the function to call.
+    /// Must start with a letter or an underscore.
+    /// Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum
+    /// length of 64.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Description and purpose of the function.
+    /// Model uses it to decide how and whether to call the function.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Describes the parameters to this function in JSON Schema Object
+    /// format. Reflects the Open API 3.03 Parameter Object. string Key: the name
+    /// of the parameter. Parameter names are case sensitive. Schema Value: the
+    /// Schema defining the type used for the parameter. For function with no
+    /// parameters, this can be left unset. Example with 1 required and 1 optional
+    /// parameter: type: OBJECT properties:
+    ///   param1:
+    ///     type: STRING
+    ///   param2:
+    ///     type: INTEGER
+    /// required:
+    ///   - param1
+    #[prost(message, optional, tag = "3")]
+    pub parameters: ::core::option::Option<Schema>,
+}
+/// A predicted \[FunctionCall\] returned from the model that contains a string
+/// representing the \[FunctionDeclaration.name\] and a structured JSON object
+/// containing the parameters and their values.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FunctionCall {
+    /// Required. The name of the function to call.
+    /// Matches \[FunctionDeclaration.name\].
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Required. The function parameters and values in JSON object
+    /// format. See \[FunctionDeclaration.parameters\] for parameter details.
+    #[prost(message, optional, tag = "2")]
+    pub args: ::core::option::Option<::prost_types::Struct>,
+}
+/// The result output from a \[FunctionCall\] that contains a string representing
+/// the \[FunctionDeclaration.name\] and a structured JSON object containing any
+/// output from the function is used as context to the model. This should contain
+/// the result of a \[FunctionCall\] made based on model prediction.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FunctionResponse {
+    /// Required. The name of the function to call.
+    /// Matches \[FunctionDeclaration.name\] and \[FunctionCall.name\].
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The function response in JSON object format.
+    #[prost(message, optional, tag = "2")]
+    pub response: ::core::option::Option<::prost_types::Struct>,
+}
+/// The base structured datatype containing multi-part content of a message.
+///
+/// A `Content` includes a `role` field designating the producer of the `Content`
+/// and a `parts` field containing multi-part data that contains the content of
+/// the message turn.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Content {
+    /// Optional. The producer of the content. Must be either 'user' or 'model'.
+    ///
+    /// Useful to set for multi-turn conversations, otherwise can be left blank
+    /// or unset.
+    #[prost(string, tag = "1")]
+    pub role: ::prost::alloc::string::String,
+    /// Required. Ordered `Parts` that constitute a single message. Parts may have
+    /// different IANA MIME types.
+    #[prost(message, repeated, tag = "2")]
+    pub parts: ::prost::alloc::vec::Vec<Part>,
+}
+/// A datatype containing media that is part of a multi-part `Content` message.
+///
+/// A `Part` consists of data which has an associated datatype. A `Part` can only
+/// contain one of the accepted types in `Part.data`.
+///
+/// A `Part` must have a fixed IANA MIME type identifying the type and subtype
+/// of the media if `inline_data` or `file_data` field is filled with raw bytes.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Part {
+    #[prost(oneof = "part::Data", tags = "1, 2, 3, 5, 6")]
+    pub data: ::core::option::Option<part::Data>,
+    #[prost(oneof = "part::Metadata", tags = "4")]
+    pub metadata: ::core::option::Option<part::Metadata>,
+}
+/// Nested message and enum types in `Part`.
+pub mod part {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Data {
+        /// Optional. Text part (can be code).
+        #[prost(string, tag = "1")]
+        Text(::prost::alloc::string::String),
+        /// Optional. Inlined bytes data.
+        #[prost(message, tag = "2")]
+        InlineData(super::Blob),
+        /// Optional. URI based data.
+        #[prost(message, tag = "3")]
+        FileData(super::FileData),
+        /// Optional. A predicted \[FunctionCall\] returned from the model that
+        /// contains a string representing the \[FunctionDeclaration.name\] with the
+        /// parameters and their values.
+        #[prost(message, tag = "5")]
+        FunctionCall(super::FunctionCall),
+        /// Optional. The result output of a \[FunctionCall\] that contains a string
+        /// representing the \[FunctionDeclaration.name\] and a structured JSON object
+        /// containing any output from the function call. It is used as context to
+        /// the model.
+        #[prost(message, tag = "6")]
+        FunctionResponse(super::FunctionResponse),
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Metadata {
+        /// Optional. Video metadata. The metadata should only be specified while the
+        /// video data is presented in inline_data or file_data.
+        #[prost(message, tag = "4")]
+        VideoMetadata(super::VideoMetadata),
+    }
+}
+/// Raw media bytes.
+///
+/// Text should not be sent as raw bytes, use the 'text' field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Blob {
+    /// Required. The IANA standard MIME type of the source data.
+    #[prost(string, tag = "1")]
+    pub mime_type: ::prost::alloc::string::String,
+    /// Required. Raw bytes for media formats.
+    #[prost(bytes = "vec", tag = "2")]
+    pub data: ::prost::alloc::vec::Vec<u8>,
+}
+/// URI based data.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileData {
+    /// Required. The IANA standard MIME type of the source data.
+    #[prost(string, tag = "1")]
+    pub mime_type: ::prost::alloc::string::String,
+    /// Required. URI.
+    #[prost(string, tag = "2")]
+    pub file_uri: ::prost::alloc::string::String,
+}
+/// Metadata describes the input video content.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VideoMetadata {
+    /// Optional. The start offset of the video.
+    #[prost(message, optional, tag = "1")]
+    pub start_offset: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. The end offset of the video.
+    #[prost(message, optional, tag = "2")]
+    pub end_offset: ::core::option::Option<::prost_types::Duration>,
+}
+/// Generation config.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerationConfig {
+    /// Optional. Controls the randomness of predictions.
+    #[prost(float, optional, tag = "1")]
+    pub temperature: ::core::option::Option<f32>,
+    /// Optional. If specified, nucleus sampling will be used.
+    #[prost(float, optional, tag = "2")]
+    pub top_p: ::core::option::Option<f32>,
+    /// Optional. If specified, top-k sampling will be used.
+    #[prost(float, optional, tag = "3")]
+    pub top_k: ::core::option::Option<f32>,
+    /// Optional. Number of candidates to generate.
+    #[prost(int32, optional, tag = "4")]
+    pub candidate_count: ::core::option::Option<i32>,
+    /// Optional. The maximum number of output tokens to generate per message.
+    #[prost(int32, optional, tag = "5")]
+    pub max_output_tokens: ::core::option::Option<i32>,
+    /// Optional. Stop sequences.
+    #[prost(string, repeated, tag = "6")]
+    pub stop_sequences: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Safety settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SafetySetting {
+    /// Required. Harm category.
+    #[prost(enumeration = "HarmCategory", tag = "1")]
+    pub category: i32,
+    /// Required. The harm block threshold.
+    #[prost(enumeration = "safety_setting::HarmBlockThreshold", tag = "2")]
+    pub threshold: i32,
+}
+/// Nested message and enum types in `SafetySetting`.
+pub mod safety_setting {
+    /// Probability based thresholds levels for blocking.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HarmBlockThreshold {
+        /// Unspecified harm block threshold.
+        Unspecified = 0,
+        /// Block low threshold and above (i.e. block more).
+        BlockLowAndAbove = 1,
+        /// Block medium threshold and above.
+        BlockMediumAndAbove = 2,
+        /// Block only high threshold (i.e. block less).
+        BlockOnlyHigh = 3,
+        /// Block none.
+        BlockNone = 4,
+    }
+    impl HarmBlockThreshold {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                HarmBlockThreshold::Unspecified => "HARM_BLOCK_THRESHOLD_UNSPECIFIED",
+                HarmBlockThreshold::BlockLowAndAbove => "BLOCK_LOW_AND_ABOVE",
+                HarmBlockThreshold::BlockMediumAndAbove => "BLOCK_MEDIUM_AND_ABOVE",
+                HarmBlockThreshold::BlockOnlyHigh => "BLOCK_ONLY_HIGH",
+                HarmBlockThreshold::BlockNone => "BLOCK_NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HARM_BLOCK_THRESHOLD_UNSPECIFIED" => Some(Self::Unspecified),
+                "BLOCK_LOW_AND_ABOVE" => Some(Self::BlockLowAndAbove),
+                "BLOCK_MEDIUM_AND_ABOVE" => Some(Self::BlockMediumAndAbove),
+                "BLOCK_ONLY_HIGH" => Some(Self::BlockOnlyHigh),
+                "BLOCK_NONE" => Some(Self::BlockNone),
+                _ => None,
+            }
+        }
+    }
+}
+/// Safety rating corresponding to the generated content.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SafetyRating {
+    /// Output only. Harm category.
+    #[prost(enumeration = "HarmCategory", tag = "1")]
+    pub category: i32,
+    /// Output only. Harm probability levels in the content.
+    #[prost(enumeration = "safety_rating::HarmProbability", tag = "2")]
+    pub probability: i32,
+    /// Output only. Indicates whether the content was filtered out because of this
+    /// rating.
+    #[prost(bool, tag = "3")]
+    pub blocked: bool,
+}
+/// Nested message and enum types in `SafetyRating`.
+pub mod safety_rating {
+    /// Harm probability levels in the content.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HarmProbability {
+        /// Harm probability unspecified.
+        Unspecified = 0,
+        /// Negligible level of harm.
+        Negligible = 1,
+        /// Low level of harm.
+        Low = 2,
+        /// Medium level of harm.
+        Medium = 3,
+        /// High level of harm.
+        High = 4,
+    }
+    impl HarmProbability {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                HarmProbability::Unspecified => "HARM_PROBABILITY_UNSPECIFIED",
+                HarmProbability::Negligible => "NEGLIGIBLE",
+                HarmProbability::Low => "LOW",
+                HarmProbability::Medium => "MEDIUM",
+                HarmProbability::High => "HIGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HARM_PROBABILITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "NEGLIGIBLE" => Some(Self::Negligible),
+                "LOW" => Some(Self::Low),
+                "MEDIUM" => Some(Self::Medium),
+                "HIGH" => Some(Self::High),
+                _ => None,
+            }
+        }
+    }
+}
+/// A collection of source attributions for a piece of content.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CitationMetadata {
+    /// Output only. List of citations.
+    #[prost(message, repeated, tag = "1")]
+    pub citations: ::prost::alloc::vec::Vec<Citation>,
+}
+/// Source attributions for content.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Citation {
+    /// Output only. Start index into the content.
+    #[prost(int32, tag = "1")]
+    pub start_index: i32,
+    /// Output only. End index into the content.
+    #[prost(int32, tag = "2")]
+    pub end_index: i32,
+    /// Output only. Url reference of the attribution.
+    #[prost(string, tag = "3")]
+    pub uri: ::prost::alloc::string::String,
+    /// Output only. Title of the attribution.
+    #[prost(string, tag = "4")]
+    pub title: ::prost::alloc::string::String,
+    /// Output only. License of the attribution.
+    #[prost(string, tag = "5")]
+    pub license: ::prost::alloc::string::String,
+    /// Output only. Publication date of the attribution.
+    #[prost(message, optional, tag = "6")]
+    pub publication_date: ::core::option::Option<super::super::super::r#type::Date>,
+}
+/// A response candidate generated from the model.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Candidate {
+    /// Output only. Index of the candidate.
+    #[prost(int32, tag = "1")]
+    pub index: i32,
+    /// Output only. Content parts of the candidate.
+    #[prost(message, optional, tag = "2")]
+    pub content: ::core::option::Option<Content>,
+    /// Output only. The reason why the model stopped generating tokens.
+    /// If empty, the model has not stopped generating the tokens.
+    #[prost(enumeration = "candidate::FinishReason", tag = "3")]
+    pub finish_reason: i32,
+    /// Output only. List of ratings for the safety of a response candidate.
+    ///
+    /// There is at most one rating per category.
+    #[prost(message, repeated, tag = "4")]
+    pub safety_ratings: ::prost::alloc::vec::Vec<SafetyRating>,
+    /// Output only. Describes the reason the mode stopped generating tokens in
+    /// more detail. This is only filled when `finish_reason` is set.
+    #[prost(string, optional, tag = "5")]
+    pub finish_message: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. Source attribution of the generated content.
+    #[prost(message, optional, tag = "6")]
+    pub citation_metadata: ::core::option::Option<CitationMetadata>,
+}
+/// Nested message and enum types in `Candidate`.
+pub mod candidate {
+    /// The reason why the model stopped generating tokens.
+    /// If empty, the model has not stopped generating the tokens.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum FinishReason {
+        /// The finish reason is unspecified.
+        Unspecified = 0,
+        /// Natural stop point of the model or provided stop sequence.
+        Stop = 1,
+        /// The maximum number of tokens as specified in the request was reached.
+        MaxTokens = 2,
+        /// The token generation was stopped as the response was flagged for safety
+        /// reasons. NOTE: When streaming the Candidate.content will be empty if
+        /// content filters blocked the output.
+        Safety = 3,
+        /// The token generation was stopped as the response was flagged for
+        /// unauthorized citations.
+        Recitation = 4,
+        /// All other reasons that stopped the token generation
+        Other = 5,
+    }
+    impl FinishReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                FinishReason::Unspecified => "FINISH_REASON_UNSPECIFIED",
+                FinishReason::Stop => "STOP",
+                FinishReason::MaxTokens => "MAX_TOKENS",
+                FinishReason::Safety => "SAFETY",
+                FinishReason::Recitation => "RECITATION",
+                FinishReason::Other => "OTHER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FINISH_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "STOP" => Some(Self::Stop),
+                "MAX_TOKENS" => Some(Self::MaxTokens),
+                "SAFETY" => Some(Self::Safety),
+                "RECITATION" => Some(Self::Recitation),
+                "OTHER" => Some(Self::Other),
+                _ => None,
+            }
+        }
+    }
+}
+/// Harm categories that will block the content.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum HarmCategory {
+    /// The harm category is unspecified.
+    Unspecified = 0,
+    /// The harm category is hate speech.
+    HateSpeech = 1,
+    /// The harm category is dangerous content.
+    DangerousContent = 2,
+    /// The harm category is harassment.
+    Harassment = 3,
+    /// The harm category is sexually explicit content.
+    SexuallyExplicit = 4,
+}
+impl HarmCategory {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            HarmCategory::Unspecified => "HARM_CATEGORY_UNSPECIFIED",
+            HarmCategory::HateSpeech => "HARM_CATEGORY_HATE_SPEECH",
+            HarmCategory::DangerousContent => "HARM_CATEGORY_DANGEROUS_CONTENT",
+            HarmCategory::Harassment => "HARM_CATEGORY_HARASSMENT",
+            HarmCategory::SexuallyExplicit => "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "HARM_CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+            "HARM_CATEGORY_HATE_SPEECH" => Some(Self::HateSpeech),
+            "HARM_CATEGORY_DANGEROUS_CONTENT" => Some(Self::DangerousContent),
+            "HARM_CATEGORY_HARASSMENT" => Some(Self::Harassment),
+            "HARM_CATEGORY_SEXUALLY_EXPLICIT" => Some(Self::SexuallyExplicit),
+            _ => None,
         }
     }
 }
@@ -4288,16 +4926,106 @@ pub struct ExportDataConfig {
     /// [ListAnnotations][google.cloud.aiplatform.v1.DatasetService.ListAnnotations].
     #[prost(string, tag = "2")]
     pub annotations_filter: ::prost::alloc::string::String,
+    /// The ID of a SavedQuery (annotation set) under the Dataset specified by
+    /// [dataset_id][] used for filtering Annotations for training.
+    ///
+    /// Only used for custom training data export use cases.
+    /// Only applicable to Datasets that have SavedQueries.
+    ///
+    /// Only Annotations that are associated with this SavedQuery are used in
+    /// respectively training. When used in conjunction with
+    /// [annotations_filter][google.cloud.aiplatform.v1.ExportDataConfig.annotations_filter],
+    /// the Annotations used for training are filtered by both
+    /// [saved_query_id][google.cloud.aiplatform.v1.ExportDataConfig.saved_query_id]
+    /// and
+    /// [annotations_filter][google.cloud.aiplatform.v1.ExportDataConfig.annotations_filter].
+    ///
+    /// Only one of
+    /// [saved_query_id][google.cloud.aiplatform.v1.ExportDataConfig.saved_query_id]
+    /// and
+    /// [annotation_schema_uri][google.cloud.aiplatform.v1.ExportDataConfig.annotation_schema_uri]
+    /// should be specified as both of them represent the same thing: problem type.
+    #[prost(string, tag = "11")]
+    pub saved_query_id: ::prost::alloc::string::String,
+    /// The Cloud Storage URI that points to a YAML file describing the annotation
+    /// schema. The schema is defined as an OpenAPI 3.0.2 [Schema
+    /// Object](<https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject>).
+    /// The schema files that can be used here are found in
+    /// gs://google-cloud-aiplatform/schema/dataset/annotation/, note that the
+    /// chosen schema must be consistent with
+    /// [metadata][google.cloud.aiplatform.v1.Dataset.metadata_schema_uri] of the
+    /// Dataset specified by [dataset_id][].
+    ///
+    /// Only used for custom training data export use cases.
+    /// Only applicable to Datasets that have DataItems and Annotations.
+    ///
+    /// Only Annotations that both match this schema and belong to DataItems not
+    /// ignored by the split method are used in respectively training, validation
+    /// or test role, depending on the role of the DataItem they are on.
+    ///
+    /// When used in conjunction with
+    /// [annotations_filter][google.cloud.aiplatform.v1.ExportDataConfig.annotations_filter],
+    /// the Annotations used for training are filtered by both
+    /// [annotations_filter][google.cloud.aiplatform.v1.ExportDataConfig.annotations_filter]
+    /// and
+    /// [annotation_schema_uri][google.cloud.aiplatform.v1.ExportDataConfig.annotation_schema_uri].
+    #[prost(string, tag = "12")]
+    pub annotation_schema_uri: ::prost::alloc::string::String,
+    /// Indicates the usage of the exported files.
+    #[prost(enumeration = "export_data_config::ExportUse", tag = "4")]
+    pub export_use: i32,
     /// The destination of the output.
     #[prost(oneof = "export_data_config::Destination", tags = "1")]
     pub destination: ::core::option::Option<export_data_config::Destination>,
     /// The instructions how the export data should be split between the
     /// training, validation and test sets.
-    #[prost(oneof = "export_data_config::Split", tags = "5")]
+    #[prost(oneof = "export_data_config::Split", tags = "5, 7")]
     pub split: ::core::option::Option<export_data_config::Split>,
 }
 /// Nested message and enum types in `ExportDataConfig`.
 pub mod export_data_config {
+    /// ExportUse indicates the usage of the exported files. It restricts file
+    /// destination, format, annotations to be exported, whether to allow
+    /// unannotated data to be exported and whether to clone files to temp Cloud
+    /// Storage bucket.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ExportUse {
+        /// Regular user export.
+        Unspecified = 0,
+        /// Export for custom code training.
+        CustomCodeTraining = 6,
+    }
+    impl ExportUse {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ExportUse::Unspecified => "EXPORT_USE_UNSPECIFIED",
+                ExportUse::CustomCodeTraining => "CUSTOM_CODE_TRAINING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXPORT_USE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CUSTOM_CODE_TRAINING" => Some(Self::CustomCodeTraining),
+                _ => None,
+            }
+        }
+    }
     /// The destination of the output.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -4322,6 +5050,9 @@ pub mod export_data_config {
         /// Split based on fractions defining the size of each set.
         #[prost(message, tag = "5")]
         FractionSplit(super::ExportFractionSplit),
+        /// Split based on the provided filters for each set.
+        #[prost(message, tag = "7")]
+        FilterSplit(super::ExportFilterSplit),
     }
 }
 /// Assigns the input data to training, validation, and test sets as per the
@@ -4342,6 +5073,44 @@ pub struct ExportFractionSplit {
     /// The fraction of the input data that is to be used to evaluate the Model.
     #[prost(double, tag = "3")]
     pub test_fraction: f64,
+}
+/// Assigns input data to training, validation, and test sets based on the given
+/// filters, data pieces not matched by any filter are ignored. Currently only
+/// supported for Datasets containing DataItems.
+/// If any of the filters in this message are to match nothing, then they can be
+/// set as '-' (the minus sign).
+///
+/// Supported only for unstructured Datasets.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportFilterSplit {
+    /// Required. A filter on DataItems of the Dataset. DataItems that match
+    /// this filter are used to train the Model. A filter with same syntax
+    /// as the one used in
+    /// [DatasetService.ListDataItems][google.cloud.aiplatform.v1.DatasetService.ListDataItems]
+    /// may be used. If a single DataItem is matched by more than one of the
+    /// FilterSplit filters, then it is assigned to the first set that applies to
+    /// it in the training, validation, test order.
+    #[prost(string, tag = "1")]
+    pub training_filter: ::prost::alloc::string::String,
+    /// Required. A filter on DataItems of the Dataset. DataItems that match
+    /// this filter are used to validate the Model. A filter with same syntax
+    /// as the one used in
+    /// [DatasetService.ListDataItems][google.cloud.aiplatform.v1.DatasetService.ListDataItems]
+    /// may be used. If a single DataItem is matched by more than one of the
+    /// FilterSplit filters, then it is assigned to the first set that applies to
+    /// it in the training, validation, test order.
+    #[prost(string, tag = "2")]
+    pub validation_filter: ::prost::alloc::string::String,
+    /// Required. A filter on DataItems of the Dataset. DataItems that match
+    /// this filter are used to test the Model. A filter with same syntax
+    /// as the one used in
+    /// [DatasetService.ListDataItems][google.cloud.aiplatform.v1.DatasetService.ListDataItems]
+    /// may be used. If a single DataItem is matched by more than one of the
+    /// FilterSplit filters, then it is assigned to the first set that applies to
+    /// it in the training, validation, test order.
+    #[prost(string, tag = "3")]
+    pub test_filter: ::prost::alloc::string::String,
 }
 /// Describes the dataset version.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -4558,9 +5327,16 @@ pub struct ExportDataRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataResponse {
-    /// All of the files that are exported in this export operation.
+    /// All of the files that are exported in this export operation. For custom
+    /// code training export, only three (training, validation and test) GCS paths
+    /// in wildcard format are populated (e.g., gs://.../training-*).
     #[prost(string, repeated, tag = "1")]
     pub exported_files: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Only present for custom code training export use case. Records data stats,
+    /// i.e., train/validation/test item/annotation counts calculated during
+    /// the export operation.
+    #[prost(message, optional, tag = "2")]
+    pub data_stats: ::core::option::Option<model::DataStats>,
 }
 /// Runtime operation information for
 /// [DatasetService.ExportData][google.cloud.aiplatform.v1.DatasetService.ExportData].
@@ -5614,6 +6390,27 @@ pub struct DeployedIndexRef {
     /// Immutable. The ID of the DeployedIndex in the above IndexEndpoint.
     #[prost(string, tag = "2")]
     pub deployed_index_id: ::prost::alloc::string::String,
+    /// Output only. The display name of the DeployedIndex.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
+}
+/// A description of resources that can be shared by multiple DeployedModels,
+/// whose underlying specification consists of a DedicatedResources.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeploymentResourcePool {
+    /// Immutable. The resource name of the DeploymentResourcePool.
+    /// Format:
+    /// `projects/{project}/locations/{location}/deploymentResourcePools/{deployment_resource_pool}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The underlying DedicatedResources that the DeploymentResourcePool
+    /// uses.
+    #[prost(message, optional, tag = "2")]
+    pub dedicated_resources: ::core::option::Option<DedicatedResources>,
+    /// Output only. Timestamp when this DeploymentResourcePool was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Models are deployed into it, and afterwards Endpoint is called to obtain
 /// predictions and explanations.
@@ -5807,7 +6604,7 @@ pub struct DeployedModel {
     /// Not all Models support all resources types. See
     /// [Model.supported_deployment_resources_types][google.cloud.aiplatform.v1.Model.supported_deployment_resources_types].
     /// Required except for Large Model Deploy use cases.
-    #[prost(oneof = "deployed_model::PredictionResources", tags = "7, 8")]
+    #[prost(oneof = "deployed_model::PredictionResources", tags = "7, 8, 17")]
     pub prediction_resources: ::core::option::Option<
         deployed_model::PredictionResources,
     >,
@@ -5831,6 +6628,11 @@ pub mod deployed_model {
         /// AI, and require only a modest additional configuration.
         #[prost(message, tag = "8")]
         AutomaticResources(super::AutomaticResources),
+        /// The resource name of the shared DeploymentResourcePool to deploy on.
+        /// Format:
+        /// `projects/{project}/locations/{location}/deploymentResourcePools/{deployment_resource_pool}`
+        #[prost(string, tag = "17")]
+        SharedResources(::prost::alloc::string::String),
     }
 }
 /// PrivateEndpoints proto is used to provide paths for users to send
@@ -5874,6 +6676,386 @@ pub struct PredictRequestResponseLoggingConfig {
     /// given, a new table will be created with name `request_response_logging`
     #[prost(message, optional, tag = "3")]
     pub bigquery_destination: ::core::option::Option<BigQueryDestination>,
+}
+/// Request message for CreateDeploymentResourcePool method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDeploymentResourcePoolRequest {
+    /// Required. The parent location resource where this DeploymentResourcePool
+    /// will be created. Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The DeploymentResourcePool to create.
+    #[prost(message, optional, tag = "2")]
+    pub deployment_resource_pool: ::core::option::Option<DeploymentResourcePool>,
+    /// Required. The ID to use for the DeploymentResourcePool, which
+    /// will become the final component of the DeploymentResourcePool's resource
+    /// name.
+    ///
+    /// The maximum length is 63 characters, and valid characters
+    /// are `/^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$/`.
+    #[prost(string, tag = "3")]
+    pub deployment_resource_pool_id: ::prost::alloc::string::String,
+}
+/// Runtime operation information for CreateDeploymentResourcePool method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDeploymentResourcePoolOperationMetadata {
+    /// The operation generic information.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Request message for GetDeploymentResourcePool method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetDeploymentResourcePoolRequest {
+    /// Required. The name of the DeploymentResourcePool to retrieve.
+    /// Format:
+    /// `projects/{project}/locations/{location}/deploymentResourcePools/{deployment_resource_pool}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListDeploymentResourcePools method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDeploymentResourcePoolsRequest {
+    /// Required. The parent Location which owns this collection of
+    /// DeploymentResourcePools. Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of DeploymentResourcePools to return. The service may
+    /// return fewer than this value.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListDeploymentResourcePools` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListDeploymentResourcePools` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListDeploymentResourcePools method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDeploymentResourcePoolsResponse {
+    /// The DeploymentResourcePools from the specified location.
+    #[prost(message, repeated, tag = "1")]
+    pub deployment_resource_pools: ::prost::alloc::vec::Vec<DeploymentResourcePool>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Runtime operation information for UpdateDeploymentResourcePool method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDeploymentResourcePoolOperationMetadata {
+    /// The operation generic information.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Request message for DeleteDeploymentResourcePool method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteDeploymentResourcePoolRequest {
+    /// Required. The name of the DeploymentResourcePool to delete.
+    /// Format:
+    /// `projects/{project}/locations/{location}/deploymentResourcePools/{deployment_resource_pool}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for QueryDeployedModels method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryDeployedModelsRequest {
+    /// Required. The name of the target DeploymentResourcePool to query.
+    /// Format:
+    /// `projects/{project}/locations/{location}/deploymentResourcePools/{deployment_resource_pool}`
+    #[prost(string, tag = "1")]
+    pub deployment_resource_pool: ::prost::alloc::string::String,
+    /// The maximum number of DeployedModels to return. The service may return
+    /// fewer than this value.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `QueryDeployedModels` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `QueryDeployedModels` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for QueryDeployedModels method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryDeployedModelsResponse {
+    /// DEPRECATED Use deployed_model_refs instead.
+    #[deprecated]
+    #[prost(message, repeated, tag = "1")]
+    pub deployed_models: ::prost::alloc::vec::Vec<DeployedModel>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// References to the DeployedModels that share the specified
+    /// deploymentResourcePool.
+    #[prost(message, repeated, tag = "3")]
+    pub deployed_model_refs: ::prost::alloc::vec::Vec<DeployedModelRef>,
+    /// The total number of DeployedModels on this DeploymentResourcePool.
+    #[prost(int32, tag = "4")]
+    pub total_deployed_model_count: i32,
+    /// The total number of Endpoints that have DeployedModels on this
+    /// DeploymentResourcePool.
+    #[prost(int32, tag = "5")]
+    pub total_endpoint_count: i32,
+}
+/// Generated client implementations.
+pub mod deployment_resource_pool_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// A service that manages the DeploymentResourcePool resource.
+    #[derive(Debug, Clone)]
+    pub struct DeploymentResourcePoolServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl DeploymentResourcePoolServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> DeploymentResourcePoolServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> DeploymentResourcePoolServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            DeploymentResourcePoolServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Create a DeploymentResourcePool.
+        pub async fn create_deployment_resource_pool(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDeploymentResourcePoolRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.DeploymentResourcePoolService/CreateDeploymentResourcePool",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.DeploymentResourcePoolService",
+                        "CreateDeploymentResourcePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get a DeploymentResourcePool.
+        pub async fn get_deployment_resource_pool(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDeploymentResourcePoolRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DeploymentResourcePool>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.DeploymentResourcePoolService/GetDeploymentResourcePool",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.DeploymentResourcePoolService",
+                        "GetDeploymentResourcePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List DeploymentResourcePools in a location.
+        pub async fn list_deployment_resource_pools(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDeploymentResourcePoolsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDeploymentResourcePoolsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.DeploymentResourcePoolService/ListDeploymentResourcePools",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.DeploymentResourcePoolService",
+                        "ListDeploymentResourcePools",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Delete a DeploymentResourcePool.
+        pub async fn delete_deployment_resource_pool(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteDeploymentResourcePoolRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.DeploymentResourcePoolService/DeleteDeploymentResourcePool",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.DeploymentResourcePoolService",
+                        "DeleteDeploymentResourcePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List DeployedModels that have been deployed on this DeploymentResourcePool.
+        pub async fn query_deployed_models(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryDeployedModelsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryDeployedModelsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.DeploymentResourcePoolService/QueryDeployedModels",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.DeploymentResourcePoolService",
+                        "QueryDeployedModels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
 }
 /// Request message for
 /// [EndpointService.CreateEndpoint][google.cloud.aiplatform.v1.EndpointService.CreateEndpoint].
@@ -7489,7 +8671,7 @@ pub mod feature {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureGroup {
-    /// Output only. Name of the FeatureGroup. Format:
+    /// Identifier. Name of the FeatureGroup. Format:
     /// `projects/{project}/locations/{location}/featureGroups/{featureGroup}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -7557,7 +8739,7 @@ pub mod feature_group {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureOnlineStore {
-    /// Output only. Name of the FeatureOnlineStore. Format:
+    /// Identifier. Name of the FeatureOnlineStore. Format:
     /// `projects/{project}/locations/{location}/featureOnlineStores/{featureOnlineStore}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -7688,7 +8870,7 @@ pub mod feature_online_store {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureView {
-    /// Output only. Name of the FeatureView. Format:
+    /// Identifier. Name of the FeatureView. Format:
     /// `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -7740,6 +8922,7 @@ pub mod feature_view {
         #[prost(string, repeated, tag = "2")]
         pub entity_id_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
+    /// Configuration for Sync. Only one option is set.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SyncConfig {
@@ -7796,7 +8979,7 @@ pub mod feature_view {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureViewSync {
-    /// Output only. Name of the FeatureViewSync. Format:
+    /// Identifier. Name of the FeatureViewSync. Format:
     /// `projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}/featureViewSyncs/{feature_view_sync}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -10504,7 +11687,7 @@ pub struct ListFeaturesRequest {
     ///
     /// When paginating, all other parameters provided to
     /// [FeaturestoreService.ListFeatures][google.cloud.aiplatform.v1.FeaturestoreService.ListFeatures]
-    /// or or
+    /// or
     /// [FeatureRegistryService.ListFeatures][google.cloud.aiplatform.v1.FeatureRegistryService.ListFeatures]
     /// must match the call that provided the page token.
     #[prost(string, tag = "4")]
@@ -18540,10 +19723,18 @@ pub struct CountTokensRequest {
     /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
     #[prost(string, tag = "1")]
     pub endpoint: ::prost::alloc::string::String,
+    /// Required. The name of the publisher model requested to serve the
+    /// prediction. Format:
+    /// `projects/{project}/locations/{location}/publishers/*/models/*`
+    #[prost(string, tag = "3")]
+    pub model: ::prost::alloc::string::String,
     /// Required. The instances that are the input to token counting call.
     /// Schema is identical to the prediction schema of the underlying model.
     #[prost(message, repeated, tag = "2")]
     pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
+    /// Required. Input content.
+    #[prost(message, repeated, tag = "4")]
+    pub contents: ::prost::alloc::vec::Vec<Content>,
 }
 /// Response message for [PredictionService.CountTokens][].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -18556,6 +19747,133 @@ pub struct CountTokensResponse {
     /// the request.
     #[prost(int32, tag = "2")]
     pub total_billable_characters: i32,
+}
+/// Request message for \[PredictionService.GenerateContent\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateContentRequest {
+    /// Required. The name of the publisher model requested to serve the
+    /// prediction. Format:
+    /// `projects/{project}/locations/{location}/publishers/*/models/*`
+    #[prost(string, tag = "5")]
+    pub model: ::prost::alloc::string::String,
+    /// Required. The content of the current conversation with the model.
+    ///
+    /// For single-turn queries, this is a single instance. For multi-turn queries,
+    /// this is a repeated field that contains conversation history + latest
+    /// request.
+    #[prost(message, repeated, tag = "2")]
+    pub contents: ::prost::alloc::vec::Vec<Content>,
+    /// Optional. A list of `Tools` the model may use to generate the next
+    /// response.
+    ///
+    /// A `Tool` is a piece of code that enables the system to interact with
+    /// external systems to perform an action, or set of actions, outside of
+    /// knowledge and scope of the model. The only supported tool is currently
+    /// `Function`
+    #[prost(message, repeated, tag = "6")]
+    pub tools: ::prost::alloc::vec::Vec<Tool>,
+    /// Optional. Per request settings for blocking unsafe content.
+    /// Enforced on GenerateContentResponse.candidates.
+    #[prost(message, repeated, tag = "3")]
+    pub safety_settings: ::prost::alloc::vec::Vec<SafetySetting>,
+    /// Optional. Generation config.
+    #[prost(message, optional, tag = "4")]
+    pub generation_config: ::core::option::Option<GenerationConfig>,
+}
+/// Response message for \[PredictionService.GenerateContent\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateContentResponse {
+    /// Output only. Generated candidates.
+    #[prost(message, repeated, tag = "2")]
+    pub candidates: ::prost::alloc::vec::Vec<Candidate>,
+    /// Output only. Content filter results for a prompt sent in the request.
+    /// Note: Sent only in the first stream chunk.
+    /// Only happens when no candidates were generated due to content violations.
+    #[prost(message, optional, tag = "3")]
+    pub prompt_feedback: ::core::option::Option<
+        generate_content_response::PromptFeedback,
+    >,
+    /// Usage metadata about the response(s).
+    #[prost(message, optional, tag = "4")]
+    pub usage_metadata: ::core::option::Option<generate_content_response::UsageMetadata>,
+}
+/// Nested message and enum types in `GenerateContentResponse`.
+pub mod generate_content_response {
+    /// Content filter results for a prompt sent in the request.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PromptFeedback {
+        /// Output only. Blocked reason.
+        #[prost(enumeration = "prompt_feedback::BlockedReason", tag = "1")]
+        pub block_reason: i32,
+        /// Output only. Safety ratings.
+        #[prost(message, repeated, tag = "2")]
+        pub safety_ratings: ::prost::alloc::vec::Vec<super::SafetyRating>,
+        /// Output only. A readable block reason message.
+        #[prost(string, tag = "3")]
+        pub block_reason_message: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `PromptFeedback`.
+    pub mod prompt_feedback {
+        /// Blocked reason enumeration.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum BlockedReason {
+            /// Unspecified blocked reason.
+            Unspecified = 0,
+            /// Candidates blocked due to safety.
+            Safety = 1,
+            /// Candidates blocked due to other reason.
+            Other = 2,
+        }
+        impl BlockedReason {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    BlockedReason::Unspecified => "BLOCKED_REASON_UNSPECIFIED",
+                    BlockedReason::Safety => "SAFETY",
+                    BlockedReason::Other => "OTHER",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "BLOCKED_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SAFETY" => Some(Self::Safety),
+                    "OTHER" => Some(Self::Other),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Usage metadata about response(s).
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UsageMetadata {
+        /// Number of tokens in the request.
+        #[prost(int32, tag = "1")]
+        pub prompt_token_count: i32,
+        /// Number of tokens in the response(s).
+        #[prost(int32, tag = "2")]
+        pub candidates_token_count: i32,
+        #[prost(int32, tag = "3")]
+        pub total_token_count: i32,
+    }
 }
 /// Generated client implementations.
 pub mod prediction_service_client {
@@ -18917,6 +20235,37 @@ pub mod prediction_service_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
+        }
+        /// Generate content with multimodal inputs with streaming support.
+        pub async fn stream_generate_content(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GenerateContentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::GenerateContentResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PredictionService/StreamGenerateContent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PredictionService",
+                        "StreamGenerateContent",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
         }
     }
 }
@@ -22364,6 +23713,9 @@ pub struct PublisherModel {
     /// Optional. Indicates the launch stage of the model.
     #[prost(enumeration = "publisher_model::LaunchStage", tag = "29")]
     pub launch_stage: i32,
+    /// Optional. Indicates the state of the model version.
+    #[prost(enumeration = "publisher_model::VersionState", tag = "37")]
+    pub version_state: i32,
     /// Optional. Output only. Immutable. Used to indicate this model has a
     /// publisher model and provide the template of the publisher model resource
     /// name.
@@ -22381,7 +23733,7 @@ pub mod publisher_model {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceReference {
-        #[prost(oneof = "resource_reference::Reference", tags = "1, 2")]
+        #[prost(oneof = "resource_reference::Reference", tags = "1, 2, 3, 4")]
         pub reference: ::core::option::Option<resource_reference::Reference>,
     }
     /// Nested message and enum types in `ResourceReference`.
@@ -22395,6 +23747,12 @@ pub mod publisher_model {
             /// The resource name of the Google Cloud resource.
             #[prost(string, tag = "2")]
             ResourceName(::prost::alloc::string::String),
+            /// Use case (CUJ) of the resource.
+            #[prost(string, tag = "3")]
+            UseCase(::prost::alloc::string::String),
+            /// Description of the resource.
+            #[prost(string, tag = "4")]
+            Description(::prost::alloc::string::String),
         }
     }
     /// A named piece of documentation.
@@ -22513,6 +23871,10 @@ pub mod publisher_model {
             /// Required. The title of the regional resource reference.
             #[prost(string, tag = "8")]
             pub title: ::prost::alloc::string::String,
+            /// Optional. The signed URI for ephemeral Cloud Storage access to model
+            /// artifact.
+            #[prost(string, tag = "9")]
+            pub public_artifact_uri: ::prost::alloc::string::String,
             /// The prediction (for example, the machine) resources that the
             /// DeployedModel uses.
             #[prost(oneof = "deploy::PredictionResources", tags = "5, 6, 7")]
@@ -22656,6 +24018,49 @@ pub mod publisher_model {
                 "PRIVATE_PREVIEW" => Some(Self::PrivatePreview),
                 "PUBLIC_PREVIEW" => Some(Self::PublicPreview),
                 "GA" => Some(Self::Ga),
+                _ => None,
+            }
+        }
+    }
+    /// An enum representing the state of the PublicModelVersion.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum VersionState {
+        /// The version state is unspecified.
+        Unspecified = 0,
+        /// Used to indicate the version is stable.
+        Stable = 1,
+        /// Used to indicate the version is unstable.
+        Unstable = 2,
+    }
+    impl VersionState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                VersionState::Unspecified => "VERSION_STATE_UNSPECIFIED",
+                VersionState::Stable => "VERSION_STATE_STABLE",
+                VersionState::Unstable => "VERSION_STATE_UNSTABLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VERSION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VERSION_STATE_STABLE" => Some(Self::Stable),
+                "VERSION_STATE_UNSTABLE" => Some(Self::Unstable),
                 _ => None,
             }
         }
@@ -22863,10 +24268,10 @@ pub struct UploadModelRequest {
     /// Optional. The user-provided custom service account to use to do the model
     /// upload. If empty, [Vertex AI Service
     /// Agent](<https://cloud.google.com/vertex-ai/docs/general/access-control#service-agents>)
-    /// will be used. Users uploading the Model must have the
-    /// `iam.serviceAccounts.actAs` permission on this service account. Also, this
-    /// account must belong to the project specified in the `parent` field and have
-    /// all necessary read permissions.
+    /// will be used to access resources needed to upload the model. This account
+    /// must belong to the target project where the model is uploaded to, i.e., the
+    /// project specified in the `parent` field of this request and have necessary
+    /// read permissions (to Google Cloud Storage, Artifact Registry, etc.).
     #[prost(string, tag = "6")]
     pub service_account: ::prost::alloc::string::String,
 }

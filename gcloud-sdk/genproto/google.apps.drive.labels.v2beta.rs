@@ -387,13 +387,11 @@ pub mod precondition_failure {
         }
     }
 }
-/// Normalized internal-only message that identifies the exact exception that
-/// caused the error on the server.
+/// Exception detail.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExceptionDetail {
-    /// The type of exception that occurred.
-    /// required
+    /// The type of exception that occurred. Required.
     #[prost(enumeration = "ExceptionType", tag = "1")]
     pub error_type: i32,
 }
@@ -1061,6 +1059,10 @@ pub struct Label {
     /// when the label is not disabled.
     #[prost(message, optional, tag = "12")]
     pub disable_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The customer this label belongs to.
+    /// For example: "customers/123abc789."
+    #[prost(string, tag = "13")]
+    pub customer: ::prost::alloc::string::String,
     /// Required. The basic properties of the label.
     #[prost(message, optional, tag = "14")]
     pub properties: ::core::option::Option<label::Properties>,
@@ -1243,6 +1245,9 @@ pub mod label {
         /// Admin-owned label. Only creatable and editable by admins. Supports some
         /// additional admin-only features.
         Admin = 2,
+        /// A label owned by an internal Google application rather than a customer.
+        /// These labels are read-only.
+        GoogleApp = 3,
     }
     impl LabelType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1254,6 +1259,7 @@ pub mod label {
                 LabelType::Unspecified => "LABEL_TYPE_UNSPECIFIED",
                 LabelType::Shared => "SHARED",
                 LabelType::Admin => "ADMIN",
+                LabelType::GoogleApp => "GOOGLE_APP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1262,6 +1268,7 @@ pub mod label {
                 "LABEL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "SHARED" => Some(Self::Shared),
                 "ADMIN" => Some(Self::Admin),
+                "GOOGLE_APP" => Some(Self::GoogleApp),
                 _ => None,
             }
         }
@@ -1639,6 +1646,11 @@ pub struct GetUserCapabilitiesRequest {
     /// supported.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// The customer to scope this request to.
+    /// For example: "customers/abcd1234".
+    /// If unset, will return settings within the current customer.
+    #[prost(string, tag = "2")]
+    pub customer: ::prost::alloc::string::String,
 }
 /// Request to create a Label.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2151,6 +2163,11 @@ pub struct ListLabelsRequest {
     ///    revision (`labels/{id}`).
     #[prost(bool, tag = "1")]
     pub published_only: bool,
+    /// The customer to scope this list request to.
+    /// For example: "customers/abcd1234".
+    /// If unset, will return all labels within the current customer.
+    #[prost(string, tag = "2")]
+    pub customer: ::prost::alloc::string::String,
     /// The BCP-47 language code to use for evaluating localized field labels.
     /// When not specified, values in the default configured language are used.
     #[prost(string, tag = "5")]

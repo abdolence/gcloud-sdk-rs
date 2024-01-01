@@ -113,6 +113,45 @@ pub struct Deployment {
         ::prost::alloc::string::String,
     >,
 }
+/// ListProfilesRequest contains request parameters for listing profiles for
+/// deployments in projects which the user has permissions to view.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListProfilesRequest {
+    /// Required. The parent, which owns this collection of profiles.
+    /// Format: projects/{user_project_id}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of items to return.
+    /// Default page_size is 1000.
+    /// Max limit is 10000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The token to continue pagination and get profiles from a particular page.
+    /// When paginating, all other parameters provided to `ListProfiles` must match
+    /// the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// ListProfileResponse contains the list of collected profiles for deployments
+/// in projects which the user has permissions to view.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListProfilesResponse {
+    /// List of profiles fetched.
+    #[prost(message, repeated, tag = "1")]
+    pub profiles: ::prost::alloc::vec::Vec<Profile>,
+    /// Token to receive the next page of results.
+    /// This field maybe empty if there are no more profiles to fetch.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Number of profiles that were skipped in the current page since they were
+    /// not able to be fetched successfully. This should typically be zero. A
+    /// non-zero value may indicate a transient failure, in which case if the
+    /// number is too high for your use case, the call may be retried.
+    #[prost(int32, tag = "3")]
+    pub skipped_profiles: i32,
+}
 /// ProfileType is type of profiling data.
 /// NOTE: the enumeration member names are used (in lowercase) as unique string
 /// identifiers of profile types, so they must not be renamed.
@@ -363,6 +402,127 @@ pub mod profiler_service_client {
                     GrpcMethod::new(
                         "google.devtools.cloudprofiler.v2.ProfilerService",
                         "UpdateProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Generated client implementations.
+pub mod export_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service allows existing Cloud Profiler customers to export their profile data
+    /// out of Google Cloud.
+    #[derive(Debug, Clone)]
+    pub struct ExportServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl ExportServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> ExportServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ExportServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            ExportServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Lists profiles which have been collected so far and for which the caller
+        /// has permission to view.
+        pub async fn list_profiles(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListProfilesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListProfilesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.devtools.cloudprofiler.v2.ExportService/ListProfiles",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.devtools.cloudprofiler.v2.ExportService",
+                        "ListProfiles",
                     ),
                 );
             self.inner.unary(req, path, codec).await

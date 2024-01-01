@@ -27,6 +27,16 @@ pub struct BillingAccount {
     /// Otherwise this will be empty.
     #[prost(string, tag = "4")]
     pub master_billing_account: ::prost::alloc::string::String,
+    /// Output only. The billing account's parent resource identifier.
+    /// Use the `MoveBillingAccount` method to update the account's parent resource
+    /// if it is a organization.
+    /// Format:
+    ///    - `organizations/{organization_id}`, for example,
+    ///      `organizations/12345678`
+    ///    - `billingAccounts/{billing_account_id}`, for example,
+    ///      `billingAccounts/012345-567890-ABCDEF`
+    #[prost(string, tag = "6")]
+    pub parent: ::prost::alloc::string::String,
 }
 /// Encapsulation of billing information for a Google Cloud Console project. A
 /// project has at most one associated billing account at a time (but a billing
@@ -82,10 +92,19 @@ pub struct ListBillingAccountsRequest {
     /// This only supports filtering for
     /// [subaccounts](<https://cloud.google.com/billing/docs/concepts>) under a
     /// single provided parent billing account.
-    /// (e.g. "master_billing_account=billingAccounts/012345-678901-ABCDEF").
+    /// (for example,
+    /// `master_billing_account=billingAccounts/012345-678901-ABCDEF`).
     /// Boolean algebra and other fields are not currently supported.
     #[prost(string, tag = "3")]
     pub filter: ::prost::alloc::string::String,
+    /// Optional. The parent resource to list billing accounts from.
+    /// Format:
+    ///    - `organizations/{organization_id}`, for example,
+    ///      `organizations/12345678`
+    ///    - `billingAccounts/{billing_account_id}`, for example,
+    ///      `billingAccounts/012345-567890-ABCDEF`
+    #[prost(string, tag = "4")]
+    pub parent: ::prost::alloc::string::String,
 }
 /// Response message for `ListBillingAccounts`.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -110,6 +129,14 @@ pub struct CreateBillingAccountRequest {
     /// account.
     #[prost(message, optional, tag = "1")]
     pub billing_account: ::core::option::Option<BillingAccount>,
+    /// Optional. The parent to create a billing account from.
+    /// Format:
+    ///    - `organizations/{organization_id}`, for example,
+    ///      `organizations/12345678`
+    ///    - `billingAccounts/{billing_account_id}`, for example,
+    ///       `billingAccounts/012345-567890-ABCDEF`
+    #[prost(string, tag = "2")]
+    pub parent: ::prost::alloc::string::String,
 }
 /// Request message for `UpdateBillingAccount`.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -183,6 +210,22 @@ pub struct UpdateProjectBillingInfoRequest {
     /// `billing_account_name`.
     #[prost(message, optional, tag = "2")]
     pub project_billing_info: ::core::option::Option<ProjectBillingInfo>,
+}
+/// Request message for `MoveBillingAccount` RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MoveBillingAccountRequest {
+    /// Required. The resource name of the billing account to move.
+    /// Must be of the form `billingAccounts/{billing_account_id}`.
+    /// The specified billing account cannot be a subaccount, since a subaccount
+    /// always belongs to the same organization as its parent account.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The resource name of the Organization to reparent
+    /// the billing account under.
+    /// Must be of the form `organizations/{organization_id}`.
+    #[prost(string, tag = "2")]
+    pub destination_parent: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod cloud_billing_client {
@@ -491,7 +534,8 @@ pub mod cloud_billing_client {
         /// account, even if the charge occurred before the new billing account was
         /// assigned to the project.
         ///
-        /// The current authenticated user must have ownership privileges for both the
+        /// The current authenticated user must have ownership privileges for both
+        /// the
         /// [project](https://cloud.google.com/docs/permissions-overview#h.bgs0oxofvnoo
         /// ) and the [billing
         /// account](https://cloud.google.com/billing/docs/how-to/billing-access).
@@ -645,6 +689,34 @@ pub mod cloud_billing_client {
                     GrpcMethod::new(
                         "google.cloud.billing.v1.CloudBilling",
                         "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Changes which parent organization a billing account belongs to.
+        pub async fn move_billing_account(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MoveBillingAccountRequest>,
+        ) -> std::result::Result<tonic::Response<super::BillingAccount>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.billing.v1.CloudBilling/MoveBillingAccount",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.billing.v1.CloudBilling",
+                        "MoveBillingAccount",
                     ),
                 );
             self.inner.unary(req, path, codec).await

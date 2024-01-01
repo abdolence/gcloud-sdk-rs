@@ -525,6 +525,11 @@ pub struct CostProjection {
     /// Duration for which this cost applies.
     #[prost(message, optional, tag = "2")]
     pub duration: ::core::option::Option<::prost_types::Duration>,
+    /// The approximate cost savings in the billing account's local currency.
+    #[prost(message, optional, tag = "3")]
+    pub cost_in_local_currency: ::core::option::Option<
+        super::super::super::r#type::Money,
+    >,
 }
 /// Contains various ways of describing the impact on Security.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -694,7 +699,7 @@ pub mod impact {
         /// Use with CategoryType.SUSTAINABILITY
         #[prost(message, tag = "102")]
         SustainabilityProjection(super::SustainabilityProjection),
-        /// Use with CategoryType.RELAIBILITY
+        /// Use with CategoryType.RELIABILITY
         #[prost(message, tag = "103")]
         ReliabilityProjection(super::ReliabilityProjection),
     }
@@ -941,6 +946,8 @@ pub struct ListInsightsRequest {
     ///
     /// * `severity`
     ///
+    /// * `targetResources`
+    ///
     /// Examples:
     ///
     /// * `stateInfo.state = ACTIVE OR stateInfo.state = DISMISSED`
@@ -949,7 +956,12 @@ pub struct ListInsightsRequest {
     ///
     /// * `severity = CRITICAL OR severity = HIGH`
     ///
+    /// * `targetResources :
+    /// //compute.googleapis.com/projects/1234/zones/us-central1-a/instances/instance-1`
+    ///
     /// * `stateInfo.state = ACTIVE AND (severity = CRITICAL OR severity = HIGH)`
+    ///
+    /// The max allowed filter length is 500 characters.
     ///
     /// (These expressions are based on the filter language described at
     /// <https://google.aip.dev/160>)
@@ -1037,6 +1049,8 @@ pub struct ListRecommendationsRequest {
     ///
     /// * `priority`
     ///
+    /// * `targetResources`
+    ///
     /// Examples:
     ///
     /// * `stateInfo.state = ACTIVE OR stateInfo.state = DISMISSED`
@@ -1045,7 +1059,12 @@ pub struct ListRecommendationsRequest {
     ///
     /// * `priority = P1 OR priority = P2`
     ///
+    /// * `targetResources :
+    /// //compute.googleapis.com/projects/1234/zones/us-central1-a/instances/instance-1`
+    ///
     /// * `stateInfo.state = ACTIVE AND (priority = P1 OR priority = P2)`
+    ///
+    /// The max allowed filter length is 500 characters.
     ///
     /// (These expressions are based on the filter language described at
     /// <https://google.aip.dev/160>)
@@ -1076,7 +1095,7 @@ pub struct GetRecommendationRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MarkRecommendationDismissedRequest {
-    /// Name of the recommendation.
+    /// Required. Name of the recommendation.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Fingerprint of the Recommendation. Provides optimistic locking.

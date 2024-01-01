@@ -4408,7 +4408,7 @@ pub struct BlueGreenSettings {
     #[prost(message, optional, tag = "2")]
     pub node_pool_soak_duration: ::core::option::Option<::prost_types::Duration>,
     /// The rollout policy controls the general rollout progress of blue-green.
-    #[prost(oneof = "blue_green_settings::RolloutPolicy", tags = "1")]
+    #[prost(oneof = "blue_green_settings::RolloutPolicy", tags = "1, 3")]
     pub rollout_policy: ::core::option::Option<blue_green_settings::RolloutPolicy>,
 }
 /// Nested message and enum types in `BlueGreenSettings`.
@@ -4441,6 +4441,11 @@ pub mod blue_green_settings {
             BatchNodeCount(i32),
         }
     }
+    /// Autoscaled rollout policy uses cluster autoscaler during
+    /// blue-green upgrades to scale both the green and blue pools.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AutoscaledRolloutPolicy {}
     /// The rollout policy controls the general rollout progress of blue-green.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -4448,6 +4453,9 @@ pub mod blue_green_settings {
         /// Standard policy for the blue-green upgrade.
         #[prost(message, tag = "1")]
         StandardRolloutPolicy(StandardRolloutPolicy),
+        /// Autoscaled policy for cluster autoscaler enabled blue-green upgrade.
+        #[prost(message, tag = "3")]
+        AutoscaledRolloutPolicy(AutoscaledRolloutPolicy),
     }
 }
 /// NodePool contains the name and configuration for a cluster's node pool.

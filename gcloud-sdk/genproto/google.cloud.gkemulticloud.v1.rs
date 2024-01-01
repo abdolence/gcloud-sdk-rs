@@ -1,3 +1,35 @@
+/// Jwk is a JSON Web Key as specified in RFC 7517.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Jwk {
+    /// Key Type.
+    #[prost(string, tag = "1")]
+    pub kty: ::prost::alloc::string::String,
+    /// Algorithm.
+    #[prost(string, tag = "2")]
+    pub alg: ::prost::alloc::string::String,
+    /// Permitted uses for the public keys.
+    #[prost(string, tag = "3")]
+    pub r#use: ::prost::alloc::string::String,
+    /// Key ID.
+    #[prost(string, tag = "4")]
+    pub kid: ::prost::alloc::string::String,
+    /// Used for RSA keys.
+    #[prost(string, tag = "5")]
+    pub n: ::prost::alloc::string::String,
+    /// Used for RSA keys.
+    #[prost(string, tag = "6")]
+    pub e: ::prost::alloc::string::String,
+    /// Used for ECDSA keys.
+    #[prost(string, tag = "7")]
+    pub x: ::prost::alloc::string::String,
+    /// Used for ECDSA keys.
+    #[prost(string, tag = "8")]
+    pub y: ::prost::alloc::string::String,
+    /// Used for ECDSA keys.
+    #[prost(string, tag = "9")]
+    pub crv: ::prost::alloc::string::String,
+}
 /// Workload Identity settings.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -229,6 +261,66 @@ pub struct ManagedPrometheusConfig {
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }
+/// Configuration for Binary Authorization.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BinaryAuthorization {
+    /// Mode of operation for binauthz policy evaluation. If unspecified, defaults
+    /// to DISABLED.
+    #[prost(enumeration = "binary_authorization::EvaluationMode", tag = "1")]
+    pub evaluation_mode: i32,
+}
+/// Nested message and enum types in `BinaryAuthorization`.
+pub mod binary_authorization {
+    /// Binary Authorization mode of operation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EvaluationMode {
+        /// Default value
+        Unspecified = 0,
+        /// Disable BinaryAuthorization
+        Disabled = 1,
+        /// Enforce Kubernetes admission requests with BinaryAuthorization using the
+        /// project's singleton policy.
+        ProjectSingletonPolicyEnforce = 2,
+    }
+    impl EvaluationMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                EvaluationMode::Unspecified => "EVALUATION_MODE_UNSPECIFIED",
+                EvaluationMode::Disabled => "DISABLED",
+                EvaluationMode::ProjectSingletonPolicyEnforce => {
+                    "PROJECT_SINGLETON_POLICY_ENFORCE"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVALUATION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "PROJECT_SINGLETON_POLICY_ENFORCE" => {
+                    Some(Self::ProjectSingletonPolicyEnforce)
+                }
+                _ => None,
+            }
+        }
+    }
+}
 /// An Anthos cluster running on customer own infrastructure.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -258,7 +350,7 @@ pub struct AttachedCluster {
     pub platform_version: ::prost::alloc::string::String,
     /// Required. The Kubernetes distribution of the underlying attached cluster.
     ///
-    /// Supported values: \["eks", "aks"\].
+    /// Supported values: \["eks", "aks", "generic"\].
     #[prost(string, tag = "16")]
     pub distribution: ::prost::alloc::string::String,
     /// Output only. The region where this cluster runs.
@@ -324,6 +416,12 @@ pub struct AttachedCluster {
     /// Optional. Monitoring configuration for this cluster.
     #[prost(message, optional, tag = "23")]
     pub monitoring_config: ::core::option::Option<MonitoringConfig>,
+    /// Optional. Proxy configuration for outbound HTTP(S) traffic.
+    #[prost(message, optional, tag = "24")]
+    pub proxy_config: ::core::option::Option<AttachedProxyConfig>,
+    /// Optional. Binary Authorization configuration for this cluster.
+    #[prost(message, optional, tag = "25")]
+    pub binary_authorization: ::core::option::Option<BinaryAuthorization>,
 }
 /// Nested message and enum types in `AttachedCluster`.
 pub mod attached_cluster {
@@ -395,7 +493,7 @@ pub mod attached_cluster {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachedClustersAuthorization {
-    /// Required. Users that can perform operations as a cluster admin. A managed
+    /// Optional. Users that can perform operations as a cluster admin. A managed
     /// ClusterRoleBinding will be created to grant the `cluster-admin` ClusterRole
     /// to the users. Up to ten admin users can be provided.
     ///
@@ -403,6 +501,14 @@ pub struct AttachedClustersAuthorization {
     /// <https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles>
     #[prost(message, repeated, tag = "1")]
     pub admin_users: ::prost::alloc::vec::Vec<AttachedClusterUser>,
+    /// Optional. Groups of users that can perform operations as a cluster admin. A
+    /// managed ClusterRoleBinding will be created to grant the `cluster-admin`
+    /// ClusterRole to the groups. Up to ten admin groups can be provided.
+    ///
+    /// For more info on RBAC, see
+    /// <https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles>
+    #[prost(message, repeated, tag = "2")]
+    pub admin_groups: ::prost::alloc::vec::Vec<AttachedClusterGroup>,
 }
 /// Identities of a user-type subject for Attached clusters.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -411,6 +517,14 @@ pub struct AttachedClusterUser {
     /// Required. The name of the user, e.g. `my-gcp-id@gmail.com`.
     #[prost(string, tag = "1")]
     pub username: ::prost::alloc::string::String,
+}
+/// Identities of a group-type subject for Attached clusters.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AttachedClusterGroup {
+    /// Required. The name of the group, e.g. `my-group@domain.com`.
+    #[prost(string, tag = "1")]
+    pub group: ::prost::alloc::string::String,
 }
 /// OIDC discovery information of the target cluster.
 ///
@@ -467,6 +581,27 @@ pub struct AttachedClusterError {
     #[prost(string, tag = "1")]
     pub message: ::prost::alloc::string::String,
 }
+/// Details of a proxy config.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AttachedProxyConfig {
+    /// The Kubernetes Secret resource that contains the HTTP(S) proxy
+    /// configuration. The secret must be a JSON encoded proxy configuration
+    /// as described in
+    #[prost(message, optional, tag = "1")]
+    pub kubernetes_secret: ::core::option::Option<KubernetesSecret>,
+}
+/// Information about a Kubernetes Secret
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct KubernetesSecret {
+    /// Name of the kubernetes secret.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Namespace in which the kubernetes secret is stored.
+    #[prost(string, tag = "2")]
+    pub namespace: ::prost::alloc::string::String,
+}
 /// Request message for `AttachedClusters.GenerateAttachedClusterInstallManifest`
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -506,6 +641,9 @@ pub struct GenerateAttachedClusterInstallManifestRequest {
     /// [GetAttachedServerConfig][google.cloud.gkemulticloud.v1.AttachedClusters.GetAttachedServerConfig].
     #[prost(string, tag = "3")]
     pub platform_version: ::prost::alloc::string::String,
+    /// Optional. Proxy configuration for outbound HTTP(S) traffic.
+    #[prost(message, optional, tag = "4")]
+    pub proxy_config: ::core::option::Option<AttachedProxyConfig>,
 }
 /// Response message for
 /// `AttachedClusters.GenerateAttachedClusterInstallManifest` method.
@@ -582,6 +720,9 @@ pub struct ImportAttachedClusterRequest {
     /// Supported values: \["eks", "aks"\].
     #[prost(string, tag = "5")]
     pub distribution: ::prost::alloc::string::String,
+    /// Optional. Proxy configuration for outbound HTTP(S) traffic.
+    #[prost(message, optional, tag = "6")]
+    pub proxy_config: ::core::option::Option<AttachedProxyConfig>,
 }
 /// Request message for `AttachedClusters.UpdateAttachedCluster` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -600,12 +741,16 @@ pub struct UpdateAttachedClusterRequest {
     /// fields from
     /// [AttachedCluster][google.cloud.gkemulticloud.v1.AttachedCluster]:
     ///
-    ///   *   `description`.
     ///   *   `annotations`.
-    ///   *   `platform_version`.
+    ///   *   `authorization.admin_groups`.
     ///   *   `authorization.admin_users`.
+    ///   *   `binary_authorization.evaluation_mode`.
+    ///   *   `description`.
     ///   *   `logging_config.component_config.enable_components`.
     ///   *   `monitoring_config.managed_prometheus_config.enabled`.
+    ///   *   `platform_version`.
+    ///   *   `proxy_config.kubernetes_secret.name`.
+    ///   *   `proxy_config.kubernetes_secret.namespace`.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -724,6 +869,47 @@ pub struct GetAttachedServerConfigRequest {
     /// for more details on Google Cloud resource names.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateAttachedClusterAgentTokenRequest {
+    /// Required.
+    #[prost(string, tag = "1")]
+    pub attached_cluster: ::prost::alloc::string::String,
+    /// Required.
+    #[prost(string, tag = "2")]
+    pub subject_token: ::prost::alloc::string::String,
+    /// Required.
+    #[prost(string, tag = "3")]
+    pub subject_token_type: ::prost::alloc::string::String,
+    /// Required.
+    #[prost(string, tag = "4")]
+    pub version: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "6")]
+    pub grant_type: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "7")]
+    pub audience: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "8")]
+    pub scope: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "9")]
+    pub requested_token_type: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "10")]
+    pub options: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateAttachedClusterAgentTokenResponse {
+    #[prost(string, tag = "1")]
+    pub access_token: ::prost::alloc::string::String,
+    #[prost(int32, tag = "2")]
+    pub expires_in: i32,
+    #[prost(string, tag = "3")]
+    pub token_type: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod attached_clusters_client {
@@ -1087,6 +1273,39 @@ pub mod attached_clusters_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Generates an access token for a cluster agent.
+        pub async fn generate_attached_cluster_agent_token(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::GenerateAttachedClusterAgentTokenRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerateAttachedClusterAgentTokenResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.gkemulticloud.v1.AttachedClusters/GenerateAttachedClusterAgentToken",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AttachedClusters",
+                        "GenerateAttachedClusterAgentToken",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// An Anthos cluster running on AWS.
@@ -1180,6 +1399,9 @@ pub struct AwsCluster {
     /// Optional. Monitoring configuration for this cluster.
     #[prost(message, optional, tag = "21")]
     pub monitoring_config: ::core::option::Option<MonitoringConfig>,
+    /// Optional. Binary Authorization configuration for this cluster.
+    #[prost(message, optional, tag = "22")]
+    pub binary_authorization: ::core::option::Option<BinaryAuthorization>,
 }
 /// Nested message and enum types in `AwsCluster`.
 pub mod aws_cluster {
@@ -1348,7 +1570,7 @@ pub struct AwsServicesAuthentication {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AwsAuthorization {
-    /// Required. Users that can perform operations as a cluster admin. A managed
+    /// Optional. Users that can perform operations as a cluster admin. A managed
     /// ClusterRoleBinding will be created to grant the `cluster-admin` ClusterRole
     /// to the users. Up to ten admin users can be provided.
     ///
@@ -1356,6 +1578,14 @@ pub struct AwsAuthorization {
     /// <https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles>
     #[prost(message, repeated, tag = "1")]
     pub admin_users: ::prost::alloc::vec::Vec<AwsClusterUser>,
+    /// Optional. Groups of users that can perform operations as a cluster admin. A
+    /// managed ClusterRoleBinding will be created to grant the `cluster-admin`
+    /// ClusterRole to the groups. Up to ten admin groups can be provided.
+    ///
+    /// For more info on RBAC, see
+    /// <https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles>
+    #[prost(message, repeated, tag = "2")]
+    pub admin_groups: ::prost::alloc::vec::Vec<AwsClusterGroup>,
 }
 /// Identities of a user-type subject for AWS clusters.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1364,6 +1594,14 @@ pub struct AwsClusterUser {
     /// Required. The name of the user, e.g. `my-gcp-id@gmail.com`.
     #[prost(string, tag = "1")]
     pub username: ::prost::alloc::string::String,
+}
+/// Identities of a group-type subject for AWS clusters.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AwsClusterGroup {
+    /// Required. The name of the group, e.g. `my-group@domain.com`.
+    #[prost(string, tag = "1")]
+    pub group: ::prost::alloc::string::String,
 }
 /// Configuration related to application-layer secrets encryption.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1392,6 +1630,12 @@ pub struct AwsVolumeTemplate {
     /// GP3 volume.
     #[prost(int32, tag = "3")]
     pub iops: i32,
+    /// Optional. The throughput that the volume supports, in MiB/s. Only valid if
+    /// volume_type is GP3.
+    ///
+    /// If the volume_type is GP3 and this is not speficied, it defaults to 125.
+    #[prost(int32, tag = "5")]
+    pub throughput: i32,
     /// Optional. The Amazon Resource Name (ARN) of the Customer Managed Key (CMK)
     /// used to encrypt AWS EBS volumes.
     ///
@@ -1476,6 +1720,13 @@ pub struct AwsClusterNetworking {
     pub service_address_cidr_blocks: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
+    /// Optional. Disable the per node pool subnet security group rules on the
+    /// control plane security group. When set to true, you must also provide one
+    /// or more security groups that ensure node pools are able to send requests to
+    /// the control plane on TCP/443 and TCP/8132. Failure to do so may result in
+    /// unavailable node pools.
+    #[prost(bool, tag = "5")]
+    pub per_node_pool_sg_rules_disabled: bool,
 }
 /// An Anthos node pool running on AWS.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1551,6 +1802,12 @@ pub struct AwsNodePool {
     /// Output only. A set of errors found in the node pool.
     #[prost(message, repeated, tag = "29")]
     pub errors: ::prost::alloc::vec::Vec<AwsNodePoolError>,
+    /// Optional. The Management configuration for this node pool.
+    #[prost(message, optional, tag = "30")]
+    pub management: ::core::option::Option<AwsNodeManagement>,
+    /// Optional. Update settings control the speed and disruption of the update.
+    #[prost(message, optional, tag = "32")]
+    pub update_settings: ::core::option::Option<UpdateSettings>,
 }
 /// Nested message and enum types in `AwsNodePool`.
 pub mod aws_node_pool {
@@ -1617,13 +1874,70 @@ pub mod aws_node_pool {
         }
     }
 }
+/// UpdateSettings control the level of parallelism and the level of
+/// disruption caused during the update of a node pool.
+///
+/// These settings are applicable when the node pool update requires replacing
+/// the existing node pool nodes with the updated ones.
+///
+/// UpdateSettings are optional. When UpdateSettings are not specified during the
+/// node pool creation, a default is chosen based on the parent cluster's
+/// version. For clusters with minor version 1.27 and later, a default
+/// surge_settings configuration with max_surge = 1 and max_unavailable = 0 is
+/// used. For clusters with older versions, node pool updates use the traditional
+/// rolling update mechanism of updating one node at a time in a
+/// "terminate before create" fashion and update_settings is not applicable.
+///
+/// Set the surge_settings parameter to use the Surge Update mechanism for
+/// the rolling update of node pool nodes.
+/// 1. max_surge controls the number of additional nodes that can be created
+/// beyond the current size of the node pool temporarily for the time of the
+/// update to increase the number of available nodes.
+/// 2. max_unavailable controls the number of nodes that can be simultaneously
+/// unavailable during the update.
+/// 3. (max_surge + max_unavailable) determines the level of parallelism (i.e.,
+/// the number of nodes being updated at the same time).
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateSettings {
+    /// Optional. Settings for surge update.
+    #[prost(message, optional, tag = "1")]
+    pub surge_settings: ::core::option::Option<SurgeSettings>,
+}
+/// SurgeSettings contains the parameters for Surge update.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SurgeSettings {
+    /// Optional. The maximum number of nodes that can be created beyond the
+    /// current size of the node pool during the update process.
+    #[prost(int32, tag = "1")]
+    pub max_surge: i32,
+    /// Optional. The maximum number of nodes that can be simultaneously
+    /// unavailable during the update process. A node is considered unavailable if
+    /// its status is not Ready.
+    #[prost(int32, tag = "2")]
+    pub max_unavailable: i32,
+}
+/// AwsNodeManagement defines the set of node management features turned on for
+/// an AWS node pool.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AwsNodeManagement {
+    /// Optional. Whether or not the nodes will be automatically repaired. When set
+    /// to true, the nodes in this node pool will be monitored and if they fail
+    /// health checks consistently over a period of time, an automatic repair
+    /// action will be triggered to replace them with new nodes.
+    #[prost(bool, tag = "1")]
+    pub auto_repair: bool,
+}
 /// Parameters that describe the nodes in a cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AwsNodeConfig {
-    /// Optional. The AWS instance type.
+    /// Optional. The EC2 instance type when creating on-Demand instances.
     ///
-    /// When unspecified, it uses a default based on the node pool's version.
+    /// If unspecified during node pool creation, a default will be chosen based on
+    /// the node pool version, and assigned to this field.
     #[prost(string, tag = "1")]
     pub instance_type: ::prost::alloc::string::String,
     /// Optional. Template for the root volume provisioned for node pool nodes.
@@ -1658,8 +1972,7 @@ pub struct AwsNodeConfig {
     #[prost(string, tag = "6")]
     pub iam_instance_profile: ::prost::alloc::string::String,
     /// Optional. The OS image type to use on node pool instances.
-    /// Can have a value of `ubuntu`, or `windows` if the cluster enables
-    /// the Windows node pool preview feature.
+    /// Can be unspecified, or have a value of `ubuntu`.
     ///
     /// When unspecified, it defaults to `ubuntu`.
     #[prost(string, tag = "11")]
@@ -1690,6 +2003,13 @@ pub struct AwsNodeConfig {
     pub autoscaling_metrics_collection: ::core::option::Option<
         AwsAutoscalingGroupMetricsCollection,
     >,
+    /// Optional. Configuration for provisioning EC2 Spot instances
+    ///
+    /// When specified, the node pool will provision Spot instances from the set
+    /// of spot_config.instance_types.
+    /// This field is mutually exclusive with `instance_type`.
+    #[prost(message, optional, tag = "16")]
+    pub spot_config: ::core::option::Option<SpotConfig>,
 }
 /// AwsNodePoolAutoscaling contains information required by cluster autoscaler
 /// to adjust the size of the node pool to the current cluster usage.
@@ -1705,6 +2025,48 @@ pub struct AwsNodePoolAutoscaling {
     #[prost(int32, tag = "2")]
     pub max_node_count: i32,
 }
+/// AwsOpenIdConfig is an OIDC discovery document for the cluster.
+/// See the OpenID Connect Discovery 1.0 specification for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AwsOpenIdConfig {
+    /// OIDC Issuer.
+    #[prost(string, tag = "1")]
+    pub issuer: ::prost::alloc::string::String,
+    /// JSON Web Key uri.
+    #[prost(string, tag = "2")]
+    pub jwks_uri: ::prost::alloc::string::String,
+    /// Supported response types.
+    #[prost(string, repeated, tag = "3")]
+    pub response_types_supported: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// Supported subject types.
+    #[prost(string, repeated, tag = "4")]
+    pub subject_types_supported: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// supported ID Token signing Algorithms.
+    #[prost(string, repeated, tag = "5")]
+    pub id_token_signing_alg_values_supported: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// Supported claims.
+    #[prost(string, repeated, tag = "6")]
+    pub claims_supported: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Supported grant types.
+    #[prost(string, repeated, tag = "7")]
+    pub grant_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// AwsJsonWebKeys is a valid JSON Web Key Set as specififed in RFC 7517.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AwsJsonWebKeys {
+    /// The public component of the keys used by the cluster to sign token
+    /// requests.
+    #[prost(message, repeated, tag = "1")]
+    pub keys: ::prost::alloc::vec::Vec<Jwk>,
+}
 /// AwsServerConfig is the configuration of GKE cluster on AWS.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1712,7 +2074,10 @@ pub struct AwsServerConfig {
     /// The resource name of the config.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// List of valid Kubernetes versions.
+    /// List of all released Kubernetes versions, including ones which are end of
+    /// life and can no longer be used.  Filter by the `enabled`
+    /// property to limit to currently available versions.
+    /// Valid versions supported for both create and update operations
     #[prost(message, repeated, tag = "2")]
     pub valid_versions: ::prost::alloc::vec::Vec<AwsK8sVersionInfo>,
     /// The list of supported AWS regions.
@@ -1726,6 +2091,26 @@ pub struct AwsK8sVersionInfo {
     /// Kubernetes version name.
     #[prost(string, tag = "1")]
     pub version: ::prost::alloc::string::String,
+    /// Optional. True if the version is available for cluster creation. If a
+    /// version is enabled for creation, it can be used to create new clusters.
+    /// Otherwise, cluster creation will fail. However, cluster upgrade operations
+    /// may succeed, even if the version is not enabled.
+    #[prost(bool, tag = "3")]
+    pub enabled: bool,
+    /// Optional. True if this cluster version belongs to a minor version that has
+    /// reached its end of life and is no longer in scope to receive security and
+    /// bug fixes.
+    #[prost(bool, tag = "4")]
+    pub end_of_life: bool,
+    /// Optional. The estimated date (in Pacific Time) when this cluster version
+    /// will reach its end of life. Or if this version is no longer supported (the
+    /// `end_of_life` field is true), this is the actual date (in Pacific time)
+    /// when the version reached its end of life.
+    #[prost(message, optional, tag = "5")]
+    pub end_of_life_date: ::core::option::Option<super::super::super::r#type::Date>,
+    /// Optional. The date (in Pacific Time) when the cluster version was released.
+    #[prost(message, optional, tag = "6")]
+    pub release_date: ::core::option::Option<super::super::super::r#type::Date>,
 }
 /// SSH configuration for AWS resources.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1838,6 +2223,14 @@ pub struct AwsAutoscalingGroupMetricsCollection {
     #[prost(string, repeated, tag = "2")]
     pub metrics: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// SpotConfig has configuration info for Spot node.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SpotConfig {
+    /// Required. A list of instance types for creating spot node pool.
+    #[prost(string, repeated, tag = "1")]
+    pub instance_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// AwsClusterError describes errors found on AWS clusters.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1906,6 +2299,8 @@ pub struct UpdateAwsClusterRequest {
     ///   *   `annotations`.
     ///   *   `control_plane.version`.
     ///   *   `authorization.admin_users`.
+    ///   *   `authorization.admin_groups`.
+    ///   *   `binary_authorization.evaluation_mode`.
     ///   *   `control_plane.aws_services_authentication.role_arn`.
     ///   *   `control_plane.aws_services_authentication.role_session_name`.
     ///   *   `control_plane.config_encryption.kms_key_arn`.
@@ -1917,6 +2312,7 @@ pub struct UpdateAwsClusterRequest {
     ///   *   `control_plane.root_volume.size_gib`.
     ///   *   `control_plane.root_volume.volume_type`.
     ///   *   `control_plane.root_volume.iops`.
+    ///   *   `control_plane.root_volume.throughput`.
     ///   *   `control_plane.root_volume.kms_key_arn`.
     ///   *   `control_plane.ssh_config`.
     ///   *   `control_plane.ssh_config.ec2_key_pair`.
@@ -1925,6 +2321,7 @@ pub struct UpdateAwsClusterRequest {
     ///   *   `logging_config.component_config.enable_components`.
     ///   *   `control_plane.tags`.
     ///   *   `monitoring_config.managed_prometheus_config.enabled`.
+    ///   *   `networking.per_node_pool_sg_rules_disabled`.
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -2010,6 +2407,12 @@ pub struct DeleteAwsClusterRequest {
     /// Useful for idempotent deletion.
     #[prost(bool, tag = "3")]
     pub allow_missing: bool,
+    /// Optional. If set to true, the deletion of
+    /// [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster] resource will
+    /// succeed even if errors occur during deleting in cluster resources. Using
+    /// this parameter may result in orphaned resources in the cluster.
+    #[prost(bool, tag = "5")]
+    pub ignore_errors: bool,
     /// The current etag of the
     /// [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster].
     ///
@@ -2076,6 +2479,7 @@ pub struct UpdateAwsNodePoolRequest {
     ///   *   `config.config_encryption.kms_key_arn`.
     ///   *   `config.security_group_ids`.
     ///   *   `config.root_volume.iops`.
+    ///   *   `config.root_volume.throughput`.
     ///   *   `config.root_volume.kms_key_arn`.
     ///   *   `config.root_volume.volume_type`.
     ///   *   `config.root_volume.size_gib`.
@@ -2091,8 +2495,35 @@ pub struct UpdateAwsNodePoolRequest {
     ///   *   `config.autoscaling_metrics_collection`.
     ///   *   `config.autoscaling_metrics_collection.granularity`.
     ///   *   `config.autoscaling_metrics_collection.metrics`.
+    ///   *   `config.instance_type`.
+    ///   *   `management.auto_repair`.
+    ///   *   `management`.
+    ///   *   `update_settings`.
+    ///   *   `update_settings.surge_settings`.
+    ///   *   `update_settings.surge_settings.max_surge`.
+    ///   *   `update_settings.surge_settings.max_unavailable`.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for `AwsClusters.RollbackAwsNodePoolUpdate` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RollbackAwsNodePoolUpdateRequest {
+    /// Required. The name of the
+    /// [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool] resource to
+    /// rollback.
+    ///
+    /// `AwsNodePool` names are formatted as
+    /// `projects/<project-id>/locations/<region>/awsClusters/<cluster-id>/awsNodePools/<node-pool-id>`.
+    ///
+    /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
+    /// for more details on Google Cloud resource names.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Option for rollback to ignore the PodDisruptionBudget when
+    /// draining the node pool nodes. Default value is false.
+    #[prost(bool, tag = "2")]
+    pub respect_pdb: bool,
 }
 /// Request message for `AwsClusters.GetAwsNodePool` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2178,6 +2609,12 @@ pub struct DeleteAwsNodePoolRequest {
     /// Useful for idempotent deletion.
     #[prost(bool, tag = "3")]
     pub allow_missing: bool,
+    /// Optional. If set to true, the deletion of
+    /// [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool] resource will
+    /// succeed even if errors occur during deleting in node pool resources. Using
+    /// this parameter may result in orphaned resources in the node pool.
+    #[prost(bool, tag = "5")]
+    pub ignore_errors: bool,
     /// The current ETag of the
     /// [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool].
     ///
@@ -2187,6 +2624,30 @@ pub struct DeleteAwsNodePoolRequest {
     /// the request will fail and an ABORTED error will be returned.
     #[prost(string, tag = "4")]
     pub etag: ::prost::alloc::string::String,
+}
+/// GetAwsOpenIdConfigRequest gets the OIDC discovery document for the
+/// cluster. See the OpenID Connect Discovery 1.0 specification for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAwsOpenIdConfigRequest {
+    /// Required. The AwsCluster, which owns the OIDC discovery document.
+    /// Format:
+    /// projects/{project}/locations/{location}/awsClusters/{cluster}
+    #[prost(string, tag = "1")]
+    pub aws_cluster: ::prost::alloc::string::String,
+}
+/// GetAwsJsonWebKeysRequest gets the public component of the keys used by the
+/// cluster to sign token requests. This will be the jwks_uri for the discover
+/// document returned by getOpenIDConfig. See the OpenID Connect
+/// Discovery 1.0 specification for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAwsJsonWebKeysRequest {
+    /// Required. The AwsCluster, which owns the JsonWebKeys.
+    /// Format:
+    /// projects/{project}/locations/{location}/awsClusters/{cluster}
+    #[prost(string, tag = "1")]
+    pub aws_cluster: ::prost::alloc::string::String,
 }
 /// GetAwsServerConfigRequest gets the server config of GKE cluster on AWS.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2230,6 +2691,50 @@ pub struct GenerateAwsAccessTokenResponse {
     /// Output only. Timestamp at which the token will expire.
     #[prost(message, optional, tag = "2")]
     pub expiration_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateAwsClusterAgentTokenRequest {
+    /// Required.
+    #[prost(string, tag = "1")]
+    pub aws_cluster: ::prost::alloc::string::String,
+    /// Required.
+    #[prost(string, tag = "2")]
+    pub subject_token: ::prost::alloc::string::String,
+    /// Required.
+    #[prost(string, tag = "3")]
+    pub subject_token_type: ::prost::alloc::string::String,
+    /// Required.
+    #[prost(string, tag = "4")]
+    pub version: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "5")]
+    pub node_pool_id: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "6")]
+    pub grant_type: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "7")]
+    pub audience: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "8")]
+    pub scope: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "9")]
+    pub requested_token_type: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "10")]
+    pub options: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateAwsClusterAgentTokenResponse {
+    #[prost(string, tag = "1")]
+    pub access_token: ::prost::alloc::string::String,
+    #[prost(int32, tag = "2")]
+    pub expires_in: i32,
+    #[prost(string, tag = "3")]
+    pub token_type: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod aws_clusters_client {
@@ -2485,6 +2990,37 @@ pub mod aws_clusters_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Generates an access token for a cluster agent.
+        pub async fn generate_aws_cluster_agent_token(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GenerateAwsClusterAgentTokenRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerateAwsClusterAgentTokenResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.gkemulticloud.v1.AwsClusters/GenerateAwsClusterAgentToken",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "GenerateAwsClusterAgentToken",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Generates a short-lived access token to authenticate to a given
         /// [AwsCluster][google.cloud.gkemulticloud.v1.AwsCluster] resource.
         pub async fn generate_aws_access_token(
@@ -2580,6 +3116,42 @@ pub mod aws_clusters_client {
                     GrpcMethod::new(
                         "google.cloud.gkemulticloud.v1.AwsClusters",
                         "UpdateAwsNodePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Rolls back a previously aborted or failed
+        /// [AwsNodePool][google.cloud.gkemulticloud.v1.AwsNodePool] update request.
+        /// Makes no changes if the last update request successfully finished.
+        /// If an update request is in progress, you cannot rollback the update.
+        /// You must first cancel or let it finish unsuccessfully before you can
+        /// rollback.
+        pub async fn rollback_aws_node_pool_update(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RollbackAwsNodePoolUpdateRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.gkemulticloud.v1.AwsClusters/RollbackAwsNodePoolUpdate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "RollbackAwsNodePoolUpdate",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -2682,6 +3254,70 @@ pub mod aws_clusters_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Gets the OIDC discovery document for the cluster.
+        /// See the
+        /// [OpenID Connect Discovery 1.0
+        /// specification](https://openid.net/specs/openid-connect-discovery-1_0.html)
+        /// for details.
+        pub async fn get_aws_open_id_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAwsOpenIdConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AwsOpenIdConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.gkemulticloud.v1.AwsClusters/GetAwsOpenIdConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "GetAwsOpenIdConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the public component of the cluster signing keys in
+        /// JSON Web Key format.
+        pub async fn get_aws_json_web_keys(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAwsJsonWebKeysRequest>,
+        ) -> std::result::Result<tonic::Response<super::AwsJsonWebKeys>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.gkemulticloud.v1.AwsClusters/GetAwsJsonWebKeys",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AwsClusters",
+                        "GetAwsJsonWebKeys",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Returns information, such as supported AWS regions and Kubernetes
         /// versions, on a given Google Cloud location.
         pub async fn get_aws_server_config(
@@ -2751,6 +3387,8 @@ pub struct AzureCluster {
     /// authentication configuration for how the Anthos Multi-Cloud API connects to
     /// Azure APIs.
     ///
+    /// Either azure_client or azure_services_authentication should be provided.
+    ///
     /// The `AzureClient` resource must reside on the same Google Cloud Platform
     /// project and region as the `AzureCluster`.
     ///
@@ -2771,6 +3409,8 @@ pub struct AzureCluster {
     #[prost(message, optional, tag = "6")]
     pub authorization: ::core::option::Option<AzureAuthorization>,
     /// Optional. Authentication configuration for management of Azure resources.
+    ///
+    /// Either azure_client or azure_services_authentication should be provided.
     #[prost(message, optional, tag = "22")]
     pub azure_services_authentication: ::core::option::Option<
         AzureServicesAuthentication,
@@ -3178,7 +3818,7 @@ pub struct AzureClient {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AzureAuthorization {
-    /// Required. Users that can perform operations as a cluster admin. A managed
+    /// Optional. Users that can perform operations as a cluster admin. A managed
     /// ClusterRoleBinding will be created to grant the `cluster-admin` ClusterRole
     /// to the users. Up to ten admin users can be provided.
     ///
@@ -3186,6 +3826,14 @@ pub struct AzureAuthorization {
     /// <https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles>
     #[prost(message, repeated, tag = "1")]
     pub admin_users: ::prost::alloc::vec::Vec<AzureClusterUser>,
+    /// Optional. Groups of users that can perform operations as a cluster admin. A
+    /// managed ClusterRoleBinding will be created to grant the `cluster-admin`
+    /// ClusterRole to the groups. Up to ten admin groups can be provided.
+    ///
+    /// For more info on RBAC, see
+    /// <https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles>
+    #[prost(message, repeated, tag = "2")]
+    pub admin_groups: ::prost::alloc::vec::Vec<AzureClusterGroup>,
 }
 /// Authentication configuration for the management of Azure resources.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3205,6 +3853,14 @@ pub struct AzureClusterUser {
     /// Required. The name of the user, e.g. `my-gcp-id@gmail.com`.
     #[prost(string, tag = "1")]
     pub username: ::prost::alloc::string::String,
+}
+/// Identities of a group-type subject for Azure clusters.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AzureClusterGroup {
+    /// Required. The name of the group, e.g. `my-group@domain.com`.
+    #[prost(string, tag = "1")]
+    pub group: ::prost::alloc::string::String,
 }
 /// An Anthos node pool running on Azure.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3282,6 +3938,9 @@ pub struct AzureNodePool {
     /// Output only. A set of errors found in the node pool.
     #[prost(message, repeated, tag = "29")]
     pub errors: ::prost::alloc::vec::Vec<AzureNodePoolError>,
+    /// Optional. The Management configuration for this node pool.
+    #[prost(message, optional, tag = "30")]
+    pub management: ::core::option::Option<AzureNodeManagement>,
 }
 /// Nested message and enum types in `AzureNodePool`.
 pub mod azure_node_pool {
@@ -3348,6 +4007,18 @@ pub mod azure_node_pool {
         }
     }
 }
+/// AzureNodeManagement defines the set of node management features turned on for
+/// an Azure node pool.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AzureNodeManagement {
+    /// Optional. Whether or not the nodes will be automatically repaired. When set
+    /// to true, the nodes in this node pool will be monitored and if they fail
+    /// health checks consistently over a period of time, an automatic repair
+    /// action will be triggered to replace them with new nodes.
+    #[prost(bool, tag = "1")]
+    pub auto_repair: bool,
+}
 /// Parameters that describe the configuration of all node machines
 /// on a given node pool.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3379,8 +4050,7 @@ pub struct AzureNodeConfig {
         ::prost::alloc::string::String,
     >,
     /// Optional. The OS image type to use on node pool instances.
-    /// Can have a value of `ubuntu`, or `windows` if the cluster enables
-    /// the Windows node pool preview feature.
+    /// Can be unspecified, or have a value of `ubuntu`.
     ///
     /// When unspecified, it defaults to `ubuntu`.
     #[prost(string, tag = "8")]
@@ -3422,6 +4092,48 @@ pub struct AzureNodePoolAutoscaling {
     #[prost(int32, tag = "2")]
     pub max_node_count: i32,
 }
+/// AzureOpenIdConfig is an OIDC discovery document for the cluster.
+/// See the OpenID Connect Discovery 1.0 specification for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AzureOpenIdConfig {
+    /// OIDC Issuer.
+    #[prost(string, tag = "1")]
+    pub issuer: ::prost::alloc::string::String,
+    /// JSON Web Key uri.
+    #[prost(string, tag = "2")]
+    pub jwks_uri: ::prost::alloc::string::String,
+    /// Supported response types.
+    #[prost(string, repeated, tag = "3")]
+    pub response_types_supported: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// Supported subject types.
+    #[prost(string, repeated, tag = "4")]
+    pub subject_types_supported: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// supported ID Token signing Algorithms.
+    #[prost(string, repeated, tag = "5")]
+    pub id_token_signing_alg_values_supported: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// Supported claims.
+    #[prost(string, repeated, tag = "6")]
+    pub claims_supported: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Supported grant types.
+    #[prost(string, repeated, tag = "7")]
+    pub grant_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// AzureJsonWebKeys is a valid JSON Web Key Set as specififed in RFC 7517.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AzureJsonWebKeys {
+    /// The public component of the keys used by the cluster to sign token
+    /// requests.
+    #[prost(message, repeated, tag = "1")]
+    pub keys: ::prost::alloc::vec::Vec<Jwk>,
+}
 /// AzureServerConfig contains information about a Google Cloud location, such as
 /// supported Azure regions and Kubernetes versions.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3436,7 +4148,10 @@ pub struct AzureServerConfig {
     /// for more details on Google Cloud Platform resource names.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// List of valid Kubernetes versions.
+    /// List of all released Kubernetes versions, including ones which are end of
+    /// life and can no longer be used.  Filter by the `enabled`
+    /// property to limit to currently available versions.
+    /// Valid versions supported for both create and update operations
     #[prost(message, repeated, tag = "2")]
     pub valid_versions: ::prost::alloc::vec::Vec<AzureK8sVersionInfo>,
     /// The list of supported Azure regions.
@@ -3445,13 +4160,33 @@ pub struct AzureServerConfig {
         ::prost::alloc::string::String,
     >,
 }
-/// Information about a supported Kubernetes version.
+/// Kubernetes version information of GKE cluster on Azure.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AzureK8sVersionInfo {
-    /// A supported Kubernetes version (for example, `1.19.10-gke.1000`)
+    /// Kubernetes version name (for example, `1.19.10-gke.1000`)
     #[prost(string, tag = "1")]
     pub version: ::prost::alloc::string::String,
+    /// Optional. True if the version is available for cluster creation. If a
+    /// version is enabled for creation, it can be used to create new clusters.
+    /// Otherwise, cluster creation will fail. However, cluster upgrade operations
+    /// may succeed, even if the version is not enabled.
+    #[prost(bool, tag = "3")]
+    pub enabled: bool,
+    /// Optional. True if this cluster version belongs to a minor version that has
+    /// reached its end of life and is no longer in scope to receive security and
+    /// bug fixes.
+    #[prost(bool, tag = "4")]
+    pub end_of_life: bool,
+    /// Optional. The estimated date (in Pacific Time) when this cluster version
+    /// will reach its end of life. Or if this version is no longer supported (the
+    /// `end_of_life` field is true), this is the actual date (in Pacific time)
+    /// when the version reached its end of life.
+    #[prost(message, optional, tag = "5")]
+    pub end_of_life_date: ::core::option::Option<super::super::super::r#type::Date>,
+    /// Optional. The date (in Pacific Time) when the cluster version was released.
+    #[prost(message, optional, tag = "6")]
+    pub release_date: ::core::option::Option<super::super::super::r#type::Date>,
 }
 /// SSH configuration for Azure resources.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3546,6 +4281,7 @@ pub struct UpdateAzureClusterRequest {
     ///   *   `control_plane.vm_size`.
     ///   *   `annotations`.
     ///   *   `authorization.admin_users`.
+    ///   *   `authorization.admin_groups`.
     ///   *   `control_plane.root_volume.size_gib`.
     ///   *   `azure_services_authentication`.
     ///   *   `azure_services_authentication.tenant_id`.
@@ -3616,7 +4352,7 @@ pub struct ListAzureClustersResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for `Clusters.DeleteAzureCluster` method.
+/// Request message for `AzureClusters.DeleteAzureCluster` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAzureClusterRequest {
@@ -3658,7 +4394,8 @@ pub struct CreateAzureNodePoolRequest {
     /// Required. The [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster]
     /// resource where this node pool will be created.
     ///
-    /// Location names are formatted as `projects/<project-id>/locations/<region>`.
+    /// `AzureCluster` names are formatted as
+    /// `projects/<project-id>/locations/<region>/azureClusters/<cluster-id>`.
     ///
     /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
     /// for more details on Google Cloud resource names.
@@ -3704,6 +4441,8 @@ pub struct UpdateAzureNodePoolRequest {
     ///   *   `autoscaling.min_node_count`.
     ///   *   `autoscaling.max_node_count`.
     ///   *   `config.ssh_config.authorized_key`.
+    ///   *   `management.auto_repair`.
+    ///   *   `management`.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -3765,7 +4504,7 @@ pub struct ListAzureNodePoolsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Delete message for `AzureClusters.DeleteAzureNodePool` method.
+/// Request message for `AzureClusters.DeleteAzureNodePool` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAzureNodePoolRequest {
@@ -3801,6 +4540,30 @@ pub struct DeleteAzureNodePoolRequest {
     /// the request will fail and an ABORTED error will be returned.
     #[prost(string, tag = "4")]
     pub etag: ::prost::alloc::string::String,
+}
+/// GetAzureOpenIdConfigRequest gets the OIDC discovery document for the
+/// cluster. See the OpenID Connect Discovery 1.0 specification for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAzureOpenIdConfigRequest {
+    /// Required. The AzureCluster, which owns the OIDC discovery document.
+    /// Format:
+    /// projects/<project-id>/locations/<region>/azureClusters/<cluster-id>
+    #[prost(string, tag = "1")]
+    pub azure_cluster: ::prost::alloc::string::String,
+}
+/// GetAzureJsonWebKeysRequest gets the public component of the keys used by the
+/// cluster to sign token requests. This will be the jwks_uri for the discover
+/// document returned by getOpenIDConfig. See the OpenID Connect
+/// Discovery 1.0 specification for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAzureJsonWebKeysRequest {
+    /// Required. The AzureCluster, which owns the JsonWebKeys.
+    /// Format:
+    /// projects/<project-id>/locations/<region>/azureClusters/<cluster-id>
+    #[prost(string, tag = "1")]
+    pub azure_cluster: ::prost::alloc::string::String,
 }
 /// GetAzureServerConfigRequest gets the server config of GKE cluster on Azure.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3945,7 +4708,7 @@ pub struct GenerateAzureAccessTokenRequest {
     /// authenticate to.
     ///
     /// `AzureCluster` names are formatted as
-    /// `projects/<project-id>/locations/<region>/AzureClusters/<cluster-id>`.
+    /// `projects/<project-id>/locations/<region>/azureClusters/<cluster-id>`.
     ///
     /// See [Resource Names](<https://cloud.google.com/apis/design/resource_names>)
     /// for more details on Google Cloud resource names.
@@ -3962,6 +4725,50 @@ pub struct GenerateAzureAccessTokenResponse {
     /// Output only. Timestamp at which the token will expire.
     #[prost(message, optional, tag = "2")]
     pub expiration_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateAzureClusterAgentTokenRequest {
+    /// Required.
+    #[prost(string, tag = "1")]
+    pub azure_cluster: ::prost::alloc::string::String,
+    /// Required.
+    #[prost(string, tag = "2")]
+    pub subject_token: ::prost::alloc::string::String,
+    /// Required.
+    #[prost(string, tag = "3")]
+    pub subject_token_type: ::prost::alloc::string::String,
+    /// Required.
+    #[prost(string, tag = "4")]
+    pub version: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "5")]
+    pub node_pool_id: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "6")]
+    pub grant_type: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "7")]
+    pub audience: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "8")]
+    pub scope: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "9")]
+    pub requested_token_type: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(string, tag = "10")]
+    pub options: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateAzureClusterAgentTokenResponse {
+    #[prost(string, tag = "1")]
+    pub access_token: ::prost::alloc::string::String,
+    #[prost(int32, tag = "2")]
+    pub expires_in: i32,
+    #[prost(string, tag = "3")]
+    pub token_type: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod azure_clusters_client {
@@ -4357,6 +5164,39 @@ pub mod azure_clusters_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Generates an access token for a cluster agent.
+        pub async fn generate_azure_cluster_agent_token(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::GenerateAzureClusterAgentTokenRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerateAzureClusterAgentTokenResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.gkemulticloud.v1.AzureClusters/GenerateAzureClusterAgentToken",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "GenerateAzureClusterAgentToken",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Generates a short-lived access token to authenticate to a given
         /// [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster] resource.
         pub async fn generate_azure_access_token(
@@ -4551,6 +5391,73 @@ pub mod azure_clusters_client {
                     GrpcMethod::new(
                         "google.cloud.gkemulticloud.v1.AzureClusters",
                         "DeleteAzureNodePool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the OIDC discovery document for the cluster.
+        /// See the
+        /// [OpenID Connect Discovery 1.0
+        /// specification](https://openid.net/specs/openid-connect-discovery-1_0.html)
+        /// for details.
+        pub async fn get_azure_open_id_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAzureOpenIdConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AzureOpenIdConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.gkemulticloud.v1.AzureClusters/GetAzureOpenIdConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "GetAzureOpenIdConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the public component of the cluster signing keys in
+        /// JSON Web Key format.
+        pub async fn get_azure_json_web_keys(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAzureJsonWebKeysRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AzureJsonWebKeys>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.gkemulticloud.v1.AzureClusters/GetAzureJsonWebKeys",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkemulticloud.v1.AzureClusters",
+                        "GetAzureJsonWebKeys",
                     ),
                 );
             self.inner.unary(req, path, codec).await

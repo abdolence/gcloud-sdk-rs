@@ -1311,11 +1311,12 @@ pub struct ChannelGroup {
     /// The description of the Channel Group. Max length of 256 characters.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// Required. The grouping rules of channels. Maximum number of rules is 25.
+    /// Required. The grouping rules of channels. Maximum number of rules is 50.
     #[prost(message, repeated, tag = "4")]
     pub grouping_rule: ::prost::alloc::vec::Vec<GroupingRule>,
-    /// Output only. Default Channel Group defined by Google, which cannot be
-    /// updated.
+    /// Output only. If true, then this channel group is the Default Channel Group
+    /// predefined by Google Analytics. Display name and grouping rules cannot be
+    /// updated for this channel group.
     #[prost(bool, tag = "5")]
     pub system_defined: bool,
 }
@@ -2542,9 +2543,30 @@ pub struct ConversionEvent {
     /// `ONCE_PER_EVENT`.
     #[prost(enumeration = "conversion_event::ConversionCountingMethod", tag = "6")]
     pub counting_method: i32,
+    /// Optional. Defines a default value/currency for a conversion event.
+    #[prost(message, optional, tag = "7")]
+    pub default_conversion_value: ::core::option::Option<
+        conversion_event::DefaultConversionValue,
+    >,
 }
 /// Nested message and enum types in `ConversionEvent`.
 pub mod conversion_event {
+    /// Defines a default value/currency for a conversion event. Both value and
+    /// currency must be provided.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DefaultConversionValue {
+        /// This value will be used to populate the value for all conversions
+        /// of the specified event_name where the event "value" parameter is unset.
+        #[prost(double, optional, tag = "1")]
+        pub value: ::core::option::Option<f64>,
+        /// When a conversion event for this event_name has no set currency,
+        /// this currency will be applied as the default. Must be in ISO 4217
+        /// currency code format. See <https://en.wikipedia.org/wiki/ISO_4217> for
+        /// more.
+        #[prost(string, optional, tag = "2")]
+        pub currency_code: ::core::option::Option<::prost::alloc::string::String>,
+    }
     /// The method by which conversions will be counted across multiple events
     /// within a session.
     #[derive(
@@ -3179,51 +3201,6 @@ pub mod attribution_settings {
         /// for YouTube) before converting.
         /// Previously CROSS_CHANNEL_LAST_CLICK
         PaidAndOrganicChannelsLastClick = 2,
-        /// Starting in June 2023, new properties can no longer use this model.
-        /// See
-        /// [Analytics
-        /// Help](<https://support.google.com/analytics/answer/9164320#040623>)
-        /// for more details.
-        /// Starting in September 2023, we will sunset this model for all properties.
-        ///
-        /// Gives all credit for the conversion to the first channel that a customer
-        /// clicked (or engaged view through for YouTube) before converting.
-        /// Previously CROSS_CHANNEL_FIRST_CLICK
-        PaidAndOrganicChannelsFirstClick = 3,
-        /// Starting in June 2023, new properties can no longer use this model.
-        /// See
-        /// [Analytics
-        /// Help](<https://support.google.com/analytics/answer/9164320#040623>)
-        /// for more details.
-        /// Starting in September 2023, we will sunset this model for all properties.
-        ///
-        /// Distributes the credit for the conversion equally across all the channels
-        /// a customer clicked (or engaged view through for YouTube) before
-        /// converting.
-        /// Previously CROSS_CHANNEL_LINEAR
-        PaidAndOrganicChannelsLinear = 4,
-        /// Starting in June 2023, new properties can no longer use this model.
-        /// See
-        /// [Analytics
-        /// Help](<https://support.google.com/analytics/answer/9164320#040623>)
-        /// for more details.
-        /// Starting in September 2023, we will sunset this model for all properties.
-        ///
-        /// Attributes 40% credit to the first and last interaction, and the
-        /// remaining 20% credit is distributed evenly to the middle interactions.
-        /// Previously CROSS_CHANNEL_POSITION_BASED
-        PaidAndOrganicChannelsPositionBased = 5,
-        /// Starting in June 2023, new properties can no longer use this model.
-        /// See
-        /// [Analytics
-        /// Help](<https://support.google.com/analytics/answer/9164320#040623>)
-        /// for more details.
-        /// Starting in September 2023, we will sunset this model for all properties.
-        ///
-        /// Gives more credit to the touchpoints that happened closer in time to
-        /// the conversion.
-        /// Previously CROSS_CHANNEL_TIME_DECAY
-        PaidAndOrganicChannelsTimeDecay = 6,
         /// Attributes 100% of the conversion value to the last Google Paid channel
         /// that the customer clicked through before converting.
         /// Previously ADS_PREFERRED_LAST_CLICK
@@ -3245,18 +3222,6 @@ pub mod attribution_settings {
                 ReportingAttributionModel::PaidAndOrganicChannelsLastClick => {
                     "PAID_AND_ORGANIC_CHANNELS_LAST_CLICK"
                 }
-                ReportingAttributionModel::PaidAndOrganicChannelsFirstClick => {
-                    "PAID_AND_ORGANIC_CHANNELS_FIRST_CLICK"
-                }
-                ReportingAttributionModel::PaidAndOrganicChannelsLinear => {
-                    "PAID_AND_ORGANIC_CHANNELS_LINEAR"
-                }
-                ReportingAttributionModel::PaidAndOrganicChannelsPositionBased => {
-                    "PAID_AND_ORGANIC_CHANNELS_POSITION_BASED"
-                }
-                ReportingAttributionModel::PaidAndOrganicChannelsTimeDecay => {
-                    "PAID_AND_ORGANIC_CHANNELS_TIME_DECAY"
-                }
                 ReportingAttributionModel::GooglePaidChannelsLastClick => {
                     "GOOGLE_PAID_CHANNELS_LAST_CLICK"
                 }
@@ -3271,18 +3236,6 @@ pub mod attribution_settings {
                 }
                 "PAID_AND_ORGANIC_CHANNELS_LAST_CLICK" => {
                     Some(Self::PaidAndOrganicChannelsLastClick)
-                }
-                "PAID_AND_ORGANIC_CHANNELS_FIRST_CLICK" => {
-                    Some(Self::PaidAndOrganicChannelsFirstClick)
-                }
-                "PAID_AND_ORGANIC_CHANNELS_LINEAR" => {
-                    Some(Self::PaidAndOrganicChannelsLinear)
-                }
-                "PAID_AND_ORGANIC_CHANNELS_POSITION_BASED" => {
-                    Some(Self::PaidAndOrganicChannelsPositionBased)
-                }
-                "PAID_AND_ORGANIC_CHANNELS_TIME_DECAY" => {
-                    Some(Self::PaidAndOrganicChannelsTimeDecay)
                 }
                 "GOOGLE_PAID_CHANNELS_LAST_CLICK" => {
                     Some(Self::GooglePaidChannelsLastClick)
@@ -9276,8 +9229,10 @@ pub mod analytics_admin_service_client {
         /// records of each time a user reads Google Analytics reporting data. Access
         /// records are retained for up to 2 years.
         ///
-        /// Data Access Reports can be requested for a property. The property must be
-        /// in Google Analytics 360. This method is only available to Administrators.
+        /// Data Access Reports can be requested for a property. Reports may be
+        /// requested for any property, but dimensions that aren't related to quota can
+        /// only be requested on Google Analytics 360 properties. This method is only
+        /// available to Administrators.
         ///
         /// These data access records include GA4 UI Reporting, GA4 UI Explorations,
         /// GA4 Data API, and other products like Firebase & Admob that can retrieve
@@ -10730,34 +10685,6 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes a subproperty event filter.
-        pub async fn delete_subproperty_event_filter(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteSubpropertyEventFilterRequest>,
-        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteSubpropertyEventFilter",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "DeleteSubpropertyEventFilter",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
         /// Creates a subproperty Event Filter.
         pub async fn create_subproperty_event_filter(
             &mut self,
@@ -10785,6 +10712,127 @@ pub mod analytics_admin_service_client {
                     GrpcMethod::new(
                         "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "CreateSubpropertyEventFilter",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lookup for a single subproperty Event Filter.
+        pub async fn get_subproperty_event_filter(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSubpropertyEventFilterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SubpropertyEventFilter>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetSubpropertyEventFilter",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "GetSubpropertyEventFilter",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List all subproperty Event Filters on a property.
+        pub async fn list_subproperty_event_filters(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSubpropertyEventFiltersRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSubpropertyEventFiltersResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListSubpropertyEventFilters",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "ListSubpropertyEventFilters",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a subproperty Event Filter.
+        pub async fn update_subproperty_event_filter(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateSubpropertyEventFilterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SubpropertyEventFilter>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateSubpropertyEventFilter",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "UpdateSubpropertyEventFilter",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a subproperty event filter.
+        pub async fn delete_subproperty_event_filter(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSubpropertyEventFilterRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteSubpropertyEventFilter",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "DeleteSubpropertyEventFilter",
                     ),
                 );
             self.inner.unary(req, path, codec).await

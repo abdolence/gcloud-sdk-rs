@@ -1,3 +1,328 @@
+/// The Google Cloud Storage location for the input content.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GcsInputSource {
+    /// Required. Source data URI. For example, `gs://my_bucket/my_object`.
+    #[prost(string, tag = "1")]
+    pub input_uri: ::prost::alloc::string::String,
+}
+/// An inlined file.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileInputSource {
+    /// Required. The file's mime type.
+    #[prost(string, tag = "1")]
+    pub mime_type: ::prost::alloc::string::String,
+    /// Required. The file's byte contents.
+    #[prost(bytes = "vec", tag = "2")]
+    pub content: ::prost::alloc::vec::Vec<u8>,
+    /// Required. The file's display name.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
+}
+/// The Google Cloud Storage location for the output content.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GcsOutputDestination {
+    /// Required. Google Cloud Storage URI to output directory. For example,
+    /// `gs://bucket/directory`. The requesting user must have write permission to
+    /// the bucket. The directory will be created if it doesn't exist.
+    #[prost(string, tag = "1")]
+    pub output_uri_prefix: ::prost::alloc::string::String,
+}
+/// An Adaptive MT Dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdaptiveMtDataset {
+    /// Required. The resource name of the dataset, in form of
+    /// `projects/{project-number-or-id}/locations/{location_id}/adaptiveMtDatasets/{dataset_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The name of the dataset to show in the interface. The name can be
+    /// up to 32 characters long and can consist only of ASCII Latin letters A-Z
+    /// and a-z, underscores (_), and ASCII digits 0-9.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// The BCP-47 language code of the source language.
+    #[prost(string, tag = "3")]
+    pub source_language_code: ::prost::alloc::string::String,
+    /// The BCP-47 language code of the target language.
+    #[prost(string, tag = "4")]
+    pub target_language_code: ::prost::alloc::string::String,
+    /// The number of examples in the dataset.
+    #[prost(int32, tag = "5")]
+    pub example_count: i32,
+    /// Output only. Timestamp when this dataset was created.
+    #[prost(message, optional, tag = "9")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this dataset was last updated.
+    #[prost(message, optional, tag = "10")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+///  Request message for creating an AdaptiveMtDataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateAdaptiveMtDatasetRequest {
+    /// Required. Name of the parent project. In form of
+    /// `projects/{project-number-or-id}/locations/{location-id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The AdaptiveMtDataset to be created.
+    #[prost(message, optional, tag = "2")]
+    pub adaptive_mt_dataset: ::core::option::Option<AdaptiveMtDataset>,
+}
+/// Request message for deleting an AdaptiveMtDataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteAdaptiveMtDatasetRequest {
+    /// Required. Name of the dataset. In the form of
+    /// `projects/{project-number-or-id}/locations/{location-id}/adaptiveMtDatasets/{adaptive-mt-dataset-id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for getting an Adaptive MT dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdaptiveMtDatasetRequest {
+    /// Required. Name of the dataset. In the form of
+    /// `projects/{project-number-or-id}/locations/{location-id}/adaptiveMtDatasets/{adaptive-mt-dataset-id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for listing all Adaptive MT datasets that the requestor has
+/// access to.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAdaptiveMtDatasetsRequest {
+    /// Required. The resource name of the project from which to list the Adaptive
+    /// MT datasets. `projects/{project-number-or-id}/locations/{location-id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. The server may return fewer results than
+    /// requested. If unspecified, the server picks an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    /// Typically, this is the value of
+    /// ListAdaptiveMtDatasetsResponse.next_page_token returned from the
+    /// previous call to `ListAdaptiveMtDatasets` method. The first page is
+    /// returned if `page_token`is empty or missing.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request.
+    /// Filter is not supported yet.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// A list of AdaptiveMtDatasets.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAdaptiveMtDatasetsResponse {
+    /// Output only. A list of Adaptive MT datasets.
+    #[prost(message, repeated, tag = "1")]
+    pub adaptive_mt_datasets: ::prost::alloc::vec::Vec<AdaptiveMtDataset>,
+    /// Optional. A token to retrieve a page of results. Pass this value in the
+    /// \[ListAdaptiveMtDatasetsRequest.page_token\] field in the subsequent call to
+    /// `ListAdaptiveMtDatasets` method to retrieve the next page of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request for sending an AdaptiveMt translation query.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdaptiveMtTranslateRequest {
+    /// Required. Location to make a regional call.
+    ///
+    /// Format: `projects/{project-number-or-id}/locations/{location-id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The resource name for the dataset to use for adaptive MT.
+    /// `projects/{project}/locations/{location-id}/adaptiveMtDatasets/{dataset}`
+    #[prost(string, tag = "2")]
+    pub dataset: ::prost::alloc::string::String,
+    /// Required. The content of the input in string format.
+    /// For now only one sentence per request is supported.
+    #[prost(string, repeated, tag = "3")]
+    pub content: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// An AdaptiveMt translation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdaptiveMtTranslation {
+    /// Output only. The translated text.
+    #[prost(string, tag = "1")]
+    pub translated_text: ::prost::alloc::string::String,
+}
+/// An AdaptiveMtTranslate response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdaptiveMtTranslateResponse {
+    /// Output only. The translation.
+    #[prost(message, repeated, tag = "1")]
+    pub translations: ::prost::alloc::vec::Vec<AdaptiveMtTranslation>,
+    /// Output only. The translation's language code.
+    #[prost(string, tag = "2")]
+    pub language_code: ::prost::alloc::string::String,
+}
+/// An AdaptiveMtFile.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdaptiveMtFile {
+    /// Required. The resource name of the file, in form of
+    /// `projects/{project-number-or-id}/locations/{location_id}/adaptiveMtDatasets/{dataset}/adaptiveMtFiles/{file}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The file's display name.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// The number of entries that the file contains.
+    #[prost(int32, tag = "3")]
+    pub entry_count: i32,
+    /// Output only. Timestamp when this file was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this file was last updated.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// The request for getting an AdaptiveMtFile.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAdaptiveMtFileRequest {
+    /// Required. The resource name of the file, in form of
+    /// `projects/{project-number-or-id}/locations/{location_id}/adaptiveMtDatasets/{dataset}/adaptiveMtFiles/{file}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for deleting an AdaptiveMt file.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteAdaptiveMtFileRequest {
+    /// Required. The resource name of the file to delete, in form of
+    /// `projects/{project-number-or-id}/locations/{location_id}/adaptiveMtDatasets/{dataset}/adaptiveMtFiles/{file}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for importing an AdaptiveMt file along with its sentences.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportAdaptiveMtFileRequest {
+    /// Required. The resource name of the file, in form of
+    /// `projects/{project-number-or-id}/locations/{location_id}/adaptiveMtDatasets/{dataset}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The source for the document.
+    #[prost(oneof = "import_adaptive_mt_file_request::Source", tags = "2, 3")]
+    pub source: ::core::option::Option<import_adaptive_mt_file_request::Source>,
+}
+/// Nested message and enum types in `ImportAdaptiveMtFileRequest`.
+pub mod import_adaptive_mt_file_request {
+    /// The source for the document.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Inline file source.
+        #[prost(message, tag = "2")]
+        FileInputSource(super::FileInputSource),
+        /// Google Cloud Storage file source.
+        #[prost(message, tag = "3")]
+        GcsInputSource(super::GcsInputSource),
+    }
+}
+/// The response for importing an AdaptiveMtFile
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportAdaptiveMtFileResponse {
+    /// Output only. The Adaptive MT file that was imported.
+    #[prost(message, optional, tag = "1")]
+    pub adaptive_mt_file: ::core::option::Option<AdaptiveMtFile>,
+}
+/// The request to list all AdaptiveMt files under a given dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAdaptiveMtFilesRequest {
+    /// Required. The resource name of the project from which to list the Adaptive
+    /// MT files.
+    /// `projects/{project}/locations/{location}/adaptiveMtDatasets/{dataset}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    /// Typically, this is the value of
+    /// ListAdaptiveMtFilesResponse.next_page_token returned from the
+    /// previous call to `ListAdaptiveMtFiles` method. The first page is
+    /// returned if `page_token`is empty or missing.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response for listing all AdaptiveMt files under a given dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAdaptiveMtFilesResponse {
+    /// Output only. The Adaptive MT files.
+    #[prost(message, repeated, tag = "1")]
+    pub adaptive_mt_files: ::prost::alloc::vec::Vec<AdaptiveMtFile>,
+    /// Optional. A token to retrieve a page of results. Pass this value in the
+    /// ListAdaptiveMtFilesRequest.page_token field in the subsequent call to
+    /// `ListAdaptiveMtFiles` method to retrieve the next page of results.
+    #[prost(string, tag = "3")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// An AdaptiveMt sentence entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdaptiveMtSentence {
+    /// Required. The resource name of the file, in form of
+    /// `projects/{project-number-or-id}/locations/{location_id}/adaptiveMtDatasets/{dataset}/adaptiveMtFiles/{file}/adaptiveMtSentences/{sentence}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The source sentence.
+    #[prost(string, tag = "2")]
+    pub source_sentence: ::prost::alloc::string::String,
+    /// Required. The target sentence.
+    #[prost(string, tag = "3")]
+    pub target_sentence: ::prost::alloc::string::String,
+    /// Output only. Timestamp when this sentence was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this sentence was last updated.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// The request for listing Adaptive MT sentences from a Dataset/File.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAdaptiveMtSentencesRequest {
+    /// Required. The resource name of the project from which to list the Adaptive
+    /// MT files. The following format lists all sentences under a file.
+    /// `projects/{project}/locations/{location}/adaptiveMtDatasets/{dataset}/adaptiveMtFiles/{file}`
+    /// The following format lists all sentences within a dataset.
+    /// `projects/{project}/locations/{location}/adaptiveMtDatasets/{dataset}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A token identifying a page of results the server should return.
+    /// Typically, this is the value of
+    /// ListAdaptiveMtSentencesRequest.next_page_token returned from the
+    /// previous call to `ListTranslationMemories` method. The first page is
+    /// returned if `page_token` is empty or missing.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// List AdaptiveMt sentences response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAdaptiveMtSentencesResponse {
+    /// Output only. The list of AdaptiveMtSentences.
+    #[prost(message, repeated, tag = "1")]
+    pub adaptive_mt_sentences: ::prost::alloc::vec::Vec<AdaptiveMtSentence>,
+    /// Optional.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// Configures which glossary is used for a specific target language and defines
 /// options for applying that glossary.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1306,9 +1631,9 @@ pub struct BatchTranslateDocumentRequest {
         ::prost::alloc::string::String,
         TranslateTextGlossaryConfig,
     >,
-    /// Optional. File format conversion map to be applied to all input files.
-    /// Map's key is the original mime_type. Map's value is the target mime_type of
-    /// translated documents.
+    /// Optional. The file format conversion map that is applied to all input
+    /// files. The map key is the original mime_type. The map value is the target
+    /// mime_type of translated documents.
     ///
     /// Supported file format conversion includes:
     /// - `application/pdf` to
@@ -1995,6 +2320,309 @@ pub mod translation_service_client {
                     GrpcMethod::new(
                         "google.cloud.translation.v3.TranslationService",
                         "DeleteGlossary",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates an Adaptive MT dataset.
+        pub async fn create_adaptive_mt_dataset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateAdaptiveMtDatasetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AdaptiveMtDataset>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.translation.v3.TranslationService/CreateAdaptiveMtDataset",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.translation.v3.TranslationService",
+                        "CreateAdaptiveMtDataset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes an Adaptive MT dataset, including all its entries and associated
+        /// metadata.
+        pub async fn delete_adaptive_mt_dataset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteAdaptiveMtDatasetRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.translation.v3.TranslationService/DeleteAdaptiveMtDataset",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.translation.v3.TranslationService",
+                        "DeleteAdaptiveMtDataset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the Adaptive MT dataset.
+        pub async fn get_adaptive_mt_dataset(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdaptiveMtDatasetRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AdaptiveMtDataset>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.translation.v3.TranslationService/GetAdaptiveMtDataset",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.translation.v3.TranslationService",
+                        "GetAdaptiveMtDataset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all Adaptive MT datasets for which the caller has read permission.
+        pub async fn list_adaptive_mt_datasets(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAdaptiveMtDatasetsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAdaptiveMtDatasetsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.translation.v3.TranslationService/ListAdaptiveMtDatasets",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.translation.v3.TranslationService",
+                        "ListAdaptiveMtDatasets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Translate text using Adaptive MT.
+        pub async fn adaptive_mt_translate(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AdaptiveMtTranslateRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AdaptiveMtTranslateResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.translation.v3.TranslationService/AdaptiveMtTranslate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.translation.v3.TranslationService",
+                        "AdaptiveMtTranslate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets and AdaptiveMtFile
+        pub async fn get_adaptive_mt_file(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAdaptiveMtFileRequest>,
+        ) -> std::result::Result<tonic::Response<super::AdaptiveMtFile>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.translation.v3.TranslationService/GetAdaptiveMtFile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.translation.v3.TranslationService",
+                        "GetAdaptiveMtFile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes an AdaptiveMtFile along with its sentences.
+        pub async fn delete_adaptive_mt_file(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteAdaptiveMtFileRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.translation.v3.TranslationService/DeleteAdaptiveMtFile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.translation.v3.TranslationService",
+                        "DeleteAdaptiveMtFile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Imports an AdaptiveMtFile and adds all of its sentences into the
+        /// AdaptiveMtDataset.
+        pub async fn import_adaptive_mt_file(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ImportAdaptiveMtFileRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ImportAdaptiveMtFileResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.translation.v3.TranslationService/ImportAdaptiveMtFile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.translation.v3.TranslationService",
+                        "ImportAdaptiveMtFile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all AdaptiveMtFiles associated to an AdaptiveMtDataset.
+        pub async fn list_adaptive_mt_files(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAdaptiveMtFilesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAdaptiveMtFilesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.translation.v3.TranslationService/ListAdaptiveMtFiles",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.translation.v3.TranslationService",
+                        "ListAdaptiveMtFiles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all AdaptiveMtSentences under a given file/dataset.
+        pub async fn list_adaptive_mt_sentences(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAdaptiveMtSentencesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAdaptiveMtSentencesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.translation.v3.TranslationService/ListAdaptiveMtSentences",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.translation.v3.TranslationService",
+                        "ListAdaptiveMtSentences",
                     ),
                 );
             self.inner.unary(req, path, codec).await

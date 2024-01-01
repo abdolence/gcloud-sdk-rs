@@ -2753,7 +2753,12 @@ pub struct DataQualityRule {
     /// `ignore_null` is `true`. In that case, such `null` rows are trivially
     /// considered passing.
     ///
-    /// This field is only valid for row-level type rules.
+    /// This field is only valid for the following type of rules:
+    ///
+    /// * RangeExpectation
+    /// * RegexExpectation
+    /// * SetExpectation
+    /// * UniquenessExpectation
     #[prost(bool, tag = "501")]
     pub ignore_null: bool,
     /// Required. The dimension a rule belongs to. Results are also aggregated at
@@ -8134,6 +8139,8 @@ pub mod governance_event {
         GovernanceRuleSearchLimitExceeds = 16,
         /// Rule processing errors.
         GovernanceRuleErrors = 17,
+        /// Governance rule prcoessing Event.
+        GovernanceRuleProcessing = 18,
     }
     impl EventType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -8164,6 +8171,7 @@ pub mod governance_event {
                     "GOVERNANCE_RULE_SEARCH_LIMIT_EXCEEDS"
                 }
                 EventType::GovernanceRuleErrors => "GOVERNANCE_RULE_ERRORS",
+                EventType::GovernanceRuleProcessing => "GOVERNANCE_RULE_PROCESSING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8191,6 +8199,7 @@ pub mod governance_event {
                     Some(Self::GovernanceRuleSearchLimitExceeds)
                 }
                 "GOVERNANCE_RULE_ERRORS" => Some(Self::GovernanceRuleErrors),
+                "GOVERNANCE_RULE_PROCESSING" => Some(Self::GovernanceRuleProcessing),
                 _ => None,
             }
         }

@@ -54,6 +54,12 @@ pub mod api_warning {
         /// Warning when user provided maxResults parameter exceeds the limit.  The
         /// returned result set may be incomplete.
         MaxResultsExceedsLimit = 2,
+        /// Warning when user tries to create/update a user with credentials that
+        /// have previously been compromised by a public data breach.
+        CompromisedCredentials = 3,
+        /// Warning when the operation succeeds but some non-critical workflow state
+        /// failed.
+        InternalStateFailure = 4,
     }
     impl SqlApiWarningCode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -65,6 +71,8 @@ pub mod api_warning {
                 SqlApiWarningCode::Unspecified => "SQL_API_WARNING_CODE_UNSPECIFIED",
                 SqlApiWarningCode::RegionUnreachable => "REGION_UNREACHABLE",
                 SqlApiWarningCode::MaxResultsExceedsLimit => "MAX_RESULTS_EXCEEDS_LIMIT",
+                SqlApiWarningCode::CompromisedCredentials => "COMPROMISED_CREDENTIALS",
+                SqlApiWarningCode::InternalStateFailure => "INTERNAL_STATE_FAILURE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -73,6 +81,8 @@ pub mod api_warning {
                 "SQL_API_WARNING_CODE_UNSPECIFIED" => Some(Self::Unspecified),
                 "REGION_UNREACHABLE" => Some(Self::RegionUnreachable),
                 "MAX_RESULTS_EXCEEDS_LIMIT" => Some(Self::MaxResultsExceedsLimit),
+                "COMPROMISED_CREDENTIALS" => Some(Self::CompromisedCredentials),
+                "INTERNAL_STATE_FAILURE" => Some(Self::InternalStateFailure),
                 _ => None,
             }
         }
@@ -583,6 +593,13 @@ pub struct DatabaseInstance {
     /// The current software version on the instance.
     #[prost(string, tag = "42")]
     pub maintenance_version: ::prost::alloc::string::String,
+    /// The SQL network architecture for the instance.
+    #[prost(
+        enumeration = "database_instance::SqlNetworkArchitecture",
+        optional,
+        tag = "47"
+    )]
+    pub sql_network_architecture: ::core::option::Option<i32>,
     /// Output only. The link to service attachment of PSC instance.
     #[prost(string, optional, tag = "48")]
     pub psc_service_attachment_link: ::core::option::Option<
@@ -763,6 +780,54 @@ pub mod database_instance {
                 "MAINTENANCE" => Some(Self::Maintenance),
                 "FAILED" => Some(Self::Failed),
                 "ONLINE_MAINTENANCE" => Some(Self::OnlineMaintenance),
+                _ => None,
+            }
+        }
+    }
+    /// The current SQL network architecture for the instance.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SqlNetworkArchitecture {
+        Unspecified = 0,
+        /// Instance is a Tenancy Unit (TU) instance.
+        NewNetworkArchitecture = 1,
+        /// Instance is an Umbrella instance.
+        OldNetworkArchitecture = 2,
+    }
+    impl SqlNetworkArchitecture {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                SqlNetworkArchitecture::Unspecified => {
+                    "SQL_NETWORK_ARCHITECTURE_UNSPECIFIED"
+                }
+                SqlNetworkArchitecture::NewNetworkArchitecture => {
+                    "NEW_NETWORK_ARCHITECTURE"
+                }
+                SqlNetworkArchitecture::OldNetworkArchitecture => {
+                    "OLD_NETWORK_ARCHITECTURE"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQL_NETWORK_ARCHITECTURE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NEW_NETWORK_ARCHITECTURE" => Some(Self::NewNetworkArchitecture),
+                "OLD_NETWORK_ARCHITECTURE" => Some(Self::OldNetworkArchitecture),
                 _ => None,
             }
         }
@@ -1442,6 +1507,11 @@ pub mod sql_external_sync_setting_error {
         /// This code instructs customers to turn on point-in-time recovery manually
         /// for the instance after promoting the Cloud SQL for PostgreSQL instance.
         TurnOnPitrAfterPromote = 36,
+        /// The minor version of replica database is incompatible with the source.
+        IncompatibleDatabaseMinorVersion = 37,
+        /// This warning message indicates that Cloud SQL uses the maximum number of
+        /// subscriptions to migrate data from the source to the destination.
+        SourceMaxSubscriptions = 38,
     }
     impl SqlExternalSyncSettingErrorType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1551,6 +1621,12 @@ pub mod sql_external_sync_setting_error {
                 SqlExternalSyncSettingErrorType::TurnOnPitrAfterPromote => {
                     "TURN_ON_PITR_AFTER_PROMOTE"
                 }
+                SqlExternalSyncSettingErrorType::IncompatibleDatabaseMinorVersion => {
+                    "INCOMPATIBLE_DATABASE_MINOR_VERSION"
+                }
+                SqlExternalSyncSettingErrorType::SourceMaxSubscriptions => {
+                    "SOURCE_MAX_SUBSCRIPTIONS"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1611,6 +1687,10 @@ pub mod sql_external_sync_setting_error {
                 }
                 "LOCAL_INFILE_OFF" => Some(Self::LocalInfileOff),
                 "TURN_ON_PITR_AFTER_PROMOTE" => Some(Self::TurnOnPitrAfterPromote),
+                "INCOMPATIBLE_DATABASE_MINOR_VERSION" => {
+                    Some(Self::IncompatibleDatabaseMinorVersion)
+                }
+                "SOURCE_MAX_SUBSCRIPTIONS" => Some(Self::SourceMaxSubscriptions),
                 _ => None,
             }
         }
@@ -1629,6 +1709,8 @@ pub struct IpConfiguration {
     /// be updated, but it cannot be removed after it is set.
     #[prost(string, tag = "2")]
     pub private_network: ::prost::alloc::string::String,
+    /// Use `ssl_mode` instead for MySQL and PostgreSQL. SQL Server uses this flag.
+    ///
     /// Whether SSL/TLS connections over IP are enforced.
     /// If set to false, then allow both non-SSL/non-TLS and SSL/TLS connections.
     /// For SSL/TLS connections, the client certificate won't be verified. If
@@ -1655,23 +1737,8 @@ pub struct IpConfiguration {
     /// such as BigQuery.
     #[prost(message, optional, tag = "7")]
     pub enable_private_path_for_google_cloud_services: ::core::option::Option<bool>,
-    /// Specify how SSL/TLS is enforced in database connections. This flag is
-    /// supported only for PostgreSQL. Use the legacy `require_ssl` flag for
-    /// enforcing SSL/TLS in MySQL and SQL Server. But, for PostgreSQL, use the
-    /// `ssl_mode` flag instead of the legacy `require_ssl` flag. To avoid the
-    /// conflict between those flags in PostgreSQL, only the following value pairs
-    /// are valid:
-    ///
-    /// * `ssl_mode=ALLOW_UNENCRYPTED_AND_ENCRYPTED` and `require_ssl=false`
-    /// * `ssl_mode=ENCRYPTED_ONLY` and `require_ssl=false`
-    /// * `ssl_mode=TRUSTED_CLIENT_CERTIFICATE_REQUIRED` and `require_ssl=true`
-    ///
-    /// Note that the value of `ssl_mode` gets priority over the value of the
-    /// legacy `require_ssl`. For example, for the pair `ssl_mode=ENCRYPTED_ONLY,
-    /// require_ssl=false`, the `ssl_mode=ENCRYPTED_ONLY` means "only accepts SSL
-    /// connection", while the `require_ssl=false` means "both non-SSL and SSL
-    /// connections are allowed". The database respects `ssl_mode` in this case
-    /// and only accepts SSL connections.
+    /// SQL Server uses the `require_ssl` flag. You can set the value for this flag
+    /// to 'true' or 'false'.
     #[prost(enumeration = "ip_configuration::SslMode", tag = "8")]
     pub ssl_mode: i32,
     /// PSC settings for this instance.
@@ -2011,6 +2078,9 @@ pub struct Operation {
     /// populated.
     #[prost(message, optional, tag = "8")]
     pub error: ::core::option::Option<OperationErrors>,
+    /// An Admin API warning message.
+    #[prost(message, optional, tag = "19")]
+    pub api_warning: ::core::option::Option<ApiWarning>,
     /// The type of the operation. Valid values are:
     /// *  `CREATE`
     /// *  `DELETE`
@@ -2337,6 +2407,10 @@ pub struct PasswordValidationPolicy {
     /// Whether the password policy is enabled or not.
     #[prost(message, optional, tag = "6")]
     pub enable_password_policy: ::core::option::Option<bool>,
+    /// Disallow credentials that have been previously compromised by a public data
+    /// breach.
+    #[prost(message, optional, tag = "7")]
+    pub disallow_compromised_credentials: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `PasswordValidationPolicy`.
 pub mod password_validation_policy {
@@ -3292,7 +3366,6 @@ impl SqlInstanceType {
     }
 }
 /// The database engine type and version.
-/// The next tag is 325.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum SqlDatabaseVersion {
@@ -3658,6 +3731,11 @@ pub enum SqlUpdateTrack {
     /// your instance prefer to let Cloud SQL choose the timing of restart (within
     /// its Maintenance window, if applicable).
     Stable = 2,
+    /// For instance update that requires a restart, this update track indicates
+    /// your instance prefer to let Cloud SQL choose the timing of restart (within
+    /// its Maintenance window, if applicable) to be at least 5 weeks after the
+    /// notification.
+    Week5 = 3,
 }
 impl SqlUpdateTrack {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -3669,6 +3747,7 @@ impl SqlUpdateTrack {
             SqlUpdateTrack::Unspecified => "SQL_UPDATE_TRACK_UNSPECIFIED",
             SqlUpdateTrack::Canary => "canary",
             SqlUpdateTrack::Stable => "stable",
+            SqlUpdateTrack::Week5 => "week5",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3677,6 +3756,7 @@ impl SqlUpdateTrack {
             "SQL_UPDATE_TRACK_UNSPECIFIED" => Some(Self::Unspecified),
             "canary" => Some(Self::Canary),
             "stable" => Some(Self::Stable),
+            "week5" => Some(Self::Week5),
             _ => None,
         }
     }
@@ -3886,7 +3966,6 @@ pub struct SqlInstancesCloneRequest {
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<InstancesCloneRequest>,
 }
-/// Next tag: 7
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesDeleteRequest {

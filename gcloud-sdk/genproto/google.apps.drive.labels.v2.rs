@@ -387,13 +387,11 @@ pub mod precondition_failure {
         }
     }
 }
-/// Normalized internal-only message that identifies the exact exception that
-/// caused the error on the server.
+/// Exception detail.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExceptionDetail {
-    /// The type of exception that occurred.
-    /// required
+    /// The type of exception that occurred. Required.
     #[prost(enumeration = "ExceptionType", tag = "1")]
     pub error_type: i32,
 }
@@ -1050,6 +1048,10 @@ pub struct Label {
     /// when the label is not disabled.
     #[prost(message, optional, tag = "12")]
     pub disable_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The customer this label belongs to.
+    /// For example: "customers/123abc789."
+    #[prost(string, tag = "13")]
+    pub customer: ::prost::alloc::string::String,
     /// Required. The basic properties of the label.
     #[prost(message, optional, tag = "14")]
     pub properties: ::core::option::Option<label::Properties>,
@@ -1232,6 +1234,9 @@ pub mod label {
         /// Admin-owned label. Only creatable and editable by admins. Supports some
         /// additional admin-only features.
         Admin = 2,
+        /// A label owned by an internal Google application rather than a customer.
+        /// These labels are read-only.
+        GoogleApp = 3,
     }
     impl LabelType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1243,6 +1248,7 @@ pub mod label {
                 LabelType::Unspecified => "LABEL_TYPE_UNSPECIFIED",
                 LabelType::Shared => "SHARED",
                 LabelType::Admin => "ADMIN",
+                LabelType::GoogleApp => "GOOGLE_APP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1251,6 +1257,239 @@ pub mod label {
                 "LABEL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "SHARED" => Some(Self::Shared),
                 "ADMIN" => Some(Self::Admin),
+                "GOOGLE_APP" => Some(Self::GoogleApp),
+                _ => None,
+            }
+        }
+    }
+}
+/// Label constraints governing the structure of a Label; such as, the maximum
+/// number of Fields allowed and maximum length of the label title.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LabelLimits {
+    /// Resource name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The maximum number of characters allowed for the title.
+    #[prost(int32, tag = "2")]
+    pub max_title_length: i32,
+    /// The maximum number of characters allowed for the description.
+    #[prost(int32, tag = "3")]
+    pub max_description_length: i32,
+    /// The maximum number of Fields allowed within the label.
+    #[prost(int32, tag = "4")]
+    pub max_fields: i32,
+    /// The maximum number of published Fields that can be deleted.
+    #[prost(int32, tag = "5")]
+    pub max_deleted_fields: i32,
+    /// The maximum number of draft revisions that will be kept before deleting
+    /// old drafts.
+    #[prost(int32, tag = "6")]
+    pub max_draft_revisions: i32,
+    /// The limits for Fields.
+    #[prost(message, optional, tag = "7")]
+    pub field_limits: ::core::option::Option<FieldLimits>,
+}
+/// Field constants governing the structure of a Field; such as, the maximum
+/// title length, minimum and maximum field values or length, etc.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FieldLimits {
+    /// Max length for the id.
+    #[prost(int32, tag = "1")]
+    pub max_id_length: i32,
+    /// Limits for Field title.
+    #[prost(int32, tag = "2")]
+    pub max_display_name_length: i32,
+    /// Limits for Field description, also called help text.
+    #[prost(int32, tag = "3")]
+    pub max_description_length: i32,
+    /// The relevant limits for the specified Field.Type.
+    /// Text Field limits.
+    #[prost(message, optional, tag = "4")]
+    pub text_limits: ::core::option::Option<TextLimits>,
+    /// Long text Field limits.
+    #[prost(message, optional, tag = "5")]
+    pub long_text_limits: ::core::option::Option<LongTextLimits>,
+    /// Integer Field limits.
+    #[prost(message, optional, tag = "6")]
+    pub integer_limits: ::core::option::Option<IntegerLimits>,
+    /// Date Field limits.
+    #[prost(message, optional, tag = "7")]
+    pub date_limits: ::core::option::Option<DateLimits>,
+    /// User Field limits.
+    #[prost(message, optional, tag = "8")]
+    pub user_limits: ::core::option::Option<UserLimits>,
+    /// Selection Field limits.
+    #[prost(message, optional, tag = "9")]
+    pub selection_limits: ::core::option::Option<SelectionLimits>,
+}
+/// Limits for list-variant of a Field type.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListLimits {
+    /// Maximum number of values allowed for the Field type.
+    #[prost(int32, tag = "1")]
+    pub max_entries: i32,
+}
+/// Limits for text Field type.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TextLimits {
+    /// Minimum length allowed for a text Field type.
+    #[prost(int32, tag = "1")]
+    pub min_length: i32,
+    /// Maximum length allowed for a text Field type.
+    #[prost(int32, tag = "2")]
+    pub max_length: i32,
+}
+/// Limits for long text Field type.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LongTextLimits {
+    /// Minimum length allowed for a long text Field type.
+    #[prost(int32, tag = "1")]
+    pub min_length: i32,
+    /// Maximum length allowed for a long text Field type.
+    #[prost(int32, tag = "2")]
+    pub max_length: i32,
+}
+/// Limits for integer Field type.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IntegerLimits {
+    /// Minimum value for an integer Field type.
+    #[prost(int64, tag = "1")]
+    pub min_value: i64,
+    /// Maximum value for an integer Field type.
+    #[prost(int64, tag = "2")]
+    pub max_value: i64,
+}
+/// Limits for date Field type.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DateLimits {
+    /// Minimum value for the date Field type.
+    #[prost(message, optional, tag = "1")]
+    pub min_value: ::core::option::Option<super::super::super::super::r#type::Date>,
+    /// Maximum value for the date Field type.
+    #[prost(message, optional, tag = "2")]
+    pub max_value: ::core::option::Option<super::super::super::super::r#type::Date>,
+}
+/// Limits for selection Field type.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SelectionLimits {
+    /// Limits for list-variant of a Field type.
+    #[prost(message, optional, tag = "1")]
+    pub list_limits: ::core::option::Option<ListLimits>,
+    /// Maximum ID length for a selection options.
+    #[prost(int32, tag = "2")]
+    pub max_id_length: i32,
+    /// Maximum length for display name.
+    #[prost(int32, tag = "3")]
+    pub max_display_name_length: i32,
+    /// The max number of choices.
+    #[prost(int32, tag = "4")]
+    pub max_choices: i32,
+    /// Maximum number of deleted choices.
+    #[prost(int32, tag = "5")]
+    pub max_deleted_choices: i32,
+}
+/// Limits for Field.Type.USER.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserLimits {
+    /// Limits for list-variant of a Field type.
+    #[prost(message, optional, tag = "1")]
+    pub list_limits: ::core::option::Option<ListLimits>,
+}
+/// A Lock that can be applied to a Label, Field, or Choice.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LabelLock {
+    /// Output only. Resource name of this LabelLock.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The ID of the Field that should be locked.  Empty if the whole
+    /// Label should be locked.
+    #[prost(string, tag = "2")]
+    pub field_id: ::prost::alloc::string::String,
+    /// The ID of the Selection Field Choice that should be locked.  If present,
+    /// `field_id` must also be present.
+    #[prost(string, tag = "3")]
+    pub choice_id: ::prost::alloc::string::String,
+    /// Output only. The time this LabelLock was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The user whose credentials were used to create the LabelLock.
+    /// This will not be present if no user was responsible for creating the
+    /// LabelLock.
+    #[prost(message, optional, tag = "5")]
+    pub creator: ::core::option::Option<UserInfo>,
+    /// Output only. A timestamp indicating when this LabelLock was scheduled for
+    /// deletion. This will be present only if this LabelLock is in the DELETING
+    /// state.
+    #[prost(message, optional, tag = "6")]
+    pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The user's capabilities on this LabelLock.
+    #[prost(message, optional, tag = "8")]
+    pub capabilities: ::core::option::Option<label_lock::Capabilities>,
+    /// Output only. This LabelLock's state.
+    #[prost(enumeration = "label_lock::State", tag = "9")]
+    pub state: i32,
+}
+/// Nested message and enum types in `LabelLock`.
+pub mod label_lock {
+    /// A description of a user's capabilities on a LabelLock.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Capabilities {
+        /// True if the user is authorized to view the policy.
+        #[prost(bool, tag = "1")]
+        pub can_view_policy: bool,
+    }
+    /// A description of a LabelLock's state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unknown state.
+        Unspecified = 0,
+        /// The LabelLock is active and is being enforced by the server.
+        Active = 1,
+        /// The LabelLock is being deleted.  The LabelLock will continue to be
+        /// enforced by the server until it has been fully removed.
+        Deleting = 2,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Active => "ACTIVE",
+                State::Deleting => "DELETING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "DELETING" => Some(Self::Deleting),
                 _ => None,
             }
         }
@@ -1260,7 +1499,28 @@ pub mod label {
 /// label.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LabelPermission {}
+pub struct LabelPermission {
+    /// Resource name of this permission.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Specifies the email address for a user or group pricinpal. Not populated
+    /// for audience principals. User and Group permissions may only be inserted
+    /// using email address. On update requests, if email address is specified,
+    /// no principal should be specified.
+    #[prost(string, tag = "2")]
+    pub email: ::prost::alloc::string::String,
+    /// The role the principal should have.
+    #[prost(enumeration = "label_permission::LabelRole", tag = "6")]
+    pub role: i32,
+    /// The principal this permission applies to. Must be either an email, user,
+    /// group, or audience.
+    /// Example:
+    /// * people/12345
+    /// * groups/45678
+    /// * audiences/default
+    #[prost(oneof = "label_permission::Principal", tags = "3, 4, 5")]
+    pub principal: ::core::option::Option<label_permission::Principal>,
+}
 /// Nested message and enum types in `LabelPermission`.
 pub mod label_permission {
     /// Roles are concentric with subsequent role.
@@ -1318,6 +1578,85 @@ pub mod label_permission {
             }
         }
     }
+    /// The principal this permission applies to. Must be either an email, user,
+    /// group, or audience.
+    /// Example:
+    /// * people/12345
+    /// * groups/45678
+    /// * audiences/default
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Principal {
+        /// Person resource name.
+        #[prost(string, tag = "3")]
+        Person(::prost::alloc::string::String),
+        /// Group resource name.
+        #[prost(string, tag = "4")]
+        Group(::prost::alloc::string::String),
+        /// Audience to grant a role to. The magic value of `audiences/default` may
+        /// be used to apply the role to the default audience in the context of the
+        /// organization that owns the Label.
+        #[prost(string, tag = "5")]
+        Audience(::prost::alloc::string::String),
+    }
+}
+/// Provides control over how write requests are executed. When not specified,
+/// the last write wins.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WriteControl {
+    /// Determines the revision of the label to write to and how the request
+    /// should behave if that revision is not the current revision of the
+    /// label.
+    #[prost(oneof = "write_control::Control", tags = "1")]
+    pub control: ::core::option::Option<write_control::Control>,
+}
+/// Nested message and enum types in `WriteControl`.
+pub mod write_control {
+    /// Determines the revision of the label to write to and how the request
+    /// should behave if that revision is not the current revision of the
+    /// label.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Control {
+        /// The [revision_id][google.apps.drive.labels.v1.Label.revision_id] of the
+        /// label that the write request will be applied to. If this is not the
+        /// latest revision of the label, the request will not be processed and will
+        /// return a 400 Bad Request error.
+        #[prost(string, tag = "1")]
+        RequiredRevisionId(::prost::alloc::string::String),
+    }
+}
+/// Request to get the capabilities for a user.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetUserCapabilitiesRequest {
+    /// Required. The resource name of the user. Only "users/me/capabilities" is
+    /// supported.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The customer to scope this request to.
+    /// For example: "customers/abcd1234".
+    /// If unset, will return settings within the current customer.
+    #[prost(string, tag = "2")]
+    pub customer: ::prost::alloc::string::String,
+}
+/// Request to create a Label.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateLabelRequest {
+    /// Required. The label to create.
+    #[prost(message, optional, tag = "1")]
+    pub label: ::core::option::Option<Label>,
+    /// Set to `true` in order to use the user's admin privileges. The server
+    /// will verify the user is an admin before allowing access.
+    #[prost(bool, tag = "2")]
+    pub use_admin_access: bool,
+    /// The BCP-47 language code to use for evaluating localized Field labels in
+    /// response. When not specified, values in the default configured language
+    /// will be used.
+    #[prost(string, tag = "3")]
+    pub language_code: ::prost::alloc::string::String,
 }
 /// Request to get a label by resource name.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1346,6 +1685,456 @@ pub struct GetLabelRequest {
     #[prost(enumeration = "LabelView", tag = "4")]
     pub view: i32,
 }
+/// The set of requests for updating aspects of a Label. If any request is not
+/// valid, no requests will be applied.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeltaUpdateLabelRequest {
+    /// Required. The resource name of the Label to update.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Provides control over how write requests are executed.
+    #[prost(message, optional, tag = "2")]
+    pub write_control: ::core::option::Option<WriteControl>,
+    /// A list of updates to apply to the Label.
+    /// Requests will be applied in the order they are specified.
+    #[prost(message, repeated, tag = "3")]
+    pub requests: ::prost::alloc::vec::Vec<delta_update_label_request::Request>,
+    /// Set to `true` in order to use the user's admin credentials. The server
+    /// will verify the user is an admin for the Label before allowing access.
+    #[prost(bool, tag = "4")]
+    pub use_admin_access: bool,
+    /// When specified, only certain fields belonging to the indicated view will be
+    /// returned.
+    #[prost(enumeration = "LabelView", tag = "5")]
+    pub view: i32,
+    /// The BCP-47 language code to use for evaluating localized Field labels when
+    /// `include_label_in_response` is `true`.
+    #[prost(string, tag = "6")]
+    pub language_code: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `DeltaUpdateLabelRequest`.
+pub mod delta_update_label_request {
+    /// A single kind of update to apply to a Label.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Request {
+        /// The kind of update. Exactly one Field is required.
+        #[prost(oneof = "request::Kind", tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12")]
+        pub kind: ::core::option::Option<request::Kind>,
+    }
+    /// Nested message and enum types in `Request`.
+    pub mod request {
+        /// The kind of update. Exactly one Field is required.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Kind {
+            /// Updates the Label properties.
+            #[prost(message, tag = "1")]
+            UpdateLabel(super::UpdateLabelPropertiesRequest),
+            /// Creates a new Field.
+            #[prost(message, tag = "2")]
+            CreateField(super::CreateFieldRequest),
+            /// Updates basic properties of a Field.
+            #[prost(message, tag = "3")]
+            UpdateField(super::UpdateFieldPropertiesRequest),
+            /// Update Field type and/or type options.
+            #[prost(message, tag = "4")]
+            UpdateFieldType(super::UpdateFieldTypeRequest),
+            /// Enables the Field.
+            #[prost(message, tag = "5")]
+            EnableField(super::EnableFieldRequest),
+            /// Disables the Field.
+            #[prost(message, tag = "6")]
+            DisableField(super::DisableFieldRequest),
+            /// Deletes a Field from the label.
+            #[prost(message, tag = "7")]
+            DeleteField(super::DeleteFieldRequest),
+            /// Creates Choice within a Selection field.
+            #[prost(message, tag = "8")]
+            CreateSelectionChoice(super::CreateSelectionChoiceRequest),
+            /// Update a Choice properties within a Selection Field.
+            #[prost(message, tag = "9")]
+            UpdateSelectionChoiceProperties(
+                super::UpdateSelectionChoicePropertiesRequest,
+            ),
+            /// Enable a Choice within a Selection Field.
+            #[prost(message, tag = "10")]
+            EnableSelectionChoice(super::EnableSelectionChoiceRequest),
+            /// Disable a Choice within a Selection Field.
+            #[prost(message, tag = "11")]
+            DisableSelectionChoice(super::DisableSelectionChoiceRequest),
+            /// Delete a Choice within a Selection Field.
+            #[prost(message, tag = "12")]
+            DeleteSelectionChoice(super::DeleteSelectionChoiceRequest),
+        }
+    }
+    /// Updates basic properties of a Label.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UpdateLabelPropertiesRequest {
+        /// The fields that should be updated. At least one field must be specified.
+        /// The root `label_properties` is implied and should not be specified. A
+        /// single `*` can be used as short-hand for updating every field.
+        #[prost(message, optional, tag = "1")]
+        pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+        /// Required. Label properties to update.
+        #[prost(message, optional, tag = "2")]
+        pub properties: ::core::option::Option<super::label::Properties>,
+    }
+    /// Request to disable the Field.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DisableFieldRequest {
+        /// The fields that should be updated. At least one field must be specified.
+        /// The root `disabled_policy` is implied and should not be specified. A
+        /// single `*` can be used as short-hand for updating every field.
+        #[prost(message, optional, tag = "1")]
+        pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+        /// Required. Key of the Field to disable.
+        #[prost(string, tag = "2")]
+        pub id: ::prost::alloc::string::String,
+        /// Required. Field Disabled Policy.
+        #[prost(message, optional, tag = "3")]
+        pub disabled_policy: ::core::option::Option<super::lifecycle::DisabledPolicy>,
+    }
+    /// Request to enable the Field.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EnableFieldRequest {
+        /// Required. ID of the Field to enable.
+        #[prost(string, tag = "1")]
+        pub id: ::prost::alloc::string::String,
+    }
+    /// Request to delete the Field.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DeleteFieldRequest {
+        /// Required. ID of the Field to delete.
+        #[prost(string, tag = "1")]
+        pub id: ::prost::alloc::string::String,
+    }
+    /// Request to create a Field within a Label.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CreateFieldRequest {
+        /// Required. Field to create.
+        #[prost(message, optional, tag = "1")]
+        pub field: ::core::option::Option<super::Field>,
+    }
+    /// Request to update Field properties.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UpdateFieldPropertiesRequest {
+        /// The fields that should be updated. At least one field must be specified.
+        /// The root `properties` is implied and should not be specified. A single
+        /// `*` can be used as short-hand for updating every field.
+        #[prost(message, optional, tag = "1")]
+        pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+        /// Required. The Field to update.
+        #[prost(string, tag = "2")]
+        pub id: ::prost::alloc::string::String,
+        /// Required. Basic Field properties.
+        #[prost(message, optional, tag = "3")]
+        pub properties: ::core::option::Option<super::field::Properties>,
+    }
+    /// Request to change the type of a Field.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UpdateFieldTypeRequest {
+        /// The fields that should be updated. At least one field must be specified.
+        /// The root of `type_options` is implied and should not be specified. A
+        /// single `*` can be used as short-hand for updating every field.
+        #[prost(message, optional, tag = "1")]
+        pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+        /// Required. The Field to update.
+        #[prost(string, tag = "2")]
+        pub id: ::prost::alloc::string::String,
+        #[prost(
+            oneof = "update_field_type_request::TypeOptions",
+            tags = "3, 5, 6, 7, 8"
+        )]
+        pub type_options: ::core::option::Option<update_field_type_request::TypeOptions>,
+    }
+    /// Nested message and enum types in `UpdateFieldTypeRequest`.
+    pub mod update_field_type_request {
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum TypeOptions {
+            /// Update field to Text.
+            #[prost(message, tag = "3")]
+            TextOptions(super::super::field::TextOptions),
+            /// Update field to Integer.
+            #[prost(message, tag = "5")]
+            IntegerOptions(super::super::field::IntegerOptions),
+            /// Update field to Date.
+            #[prost(message, tag = "6")]
+            DateOptions(super::super::field::DateOptions),
+            /// Update field to Selection.
+            #[prost(message, tag = "7")]
+            SelectionOptions(super::super::field::SelectionOptions),
+            /// Update field to User.
+            #[prost(message, tag = "8")]
+            UserOptions(super::super::field::UserOptions),
+        }
+    }
+    /// Request to create a Selection Choice.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CreateSelectionChoiceRequest {
+        /// Required. The Selection Field in which a Choice will be created.
+        #[prost(string, tag = "1")]
+        pub field_id: ::prost::alloc::string::String,
+        /// Required. The Choice to create.
+        #[prost(message, optional, tag = "2")]
+        pub choice: ::core::option::Option<super::field::selection_options::Choice>,
+    }
+    /// Request to update a Choice properties.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UpdateSelectionChoicePropertiesRequest {
+        /// The fields that should be updated. At least one field must be specified.
+        /// The root `properties` is implied and should not be specified. A single
+        /// `*` can be used as short-hand for updating every field.
+        #[prost(message, optional, tag = "1")]
+        pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+        /// Required. The Selection Field to update.
+        #[prost(string, tag = "2")]
+        pub field_id: ::prost::alloc::string::String,
+        /// Required. The Choice to update.
+        #[prost(string, tag = "3")]
+        pub id: ::prost::alloc::string::String,
+        /// Required. The Choice properties to update.
+        #[prost(message, optional, tag = "4")]
+        pub properties: ::core::option::Option<
+            super::field::selection_options::choice::Properties,
+        >,
+    }
+    /// Request to delete a Choice.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DeleteSelectionChoiceRequest {
+        /// Required. The Selection Field from which a Choice will be deleted.
+        #[prost(string, tag = "1")]
+        pub field_id: ::prost::alloc::string::String,
+        /// Required. Choice to delete.
+        #[prost(string, tag = "2")]
+        pub id: ::prost::alloc::string::String,
+    }
+    /// Request to disable a Choice.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DisableSelectionChoiceRequest {
+        /// The fields that should be updated. At least one field must be specified.
+        /// The root `disabled_policy` is implied and should not be specified. A
+        /// single `*` can be used as short-hand for updating every field.
+        #[prost(message, optional, tag = "1")]
+        pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+        /// Required. The Selection Field in which a Choice will be disabled.
+        #[prost(string, tag = "2")]
+        pub field_id: ::prost::alloc::string::String,
+        /// Required. Choice to disable.
+        #[prost(string, tag = "3")]
+        pub id: ::prost::alloc::string::String,
+        /// Required. The disabled policy to update.
+        #[prost(message, optional, tag = "4")]
+        pub disabled_policy: ::core::option::Option<super::lifecycle::DisabledPolicy>,
+    }
+    /// Request to enable a Choice.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EnableSelectionChoiceRequest {
+        /// Required. The Selection Field in which a Choice will be enabled.
+        #[prost(string, tag = "1")]
+        pub field_id: ::prost::alloc::string::String,
+        /// Required. Choice to enable.
+        #[prost(string, tag = "2")]
+        pub id: ::prost::alloc::string::String,
+    }
+}
+/// Response for Label update.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeltaUpdateLabelResponse {
+    /// The reply of the updates. This maps 1:1 with the updates, although
+    /// responses to some requests may be empty.
+    #[prost(message, repeated, tag = "1")]
+    pub responses: ::prost::alloc::vec::Vec<delta_update_label_response::Response>,
+    /// The label after updates were applied. This is only set if
+    /// \[BatchUpdateLabelResponse2.include_label_in_response\] is `true` and there
+    /// were no errors.
+    #[prost(message, optional, tag = "6")]
+    pub updated_label: ::core::option::Option<Label>,
+}
+/// Nested message and enum types in `DeltaUpdateLabelResponse`.
+pub mod delta_update_label_response {
+    /// A single response from an update.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Response {
+        /// The response for the corresponding request.
+        #[prost(
+            oneof = "response::Response",
+            tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12"
+        )]
+        pub response: ::core::option::Option<response::Response>,
+    }
+    /// Nested message and enum types in `Response`.
+    pub mod response {
+        /// The response for the corresponding request.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Response {
+            /// Updated basic properties of a Label.
+            #[prost(message, tag = "1")]
+            UpdateLabel(super::UpdateLabelPropertiesResponse),
+            /// Creates a new Field.
+            #[prost(message, tag = "2")]
+            CreateField(super::CreateFieldResponse),
+            /// Updates basic properties of a Field.
+            #[prost(message, tag = "3")]
+            UpdateField(super::UpdateFieldPropertiesResponse),
+            /// Update Field type and/or type options.
+            #[prost(message, tag = "4")]
+            UpdateFieldType(super::UpdateFieldTypeResponse),
+            /// Enables Field.
+            #[prost(message, tag = "5")]
+            EnableField(super::EnableFieldResponse),
+            /// Disables Field.
+            #[prost(message, tag = "6")]
+            DisableField(super::DisableFieldResponse),
+            /// Deletes a Field from the label.
+            #[prost(message, tag = "7")]
+            DeleteField(super::DeleteFieldResponse),
+            /// Creates a new selection list option to add to a Selection Field.
+            #[prost(message, tag = "8")]
+            CreateSelectionChoice(super::CreateSelectionChoiceResponse),
+            /// Updates a Choice within a Selection Field.
+            #[prost(message, tag = "9")]
+            UpdateSelectionChoiceProperties(
+                super::UpdateSelectionChoicePropertiesResponse,
+            ),
+            /// Enables a Choice within a Selection Field.
+            #[prost(message, tag = "10")]
+            EnableSelectionChoice(super::EnableSelectionChoiceResponse),
+            /// Disables a Choice within a Selection Field.
+            #[prost(message, tag = "11")]
+            DisableSelectionChoice(super::DisableSelectionChoiceResponse),
+            /// Deletes a Choice from a Selection Field.
+            #[prost(message, tag = "12")]
+            DeleteSelectionChoice(super::DeleteSelectionChoiceResponse),
+        }
+    }
+    /// Response following update to Label properties.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UpdateLabelPropertiesResponse {}
+    /// Response following Field create.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CreateFieldResponse {
+        /// The field of the created field. When left blank in a create request,
+        /// a key will be autogenerated and can be identified here.
+        #[prost(string, tag = "1")]
+        pub id: ::prost::alloc::string::String,
+        /// The priority of the created field. The priority may change from what
+        /// was specified to assure contiguous priorities between fields (1-n).
+        #[prost(int32, tag = "2")]
+        pub priority: i32,
+    }
+    /// Response following update to Field properties.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UpdateFieldPropertiesResponse {
+        /// The priority of the updated field. The priority may change from what
+        /// was specified to assure contiguous priorities between fields (1-n).
+        #[prost(int32, tag = "1")]
+        pub priority: i32,
+    }
+    /// Response following update to Field type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UpdateFieldTypeResponse {}
+    /// Response following Field enable.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EnableFieldResponse {}
+    /// Response following Field disable.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DisableFieldResponse {}
+    /// Response following Field delete.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DeleteFieldResponse {}
+    /// Response following Selection Choice create.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CreateSelectionChoiceResponse {
+        /// The server-generated id of the field.
+        #[prost(string, tag = "1")]
+        pub field_id: ::prost::alloc::string::String,
+        /// The server-generated ID of the created choice within the Field
+        #[prost(string, tag = "2")]
+        pub id: ::prost::alloc::string::String,
+    }
+    /// Response following update to Selection Choice properties.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UpdateSelectionChoicePropertiesResponse {
+        /// The priority of the updated choice. The priority may change from what
+        /// was specified to assure contiguous priorities between choices (1-n).
+        #[prost(int32, tag = "1")]
+        pub priority: i32,
+    }
+    /// Response following Choice enable.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EnableSelectionChoiceResponse {}
+    /// Response following Choice disable.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DisableSelectionChoiceResponse {}
+    /// Response following Choice delete.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DeleteSelectionChoiceResponse {}
+}
+/// Request to update the `CopyMode` of the given Label. Changes to this policy
+/// are not revisioned, do not require publishing, and take effect immediately.
+/// \
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateLabelCopyModeRequest {
+    /// Required. The resource name of the Label to update.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Indicates how the applied Label, and Field values should be copied
+    /// when a Drive item is copied.
+    #[prost(enumeration = "label::applied_label_policy::CopyMode", tag = "2")]
+    pub copy_mode: i32,
+    /// Set to `true` in order to use the user's admin credentials. The server
+    /// will verify the user is an admin for the Label before allowing access.
+    #[prost(bool, tag = "3")]
+    pub use_admin_access: bool,
+    /// The BCP-47 language code to use for evaluating localized field labels.
+    /// When not specified, values in the default configured language will be used.
+    #[prost(string, tag = "4")]
+    pub language_code: ::prost::alloc::string::String,
+    /// When specified, only certain fields belonging to the indicated view will be
+    /// returned.
+    #[prost(enumeration = "LabelView", tag = "5")]
+    pub view: i32,
+}
+/// Request to get the limits for a Label.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetLabelLimitsRequest {
+    /// Required. Label revision resource name
+    /// Must be: "limits/label"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Request to list labels available to the current user.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1360,6 +2149,11 @@ pub struct ListLabelsRequest {
     ///    revision (`labels/{id}`).
     #[prost(bool, tag = "1")]
     pub published_only: bool,
+    /// The customer to scope this list request to.
+    /// For example: "customers/abcd1234".
+    /// If unset, will return all labels within the current customer.
+    #[prost(string, tag = "2")]
+    pub customer: ::prost::alloc::string::String,
     /// The BCP-47 language code to use for evaluating localized field labels.
     /// When not specified, values in the default configured language are used.
     #[prost(string, tag = "5")]
@@ -1404,6 +2198,242 @@ pub struct ListLabelsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Creates or updates a permission on the Label. Permissions affect the Label
+/// resource as a whole, are not revisioned, and do not require publishing.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateLabelPermissionRequest {
+    /// Required. The parent Label resource name on the Label Permission is
+    /// created. Format: labels/{label}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The permission to create or update on the Label.
+    #[prost(message, optional, tag = "2")]
+    pub label_permission: ::core::option::Option<LabelPermission>,
+    /// Set to `true` in order to use the user's admin credentials. The server
+    /// will verify the user is an admin for the Label before allowing access.
+    #[prost(bool, tag = "3")]
+    pub use_admin_access: bool,
+}
+/// Request to list the permissions on a Label.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListLabelPermissionsRequest {
+    /// Required. The parent Label resource name on which Label Permission are
+    /// listed. Format: labels/{label}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Set to `true` in order to use the user's admin credentials. The server will
+    /// verify the user is an admin for the Label before allowing access.
+    #[prost(bool, tag = "2")]
+    pub use_admin_access: bool,
+    /// Maximum number of permissions to return per page. Default: 50. Max: 200.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// The token of the page to return.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for listing the permissions on a Label.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListLabelPermissionsResponse {
+    /// Label permissions.
+    #[prost(message, repeated, tag = "1")]
+    pub label_permissions: ::prost::alloc::vec::Vec<LabelPermission>,
+    /// The token of the next page in the response.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Updates a Label Permission. Permissions affect the Label resource as a whole,
+/// are not revisioned, and do not require publishing.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateLabelPermissionRequest {
+    /// Required. The parent Label resource name.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The permission to create or update on the Label.
+    #[prost(message, optional, tag = "2")]
+    pub label_permission: ::core::option::Option<LabelPermission>,
+    /// Set to `true` in order to use the user's admin credentials. The server
+    /// will verify the user is an admin for the Label before allowing access.
+    #[prost(bool, tag = "3")]
+    pub use_admin_access: bool,
+}
+/// Deletes a Label Permission. Permissions affect the Label resource as a whole,
+/// are not revisioned, and do not require publishing.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteLabelPermissionRequest {
+    /// Required. Label Permission resource name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Set to `true` in order to use the user's admin credentials. The server
+    /// will verify the user is an admin for the Label before allowing access.
+    #[prost(bool, tag = "2")]
+    pub use_admin_access: bool,
+}
+/// Updates one or more Label Permissions.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchUpdateLabelPermissionsRequest {
+    /// Required. The parent Label resource name shared by all permissions being
+    /// updated. Format: labels/{label} If this is set, the parent field in the
+    /// UpdateLabelPermissionRequest messages must either be empty or match this
+    /// field.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The request message specifying the resources to update.
+    #[prost(message, repeated, tag = "2")]
+    pub requests: ::prost::alloc::vec::Vec<UpdateLabelPermissionRequest>,
+    /// Set to `true` in order to use the user's admin credentials. The server
+    /// will verify the user is an admin for the Label before allowing access.
+    /// If this is set, the use_admin_access field in the
+    /// UpdateLabelPermissionRequest messages must either be empty or match this
+    /// field.
+    #[prost(bool, tag = "3")]
+    pub use_admin_access: bool,
+}
+/// Response for updating one or more Label Permissions.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchUpdateLabelPermissionsResponse {
+    /// Required. Permissions updated.
+    #[prost(message, repeated, tag = "1")]
+    pub permissions: ::prost::alloc::vec::Vec<LabelPermission>,
+}
+/// Deletes one of more Label Permissions.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchDeleteLabelPermissionsRequest {
+    /// Required. The request message specifying the resources to update.
+    #[prost(message, repeated, tag = "1")]
+    pub requests: ::prost::alloc::vec::Vec<DeleteLabelPermissionRequest>,
+    /// Set to `true` in order to use the user's admin credentials. The server
+    /// will verify the user is an admin for the Label before allowing access.
+    /// If this is set, the use_admin_access field in the
+    /// DeleteLabelPermissionRequest messages must either be empty or match this
+    /// field.
+    #[prost(bool, tag = "2")]
+    pub use_admin_access: bool,
+    /// Required. The parent Label resource name shared by all permissions being
+    /// deleted. Format: labels/{label} If this is set, the parent field in the
+    /// UpdateLabelPermissionRequest messages must either be empty or match this
+    /// field.
+    #[prost(string, tag = "3")]
+    pub parent: ::prost::alloc::string::String,
+}
+/// Request to deprecate a published Label.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisableLabelRequest {
+    /// The fields that should be updated. At least one field must be specified.
+    /// The root `disabled_policy` is implied and should not be specified. A
+    /// single `*` can be used as short-hand for updating every field.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. Label resource name.
+    #[prost(string, tag = "2")]
+    pub name: ::prost::alloc::string::String,
+    /// Set to `true` in order to use the user's admin credentials. The server
+    /// will verify the user is an admin for the Label before allowing access.
+    #[prost(bool, tag = "3")]
+    pub use_admin_access: bool,
+    /// Provides control over how write requests are executed. Defaults to unset,
+    /// which means last write wins.
+    #[prost(message, optional, tag = "4")]
+    pub write_control: ::core::option::Option<WriteControl>,
+    /// Disabled policy to use.
+    #[prost(message, optional, tag = "5")]
+    pub disabled_policy: ::core::option::Option<lifecycle::DisabledPolicy>,
+    /// The BCP-47 language code to use for evaluating localized field labels.
+    /// When not specified, values in the default configured language will be used.
+    #[prost(string, tag = "6")]
+    pub language_code: ::prost::alloc::string::String,
+}
+/// Request to publish a label.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PublishLabelRequest {
+    /// Required. Label resource name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Set to `true` in order to use the user's admin credentials. The server
+    /// will verify the user is an admin for the Label before allowing access.
+    #[prost(bool, tag = "2")]
+    pub use_admin_access: bool,
+    /// Provides control over how write requests are executed. Defaults to unset,
+    /// which means last write wins.
+    #[prost(message, optional, tag = "3")]
+    pub write_control: ::core::option::Option<WriteControl>,
+    /// The BCP-47 language code to use for evaluating localized field labels.
+    /// When not specified, values in the default configured language will be used.
+    #[prost(string, tag = "4")]
+    pub language_code: ::prost::alloc::string::String,
+}
+/// Request to enable a label.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnableLabelRequest {
+    /// Required. Label resource name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Set to `true` in order to use the user's admin credentials. The server
+    /// will verify the user is an admin for the Label before allowing access.
+    #[prost(bool, tag = "2")]
+    pub use_admin_access: bool,
+    /// Provides control over how write requests are executed. Defaults to unset,
+    /// which means last write wins.
+    #[prost(message, optional, tag = "3")]
+    pub write_control: ::core::option::Option<WriteControl>,
+    /// The BCP-47 language code to use for evaluating localized field labels.
+    /// When not specified, values in the default configured language will be used.
+    #[prost(string, tag = "4")]
+    pub language_code: ::prost::alloc::string::String,
+}
+/// Request to delete a label.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteLabelRequest {
+    /// Required. Label resource name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Set to `true` in order to use the user's admin credentials. The server
+    /// will verify the user is an admin for the Label before allowing access.
+    #[prost(bool, tag = "2")]
+    pub use_admin_access: bool,
+    /// Provides control over how write requests are executed. Defaults to unset,
+    /// which means last write wins.
+    #[prost(message, optional, tag = "3")]
+    pub write_control: ::core::option::Option<WriteControl>,
+}
+/// A request to list the LabelLocks on a Label.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListLabelLocksRequest {
+    /// Required. Label on which Locks are applied.
+    /// Format: labels/{label}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Maximum number of Locks to return per page. Default: 100. Max: 200.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The token of the page to return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response to a ListLabelLocksRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListLabelLocksResponse {
+    /// LabelLocks.
+    #[prost(message, repeated, tag = "1")]
+    pub label_locks: ::prost::alloc::vec::Vec<LabelLock>,
+    /// The token of the next page in the response.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// Resource view that can be applied to label responses. The default value
 /// `LABEL_VIEW_BASIC` implies the field mask:
 /// `name,id,revision_id,label_type,properties.*`\
@@ -1435,6 +2465,27 @@ impl LabelView {
             _ => None,
         }
     }
+}
+/// The capabilities of a user.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserCapabilities {
+    /// Output only. Resource name for the user capabilities.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Whether the user is allowed access to the label manager.
+    #[prost(bool, tag = "2")]
+    pub can_access_label_manager: bool,
+    /// Output only. Whether the user is an administrator for the shared labels
+    /// feature.
+    #[prost(bool, tag = "3")]
+    pub can_administrate_labels: bool,
+    /// Output only. Whether the user is allowed to create new shared labels.
+    #[prost(bool, tag = "4")]
+    pub can_create_shared_labels: bool,
+    /// Output only. Whether the user is allowed to create new admin labels.
+    #[prost(bool, tag = "5")]
+    pub can_create_admin_labels: bool,
 }
 /// Generated client implementations.
 pub mod label_service_client {
@@ -1523,6 +2574,37 @@ pub mod label_service_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
+        /// Gets the user capabilities.
+        pub async fn get_user_capabilities(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetUserCapabilitiesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::UserCapabilities>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.apps.drive.labels.v2.LabelService/GetUserCapabilities",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2.LabelService",
+                        "GetUserCapabilities",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// List labels.
         pub async fn list_labels(
             &mut self,
@@ -1586,6 +2668,489 @@ pub mod label_service_client {
                     GrpcMethod::new(
                         "google.apps.drive.labels.v2.LabelService",
                         "GetLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get the constraints on the structure of a Label; such as, the maximum
+        /// number of Fields allowed and maximum length of the label title.
+        pub async fn get_label_limits(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetLabelLimitsRequest>,
+        ) -> std::result::Result<tonic::Response<super::LabelLimits>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.apps.drive.labels.v2.LabelService/GetLabelLimits",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2.LabelService",
+                        "GetLabelLimits",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new Label.
+        pub async fn create_label(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateLabelRequest>,
+        ) -> std::result::Result<tonic::Response<super::Label>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.apps.drive.labels.v2.LabelService/CreateLabel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2.LabelService",
+                        "CreateLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a single Label by applying a set of update requests resulting in a
+        /// new draft revision. The batch update is all-or-nothing: If any of the
+        /// update requests are invalid, no changes are applied. The resulting draft
+        /// revision must be published before the changes may be used with Drive Items.
+        pub async fn delta_update_label(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeltaUpdateLabelRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DeltaUpdateLabelResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.apps.drive.labels.v2.LabelService/DeltaUpdateLabel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2.LabelService",
+                        "DeltaUpdateLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a Label's `CopyMode`. Changes to this policy are not revisioned, do
+        /// not require publishing, and take effect immediately.
+        pub async fn update_label_copy_mode(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateLabelCopyModeRequest>,
+        ) -> std::result::Result<tonic::Response<super::Label>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.apps.drive.labels.v2.LabelService/UpdateLabelCopyMode",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2.LabelService",
+                        "UpdateLabelCopyMode",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Publish all draft changes to the Label. Once published, the Label may not
+        /// return to its draft state. See
+        /// `google.apps.drive.labels.v2.Lifecycle` for more information.
+        ///
+        /// Publishing a Label will result in a new published revision. All previous
+        /// draft revisions will be deleted. Previous published revisions will be kept
+        /// but are subject to automated deletion as needed.
+        ///
+        /// Once published, some changes are no longer permitted. Generally, any change
+        /// that would invalidate or cause new restrictions on existing metadata
+        /// related to the Label will be rejected. For example, the following changes
+        /// to a Label will be rejected after the Label is published:
+        /// * The label cannot be directly deleted. It must be disabled first, then
+        ///   deleted.
+        /// * Field.FieldType cannot be changed.
+        /// * Changes to Field validation options cannot reject something that was
+        ///   previously accepted.
+        /// * Reducing the max entries.
+        pub async fn publish_label(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PublishLabelRequest>,
+        ) -> std::result::Result<tonic::Response<super::Label>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.apps.drive.labels.v2.LabelService/PublishLabel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2.LabelService",
+                        "PublishLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Disable a published Label.
+        /// Disabling a Label will result in a new disabled published revision based on
+        /// the current published revision. If there is a draft revision, a new
+        /// disabled draft revision will be created based on the latest draft revision.
+        /// Older draft revisions will be deleted.
+        ///
+        /// Once disabled, a label may be deleted with `DeleteLabel`.
+        pub async fn disable_label(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DisableLabelRequest>,
+        ) -> std::result::Result<tonic::Response<super::Label>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.apps.drive.labels.v2.LabelService/DisableLabel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2.LabelService",
+                        "DisableLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Enable a disabled Label and restore it to its published state.
+        /// This will result in a new published revision based on the current disabled
+        /// published revision. If there is an existing disabled draft revision, a new
+        /// revision will be created based on that draft and will be enabled.
+        pub async fn enable_label(
+            &mut self,
+            request: impl tonic::IntoRequest<super::EnableLabelRequest>,
+        ) -> std::result::Result<tonic::Response<super::Label>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.apps.drive.labels.v2.LabelService/EnableLabel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2.LabelService",
+                        "EnableLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Permanently deletes a Label and related metadata on Drive Items.
+        ///
+        /// Once deleted, the Label and related Drive item metadata will be deleted.
+        /// Only draft Labels, and disabled Labels may be deleted.
+        pub async fn delete_label(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteLabelRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.apps.drive.labels.v2.LabelService/DeleteLabel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2.LabelService",
+                        "DeleteLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists a Label's permissions.
+        pub async fn list_label_permissions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListLabelPermissionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListLabelPermissionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.apps.drive.labels.v2.LabelService/ListLabelPermissions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2.LabelService",
+                        "ListLabelPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a Label's permissions. If a permission for the indicated principal
+        /// doesn't exist, a new Label Permission is created, otherwise the existing
+        /// permission is updated. Permissions affect the Label resource as a whole,
+        /// are not revisioned, and do not require publishing.
+        pub async fn create_label_permission(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateLabelPermissionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::LabelPermission>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.apps.drive.labels.v2.LabelService/CreateLabelPermission",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2.LabelService",
+                        "CreateLabelPermission",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a Label's permissions. If a permission for the indicated principal
+        /// doesn't exist, a new Label Permission is created, otherwise the existing
+        /// permission is updated. Permissions affect the Label resource as a whole,
+        /// are not revisioned, and do not require publishing.
+        pub async fn update_label_permission(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateLabelPermissionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::LabelPermission>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.apps.drive.labels.v2.LabelService/UpdateLabelPermission",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2.LabelService",
+                        "UpdateLabelPermission",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a Label's permission. Permissions affect the Label resource as a
+        /// whole, are not revisioned, and do not require publishing.
+        pub async fn delete_label_permission(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteLabelPermissionRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.apps.drive.labels.v2.LabelService/DeleteLabelPermission",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2.LabelService",
+                        "DeleteLabelPermission",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates Label permissions. If a permission for the
+        /// indicated principal doesn't exist, a new Label Permission is created,
+        /// otherwise the existing permission is updated. Permissions affect the Label
+        /// resource as a whole, are not revisioned, and do not require publishing.
+        pub async fn batch_update_label_permissions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchUpdateLabelPermissionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::BatchUpdateLabelPermissionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.apps.drive.labels.v2.LabelService/BatchUpdateLabelPermissions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2.LabelService",
+                        "BatchUpdateLabelPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes Label permissions. Permissions affect the Label resource as a
+        /// whole, are not revisioned, and do not require publishing.
+        pub async fn batch_delete_label_permissions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchDeleteLabelPermissionsRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.apps.drive.labels.v2.LabelService/BatchDeleteLabelPermissions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2.LabelService",
+                        "BatchDeleteLabelPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists the LabelLocks on a Label.
+        pub async fn list_label_locks(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListLabelLocksRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListLabelLocksResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.apps.drive.labels.v2.LabelService/ListLabelLocks",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.apps.drive.labels.v2.LabelService",
+                        "ListLabelLocks",
                     ),
                 );
             self.inner.unary(req, path, codec).await
