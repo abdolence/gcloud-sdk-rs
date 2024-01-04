@@ -151,7 +151,7 @@ mod jwt {
         Token, TokenResponse,
     };
 
-    #[derive(Debug, serde::Serialize, serde::Deserialize)]
+    #[derive(Debug, serde::Serialize)]
     struct Claims<'a> {
         iss: &'a str,
         scope: &'a str,
@@ -176,7 +176,7 @@ mod jwt {
         }
     }
 
-    #[derive(Debug, serde::Serialize, serde::Deserialize)]
+    #[derive(Debug, serde::Serialize)]
     struct Payload<'a> {
         grant_type: &'a str,
         assertion: &'a str,
@@ -263,7 +263,7 @@ mod external_account {
     use crate::token_source::credentials::ExternalAccount;
     use crate::token_source::{ext_creds_source, Token, TokenResponse};
 
-    #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+    #[derive(Debug, PartialEq, Eq, serde::Serialize)]
     #[serde(rename_all = "camelCase")]
     struct StsRequest {
         pub grant_type: String,
@@ -274,16 +274,17 @@ mod external_account {
         pub scope: String,
     }
 
-    #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+    #[derive(Debug, PartialEq, Eq, serde::Serialize)]
     #[serde(rename_all = "camelCase")]
     struct IamCredentialsGenerateAccessToken {
         pub scope: String,
     }
 
-    #[derive(Debug, serde::Serialize, serde::Deserialize)]
+    #[derive(Debug, serde::Deserialize)]
     #[serde(rename_all = "camelCase")]
     struct IamCredentialsTokenResponse {
         access_token: SecretValue,
+        #[allow(unused)]
         expire_time: chrono::DateTime<chrono::Utc>,
     }
 
