@@ -170,28 +170,13 @@ impl GoogleEnvironment {
                 debug!("Detected GCP Project ID using GKE metadata server");
                 metadata_result
             } else {
-                let local_creds: Option<crate::token_source::credentials::Credentials> =
-                    if let Ok(Some(src)) = crate::token_source::from_env_var(&GCP_DEFAULT_SCOPES) {
-                        Some(src)
-                    } else if let Ok(Some(src)) =
-                        crate::token_source::from_well_known_file(&GCP_DEFAULT_SCOPES)
-                    {
-                        Some(src)
-                    } else {
-                        None
-                    };
+                let local_creds = crate::token_source::from_env_var(&GCP_DEFAULT_SCOPES)
+                    .or_else(|_| crate::token_source::from_well_known_file(&GCP_DEFAULT_SCOPES))
+                    .ok()
+                    .flatten();
 
-                let local_quota_project_id = local_creds.and_then(|creds| match creds {
-                    crate::token_source::credentials::Credentials::ServiceAccount(sa) => {
-                        sa.quota_project_id
-                    }
-                    crate::token_source::credentials::Credentials::User(user) => {
-                        user.quota_project_id
-                    }
-                    crate::token_source::credentials::Credentials::ExternalAccount(
-                        external_account,
-                    ) => external_account.quota_project_id,
-                });
+                let local_quota_project_id =
+                    local_creds.and_then(|creds| creds.quota_project_id().map(ToString::to_string));
 
                 if local_quota_project_id.is_some() {
                     debug!("Detected default project id from local defined quota_project_id");

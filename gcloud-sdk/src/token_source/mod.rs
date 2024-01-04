@@ -122,7 +122,7 @@ impl TryFrom<TokenResponse> for Token {
     }
 }
 
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, serde::Deserialize)]
 struct TokenResponse {
     token_type: String,
     access_token: SecretValue,
