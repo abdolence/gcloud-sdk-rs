@@ -69,41 +69,33 @@ pub async fn subject_token_url(
     let response = request.send().await?;
 
     if response.status().is_success() {
-        if let Some(format) = &url_creds.format {
-            match format {
-                ExternalCredentialUrlFormat::Json(json_settings) => {
-                    let json: serde_json::Value = response.json().await?;
-                    let json_object = json.as_object().ok_or_else(|| {
-                        crate::error::ErrorKind::ExternalCredsSourceError(format!(
-                            "External subject JSON format is not object: {}",
-                            json
-                        ))
-                    })?;
+        match &url_creds.format {
+            None | Some(ExternalCredentialUrlFormat::Text) => Ok(response.text().await?.into()),
+            Some(ExternalCredentialUrlFormat::Json(json_settings)) => {
+                let json: serde_json::Value = response.json().await?;
+                let json_object = json.as_object().ok_or_else(|| {
+                    crate::error::ErrorKind::ExternalCredsSourceError(format!(
+                        "External subject JSON format is not object: {}",
+                        json
+                    ))
+                })?;
 
-                    if let Some(subject_json_value) =
-                        json_object.get(&json_settings.subject_token_field_name)
-                    {
-                        if let Some(subject_json_value_str) = subject_json_value.as_str() {
-                            Ok(subject_json_value_str.into())
-                        } else {
-                            Err(crate::error::ErrorKind::ExternalCredsSourceError(format!(
-                                "External subject JSON field must have string type: {}",
-                                &json_settings.subject_token_field_name
-                            ))
-                            .into())
-                        }
-                    } else {
-                        Err(crate::error::ErrorKind::ExternalCredsSourceError(format!(
-                            "External subject JSON format doesn't contain required field: {}",
-                            &json_settings.subject_token_field_name
-                        ))
-                        .into())
-                    }
-                }
-                ExternalCredentialUrlFormat::Text => Ok(response.text().await?.into()),
+                let subject_json_value = json_object
+                    .get(&json_settings.subject_token_field_name)
+                    .ok_or_else(|| {
+                    crate::error::ErrorKind::ExternalCredsSourceError(format!(
+                        "External subject JSON field must have string type: {}",
+                        &json_settings.subject_token_field_name
+                    ))
+                })?;
+                subject_json_value.as_str().map(Into::into).ok_or_else(|| {
+                    crate::error::ErrorKind::ExternalCredsSourceError(format!(
+                        "External subject JSON field must have string type: {}",
+                        &json_settings.subject_token_field_name
+                    ))
+                    .into()
+                })
             }
-        } else {
-            Ok(response.text().await?.into())
         }
     } else {
         let status = response.status();
@@ -129,47 +121,37 @@ pub async fn subject_token_file(
             e
         ))
     })?;
-
-    if let Some(format) = &url_creds.format {
-        match format {
-            ExternalCredentialUrlFormat::Json(json_settings) => {
-                let json: serde_json::Value =
-                    serde_json::from_str(file_content.as_str()).map_err(|e| {
-                        crate::error::ErrorKind::ExternalCredsSourceError(format!(
-                            "External file JSON format error: {}",
-                            e
-                        ))
-                    })?;
-                let json_object = json.as_object().ok_or_else(|| {
+    match &url_creds.format {
+        None | Some(ExternalCredentialUrlFormat::Text) => Ok(file_content.into()),
+        Some(ExternalCredentialUrlFormat::Json(json_settings)) => {
+            let json: serde_json::Value =
+                serde_json::from_str(file_content.as_str()).map_err(|e| {
                     crate::error::ErrorKind::ExternalCredsSourceError(format!(
-                        "External subject JSON format is not object: {}",
-                        json
+                        "External file JSON format error: {}",
+                        e
                     ))
                 })?;
-
-                if let Some(subject_json_value) =
-                    json_object.get(&json_settings.subject_token_field_name)
-                {
-                    if let Some(subject_json_value_str) = subject_json_value.as_str() {
-                        Ok(subject_json_value_str.into())
-                    } else {
-                        Err(crate::error::ErrorKind::ExternalCredsSourceError(format!(
-                            "External subject JSON field must have string type: {}",
-                            &json_settings.subject_token_field_name
-                        ))
-                        .into())
-                    }
-                } else {
-                    Err(crate::error::ErrorKind::ExternalCredsSourceError(format!(
+            let json_object = json.as_object().ok_or_else(|| {
+                crate::error::ErrorKind::ExternalCredsSourceError(format!(
+                    "External subject JSON format is not object: {}",
+                    json
+                ))
+            })?;
+            let subject_json_value = json_object
+                .get(&json_settings.subject_token_field_name)
+                .ok_or_else(|| {
+                    crate::error::ErrorKind::ExternalCredsSourceError(format!(
                         "External subject JSON format doesn't contain required field: {}",
                         &json_settings.subject_token_field_name
                     ))
-                    .into())
-                }
-            }
-            ExternalCredentialUrlFormat::Text => Ok(file_content.into()),
+                })?;
+            subject_json_value.as_str().map(Into::into).ok_or_else(|| {
+                crate::error::ErrorKind::ExternalCredsSourceError(format!(
+                    "External subject JSON field must have string type: {}",
+                    &json_settings.subject_token_field_name
+                ))
+                .into()
+            })
         }
-    } else {
-        Ok(file_content.into())
     }
 }
