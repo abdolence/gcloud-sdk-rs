@@ -18,6 +18,16 @@ pub enum Credentials {
     ExternalAccount(ExternalAccount),
 }
 
+impl Credentials {
+    pub(crate) fn quota_project_id(&self) -> Option<&str> {
+        match self {
+            Self::ExternalAccount(ea) => ea.quota_project_id.as_deref(),
+            Self::User(u) => u.quota_project_id.as_deref(),
+            Self::ServiceAccount(sa) => sa.quota_project_id.as_deref(),
+        }
+    }
+}
+
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct ServiceAccount {
     pub client_email: String,
