@@ -240,7 +240,7 @@ mod oauth2 {
             client_id: &user.client_id,
             client_secret: user.client_secret.as_sensitive_str(),
             grant_type: GRANT_TYPE,
-            // The reflesh token is not included in the response from google's server,
+            // The refresh token is not included in the response from google's server,
             // so it always uses the specified refresh token from the file.
             refresh_token: user.refresh_token.as_sensitive_str(),
         });
