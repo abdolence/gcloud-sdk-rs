@@ -1,3 +1,85 @@
+/// Cloud Logging details for execution info
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudLoggingDetails {
+    /// Optional. Severity selected by the customer for the logs to be sent to
+    /// Cloud Logging, for the integration version getting executed.
+    #[prost(
+        enumeration = "cloud_logging_details::CloudLoggingSeverity",
+        optional,
+        tag = "1"
+    )]
+    pub cloud_logging_severity: ::core::option::Option<i32>,
+    /// Optional. Status of whether Cloud Logging is enabled or not for the
+    /// integration version getting executed.
+    #[prost(bool, optional, tag = "2")]
+    pub enable_cloud_logging: ::core::option::Option<bool>,
+}
+/// Nested message and enum types in `CloudLoggingDetails`.
+pub mod cloud_logging_details {
+    /// The severity will be mapped to the Integration Execution State.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CloudLoggingSeverity {
+        /// Unspecified
+        Unspecified = 0,
+        /// If Severity selected is `INFO`, then all the Integration Execution States
+        /// (`IN_PROCESS`, `ON_HOLD`, `SUCCEEDED`, `SUSPENDED`, `ERROR`, `CANCELLED`)
+        /// will be sent to Cloud Logging.
+        Info = 2,
+        /// If Severity selected is `ERROR`, then only the following Integration
+        /// Execution States (`ERROR`, `CANCELLED`) will be sent to Cloud Logging.
+        Error = 3,
+        /// If Severity selected is `WARNING`, then only the following Integration
+        /// Execution States (`ERROR`, `CANCELLED`) will be sent to Cloud Logging.
+        Warning = 4,
+    }
+    impl CloudLoggingSeverity {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                CloudLoggingSeverity::Unspecified => "CLOUD_LOGGING_SEVERITY_UNSPECIFIED",
+                CloudLoggingSeverity::Info => "INFO",
+                CloudLoggingSeverity::Error => "ERROR",
+                CloudLoggingSeverity::Warning => "WARNING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLOUD_LOGGING_SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "INFO" => Some(Self::Info),
+                "ERROR" => Some(Self::Error),
+                "WARNING" => Some(Self::Warning),
+                _ => None,
+            }
+        }
+    }
+}
+/// Configuration detail of coordinate, it used for UI
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Coordinate {
+    /// Required. X axis of the coordinate
+    #[prost(int32, tag = "1")]
+    pub x: i32,
+    /// Required. Y axis of the coordinate
+    #[prost(int32, tag = "2")]
+    pub y: i32,
+}
 /// The type of the parameter.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -73,6 +155,7 @@ pub struct BooleanParameterArray {
 }
 /// This message is used for processing and persisting (when applicable) key
 /// value pair parameters for each event in the event bus.
+/// Next available id: 4
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventParameter {
@@ -85,6 +168,50 @@ pub struct EventParameter {
     /// or any proto message.
     #[prost(message, optional, tag = "2")]
     pub value: ::core::option::Option<ValueType>,
+    /// True if this parameter should be masked in the logs
+    #[prost(bool, tag = "3")]
+    pub masked: bool,
+}
+/// Indicates the status of the integration.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum IntegrationState {
+    /// Default.
+    Unspecified = 0,
+    /// Draft.
+    Draft = 1,
+    /// Active.
+    Active = 2,
+    /// Archived.
+    Archived = 3,
+    /// Snapshot.
+    Snapshot = 4,
+}
+impl IntegrationState {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            IntegrationState::Unspecified => "INTEGRATION_STATE_UNSPECIFIED",
+            IntegrationState::Draft => "DRAFT",
+            IntegrationState::Active => "ACTIVE",
+            IntegrationState::Archived => "ARCHIVED",
+            IntegrationState::Snapshot => "SNAPSHOT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "INTEGRATION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "DRAFT" => Some(Self::Draft),
+            "ACTIVE" => Some(Self::Active),
+            "ARCHIVED" => Some(Self::Archived),
+            "SNAPSHOT" => Some(Self::Snapshot),
+            _ => None,
+        }
+    }
 }
 /// Options for how to validate json schemas.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -130,46 +257,8 @@ impl JsonValidationOption {
         }
     }
 }
-/// Enum Product.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum Product {
-    /// Default value.
-    Unspecified = 0,
-    /// Integration Platform.
-    Ip = 1,
-    /// Apigee.
-    Apigee = 2,
-    /// Security Command Center.
-    Security = 3,
-}
-impl Product {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            Product::Unspecified => "PRODUCT_UNSPECIFIED",
-            Product::Ip => "IP",
-            Product::Apigee => "APIGEE",
-            Product::Security => "SECURITY",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "PRODUCT_UNSPECIFIED" => Some(Self::Unspecified),
-            "IP" => Some(Self::Ip),
-            "APIGEE" => Some(Self::Apigee),
-            "SECURITY" => Some(Self::Security),
-            _ => None,
-        }
-    }
-}
 /// The task configuration details. This is not the implementation of Task.
 /// There might be multiple TaskConfigs for the same Task.
-/// (-- Next available id: 12 --)
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TaskConfig {
@@ -205,22 +294,44 @@ pub struct TaskConfig {
     /// only if the condition associated with them evaluates to true.
     #[prost(message, repeated, tag = "6")]
     pub next_tasks: ::prost::alloc::vec::Vec<NextTask>,
-    /// Optional. The policy dictating the execution of the next set of tasks for the current
-    /// task.
+    /// Optional. The policy dictating the execution of the next set of tasks for
+    /// the current task.
     #[prost(enumeration = "task_config::NextTasksExecutionPolicy", tag = "7")]
     pub next_tasks_execution_policy: i32,
     /// Optional. The policy dictating the execution strategy of this task.
     #[prost(enumeration = "task_config::TaskExecutionStrategy", tag = "8")]
     pub task_execution_strategy: i32,
-    /// Optional. User-provided label that is attached to this TaskConfig in the UI.
+    /// Optional. User-provided label that is attached to this TaskConfig in the
+    /// UI.
     #[prost(string, tag = "9")]
     pub display_name: ::prost::alloc::string::String,
     /// Optional. Determines what action to take upon successful task completion.
     #[prost(message, optional, tag = "10")]
     pub success_policy: ::core::option::Option<SuccessPolicy>,
-    /// Optional. If set, overrides the option configured in the Task implementation class.
+    /// Optional. If set, overrides the option configured in the Task
+    /// implementation class.
     #[prost(enumeration = "JsonValidationOption", tag = "11")]
     pub json_validation_option: i32,
+    /// Optional. User-provided description intended to give additional business
+    /// context about the task.
+    #[prost(string, tag = "12")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Used to define task-template name if task is of type
+    /// task-template
+    #[prost(string, tag = "13")]
+    pub task_template: ::prost::alloc::string::String,
+    /// Optional. Optional
+    /// Error catcher id of the error catch flow which will be executed when
+    /// execution error happens in the task
+    #[prost(string, tag = "17")]
+    pub error_catcher_id: ::prost::alloc::string::String,
+    /// Optional. External task type of the task
+    #[prost(enumeration = "task_config::ExternalTaskType", tag = "15")]
+    pub external_task_type: i32,
+    /// Optional. Informs the front-end application where to draw this error
+    /// catcher config on the UI.
+    #[prost(message, optional, tag = "16")]
+    pub position: ::core::option::Option<Coordinate>,
 }
 /// Nested message and enum types in `TaskConfig`.
 pub mod task_config {
@@ -324,6 +435,49 @@ pub mod task_config {
                 "WHEN_ALL_TASKS_AND_CONDITIONS_SUCCEED" => {
                     Some(Self::WhenAllTasksAndConditionsSucceed)
                 }
+                _ => None,
+            }
+        }
+    }
+    /// Defines the type of the task for external customer
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ExternalTaskType {
+        /// Default value. External task type is not specified
+        Unspecified = 0,
+        /// Tasks belongs to the normal task flows
+        NormalTask = 1,
+        /// Task belongs to the error catch task flows
+        ErrorTask = 2,
+    }
+    impl ExternalTaskType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ExternalTaskType::Unspecified => "EXTERNAL_TASK_TYPE_UNSPECIFIED",
+                ExternalTaskType::NormalTask => "NORMAL_TASK",
+                ExternalTaskType::ErrorTask => "ERROR_TASK",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXTERNAL_TASK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NORMAL_TASK" => Some(Self::NormalTask),
+                "ERROR_TASK" => Some(Self::ErrorTask),
                 _ => None,
             }
         }
@@ -518,22 +672,20 @@ pub struct NextTask {
     /// User-provided label that is attached to this edge in the UI.
     #[prost(string, tag = "4")]
     pub display_name: ::prost::alloc::string::String,
+    /// User-provided description intended to give additional business context
+    /// about the task.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
 }
 /// Log entry to log execution info for the monitored resource
 /// `integrations.googleapis.com/IntegrationVersion`.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutionInfo {
-    /// Auto-generated primary key.
-    #[prost(string, tag = "1")]
-    pub event_execution_info_id: ::prost::alloc::string::String,
     /// Name of the integration.
     #[prost(string, tag = "2")]
     pub integration: ::prost::alloc::string::String,
-    /// Pointer to the active version it is executing.
-    #[prost(string, tag = "3")]
-    pub integration_version: ::prost::alloc::string::String,
-    /// The event data user sends as request.
+    /// The customer's project number.
     #[prost(string, tag = "4")]
     pub project_id: ::prost::alloc::string::String,
     /// The trigger id of the integration trigger config. If both trigger_id
@@ -542,43 +694,61 @@ pub struct ExecutionInfo {
     /// default start tasks.
     #[prost(string, tag = "5")]
     pub trigger_id: ::prost::alloc::string::String,
-    /// Event parameters come in as part of the request.
+    /// Execution parameters come in as part of the request.
     #[prost(map = "string, message", tag = "6")]
     pub request_params: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         EventParameter,
     >,
-    /// Event parameters come out as part of the response.
+    /// Execution parameters come out as part of the response.
     #[prost(map = "string, message", tag = "7")]
     pub response_params: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         EventParameter,
     >,
-    /// The ways user posts this event.
-    #[prost(enumeration = "execution_info::PostMethod", tag = "8")]
-    pub post_method: i32,
-    /// The execution info about this event.
-    #[prost(message, optional, tag = "9")]
-    pub event_execution_details: ::core::option::Option<EventExecutionDetails>,
     /// Errors, warnings, and informationals associated with the workflow/task.
     /// The order in which the errors were added by the workflow/task is
     /// maintained.
     #[prost(message, repeated, tag = "10")]
     pub errors: ::prost::alloc::vec::Vec<ErrorDetail>,
-    /// Which Google product the execution_info belongs to. If not set, the
-    /// execution_info belongs to Integration Platform by default.
-    #[prost(enumeration = "Product", tag = "11")]
-    pub product: i32,
-    /// This is used to de-dup incoming request.
-    #[prost(string, tag = "12")]
-    pub request_id: ::prost::alloc::string::String,
     /// The configuration details for a task.
     #[prost(message, repeated, tag = "13")]
     pub task_configs: ::prost::alloc::vec::Vec<TaskConfig>,
+    /// Pointer to the active version it is executing.
+    #[prost(string, tag = "14")]
+    pub integration_version_number: ::prost::alloc::string::String,
+    /// Auto-generated primary key.
+    #[prost(string, tag = "15")]
+    pub execution_id: ::prost::alloc::string::String,
+    /// Output only. State of the integration version
+    #[prost(enumeration = "IntegrationState", tag = "16")]
+    pub integration_version_state: i32,
+    /// Database persistence policy for execution info
+    #[prost(bool, tag = "17")]
+    pub enable_database_persistence: bool,
+    /// Cloud Logging details for execution info
+    #[prost(message, optional, tag = "18")]
+    pub cloud_logging_details: ::core::option::Option<CloudLoggingDetails>,
+    /// The details about this integration execution.
+    #[prost(message, optional, tag = "19")]
+    pub integration_execution_details: ::core::option::Option<
+        IntegrationExecutionDetails,
+    >,
+    /// Specifies whether this execution info corresponds to actual integration or
+    /// test case.
+    #[prost(enumeration = "ExecutionType", tag = "20")]
+    pub execution_type: i32,
+    /// The ways user posts this event.
+    #[prost(enumeration = "execution_info::ExecutionMethod", tag = "21")]
+    pub execution_method: i32,
+    /// An increasing sequence that is set when a new snapshot (Integration
+    /// Version) is created.
+    #[prost(int64, tag = "22")]
+    pub integration_snapshot_number: i64,
 }
 /// Nested message and enum types in `ExecutionInfo`.
 pub mod execution_info {
-    /// PostMethod Enum
+    /// ExecutionMethod Enum
     #[derive(
         Clone,
         Copy,
@@ -591,52 +761,60 @@ pub mod execution_info {
         ::prost::Enumeration
     )]
     #[repr(i32)]
-    pub enum PostMethod {
+    pub enum ExecutionMethod {
         /// Default value.
         Unspecified = 0,
         /// Sync post.
         Post = 1,
         /// Async post with schedule time.
         Schedule = 2,
+        /// Async post.
+        PostToQueue = 3,
     }
-    impl PostMethod {
+    impl ExecutionMethod {
         /// String value of the enum field names used in the ProtoBuf definition.
         ///
         /// The values are not transformed in any way and thus are considered stable
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PostMethod::Unspecified => "POST_METHOD_UNSPECIFIED",
-                PostMethod::Post => "POST",
-                PostMethod::Schedule => "SCHEDULE",
+                ExecutionMethod::Unspecified => "EXECUTION_METHOD_UNSPECIFIED",
+                ExecutionMethod::Post => "POST",
+                ExecutionMethod::Schedule => "SCHEDULE",
+                ExecutionMethod::PostToQueue => "POST_TO_QUEUE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
-                "POST_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXECUTION_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
                 "POST" => Some(Self::Post),
                 "SCHEDULE" => Some(Self::Schedule),
+                "POST_TO_QUEUE" => Some(Self::PostToQueue),
                 _ => None,
             }
         }
     }
 }
-/// Contains the details of the execution info of this event: this includes
-/// the tasks execution details plus the event execution statistics.
+/// Contains the details of the execution info: this includes the tasks execution
+/// details plus the integration execution statistics.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct EventExecutionDetails {
-    /// The execution state of this event.
-    #[prost(enumeration = "event_execution_details::EventExecutionState", tag = "1")]
-    pub event_execution_state: i32,
-    /// After snapshot migration, this field will no longer be populated, but old
-    /// execution snapshots will still be accessible.
+pub struct IntegrationExecutionDetails {
+    /// Output only. The execution state of this Integration.
+    #[prost(
+        enumeration = "integration_execution_details::IntegrationExecutionState",
+        tag = "1"
+    )]
+    pub integration_execution_state: i32,
+    /// Execution snapshot.
     #[prost(message, repeated, tag = "2")]
-    pub event_execution_snapshot: ::prost::alloc::vec::Vec<EventExecutionSnapshot>,
-    /// Status for the current event execution attempt.
+    pub integration_execution_snapshot: ::prost::alloc::vec::Vec<
+        IntegrationExecutionSnapshot,
+    >,
+    /// Status for the current execution attempt.
     #[prost(message, repeated, tag = "3")]
-    pub event_attempt_stats: ::prost::alloc::vec::Vec<AttemptStats>,
+    pub execution_attempt_stats: ::prost::alloc::vec::Vec<AttemptStats>,
     /// Next scheduled execution time in case the execution status was
     /// RETRY_ON_HOLD.
     #[prost(message, optional, tag = "4")]
@@ -644,11 +822,11 @@ pub struct EventExecutionDetails {
     /// Indicates the number of times the execution has restarted from the
     /// beginning.
     #[prost(int32, tag = "5")]
-    pub event_retries_count: i32,
+    pub execution_retries_count: i32,
 }
-/// Nested message and enum types in `EventExecutionDetails`.
-pub mod event_execution_details {
-    /// Enum EventExecutionState.
+/// Nested message and enum types in `IntegrationExecutionDetails`.
+pub mod integration_execution_details {
+    /// Enum ExecutionState.
     #[derive(
         Clone,
         Copy,
@@ -661,48 +839,50 @@ pub mod event_execution_details {
         ::prost::Enumeration
     )]
     #[repr(i32)]
-    pub enum EventExecutionState {
+    pub enum IntegrationExecutionState {
         /// Default value.
         Unspecified = 0,
-        /// Event is received and waiting for the execution. This happens when
-        /// firing the event via "postToQueue" or "schedule".
+        /// Integration is received and waiting for the execution. This happens when
+        /// firing the Integration via "postToQueue" or "schedule".
         OnHold = 1,
-        /// Event is under processing.
+        /// Integration is under processing.
         InProcess = 2,
-        /// Event execution successfully finished. There's no more change after
+        /// Integration execution successfully finished. There's no more change after
         /// this state.
         Succeeded = 3,
-        /// Event execution failed. There's no more change after this state.
+        /// Integration execution failed. There's no more change after this state.
         Failed = 4,
-        /// Event execution canceled by user. There's no more change after this
+        /// Integration execution canceled by user. There's no more change after this
         /// state.
         Cancelled = 5,
-        /// Event execution failed and waiting for retry.
+        /// Integration execution failed and waiting for retry.
         RetryOnHold = 6,
-        /// Event execution suspended and waiting for manual intervention.
+        /// Integration execution suspended and waiting for manual intervention.
         Suspended = 7,
     }
-    impl EventExecutionState {
+    impl IntegrationExecutionState {
         /// String value of the enum field names used in the ProtoBuf definition.
         ///
         /// The values are not transformed in any way and thus are considered stable
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EventExecutionState::Unspecified => "EVENT_EXECUTION_STATE_UNSPECIFIED",
-                EventExecutionState::OnHold => "ON_HOLD",
-                EventExecutionState::InProcess => "IN_PROCESS",
-                EventExecutionState::Succeeded => "SUCCEEDED",
-                EventExecutionState::Failed => "FAILED",
-                EventExecutionState::Cancelled => "CANCELLED",
-                EventExecutionState::RetryOnHold => "RETRY_ON_HOLD",
-                EventExecutionState::Suspended => "SUSPENDED",
+                IntegrationExecutionState::Unspecified => {
+                    "INTEGRATION_EXECUTION_STATE_UNSPECIFIED"
+                }
+                IntegrationExecutionState::OnHold => "ON_HOLD",
+                IntegrationExecutionState::InProcess => "IN_PROCESS",
+                IntegrationExecutionState::Succeeded => "SUCCEEDED",
+                IntegrationExecutionState::Failed => "FAILED",
+                IntegrationExecutionState::Cancelled => "CANCELLED",
+                IntegrationExecutionState::RetryOnHold => "RETRY_ON_HOLD",
+                IntegrationExecutionState::Suspended => "SUSPENDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
-                "EVENT_EXECUTION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INTEGRATION_EXECUTION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
                 "ON_HOLD" => Some(Self::OnHold),
                 "IN_PROCESS" => Some(Self::InProcess),
                 "SUCCEEDED" => Some(Self::Succeeded),
@@ -715,10 +895,10 @@ pub mod event_execution_details {
         }
     }
 }
-/// Contains the snapshot of the event execution for a given checkpoint.
+/// Contains the snapshot of the integration execution for a given checkpoint.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct EventExecutionSnapshot {
+pub struct IntegrationExecutionSnapshot {
     /// Indicates "right after which checkpoint task's execution" this snapshot
     /// is taken.
     #[prost(string, tag = "1")]
@@ -728,8 +908,8 @@ pub struct EventExecutionSnapshot {
     pub snapshot_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Snapshot metadata.
     #[prost(message, optional, tag = "3")]
-    pub event_execution_snapshot_metadata: ::core::option::Option<
-        event_execution_snapshot::EventExecutionSnapshotMetadata,
+    pub integration_execution_snapshot_metadata: ::core::option::Option<
+        integration_execution_snapshot::IntegrationExecutionSnapshotMetadata,
     >,
     /// All of the task execution details at the given point of time.
     #[prost(message, repeated, tag = "4")]
@@ -739,35 +919,47 @@ pub struct EventExecutionSnapshot {
     pub condition_results: ::prost::alloc::vec::Vec<ConditionResult>,
     /// The parameters in Event object.
     #[prost(map = "string, message", tag = "6")]
-    pub event_params: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        EventParameter,
-    >,
-    /// The parameters in Event object that differs from last snapshot.
-    #[prost(map = "string, message", tag = "7")]
-    pub diff_params: ::std::collections::HashMap<
+    pub execution_params: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         EventParameter,
     >,
 }
-/// Nested message and enum types in `EventExecutionSnapshot`.
-pub mod event_execution_snapshot {
-    /// Metadata for the event/task retry.
+/// Nested message and enum types in `IntegrationExecutionSnapshot`.
+pub mod integration_execution_snapshot {
+    /// Metadata for the integration/task retry.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct EventExecutionSnapshotMetadata {
+    pub struct IntegrationExecutionSnapshotMetadata {
         /// The task number associated with this snapshot. Could be empty.
         #[prost(string, tag = "1")]
         pub task_number: ::prost::alloc::string::String,
         /// the task name associated with this snapshot. Could be empty.
         #[prost(string, tag = "2")]
         pub task: ::prost::alloc::string::String,
-        /// the event attempt number this snapshot belongs to.
+        /// the integration execution attempt number this snapshot belongs to.
         #[prost(int32, tag = "3")]
-        pub event_attempt_num: i32,
+        pub integration_execution_attempt_num: i32,
         /// the task attempt number this snapshot belongs to. Could be empty.
         #[prost(int32, tag = "4")]
         pub task_attempt_num: i32,
+        /// the task label associated with this snapshot. Could be empty.
+        #[prost(string, tag = "5")]
+        pub task_label: ::prost::alloc::string::String,
+        /// Ancestor task number for the task(it will only be non-empty if the task
+        /// is under 'private workflow')
+        #[prost(string, repeated, tag = "6")]
+        pub ancestor_task_numbers: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
+        /// Ancestor iteration number for the task(it will only be non-empty if the
+        /// task is under 'private workflow')
+        #[prost(string, repeated, tag = "7")]
+        pub ancestor_iteration_numbers: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
+        /// The direct integration which the event execution snapshots belongs to
+        #[prost(string, tag = "8")]
+        pub integration: ::prost::alloc::string::String,
     }
 }
 /// Contains the details of the execution of this task.
@@ -812,16 +1004,16 @@ pub mod task_execution_details {
         Succeed = 3,
         /// Task execution failed. There's no more change after this state.
         Failed = 4,
-        /// Task execution failed and cause the whole event execution to fail
+        /// Task execution failed and cause the whole integration execution to fail
         /// immediately. There's no more change after this state.
         Fatal = 5,
         /// Task execution failed and waiting for retry.
         RetryOnHold = 6,
         /// Task execution skipped. This happens when its precondition wasn't met,
-        /// or the event execution been canceled before reach to the task.
+        /// or the integration execution been canceled before reach to the task.
         /// There's no more changes after this state.
         Skipped = 7,
-        /// Task execution canceled when in progress. This happens when event
+        /// Task execution canceled when in progress. This happens when integration
         /// execution been canceled or any other task fall in fatal state.
         Cancelled = 8,
         /// Task is waiting for its dependency tasks' rollback to finish to start
@@ -883,11 +1075,11 @@ pub mod task_execution_details {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttemptStats {
-    /// The start time of the event execution for current attempt. This could be
-    /// in the future if it's been scheduled.
+    /// The start time of the integration execution for current attempt. This could
+    /// be in the future if it's been scheduled.
     #[prost(message, optional, tag = "1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The end time of the event execution for current attempt.
+    /// The end time of the integration execution for current attempt.
     #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
@@ -900,7 +1092,7 @@ pub struct ErrorDetail {
     #[prost(string, tag = "1")]
     pub error_message: ::prost::alloc::string::String,
     /// The task try-number, in which, the error occurred.  If zero, the error
-    /// happened at the event level.
+    /// happened at the integration level.
     #[prost(int32, tag = "2")]
     pub task_number: i32,
 }
@@ -918,4 +1110,75 @@ pub struct ConditionResult {
     /// no combined condition specified.
     #[prost(bool, tag = "3")]
     pub result: bool,
+}
+/// Specifies whether this execution info corresponds to actual integration or
+/// test case.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ExecutionType {
+    /// Unspecified value.
+    Unspecified = 0,
+    /// Execution corresponds to run of an integration version.
+    IntegrationVersion = 1,
+    /// Execution corresponds to run of a functional test case.
+    TestCase = 2,
+}
+impl ExecutionType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ExecutionType::Unspecified => "EXECUTION_TYPE_UNSPECIFIED",
+            ExecutionType::IntegrationVersion => "INTEGRATION_VERSION",
+            ExecutionType::TestCase => "TEST_CASE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "EXECUTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "INTEGRATION_VERSION" => Some(Self::IntegrationVersion),
+            "TEST_CASE" => Some(Self::TestCase),
+            _ => None,
+        }
+    }
+}
+/// Enum Product.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Product {
+    /// Default value.
+    Unspecified = 0,
+    /// Integration Platform.
+    Ip = 1,
+    /// Apigee.
+    Apigee = 2,
+    /// Security Command Center.
+    Security = 3,
+}
+impl Product {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Product::Unspecified => "PRODUCT_UNSPECIFIED",
+            Product::Ip => "IP",
+            Product::Apigee => "APIGEE",
+            Product::Security => "SECURITY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PRODUCT_UNSPECIFIED" => Some(Self::Unspecified),
+            "IP" => Some(Self::Ip),
+            "APIGEE" => Some(Self::Apigee),
+            "SECURITY" => Some(Self::Security),
+            _ => None,
+        }
+    }
 }

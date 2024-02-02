@@ -1745,7 +1745,7 @@ pub mod firestore_admin_client {
         /// only supports listing fields that have been explicitly overridden. To issue
         /// this query, call
         /// [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields]
-        /// with the filter set to `indexConfig.usesAncestorConfig:false or
+        /// with the filter set to `indexConfig.usesAncestorConfig:false` or
         /// `ttlConfig:*`.
         pub async fn list_fields(
             &mut self,

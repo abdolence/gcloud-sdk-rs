@@ -988,6 +988,23 @@ pub struct CreateDatabaseRequest {
     /// Optional. The dialect of the Cloud Spanner Database.
     #[prost(enumeration = "DatabaseDialect", tag = "5")]
     pub database_dialect: i32,
+    /// Optional. Proto descriptors used by CREATE/ALTER PROTO BUNDLE statements in
+    /// 'extra_statements' above.
+    /// Contains a protobuf-serialized
+    /// [google.protobuf.FileDescriptorSet](<https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto>).
+    /// To generate it, [install](<https://grpc.io/docs/protoc-installation/>) and
+    /// run `protoc` with --include_imports and --descriptor_set_out. For example,
+    /// to generate for moon/shot/app.proto, run
+    /// ```
+    /// $protoc  --proto_path=/app_path --proto_path=/lib_path \
+    ///           --include_imports \
+    ///           --descriptor_set_out=descriptors.data \
+    ///           moon/shot/app.proto
+    /// ```
+    /// For more details, see protobuffer [self
+    /// description](<https://developers.google.com/protocol-buffers/docs/techniques#self-description>).
+    #[prost(bytes = "vec", tag = "6")]
+    pub proto_descriptors: ::prost::alloc::vec::Vec<u8>,
 }
 /// Metadata type for the operation returned by
 /// [CreateDatabase][google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase].
@@ -1087,6 +1104,22 @@ pub struct UpdateDatabaseDdlRequest {
     /// `ALREADY_EXISTS`.
     #[prost(string, tag = "3")]
     pub operation_id: ::prost::alloc::string::String,
+    /// Optional. Proto descriptors used by CREATE/ALTER PROTO BUNDLE statements.
+    /// Contains a protobuf-serialized
+    /// [google.protobuf.FileDescriptorSet](<https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto>).
+    /// To generate it, [install](<https://grpc.io/docs/protoc-installation/>) and
+    /// run `protoc` with --include_imports and --descriptor_set_out. For example,
+    /// to generate for moon/shot/app.proto, run
+    /// ```
+    /// $protoc  --proto_path=/app_path --proto_path=/lib_path \
+    ///           --include_imports \
+    ///           --descriptor_set_out=descriptors.data \
+    ///           moon/shot/app.proto
+    /// ```
+    /// For more details, see protobuffer [self
+    /// description](<https://developers.google.com/protocol-buffers/docs/techniques#self-description>).
+    #[prost(bytes = "vec", tag = "4")]
+    pub proto_descriptors: ::prost::alloc::vec::Vec<u8>,
 }
 /// Action information extracted from a DDL statement. This proto is used to
 /// display the brief info of the DDL statement for the operation
@@ -1173,6 +1206,13 @@ pub struct GetDatabaseDdlResponse {
     /// specified in the request.
     #[prost(string, repeated, tag = "1")]
     pub statements: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Proto descriptors stored in the database.
+    /// Contains a protobuf-serialized
+    /// [google.protobuf.FileDescriptorSet](<https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto>).
+    /// For more details, see protobuffer [self
+    /// description](<https://developers.google.com/protocol-buffers/docs/techniques#self-description>).
+    #[prost(bytes = "vec", tag = "2")]
+    pub proto_descriptors: ::prost::alloc::vec::Vec<u8>,
 }
 /// The request for
 /// [ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations].

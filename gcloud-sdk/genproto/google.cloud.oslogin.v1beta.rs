@@ -93,6 +93,11 @@ pub struct ImportSshPublicKeyRequest {
     /// The view configures whether to retrieve security keys information.
     #[prost(enumeration = "LoginProfileView", tag = "4")]
     pub view: i32,
+    /// Optional. The regions to which to assert that the key was written.
+    /// If unspecified, defaults to all regions.
+    /// Regions are listed at <https://cloud.google.com/about/locations#region.>
+    #[prost(string, repeated, tag = "5")]
+    pub regions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A response message for importing an SSH public key.
 #[allow(clippy::derive_partial_eq_without_eq)]

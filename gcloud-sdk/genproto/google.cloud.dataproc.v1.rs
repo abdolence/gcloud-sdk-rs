@@ -540,6 +540,9 @@ pub struct RuntimeConfig {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. Dependency repository configuration.
+    #[prost(message, optional, tag = "5")]
+    pub repository_config: ::core::option::Option<RepositoryConfig>,
 }
 /// Environment configuration for a workload.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -565,16 +568,32 @@ pub struct ExecutionConfig {
     /// Optional. The Cloud KMS key to use for encryption.
     #[prost(string, tag = "7")]
     pub kms_key: ::prost::alloc::string::String,
-    /// Optional. The duration after which the workload will be terminated.
-    /// When the workload passes this ttl, it will be unconditionally killed
-    /// without waiting for ongoing work to finish.
-    /// Minimum value is 10 minutes; maximum value is 14 days (see JSON
-    /// representation of
+    /// Optional. Applies to sessions only. The duration to keep the session alive
+    /// while it's idling. Exceeding this threshold causes the session to
+    /// terminate. This field cannot be set on a batch workload. Minimum value is
+    /// 10 minutes; maximum value is 14 days (see JSON representation of
     /// [Duration](<https://developers.google.com/protocol-buffers/docs/proto3#json>)).
-    /// If both ttl and idle_ttl are specified, the conditions are treated as
-    /// and OR: the workload will be terminated when it has been idle for idle_ttl
-    /// or when the ttl has passed, whichever comes first.
-    /// If ttl is not specified for a session, it defaults to 24h.
+    /// Defaults to 1 hour if not set.
+    /// If both `ttl` and `idle_ttl` are specified for an interactive session,
+    /// the conditions are treated as `OR` conditions: the workload will be
+    /// terminated when it has been idle for `idle_ttl` or when `ttl` has been
+    /// exceeded, whichever occurs first.
+    #[prost(message, optional, tag = "8")]
+    pub idle_ttl: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. The duration after which the workload will be terminated,
+    /// specified as the JSON representation for
+    /// [Duration](<https://protobuf.dev/programming-guides/proto3/#json>).
+    /// When the workload exceeds this duration, it will be unconditionally
+    /// terminated without waiting for ongoing work to finish. If `ttl` is not
+    /// specified for a batch workload, the workload will be allowed to run until
+    /// it exits naturally (or run forever without exiting). If `ttl` is not
+    /// specified for an interactive session, it defaults to 24 hours. If `ttl` is
+    /// not specified for a batch that uses 2.1+ runtime version, it defaults to 4
+    /// hours. Minimum value is 10 minutes; maximum value is 14 days. If both `ttl`
+    /// and `idle_ttl` are specified (for an interactive session), the conditions
+    /// are treated as `OR` conditions: the workload will be terminated when it has
+    /// been idle for `idle_ttl` or when `ttl` has been exceeded, whichever occurs
+    /// first.
     #[prost(message, optional, tag = "9")]
     pub ttl: ::core::option::Option<::prost_types::Duration>,
     /// Optional. A Cloud Storage bucket used to stage workload dependencies,
@@ -651,9 +670,17 @@ pub struct RuntimeInfo {
     /// Output only. A URI pointing to the location of the diagnostics tarball.
     #[prost(string, tag = "3")]
     pub diagnostic_output_uri: ::prost::alloc::string::String,
-    /// Output only. Approximate workload resource usage calculated after workload
-    /// finishes (see \[Dataproc Serverless pricing\]
+    /// Output only. Approximate workload resource usage, calculated when
+    /// the workload completes (see \[Dataproc Serverless pricing\]
     /// (<https://cloud.google.com/dataproc-serverless/pricing>)).
+    ///
+    /// **Note:** This metric calculation may change in the future, for
+    /// example, to capture cumulative workload resource
+    /// consumption during workload execution (see the
+    /// \[Dataproc Serverless release notes\]
+    /// (<https://cloud.google.com/dataproc-serverless/docs/release-notes>)
+    /// for announcements, changes, fixes
+    /// and other Dataproc developments).
     #[prost(message, optional, tag = "6")]
     pub approximate_usage: ::core::option::Option<UsageMetrics>,
     /// Output only. Snapshot of current workload resource usage.
@@ -674,8 +701,16 @@ pub struct UsageMetrics {
     /// (<https://cloud.google.com/dataproc-serverless/pricing>)).
     #[prost(int64, tag = "2")]
     pub shuffle_storage_gb_seconds: i64,
+    /// Optional. Accelerator usage in (`milliAccelerator` x `seconds`) (see
+    /// \[Dataproc Serverless pricing\]
+    /// (<https://cloud.google.com/dataproc-serverless/pricing>)).
+    #[prost(int64, tag = "3")]
+    pub milli_accelerator_seconds: i64,
+    /// Optional. Accelerator type being used, if any
+    #[prost(string, tag = "4")]
+    pub accelerator_type: ::prost::alloc::string::String,
 }
-/// The usage snaphot represents the resources consumed by a workload at a
+/// The usage snapshot represents the resources consumed by a workload at a
 /// specified time.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -689,6 +724,23 @@ pub struct UsageSnapshot {
     /// pricing] (<https://cloud.google.com/dataproc-serverless/pricing>))
     #[prost(int64, tag = "2")]
     pub shuffle_storage_gb: i64,
+    /// Optional. Milli (one-thousandth) Dataproc Compute Units (DCUs) charged at
+    /// premium tier (see \[Dataproc Serverless pricing\]
+    /// (<https://cloud.google.com/dataproc-serverless/pricing>)).
+    #[prost(int64, tag = "4")]
+    pub milli_dcu_premium: i64,
+    /// Optional. Shuffle Storage in gigabytes (GB) charged at premium tier. (see
+    /// \[Dataproc Serverless pricing\]
+    /// (<https://cloud.google.com/dataproc-serverless/pricing>))
+    #[prost(int64, tag = "5")]
+    pub shuffle_storage_gb_premium: i64,
+    /// Optional. Milli (one-thousandth) accelerator. (see [Dataproc
+    /// Serverless pricing] (<https://cloud.google.com/dataproc-serverless/pricing>))
+    #[prost(int64, tag = "6")]
+    pub milli_accelerator: i64,
+    /// Optional. Accelerator type being used, if any
+    #[prost(string, tag = "7")]
+    pub accelerator_type: ::prost::alloc::string::String,
     /// Optional. The timestamp of the usage snapshot.
     #[prost(message, optional, tag = "3")]
     pub snapshot_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -983,6 +1035,22 @@ pub mod gke_node_pool_config {
         pub max_node_count: i32,
     }
 }
+/// Configuration for dependency repositories
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RepositoryConfig {
+    /// Optional. Configuration for PyPi repository.
+    #[prost(message, optional, tag = "1")]
+    pub pypi_repository_config: ::core::option::Option<PyPiRepositoryConfig>,
+}
+/// Configuration for PyPi repository
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PyPiRepositoryConfig {
+    /// Optional. PyPi repository address
+    #[prost(string, tag = "1")]
+    pub pypi_repository: ::prost::alloc::string::String,
+}
 /// Cluster components that can be activated.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -990,10 +1058,9 @@ pub enum Component {
     /// Unspecified component. Specifying this will cause Cluster creation to fail.
     Unspecified = 0,
     /// The Anaconda python distribution. The Anaconda component is not supported
-    /// in the Dataproc
-    /// <a
-    /// href="/dataproc/docs/concepts/versioning/dataproc-release-2.0">2.0
-    /// image</a>. The 2.0 image is pre-installed with Miniconda.
+    /// in the Dataproc \[2.0 image\]
+    /// (/<https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-release-2.0>).
+    /// The 2.0 image is pre-installed with Miniconda.
     Anaconda = 5,
     /// Docker
     Docker = 13,
@@ -1761,6 +1828,88 @@ pub mod batch_operation_metadata {
             match value {
                 "BATCH_OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "BATCH" => Some(Self::Batch),
+                _ => None,
+            }
+        }
+    }
+}
+/// Metadata describing the Session operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionOperationMetadata {
+    /// Name of the session for the operation.
+    #[prost(string, tag = "1")]
+    pub session: ::prost::alloc::string::String,
+    /// Session UUID for the operation.
+    #[prost(string, tag = "2")]
+    pub session_uuid: ::prost::alloc::string::String,
+    /// The time when the operation was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time when the operation was finished.
+    #[prost(message, optional, tag = "4")]
+    pub done_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The operation type.
+    #[prost(enumeration = "session_operation_metadata::SessionOperationType", tag = "6")]
+    pub operation_type: i32,
+    /// Short description of the operation.
+    #[prost(string, tag = "7")]
+    pub description: ::prost::alloc::string::String,
+    /// Labels associated with the operation.
+    #[prost(map = "string, string", tag = "8")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Warnings encountered during operation execution.
+    #[prost(string, repeated, tag = "9")]
+    pub warnings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `SessionOperationMetadata`.
+pub mod session_operation_metadata {
+    /// Operation type for Session resources
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SessionOperationType {
+        /// Session operation type is unknown.
+        Unspecified = 0,
+        /// Create Session operation type.
+        Create = 1,
+        /// Terminate Session operation type.
+        Terminate = 2,
+        /// Delete Session operation type.
+        Delete = 3,
+    }
+    impl SessionOperationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                SessionOperationType::Unspecified => "SESSION_OPERATION_TYPE_UNSPECIFIED",
+                SessionOperationType::Create => "CREATE",
+                SessionOperationType::Terminate => "TERMINATE",
+                SessionOperationType::Delete => "DELETE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SESSION_OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATE" => Some(Self::Create),
+                "TERMINATE" => Some(Self::Terminate),
+                "DELETE" => Some(Self::Delete),
                 _ => None,
             }
         }
@@ -5863,6 +6012,947 @@ pub mod node_group_controller_client {
                     GrpcMethod::new(
                         "google.cloud.dataproc.v1.NodeGroupController",
                         "GetNodeGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// A request to create a session.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSessionRequest {
+    /// Required. The parent resource where this session will be created.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The interactive session to create.
+    #[prost(message, optional, tag = "2")]
+    pub session: ::core::option::Option<Session>,
+    /// Required. The ID to use for the session, which becomes the final component
+    /// of the session's resource name.
+    ///
+    /// This value must be 4-63 characters. Valid characters
+    /// are /[a-z][0-9]-/.
+    #[prost(string, tag = "3")]
+    pub session_id: ::prost::alloc::string::String,
+    /// Optional. A unique ID used to identify the request. If the service
+    /// receives two
+    /// [CreateSessionRequests](<https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.CreateSessionRequest>)s
+    /// with the same ID, the second request is ignored, and the
+    /// first [Session][google.cloud.dataproc.v1.Session] is created and stored in
+    /// the backend.
+    ///
+    /// Recommendation: Set this value to a
+    /// [UUID](<https://en.wikipedia.org/wiki/Universally_unique_identifier>).
+    ///
+    /// The value must contain only letters (a-z, A-Z), numbers (0-9),
+    /// underscores (_), and hyphens (-). The maximum length is 40 characters.
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// A request to get the resource representation for a session.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetSessionRequest {
+    /// Required. The name of the session to retrieve.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A request to list sessions in a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSessionsRequest {
+    /// Required. The parent, which owns this collection of sessions.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of sessions to return in each response.
+    /// The service may return fewer than this value.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token received from a previous `ListSessions` call.
+    /// Provide this token to retrieve the subsequent page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. A filter for the sessions to return in the response.
+    ///
+    /// A filter is a logical expression constraining the values of various fields
+    /// in each session resource. Filters are case sensitive, and may contain
+    /// multiple clauses combined with logical operators (AND, OR).
+    /// Supported fields are `session_id`, `session_uuid`, `state`, and
+    /// `create_time`.
+    ///
+    /// Example: `state = ACTIVE and create_time < "2023-01-01T00:00:00Z"`
+    /// is a filter for sessions in an ACTIVE state that were created before
+    /// 2023-01-01.
+    ///
+    /// See <https://google.aip.dev/assets/misc/ebnf-filtering.txt> for a detailed
+    /// description of the filter syntax and a list of supported comparators.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// A list of interactive sessions.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSessionsResponse {
+    /// Output only. The sessions from the specified collection.
+    #[prost(message, repeated, tag = "1")]
+    pub sessions: ::prost::alloc::vec::Vec<Session>,
+    /// A token, which can be sent as `page_token`, to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// A request to terminate an interactive session.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TerminateSessionRequest {
+    /// Required. The name of the session resource to terminate.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A unique ID used to identify the request. If the service
+    /// receives two
+    /// [TerminateSessionRequest](<https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.TerminateSessionRequest>)s
+    /// with the same ID, the second request is ignored.
+    ///
+    /// Recommendation: Set this value to a
+    /// [UUID](<https://en.wikipedia.org/wiki/Universally_unique_identifier>).
+    ///
+    /// The value must contain only letters (a-z, A-Z), numbers (0-9),
+    /// underscores (_), and hyphens (-). The maximum length is 40 characters.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// A request to delete a session.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteSessionRequest {
+    /// Required. The name of the session resource to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A unique ID used to identify the request. If the service
+    /// receives two
+    /// [DeleteSessionRequest](<https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.DeleteSessionRequest>)s
+    /// with the same ID, the second request is ignored.
+    ///
+    /// Recommendation: Set this value to a
+    /// [UUID](<https://en.wikipedia.org/wiki/Universally_unique_identifier>).
+    ///
+    /// The value must contain only letters (a-z, A-Z), numbers (0-9),
+    /// underscores (_), and hyphens (-). The maximum length is 40 characters.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// A representation of a session.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Session {
+    /// Required. The resource name of the session.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. A session UUID (Unique Universal Identifier). The service
+    /// generates this value when it creates the session.
+    #[prost(string, tag = "2")]
+    pub uuid: ::prost::alloc::string::String,
+    /// Output only. The time when the session was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Runtime information about session execution.
+    #[prost(message, optional, tag = "6")]
+    pub runtime_info: ::core::option::Option<RuntimeInfo>,
+    /// Output only. A state of the session.
+    #[prost(enumeration = "session::State", tag = "7")]
+    pub state: i32,
+    /// Output only. Session state details, such as the failure
+    /// description if the state is `FAILED`.
+    #[prost(string, tag = "8")]
+    pub state_message: ::prost::alloc::string::String,
+    /// Output only. The time when the session entered the current state.
+    #[prost(message, optional, tag = "9")]
+    pub state_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The email address of the user who created the session.
+    #[prost(string, tag = "10")]
+    pub creator: ::prost::alloc::string::String,
+    /// Optional. The labels to associate with the session.
+    /// Label **keys** must contain 1 to 63 characters, and must conform to
+    /// [RFC 1035](<https://www.ietf.org/rfc/rfc1035.txt>).
+    /// Label **values** may be empty, but, if present, must contain 1 to 63
+    /// characters, and must conform to [RFC
+    /// 1035](<https://www.ietf.org/rfc/rfc1035.txt>). No more than 32 labels can be
+    /// associated with a session.
+    #[prost(map = "string, string", tag = "11")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Runtime configuration for the session execution.
+    #[prost(message, optional, tag = "12")]
+    pub runtime_config: ::core::option::Option<RuntimeConfig>,
+    /// Optional. Environment configuration for the session execution.
+    #[prost(message, optional, tag = "13")]
+    pub environment_config: ::core::option::Option<EnvironmentConfig>,
+    /// Optional. The email address of the user who owns the session.
+    #[prost(string, tag = "14")]
+    pub user: ::prost::alloc::string::String,
+    /// Output only. Historical state information for the session.
+    #[prost(message, repeated, tag = "15")]
+    pub state_history: ::prost::alloc::vec::Vec<session::SessionStateHistory>,
+    /// Optional. The session template used by the session.
+    ///
+    /// Only resource names, including project ID and location, are valid.
+    ///
+    /// Example:
+    /// * `<https://www.googleapis.com/compute/v1/projects/\[project_id\]/locations/\[dataproc_region\]/sessionTemplates/\[template_id\]`>
+    /// * `projects/\[project_id\]/locations/\[dataproc_region\]/sessionTemplates/\[template_id\]`
+    ///
+    /// The template must be in the same project and Dataproc region as the
+    /// session.
+    #[prost(string, tag = "16")]
+    pub session_template: ::prost::alloc::string::String,
+    /// The session configuration.
+    #[prost(oneof = "session::SessionConfig", tags = "4")]
+    pub session_config: ::core::option::Option<session::SessionConfig>,
+}
+/// Nested message and enum types in `Session`.
+pub mod session {
+    /// Historical state information.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SessionStateHistory {
+        /// Output only. The state of the session at this point in the session
+        /// history.
+        #[prost(enumeration = "State", tag = "1")]
+        pub state: i32,
+        /// Output only. Details about the state at this point in the session
+        /// history.
+        #[prost(string, tag = "2")]
+        pub state_message: ::prost::alloc::string::String,
+        /// Output only. The time when the session entered the historical state.
+        #[prost(message, optional, tag = "3")]
+        pub state_start_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// The session state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The session state is unknown.
+        Unspecified = 0,
+        /// The session is created prior to running.
+        Creating = 1,
+        /// The session is running.
+        Active = 2,
+        /// The session is terminating.
+        Terminating = 3,
+        /// The session is terminated successfully.
+        Terminated = 4,
+        /// The session is no longer running due to an error.
+        Failed = 5,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Creating => "CREATING",
+                State::Active => "ACTIVE",
+                State::Terminating => "TERMINATING",
+                State::Terminated => "TERMINATED",
+                State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "ACTIVE" => Some(Self::Active),
+                "TERMINATING" => Some(Self::Terminating),
+                "TERMINATED" => Some(Self::Terminated),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+    /// The session configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SessionConfig {
+        /// Optional. Jupyter session config.
+        #[prost(message, tag = "4")]
+        JupyterSession(super::JupyterConfig),
+    }
+}
+/// Jupyter configuration for an interactive session.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct JupyterConfig {
+    /// Optional. Kernel
+    #[prost(enumeration = "jupyter_config::Kernel", tag = "1")]
+    pub kernel: i32,
+    /// Optional. Display name, shown in the Jupyter kernelspec card.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `JupyterConfig`.
+pub mod jupyter_config {
+    /// Jupyter kernel types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Kernel {
+        /// The kernel is unknown.
+        Unspecified = 0,
+        /// Python kernel.
+        Python = 1,
+        /// Scala kernel.
+        Scala = 2,
+    }
+    impl Kernel {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Kernel::Unspecified => "KERNEL_UNSPECIFIED",
+                Kernel::Python => "PYTHON",
+                Kernel::Scala => "SCALA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KERNEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "PYTHON" => Some(Self::Python),
+                "SCALA" => Some(Self::Scala),
+                _ => None,
+            }
+        }
+    }
+}
+/// Generated client implementations.
+pub mod session_controller_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The `SessionController` provides methods to manage interactive sessions.
+    #[derive(Debug, Clone)]
+    pub struct SessionControllerClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl SessionControllerClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> SessionControllerClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SessionControllerClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            SessionControllerClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Create an interactive session asynchronously.
+        pub async fn create_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSessionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataproc.v1.SessionController/CreateSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataproc.v1.SessionController",
+                        "CreateSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the resource representation for an interactive session.
+        pub async fn get_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSessionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Session>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataproc.v1.SessionController/GetSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataproc.v1.SessionController",
+                        "GetSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists interactive sessions.
+        pub async fn list_sessions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSessionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSessionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataproc.v1.SessionController/ListSessions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataproc.v1.SessionController",
+                        "ListSessions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Terminates the interactive session.
+        pub async fn terminate_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::TerminateSessionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataproc.v1.SessionController/TerminateSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataproc.v1.SessionController",
+                        "TerminateSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the interactive session resource. If the session is not in terminal
+        /// state, it is terminated, and then deleted.
+        pub async fn delete_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSessionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataproc.v1.SessionController/DeleteSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataproc.v1.SessionController",
+                        "DeleteSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// A request to create a session template.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSessionTemplateRequest {
+    /// Required. The parent resource where this session template will be created.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The session template to create.
+    #[prost(message, optional, tag = "3")]
+    pub session_template: ::core::option::Option<SessionTemplate>,
+}
+/// A request to update a session template.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateSessionTemplateRequest {
+    /// Required. The updated session template.
+    #[prost(message, optional, tag = "1")]
+    pub session_template: ::core::option::Option<SessionTemplate>,
+}
+/// A request to get the resource representation for a session template.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetSessionTemplateRequest {
+    /// Required. The name of the session template to retrieve.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A request to list session templates in a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSessionTemplatesRequest {
+    /// Required. The parent that owns this collection of session templates.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of sessions to return in each response.
+    /// The service may return fewer than this value.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token received from a previous `ListSessions` call.
+    /// Provide this token to retrieve the subsequent page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. A filter for the session templates to return in the response.
+    /// Filters are case sensitive and have the following syntax:
+    ///
+    /// \[field = value\] AND \[field [= value]\] ...
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// A list of session templates.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSessionTemplatesResponse {
+    /// Output only. Session template list
+    #[prost(message, repeated, tag = "1")]
+    pub session_templates: ::prost::alloc::vec::Vec<SessionTemplate>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// A request to delete a session template.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteSessionTemplateRequest {
+    /// Required. The name of the session template resource to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A representation of a session template.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionTemplate {
+    /// Required. The resource name of the session template.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Brief description of the template.
+    #[prost(string, tag = "9")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. The time when the template was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The email address of the user who created the template.
+    #[prost(string, tag = "5")]
+    pub creator: ::prost::alloc::string::String,
+    /// Optional. Labels to associate with sessions created using this template.
+    /// Label **keys** must contain 1 to 63 characters, and must conform to
+    /// [RFC 1035](<https://www.ietf.org/rfc/rfc1035.txt>).
+    /// Label **values** can be empty, but, if present, must contain 1 to 63
+    /// characters and conform to [RFC
+    /// 1035](<https://www.ietf.org/rfc/rfc1035.txt>). No more than 32 labels can be
+    /// associated with a session.
+    #[prost(map = "string, string", tag = "6")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Runtime configuration for session execution.
+    #[prost(message, optional, tag = "7")]
+    pub runtime_config: ::core::option::Option<RuntimeConfig>,
+    /// Optional. Environment configuration for session execution.
+    #[prost(message, optional, tag = "8")]
+    pub environment_config: ::core::option::Option<EnvironmentConfig>,
+    /// Output only. The time the template was last updated.
+    #[prost(message, optional, tag = "10")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. A session template UUID (Unique Universal Identifier). The
+    /// service generates this value when it creates the session template.
+    #[prost(string, tag = "12")]
+    pub uuid: ::prost::alloc::string::String,
+    /// The session configuration.
+    #[prost(oneof = "session_template::SessionConfig", tags = "3")]
+    pub session_config: ::core::option::Option<session_template::SessionConfig>,
+}
+/// Nested message and enum types in `SessionTemplate`.
+pub mod session_template {
+    /// The session configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SessionConfig {
+        /// Optional. Jupyter session config.
+        #[prost(message, tag = "3")]
+        JupyterSession(super::JupyterConfig),
+    }
+}
+/// Generated client implementations.
+pub mod session_template_controller_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The SessionTemplateController provides methods to manage session templates.
+    #[derive(Debug, Clone)]
+    pub struct SessionTemplateControllerClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl SessionTemplateControllerClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> SessionTemplateControllerClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SessionTemplateControllerClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            SessionTemplateControllerClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Create a session template synchronously.
+        pub async fn create_session_template(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSessionTemplateRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SessionTemplate>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataproc.v1.SessionTemplateController/CreateSessionTemplate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataproc.v1.SessionTemplateController",
+                        "CreateSessionTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the session template synchronously.
+        pub async fn update_session_template(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateSessionTemplateRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SessionTemplate>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataproc.v1.SessionTemplateController/UpdateSessionTemplate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataproc.v1.SessionTemplateController",
+                        "UpdateSessionTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the resource representation for a session template.
+        pub async fn get_session_template(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSessionTemplateRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SessionTemplate>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataproc.v1.SessionTemplateController/GetSessionTemplate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataproc.v1.SessionTemplateController",
+                        "GetSessionTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists session templates.
+        pub async fn list_session_templates(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSessionTemplatesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSessionTemplatesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataproc.v1.SessionTemplateController/ListSessionTemplates",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataproc.v1.SessionTemplateController",
+                        "ListSessionTemplates",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a session template.
+        pub async fn delete_session_template(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSessionTemplateRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataproc.v1.SessionTemplateController/DeleteSessionTemplate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataproc.v1.SessionTemplateController",
+                        "DeleteSessionTemplate",
                     ),
                 );
             self.inner.unary(req, path, codec).await

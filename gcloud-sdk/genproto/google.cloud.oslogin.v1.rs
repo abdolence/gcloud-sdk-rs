@@ -84,6 +84,11 @@ pub struct ImportSshPublicKeyRequest {
     /// The project ID of the Google Cloud Platform project.
     #[prost(string, tag = "3")]
     pub project_id: ::prost::alloc::string::String,
+    /// Optional. The regions to which to assert that the key was written.
+    /// If unspecified, defaults to all regions.
+    /// Regions are listed at <https://cloud.google.com/about/locations#region.>
+    #[prost(string, repeated, tag = "5")]
+    pub regions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A response message for importing an SSH public key.
 #[allow(clippy::derive_partial_eq_without_eq)]

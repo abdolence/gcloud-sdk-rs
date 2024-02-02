@@ -2402,3 +2402,121 @@ pub mod firestore_client {
         }
     }
 }
+/// A message signifying an event that cannot be delivered to Cloud Functions
+/// from Firestore using [Cloud Firestore triggers 1st
+/// gen](<https://cloud.google.com/functions/docs/calling/cloud-firestore>)
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UndeliverableFirstGenEvent {
+    /// Error message for events being undeliverable.
+    #[prost(string, tag = "1")]
+    pub message: ::prost::alloc::string::String,
+    /// Reason for events being undeliverable.
+    #[prost(enumeration = "undeliverable_first_gen_event::Reason", tag = "2")]
+    pub reason: i32,
+    /// The resource name of the changed document, in the format of
+    /// `projects/{projectId}/databases/{databaseId}/documents/{document_path}`.
+    #[prost(string, tag = "3")]
+    pub document_name: ::prost::alloc::string::String,
+    /// The type of the document change.
+    #[prost(
+        enumeration = "undeliverable_first_gen_event::DocumentChangeType",
+        tag = "4"
+    )]
+    pub document_change_type: i32,
+    /// The names of the functions that were supposed to be triggered.
+    #[prost(string, repeated, tag = "5")]
+    pub function_name: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The commit time of triggered write operation.
+    #[prost(message, optional, tag = "6")]
+    pub triggered_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `UndeliverableFirstGenEvent`.
+pub mod undeliverable_first_gen_event {
+    /// Reason for events being undeliverable.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Reason {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Exceeding maximum event size limit
+        ExceedingSizeLimit = 1,
+    }
+    impl Reason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Reason::Unspecified => "REASON_UNSPECIFIED",
+                Reason::ExceedingSizeLimit => "EXCEEDING_SIZE_LIMIT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXCEEDING_SIZE_LIMIT" => Some(Self::ExceedingSizeLimit),
+                _ => None,
+            }
+        }
+    }
+    /// Document change type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DocumentChangeType {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Represent creation operation.
+        Create = 1,
+        /// Represent delete operation.
+        Delete = 2,
+        /// Represent update operation.
+        Update = 3,
+    }
+    impl DocumentChangeType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DocumentChangeType::Unspecified => "DOCUMENT_CHANGE_TYPE_UNSPECIFIED",
+                DocumentChangeType::Create => "CREATE",
+                DocumentChangeType::Delete => "DELETE",
+                DocumentChangeType::Update => "UPDATE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DOCUMENT_CHANGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATE" => Some(Self::Create),
+                "DELETE" => Some(Self::Delete),
+                "UPDATE" => Some(Self::Update),
+                _ => None,
+            }
+        }
+    }
+}

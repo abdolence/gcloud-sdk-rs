@@ -682,13 +682,16 @@ pub struct BidiWriteObjectRequest {
     /// covers all the bytes the server has persisted thus far and can be used to
     /// decide what data is safe for the client to drop. Note that the object's
     /// current size reported by the BidiWriteObjectResponse may lag behind the
-    /// number of bytes written by the client.
+    /// number of bytes written by the client. This field is ignored if
+    /// `finish_write` is set to true.
     #[prost(bool, tag = "7")]
     pub state_lookup: bool,
     /// Persists data written on the stream, up to and including the current
     /// message, to permanent storage. This option should be used sparingly as it
     /// may reduce performance. Ongoing writes will periodically be persisted on
-    /// the server even when `flush` is not set.
+    /// the server even when `flush` is not set. This field is ignored if
+    /// `finish_write` is set to true since there's no need to checkpoint or flush
+    /// if this message completes the write.
     #[prost(bool, tag = "8")]
     pub flush: bool,
     /// If `true`, this indicates that the write is complete. Sending any
@@ -2251,10 +2254,10 @@ pub struct Owner {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContentRange {
-    /// The starting offset of the object data.
+    /// The starting offset of the object data. This value is inclusive.
     #[prost(int64, tag = "1")]
     pub start: i64,
-    /// The ending offset of the object data.
+    /// The ending offset of the object data. This value is exclusive.
     #[prost(int64, tag = "2")]
     pub end: i64,
     /// The complete length of the object data.
@@ -2490,10 +2493,9 @@ pub mod storage_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets the IAM policy for a specified bucket or object.
+        /// Gets the IAM policy for a specified bucket.
         /// The `resource` field in the request should be
-        /// `projects/_/buckets/{bucket}` for a bucket or
-        /// `projects/_/buckets/{bucket}/objects/{object}` for an object.
+        /// `projects/_/buckets/{bucket}`.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -2521,10 +2523,9 @@ pub mod storage_client {
                 .insert(GrpcMethod::new("google.storage.v2.Storage", "GetIamPolicy"));
             self.inner.unary(req, path, codec).await
         }
-        /// Updates an IAM policy for the specified bucket or object.
+        /// Updates an IAM policy for the specified bucket.
         /// The `resource` field in the request should be
-        /// `projects/_/buckets/{bucket}` for a bucket or
-        /// `projects/_/buckets/{bucket}/objects/{object}` for an object.
+        /// `projects/_/buckets/{bucket}`.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<

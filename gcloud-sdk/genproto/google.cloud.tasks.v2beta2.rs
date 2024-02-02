@@ -2120,38 +2120,6 @@ pub struct RunTaskRequest {
     #[prost(enumeration = "task::View", tag = "2")]
     pub response_view: i32,
 }
-/// LINT.IfChange
-/// Request message for
-/// [BufferTask][google.cloud.tasks.v2beta2.CloudTasks.BufferTask].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BufferTaskRequest {
-    /// Required. The parent queue name. For example:
-    /// projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`
-    ///
-    /// The queue must already exist.
-    #[prost(string, tag = "1")]
-    pub queue: ::prost::alloc::string::String,
-    /// Optional. Task ID for the task being created. If not provided, a random
-    /// task ID is assigned to the task.
-    #[prost(string, tag = "2")]
-    pub task_id: ::prost::alloc::string::String,
-    /// Optional. Body of the HTTP request.
-    ///
-    /// The body can take any generic value. The value is written to the
-    /// [HttpRequest][payload] of the \[Task\].
-    #[prost(message, optional, tag = "3")]
-    pub body: ::core::option::Option<super::super::super::api::HttpBody>,
-}
-/// Response message for
-/// [BufferTask][google.cloud.tasks.v2beta2.CloudTasks.BufferTask].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BufferTaskResponse {
-    /// The created task.
-    #[prost(message, optional, tag = "1")]
-    pub task: ::core::option::Option<Task>,
-}
 /// Generated client implementations.
 pub mod cloud_tasks_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -3026,47 +2994,6 @@ pub mod cloud_tasks_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.cloud.tasks.v2beta2.CloudTasks", "RunTask"),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Creates and buffers a new task without the need to explicitly define a Task
-        /// message. The queue must have [HTTP
-        /// target][google.cloud.tasks.v2beta2.HttpTarget]. To create the task with a
-        /// custom ID, use the following format and set TASK_ID to your desired ID:
-        /// projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID:buffer
-        /// To create the task with an automatically generated ID, use the following
-        /// format:
-        /// projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks:buffer.
-        /// Note: This feature is in its experimental stage. You must request access to
-        /// the API through the [Cloud Tasks BufferTask Experiment Signup
-        /// form](https://forms.gle/X8Zr5hiXH5tTGFqh8).
-        pub async fn buffer_task(
-            &mut self,
-            request: impl tonic::IntoRequest<super::BufferTaskRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::BufferTaskResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.tasks.v2beta2.CloudTasks/BufferTask",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.tasks.v2beta2.CloudTasks",
-                        "BufferTask",
-                    ),
                 );
             self.inner.unary(req, path, codec).await
         }

@@ -16,14 +16,16 @@ pub struct ParsedExpr {
 /// operators with the exception of the '.' operator are modelled as function
 /// calls. This makes it easy to represent new operators into the existing AST.
 ///
-/// All references within expressions must resolve to a [Decl][google.api.expr.v1alpha1.Decl] provided at
-/// type-check for an expression to be valid. A reference may either be a bare
-/// identifier `name` or a qualified identifier `google.api.name`. References
-/// may either refer to a value or a function declaration.
+/// All references within expressions must resolve to a
+/// [Decl][google.api.expr.v1alpha1.Decl] provided at type-check for an
+/// expression to be valid. A reference may either be a bare identifier `name` or
+/// a qualified identifier `google.api.name`. References may either refer to a
+/// value or a function declaration.
 ///
 /// For example, the expression `google.api.name.startsWith('expr')` references
-/// the declaration `google.api.name` within a [Expr.Select][google.api.expr.v1alpha1.Expr.Select] expression, and
-/// the function declaration `startsWith`.
+/// the declaration `google.api.name` within a
+/// [Expr.Select][google.api.expr.v1alpha1.Expr.Select] expression, and the
+/// function declaration `startsWith`.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Expr {
@@ -45,7 +47,8 @@ pub mod expr {
         /// Required. Holds a single, unqualified identifier, possibly preceded by a
         /// '.'.
         ///
-        /// Qualified names are represented by the [Expr.Select][google.api.expr.v1alpha1.Expr.Select] expression.
+        /// Qualified names are represented by the
+        /// [Expr.Select][google.api.expr.v1alpha1.Expr.Select] expression.
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
     }
@@ -259,7 +262,8 @@ pub mod expr {
 /// primitives.
 ///
 /// Lists and structs are not included as constants as these aggregate types may
-/// contain [Expr][google.api.expr.v1alpha1.Expr] elements which require evaluation and are thus not constant.
+/// contain [Expr][google.api.expr.v1alpha1.Expr] elements which require
+/// evaluation and are thus not constant.
 ///
 /// Examples of literals include: `"hello"`, `b'bytes'`, `1u`, `4.2`, `-2`,
 /// `true`, `null`.
@@ -345,6 +349,101 @@ pub struct SourceInfo {
     /// value is the call `Expr` that was replaced.
     #[prost(map = "int64, message", tag = "5")]
     pub macro_calls: ::std::collections::HashMap<i64, Expr>,
+    /// A list of tags for extensions that were used while parsing or type checking
+    /// the source expression. For example, optimizations that require special
+    /// runtime support may be specified.
+    ///
+    /// These are used to check feature support between components in separate
+    /// implementations. This can be used to either skip redundant work or
+    /// report an error if the extension is unsupported.
+    #[prost(message, repeated, tag = "6")]
+    pub extensions: ::prost::alloc::vec::Vec<source_info::Extension>,
+}
+/// Nested message and enum types in `SourceInfo`.
+pub mod source_info {
+    /// An extension that was requested for the source expression.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Extension {
+        /// Identifier for the extension. Example: constant_folding
+        #[prost(string, tag = "1")]
+        pub id: ::prost::alloc::string::String,
+        /// If set, the listed components must understand the extension for the
+        /// expression to evaluate correctly.
+        ///
+        /// This field has set semantics, repeated values should be deduplicated.
+        #[prost(enumeration = "extension::Component", repeated, tag = "2")]
+        pub affected_components: ::prost::alloc::vec::Vec<i32>,
+        /// Version info. May be skipped if it isn't meaningful for the extension.
+        /// (for example constant_folding might always be v0.0).
+        #[prost(message, optional, tag = "3")]
+        pub version: ::core::option::Option<extension::Version>,
+    }
+    /// Nested message and enum types in `Extension`.
+    pub mod extension {
+        /// Version
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Version {
+            /// Major version changes indicate different required support level from
+            /// the required components.
+            #[prost(int64, tag = "1")]
+            pub major: i64,
+            /// Minor version changes must not change the observed behavior from
+            /// existing implementations, but may be provided informationally.
+            #[prost(int64, tag = "2")]
+            pub minor: i64,
+        }
+        /// CEL component specifier.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Component {
+            /// Unspecified, default.
+            Unspecified = 0,
+            /// Parser. Converts a CEL string to an AST.
+            Parser = 1,
+            /// Type checker. Checks that references in an AST are defined and types
+            /// agree.
+            TypeChecker = 2,
+            /// Runtime. Evaluates a parsed and optionally checked CEL AST against a
+            /// context.
+            Runtime = 3,
+        }
+        impl Component {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Component::Unspecified => "COMPONENT_UNSPECIFIED",
+                    Component::Parser => "COMPONENT_PARSER",
+                    Component::TypeChecker => "COMPONENT_TYPE_CHECKER",
+                    Component::Runtime => "COMPONENT_RUNTIME",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "COMPONENT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "COMPONENT_PARSER" => Some(Self::Parser),
+                    "COMPONENT_TYPE_CHECKER" => Some(Self::TypeChecker),
+                    "COMPONENT_RUNTIME" => Some(Self::Runtime),
+                    _ => None,
+                }
+            }
+        }
+    }
 }
 /// A specific position in source.
 #[allow(clippy::derive_partial_eq_without_eq)]

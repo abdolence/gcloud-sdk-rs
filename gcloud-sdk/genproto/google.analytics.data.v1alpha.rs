@@ -1800,6 +1800,76 @@ pub struct RecurringAudienceList {
     /// This list is ordered with the most recently created audience list first.
     #[prost(string, repeated, tag = "6")]
     pub audience_lists: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Configures webhook notifications to be sent from the Google
+    /// Analytics Data API to your webhook server. Use of webhooks is optional. If
+    /// unused, you'll need to poll this API to determine when a recurring audience
+    /// list creates new audience lists. Webhooks allow a notification to be sent
+    /// to your servers & avoid the need for polling.
+    ///
+    /// Two POST requests will be sent each time a recurring audience list creates
+    /// an audience list. This happens once per day until a recurring audience list
+    /// reaches 0 active days remaining. The first request will be sent showing a
+    /// newly created audience list in its CREATING state. The second request will
+    /// be sent after the audience list completes creation (either the ACTIVE or
+    /// FAILED state).
+    #[prost(message, optional, tag = "8")]
+    pub webhook_notification: ::core::option::Option<WebhookNotification>,
+}
+/// Configures a long-running operation resource to send a webhook notification
+/// from the Google Analytics Data API to your webhook server when the resource
+/// updates.
+///
+/// Notification configurations contain private values & are only visible to your
+/// GCP project. Different GCP projects may attach different webhook
+/// notifications to the same long-running operation resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WebhookNotification {
+    /// Optional. The web address that will receive the webhook notification. This
+    /// address will receive POST requests as the state of the long running
+    /// operation resource changes. The POST request will contain both a JSON
+    /// version of the long running operation resource in the body and a
+    /// `sentTimestamp` field. The sent timestamp will specify the unix
+    /// microseconds since the epoch that the request was sent; this lets you
+    /// identify replayed notifications.
+    ///
+    /// An example URI is
+    /// `<https://us-central1-example-project-id.cloudfunctions.net/example-function-1`.>
+    ///
+    /// The URI must use HTTPS and point to a site with a valid SSL certificate on
+    /// the web server. The URI must have a maximum string length of 128 characters
+    /// & use only the allowlisted characters from [RFC
+    /// 1738](<https://www.rfc-editor.org/rfc/rfc1738>).
+    ///
+    /// When your webhook server receives a notification, it is expected to reply
+    /// with an HTTP response status code of 200 within 5 seconds.
+    ///
+    /// A URI is required to use webhook notifications.
+    ///
+    /// Requests to this webhook server will contain an ID token authenticating the
+    /// service account
+    /// `google-analytics-audience-export@system.gserviceaccount.com`. To learn
+    /// more about ID tokens, see
+    /// <https://cloud.google.com/docs/authentication/token-types#id.> For Google
+    /// Cloud Functions, this lets you configure your function to require
+    /// authentication. In Cloud IAM, you will need to grant the service account
+    /// permissions to the Cloud Run Invoker (`roles/run.invoker`) & Cloud
+    /// Functions Invoker (`roles/cloudfunctions.invoker`) roles for the webhook
+    /// post request to pass Google Cloud Functions authentication. This API can
+    /// send webhook notifications to arbitrary URIs; for webhook servers other
+    /// than Google Cloud Functions, this ID token in the authorization bearer
+    /// header should be ignored if it is not needed.
+    #[prost(string, optional, tag = "1")]
+    pub uri: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The channel token is an arbitrary string value and must have a
+    /// maximum string length of 64 characters. Channel tokens allow you to verify
+    /// the source of a webhook notification. This guards against the message being
+    /// spoofed. The channel token will be specified in the `X-Goog-Channel-Token`
+    /// HTTP header of the webhook POST request.
+    ///
+    /// A channel token is not required to use webhook notifications.
+    #[prost(string, optional, tag = "2")]
+    pub channel_token: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request to retrieve configuration metadata about a specific recurring
 /// audience list.
@@ -1960,6 +2030,23 @@ pub struct AudienceList {
     /// recurring audience list, and this field will be blank.
     #[prost(string, optional, tag = "12")]
     pub recurring_audience_list: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Configures webhook notifications to be sent from the Google
+    /// Analytics Data API to your webhook server. Use of webhooks is optional. If
+    /// unused, you'll need to poll this API to determine when an audience list is
+    /// ready to be used. Webhooks allow a notification to be sent to your servers
+    /// & avoid the need for polling.
+    ///
+    /// Either one or two POST requests will be sent to the webhook. The first POST
+    /// request will be sent immediately showing the newly created audience list in
+    /// its CREATING state. The second POST request will be sent after the audience
+    /// list completes creation (either the ACTIVE or FAILED state).
+    ///
+    /// If identical audience lists are requested in quick succession, the second &
+    /// subsequent audience lists can be served from cache. In that case, the
+    /// audience list create method can return an audience list is already ACTIVE.
+    /// In this scenario, only one POST request will be sent to the webhook.
+    #[prost(message, optional, tag = "13")]
+    pub webhook_notification: ::core::option::Option<WebhookNotification>,
 }
 /// Nested message and enum types in `AudienceList`.
 pub mod audience_list {
@@ -2490,11 +2577,10 @@ pub mod alpha_analytics_data_client {
         /// https://support.google.com/analytics/answer/9267572. Audience lists contain
         /// the users in each audience.
         ///
-        /// This method is introduced at alpha stability with the intention of
-        /// gathering feedback on syntax and capabilities before entering beta. To give
-        /// your feedback on this API, complete the
-        /// [Google Analytics Audience Export API
-        /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        /// This method is available at beta stability at
+        /// [audienceExports.create](https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties.audienceExports/create).
+        /// To give your feedback on this API, complete the [Google Analytics Audience
+        /// Export API Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
         pub async fn create_audience_list(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAudienceListRequest>,
@@ -2539,11 +2625,10 @@ pub mod alpha_analytics_data_client {
         /// that are important to your business. To learn more, see
         /// https://support.google.com/analytics/answer/9267572.
         ///
-        /// This method is introduced at alpha stability with the intention of
-        /// gathering feedback on syntax and capabilities before entering beta. To give
-        /// your feedback on this API, complete the
-        /// [Google Analytics Audience Export API
-        /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        /// This method is available at beta stability at
+        /// [audienceExports.query](https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties.audienceExports/query).
+        /// To give your feedback on this API, complete the [Google Analytics Audience
+        /// Export API Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
         pub async fn query_audience_list(
             &mut self,
             request: impl tonic::IntoRequest<super::QueryAudienceListRequest>,
@@ -2630,9 +2715,9 @@ pub mod alpha_analytics_data_client {
         /// List](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics)
         /// for an introduction to Audience Lists with examples.
         ///
-        /// This method is introduced at alpha stability with the intention of
-        /// gathering feedback on syntax and capabilities before entering beta. To give
-        /// your feedback on this API, complete the
+        /// This method is available at beta stability at
+        /// [audienceExports.get](https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties.audienceExports/get).
+        /// To give your feedback on this API, complete the
         /// [Google Analytics Audience Export API
         /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
         pub async fn get_audience_list(
@@ -2671,9 +2756,9 @@ pub mod alpha_analytics_data_client {
         /// List](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics)
         /// for an introduction to Audience Lists with examples.
         ///
-        /// This method is introduced at alpha stability with the intention of
-        /// gathering feedback on syntax and capabilities before entering beta. To give
-        /// your feedback on this API, complete the
+        /// This method is available at beta stability at
+        /// [audienceExports.list](https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties.audienceExports/list).
+        /// To give your feedback on this API, complete the
         /// [Google Analytics Audience Export API
         /// Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
         pub async fn list_audience_lists(

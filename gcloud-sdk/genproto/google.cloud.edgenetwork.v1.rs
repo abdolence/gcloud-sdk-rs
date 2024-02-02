@@ -1283,6 +1283,55 @@ pub mod diagnose_network_response {
         /// A list of status for the subnets under the current network.
         #[prost(message, repeated, tag = "1")]
         pub subnet_status: ::prost::alloc::vec::Vec<super::SubnetStatus>,
+        /// The MACsec status of internal links.
+        #[prost(enumeration = "network_status::MacsecStatus", tag = "2")]
+        pub macsec_status_internal_links: i32,
+    }
+    /// Nested message and enum types in `NetworkStatus`.
+    pub mod network_status {
+        /// Denotes the status of MACsec sessions for the links of a zone.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum MacsecStatus {
+            /// MACsec status not specified, likely due to missing metrics.
+            Unspecified = 0,
+            /// All relevant links have at least one MACsec session up.
+            Secure = 1,
+            /// At least one relevant link does not have any MACsec sessions up.
+            Unsecure = 2,
+        }
+        impl MacsecStatus {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    MacsecStatus::Unspecified => "MACSEC_STATUS_UNSPECIFIED",
+                    MacsecStatus::Secure => "SECURE",
+                    MacsecStatus::Unsecure => "UNSECURE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MACSEC_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SECURE" => Some(Self::Secure),
+                    "UNSECURE" => Some(Self::Unsecure),
+                    _ => None,
+                }
+            }
+        }
     }
 }
 /// Message for requesting the diagnostics of an interconnect within a specific

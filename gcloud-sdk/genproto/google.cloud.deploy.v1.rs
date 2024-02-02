@@ -405,6 +405,12 @@ pub mod kubernetes_config {
         /// no wait time.
         #[prost(message, optional, tag = "4")]
         pub route_update_wait_time: ::core::option::Option<::prost_types::Duration>,
+        /// Optional. The amount of time to migrate traffic back from the canary
+        /// Service to the original Service during the stable phase deployment. If
+        /// specified, must be between 15s and 3600s. If unspecified, there is no
+        /// cutback time.
+        #[prost(message, optional, tag = "5")]
+        pub stable_cutback_duration: ::core::option::Option<::prost_types::Duration>,
     }
     /// Information about the Kubernetes Service networking configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -447,15 +453,15 @@ pub struct CloudRunConfig {
     #[prost(bool, tag = "1")]
     pub automatic_traffic_control: bool,
     /// Optional. A list of tags that are added to the canary revision while the
-    /// canary deployment is in progress.
+    /// canary phase is in progress.
     #[prost(string, repeated, tag = "2")]
     pub canary_revision_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A list of tags that are added to the prior revision while the
-    /// canary deployment is in progress.
+    /// canary phase is in progress.
     #[prost(string, repeated, tag = "3")]
     pub prior_revision_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. A list of tags that are added to the final stable revision after
-    /// the canary deployment is completed.
+    /// Optional. A list of tags that are added to the final stable revision when
+    /// the stable phase is applied.
     #[prost(string, repeated, tag = "4")]
     pub stable_revision_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -611,9 +617,9 @@ pub struct CreateDeliveryPipelineRequest {
     #[prost(message, optional, tag = "3")]
     pub delivery_pipeline: ::core::option::Option<DeliveryPipeline>,
     /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -637,17 +643,17 @@ pub struct UpdateDeliveryPipelineRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
     /// `DeliveryPipeline` resource by the update.
     /// The fields specified in the update_mask are relative to the resource, not
-    /// the full request. A field will be overwritten if it is in the mask. If the
-    /// user does not provide a mask then all fields will be overwritten.
+    /// the full request. A field will be overwritten if it's in the mask. If the
+    /// user doesn't provide a mask then all fields are overwritten.
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The `DeliveryPipeline` to update.
     #[prost(message, optional, tag = "2")]
     pub delivery_pipeline: ::core::option::Option<DeliveryPipeline>,
     /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -677,9 +683,9 @@ pub struct DeleteDeliveryPipelineRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes after the first request.
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -1137,9 +1143,9 @@ pub struct CreateTargetRequest {
     #[prost(message, optional, tag = "3")]
     pub target: ::core::option::Option<Target>,
     /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -1163,17 +1169,17 @@ pub struct UpdateTargetRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
     /// Target resource by the update.
     /// The fields specified in the update_mask are relative to the resource, not
-    /// the full request. A field will be overwritten if it is in the mask. If the
-    /// user does not provide a mask then all fields will be overwritten.
+    /// the full request. A field will be overwritten if it's in the mask. If the
+    /// user doesn't provide a mask then all fields are overwritten.
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The `Target` to update.
     #[prost(message, optional, tag = "2")]
     pub target: ::core::option::Option<Target>,
     /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -1203,9 +1209,9 @@ pub struct DeleteTargetRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes after the first request.
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -1234,8 +1240,8 @@ pub struct DeleteTargetRequest {
 /// A `CustomTargetType` resource in the Cloud Deploy API.
 ///
 /// A `CustomTargetType` defines a type of custom target that can be referenced
-/// in a `Target` in order to facilitate deploying to a runtime that does not
-/// have a 1P integration with Cloud Deploy.
+/// in a `Target` in order to facilitate deploying to other systems besides the
+/// supported runtimes.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomTargetType {
@@ -1434,7 +1440,7 @@ pub struct GetCustomTargetTypeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCustomTargetTypeRequest {
     /// Required. The parent collection in which the `CustomTargetType` should be
-    /// created in. Format should be
+    /// created. Format should be
     /// `projects/{project_id}/locations/{location_name}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -1445,9 +1451,9 @@ pub struct CreateCustomTargetTypeRequest {
     #[prost(message, optional, tag = "3")]
     pub custom_target_type: ::core::option::Option<CustomTargetType>,
     /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -1471,17 +1477,17 @@ pub struct UpdateCustomTargetTypeRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
     /// `CustomTargetType` resource by the update.
     /// The fields specified in the update_mask are relative to the resource, not
-    /// the full request. A field will be overwritten if it is in the mask. If the
-    /// user does not provide a mask then all fields will be overwritten.
+    /// the full request. A field will be overwritten if it's in the mask. If the
+    /// user doesn't provide a mask then all fields are overwritten.
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The `CustomTargetType` to update.
     #[prost(message, optional, tag = "2")]
     pub custom_target_type: ::core::option::Option<CustomTargetType>,
     /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -1511,9 +1517,9 @@ pub struct DeleteCustomTargetTypeRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes after the first request.
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -1539,10 +1545,7 @@ pub struct DeleteCustomTargetTypeRequest {
     #[prost(string, tag = "5")]
     pub etag: ::prost::alloc::string::String,
 }
-/// Contains criteria for selecting Targets. Attributes provided must match the
-/// target resource in order for policy restrictions to apply. E.g. if id "prod"
-/// and labels "foo: bar" are given the target resource must match both that id
-/// and have that label in order to be selected.
+/// Contains criteria for selecting Targets.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetAttribute {
@@ -2018,7 +2021,7 @@ pub struct RenderMetadata {
     /// Output only. Metadata associated with rendering for Cloud Run.
     #[prost(message, optional, tag = "1")]
     pub cloud_run: ::core::option::Option<CloudRunRenderMetadata>,
-    /// Output only. Custom metadata provided by user defined render operation.
+    /// Output only. Custom metadata provided by user-defined render operation.
     #[prost(message, optional, tag = "2")]
     pub custom: ::core::option::Option<CustomMetadata>,
 }
@@ -2092,9 +2095,9 @@ pub struct CreateReleaseRequest {
     #[prost(message, optional, tag = "3")]
     pub release: ::core::option::Option<Release>,
     /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -2433,7 +2436,7 @@ pub struct Metadata {
     /// interactions between Automation service and this rollout.
     #[prost(message, optional, tag = "2")]
     pub automation: ::core::option::Option<AutomationRolloutMetadata>,
-    /// Output only. Custom metadata provided by user defined `Rollout` operations.
+    /// Output only. Custom metadata provided by user-defined `Rollout` operations.
     #[prost(message, optional, tag = "3")]
     pub custom: ::core::option::Option<CustomMetadata>,
 }
@@ -2449,7 +2452,7 @@ pub struct DeployJobRunMetadata {
     /// Output only. Custom Target metadata associated with a `DeployJobRun`.
     #[prost(message, optional, tag = "2")]
     pub custom_target: ::core::option::Option<CustomTargetDeployMetadata>,
-    /// Output only. Custom metadata provided by user defined deploy operation.
+    /// Output only. Custom metadata provided by user-defined deploy operation.
     #[prost(message, optional, tag = "3")]
     pub custom: ::core::option::Option<CustomMetadata>,
 }
@@ -2505,11 +2508,11 @@ pub struct AutomationRolloutMetadata {
     #[prost(string, repeated, tag = "3")]
     pub repair_automation_runs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// CustomMetadata contains information from a user defined operation.
+/// CustomMetadata contains information from a user-defined operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomMetadata {
-    /// Output only. Key-value pairs provided by the user defined operation.
+    /// Output only. Key-value pairs provided by the user-defined operation.
     #[prost(map = "string, string", tag = "1")]
     pub values: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2852,9 +2855,9 @@ pub struct CreateRolloutRequest {
     #[prost(message, optional, tag = "3")]
     pub rollout: ::core::option::Option<Rollout>,
     /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -3869,9 +3872,9 @@ pub struct CreateAutomationRequest {
     #[prost(message, optional, tag = "3")]
     pub automation: ::core::option::Option<Automation>,
     /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -3895,17 +3898,17 @@ pub struct UpdateAutomationRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
     /// `Automation` resource by the update.
     /// The fields specified in the update_mask are relative to the resource, not
-    /// the full request. A field will be overwritten if it is in the mask. If the
-    /// user does not provide a mask then all fields will be overwritten.
+    /// the full request. A field will be overwritten if it's in the mask. If the
+    /// user doesn't provide a mask then all fields are overwritten.
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The `Automation` to update.
     #[prost(message, optional, tag = "2")]
     pub automation: ::core::option::Option<Automation>,
     /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -3935,9 +3938,9 @@ pub struct DeleteAutomationRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. A request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes after the first request.
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -5745,6 +5748,9 @@ pub struct DeliveryPipelineNotificationEvent {
     /// Debug message for when a notification fails to send.
     #[prost(string, tag = "1")]
     pub message: ::prost::alloc::string::String,
+    /// Unique identifier of the `DeliveryPipeline`.
+    #[prost(string, tag = "4")]
+    pub pipeline_uid: ::prost::alloc::string::String,
     /// The name of the `Delivery Pipeline`.
     #[prost(string, tag = "2")]
     pub delivery_pipeline: ::prost::alloc::string::String,
@@ -5770,9 +5776,15 @@ pub struct JobRunNotificationEvent {
     /// Unique identifier of the `Release`.
     #[prost(string, tag = "4")]
     pub release_uid: ::prost::alloc::string::String,
+    /// The name of the `Release`.
+    #[prost(string, tag = "8")]
+    pub release: ::prost::alloc::string::String,
     /// Unique identifier of the `Rollout`.
     #[prost(string, tag = "5")]
     pub rollout_uid: ::prost::alloc::string::String,
+    /// The name of the `Rollout`.
+    #[prost(string, tag = "9")]
+    pub rollout: ::prost::alloc::string::String,
     /// ID of the `Target`.
     #[prost(string, tag = "6")]
     pub target_id: ::prost::alloc::string::String,
@@ -5789,6 +5801,12 @@ pub struct ReleaseNotificationEvent {
     /// Debug message for when a notification fails to send.
     #[prost(string, tag = "1")]
     pub message: ::prost::alloc::string::String,
+    /// Unique identifier of the `DeliveryPipeline`.
+    #[prost(string, tag = "4")]
+    pub pipeline_uid: ::prost::alloc::string::String,
+    /// Unique identifier of the `Release`.
+    #[prost(string, tag = "5")]
+    pub release_uid: ::prost::alloc::string::String,
     /// The name of the `Release`.
     #[prost(string, tag = "2")]
     pub release: ::prost::alloc::string::String,
@@ -5805,9 +5823,17 @@ pub struct ReleaseRenderEvent {
     /// details as rendering progresses through render states.
     #[prost(string, tag = "1")]
     pub message: ::prost::alloc::string::String,
+    /// Unique identifier of the `DeliveryPipeline`.
+    #[prost(string, tag = "4")]
+    pub pipeline_uid: ::prost::alloc::string::String,
     /// The name of the release.
+    /// release_uid is not in this log message because we write some of these log
+    /// messages at release creation time, before we've generated the uid.
     #[prost(string, tag = "2")]
     pub release: ::prost::alloc::string::String,
+    /// Type of this notification, e.g. for a release render state change event.
+    #[prost(enumeration = "Type", tag = "5")]
+    pub r#type: i32,
     /// The state of the release render.
     #[prost(enumeration = "release::RenderState", tag = "3")]
     pub release_render_state: i32,
@@ -5827,42 +5853,53 @@ pub struct RolloutNotificationEvent {
     /// Unique identifier of the `Release`.
     #[prost(string, tag = "3")]
     pub release_uid: ::prost::alloc::string::String,
+    /// The name of the `Release`.
+    #[prost(string, tag = "7")]
+    pub release: ::prost::alloc::string::String,
+    /// Unique identifier of the `Rollout`.
+    #[prost(string, tag = "8")]
+    pub rollout_uid: ::prost::alloc::string::String,
     /// The name of the `Rollout`.
     #[prost(string, tag = "4")]
     pub rollout: ::prost::alloc::string::String,
-    /// Type of this notification, e.g. for a Pub/Sub failure.
-    #[prost(enumeration = "Type", tag = "5")]
-    pub r#type: i32,
     /// ID of the `Target` that the rollout is deployed to.
     #[prost(string, tag = "6")]
     pub target_id: ::prost::alloc::string::String,
+    /// Type of this notification, e.g. for a Pub/Sub failure.
+    #[prost(enumeration = "Type", tag = "5")]
+    pub r#type: i32,
 }
 /// Payload proto for "clouddeploy.googleapis.com/rollout_update"
 /// Platform Log event that describes the rollout update event.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RolloutUpdateEvent {
+    /// Debug message for when a rollout update event occurs.
+    #[prost(string, tag = "6")]
+    pub message: ::prost::alloc::string::String,
     /// Unique identifier of the pipeline.
     #[prost(string, tag = "1")]
     pub pipeline_uid: ::prost::alloc::string::String,
     /// Unique identifier of the release.
     #[prost(string, tag = "2")]
     pub release_uid: ::prost::alloc::string::String,
+    /// The name of the `Release`.
+    #[prost(string, tag = "8")]
+    pub release: ::prost::alloc::string::String,
     /// The name of the rollout.
+    /// rollout_uid is not in this log message because we write some of these log
+    /// messages at rollout creation time, before we've generated the uid.
     #[prost(string, tag = "3")]
     pub rollout: ::prost::alloc::string::String,
     /// ID of the target.
     #[prost(string, tag = "4")]
     pub target_id: ::prost::alloc::string::String,
-    /// The type of the rollout update.
-    #[prost(enumeration = "rollout_update_event::RolloutUpdateType", tag = "5")]
-    pub rollout_update_type: i32,
-    /// Debug message for when a rollout update event occurs.
-    #[prost(string, tag = "6")]
-    pub message: ::prost::alloc::string::String,
     /// Type of this notification, e.g. for a rollout update event.
     #[prost(enumeration = "Type", tag = "7")]
     pub r#type: i32,
+    /// The type of the rollout update.
+    #[prost(enumeration = "rollout_update_event::RolloutUpdateType", tag = "5")]
+    pub rollout_update_type: i32,
 }
 /// Nested message and enum types in `RolloutUpdateEvent`.
 pub mod rollout_update_event {

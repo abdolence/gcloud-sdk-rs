@@ -1007,6 +1007,13 @@ pub struct Type {
     /// affect serialization) and clients can ignore it on the read path.
     #[prost(enumeration = "TypeAnnotationCode", tag = "4")]
     pub type_annotation: i32,
+    /// If [code][google.spanner.v1.Type.code] ==
+    /// [PROTO][google.spanner.v1.TypeCode.PROTO] or
+    /// [code][google.spanner.v1.Type.code] ==
+    /// [ENUM][google.spanner.v1.TypeCode.ENUM], then `proto_type_fqn` is the fully
+    /// qualified name of the proto type representing the proto/enum definition.
+    #[prost(string, tag = "5")]
+    pub proto_type_fqn: ::prost::alloc::string::String,
 }
 /// `StructType` defines the fields of a [STRUCT][google.spanner.v1.TypeCode.STRUCT] type.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1060,6 +1067,9 @@ pub enum TypeCode {
     /// Encoded as `number`, or the strings `"NaN"`, `"Infinity"`, or
     /// `"-Infinity"`.
     Float64 = 3,
+    /// Encoded as `number`, or the strings `"NaN"`, `"Infinity"`, or
+    /// `"-Infinity"`.
+    Float32 = 15,
     /// Encoded as `string` in RFC 3339 timestamp format. The time zone
     /// must be present, and must be `"Z"`.
     ///
@@ -1102,6 +1112,11 @@ pub enum TypeCode {
     ///    preserved.
     /// - JSON array elements will have their order preserved.
     Json = 11,
+    /// Encoded as a base64-encoded `string`, as described in RFC 4648,
+    /// section 4.
+    Proto = 13,
+    /// Encoded as `string`, in decimal format.
+    Enum = 14,
 }
 impl TypeCode {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1114,6 +1129,7 @@ impl TypeCode {
             TypeCode::Bool => "BOOL",
             TypeCode::Int64 => "INT64",
             TypeCode::Float64 => "FLOAT64",
+            TypeCode::Float32 => "FLOAT32",
             TypeCode::Timestamp => "TIMESTAMP",
             TypeCode::Date => "DATE",
             TypeCode::String => "STRING",
@@ -1122,6 +1138,8 @@ impl TypeCode {
             TypeCode::Struct => "STRUCT",
             TypeCode::Numeric => "NUMERIC",
             TypeCode::Json => "JSON",
+            TypeCode::Proto => "PROTO",
+            TypeCode::Enum => "ENUM",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1131,6 +1149,7 @@ impl TypeCode {
             "BOOL" => Some(Self::Bool),
             "INT64" => Some(Self::Int64),
             "FLOAT64" => Some(Self::Float64),
+            "FLOAT32" => Some(Self::Float32),
             "TIMESTAMP" => Some(Self::Timestamp),
             "DATE" => Some(Self::Date),
             "STRING" => Some(Self::String),
@@ -1139,6 +1158,8 @@ impl TypeCode {
             "STRUCT" => Some(Self::Struct),
             "NUMERIC" => Some(Self::Numeric),
             "JSON" => Some(Self::Json),
+            "PROTO" => Some(Self::Proto),
+            "ENUM" => Some(Self::Enum),
             _ => None,
         }
     }
@@ -2124,9 +2145,10 @@ pub struct PartitionQueryRequest {
     pub transaction: ::core::option::Option<TransactionSelector>,
     /// Required. The query request to generate partitions for. The request will
     /// fail if the query is not root partitionable. For a query to be root
-    /// partitionable, it needs to satisfy a few conditions. For example, the first
-    /// operator in the query execution plan must be a distributed union operator.
-    /// For more information about other conditions, see [Read data in
+    /// partitionable, it needs to satisfy a few conditions. For example, if the
+    /// query execution plan contains a distributed union operator, then it must be
+    /// the first operator in the plan. For more information about other
+    /// conditions, see [Read data in
     /// parallel](<https://cloud.google.com/spanner/docs/reads#read_data_in_parallel>).
     ///
     /// The query request must not contain DML commands, such as INSERT, UPDATE, or
@@ -2343,6 +2365,13 @@ pub struct CommitRequest {
     /// Default value is `false`.
     #[prost(bool, tag = "5")]
     pub return_commit_stats: bool,
+    /// Optional. The amount of latency this request is willing to incur in order
+    /// to improve throughput. If this field is not set, Spanner assumes requests
+    /// are relatively latency sensitive and automatically determines an
+    /// appropriate delay time. You can specify a batching delay value between 0
+    /// and 500 ms.
+    #[prost(message, optional, tag = "8")]
+    pub max_commit_delay: ::core::option::Option<::prost_types::Duration>,
     /// Common options for this request.
     #[prost(message, optional, tag = "6")]
     pub request_options: ::core::option::Option<RequestOptions>,

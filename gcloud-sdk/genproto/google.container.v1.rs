@@ -2385,6 +2385,9 @@ pub struct ClusterUpdate {
     pub desired_node_pool_auto_config_resource_manager_tags: ::core::option::Option<
         ResourceManagerTags,
     >,
+    /// Specify the details of in-transit encryption.
+    #[prost(enumeration = "InTransitEncryptionConfig", optional, tag = "137")]
+    pub desired_in_transit_encryption_config: ::core::option::Option<i32>,
 }
 /// AdditionalPodRangesConfig is the configuration for additional pod secondary
 /// ranges supporting the ClusterUpdate message.
@@ -5241,6 +5244,9 @@ pub struct NetworkConfig {
     /// Whether FQDN Network Policy is enabled on this cluster.
     #[prost(bool, optional, tag = "19")]
     pub enable_fqdn_network_policy: ::core::option::Option<bool>,
+    /// Specify the details of in-transit encryption.
+    #[prost(enumeration = "InTransitEncryptionConfig", optional, tag = "20")]
+    pub in_transit_encryption_config: ::core::option::Option<i32>,
 }
 /// Nested message and enum types in `NetworkConfig`.
 pub mod network_config {
@@ -6985,6 +6991,48 @@ impl IPv6AccessType {
         }
     }
 }
+/// Options for in-transit encryption.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum InTransitEncryptionConfig {
+    /// Unspecified, will be inferred as default -
+    /// IN_TRANSIT_ENCRYPTION_UNSPECIFIED.
+    Unspecified = 0,
+    /// In-transit encryption is disabled.
+    InTransitEncryptionDisabled = 1,
+    /// Data in-transit is encrypted using inter-node transparent encryption.
+    InTransitEncryptionInterNodeTransparent = 2,
+}
+impl InTransitEncryptionConfig {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            InTransitEncryptionConfig::Unspecified => {
+                "IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED"
+            }
+            InTransitEncryptionConfig::InTransitEncryptionDisabled => {
+                "IN_TRANSIT_ENCRYPTION_DISABLED"
+            }
+            InTransitEncryptionConfig::InTransitEncryptionInterNodeTransparent => {
+                "IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT"
+            }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED" => Some(Self::Unspecified),
+            "IN_TRANSIT_ENCRYPTION_DISABLED" => Some(Self::InTransitEncryptionDisabled),
+            "IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT" => {
+                Some(Self::InTransitEncryptionInterNodeTransparent)
+            }
+            _ => None,
+        }
+    }
+}
 /// Generated client implementations.
 pub mod cluster_manager_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -7567,8 +7615,6 @@ pub mod cluster_manager_client {
         }
         /// Gets the public component of the cluster signing keys in
         /// JSON Web Key format.
-        /// This API is not yet intended for general use, and is not available for all
-        /// clusters.
         pub async fn get_json_web_keys(
             &mut self,
             request: impl tonic::IntoRequest<super::GetJsonWebKeysRequest>,

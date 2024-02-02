@@ -118,7 +118,7 @@ pub struct Tool {
     /// [FunctionCall][content.part.function_call] in the response. The next
     /// conversation turn may contain a
     /// [FunctionResponse][content.part.function_response]
-    /// with the \[conent.role\] "function" generation context for the next model
+    /// with the \[content.role\] "function" generation context for the next model
     /// turn.
     #[prost(message, repeated, tag = "1")]
     pub function_declarations: ::prost::alloc::vec::Vec<FunctionDeclaration>,
@@ -185,10 +185,10 @@ pub struct FunctionResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schema {
-    /// Optional. Data type.
+    /// Required. Data type.
     #[prost(enumeration = "Type", tag = "1")]
     pub r#type: i32,
-    /// Optional. The format of the data. This is used obnly for primative
+    /// Optional. The format of the data. This is used only for primitive
     /// datatypes. Supported formats:
     ///   for NUMBER type: float, double
     ///   for INTEGER type: int32, int64
@@ -936,7 +936,7 @@ pub struct Corpus {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The human-readable display name for the `Corpus`. The display
-    /// name must be no more than 128 characters in length, including spaces.
+    /// name must be no more than 512 characters in length, including spaces.
     /// Example: "Docs on Semantic Retriever"
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
@@ -1613,6 +1613,8 @@ pub struct GenerateAnswerRequest {
     /// single-turn queries, this is a single question to answer. For multi-turn
     /// queries, this is a repeated field that contains conversation history and
     /// the last `Content` in the list containing the question.
+    ///
+    /// Note: GenerateAnswer currently only supports queries in English.
     #[prost(message, repeated, tag = "2")]
     pub contents: ::prost::alloc::vec::Vec<Content>,
     /// Required. Style in which answers should be returned.
@@ -1736,6 +1738,82 @@ pub struct GenerateAnswerResponse {
     /// individual clients’ use cases. 0.5 is a good starting threshold.
     #[prost(float, optional, tag = "2")]
     pub answerable_probability: ::core::option::Option<f32>,
+    /// Output only. Feedback related to the input data used to answer the
+    /// question, as opposed to model-generated response to the question.
+    ///
+    /// "Input data" can be one or more of the following:
+    ///
+    /// - Question specified by the last entry in `GenerateAnswerRequest.content`
+    /// - Conversation history specified by the other entries in
+    /// `GenerateAnswerRequest.content`
+    /// - Grounding sources (`GenerateAnswerRequest.semantic_retriever` or
+    /// `GenerateAnswerRequest.inline_passages`)
+    #[prost(message, optional, tag = "3")]
+    pub input_feedback: ::core::option::Option<generate_answer_response::InputFeedback>,
+}
+/// Nested message and enum types in `GenerateAnswerResponse`.
+pub mod generate_answer_response {
+    /// Feedback related to the input data used to answer the question, as opposed
+    /// to model-generated response to the question.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InputFeedback {
+        /// Optional. If set, the input was blocked and no candidates are returned.
+        /// Rephrase your input.
+        #[prost(enumeration = "input_feedback::BlockReason", optional, tag = "1")]
+        pub block_reason: ::core::option::Option<i32>,
+        /// Ratings for safety of the input.
+        /// There is at most one rating per category.
+        #[prost(message, repeated, tag = "2")]
+        pub safety_ratings: ::prost::alloc::vec::Vec<super::SafetyRating>,
+    }
+    /// Nested message and enum types in `InputFeedback`.
+    pub mod input_feedback {
+        /// Specifies what was the reason why input was blocked.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum BlockReason {
+            /// Default value. This value is unused.
+            Unspecified = 0,
+            /// Input was blocked due to safety reasons. You can inspect
+            /// `safety_ratings` to understand which safety category blocked it.
+            Safety = 1,
+            /// Input was blocked due to other reasons.
+            Other = 2,
+        }
+        impl BlockReason {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    BlockReason::Unspecified => "BLOCK_REASON_UNSPECIFIED",
+                    BlockReason::Safety => "SAFETY",
+                    BlockReason::Other => "OTHER",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "BLOCK_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SAFETY" => Some(Self::Safety),
+                    "OTHER" => Some(Self::Other),
+                    _ => None,
+                }
+            }
+        }
+    }
 }
 /// Request containing the `Content` for the model to embed.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1759,6 +1837,9 @@ pub struct EmbedContentRequest {
     pub task_type: ::core::option::Option<i32>,
     /// Optional. An optional title for the text. Only applicable when TaskType is
     /// `RETRIEVAL_DOCUMENT`.
+    ///
+    /// Note: Specifying a `title` for `RETRIEVAL_DOCUMENT` provides better quality
+    /// embeddings for retrieval.
     #[prost(string, optional, tag = "4")]
     pub title: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -2435,7 +2516,7 @@ pub mod dataset {
         Examples(super::TuningExamples),
     }
 }
-/// A set of tuning examples. Can be training or validatation data.
+/// A set of tuning examples. Can be training or validation data.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TuningExamples {

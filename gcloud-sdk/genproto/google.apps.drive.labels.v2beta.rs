@@ -714,17 +714,6 @@ pub mod field {
         #[prost(int32, tag = "2")]
         pub max_length: i32,
     }
-    /// Options the Long Text field type.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct LongTextOptions {
-        /// Output only. The minimum valid length of values for the text field.
-        #[prost(int32, tag = "1")]
-        pub min_length: i32,
-        /// Output only. The maximum valid length of values for the text field.
-        #[prost(int32, tag = "2")]
-        pub max_length: i32,
-    }
     /// Options for the Integer field type.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1863,7 +1852,7 @@ pub mod delta_update_label_request {
         pub id: ::prost::alloc::string::String,
         #[prost(
             oneof = "update_field_type_request::TypeOptions",
-            tags = "3, 4, 5, 6, 7, 8"
+            tags = "3, 5, 6, 7, 8"
         )]
         pub type_options: ::core::option::Option<update_field_type_request::TypeOptions>,
     }
@@ -1875,9 +1864,6 @@ pub mod delta_update_label_request {
             /// Update field to Text.
             #[prost(message, tag = "3")]
             TextOptions(super::super::field::TextOptions),
-            /// Update field to Long Text.
-            #[prost(message, tag = "4")]
-            LongTextOptions(super::super::field::LongTextOptions),
             /// Update field to Integer.
             #[prost(message, tag = "5")]
             IntegerOptions(super::super::field::IntegerOptions),
