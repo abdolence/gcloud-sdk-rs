@@ -1,3 +1,324 @@
+/// The output configuration setting.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OutputConfig {
+    /// The configuration of destination for holding output data.
+    #[prost(oneof = "output_config::Destination", tags = "1, 2")]
+    pub destination: ::core::option::Option<output_config::Destination>,
+}
+/// Nested message and enum types in `OutputConfig`.
+pub mod output_config {
+    /// The Google Cloud Storage output destination configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GcsDestination {
+        /// Required. The output uri prefix for saving output data to json files.
+        /// Some mapping examples are as follows:
+        /// output_uri_prefix         sample output(assuming the object is foo.json)
+        /// ========================  =============================================
+        /// gs://bucket/              gs://bucket/foo.json
+        /// gs://bucket/folder/       gs://bucket/folder/foo.json
+        /// gs://bucket/folder/item_  gs://bucket/folder/item_foo.json
+        #[prost(string, tag = "1")]
+        pub output_uri_prefix: ::prost::alloc::string::String,
+    }
+    /// The BigQuery output destination configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct BigQueryDestination {
+        /// Required. The ID of a BigQuery Dataset.
+        #[prost(string, tag = "1")]
+        pub dataset_id: ::prost::alloc::string::String,
+        /// Required. The prefix of exported BigQuery tables.
+        #[prost(string, tag = "2")]
+        pub table_id_prefix: ::prost::alloc::string::String,
+        /// Required. Describes the table type. The following values are supported:
+        ///
+        /// * `table`: A BigQuery native table.
+        /// * `view`: A virtual table defined by a SQL query.
+        #[prost(string, tag = "3")]
+        pub table_type: ::prost::alloc::string::String,
+    }
+    /// The configuration of destination for holding output data.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Destination {
+        /// The Google Cloud Storage location where the output is to be written to.
+        #[prost(message, tag = "1")]
+        GcsDestination(GcsDestination),
+        /// The BigQuery location where the output is to be written to.
+        #[prost(message, tag = "2")]
+        BigqueryDestination(BigQueryDestination),
+    }
+}
+/// Configuration of destination for Export related errors.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportErrorsConfig {
+    /// Required. Errors destination.
+    #[prost(oneof = "export_errors_config::Destination", tags = "1")]
+    pub destination: ::core::option::Option<export_errors_config::Destination>,
+}
+/// Nested message and enum types in `ExportErrorsConfig`.
+pub mod export_errors_config {
+    /// Required. Errors destination.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Destination {
+        /// Google Cloud Storage path for import errors. This must be an empty,
+        /// existing Cloud Storage bucket. Export errors will be written to a file in
+        /// this bucket, one per line, as a JSON-encoded
+        /// `google.rpc.Status` message.
+        #[prost(string, tag = "1")]
+        GcsPrefix(::prost::alloc::string::String),
+    }
+}
+/// Request message for the `ExportAnalyticsMetrics` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportAnalyticsMetricsRequest {
+    /// Required. Full resource name of the parent catalog.
+    /// Expected format: `projects/*/locations/*/catalogs/*`
+    #[prost(string, tag = "1")]
+    pub catalog: ::prost::alloc::string::String,
+    /// Required. The output location of the data.
+    #[prost(message, optional, tag = "2")]
+    pub output_config: ::core::option::Option<OutputConfig>,
+    /// A filtering expression to specify restrictions on returned metrics.
+    /// The expression is a sequence of terms. Each term applies a restriction to
+    /// the returned metrics. Use this expression to restrict results to a
+    /// specific time range.
+    ///
+    ///    Currently we expect only one types of fields:
+    ///
+    ///     * `timestamp`: This can be specified twice, once with a
+    ///       less than operator and once with a greater than operator. The
+    ///       `timestamp` restriction should result in one, contiguous, valid,
+    ///       `timestamp` range.
+    ///
+    ///    Some examples of valid filters expressions:
+    ///
+    ///    * Example 1: `timestamp > "2012-04-23T18:25:43.511Z"
+    ///              timestamp < "2012-04-23T18:30:43.511Z"`
+    ///    * Example 2: `timestamp > "2012-04-23T18:25:43.511Z"`
+    #[prost(string, tag = "3")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Metadata related to the progress of the Export operation. This is
+/// returned by the google.longrunning.Operation.metadata field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Response of the ExportProductsRequest. If the long running
+/// operation is done, then this message is returned by the
+/// google.longrunning.Operations.response field if the operation was successful.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportProductsResponse {
+    /// A sample of errors encountered while processing the request.
+    #[prost(message, repeated, tag = "1")]
+    pub error_samples: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+    /// This field is never set.
+    #[prost(message, optional, tag = "2")]
+    pub errors_config: ::core::option::Option<ExportErrorsConfig>,
+    /// Output result indicating where the data were exported to.
+    #[prost(message, optional, tag = "3")]
+    pub output_result: ::core::option::Option<OutputResult>,
+}
+/// Response of the ExportUserEventsRequest. If the long running
+/// operation was successful, then this message is returned by the
+/// google.longrunning.Operations.response field if the operation was successful.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportUserEventsResponse {
+    /// A sample of errors encountered while processing the request.
+    #[prost(message, repeated, tag = "1")]
+    pub error_samples: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+    /// This field is never set.
+    #[prost(message, optional, tag = "2")]
+    pub errors_config: ::core::option::Option<ExportErrorsConfig>,
+    /// Output result indicating where the data were exported to.
+    #[prost(message, optional, tag = "3")]
+    pub output_result: ::core::option::Option<OutputResult>,
+}
+/// Response of the ExportAnalyticsMetricsRequest. If the long running
+/// operation was successful, then this message is returned by the
+/// google.longrunning.Operations.response field if the operation was successful.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportAnalyticsMetricsResponse {
+    /// A sample of errors encountered while processing the request.
+    #[prost(message, repeated, tag = "1")]
+    pub error_samples: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+    /// This field is never set.
+    #[prost(message, optional, tag = "2")]
+    pub errors_config: ::core::option::Option<ExportErrorsConfig>,
+    /// Output result indicating where the data were exported to.
+    #[prost(message, optional, tag = "3")]
+    pub output_result: ::core::option::Option<OutputResult>,
+}
+/// Output result that stores the information about where the exported data is
+/// stored.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OutputResult {
+    /// The BigQuery location where the result is stored.
+    #[prost(message, repeated, tag = "1")]
+    pub bigquery_result: ::prost::alloc::vec::Vec<BigQueryOutputResult>,
+    /// The Google Cloud Storage location where the result is stored.
+    #[prost(message, repeated, tag = "2")]
+    pub gcs_result: ::prost::alloc::vec::Vec<GcsOutputResult>,
+}
+/// A BigQuery output result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BigQueryOutputResult {
+    /// The ID of a BigQuery Dataset.
+    #[prost(string, tag = "1")]
+    pub dataset_id: ::prost::alloc::string::String,
+    /// The ID of a BigQuery Table.
+    #[prost(string, tag = "2")]
+    pub table_id: ::prost::alloc::string::String,
+}
+/// A Gcs output result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GcsOutputResult {
+    /// The uri of Gcs output
+    #[prost(string, tag = "1")]
+    pub output_uri: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod analytics_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for managing & accessing retail search business metric.
+    /// Retail recommendation business metric is currently not available.
+    #[derive(Debug, Clone)]
+    pub struct AnalyticsServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl AnalyticsServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> AnalyticsServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> AnalyticsServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            AnalyticsServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Exports analytics metrics.
+        ///
+        /// `Operation.response` is of type `ExportAnalyticsMetricsResponse`.
+        /// `Operation.metadata` is of type `ExportMetadata`.
+        pub async fn export_analytics_metrics(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExportAnalyticsMetricsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2beta.AnalyticsService/ExportAnalyticsMetrics",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2beta.AnalyticsService",
+                        "ExportAnalyticsMetrics",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// Metadata that is used to define a condition that triggers an action.
 /// A valid condition must specify at least one of 'query_terms' or
 /// 'products_filter'. If multiple fields are specified, the condition is met if
@@ -5847,104 +6168,6 @@ pub mod control_service_client {
             self.inner.unary(req, path, codec).await
         }
     }
-}
-/// Configuration of destination for Export related errors.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExportErrorsConfig {
-    /// Required. Errors destination.
-    #[prost(oneof = "export_errors_config::Destination", tags = "1")]
-    pub destination: ::core::option::Option<export_errors_config::Destination>,
-}
-/// Nested message and enum types in `ExportErrorsConfig`.
-pub mod export_errors_config {
-    /// Required. Errors destination.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Destination {
-        /// Google Cloud Storage path for import errors. This must be an empty,
-        /// existing Cloud Storage bucket. Export errors will be written to a file in
-        /// this bucket, one per line, as a JSON-encoded
-        /// `google.rpc.Status` message.
-        #[prost(string, tag = "1")]
-        GcsPrefix(::prost::alloc::string::String),
-    }
-}
-/// Metadata related to the progress of the Export operation. This is
-/// returned by the google.longrunning.Operation.metadata field.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExportMetadata {
-    /// Operation create time.
-    #[prost(message, optional, tag = "1")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Operation last update time. If the operation is done, this is also the
-    /// finish time.
-    #[prost(message, optional, tag = "2")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// Response of the ExportProductsRequest. If the long running
-/// operation is done, then this message is returned by the
-/// google.longrunning.Operations.response field if the operation was successful.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExportProductsResponse {
-    /// A sample of errors encountered while processing the request.
-    #[prost(message, repeated, tag = "1")]
-    pub error_samples: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
-    /// This field is never set.
-    #[prost(message, optional, tag = "2")]
-    pub errors_config: ::core::option::Option<ExportErrorsConfig>,
-    /// Output result indicating where the data were exported to.
-    #[prost(message, optional, tag = "3")]
-    pub output_result: ::core::option::Option<OutputResult>,
-}
-/// Response of the ExportUserEventsRequest. If the long running
-/// operation was successful, then this message is returned by the
-/// google.longrunning.Operations.response field if the operation was successful.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExportUserEventsResponse {
-    /// A sample of errors encountered while processing the request.
-    #[prost(message, repeated, tag = "1")]
-    pub error_samples: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
-    /// This field is never set.
-    #[prost(message, optional, tag = "2")]
-    pub errors_config: ::core::option::Option<ExportErrorsConfig>,
-    /// Output result indicating where the data were exported to.
-    #[prost(message, optional, tag = "3")]
-    pub output_result: ::core::option::Option<OutputResult>,
-}
-/// Output result that stores the information about where the exported data is
-/// stored.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OutputResult {
-    /// The BigQuery location where the result is stored.
-    #[prost(message, repeated, tag = "1")]
-    pub bigquery_result: ::prost::alloc::vec::Vec<BigQueryOutputResult>,
-    /// The Google Cloud Storage location where the result is stored.
-    #[prost(message, repeated, tag = "2")]
-    pub gcs_result: ::prost::alloc::vec::Vec<GcsOutputResult>,
-}
-/// A BigQuery output result.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BigQueryOutputResult {
-    /// The ID of a BigQuery Dataset.
-    #[prost(string, tag = "1")]
-    pub dataset_id: ::prost::alloc::string::String,
-    /// The ID of a BigQuery Table.
-    #[prost(string, tag = "2")]
-    pub table_id: ::prost::alloc::string::String,
-}
-/// A Gcs output result.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GcsOutputResult {
-    /// The uri of Gcs output
-    #[prost(string, tag = "1")]
-    pub output_uri: ::prost::alloc::string::String,
 }
 /// Metadata that describes the training and serving parameters of a
 /// [Model][google.cloud.retail.v2beta.Model]. A

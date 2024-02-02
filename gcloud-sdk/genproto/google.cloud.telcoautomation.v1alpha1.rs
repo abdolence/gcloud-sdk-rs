@@ -3,7 +3,8 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrchestrationCluster {
-    /// Name of the orchestration cluster.
+    /// Name of the orchestration cluster. The name of orchestration cluster cannot
+    /// be more than 24 characters.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Management configuration of the underlying GKE cluster.
@@ -227,7 +228,7 @@ pub mod edge_slm {
 /// b) modified as per a user's need
 /// c) proposed and approved.
 /// On approval, a revision of blueprint is created which can be used to
-/// create a deployment on Orchestration Cluster.
+/// create a deployment on Orchestration or Workload Cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Blueprint {
@@ -278,6 +279,14 @@ pub struct Blueprint {
     /// which this blueprint is created.
     #[prost(string, tag = "13")]
     pub source_provider: ::prost::alloc::string::String,
+    /// Output only. DeploymentLevel of a blueprint signifies where the blueprint
+    /// will be applied. e.g. \[HYDRATION, SINGLE_DEPLOYMENT, MULTI_DEPLOYMENT\]
+    #[prost(enumeration = "DeploymentLevel", tag = "14")]
+    pub deployment_level: i32,
+    /// Output only. Indicates if the deployment created from this blueprint can be
+    /// rolled back.
+    #[prost(bool, tag = "15")]
+    pub rollback_support: bool,
 }
 /// Nested message and enum types in `Blueprint`.
 pub mod blueprint {
@@ -306,9 +315,9 @@ pub mod blueprint {
         Proposed = 2,
         /// When a proposed blueprint is approved, it moves to APPROVED state. A new
         /// revision is committed. The latest committed revision can be used to
-        /// create a deployment on Orchestration Cluster. Edits to an APPROVED
-        /// blueprint changes its state back to DRAFT. The last committed revision of
-        /// a blueprint represents its latest APPROVED state.
+        /// create a deployment on Orchestration or Workload Cluster. Edits to an
+        /// APPROVED blueprint changes its state back to DRAFT. The last committed
+        /// revision of a blueprint represents its latest APPROVED state.
         Approved = 3,
     }
     impl ApprovalState {
@@ -355,70 +364,20 @@ pub struct PublicBlueprint {
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// DeploymentLevel of a blueprint signifies where the blueprint will be
-    /// applied. e.g. \[HYDRATION, DEPLOYMENT\]
-    #[prost(enumeration = "public_blueprint::DeploymentLevel", tag = "4")]
+    /// applied. e.g. \[HYDRATION, SINGLE_DEPLOYMENT, MULTI_DEPLOYMENT\]
+    #[prost(enumeration = "DeploymentLevel", tag = "4")]
     pub deployment_level: i32,
     /// Source provider is the author of a public blueprint. e.g. Google, vendors
     #[prost(string, tag = "5")]
     pub source_provider: ::prost::alloc::string::String,
-}
-/// Nested message and enum types in `PublicBlueprint`.
-pub mod public_blueprint {
-    /// DeploymentLevel of a blueprint signifies where the blueprint will be
-    /// applied.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum DeploymentLevel {
-        /// Default unspecified deployment level.
-        Unspecified = 0,
-        /// Blueprints at HYDRATION level cannot be used to create a Deployment
-        /// (A user cannot manually initate deployment of these blueprints on
-        /// orchestration or workload cluster).
-        /// These blueprints stay in a user's private catalog and are configured and
-        /// deployed by TNA automation.
-        Hydration = 1,
-        /// Blueprints at DEPLOYMENT level can be
-        /// a) Modified in private catalog.
-        /// b) Used to create a deployment on orchestration cluster by the user, once
-        /// approved.
-        Deployment = 2,
-    }
-    impl DeploymentLevel {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                DeploymentLevel::Unspecified => "DEPLOYMENT_LEVEL_UNSPECIFIED",
-                DeploymentLevel::Hydration => "HYDRATION",
-                DeploymentLevel::Deployment => "DEPLOYMENT",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "DEPLOYMENT_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
-                "HYDRATION" => Some(Self::Hydration),
-                "DEPLOYMENT" => Some(Self::Deployment),
-                _ => None,
-            }
-        }
-    }
+    /// Output only. Indicates if the deployment created from this blueprint can be
+    /// rolled back.
+    #[prost(bool, tag = "15")]
+    pub rollback_support: bool,
 }
 /// Deployment contains a collection of YAML files (This collection is also known
 /// as package) that can to applied on an orchestration cluster (GKE cluster with
-/// TNA addons).
+/// TNA addons) or a workload cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Deployment {
@@ -429,14 +388,13 @@ pub struct Deployment {
     /// A new revision is committed whenever a change in deployment is applied.
     #[prost(string, tag = "2")]
     pub revision_id: ::prost::alloc::string::String,
-    /// Required. Immutable. The blueprint revision from which this deployment was
-    /// created.
+    /// Required. The blueprint revision from which this deployment was created.
     #[prost(string, tag = "3")]
     pub source_blueprint_revision: ::prost::alloc::string::String,
     /// Output only. The timestamp that the revision was created.
     #[prost(message, optional, tag = "4")]
     pub revision_create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. State of the deployment (DRAFT, APPLIED).
+    /// Output only. State of the deployment (DRAFT, APPLIED, DELETING).
     #[prost(enumeration = "deployment::State", tag = "5")]
     pub state: i32,
     /// Optional. Human readable name of a Deployment.
@@ -469,6 +427,20 @@ pub struct Deployment {
     /// which this deployment is created.
     #[prost(string, tag = "12")]
     pub source_provider: ::prost::alloc::string::String,
+    /// Optional. Immutable. The WorkloadCluster on which to create the Deployment.
+    /// This field should only be passed when the deployment_level of the source
+    /// blueprint specifies deployments on workload clusters e.g.
+    /// WORKLOAD_CLUSTER_DEPLOYMENT.
+    #[prost(string, tag = "13")]
+    pub workload_cluster: ::prost::alloc::string::String,
+    /// Output only. Attributes to where the deployment can inflict changes. The
+    /// value can only be \[SINGLE_DEPLOYMENT, MULTI_DEPLOYMENT\].
+    #[prost(enumeration = "DeploymentLevel", tag = "14")]
+    pub deployment_level: i32,
+    /// Output only. Indicates if the deployment can be rolled back, exported from
+    /// public blueprint.
+    #[prost(bool, tag = "15")]
+    pub rollback_support: bool,
 }
 /// Nested message and enum types in `Deployment`.
 pub mod deployment {
@@ -493,12 +465,16 @@ pub mod deployment {
         /// while its prevision revision will be its current applied version.
         Draft = 1,
         /// This state means that the contents (YAML files containing kubernetes
-        /// resources) of the deployment have been applied to an Orchestration
-        /// Cluster. A revision is created when a deployment is applied. This
-        /// revision will represent the latest view of what is applied on the cluster
-        /// until the deployment is modified and applied again, which will create a
-        /// new revision.
+        /// resources) of the deployment have been applied to an Orchestration or
+        /// Workload Cluster. A revision is created when a deployment is applied.
+        /// This revision will represent the latest view of what is applied on the
+        /// cluster until the deployment is modified and applied again, which will
+        /// create a new revision.
         Applied = 2,
+        /// A deployment in DELETING state has been marked for deletion. Its
+        /// deletion status can be queried using `ComputeDeploymentStatus` API. No
+        /// updates are allowed to a deployment in DELETING state.
+        Deleting = 3,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -510,6 +486,7 @@ pub mod deployment {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Draft => "DRAFT",
                 State::Applied => "APPLIED",
+                State::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -518,6 +495,7 @@ pub mod deployment {
                 "STATE_UNSPECIFIED" => Some(Self::Unspecified),
                 "DRAFT" => Some(Self::Draft),
                 "APPLIED" => Some(Self::Applied),
+                "DELETING" => Some(Self::Deleting),
                 _ => None,
             }
         }
@@ -842,15 +820,6 @@ pub struct DeleteBlueprintRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request object for `DeleteBlueprintRevision`.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteBlueprintRevisionRequest {
-    /// Required. The name of the blueprint revision in the form
-    /// {blueprint_id}@{revision_id}.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
 /// Request object for `ListBlueprints`.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -949,10 +918,10 @@ pub struct SearchBlueprintRevisionsRequest {
     /// Required. Supported queries:
     /// 1. ""                       : Lists all revisions across all blueprints.
     /// 2. "latest=true"            : Lists latest revisions across all blueprints.
-    /// 3. "name=<name>"            : Lists all revisions of blueprint with name
-    /// <name>.
-    /// 4. "name=<name> latest=true": Lists latest revision of blueprint with name
-    /// <name>
+    /// 3. "name={name}"            : Lists all revisions of blueprint with name
+    /// {name}.
+    /// 4. "name={name} latest=true": Lists latest revision of blueprint with name
+    /// {name}
     #[prost(string, tag = "2")]
     pub query: ::prost::alloc::string::String,
     /// Optional. The maximum number of blueprints revisions to return per page.
@@ -1070,28 +1039,11 @@ pub struct GetDeploymentRequest {
     #[prost(enumeration = "DeploymentView", tag = "2")]
     pub view: i32,
 }
-/// Request object for `DeleteDeployment`.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteDeploymentRequest {
-    /// Required. The name of deployment to delete.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
 /// Request object for `RemoveDeployment`.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveDeploymentRequest {
     /// Required. The name of deployment to initiate delete.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request object for `DeleteDeploymentRevision`.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteDeploymentRevisionRequest {
-    /// Required. The name of the deployment revision in the form
-    /// {deployment_id}@{revision_id}.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1169,10 +1121,10 @@ pub struct SearchDeploymentRevisionsRequest {
     /// 1. ""                       : Lists all revisions across all deployments.
     /// 2. "latest=true"            : Lists latest revisions across all
     /// deployments.
-    /// 3. "name=<name>"            : Lists all revisions of deployment with name
-    /// <name>.
-    /// 4. "name=<name> latest=true": Lists latest revision of deployment with name
-    /// <name>
+    /// 3. "name={name}"            : Lists all revisions of deployment with name
+    /// {name}.
+    /// 4. "name={name} latest=true": Lists latest revision of deployment with name
+    /// {name}
     #[prost(string, tag = "2")]
     pub query: ::prost::alloc::string::String,
     /// Optional. The maximum number of deployment revisions to return per page.
@@ -1222,7 +1174,7 @@ pub struct ApplyDeploymentRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeDeploymentStatusRequest {
-    /// Required. The name of the deployment.
+    /// Required. The name of the deployment without revisionID.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1235,7 +1187,7 @@ pub struct ComputeDeploymentStatusResponse {
     pub name: ::prost::alloc::string::String,
     /// Output only. Aggregated status of a deployment.
     #[prost(enumeration = "Status", tag = "2")]
-    pub status: i32,
+    pub aggregated_status: i32,
     /// Output only. Resource level status details in deployments.
     #[prost(message, repeated, tag = "3")]
     pub resource_statuses: ::prost::alloc::vec::Vec<ResourceStatus>,
@@ -1377,7 +1329,8 @@ pub struct StandardManagementConfig {
     /// network.
     #[prost(string, tag = "2")]
     pub subnet: ::prost::alloc::string::String,
-    /// Optional. The /28 network that the masters will use.
+    /// Optional. The /28 network that the masters will use. It should be free
+    /// within the network.
     #[prost(string, tag = "3")]
     pub master_ipv4_cidr_block: ::prost::alloc::string::String,
     /// Optional. The IP address range for the cluster pod IPs. Set to blank to
@@ -1533,6 +1486,77 @@ pub struct ResourceStatus {
     /// Output only. Status of the resource.
     #[prost(enumeration = "Status", tag = "7")]
     pub status: i32,
+    /// Output only. Detailed status of NFDeploy.
+    #[prost(message, optional, tag = "8")]
+    pub nf_deploy_status: ::core::option::Option<NfDeployStatus>,
+}
+/// Deployment status of NFDeploy.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NfDeployStatus {
+    /// Output only. Total number of NFs targeted by this deployment
+    #[prost(int32, tag = "1")]
+    pub targeted_nfs: i32,
+    /// Output only. Total number of NFs targeted by this deployment with a Ready
+    /// Condition set.
+    #[prost(int32, tag = "2")]
+    pub ready_nfs: i32,
+    /// Output only. Per-Site Status.
+    #[prost(message, repeated, tag = "3")]
+    pub sites: ::prost::alloc::vec::Vec<NfDeploySiteStatus>,
+}
+/// Per-Site Status.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NfDeploySiteStatus {
+    /// Output only. Site id.
+    #[prost(string, tag = "1")]
+    pub site: ::prost::alloc::string::String,
+    /// Output only. If true, the Site Deletion is in progress.
+    #[prost(bool, tag = "2")]
+    pub pending_deletion: bool,
+    /// Output only. Hydration status.
+    #[prost(message, optional, tag = "3")]
+    pub hydration: ::core::option::Option<HydrationStatus>,
+    /// Output only. Workload status.
+    #[prost(message, optional, tag = "4")]
+    pub workload: ::core::option::Option<WorkloadStatus>,
+}
+/// Hydration status.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HydrationStatus {
+    /// Output only. SiteVersion Hydration is targeting.
+    #[prost(message, optional, tag = "1")]
+    pub site_version: ::core::option::Option<SiteVersion>,
+    /// Output only. Status.
+    #[prost(string, tag = "2")]
+    pub status: ::prost::alloc::string::String,
+}
+/// SiteVersion Hydration is targeting.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SiteVersion {
+    /// Output only. NF vendor.
+    #[prost(string, tag = "1")]
+    pub nf_vendor: ::prost::alloc::string::String,
+    /// Output only. NF vendor type.
+    #[prost(string, tag = "2")]
+    pub nf_type: ::prost::alloc::string::String,
+    /// Output only. NF version.
+    #[prost(string, tag = "3")]
+    pub nf_version: ::prost::alloc::string::String,
+}
+/// Workload status.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorkloadStatus {
+    /// Output only. SiteVersion running in the workload cluster.
+    #[prost(message, optional, tag = "1")]
+    pub site_version: ::core::option::Option<SiteVersion>,
+    /// Output only. Status.
+    #[prost(string, tag = "2")]
+    pub status: ::prost::alloc::string::String,
 }
 /// BlueprintView defines the type of view of the blueprint.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1607,9 +1631,9 @@ pub enum ResourceType {
     /// Unspecified resource type.
     Unspecified = 0,
     /// User specified NF Deploy CR.
-    NfDeployCustomResource = 1,
+    NfDeployResource = 1,
     /// CRs that are part of a blueprint.
-    BlueprintCustomResource = 2,
+    DeploymentResource = 2,
 }
 impl ResourceType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1619,16 +1643,16 @@ impl ResourceType {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             ResourceType::Unspecified => "RESOURCE_TYPE_UNSPECIFIED",
-            ResourceType::NfDeployCustomResource => "NF_DEPLOY_CUSTOM_RESOURCE",
-            ResourceType::BlueprintCustomResource => "BLUEPRINT_CUSTOM_RESOURCE",
+            ResourceType::NfDeployResource => "NF_DEPLOY_RESOURCE",
+            ResourceType::DeploymentResource => "DEPLOYMENT_RESOURCE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
     pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
         match value {
             "RESOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-            "NF_DEPLOY_CUSTOM_RESOURCE" => Some(Self::NfDeployCustomResource),
-            "BLUEPRINT_CUSTOM_RESOURCE" => Some(Self::BlueprintCustomResource),
+            "NF_DEPLOY_RESOURCE" => Some(Self::NfDeployResource),
+            "DEPLOYMENT_RESOURCE" => Some(Self::DeploymentResource),
             _ => None,
         }
     }
@@ -1645,8 +1669,15 @@ pub enum Status {
     Active = 2,
     /// Failed or stalled.
     Failed = 3,
-    /// NFDeploy specific status.
+    /// Delete in progress.
+    Deleting = 4,
+    /// Deleted deployment.
+    Deleted = 5,
+    /// NFDeploy specific status. Peering in progress.
     Peering = 10,
+    /// K8s objects such as NetworkAttachmentDefinition don't have a defined
+    /// status.
+    NotApplicable = 11,
 }
 impl Status {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1659,7 +1690,10 @@ impl Status {
             Status::InProgress => "STATUS_IN_PROGRESS",
             Status::Active => "STATUS_ACTIVE",
             Status::Failed => "STATUS_FAILED",
+            Status::Deleting => "STATUS_DELETING",
+            Status::Deleted => "STATUS_DELETED",
             Status::Peering => "STATUS_PEERING",
+            Status::NotApplicable => "STATUS_NOT_APPLICABLE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1669,7 +1703,65 @@ impl Status {
             "STATUS_IN_PROGRESS" => Some(Self::InProgress),
             "STATUS_ACTIVE" => Some(Self::Active),
             "STATUS_FAILED" => Some(Self::Failed),
+            "STATUS_DELETING" => Some(Self::Deleting),
+            "STATUS_DELETED" => Some(Self::Deleted),
             "STATUS_PEERING" => Some(Self::Peering),
+            "STATUS_NOT_APPLICABLE" => Some(Self::NotApplicable),
+            _ => None,
+        }
+    }
+}
+/// DeploymentLevel of a blueprint signifies where the blueprint will be
+/// applied.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DeploymentLevel {
+    /// Default unspecified deployment level.
+    Unspecified = 0,
+    /// Blueprints at HYDRATION level cannot be used to create a Deployment
+    /// (A user cannot manually initate deployment of these blueprints on
+    /// orchestration or workload cluster).
+    /// These blueprints stay in a user's private catalog and are configured and
+    /// deployed by TNA automation.
+    Hydration = 1,
+    /// Blueprints at SINGLE_DEPLOYMENT level can be
+    /// a) Modified in private catalog.
+    /// b) Used to create a deployment on orchestration cluster by the user, once
+    /// approved.
+    SingleDeployment = 2,
+    /// Blueprints at MULTI_DEPLOYMENT level can be
+    /// a) Modified in private catalog.
+    /// b) Used to create a deployment on orchestration cluster which will create
+    /// further hydrated deployments.
+    MultiDeployment = 3,
+    /// Blueprints at WORKLOAD_CLUSTER_DEPLOYMENT level can be
+    /// a) Modified in private catalog.
+    /// b) Used to create a deployment on workload cluster by the user, once
+    /// approved.
+    WorkloadClusterDeployment = 4,
+}
+impl DeploymentLevel {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            DeploymentLevel::Unspecified => "DEPLOYMENT_LEVEL_UNSPECIFIED",
+            DeploymentLevel::Hydration => "HYDRATION",
+            DeploymentLevel::SingleDeployment => "SINGLE_DEPLOYMENT",
+            DeploymentLevel::MultiDeployment => "MULTI_DEPLOYMENT",
+            DeploymentLevel::WorkloadClusterDeployment => "WORKLOAD_CLUSTER_DEPLOYMENT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DEPLOYMENT_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+            "HYDRATION" => Some(Self::Hydration),
+            "SINGLE_DEPLOYMENT" => Some(Self::SingleDeployment),
+            "MULTI_DEPLOYMENT" => Some(Self::MultiDeployment),
+            "WORKLOAD_CLUSTER_DEPLOYMENT" => Some(Self::WorkloadClusterDeployment),
             _ => None,
         }
     }
@@ -2121,34 +2213,6 @@ pub mod telco_automation_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes the specified revision of the blueprint.
-        pub async fn delete_blueprint_revision(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteBlueprintRevisionRequest>,
-        ) -> std::result::Result<tonic::Response<super::Blueprint>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/DeleteBlueprintRevision",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
-                        "DeleteBlueprintRevision",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
         /// List all blueprints.
         pub async fn list_blueprints(
             &mut self,
@@ -2537,34 +2601,6 @@ pub mod telco_automation_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes a deployment and all its revisions.
-        pub async fn delete_deployment(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteDeploymentRequest>,
-        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/DeleteDeployment",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
-                        "DeleteDeployment",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
         /// Removes the deployment by marking it as DELETING. Post which deployment and
         /// it's revisions gets deleted.
         pub async fn remove_deployment(
@@ -2590,34 +2626,6 @@ pub mod telco_automation_client {
                     GrpcMethod::new(
                         "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
                         "RemoveDeployment",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Deletes the specified revision of the deployment.
-        pub async fn delete_deployment_revision(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteDeploymentRevisionRequest>,
-        ) -> std::result::Result<tonic::Response<super::Deployment>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/DeleteDeploymentRevision",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
-                        "DeleteDeploymentRevision",
                     ),
                 );
             self.inner.unary(req, path, codec).await

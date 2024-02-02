@@ -33,6 +33,9 @@ pub struct Conversation {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Conversation metadata related to quality management.
+    #[prost(message, optional, tag = "24")]
+    pub quality_metadata: ::core::option::Option<conversation::QualityMetadata>,
     /// Output only. The conversation transcript.
     #[prost(message, optional, tag = "8")]
     pub transcript: ::core::option::Option<conversation::Transcript>,
@@ -89,6 +92,44 @@ pub mod conversation {
         /// The audio channel that contains the agent.
         #[prost(int32, tag = "2")]
         pub agent_channel: i32,
+    }
+    /// Conversation metadata related to quality management.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct QualityMetadata {
+        /// An arbitrary integer value indicating the customer's satisfaction rating.
+        #[prost(int32, tag = "1")]
+        pub customer_satisfaction_rating: i32,
+        /// The amount of time the customer waited to connect with an agent.
+        #[prost(message, optional, tag = "2")]
+        pub wait_duration: ::core::option::Option<::prost_types::Duration>,
+        /// An arbitrary string value specifying the menu path the customer took.
+        #[prost(string, tag = "3")]
+        pub menu_path: ::prost::alloc::string::String,
+        /// Information about agents involved in the call.
+        #[prost(message, repeated, tag = "4")]
+        pub agent_info: ::prost::alloc::vec::Vec<quality_metadata::AgentInfo>,
+    }
+    /// Nested message and enum types in `QualityMetadata`.
+    pub mod quality_metadata {
+        /// Information about an agent involved in the conversation.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct AgentInfo {
+            /// A user-specified string representing the agent.
+            #[prost(string, tag = "1")]
+            pub agent_id: ::prost::alloc::string::String,
+            /// The agent's name.
+            #[prost(string, tag = "2")]
+            pub display_name: ::prost::alloc::string::String,
+            /// A user-specified string representing the agent's team.
+            #[prost(string, tag = "3")]
+            pub team: ::prost::alloc::string::String,
+            /// A user-provided string indicating the outcome of the agent's segment of
+            /// the call.
+            #[prost(string, tag = "4")]
+            pub disposition_code: ::prost::alloc::string::String,
+        }
     }
     /// A message representing the transcript of a conversation.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2162,14 +2203,14 @@ pub mod ingest_conversations_request {
         /// the conversations.
         #[prost(string, tag = "1")]
         pub agent_id: ::prost::alloc::string::String,
-        /// Optional. For audio conversations, this field indicates which of the
-        /// channels, 1 or 2, contains the agent. Note that this must be set for
-        /// audio conversations to be properly displayed and analyzed.
+        /// Optional. Indicates which of the channels, 1 or 2, contains the agent.
+        /// Note that this must be set for conversations to be properly displayed and
+        /// analyzed.
         #[prost(int32, tag = "2")]
         pub agent_channel: i32,
-        /// Optional. For audio conversations, this field indicates which of the
-        /// channels, 1 or 2, contains the customer. Note that this must be set for
-        /// audio conversations to be properly displayed and analyzed.
+        /// Optional. Indicates which of the channels, 1 or 2, contains the agent.
+        /// Note that this must be set for conversations to be properly displayed and
+        /// analyzed.
         #[prost(int32, tag = "3")]
         pub customer_channel: i32,
     }

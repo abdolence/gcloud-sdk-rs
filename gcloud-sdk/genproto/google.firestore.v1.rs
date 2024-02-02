@@ -12,23 +12,23 @@ pub struct Document {
     ///
     /// The map keys represent field names.
     ///
+    /// Field names matching the regular expression `__.*__` are reserved. Reserved
+    /// field names are forbidden except in certain documented contexts. The field
+    /// names, represented as UTF-8, must not exceed 1,500 bytes and cannot be
+    /// empty.
+    ///
+    /// Field paths may be used in other contexts to refer to structured fields
+    /// defined here. For `map_value`, the field path is represented by a
+    /// dot-delimited (`.`) string of segments. Each segment is either a simple
+    /// field name (defined below) or a quoted field name. For example, the
+    /// structured field `"foo" : { map_value: { "x&y" : { string_value: "hello"
+    /// }}}` would be represented by the field path `` foo.`x&y` ``.
+    ///
     /// A simple field name contains only characters `a` to `z`, `A` to `Z`,
     /// `0` to `9`, or `_`, and must not start with `0` to `9`. For example,
     /// `foo_bar_17`.
     ///
-    /// Field names matching the regular expression `__.*__` are reserved. Reserved
-    /// field names are forbidden except in certain documented contexts. The map
-    /// keys, represented as UTF-8, must not exceed 1,500 bytes and cannot be
-    /// empty.
-    ///
-    /// Field paths may be used in other contexts to refer to structured fields
-    /// defined here. For `map_value`, the field path is represented by the simple
-    /// or quoted field names of the containing fields, delimited by `.`. For
-    /// example, the structured field
-    /// `"foo" : { map_value: { "x&y" : { string_value: "hello" }}}` would be
-    /// represented by the field path `foo.x&y`.
-    ///
-    /// Within a field path, a quoted field name starts and ends with `` ` `` and
+    /// A quoted field name starts and ends with `` ` `` and
     /// may contain any character. Some characters, including `` ` ``, must be
     /// escaped using a `\`. For example, `` `x&y` `` represents `x&y` and
     /// `` `bak\`tik` `` represents `` bak`tik ``.
@@ -134,6 +134,14 @@ pub struct MapValue {
     pub fields: ::std::collections::HashMap<::prost::alloc::string::String, Value>,
 }
 /// A Firestore query.
+///
+/// The query stages are executed in the following order:
+/// 1. from
+/// 2. where
+/// 3. select
+/// 4. order_by + start_at + end_at
+/// 5. offset
+/// 6. limit
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StructuredQuery {

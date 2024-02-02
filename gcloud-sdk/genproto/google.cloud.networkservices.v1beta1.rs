@@ -200,6 +200,10 @@ pub mod extension_chain {
     pub struct MatchCondition {
         /// Required. A Common Expression Language (CEL) expression that is used to
         /// match requests for which the extension chain is executed.
+        ///
+        /// For more information, see
+        /// [CEL matcher language
+        /// reference](<https://cloud.google.com/service-extensions/docs/cel-matcher-language-reference>).
         #[prost(string, tag = "1")]
         pub cel_expression: ::prost::alloc::string::String,
     }
@@ -220,8 +224,17 @@ pub mod extension_chain {
         #[prost(string, tag = "2")]
         pub authority: ::prost::alloc::string::String,
         /// Required. The reference to the service that runs the extension.
-        /// Must be a reference to a [backend
-        /// service](<https://cloud.google.com/compute/docs/reference/rest/v1/backendServices>).
+        ///
+        /// Currently only Callout extensions are supported here.
+        ///
+        /// To configure a Callout extension, `service` must be a fully-qualified
+        /// reference
+        /// to a [backend
+        /// service](<https://cloud.google.com/compute/docs/reference/rest/v1/backendServices>)
+        /// in the format:
+        /// `<https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/backendServices/{backendService}`>
+        /// or
+        /// `<https://www.googleapis.com/compute/v1/projects/{project}/global/backendServices/{backendService}`.>
         #[prost(string, tag = "3")]
         pub service: ::prost::alloc::string::String,
         /// Optional. A set of events during request or response processing for which
@@ -329,8 +342,8 @@ pub mod extension_chain {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LbTrafficExtension {
-    /// Required. Name of the `LbTrafficExtension` resource in the following
-    /// format:
+    /// Required. Identifier. Name of the `LbTrafficExtension` resource in the
+    /// following format:
     /// `projects/{project}/locations/{location}/lbTrafficExtensions/{lb_traffic_extension}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -353,7 +366,7 @@ pub struct LbTrafficExtension {
         ::prost::alloc::string::String,
     >,
     /// Required. A list of references to the forwarding rules to which this
-    /// service extension is attach to. At least one forwarding rule is required.
+    /// service extension is attached to. At least one forwarding rule is required.
     /// There can be only one `LBTrafficExtension` resource per forwarding rule.
     #[prost(string, repeated, tag = "5")]
     pub forwarding_rules: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -511,7 +524,8 @@ pub struct DeleteLbTrafficExtensionRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LbRouteExtension {
-    /// Required. Name of the `LbRouteExtension` resource in the following format:
+    /// Required. Identifier. Name of the `LbRouteExtension` resource in the
+    /// following format:
     /// `projects/{project}/locations/{location}/lbRouteExtensions/{lb_route_extension}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -534,7 +548,7 @@ pub struct LbRouteExtension {
         ::prost::alloc::string::String,
     >,
     /// Required. A list of references to the forwarding rules to which this
-    /// service extension is attach to. At least one forwarding rule is required.
+    /// service extension is attached to. At least one forwarding rule is required.
     /// There can be only one `LbRouteExtension` resource per forwarding rule.
     #[prost(string, repeated, tag = "5")]
     pub forwarding_rules: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -548,7 +562,9 @@ pub struct LbRouteExtension {
     pub extension_chains: ::prost::alloc::vec::Vec<ExtensionChain>,
     /// Required. All backend services and forwarding rules referenced by this
     /// extension must share the same load balancing scheme. Supported values:
-    /// `INTERNAL_MANAGED`, `EXTERNAL_MANAGED`.
+    /// `INTERNAL_MANAGED`, `EXTERNAL_MANAGED`. For more information, refer to
+    /// [Choosing a load
+    /// balancer](<https://cloud.google.com/load-balancing/docs/backend-service>).
     #[prost(enumeration = "LoadBalancingScheme", tag = "8")]
     pub load_balancing_scheme: i32,
 }
@@ -688,6 +704,8 @@ pub struct DeleteLbRouteExtensionRequest {
 /// Load balancing schemes supported by the `LbTrafficExtension` resource and
 /// `LbRouteExtension` resource. The valid values are: `INTERNAL_MANAGED`,
 /// `EXTERNAL_MANAGED`.
+/// For more information, refer to [Choosing a load
+/// balancer](<https://cloud.google.com/load-balancing/docs/backend-service>).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum LoadBalancingScheme {

@@ -85,8 +85,8 @@ pub struct CreateSchemaRequest {
     /// The ID to use for the schema, which will become the final component of
     /// the schema's resource name.
     ///
-    /// See <https://cloud.google.com/pubsub/docs/admin#resource_names> for resource
-    /// name constraints.
+    /// See <https://cloud.google.com/pubsub/docs/pubsub-basics#resource_names> for
+    /// resource name constraints.
     #[prost(string, tag = "3")]
     pub schema_id: ::prost::alloc::string::String,
 }
@@ -701,16 +701,23 @@ pub mod schema_service_client {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MessageStoragePolicy {
-    /// A list of IDs of Google Cloud regions where messages that are published
-    /// to the topic may be persisted in storage. Messages published by publishers
-    /// running in non-allowed Google Cloud regions (or running outside of Google
-    /// Cloud altogether) are routed for storage in one of the allowed regions.
-    /// An empty list means that no regions are allowed, and is not a valid
-    /// configuration.
+    /// Optional. A list of IDs of Google Cloud regions where messages that are
+    /// published to the topic may be persisted in storage. Messages published by
+    /// publishers running in non-allowed Google Cloud regions (or running outside
+    /// of Google Cloud altogether) are routed for storage in one of the allowed
+    /// regions. An empty list means that no regions are allowed, and is not a
+    /// valid configuration.
     #[prost(string, repeated, tag = "1")]
     pub allowed_persistence_regions: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
+    /// Optional. If true, `allowed_persistence_regions` is also used to enforce
+    /// in-transit guarantees for messages. That is, Pub/Sub will fail
+    /// Publish operations on this topic and subscribe operations
+    /// on any subscription attached to this topic in any region that is
+    /// not in `allowed_persistence_regions`.
+    #[prost(bool, tag = "2")]
+    pub enforce_in_transit: bool,
 }
 /// Settings for validating messages published against a schema.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -722,19 +729,133 @@ pub struct SchemaSettings {
     /// deleted.
     #[prost(string, tag = "1")]
     pub schema: ::prost::alloc::string::String,
-    /// The encoding of messages validated against `schema`.
+    /// Optional. The encoding of messages validated against `schema`.
     #[prost(enumeration = "Encoding", tag = "2")]
     pub encoding: i32,
-    /// The minimum (inclusive) revision allowed for validating messages. If empty
-    /// or not present, allow any revision to be validated against last_revision or
-    /// any revision created before.
+    /// Optional. The minimum (inclusive) revision allowed for validating messages.
+    /// If empty or not present, allow any revision to be validated against
+    /// last_revision or any revision created before.
     #[prost(string, tag = "3")]
     pub first_revision_id: ::prost::alloc::string::String,
-    /// The maximum (inclusive) revision allowed for validating messages. If empty
-    /// or not present, allow any revision to be validated against first_revision
-    /// or any revision created after.
+    /// Optional. The maximum (inclusive) revision allowed for validating messages.
+    /// If empty or not present, allow any revision to be validated against
+    /// first_revision or any revision created after.
     #[prost(string, tag = "4")]
     pub last_revision_id: ::prost::alloc::string::String,
+}
+/// Settings for an ingestion data source on a topic.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IngestionDataSourceSettings {
+    /// Only one source type can have settings set.
+    #[prost(oneof = "ingestion_data_source_settings::Source", tags = "1")]
+    pub source: ::core::option::Option<ingestion_data_source_settings::Source>,
+}
+/// Nested message and enum types in `IngestionDataSourceSettings`.
+pub mod ingestion_data_source_settings {
+    /// Ingestion settings for Amazon Kinesis Data Streams.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AwsKinesis {
+        /// Output only. An output-only field that indicates the state of the Kinesis
+        /// ingestion source.
+        #[prost(enumeration = "aws_kinesis::State", tag = "1")]
+        pub state: i32,
+        /// Required. The Kinesis stream ARN to ingest data from.
+        #[prost(string, tag = "2")]
+        pub stream_arn: ::prost::alloc::string::String,
+        /// Required. The Kinesis consumer ARN to used for ingestion in Enhanced
+        /// Fan-Out mode. The consumer must be already created and ready to be used.
+        #[prost(string, tag = "3")]
+        pub consumer_arn: ::prost::alloc::string::String,
+        /// Required. AWS role ARN to be used for Federated Identity authentication
+        /// with Kinesis. Check the Pub/Sub docs for how to set up this role and the
+        /// required permissions that need to be attached to it.
+        #[prost(string, tag = "4")]
+        pub aws_role_arn: ::prost::alloc::string::String,
+        /// Required. The GCP service account to be used for Federated Identity
+        /// authentication with Kinesis (via a `AssumeRoleWithWebIdentity` call for
+        /// the provided role). The `aws_role_arn` must be set up with
+        /// `accounts.google.com:sub` equals to this service account number.
+        #[prost(string, tag = "5")]
+        pub gcp_service_account: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `AwsKinesis`.
+    pub mod aws_kinesis {
+        /// Possible states for managed ingestion from Amazon Kinesis Data Streams.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum State {
+            /// Default value. This value is unused.
+            Unspecified = 0,
+            /// Ingestion is active.
+            Active = 1,
+            /// Permission denied encountered while consuming data from Kinesis.
+            /// This can happen if:
+            ///    - The provided `aws_role_arn` does not exist or does not have the
+            ///      appropriate permissions attached.
+            ///    - The provided `aws_role_arn` is not set up properly for Identity
+            ///      Federation using `gcp_service_account`.
+            ///    - The Pub/Sub SA is not granted the
+            ///      `iam.serviceAccounts.getOpenIdToken` permission on
+            ///      `gcp_service_account`.
+            KinesisPermissionDenied = 2,
+            /// Permission denied encountered while publishing to the topic. This can
+            /// happen due to Pub/Sub SA has not been granted the [appropriate publish
+            /// permissions](<https://cloud.google.com/pubsub/docs/access-control#pubsub.publisher>)
+            PublishPermissionDenied = 3,
+            /// The Kinesis stream does not exist.
+            StreamNotFound = 4,
+            /// The Kinesis consumer does not exist.
+            ConsumerNotFound = 5,
+        }
+        impl State {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    State::Unspecified => "STATE_UNSPECIFIED",
+                    State::Active => "ACTIVE",
+                    State::KinesisPermissionDenied => "KINESIS_PERMISSION_DENIED",
+                    State::PublishPermissionDenied => "PUBLISH_PERMISSION_DENIED",
+                    State::StreamNotFound => "STREAM_NOT_FOUND",
+                    State::ConsumerNotFound => "CONSUMER_NOT_FOUND",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ACTIVE" => Some(Self::Active),
+                    "KINESIS_PERMISSION_DENIED" => Some(Self::KinesisPermissionDenied),
+                    "PUBLISH_PERMISSION_DENIED" => Some(Self::PublishPermissionDenied),
+                    "STREAM_NOT_FOUND" => Some(Self::StreamNotFound),
+                    "CONSUMER_NOT_FOUND" => Some(Self::ConsumerNotFound),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Only one source type can have settings set.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Optional. Amazon Kinesis Data Streams.
+        #[prost(message, tag = "1")]
+        AwsKinesis(AwsKinesis),
+    }
 }
 /// A topic resource.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -748,41 +869,99 @@ pub struct Topic {
     /// must not start with `"goog"`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// See \[Creating and managing labels\]
+    /// Optional. See \[Creating and managing labels\]
     /// (<https://cloud.google.com/pubsub/docs/labels>).
     #[prost(map = "string, string", tag = "2")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Policy constraining the set of Google Cloud Platform regions where messages
-    /// published to the topic may be stored. If not present, then no constraints
-    /// are in effect.
+    /// Optional. Policy constraining the set of Google Cloud Platform regions
+    /// where messages published to the topic may be stored. If not present, then
+    /// no constraints are in effect.
     #[prost(message, optional, tag = "3")]
     pub message_storage_policy: ::core::option::Option<MessageStoragePolicy>,
-    /// The resource name of the Cloud KMS CryptoKey to be used to protect access
-    /// to messages published on this topic.
+    /// Optional. The resource name of the Cloud KMS CryptoKey to be used to
+    /// protect access to messages published on this topic.
     ///
     /// The expected format is `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
     #[prost(string, tag = "5")]
     pub kms_key_name: ::prost::alloc::string::String,
-    /// Settings for validating messages published against a schema.
+    /// Optional. Settings for validating messages published against a schema.
     #[prost(message, optional, tag = "6")]
     pub schema_settings: ::core::option::Option<SchemaSettings>,
-    /// Reserved for future use. This field is set only in responses from the
-    /// server; it is ignored if it is set in any requests.
+    /// Optional. Reserved for future use. This field is set only in responses from
+    /// the server; it is ignored if it is set in any requests.
     #[prost(bool, tag = "7")]
     pub satisfies_pzs: bool,
-    /// Indicates the minimum duration to retain a message after it is published to
-    /// the topic. If this field is set, messages published to the topic in the
-    /// last `message_retention_duration` are always available to subscribers. For
-    /// instance, it allows any attached subscription to [seek to a
+    /// Optional. Indicates the minimum duration to retain a message after it is
+    /// published to the topic. If this field is set, messages published to the
+    /// topic in the last `message_retention_duration` are always available to
+    /// subscribers. For instance, it allows any attached subscription to [seek to
+    /// a
     /// timestamp](<https://cloud.google.com/pubsub/docs/replay-overview#seek_to_a_time>)
     /// that is up to `message_retention_duration` in the past. If this field is
     /// not set, message retention is controlled by settings on individual
     /// subscriptions. Cannot be more than 31 days or less than 10 minutes.
     #[prost(message, optional, tag = "8")]
     pub message_retention_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Output only. An output-only field indicating the state of the topic.
+    #[prost(enumeration = "topic::State", tag = "9")]
+    pub state: i32,
+    /// Optional. Settings for managed ingestion from a data source into this
+    /// topic.
+    #[prost(message, optional, tag = "10")]
+    pub ingestion_data_source_settings: ::core::option::Option<
+        IngestionDataSourceSettings,
+    >,
+}
+/// Nested message and enum types in `Topic`.
+pub mod topic {
+    /// The state of the topic.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// The topic does not have any persistent errors.
+        Active = 1,
+        /// Ingestion from the data source has encountered a permanent error.
+        /// See the more detailed error state in the corresponding ingestion
+        /// source configuration.
+        IngestionResourceError = 2,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Active => "ACTIVE",
+                State::IngestionResourceError => "INGESTION_RESOURCE_ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "INGESTION_RESOURCE_ERROR" => Some(Self::IngestionResourceError),
+                _ => None,
+            }
+        }
+    }
 }
 /// A message that is published by publishers and consumed by subscribers. The
 /// message must contain either a non-empty data field or at least one attribute.
@@ -795,12 +974,12 @@ pub struct Topic {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PubsubMessage {
-    /// The message data field. If this field is empty, the message must contain
-    /// at least one attribute.
+    /// Optional. The message data field. If this field is empty, the message must
+    /// contain at least one attribute.
     #[prost(bytes = "vec", tag = "1")]
     pub data: ::prost::alloc::vec::Vec<u8>,
-    /// Attributes for this message. If this field is empty, the message must
-    /// contain non-empty data. This can be used to filter messages on the
+    /// Optional. Attributes for this message. If this field is empty, the message
+    /// must contain non-empty data. This can be used to filter messages on the
     /// subscription.
     #[prost(map = "string, string", tag = "2")]
     pub attributes: ::std::collections::HashMap<
@@ -818,13 +997,13 @@ pub struct PubsubMessage {
     /// publisher in a `Publish` call.
     #[prost(message, optional, tag = "4")]
     pub publish_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// If non-empty, identifies related messages for which publish order should be
-    /// respected. If a `Subscription` has `enable_message_ordering` set to `true`,
-    /// messages published with the same non-empty `ordering_key` value will be
-    /// delivered to subscribers in the order in which they are received by the
-    /// Pub/Sub system. All `PubsubMessage`s published in a given `PublishRequest`
-    /// must specify the same `ordering_key` value.
-    /// For more information, see [ordering
+    /// Optional. If non-empty, identifies related messages for which publish order
+    /// should be respected. If a `Subscription` has `enable_message_ordering` set
+    /// to `true`, messages published with the same non-empty `ordering_key` value
+    /// will be delivered to subscribers in the order in which they are received by
+    /// the Pub/Sub system. All `PubsubMessage`s published in a given
+    /// `PublishRequest` must specify the same `ordering_key` value. For more
+    /// information, see [ordering
     /// messages](<https://cloud.google.com/pubsub/docs/ordering>).
     #[prost(string, tag = "5")]
     pub ordering_key: ::prost::alloc::string::String,
@@ -869,9 +1048,9 @@ pub struct PublishRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishResponse {
-    /// The server-assigned ID of each published message, in the same order as
-    /// the messages in the request. IDs are guaranteed to be unique within
-    /// the topic.
+    /// Optional. The server-assigned ID of each published message, in the same
+    /// order as the messages in the request. IDs are guaranteed to be unique
+    /// within the topic.
     #[prost(string, repeated, tag = "1")]
     pub message_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -883,12 +1062,12 @@ pub struct ListTopicsRequest {
     /// Format is `projects/{project-id}`.
     #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
-    /// Maximum number of topics to return.
+    /// Optional. Maximum number of topics to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The value returned by the last `ListTopicsResponse`; indicates that this is
-    /// a continuation of a prior `ListTopics` call, and that the system should
-    /// return the next page of data.
+    /// Optional. The value returned by the last `ListTopicsResponse`; indicates
+    /// that this is a continuation of a prior `ListTopics` call, and that the
+    /// system should return the next page of data.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -896,11 +1075,11 @@ pub struct ListTopicsRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTopicsResponse {
-    /// The resulting topics.
+    /// Optional. The resulting topics.
     #[prost(message, repeated, tag = "1")]
     pub topics: ::prost::alloc::vec::Vec<Topic>,
-    /// If not empty, indicates that there may be more topics that match the
-    /// request; this value should be passed in a new `ListTopicsRequest`.
+    /// Optional. If not empty, indicates that there may be more topics that match
+    /// the request; this value should be passed in a new `ListTopicsRequest`.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
@@ -912,12 +1091,12 @@ pub struct ListTopicSubscriptionsRequest {
     /// Format is `projects/{project}/topics/{topic}`.
     #[prost(string, tag = "1")]
     pub topic: ::prost::alloc::string::String,
-    /// Maximum number of subscription names to return.
+    /// Optional. Maximum number of subscription names to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The value returned by the last `ListTopicSubscriptionsResponse`; indicates
-    /// that this is a continuation of a prior `ListTopicSubscriptions` call, and
-    /// that the system should return the next page of data.
+    /// Optional. The value returned by the last `ListTopicSubscriptionsResponse`;
+    /// indicates that this is a continuation of a prior `ListTopicSubscriptions`
+    /// call, and that the system should return the next page of data.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -925,11 +1104,12 @@ pub struct ListTopicSubscriptionsRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTopicSubscriptionsResponse {
-    /// The names of subscriptions attached to the topic specified in the request.
+    /// Optional. The names of subscriptions attached to the topic specified in the
+    /// request.
     #[prost(string, repeated, tag = "1")]
     pub subscriptions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// If not empty, indicates that there may be more subscriptions that match
-    /// the request; this value should be passed in a new
+    /// Optional. If not empty, indicates that there may be more subscriptions that
+    /// match the request; this value should be passed in a new
     /// `ListTopicSubscriptionsRequest` to get more subscriptions.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -942,12 +1122,12 @@ pub struct ListTopicSnapshotsRequest {
     /// Format is `projects/{project}/topics/{topic}`.
     #[prost(string, tag = "1")]
     pub topic: ::prost::alloc::string::String,
-    /// Maximum number of snapshot names to return.
+    /// Optional. Maximum number of snapshot names to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The value returned by the last `ListTopicSnapshotsResponse`; indicates
-    /// that this is a continuation of a prior `ListTopicSnapshots` call, and
-    /// that the system should return the next page of data.
+    /// Optional. The value returned by the last `ListTopicSnapshotsResponse`;
+    /// indicates that this is a continuation of a prior `ListTopicSnapshots` call,
+    /// and that the system should return the next page of data.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -955,11 +1135,11 @@ pub struct ListTopicSnapshotsRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTopicSnapshotsResponse {
-    /// The names of the snapshots that match the request.
+    /// Optional. The names of the snapshots that match the request.
     #[prost(string, repeated, tag = "1")]
     pub snapshots: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// If not empty, indicates that there may be more snapshots that match
-    /// the request; this value should be passed in a new
+    /// Optional. If not empty, indicates that there may be more snapshots that
+    /// match the request; this value should be passed in a new
     /// `ListTopicSnapshotsRequest` to get more snapshots.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -1006,23 +1186,23 @@ pub struct Subscription {
     /// field will be `_deleted-topic_` if the topic has been deleted.
     #[prost(string, tag = "2")]
     pub topic: ::prost::alloc::string::String,
-    /// If push delivery is used with this subscription, this field is
+    /// Optional. If push delivery is used with this subscription, this field is
     /// used to configure it.
     #[prost(message, optional, tag = "4")]
     pub push_config: ::core::option::Option<PushConfig>,
-    /// If delivery to BigQuery is used with this subscription, this field is
-    /// used to configure it.
+    /// Optional. If delivery to BigQuery is used with this subscription, this
+    /// field is used to configure it.
     #[prost(message, optional, tag = "18")]
     pub bigquery_config: ::core::option::Option<BigQueryConfig>,
-    /// If delivery to Google Cloud Storage is used with this subscription, this
-    /// field is used to configure it.
+    /// Optional. If delivery to Google Cloud Storage is used with this
+    /// subscription, this field is used to configure it.
     #[prost(message, optional, tag = "22")]
     pub cloud_storage_config: ::core::option::Option<CloudStorageConfig>,
-    /// The approximate amount of time (on a best-effort basis) Pub/Sub waits for
-    /// the subscriber to acknowledge receipt before resending the message. In the
-    /// interval after the message is delivered and before it is acknowledged, it
-    /// is considered to be _outstanding_. During that time period, the
-    /// message will not be redelivered (on a best-effort basis).
+    /// Optional. The approximate amount of time (on a best-effort basis) Pub/Sub
+    /// waits for the subscriber to acknowledge receipt before resending the
+    /// message. In the interval after the message is delivered and before it is
+    /// acknowledged, it is considered to be _outstanding_. During that time
+    /// period, the message will not be redelivered (on a best-effort basis).
     ///
     /// For pull subscriptions, this value is used as the initial value for the ack
     /// deadline. To override this value for a given message, call
@@ -1040,7 +1220,7 @@ pub struct Subscription {
     /// system will eventually redeliver the message.
     #[prost(int32, tag = "5")]
     pub ack_deadline_seconds: i32,
-    /// Indicates whether to retain acknowledged messages. If true, then
+    /// Optional. Indicates whether to retain acknowledged messages. If true, then
     /// messages are not expunged from the subscription's backlog, even if they are
     /// acknowledged, until they fall out of the `message_retention_duration`
     /// window. This must be true if you would like to \[`Seek` to a timestamp\]
@@ -1048,55 +1228,54 @@ pub struct Subscription {
     /// the past to replay previously-acknowledged messages.
     #[prost(bool, tag = "7")]
     pub retain_acked_messages: bool,
-    /// How long to retain unacknowledged messages in the subscription's backlog,
-    /// from the moment a message is published.
-    /// If `retain_acked_messages` is true, then this also configures the retention
-    /// of acknowledged messages, and thus configures how far back in time a `Seek`
-    /// can be done. Defaults to 7 days. Cannot be more than 7 days or less than 10
-    /// minutes.
+    /// Optional. How long to retain unacknowledged messages in the subscription's
+    /// backlog, from the moment a message is published. If `retain_acked_messages`
+    /// is true, then this also configures the retention of acknowledged messages,
+    /// and thus configures how far back in time a `Seek` can be done. Defaults to
+    /// 7 days. Cannot be more than 7 days or less than 10 minutes.
     #[prost(message, optional, tag = "8")]
     pub message_retention_duration: ::core::option::Option<::prost_types::Duration>,
-    /// See [Creating and managing
+    /// Optional. See [Creating and managing
     /// labels](<https://cloud.google.com/pubsub/docs/labels>).
     #[prost(map = "string, string", tag = "9")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// If true, messages published with the same `ordering_key` in `PubsubMessage`
-    /// will be delivered to the subscribers in the order in which they
-    /// are received by the Pub/Sub system. Otherwise, they may be delivered in
-    /// any order.
+    /// Optional. If true, messages published with the same `ordering_key` in
+    /// `PubsubMessage` will be delivered to the subscribers in the order in which
+    /// they are received by the Pub/Sub system. Otherwise, they may be delivered
+    /// in any order.
     #[prost(bool, tag = "10")]
     pub enable_message_ordering: bool,
-    /// A policy that specifies the conditions for this subscription's expiration.
-    /// A subscription is considered active as long as any connected subscriber is
-    /// successfully consuming messages from the subscription or is issuing
-    /// operations on the subscription. If `expiration_policy` is not set, a
-    /// *default policy* with `ttl` of 31 days will be used. The minimum allowed
+    /// Optional. A policy that specifies the conditions for this subscription's
+    /// expiration. A subscription is considered active as long as any connected
+    /// subscriber is successfully consuming messages from the subscription or is
+    /// issuing operations on the subscription. If `expiration_policy` is not set,
+    /// a *default policy* with `ttl` of 31 days will be used. The minimum allowed
     /// value for `expiration_policy.ttl` is 1 day. If `expiration_policy` is set,
     /// but `expiration_policy.ttl` is not set, the subscription never expires.
     #[prost(message, optional, tag = "11")]
     pub expiration_policy: ::core::option::Option<ExpirationPolicy>,
-    /// An expression written in the Pub/Sub [filter
+    /// Optional. An expression written in the Pub/Sub [filter
     /// language](<https://cloud.google.com/pubsub/docs/filtering>). If non-empty,
     /// then only `PubsubMessage`s whose `attributes` field matches the filter are
     /// delivered on this subscription. If empty, then no messages are filtered
     /// out.
     #[prost(string, tag = "12")]
     pub filter: ::prost::alloc::string::String,
-    /// A policy that specifies the conditions for dead lettering messages in
-    /// this subscription. If dead_letter_policy is not set, dead lettering
-    /// is disabled.
+    /// Optional. A policy that specifies the conditions for dead lettering
+    /// messages in this subscription. If dead_letter_policy is not set, dead
+    /// lettering is disabled.
     ///
-    /// The Cloud Pub/Sub service account associated with this subscriptions's
+    /// The Pub/Sub service account associated with this subscriptions's
     /// parent project (i.e.,
     /// service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com) must have
     /// permission to Acknowledge() messages on this subscription.
     #[prost(message, optional, tag = "13")]
     pub dead_letter_policy: ::core::option::Option<DeadLetterPolicy>,
-    /// A policy that specifies how Pub/Sub retries message delivery for this
-    /// subscription.
+    /// Optional. A policy that specifies how Pub/Sub retries message delivery for
+    /// this subscription.
     ///
     /// If not set, the default retry policy is applied. This generally implies
     /// that messages will be retried as soon as possible for healthy subscribers.
@@ -1104,15 +1283,16 @@ pub struct Subscription {
     /// exceeded events for a given message.
     #[prost(message, optional, tag = "14")]
     pub retry_policy: ::core::option::Option<RetryPolicy>,
-    /// Indicates whether the subscription is detached from its topic. Detached
-    /// subscriptions don't receive messages from their topic and don't retain any
-    /// backlog. `Pull` and `StreamingPull` requests will return
+    /// Optional. Indicates whether the subscription is detached from its topic.
+    /// Detached subscriptions don't receive messages from their topic and don't
+    /// retain any backlog. `Pull` and `StreamingPull` requests will return
     /// FAILED_PRECONDITION. If the subscription is a push subscription, pushes to
     /// the endpoint will not be made.
     #[prost(bool, tag = "15")]
     pub detached: bool,
-    /// If true, Pub/Sub provides the following guarantees for the delivery of
-    /// a message with a given value of `message_id` on this subscription:
+    /// Optional. If true, Pub/Sub provides the following guarantees for the
+    /// delivery of a message with a given value of `message_id` on this
+    /// subscription:
     ///
     /// * The message sent to a subscriber is guaranteed not to be resent
     /// before the message's acknowledgement deadline expires.
@@ -1187,7 +1367,7 @@ pub mod subscription {
         }
     }
 }
-/// A policy that specifies how Cloud Pub/Sub retries message delivery.
+/// A policy that specifies how Pub/Sub retries message delivery.
 ///
 /// Retry delay will be exponential based on provided minimum and maximum
 /// backoffs. <https://en.wikipedia.org/wiki/Exponential_backoff.>
@@ -1201,12 +1381,13 @@ pub mod subscription {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RetryPolicy {
-    /// The minimum delay between consecutive deliveries of a given message.
-    /// Value should be between 0 and 600 seconds. Defaults to 10 seconds.
+    /// Optional. The minimum delay between consecutive deliveries of a given
+    /// message. Value should be between 0 and 600 seconds. Defaults to 10 seconds.
     #[prost(message, optional, tag = "1")]
     pub minimum_backoff: ::core::option::Option<::prost_types::Duration>,
-    /// The maximum delay between consecutive deliveries of a given message.
-    /// Value should be between 0 and 600 seconds. Defaults to 600 seconds.
+    /// Optional. The maximum delay between consecutive deliveries of a given
+    /// message. Value should be between 0 and 600 seconds. Defaults to 600
+    /// seconds.
     #[prost(message, optional, tag = "2")]
     pub maximum_backoff: ::core::option::Option<::prost_types::Duration>,
 }
@@ -1218,19 +1399,19 @@ pub struct RetryPolicy {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeadLetterPolicy {
-    /// The name of the topic to which dead letter messages should be published.
-    /// Format is `projects/{project}/topics/{topic}`.The Cloud Pub/Sub service
-    /// account associated with the enclosing subscription's parent project (i.e.,
-    /// service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com) must have
-    /// permission to Publish() to this topic.
+    /// Optional. The name of the topic to which dead letter messages should be
+    /// published. Format is `projects/{project}/topics/{topic}`.The Pub/Sub
+    /// service account associated with the enclosing subscription's parent project
+    /// (i.e., service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com) must
+    /// have permission to Publish() to this topic.
     ///
     /// The operation will fail if the topic does not exist.
     /// Users should ensure that there is a subscription attached to this topic
     /// since messages published to a topic with no subscriptions are lost.
     #[prost(string, tag = "1")]
     pub dead_letter_topic: ::prost::alloc::string::String,
-    /// The maximum number of delivery attempts for any message. The value must be
-    /// between 5 and 100.
+    /// Optional. The maximum number of delivery attempts for any message. The
+    /// value must be between 5 and 100.
     ///
     /// The number of delivery attempts is defined as 1 + (the sum of number of
     /// NACKs and number of times the acknowledgement deadline has been exceeded
@@ -1250,12 +1431,12 @@ pub struct DeadLetterPolicy {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExpirationPolicy {
-    /// Specifies the "time-to-live" duration for an associated resource. The
-    /// resource expires if it is not active for a period of `ttl`. The definition
-    /// of "activity" depends on the type of the associated resource. The minimum
-    /// and maximum allowed values for `ttl` depend on the type of the associated
-    /// resource, as well. If `ttl` is not set, the associated resource never
-    /// expires.
+    /// Optional. Specifies the "time-to-live" duration for an associated resource.
+    /// The resource expires if it is not active for a period of `ttl`. The
+    /// definition of "activity" depends on the type of the associated resource.
+    /// The minimum and maximum allowed values for `ttl` depend on the type of the
+    /// associated resource, as well. If `ttl` is not set, the associated resource
+    /// never expires.
     #[prost(message, optional, tag = "1")]
     pub ttl: ::core::option::Option<::prost_types::Duration>,
 }
@@ -1263,12 +1444,12 @@ pub struct ExpirationPolicy {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PushConfig {
-    /// A URL locating the endpoint to which messages should be pushed.
+    /// Optional. A URL locating the endpoint to which messages should be pushed.
     /// For example, a Webhook endpoint might use `<https://example.com/push`.>
     #[prost(string, tag = "1")]
     pub push_endpoint: ::prost::alloc::string::String,
-    /// Endpoint configuration attributes that can be used to control different
-    /// aspects of the message delivery.
+    /// Optional. Endpoint configuration attributes that can be used to control
+    /// different aspects of the message delivery.
     ///
     /// The only currently supported attribute is `x-goog-version`, which you can
     /// use to change the format of the pushed message. This attribute
@@ -1295,7 +1476,7 @@ pub struct PushConfig {
     >,
     /// An authentication method used by push endpoints to verify the source of
     /// push requests. This can be used with push endpoints that are private by
-    /// default to allow requests only from the Cloud Pub/Sub system, for example.
+    /// default to allow requests only from the Pub/Sub system, for example.
     /// This field is optional and should be set only by users interested in
     /// authenticated push.
     #[prost(oneof = "push_config::AuthenticationMethod", tags = "3")]
@@ -1313,19 +1494,20 @@ pub mod push_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct OidcToken {
-        /// [Service account
+        /// Optional. [Service account
         /// email](<https://cloud.google.com/iam/docs/service-accounts>)
         /// used for generating the OIDC token. For more information
         /// on setting up authentication, see
         /// [Push subscriptions](<https://cloud.google.com/pubsub/docs/push>).
         #[prost(string, tag = "1")]
         pub service_account_email: ::prost::alloc::string::String,
-        /// Audience to be used when generating OIDC token. The audience claim
-        /// identifies the recipients that the JWT is intended for. The audience
-        /// value is a single case-sensitive string. Having multiple values (array)
-        /// for the audience field is not supported. More info about the OIDC JWT
-        /// token audience here: <https://tools.ietf.org/html/rfc7519#section-4.1.3>
-        /// Note: if not specified, the Push endpoint URL will be used.
+        /// Optional. Audience to be used when generating OIDC token. The audience
+        /// claim identifies the recipients that the JWT is intended for. The
+        /// audience value is a single case-sensitive string. Having multiple values
+        /// (array) for the audience field is not supported. More info about the OIDC
+        /// JWT token audience here:
+        /// <https://tools.ietf.org/html/rfc7519#section-4.1.3> Note: if not specified,
+        /// the Push endpoint URL will be used.
         #[prost(string, tag = "2")]
         pub audience: ::prost::alloc::string::String,
     }
@@ -1339,7 +1521,7 @@ pub mod push_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NoWrapper {
-        /// When true, writes the Pub/Sub message metadata to
+        /// Optional. When true, writes the Pub/Sub message metadata to
         /// `x-goog-pubsub-<KEY>:<VAL>` headers of the HTTP request. Writes the
         /// Pub/Sub message attributes to `<KEY>:<VAL>` headers of the HTTP request.
         #[prost(bool, tag = "1")]
@@ -1347,14 +1529,15 @@ pub mod push_config {
     }
     /// An authentication method used by push endpoints to verify the source of
     /// push requests. This can be used with push endpoints that are private by
-    /// default to allow requests only from the Cloud Pub/Sub system, for example.
+    /// default to allow requests only from the Pub/Sub system, for example.
     /// This field is optional and should be set only by users interested in
     /// authenticated push.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AuthenticationMethod {
-        /// If specified, Pub/Sub will generate and attach an OIDC JWT token as an
-        /// `Authorization` header in the HTTP request for every pushed message.
+        /// Optional. If specified, Pub/Sub will generate and attach an OIDC JWT
+        /// token as an `Authorization` header in the HTTP request for every pushed
+        /// message.
         #[prost(message, tag = "3")]
         OidcToken(OidcToken),
     }
@@ -1363,12 +1546,12 @@ pub mod push_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Wrapper {
-        /// When set, the payload to the push endpoint is in the form of the JSON
-        /// representation of a PubsubMessage
+        /// Optional. When set, the payload to the push endpoint is in the form of
+        /// the JSON representation of a PubsubMessage
         /// (<https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#pubsubmessage>).
         #[prost(message, tag = "4")]
         PubsubWrapper(PubsubWrapper),
-        /// When set, the payload to the push endpoint is not wrapped.
+        /// Optional. When set, the payload to the push endpoint is not wrapped.
         #[prost(message, tag = "5")]
         NoWrapper(NoWrapper),
     }
@@ -1377,7 +1560,7 @@ pub mod push_config {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryConfig {
-    /// The name of the table to which to write data, of the form
+    /// Optional. The name of the table to which to write data, of the form
     /// {projectId}.{datasetId}.{tableId}
     #[prost(string, tag = "1")]
     pub table: ::prost::alloc::string::String,
@@ -1386,17 +1569,17 @@ pub struct BigQueryConfig {
     /// enabled at the same time.
     #[prost(bool, tag = "2")]
     pub use_topic_schema: bool,
-    /// When true, write the subscription name, message_id, publish_time,
+    /// Optional. When true, write the subscription name, message_id, publish_time,
     /// attributes, and ordering_key to additional columns in the table. The
     /// subscription name, message_id, and publish_time fields are put in their own
     /// columns while all other message properties (other than data) are written to
     /// a JSON object in the attributes column.
     #[prost(bool, tag = "3")]
     pub write_metadata: bool,
-    /// When true and use_topic_schema is true, any fields that are a part of the
-    /// topic schema that are not part of the BigQuery table schema are dropped
-    /// when writing to BigQuery. Otherwise, the schemas must be kept in sync and
-    /// any messages with extra fields are not written and remain in the
+    /// Optional. When true and use_topic_schema is true, any fields that are a
+    /// part of the topic schema that are not part of the BigQuery table schema are
+    /// dropped when writing to BigQuery. Otherwise, the schemas must be kept in
+    /// sync and any messages with extra fields are not written and remain in the
     /// subscription's backlog.
     #[prost(bool, tag = "4")]
     pub drop_unknown_fields: bool,
@@ -1441,6 +1624,9 @@ pub mod big_query_config {
         NotFound = 3,
         /// Cannot write to the BigQuery table due to a schema mismatch.
         SchemaMismatch = 4,
+        /// Cannot write to the destination because enforce_in_transit is set to true
+        /// and the destination locations are not in the allowed regions.
+        InTransitLocationRestriction = 5,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1454,6 +1640,7 @@ pub mod big_query_config {
                 State::PermissionDenied => "PERMISSION_DENIED",
                 State::NotFound => "NOT_FOUND",
                 State::SchemaMismatch => "SCHEMA_MISMATCH",
+                State::InTransitLocationRestriction => "IN_TRANSIT_LOCATION_RESTRICTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1464,6 +1651,9 @@ pub mod big_query_config {
                 "PERMISSION_DENIED" => Some(Self::PermissionDenied),
                 "NOT_FOUND" => Some(Self::NotFound),
                 "SCHEMA_MISMATCH" => Some(Self::SchemaMismatch),
+                "IN_TRANSIT_LOCATION_RESTRICTION" => {
+                    Some(Self::InTransitLocationRestriction)
+                }
                 _ => None,
             }
         }
@@ -1479,23 +1669,23 @@ pub struct CloudStorageConfig {
     /// requirements] (<https://cloud.google.com/storage/docs/buckets#naming>).
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
-    /// User-provided prefix for Cloud Storage filename. See the [object naming
-    /// requirements](<https://cloud.google.com/storage/docs/objects#naming>).
+    /// Optional. User-provided prefix for Cloud Storage filename. See the [object
+    /// naming requirements](<https://cloud.google.com/storage/docs/objects#naming>).
     #[prost(string, tag = "2")]
     pub filename_prefix: ::prost::alloc::string::String,
-    /// User-provided suffix for Cloud Storage filename. See the [object naming
-    /// requirements](<https://cloud.google.com/storage/docs/objects#naming>). Must
-    /// not end in "/".
+    /// Optional. User-provided suffix for Cloud Storage filename. See the [object
+    /// naming requirements](<https://cloud.google.com/storage/docs/objects#naming>).
+    /// Must not end in "/".
     #[prost(string, tag = "3")]
     pub filename_suffix: ::prost::alloc::string::String,
-    /// The maximum duration that can elapse before a new Cloud Storage file is
-    /// created. Min 1 minute, max 10 minutes, default 5 minutes. May not exceed
-    /// the subscription's acknowledgement deadline.
+    /// Optional. The maximum duration that can elapse before a new Cloud Storage
+    /// file is created. Min 1 minute, max 10 minutes, default 5 minutes. May not
+    /// exceed the subscription's acknowledgement deadline.
     #[prost(message, optional, tag = "6")]
     pub max_duration: ::core::option::Option<::prost_types::Duration>,
-    /// The maximum bytes that can be written to a Cloud Storage file before a new
-    /// file is created. Min 1 KB, max 10 GiB. The max_bytes limit may be exceeded
-    /// in cases where messages are larger than the limit.
+    /// Optional. The maximum bytes that can be written to a Cloud Storage file
+    /// before a new file is created. Min 1 KB, max 10 GiB. The max_bytes limit may
+    /// be exceeded in cases where messages are larger than the limit.
     #[prost(int64, tag = "7")]
     pub max_bytes: i64,
     /// Output only. An output-only field that indicates whether or not the
@@ -1519,12 +1709,12 @@ pub mod cloud_storage_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AvroConfig {
-        /// When true, write the subscription name, message_id, publish_time,
-        /// attributes, and ordering_key as additional fields in the output. The
-        /// subscription name, message_id, and publish_time fields are put in their
-        /// own fields while all other message properties other than data (for
-        /// example, an ordering_key, if present) are added as entries in the
-        /// attributes map.
+        /// Optional. When true, write the subscription name, message_id,
+        /// publish_time, attributes, and ordering_key as additional fields in the
+        /// output. The subscription name, message_id, and publish_time fields are
+        /// put in their own fields while all other message properties other than
+        /// data (for example, an ordering_key, if present) are added as entries in
+        /// the attributes map.
         #[prost(bool, tag = "1")]
         pub write_metadata: bool,
     }
@@ -1551,6 +1741,9 @@ pub mod cloud_storage_config {
         PermissionDenied = 2,
         /// Cannot write to the Cloud Storage bucket because it does not exist.
         NotFound = 3,
+        /// Cannot write to the destination because enforce_in_transit is set to true
+        /// and the destination locations are not in the allowed regions.
+        InTransitLocationRestriction = 4,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1563,6 +1756,7 @@ pub mod cloud_storage_config {
                 State::Active => "ACTIVE",
                 State::PermissionDenied => "PERMISSION_DENIED",
                 State::NotFound => "NOT_FOUND",
+                State::InTransitLocationRestriction => "IN_TRANSIT_LOCATION_RESTRICTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1572,6 +1766,9 @@ pub mod cloud_storage_config {
                 "ACTIVE" => Some(Self::Active),
                 "PERMISSION_DENIED" => Some(Self::PermissionDenied),
                 "NOT_FOUND" => Some(Self::NotFound),
+                "IN_TRANSIT_LOCATION_RESTRICTION" => {
+                    Some(Self::InTransitLocationRestriction)
+                }
                 _ => None,
             }
         }
@@ -1580,10 +1777,12 @@ pub mod cloud_storage_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OutputFormat {
-        /// If set, message data will be written to Cloud Storage in text format.
+        /// Optional. If set, message data will be written to Cloud Storage in text
+        /// format.
         #[prost(message, tag = "4")]
         TextConfig(TextConfig),
-        /// If set, message data will be written to Cloud Storage in Avro format.
+        /// Optional. If set, message data will be written to Cloud Storage in Avro
+        /// format.
         #[prost(message, tag = "5")]
         AvroConfig(AvroConfig),
     }
@@ -1592,14 +1791,14 @@ pub mod cloud_storage_config {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReceivedMessage {
-    /// This ID can be used to acknowledge the received message.
+    /// Optional. This ID can be used to acknowledge the received message.
     #[prost(string, tag = "1")]
     pub ack_id: ::prost::alloc::string::String,
-    /// The message.
+    /// Optional. The message.
     #[prost(message, optional, tag = "2")]
     pub message: ::core::option::Option<PubsubMessage>,
-    /// The approximate number of times that Cloud Pub/Sub has attempted to deliver
-    /// the associated message to a subscriber.
+    /// Optional. The approximate number of times that Pub/Sub has attempted to
+    /// deliver the associated message to a subscriber.
     ///
     /// More precisely, this is 1 + (number of NACKs) +
     /// (number of ack_deadline exceeds) for this message.
@@ -1646,12 +1845,12 @@ pub struct ListSubscriptionsRequest {
     /// Format is `projects/{project-id}`.
     #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
-    /// Maximum number of subscriptions to return.
+    /// Optional. Maximum number of subscriptions to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The value returned by the last `ListSubscriptionsResponse`; indicates that
-    /// this is a continuation of a prior `ListSubscriptions` call, and that the
-    /// system should return the next page of data.
+    /// Optional. The value returned by the last `ListSubscriptionsResponse`;
+    /// indicates that this is a continuation of a prior `ListSubscriptions` call,
+    /// and that the system should return the next page of data.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -1659,11 +1858,11 @@ pub struct ListSubscriptionsRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubscriptionsResponse {
-    /// The subscriptions that match the request.
+    /// Optional. The subscriptions that match the request.
     #[prost(message, repeated, tag = "1")]
     pub subscriptions: ::prost::alloc::vec::Vec<Subscription>,
-    /// If not empty, indicates that there may be more subscriptions that match
-    /// the request; this value should be passed in a new
+    /// Optional. If not empty, indicates that there may be more subscriptions that
+    /// match the request; this value should be passed in a new
     /// `ListSubscriptionsRequest` to get more subscriptions.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -1722,8 +1921,8 @@ pub struct PullRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PullResponse {
-    /// Received Pub/Sub messages. The list will be empty if there are no more
-    /// messages available in the backlog, or if no messages could be returned
+    /// Optional. Received Pub/Sub messages. The list will be empty if there are no
+    /// more messages available in the backlog, or if no messages could be returned
     /// before the request timeout. For JSON, the response can be entirely
     /// empty. The Pub/Sub system may return fewer than the `maxMessages` requested
     /// even if there are more messages available in the backlog.
@@ -1748,7 +1947,8 @@ pub struct ModifyAckDeadlineRequest {
     /// delivery to another subscriber client. This typically results in an
     /// increase in the rate of message redeliveries (that is, duplicates).
     /// The minimum deadline you can specify is 0 seconds.
-    /// The maximum deadline you can specify is 600 seconds (10 minutes).
+    /// The maximum deadline you can specify in a single request is 600 seconds
+    /// (10 minutes).
     #[prost(int32, tag = "3")]
     pub ack_deadline_seconds: i32,
 }
@@ -1778,14 +1978,15 @@ pub struct StreamingPullRequest {
     /// Format is `projects/{project}/subscriptions/{sub}`.
     #[prost(string, tag = "1")]
     pub subscription: ::prost::alloc::string::String,
-    /// List of acknowledgement IDs for acknowledging previously received messages
-    /// (received on this stream or a different stream). If an ack ID has expired,
-    /// the corresponding message may be redelivered later. Acknowledging a message
-    /// more than once will not result in an error. If the acknowledgement ID is
-    /// malformed, the stream will be aborted with status `INVALID_ARGUMENT`.
+    /// Optional. List of acknowledgement IDs for acknowledging previously received
+    /// messages (received on this stream or a different stream). If an ack ID has
+    /// expired, the corresponding message may be redelivered later. Acknowledging
+    /// a message more than once will not result in an error. If the
+    /// acknowledgement ID is malformed, the stream will be aborted with status
+    /// `INVALID_ARGUMENT`.
     #[prost(string, repeated, tag = "2")]
     pub ack_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The list of new ack deadlines for the IDs listed in
+    /// Optional. The list of new ack deadlines for the IDs listed in
     /// `modify_deadline_ack_ids`. The size of this list must be the same as the
     /// size of `modify_deadline_ack_ids`. If it differs the stream will be aborted
     /// with `INVALID_ARGUMENT`. Each element in this list is applied to the
@@ -1796,11 +1997,11 @@ pub struct StreamingPullRequest {
     /// the message is immediately made available for another streaming or
     /// non-streaming pull request. If the value is < 0 (an error), the stream will
     /// be aborted with status `INVALID_ARGUMENT`.
-    #[prost(int32, repeated, tag = "3")]
+    #[prost(int32, repeated, packed = "false", tag = "3")]
     pub modify_deadline_seconds: ::prost::alloc::vec::Vec<i32>,
-    /// List of acknowledgement IDs whose deadline will be modified based on the
-    /// corresponding element in `modify_deadline_seconds`. This field can be used
-    /// to indicate that more time is needed to process a message by the
+    /// Optional. List of acknowledgement IDs whose deadline will be modified based
+    /// on the corresponding element in `modify_deadline_seconds`. This field can
+    /// be used to indicate that more time is needed to process a message by the
     /// subscriber, or to make the message available for redelivery if the
     /// processing was interrupted.
     #[prost(string, repeated, tag = "4")]
@@ -1813,16 +2014,16 @@ pub struct StreamingPullRequest {
     /// seconds. The maximum deadline you can specify is 600 seconds (10 minutes).
     #[prost(int32, tag = "5")]
     pub stream_ack_deadline_seconds: i32,
-    /// A unique identifier that is used to distinguish client instances from each
-    /// other. Only needs to be provided on the initial request. When a stream
-    /// disconnects and reconnects for the same stream, the client_id should be set
-    /// to the same value so that state associated with the old stream can be
-    /// transferred to the new stream. The same client_id should not be used for
+    /// Optional. A unique identifier that is used to distinguish client instances
+    /// from each other. Only needs to be provided on the initial request. When a
+    /// stream disconnects and reconnects for the same stream, the client_id should
+    /// be set to the same value so that state associated with the old stream can
+    /// be transferred to the new stream. The same client_id should not be used for
     /// different client instances.
     #[prost(string, tag = "6")]
     pub client_id: ::prost::alloc::string::String,
-    /// Flow control settings for the maximum number of outstanding messages. When
-    /// there are `max_outstanding_messages` or more currently sent to the
+    /// Optional. Flow control settings for the maximum number of outstanding
+    /// messages. When there are `max_outstanding_messages` currently sent to the
     /// streaming pull client that have not yet been acked or nacked, the server
     /// stops sending more messages. The sending of messages resumes once the
     /// number of outstanding messages is less than this value. If the value is
@@ -1832,14 +2033,14 @@ pub struct StreamingPullRequest {
     /// `INVALID_ARGUMENT`.
     #[prost(int64, tag = "7")]
     pub max_outstanding_messages: i64,
-    /// Flow control settings for the maximum number of outstanding bytes. When
-    /// there are `max_outstanding_bytes` or more worth of messages currently sent
-    /// to the streaming pull client that have not yet been acked or nacked, the
-    /// server will stop sending more messages. The sending of messages resumes
-    /// once the number of outstanding bytes is less than this value. If the value
-    /// is <= 0, there is no limit to the number of outstanding bytes. This
-    /// property can only be set on the initial StreamingPullRequest. If it is set
-    /// on a subsequent request, the stream will be aborted with status
+    /// Optional. Flow control settings for the maximum number of outstanding
+    /// bytes. When there are `max_outstanding_bytes` or more worth of messages
+    /// currently sent to the streaming pull client that have not yet been acked or
+    /// nacked, the server will stop sending more messages. The sending of messages
+    /// resumes once the number of outstanding bytes is less than this value. If
+    /// the value is <= 0, there is no limit to the number of outstanding bytes.
+    /// This property can only be set on the initial StreamingPullRequest. If it is
+    /// set on a subsequent request, the stream will be aborted with status
     /// `INVALID_ARGUMENT`.
     #[prost(int64, tag = "8")]
     pub max_outstanding_bytes: i64,
@@ -1849,22 +2050,22 @@ pub struct StreamingPullRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingPullResponse {
-    /// Received Pub/Sub messages. This will not be empty.
+    /// Optional. Received Pub/Sub messages. This will not be empty.
     #[prost(message, repeated, tag = "1")]
     pub received_messages: ::prost::alloc::vec::Vec<ReceivedMessage>,
-    /// This field will only be set if `enable_exactly_once_delivery` is set to
-    /// `true`.
+    /// Optional. This field will only be set if `enable_exactly_once_delivery` is
+    /// set to `true`.
     #[prost(message, optional, tag = "5")]
     pub acknowledge_confirmation: ::core::option::Option<
         streaming_pull_response::AcknowledgeConfirmation,
     >,
-    /// This field will only be set if `enable_exactly_once_delivery` is set to
-    /// `true`.
+    /// Optional. This field will only be set if `enable_exactly_once_delivery` is
+    /// set to `true`.
     #[prost(message, optional, tag = "3")]
     pub modify_ack_deadline_confirmation: ::core::option::Option<
         streaming_pull_response::ModifyAckDeadlineConfirmation,
     >,
-    /// Properties associated with this subscription.
+    /// Optional. Properties associated with this subscription.
     #[prost(message, optional, tag = "4")]
     pub subscription_properties: ::core::option::Option<
         streaming_pull_response::SubscriptionProperties,
@@ -1877,17 +2078,18 @@ pub mod streaming_pull_response {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AcknowledgeConfirmation {
-        /// Successfully processed acknowledgement IDs.
+        /// Optional. Successfully processed acknowledgement IDs.
         #[prost(string, repeated, tag = "1")]
         pub ack_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// List of acknowledgement IDs that were malformed or whose acknowledgement
-        /// deadline has expired.
+        /// Optional. List of acknowledgement IDs that were malformed or whose
+        /// acknowledgement deadline has expired.
         #[prost(string, repeated, tag = "2")]
         pub invalid_ack_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// List of acknowledgement IDs that were out of order.
+        /// Optional. List of acknowledgement IDs that were out of order.
         #[prost(string, repeated, tag = "3")]
         pub unordered_ack_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// List of acknowledgement IDs that failed processing with temporary issues.
+        /// Optional. List of acknowledgement IDs that failed processing with
+        /// temporary issues.
         #[prost(string, repeated, tag = "4")]
         pub temporary_failed_ack_ids: ::prost::alloc::vec::Vec<
             ::prost::alloc::string::String,
@@ -1898,14 +2100,15 @@ pub mod streaming_pull_response {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ModifyAckDeadlineConfirmation {
-        /// Successfully processed acknowledgement IDs.
+        /// Optional. Successfully processed acknowledgement IDs.
         #[prost(string, repeated, tag = "1")]
         pub ack_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// List of acknowledgement IDs that were malformed or whose acknowledgement
-        /// deadline has expired.
+        /// Optional. List of acknowledgement IDs that were malformed or whose
+        /// acknowledgement deadline has expired.
         #[prost(string, repeated, tag = "2")]
         pub invalid_ack_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// List of acknowledgement IDs that failed processing with temporary issues.
+        /// Optional. List of acknowledgement IDs that failed processing with
+        /// temporary issues.
         #[prost(string, repeated, tag = "3")]
         pub temporary_failed_ack_ids: ::prost::alloc::vec::Vec<
             ::prost::alloc::string::String,
@@ -1915,10 +2118,11 @@ pub mod streaming_pull_response {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SubscriptionProperties {
-        /// True iff exactly once delivery is enabled for this subscription.
+        /// Optional. True iff exactly once delivery is enabled for this
+        /// subscription.
         #[prost(bool, tag = "1")]
         pub exactly_once_delivery_enabled: bool,
-        /// True iff message ordering is enabled for this subscription.
+        /// Optional. True iff message ordering is enabled for this subscription.
         #[prost(bool, tag = "2")]
         pub message_ordering_enabled: bool,
     }
@@ -1946,7 +2150,7 @@ pub struct CreateSnapshotRequest {
     /// Format is `projects/{project}/subscriptions/{sub}`.
     #[prost(string, tag = "2")]
     pub subscription: ::prost::alloc::string::String,
-    /// See [Creating and managing
+    /// Optional. See [Creating and managing
     /// labels](<https://cloud.google.com/pubsub/docs/labels>).
     #[prost(map = "string, string", tag = "3")]
     pub labels: ::std::collections::HashMap<
@@ -1974,13 +2178,14 @@ pub struct UpdateSnapshotRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Snapshot {
-    /// The name of the snapshot.
+    /// Optional. The name of the snapshot.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The name of the topic from which this snapshot is retaining messages.
+    /// Optional. The name of the topic from which this snapshot is retaining
+    /// messages.
     #[prost(string, tag = "2")]
     pub topic: ::prost::alloc::string::String,
-    /// The snapshot is guaranteed to exist up until this time.
+    /// Optional. The snapshot is guaranteed to exist up until this time.
     /// A newly-created snapshot expires no later than 7 days from the time of its
     /// creation. Its exact lifetime is determined at creation by the existing
     /// backlog in the source subscription. Specifically, the lifetime of the
@@ -1992,7 +2197,7 @@ pub struct Snapshot {
     /// snapshot that would expire in less than 1 hour after creation.
     #[prost(message, optional, tag = "3")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// See \[Creating and managing labels\]
+    /// Optional. See \[Creating and managing labels\]
     /// (<https://cloud.google.com/pubsub/docs/labels>).
     #[prost(map = "string, string", tag = "4")]
     pub labels: ::std::collections::HashMap<
@@ -2017,12 +2222,12 @@ pub struct ListSnapshotsRequest {
     /// Format is `projects/{project-id}`.
     #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
-    /// Maximum number of snapshots to return.
+    /// Optional. Maximum number of snapshots to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The value returned by the last `ListSnapshotsResponse`; indicates that this
-    /// is a continuation of a prior `ListSnapshots` call, and that the system
-    /// should return the next page of data.
+    /// Optional. The value returned by the last `ListSnapshotsResponse`; indicates
+    /// that this is a continuation of a prior `ListSnapshots` call, and that the
+    /// system should return the next page of data.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -2030,11 +2235,12 @@ pub struct ListSnapshotsRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSnapshotsResponse {
-    /// The resulting snapshots.
+    /// Optional. The resulting snapshots.
     #[prost(message, repeated, tag = "1")]
     pub snapshots: ::prost::alloc::vec::Vec<Snapshot>,
-    /// If not empty, indicates that there may be more snapshot that match the
-    /// request; this value should be passed in a new `ListSnapshotsRequest`.
+    /// Optional. If not empty, indicates that there may be more snapshot that
+    /// match the request; this value should be passed in a new
+    /// `ListSnapshotsRequest`.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
@@ -2062,7 +2268,7 @@ pub mod seek_request {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Target {
-        /// The time to seek to.
+        /// Optional. The time to seek to.
         /// Messages retained in the subscription that were published before this
         /// time are marked as acknowledged, and messages retained in the
         /// subscription that were published after this time are marked as
@@ -2075,9 +2281,9 @@ pub mod seek_request {
         /// and already-expunged messages will not be restored.
         #[prost(message, tag = "2")]
         Time(::prost_types::Timestamp),
-        /// The snapshot to seek to. The snapshot's topic must be the same as that of
-        /// the provided subscription.
-        /// Format is `projects/{project}/snapshots/{snap}`.
+        /// Optional. The snapshot to seek to. The snapshot's topic must be the same
+        /// as that of the provided subscription. Format is
+        /// `projects/{project}/snapshots/{snap}`.
         #[prost(string, tag = "3")]
         Snapshot(::prost::alloc::string::String),
     }
@@ -2197,8 +2403,8 @@ pub mod publisher_client {
                 .insert(GrpcMethod::new("google.pubsub.v1.Publisher", "CreateTopic"));
             self.inner.unary(req, path, codec).await
         }
-        /// Updates an existing topic. Note that certain properties of a
-        /// topic are not modifiable.
+        /// Updates an existing topic by updating the fields specified in the update
+        /// mask. Note that certain properties of a topic are not modifiable.
         pub async fn update_topic(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTopicRequest>,
@@ -2568,8 +2774,9 @@ pub mod subscriber_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Updates an existing subscription. Note that certain properties of a
-        /// subscription, such as its topic, are not modifiable.
+        /// Updates an existing subscription by updating the fields specified in the
+        /// update mask. Note that certain properties of a subscription, such as its
+        /// topic, are not modifiable.
         pub async fn update_subscription(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSubscriptionRequest>,
@@ -2893,7 +3100,8 @@ pub mod subscriber_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Updates an existing snapshot. Snapshots are used in
+        /// Updates an existing snapshot by updating the fields specified in the update
+        /// mask. Snapshots are used in
         /// [Seek](https://cloud.google.com/pubsub/docs/replay-overview) operations,
         /// which allow you to manage message acknowledgments in bulk. That is, you can
         /// set the acknowledgment state of messages in an existing subscription to the

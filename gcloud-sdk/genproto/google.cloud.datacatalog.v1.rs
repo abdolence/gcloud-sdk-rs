@@ -4785,7 +4785,7 @@ pub mod dump_item {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Taxonomy {
-    /// Output only. Resource name of this taxonomy in URL format.
+    /// Identifier. Resource name of this taxonomy in URL format.
     ///
     /// Note: Policy tag manager generates unique taxonomy IDs.
     #[prost(string, tag = "1")]
@@ -4891,7 +4891,7 @@ pub mod taxonomy {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyTag {
-    /// Output only. Resource name of this policy tag in the URL format.
+    /// Identifier. Resource name of this policy tag in the URL format.
     ///
     /// The policy tag manager generates unique taxonomy IDs and policy tag IDs.
     #[prost(string, tag = "1")]

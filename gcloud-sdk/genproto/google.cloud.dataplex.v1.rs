@@ -8139,7 +8139,7 @@ pub mod governance_event {
         GovernanceRuleSearchLimitExceeds = 16,
         /// Rule processing errors.
         GovernanceRuleErrors = 17,
-        /// Governance rule prcoessing Event.
+        /// Governance rule processing Event.
         GovernanceRuleProcessing = 18,
     }
     impl EventType {

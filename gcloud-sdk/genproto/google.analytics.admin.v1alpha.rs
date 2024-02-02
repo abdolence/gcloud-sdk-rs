@@ -2283,7 +2283,7 @@ pub mod change_history_change {
     pub struct ChangeHistoryResource {
         #[prost(
             oneof = "change_history_resource::Resource",
-            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29"
+            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31"
         )]
         pub resource: ::core::option::Option<change_history_resource::Resource>,
     }
@@ -2371,6 +2371,9 @@ pub mod change_history_change {
             /// A snapshot of an EventCreateRule resource in change history.
             #[prost(message, tag = "29")]
             EventCreateRule(super::super::EventCreateRule),
+            /// A snapshot of a CalculatedMetric resource in change history.
+            #[prost(message, tag = "31")]
+            CalculatedMetric(super::super::CalculatedMetric),
         }
     }
 }
@@ -2563,7 +2566,7 @@ pub mod conversion_event {
         /// When a conversion event for this event_name has no set currency,
         /// this currency will be applied as the default. Must be in ISO 4217
         /// currency code format. See <https://en.wikipedia.org/wiki/ISO_4217> for
-        /// more.
+        /// more information.
         #[prost(string, optional, tag = "2")]
         pub currency_code: ::core::option::Option<::prost::alloc::string::String>,
     }
@@ -2890,6 +2893,177 @@ pub mod custom_metric {
     }
     /// Labels that mark the data in this custom metric as data that should be
     /// restricted to specific users.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RestrictedMetricType {
+        /// Type unknown or unspecified.
+        Unspecified = 0,
+        /// Metric reports cost data.
+        CostData = 1,
+        /// Metric reports revenue data.
+        RevenueData = 2,
+    }
+    impl RestrictedMetricType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RestrictedMetricType::Unspecified => "RESTRICTED_METRIC_TYPE_UNSPECIFIED",
+                RestrictedMetricType::CostData => "COST_DATA",
+                RestrictedMetricType::RevenueData => "REVENUE_DATA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESTRICTED_METRIC_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COST_DATA" => Some(Self::CostData),
+                "REVENUE_DATA" => Some(Self::RevenueData),
+                _ => None,
+            }
+        }
+    }
+}
+/// A definition for a calculated metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CalculatedMetric {
+    /// Output only. Resource name for this CalculatedMetric.
+    /// Format: 'properties/{property_id}/calculatedMetrics/{calculated_metric_id}'
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Description for this calculated metric.
+    /// Max length of 4096 characters.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// Required. Display name for this calculated metric as shown in the
+    /// Google Analytics UI. Max length 82 characters.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The ID to use for the calculated metric. In the UI, this is
+    /// referred to as the "API name."
+    ///
+    /// The calculated_metric_id is used when referencing this calculated metric
+    /// from external APIs. For example, "calcMetric:{calculated_metric_id}".
+    #[prost(string, tag = "4")]
+    pub calculated_metric_id: ::prost::alloc::string::String,
+    /// Required. The type for the calculated metric's value.
+    #[prost(enumeration = "calculated_metric::MetricUnit", tag = "5")]
+    pub metric_unit: i32,
+    /// Output only. Types of restricted data that this metric contains.
+    #[prost(
+        enumeration = "calculated_metric::RestrictedMetricType",
+        repeated,
+        packed = "false",
+        tag = "6"
+    )]
+    pub restricted_metric_type: ::prost::alloc::vec::Vec<i32>,
+    /// Required. The calculated metric's definition. Maximum number of unique
+    /// referenced custom metrics is 5. Formulas supports the following operations:
+    /// + (addition),  - (subtraction), - (negative),  * (multiplication), /
+    /// (division), () (parenthesis). Any valid real numbers are acceptable that
+    /// fit in a Long (64bit integer) or a Double (64 bit floating point number).
+    /// Example formula:
+    ///    "( customEvent:parameter_name + cartPurchaseQuantity ) / 2.0"
+    #[prost(string, tag = "7")]
+    pub formula: ::prost::alloc::string::String,
+    /// Output only. If true, this calculated metric has a invalid metric
+    /// reference. Anything using a calculated metric with invalid_metric_reference
+    /// set to true may fail, produce warnings, or produce unexpected results.
+    #[prost(bool, tag = "9")]
+    pub invalid_metric_reference: bool,
+}
+/// Nested message and enum types in `CalculatedMetric`.
+pub mod calculated_metric {
+    /// Possible types of representing the calculated metric's value.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MetricUnit {
+        /// MetricUnit unspecified or missing.
+        Unspecified = 0,
+        /// This metric uses default units.
+        Standard = 1,
+        /// This metric measures a currency.
+        Currency = 2,
+        /// This metric measures feet.
+        Feet = 3,
+        /// This metric measures miles.
+        Miles = 4,
+        /// This metric measures meters.
+        Meters = 5,
+        /// This metric measures kilometers.
+        Kilometers = 6,
+        /// This metric measures milliseconds.
+        Milliseconds = 7,
+        /// This metric measures seconds.
+        Seconds = 8,
+        /// This metric measures minutes.
+        Minutes = 9,
+        /// This metric measures hours.
+        Hours = 10,
+    }
+    impl MetricUnit {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                MetricUnit::Unspecified => "METRIC_UNIT_UNSPECIFIED",
+                MetricUnit::Standard => "STANDARD",
+                MetricUnit::Currency => "CURRENCY",
+                MetricUnit::Feet => "FEET",
+                MetricUnit::Miles => "MILES",
+                MetricUnit::Meters => "METERS",
+                MetricUnit::Kilometers => "KILOMETERS",
+                MetricUnit::Milliseconds => "MILLISECONDS",
+                MetricUnit::Seconds => "SECONDS",
+                MetricUnit::Minutes => "MINUTES",
+                MetricUnit::Hours => "HOURS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "METRIC_UNIT_UNSPECIFIED" => Some(Self::Unspecified),
+                "STANDARD" => Some(Self::Standard),
+                "CURRENCY" => Some(Self::Currency),
+                "FEET" => Some(Self::Feet),
+                "MILES" => Some(Self::Miles),
+                "METERS" => Some(Self::Meters),
+                "KILOMETERS" => Some(Self::Kilometers),
+                "MILLISECONDS" => Some(Self::Milliseconds),
+                "SECONDS" => Some(Self::Seconds),
+                "MINUTES" => Some(Self::Minutes),
+                "HOURS" => Some(Self::Hours),
+                _ => None,
+            }
+        }
+    }
+    /// Labels that mark the data in calculated metric used in conjunction with
+    /// user roles that restrict access to cost and/or revenue metrics.
     #[derive(
         Clone,
         Copy,
@@ -3812,6 +3986,8 @@ pub enum ChangeHistoryResourceType {
     Audience = 28,
     /// EventCreateRule resource
     EventCreateRule = 29,
+    /// CalculatedMetric resource
+    CalculatedMetric = 31,
 }
 impl ChangeHistoryResourceType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -3856,6 +4032,7 @@ impl ChangeHistoryResourceType {
             ChangeHistoryResourceType::AdsenseLink => "ADSENSE_LINK",
             ChangeHistoryResourceType::Audience => "AUDIENCE",
             ChangeHistoryResourceType::EventCreateRule => "EVENT_CREATE_RULE",
+            ChangeHistoryResourceType::CalculatedMetric => "CALCULATED_METRIC",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3891,6 +4068,7 @@ impl ChangeHistoryResourceType {
             "ADSENSE_LINK" => Some(Self::AdsenseLink),
             "AUDIENCE" => Some(Self::Audience),
             "EVENT_CREATE_RULE" => Some(Self::EventCreateRule),
+            "CALCULATED_METRIC" => Some(Self::CalculatedMetric),
             _ => None,
         }
     }
@@ -4877,11 +5055,13 @@ pub struct AcknowledgeUserDataCollectionResponse {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchChangeHistoryEventsRequest {
     /// Required. The account resource for which to return change history
-    /// resources.
+    /// resources. Format: accounts/{account} Example: "accounts/100"
     #[prost(string, tag = "1")]
     pub account: ::prost::alloc::string::String,
     /// Optional. Resource name for a child property. If set, only return changes
     /// made to this property or its child resources.
+    /// Format: properties/{propertyId}
+    /// Example: "properties/100"
     #[prost(string, tag = "2")]
     pub property: ::prost::alloc::string::String,
     /// Optional. If set, only return changes if they are for a resource that
@@ -5602,6 +5782,93 @@ pub struct ArchiveCustomMetricRequest {
 pub struct GetCustomMetricRequest {
     /// Required. The name of the CustomMetric to get.
     /// Example format: properties/1234/customMetrics/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for CreateCalculatedMetric RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateCalculatedMetricRequest {
+    /// Required. Format: properties/{property_id}
+    /// Example: properties/1234
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID to use for the calculated metric which will become the
+    /// final component of the calculated metric's resource name.
+    ///
+    /// This value should be 1-80 characters and valid characters are
+    /// /\[a-zA-Z0-9_\]/, no spaces allowed. calculated_metric_id must be unique
+    /// between all calculated metrics under a property. The calculated_metric_id
+    /// is used when referencing this calculated metric from external APIs, for
+    /// example, "calcMetric:{calculated_metric_id}".
+    #[prost(string, tag = "2")]
+    pub calculated_metric_id: ::prost::alloc::string::String,
+    /// Required. The CalculatedMetric to create.
+    #[prost(message, optional, tag = "3")]
+    pub calculated_metric: ::core::option::Option<CalculatedMetric>,
+}
+/// Request message for UpdateCalculatedMetric RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateCalculatedMetricRequest {
+    /// Required. The CalculatedMetric to update
+    #[prost(message, optional, tag = "1")]
+    pub calculated_metric: ::core::option::Option<CalculatedMetric>,
+    /// Required. The list of fields to be updated. Omitted fields will not be
+    /// updated. To replace the entire entity, use one path with the string "*" to
+    /// match all fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for DeleteCalculatedMetric RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteCalculatedMetricRequest {
+    /// Required. The name of the CalculatedMetric to delete.
+    /// Format: properties/{property_id}/calculatedMetrics/{calculated_metric_id}
+    /// Example: properties/1234/calculatedMetrics/Metric01
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListCalculatedMetrics RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCalculatedMetricsRequest {
+    /// Required. Example format: properties/1234
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200 (higher values will be coerced to the maximum).
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListCalculatedMetrics`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListCalculatedMetrics`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListCalculatedMetrics RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCalculatedMetricsResponse {
+    /// List of CalculatedMetrics.
+    #[prost(message, repeated, tag = "1")]
+    pub calculated_metrics: ::prost::alloc::vec::Vec<CalculatedMetric>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for GetCalculatedMetric RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetCalculatedMetricRequest {
+    /// Required. The name of the CalculatedMetric to get.
+    /// Format: properties/{property_id}/calculatedMetrics/{calculated_metric_id}
+    /// Example: properties/1234/calculatedMetrics/Metric01
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -10485,6 +10752,158 @@ pub mod analytics_admin_service_client {
                     GrpcMethod::new(
                         "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "GetDataRedactionSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lookup for a single CalculatedMetric.
+        pub async fn get_calculated_metric(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetCalculatedMetricRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CalculatedMetric>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetCalculatedMetric",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "GetCalculatedMetric",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a CalculatedMetric.
+        pub async fn create_calculated_metric(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateCalculatedMetricRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CalculatedMetric>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateCalculatedMetric",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "CreateCalculatedMetric",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists CalculatedMetrics on a property.
+        pub async fn list_calculated_metrics(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListCalculatedMetricsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListCalculatedMetricsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListCalculatedMetrics",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "ListCalculatedMetrics",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a CalculatedMetric on a property.
+        pub async fn update_calculated_metric(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateCalculatedMetricRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CalculatedMetric>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateCalculatedMetric",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "UpdateCalculatedMetric",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a CalculatedMetric on a property.
+        pub async fn delete_calculated_metric(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteCalculatedMetricRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteCalculatedMetric",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "DeleteCalculatedMetric",
                     ),
                 );
             self.inner.unary(req, path, codec).await

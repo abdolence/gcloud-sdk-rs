@@ -433,7 +433,7 @@ pub struct AccountVerificationInfo {
     #[prost(enumeration = "account_verification_info::Result", tag = "7")]
     pub latest_verification_result: i32,
     /// Username of the account that is being verified. Deprecated. Customers
-    /// should now provide the hashed account ID field in Event.
+    /// should now provide the `account_id` field in `event.user_info`.
     #[deprecated]
     #[prost(string, tag = "2")]
     pub username: ::prost::alloc::string::String,

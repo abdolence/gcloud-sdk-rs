@@ -105,8 +105,8 @@ pub mod synthesize_speech_request {
 }
 /// Contains text input to be synthesized. Either `text` or `ssml` must be
 /// supplied. Supplying both or neither returns
-/// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]. The input size is limited to 5000
-/// bytes.
+/// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]. The
+/// input size is limited to 5000 bytes.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynthesisInput {
@@ -125,7 +125,8 @@ pub mod synthesis_input {
         Text(::prost::alloc::string::String),
         /// The SSML document to be synthesized. The SSML document must be valid
         /// and well-formed. Otherwise the RPC will fail and return
-        /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]. For more information, see
+        /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]. For
+        /// more information, see
         /// [SSML](<https://cloud.google.com/text-to-speech/docs/ssml>).
         #[prost(string, tag = "2")]
         Ssml(::prost::alloc::string::String),
@@ -135,9 +136,9 @@ pub mod synthesis_input {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VoiceSelectionParams {
-    /// Required. The language (and potentially also the region) of the voice expressed as a
-    /// [BCP-47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag, e.g.
-    /// "en-US". This should not include a script tag (e.g. use
+    /// Required. The language (and potentially also the region) of the voice
+    /// expressed as a [BCP-47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>)
+    /// language tag, e.g. "en-US". This should not include a script tag (e.g. use
     /// "cmn-cn" rather than "cmn-Hant-cn"), because the script will be inferred
     /// from the input provided in the SynthesisInput.  The TTS service
     /// will use this parameter to help choose an appropriate voice.  Note that
@@ -218,15 +219,15 @@ pub struct CustomVoiceParams {
     /// Required. The name of the AutoML model that synthesizes the custom voice.
     #[prost(string, tag = "1")]
     pub model: ::prost::alloc::string::String,
-    /// Optional. The usage of the synthesized audio to be reported.
+    /// Optional. Deprecated. The usage of the synthesized audio to be reported.
+    #[deprecated]
     #[prost(enumeration = "custom_voice_params::ReportedUsage", tag = "3")]
     pub reported_usage: i32,
 }
 /// Nested message and enum types in `CustomVoiceParams`.
 pub mod custom_voice_params {
-    /// The usage of the synthesized audio. You must report your honest and
-    /// correct usage of the service as it's regulated by contract and will cause
-    /// significant difference in billing.
+    /// Deprecated. The usage of the synthesized audio. Usage does not affect
+    /// billing.
     #[derive(
         Clone,
         Copy,
@@ -351,7 +352,8 @@ impl SsmlVoiceGender {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum AudioEncoding {
-    /// Not specified. Will return result [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
+    /// Not specified. Will return result
+    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
     Unspecified = 0,
     /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
     /// Audio content returned as LINEAR16 also contains a WAV header.
@@ -589,7 +591,8 @@ pub struct SynthesizeLongAudioMetadata {
     /// Time when the request was received.
     #[prost(message, optional, tag = "1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Time of the most recent processing update.
+    /// Deprecated. Do not use.
+    #[deprecated]
     #[prost(message, optional, tag = "2")]
     pub last_update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The progress of the most recent processing update in percentage, ie. 70.0%.

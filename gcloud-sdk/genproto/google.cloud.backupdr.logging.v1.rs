@@ -176,3 +176,117 @@ pub struct BackupRecoveryJobReportLog {
     #[prost(string, tag = "40")]
     pub target_appliance_id: ::prost::alloc::string::String,
 }
+/// This is a UnprotectedResourceLogReport published as part of GCBDR
+/// Reporting.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UnprotectedResourceReportLog {
+    /// Required. Name of the host where the application/resource resides.
+    #[prost(string, tag = "1")]
+    pub host_name: ::prost::alloc::string::String,
+    /// Required. Name of the application/resource.
+    #[prost(string, tag = "2")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Required. Type of the application/resource.
+    #[prost(string, tag = "3")]
+    pub resource_type: ::prost::alloc::string::String,
+    /// Optional. Name of the database instance for instance members.
+    #[prost(string, tag = "4")]
+    pub instance_name: ::prost::alloc::string::String,
+    /// Required. Date when the Appliance was Discovered first.
+    #[prost(string, tag = "5")]
+    pub discovered_on: ::prost::alloc::string::String,
+    /// Required. Name of the appliance on which it was discovered.
+    #[prost(string, tag = "6")]
+    pub discovered_by: ::prost::alloc::string::String,
+    /// Required. Id of the Appliance
+    #[prost(string, tag = "7")]
+    pub appliance_id: ::prost::alloc::string::String,
+    /// Required. Id of the application/resource
+    #[prost(string, tag = "8")]
+    pub resource_id: ::prost::alloc::string::String,
+    /// Required. Id of the Host where the application/resource resides.
+    #[prost(string, tag = "9")]
+    pub host_id: ::prost::alloc::string::String,
+}
+/// This is a DailyScheduleComplianceReportLog published as part of GCBDR
+/// Reporting.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DailyScheduleComplianceReportLog {
+    /// Required. Resource/App Name.
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Required. Resource/App Type.
+    #[prost(string, tag = "2")]
+    pub resource_type: ::prost::alloc::string::String,
+    /// Required. Policy Name.
+    #[prost(string, tag = "3")]
+    pub backup_rule_policy_name: ::prost::alloc::string::String,
+    /// Required. Policy Template Name.
+    #[prost(string, tag = "4")]
+    pub backup_plan_policy_template: ::prost::alloc::string::String,
+    /// Required. Name of the host where the app/resource resides.
+    #[prost(string, tag = "5")]
+    pub host_name: ::prost::alloc::string::String,
+    /// Required. Appliance Name.
+    #[prost(string, tag = "6")]
+    pub appliance_name: ::prost::alloc::string::String,
+    /// Required. Date for which compliance is being reported.
+    #[prost(string, tag = "7")]
+    pub date: ::prost::alloc::string::String,
+    /// Required. Backup Window Start time.
+    #[prost(string, tag = "8")]
+    pub backup_window_start_time: ::prost::alloc::string::String,
+    /// Required. JobType of the policy.
+    #[prost(string, tag = "9")]
+    pub job_type: ::prost::alloc::string::String,
+    /// Required. Compliance status for the policy.
+    #[prost(string, tag = "10")]
+    pub status: ::prost::alloc::string::String,
+    /// Required. Description for the status reason.
+    #[prost(string, tag = "11")]
+    pub comment: ::prost::alloc::string::String,
+    /// Required. Resource/App Id.
+    #[prost(string, tag = "12")]
+    pub resource_id: ::prost::alloc::string::String,
+    /// Required. Host Id.
+    #[prost(string, tag = "13")]
+    pub host_id: ::prost::alloc::string::String,
+    /// Required. Policy Template Id
+    #[prost(string, tag = "14")]
+    pub backup_plan_policy_template_id: ::prost::alloc::string::String,
+    /// Required. Policy Id.
+    #[prost(string, tag = "15")]
+    pub backup_rule_policy_id: ::prost::alloc::string::String,
+    /// Required. Appliance Id.
+    #[prost(string, tag = "16")]
+    pub appliance_id: ::prost::alloc::string::String,
+}
+/// This is a BackupStorageUtilizationReportLog published as part of GCBDR
+/// Reporting.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BackupStorageUtilizationReportLog {
+    /// Optional. The appliance name.
+    #[prost(string, tag = "1")]
+    pub appliance_name: ::prost::alloc::string::String,
+    /// Required. The storage resource type.
+    #[prost(string, tag = "2")]
+    pub storage_type: ::prost::alloc::string::String,
+    /// Required. The storage pool name.
+    #[prost(string, tag = "3")]
+    pub pool_name: ::prost::alloc::string::String,
+    /// Required. Total capacity of the pool in GiB.
+    #[prost(double, tag = "4")]
+    pub total_capacity_in_gib: f64,
+    /// Required. Used capacity of the pool in GiB.
+    #[prost(double, tag = "5")]
+    pub used_capacity_in_gib: f64,
+    /// Required. Utilization percentage of a storage pool.
+    #[prost(double, tag = "6")]
+    pub utilization_percentage: f64,
+    /// Required. Appliance id.
+    #[prost(string, tag = "7")]
+    pub appliance_id: ::prost::alloc::string::String,
+}

@@ -7418,7 +7418,7 @@ pub struct BoostSpecs {
     /// Optional. Data Stores where the boosting configuration is applied. The full
     /// names of the referenced data stores. Formats:
     /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}`
-    /// `projects/{project}/locations/{location}/dataStores/{data_store}
+    /// `projects/{project}/locations/{location}/dataStores/{data_store}`
     #[prost(string, repeated, tag = "1")]
     pub data_stores: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A list of boosting specifications.
@@ -7432,7 +7432,7 @@ pub struct FilterSpecs {
     /// Optional. Data Stores where the boosting configuration is applied. The full
     /// names of the referenced data stores. Formats:
     /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}`
-    /// `projects/{project}/locations/{location}/dataStores/{data_store}
+    /// `projects/{project}/locations/{location}/dataStores/{data_store}`
     #[prost(string, repeated, tag = "1")]
     pub data_stores: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The filter expression to be applied.

@@ -428,6 +428,9 @@ pub struct Deployment {
     #[prost(string, tag = "12")]
     pub source_provider: ::prost::alloc::string::String,
     /// Optional. Immutable. The WorkloadCluster on which to create the Deployment.
+    /// This field should only be passed when the deployment_level of the source
+    /// blueprint specifies deployments on workload clusters e.g.
+    /// WORKLOAD_CLUSTER_DEPLOYMENT.
     #[prost(string, tag = "13")]
     pub workload_cluster: ::prost::alloc::string::String,
     /// Output only. Attributes to where the deployment can inflict changes. The
@@ -1672,6 +1675,9 @@ pub enum Status {
     Deleted = 5,
     /// NFDeploy specific status. Peering in progress.
     Peering = 10,
+    /// K8s objects such as NetworkAttachmentDefinition don't have a defined
+    /// status.
+    NotApplicable = 11,
 }
 impl Status {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1687,6 +1693,7 @@ impl Status {
             Status::Deleting => "STATUS_DELETING",
             Status::Deleted => "STATUS_DELETED",
             Status::Peering => "STATUS_PEERING",
+            Status::NotApplicable => "STATUS_NOT_APPLICABLE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1699,6 +1706,7 @@ impl Status {
             "STATUS_DELETING" => Some(Self::Deleting),
             "STATUS_DELETED" => Some(Self::Deleted),
             "STATUS_PEERING" => Some(Self::Peering),
+            "STATUS_NOT_APPLICABLE" => Some(Self::NotApplicable),
             _ => None,
         }
     }
@@ -1726,6 +1734,11 @@ pub enum DeploymentLevel {
     /// b) Used to create a deployment on orchestration cluster which will create
     /// further hydrated deployments.
     MultiDeployment = 3,
+    /// Blueprints at WORKLOAD_CLUSTER_DEPLOYMENT level can be
+    /// a) Modified in private catalog.
+    /// b) Used to create a deployment on workload cluster by the user, once
+    /// approved.
+    WorkloadClusterDeployment = 4,
 }
 impl DeploymentLevel {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1738,6 +1751,7 @@ impl DeploymentLevel {
             DeploymentLevel::Hydration => "HYDRATION",
             DeploymentLevel::SingleDeployment => "SINGLE_DEPLOYMENT",
             DeploymentLevel::MultiDeployment => "MULTI_DEPLOYMENT",
+            DeploymentLevel::WorkloadClusterDeployment => "WORKLOAD_CLUSTER_DEPLOYMENT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1747,6 +1761,7 @@ impl DeploymentLevel {
             "HYDRATION" => Some(Self::Hydration),
             "SINGLE_DEPLOYMENT" => Some(Self::SingleDeployment),
             "MULTI_DEPLOYMENT" => Some(Self::MultiDeployment),
+            "WORKLOAD_CLUSTER_DEPLOYMENT" => Some(Self::WorkloadClusterDeployment),
             _ => None,
         }
     }

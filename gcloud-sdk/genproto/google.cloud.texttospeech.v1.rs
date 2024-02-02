@@ -170,15 +170,15 @@ pub struct CustomVoiceParams {
     /// Required. The name of the AutoML model that synthesizes the custom voice.
     #[prost(string, tag = "1")]
     pub model: ::prost::alloc::string::String,
-    /// Optional. The usage of the synthesized audio to be reported.
+    /// Optional. Deprecated. The usage of the synthesized audio to be reported.
+    #[deprecated]
     #[prost(enumeration = "custom_voice_params::ReportedUsage", tag = "3")]
     pub reported_usage: i32,
 }
 /// Nested message and enum types in `CustomVoiceParams`.
 pub mod custom_voice_params {
-    /// The usage of the synthesized audio. You must report your honest and
-    /// correct usage of the service as it's regulated by contract and will cause
-    /// significant difference in billing.
+    /// Deprecated. The usage of the synthesized audio. Usage does not affect
+    /// billing.
     #[derive(
         Clone,
         Copy,
@@ -519,7 +519,8 @@ pub struct SynthesizeLongAudioMetadata {
     /// Time when the request was received.
     #[prost(message, optional, tag = "1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Time of the most recent processing update.
+    /// Deprecated. Do not use.
+    #[deprecated]
     #[prost(message, optional, tag = "2")]
     pub last_update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The progress of the most recent processing update in percentage, ie. 70.0%.

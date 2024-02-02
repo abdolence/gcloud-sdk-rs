@@ -594,6 +594,9 @@ pub struct EmbedContentRequest {
     pub task_type: ::core::option::Option<i32>,
     /// Optional. An optional title for the text. Only applicable when TaskType is
     /// `RETRIEVAL_DOCUMENT`.
+    ///
+    /// Note: Specifying a `title` for `RETRIEVAL_DOCUMENT` provides better quality
+    /// embeddings for retrieval.
     #[prost(string, optional, tag = "4")]
     pub title: ::core::option::Option<::prost::alloc::string::String>,
 }
