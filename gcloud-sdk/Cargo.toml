@@ -453,7 +453,7 @@ bytes = { version = "1", optional = true }
 serde_with = { version = "3", optional = true }
 
 [dev-dependencies]
-cargo-audit = "0.19"
+cargo-audit = "0.20"
 
 [package.metadata.release]
 tag-prefix=""
