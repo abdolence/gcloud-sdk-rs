@@ -1045,7 +1045,8 @@ pub mod document {
             #[prost(string, tag = "3")]
             pub layout_id: ::prost::alloc::string::String,
             /// Optional. Identifies the bounding polygon of a layout element on the
-            /// page.
+            /// page. If `layout_type` is set, the bounding polygon must be exactly the
+            /// same to the layout element it's referring to.
             #[prost(message, optional, tag = "4")]
             pub bounding_poly: ::core::option::Option<super::super::BoundingPoly>,
             /// Optional. Confidence of detected page element, if applicable. Range

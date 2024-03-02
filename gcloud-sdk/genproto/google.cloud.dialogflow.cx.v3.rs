@@ -171,28 +171,10 @@ pub struct InputAudioConfig {
     /// for more details.
     #[prost(string, repeated, tag = "4")]
     pub phrase_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. Which Speech model to select for the given request. Select the
-    /// model best suited to your domain to get best results. If a model is not
-    /// explicitly specified, then Dialogflow auto-selects a model based on other
-    /// parameters in the InputAudioConfig and Agent settings.
-    /// If enhanced speech model is enabled for the agent and an enhanced
-    /// version of the specified model for the language does not exist, then the
-    /// speech is recognized using the standard version of the specified model.
-    /// Refer to
-    /// [Cloud Speech API
-    /// documentation](<https://cloud.google.com/speech-to-text/docs/basics#select-model>)
-    /// for more details.
-    /// If you specify a model, the following models typically have the best
-    /// performance:
-    ///
-    /// - phone_call (best for Agent Assist and telephony)
-    /// - latest_short (best for Dialogflow non-telephony)
-    /// - command_and_search
-    ///
-    /// Leave this field unspecified to use
-    /// [Agent Speech
-    /// settings](<https://cloud.google.com/dialogflow/cx/docs/concept/agent#settings-speech>)
-    /// for model selection.
+    /// Optional. Which Speech model to select for the given request.
+    /// For more information, see
+    /// [Speech
+    /// models](<https://cloud.google.com/dialogflow/cx/docs/concept/speech-models>).
     #[prost(string, tag = "7")]
     pub model: ::prost::alloc::string::String,
     /// Optional. Which variant of the [Speech
@@ -212,6 +194,12 @@ pub struct InputAudioConfig {
     /// Configuration of barge-in behavior during the streaming of input audio.
     #[prost(message, optional, tag = "15")]
     pub barge_in_config: ::core::option::Option<BargeInConfig>,
+    /// If `true`, the request will opt out for STT conformer model migration.
+    /// This field will be deprecated once force migration takes place in June
+    /// 2024. Please refer to [Dialogflow CX Speech model
+    /// migration](<https://cloud.google.com/dialogflow/cx/docs/concept/speech-model-migration>).
+    #[prost(bool, tag = "26")]
+    pub opt_out_conformer_model_migration: bool,
 }
 /// Description of which voice to use for speech synthesis.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -407,10 +395,6 @@ pub enum SpeechModelVariant {
     Unspecified = 0,
     /// Use the best available variant of the [Speech
     /// model][InputAudioConfig.model] that the caller is eligible for.
-    ///
-    /// Please see the [Dialogflow
-    /// docs](<https://cloud.google.com/dialogflow/docs/data-logging>) for
-    /// how to make your project eligible for enhanced models.
     UseBestAvailable = 1,
     /// Use standard model variant even if an enhanced model is available.  See the
     /// [Cloud Speech
@@ -426,11 +410,6 @@ pub enum SpeechModelVariant {
     ///    The [Cloud Speech
     ///    documentation](<https://cloud.google.com/speech-to-text/docs/enhanced-models>)
     ///    describes which models have enhanced variants.
-    ///
-    /// * If the API caller isn't eligible for enhanced models, Dialogflow returns
-    ///    an error.  Please see the [Dialogflow
-    ///    docs](<https://cloud.google.com/dialogflow/docs/data-logging>)
-    ///    for how to make your project eligible.
     UseEnhanced = 3,
 }
 impl SpeechModelVariant {
@@ -1140,6 +1119,9 @@ pub struct Page {
     /// Required. The human-readable name of the page, unique within the flow.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
+    /// The description of the page. The maximum length is 500 characters.
+    #[prost(string, tag = "19")]
+    pub description: ::prost::alloc::string::String,
     /// The fulfillment to call when the session is entering the page.
     #[prost(message, optional, tag = "7")]
     pub entry_fulfillment: ::core::option::Option<Fulfillment>,
@@ -3175,6 +3157,10 @@ pub mod generative_settings {
         /// company website for employees", "manual of car owner".
         #[prost(string, tag = "5")]
         pub agent_scope: ::prost::alloc::string::String,
+        /// Whether to disable fallback to Data Store search results (in case the LLM
+        /// couldn't pick a proper answer). Per default the feature is enabled.
+        #[prost(bool, tag = "8")]
+        pub disable_data_store_fallback: bool,
     }
 }
 /// Settings related to speech recognition.
@@ -3249,7 +3235,8 @@ pub struct Agent {
     /// Immutable. Name of the start flow in this agent. A start flow will be
     /// automatically created when the agent is created, and can only be deleted by
     /// deleting the agent. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/flows/<Flow ID>`.
+    /// ID>/agents/<Agent ID>/flows/<Flow ID>`. Currently only the default start
+    /// flow with id "00000000-0000-0000-0000-000000000000" is allowed.
     #[prost(string, tag = "16")]
     pub start_flow: ::prost::alloc::string::String,
     /// Name of the
@@ -4261,6 +4248,9 @@ pub struct Changelog {
     /// The timestamp of the change.
     #[prost(message, optional, tag = "4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The affected language code of the change.
+    #[prost(string, tag = "14")]
+    pub language_code: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod changelogs_client {
@@ -4702,6 +4692,25 @@ pub mod deployments_client {
         }
     }
 }
+/// Inline destination for a Dialogflow operation that writes or exports objects
+/// (e.g. [intents][google.cloud.dialogflow.cx.v3.Intent]) outside of Dialogflow.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InlineDestination {
+    /// Output only. The uncompressed byte content for the objects.
+    /// Only populated in responses.
+    #[prost(bytes = "vec", tag = "1")]
+    pub content: ::prost::alloc::vec::Vec<u8>,
+}
+/// Inline source for a Dialogflow operation that reads or imports objects
+/// (e.g. [intents][google.cloud.dialogflow.cx.v3.Intent]) into Dialogflow.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InlineSource {
+    /// The uncompressed byte content for the objects.
+    #[prost(bytes = "vec", tag = "1")]
+    pub content: ::prost::alloc::vec::Vec<u8>,
+}
 /// Entities are extracted from user input and represent parameters that are
 /// meaningful to your application. For example, a date range, a proper name
 /// such as a geographic location or landmark, and so on. Entities represent
@@ -4902,6 +4911,296 @@ pub mod entity_type {
         }
     }
 }
+/// The request message for
+/// [EntityTypes.ExportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportEntityTypesRequest {
+    /// Required. The name of the parent agent to export entity types.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The name of the entity types to export.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/entityTypes/<EntityType ID>`.
+    #[prost(string, repeated, tag = "2")]
+    pub entity_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The data format of the exported entity types. If not specified,
+    /// `BLOB` is assumed.
+    #[prost(enumeration = "export_entity_types_request::DataFormat", tag = "5")]
+    pub data_format: i32,
+    /// Optional. The language to retrieve the entity type for. The following
+    /// fields are language dependent:
+    ///
+    /// *   `EntityType.entities.value`
+    /// *   `EntityType.entities.synonyms`
+    /// *   `EntityType.excluded_phrases.value`
+    ///
+    /// If not specified, all language dependent fields will be retrieved.
+    /// [Many
+    /// languages](<https://cloud.google.com/dialogflow/docs/reference/language>)
+    /// are supported.
+    /// Note: languages must be enabled in the agent before they can be used.
+    #[prost(string, tag = "6")]
+    pub language_code: ::prost::alloc::string::String,
+    /// The destination to export.
+    #[prost(oneof = "export_entity_types_request::Destination", tags = "3, 4")]
+    pub destination: ::core::option::Option<export_entity_types_request::Destination>,
+}
+/// Nested message and enum types in `ExportEntityTypesRequest`.
+pub mod export_entity_types_request {
+    /// Data format of the exported entity types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DataFormat {
+        /// Unspecified format. Treated as `BLOB`.
+        Unspecified = 0,
+        /// EntityTypes will be exported as raw bytes.
+        Blob = 1,
+        /// EntityTypes will be exported in JSON Package format.
+        JsonPackage = 5,
+    }
+    impl DataFormat {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DataFormat::Unspecified => "DATA_FORMAT_UNSPECIFIED",
+                DataFormat::Blob => "BLOB",
+                DataFormat::JsonPackage => "JSON_PACKAGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "BLOB" => Some(Self::Blob),
+                "JSON_PACKAGE" => Some(Self::JsonPackage),
+                _ => None,
+            }
+        }
+    }
+    /// The destination to export.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Destination {
+        /// Optional. The [Google Cloud
+        /// Storage](<https://cloud.google.com/storage/docs/>) URI to export the entity
+        /// types to. The format of this URI must be
+        /// `gs://<bucket-name>/<object-name>`.
+        ///
+        /// Dialogflow performs a write operation for the Cloud Storage object
+        /// on the caller's behalf, so your request authentication must
+        /// have write permissions for the object. For more information, see
+        /// [Dialogflow access
+        /// control](<https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>).
+        #[prost(string, tag = "3")]
+        EntityTypesUri(::prost::alloc::string::String),
+        /// Optional. The option to return the serialized entity types inline.
+        #[prost(bool, tag = "4")]
+        EntityTypesContentInline(bool),
+    }
+}
+/// The response message for
+/// [EntityTypes.ExportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportEntityTypesResponse {
+    /// Exported entity types can be either in cloud storage or local download.
+    #[prost(oneof = "export_entity_types_response::ExportedEntityTypes", tags = "1, 2")]
+    pub exported_entity_types: ::core::option::Option<
+        export_entity_types_response::ExportedEntityTypes,
+    >,
+}
+/// Nested message and enum types in `ExportEntityTypesResponse`.
+pub mod export_entity_types_response {
+    /// Exported entity types can be either in cloud storage or local download.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ExportedEntityTypes {
+        /// The URI to a file containing the exported entity types. This field is
+        /// populated only if `entity_types_uri` is specified in
+        /// [ExportEntityTypesRequest][google.cloud.dialogflow.cx.v3.ExportEntityTypesRequest].
+        #[prost(string, tag = "1")]
+        EntityTypesUri(::prost::alloc::string::String),
+        /// Uncompressed byte content for entity types. This field is populated only
+        /// if `entity_types_content_inline` is set to true in
+        /// [ExportEntityTypesRequest][google.cloud.dialogflow.cx.v3.ExportEntityTypesRequest].
+        #[prost(message, tag = "2")]
+        EntityTypesContent(super::InlineDestination),
+    }
+}
+/// Metadata returned for the
+/// [EntityTypes.ExportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes]
+/// long running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportEntityTypesMetadata {}
+/// The request message for
+/// [EntityTypes.ImportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportEntityTypesRequest {
+    /// Required. The agent to import the entity types into.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Merge option for importing entity types.
+    #[prost(enumeration = "import_entity_types_request::MergeOption", tag = "4")]
+    pub merge_option: i32,
+    /// Optional. The target entity type to import into.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/entity_types/<EntityType ID>`.
+    /// If set, there should be only one entity type included in
+    /// [entity_types][google.cloud.dialogflow.cx.v3.ImportEntityTypesRequest.entity_types],
+    /// of which the type should match the type of the target entity type. All
+    /// [entities][google.cloud.dialogflow.cx.v3.EntityType.entities] in the
+    /// imported entity type will be added to the target entity type.
+    #[prost(string, tag = "5")]
+    pub target_entity_type: ::prost::alloc::string::String,
+    /// Required. The entity types to import.
+    #[prost(oneof = "import_entity_types_request::EntityTypes", tags = "2, 3")]
+    pub entity_types: ::core::option::Option<import_entity_types_request::EntityTypes>,
+}
+/// Nested message and enum types in `ImportEntityTypesRequest`.
+pub mod import_entity_types_request {
+    /// Merge option when display name conflicts exist during import.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MergeOption {
+        /// Unspecified. If used, system uses REPORT_CONFLICT as default.
+        Unspecified = 0,
+        /// Replace the original entity type in the agent with the new entity type
+        /// when display name conflicts exist.
+        Replace = 1,
+        /// Merge the original entity type with the new entity type when display name
+        /// conflicts exist.
+        Merge = 2,
+        /// Create new entity types with new display names to differentiate them from
+        /// the existing entity types when display name conflicts exist.
+        Rename = 3,
+        /// Report conflict information if display names conflict is detected.
+        /// Otherwise, import entity types.
+        ReportConflict = 4,
+        /// Keep the original entity type and discard the conflicting new entity type
+        /// when display name conflicts exist.
+        Keep = 5,
+    }
+    impl MergeOption {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                MergeOption::Unspecified => "MERGE_OPTION_UNSPECIFIED",
+                MergeOption::Replace => "REPLACE",
+                MergeOption::Merge => "MERGE",
+                MergeOption::Rename => "RENAME",
+                MergeOption::ReportConflict => "REPORT_CONFLICT",
+                MergeOption::Keep => "KEEP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MERGE_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "REPLACE" => Some(Self::Replace),
+                "MERGE" => Some(Self::Merge),
+                "RENAME" => Some(Self::Rename),
+                "REPORT_CONFLICT" => Some(Self::ReportConflict),
+                "KEEP" => Some(Self::Keep),
+                _ => None,
+            }
+        }
+    }
+    /// Required. The entity types to import.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum EntityTypes {
+        /// The [Google Cloud Storage](<https://cloud.google.com/storage/docs/>) URI
+        /// to import entity types from. The format of this URI must be
+        /// `gs://<bucket-name>/<object-name>`.
+        ///
+        /// Dialogflow performs a read operation for the Cloud Storage object
+        /// on the caller's behalf, so your request authentication must
+        /// have read permissions for the object. For more information, see
+        /// [Dialogflow access
+        /// control](<https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>).
+        #[prost(string, tag = "2")]
+        EntityTypesUri(::prost::alloc::string::String),
+        /// Uncompressed byte content of entity types.
+        #[prost(message, tag = "3")]
+        EntityTypesContent(super::InlineSource),
+    }
+}
+/// The response message for
+/// [EntityTypes.ImportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportEntityTypesResponse {
+    /// The unique identifier of the imported entity types.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/entity_types/<EntityType ID>`.
+    #[prost(string, repeated, tag = "1")]
+    pub entity_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Info which resources have conflicts when
+    /// [REPORT_CONFLICT][ImportEntityTypesResponse.REPORT_CONFLICT] merge_option
+    /// is set in ImportEntityTypesRequest.
+    #[prost(message, optional, tag = "2")]
+    pub conflicting_resources: ::core::option::Option<
+        import_entity_types_response::ConflictingResources,
+    >,
+}
+/// Nested message and enum types in `ImportEntityTypesResponse`.
+pub mod import_entity_types_response {
+    /// Conflicting resources detected during the import process. Only filled when
+    /// [REPORT_CONFLICT][ImportEntityTypesResponse.REPORT_CONFLICT] is set in the
+    /// request and there are conflicts in the display names.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConflictingResources {
+        /// Display names of conflicting entity types.
+        #[prost(string, repeated, tag = "1")]
+        pub entity_type_display_names: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
+        /// Display names of conflicting entities.
+        #[prost(string, repeated, tag = "2")]
+        pub entity_display_names: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
+    }
+}
+/// Metadata returned for the
+/// [EntityTypes.ImportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes]
+/// long running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportEntityTypesMetadata {}
 /// The request message for
 /// [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5289,26 +5588,69 @@ pub mod entity_types_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Exports the selected entity types.
+        pub async fn export_entity_types(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExportEntityTypesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3.EntityTypes/ExportEntityTypes",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3.EntityTypes",
+                        "ExportEntityTypes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Imports the specified entitytypes into the agent.
+        pub async fn import_entity_types(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ImportEntityTypesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3.EntityTypes/ImportEntityTypes",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3.EntityTypes",
+                        "ImportEntityTypes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
-}
-/// Inline destination for a Dialogflow operation that writes or exports objects
-/// (e.g. [intents][google.cloud.dialogflow.cx.v3.Intent]) outside of Dialogflow.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InlineDestination {
-    /// Output only. The uncompressed byte content for the objects.
-    /// Only populated in responses.
-    #[prost(bytes = "vec", tag = "1")]
-    pub content: ::prost::alloc::vec::Vec<u8>,
-}
-/// Inline source for a Dialogflow operation that reads or imports objects
-/// (e.g. [intents][google.cloud.dialogflow.cx.v3.Intent]) into Dialogflow.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InlineSource {
-    /// The uncompressed byte content for the objects.
-    #[prost(bytes = "vec", tag = "1")]
-    pub content: ::prost::alloc::vec::Vec<u8>,
 }
 /// An intent represents a user's intent to interact with a conversational agent.
 ///
@@ -7172,9 +7514,9 @@ pub mod streaming_recognition_result {
         Unspecified = 0,
         /// Message contains a (possibly partial) transcript.
         Transcript = 1,
-        /// Event indicates that the server has detected the end of the user's speech
-        /// utterance and expects no additional speech. Therefore, the server will
-        /// not process additional audio (although it may subsequently return
+        /// This event indicates that the server has detected the end of the user's
+        /// speech utterance and expects no additional speech. Therefore, the server
+        /// will not process additional audio (although it may subsequently return
         /// additional results). The client should stop sending additional audio
         /// data, half-close the gRPC connection, and wait for any additional results
         /// until the server closes the gRPC connection. This message is only sent if
@@ -7320,7 +7662,7 @@ pub struct QueryParameters {
     /// unspecified channel will be returned.
     #[prost(string, tag = "15")]
     pub channel: ::prost::alloc::string::String,
-    /// Optional. Sets Dialogflow session life time.
+    /// Optional. Configure lifetime of the Dialogflow session.
     /// By default, a Dialogflow session remains active and its data is stored for
     /// 30 minutes after the last request is sent for the session.
     /// This value should be no longer than 1 day.
@@ -7452,6 +7794,8 @@ pub struct FilterSpecs {
 /// 4. An event to be triggered.
 ///
 /// 5. DTMF digits to invoke an intent and fill in parameter value.
+///
+/// 6. The results of a tool executed by the client.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryInput {
@@ -7520,6 +7864,18 @@ pub struct QueryResult {
     /// to drive complex logic.
     #[prost(message, repeated, tag = "4")]
     pub response_messages: ::prost::alloc::vec::Vec<ResponseMessage>,
+    /// The list of webhook ids in the order of call sequence.
+    #[prost(string, repeated, tag = "25")]
+    pub webhook_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The list of webhook display names in the order of call sequence.
+    #[prost(string, repeated, tag = "26")]
+    pub webhook_display_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The list of webhook latencies in the order of call sequence.
+    #[prost(message, repeated, tag = "27")]
+    pub webhook_latencies: ::prost::alloc::vec::Vec<::prost_types::Duration>,
+    /// The list of webhook tags in the order of call sequence.
+    #[prost(string, repeated, tag = "29")]
+    pub webhook_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The list of webhook call status in the order of call sequence.
     #[prost(message, repeated, tag = "13")]
     pub webhook_statuses: ::prost::alloc::vec::Vec<
@@ -7536,6 +7892,11 @@ pub struct QueryResult {
     /// `display_name`.
     #[prost(message, optional, tag = "7")]
     pub current_page: ::core::option::Option<Page>,
+    /// The current [Flow][google.cloud.dialogflow.cx.v3.Flow]. Some, not all
+    /// fields are filled in this message, including but not limited to `name` and
+    /// `display_name`.
+    #[prost(message, optional, tag = "31")]
+    pub current_flow: ::core::option::Option<Flow>,
     /// The [Intent][google.cloud.dialogflow.cx.v3.Intent] that matched the
     /// conversational query. Some, not all fields are filled in this message,
     /// including but not limited to: `name` and `display_name`. This field is
@@ -7636,8 +7997,7 @@ pub mod query_result {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextInput {
-    /// Required. The UTF-8 encoded natural language text to be processed. Text
-    /// length must not exceed 256 characters.
+    /// Required. The UTF-8 encoded natural language text to be processed.
     #[prost(string, tag = "1")]
     pub text: ::prost::alloc::string::String,
 }
@@ -8058,6 +8418,41 @@ pub mod sessions_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
+        }
+        /// Processes a natural language query and returns structured, actionable data
+        /// as a result through server-side streaming. Server-side streaming allows
+        /// Dialogflow to send [partial
+        /// responses](https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment#partial-response)
+        /// earlier in a single request.
+        pub async fn server_streaming_detect_intent(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DetectIntentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::DetectIntentResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3.Sessions/ServerStreamingDetectIntent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3.Sessions",
+                        "ServerStreamingDetectIntent",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
         }
         /// Processes a natural language query in audio format in a streaming fashion
         /// and returns structured, actionable data as a result. This method is only

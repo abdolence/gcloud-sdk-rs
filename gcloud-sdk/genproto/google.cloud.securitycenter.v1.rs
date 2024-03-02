@@ -92,6 +92,19 @@ pub struct Geolocation {
     #[prost(string, tag = "1")]
     pub region_code: ::prost::alloc::string::String,
 }
+/// Represents an application associated with a finding.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Application {
+    /// The base URI that identifies the network location of the application in
+    /// which the vulnerability was detected. For example, `<http://example.com`.>
+    #[prost(string, tag = "1")]
+    pub base_uri: ::prost::alloc::string::String,
+    /// The full URI with payload that can be used to reproduce the
+    /// vulnerability. For example, `<http://example.com?p=aMmYgI6H`.>
+    #[prost(string, tag = "2")]
+    pub full_uri: ::prost::alloc::string::String,
+}
 /// Message that contains the resource name and display name of a folder
 /// resource.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -253,6 +266,69 @@ pub mod asset {
         #[prost(string, tag = "1")]
         pub policy_blob: ::prost::alloc::string::String,
     }
+}
+/// Information related to Google Cloud Backup and DR Service findings.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BackupDisasterRecovery {
+    /// The name of a Backup and DR template which comprises one or more backup
+    /// policies. See the [Backup and DR
+    /// documentation](<https://cloud.google.com/backup-disaster-recovery/docs/concepts/backup-plan#temp>)
+    /// for more information. For example, `snap-ov`.
+    #[prost(string, tag = "1")]
+    pub backup_template: ::prost::alloc::string::String,
+    /// The names of Backup and DR policies that are associated with a template
+    /// and that define when to run a backup, how frequently to run a backup, and
+    /// how long to retain the backup image. For example, `onvaults`.
+    #[prost(string, repeated, tag = "2")]
+    pub policies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The name of a Backup and DR host, which is managed by the backup and
+    /// recovery appliance and known to the management console. The host can be of
+    /// type Generic (for example, Compute Engine, SQL Server, Oracle DB, SMB file
+    /// system, etc.), vCenter, or an ESX server. See the [Backup and DR
+    /// documentation on
+    /// hosts](<https://cloud.google.com/backup-disaster-recovery/docs/configuration/manage-hosts-and-their-applications>)
+    /// for more information. For example, `centos7-01`.
+    #[prost(string, tag = "3")]
+    pub host: ::prost::alloc::string::String,
+    /// The names of Backup and DR applications. An application is a VM, database,
+    /// or file system on a managed host monitored by a backup and recovery
+    /// appliance. For example, `centos7-01-vol00`, `centos7-01-vol01`,
+    /// `centos7-01-vol02`.
+    #[prost(string, repeated, tag = "4")]
+    pub applications: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The name of the Backup and DR storage pool that the backup and recovery
+    /// appliance is storing data in. The storage pool could be of type Cloud,
+    /// Primary, Snapshot, or OnVault. See the [Backup and DR documentation on
+    /// storage
+    /// pools](<https://cloud.google.com/backup-disaster-recovery/docs/concepts/storage-pools>).
+    /// For example, `DiskPoolOne`.
+    #[prost(string, tag = "5")]
+    pub storage_pool: ::prost::alloc::string::String,
+    /// The names of Backup and DR advanced policy options of a policy applying to
+    /// an application. See the [Backup and DR documentation on policy
+    /// options](<https://cloud.google.com/backup-disaster-recovery/docs/create-plan/policy-settings>).
+    /// For example, `skipofflineappsincongrp, nounmap`.
+    #[prost(string, repeated, tag = "6")]
+    pub policy_options: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The name of the Backup and DR resource profile that specifies the storage
+    /// media for backups of application and VM data. See the [Backup and DR
+    /// documentation on
+    /// profiles](<https://cloud.google.com/backup-disaster-recovery/docs/concepts/backup-plan#profile>).
+    /// For example, `GCP`.
+    #[prost(string, tag = "7")]
+    pub profile: ::prost::alloc::string::String,
+    /// The name of the Backup and DR appliance that captures, moves, and manages
+    /// the lifecycle of backup data. For example, `backup-server-57137`.
+    #[prost(string, tag = "8")]
+    pub appliance: ::prost::alloc::string::String,
+    /// The backup type of the Backup and DR image.
+    /// For example, `Snapshot`, `Remote Snapshot`, `OnVault`.
+    #[prost(string, tag = "9")]
+    pub backup_type: ::prost::alloc::string::String,
+    /// The timestamp at which the Backup and DR backup was created.
+    #[prost(message, optional, tag = "10")]
+    pub backup_create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Configures how to deliver Findings to BigQuery Instance.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -545,6 +621,9 @@ pub struct Container {
     /// Container labels, as provided by the container runtime.
     #[prost(message, repeated, tag = "4")]
     pub labels: ::prost::alloc::vec::Vec<Label>,
+    /// The time that the container was created.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Represents database access information, such as queries. A database may be a
 /// sub-resource of an instance (as in the case of Cloud SQL instances or Cloud
@@ -553,14 +632,14 @@ pub struct Container {
 /// name](<https://google.aip.dev/122#full-resource-names>) populated because these
 /// resource types, such as Cloud SQL databases, are not yet supported by Cloud
 /// Asset Inventory. In these cases only the display name is provided.
-/// Some database resources may not have the [full resource
-/// name](<https://google.aip.dev/122#full-resource-names>) populated because
-/// these resource types are not yet supported by Cloud Asset Inventory (e.g.
-/// Cloud SQL databases). In these cases only the display name will be
-/// provided.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Database {
+    /// Some database resources may not have the [full resource
+    /// name](<https://google.aip.dev/122#full-resource-names>) populated because
+    /// these resource types are not yet supported by Cloud Asset Inventory (e.g.
+    /// Cloud SQL databases). In these cases only the display name will be
+    /// provided.
     /// The [full resource name](<https://google.aip.dev/122#full-resource-names>) of
     /// the database that the user connected to, if it is supported by Cloud Asset
     /// Inventory.
@@ -580,6 +659,11 @@ pub struct Database {
     /// not an IAM policy change.
     #[prost(string, repeated, tag = "5")]
     pub grantees: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The version of the database, for example, POSTGRES_14.
+    /// See [the complete
+    /// list](<https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1/SqlDatabaseVersion>).
+    #[prost(string, tag = "6")]
+    pub version: ::prost::alloc::string::String,
 }
 /// Defines the properties in a custom module configuration for Security
 /// Health Analytics. Use the custom module configuration to create custom
@@ -803,6 +887,9 @@ pub struct Exfiltration {
     /// "joined" source data.
     #[prost(message, repeated, tag = "2")]
     pub targets: ::prost::alloc::vec::Vec<ExfilResource>,
+    /// Total exfiltrated bytes processed for the entire job.
+    #[prost(int64, tag = "3")]
+    pub total_exfiltrated_bytes: i64,
 }
 /// Resource where data was exfiltrated from or exfiltrated to.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -872,6 +959,25 @@ pub struct File {
     /// Prefix of the file contents as a JSON-encoded string.
     #[prost(string, tag = "6")]
     pub contents: ::prost::alloc::string::String,
+    /// Path of the file in terms of underlying disk/partition identifiers.
+    #[prost(message, optional, tag = "7")]
+    pub disk_path: ::core::option::Option<file::DiskPath>,
+}
+/// Nested message and enum types in `File`.
+pub mod file {
+    /// Path of the file in terms of underlying disk/partition identifiers.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DiskPath {
+        /// UUID of the partition (format
+        /// <https://wiki.archlinux.org/title/persistent_block_device_naming#by-uuid>)
+        #[prost(string, tag = "1")]
+        pub partition_uuid: ::prost::alloc::string::String,
+        /// Relative path of the file in the partition as a JSON encoded string.
+        /// Example: /home/user1/executable_file.sh
+        #[prost(string, tag = "2")]
+        pub relative_path: ::prost::alloc::string::String,
+    }
 }
 /// Represents a particular IAM binding, which captures a member's role addition,
 /// removal, or state.
@@ -964,6 +1070,9 @@ pub mod indicator {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ProcessSignature {
+        /// Describes the type of resource associated with the signature.
+        #[prost(enumeration = "process_signature::SignatureType", tag = "8")]
+        pub signature_type: i32,
         #[prost(oneof = "process_signature::Signature", tags = "6, 7")]
         pub signature: ::core::option::Option<process_signature::Signature>,
     }
@@ -1004,6 +1113,49 @@ pub mod indicator {
             /// The name of the YARA rule.
             #[prost(string, tag = "5")]
             pub yara_rule: ::prost::alloc::string::String,
+        }
+        /// Possible resource types to be associated with a signature.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum SignatureType {
+            /// The default signature type.
+            Unspecified = 0,
+            /// Used for signatures concerning processes.
+            Process = 1,
+            /// Used for signatures concerning disks.
+            File = 2,
+        }
+        impl SignatureType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    SignatureType::Unspecified => "SIGNATURE_TYPE_UNSPECIFIED",
+                    SignatureType::Process => "SIGNATURE_TYPE_PROCESS",
+                    SignatureType::File => "SIGNATURE_TYPE_FILE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SIGNATURE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SIGNATURE_TYPE_PROCESS" => Some(Self::Process),
+                    "SIGNATURE_TYPE_FILE" => Some(Self::File),
+                    _ => None,
+                }
+            }
         }
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1090,6 +1242,9 @@ pub struct Kubernetes {
     /// relevant to the finding.
     #[prost(message, repeated, tag = "6")]
     pub access_reviews: ::prost::alloc::vec::Vec<kubernetes::AccessReview>,
+    /// Kubernetes objects related to the finding.
+    #[prost(message, repeated, tag = "7")]
+    pub objects: ::prost::alloc::vec::Vec<kubernetes::Object>,
 }
 /// Nested message and enum types in `Kubernetes`.
 pub mod kubernetes {
@@ -1305,6 +1460,79 @@ pub mod kubernetes {
         #[prost(string, tag = "7")]
         pub version: ::prost::alloc::string::String,
     }
+    /// Kubernetes object related to the finding, uniquely identified by GKNN.
+    /// Used if the object Kind is not one of Pod, Node, NodePool, Binding, or
+    /// AccessReview.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Object {
+        /// Kubernetes object group, such as "policy.k8s.io/v1".
+        #[prost(string, tag = "1")]
+        pub group: ::prost::alloc::string::String,
+        /// Kubernetes object kind, such as "Namespace".
+        #[prost(string, tag = "2")]
+        pub kind: ::prost::alloc::string::String,
+        /// Kubernetes object namespace. Must be a valid DNS label. Named
+        /// "ns" to avoid collision with C++ namespace keyword. For details see
+        /// <https://kubernetes.io/docs/tasks/administer-cluster/namespaces/.>
+        #[prost(string, tag = "3")]
+        pub ns: ::prost::alloc::string::String,
+        /// Kubernetes object name. For details see
+        /// <https://kubernetes.io/docs/concepts/overview/working-with-objects/names/.>
+        #[prost(string, tag = "4")]
+        pub name: ::prost::alloc::string::String,
+        /// Pod containers associated with this finding, if any.
+        #[prost(message, repeated, tag = "5")]
+        pub containers: ::prost::alloc::vec::Vec<super::Container>,
+    }
+}
+/// Contains information related to the load balancer associated with the
+/// finding.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LoadBalancer {
+    /// The name of the load balancer associated with the finding.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// An individual entry in a log.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LogEntry {
+    #[prost(oneof = "log_entry::LogEntry", tags = "1")]
+    pub log_entry: ::core::option::Option<log_entry::LogEntry>,
+}
+/// Nested message and enum types in `LogEntry`.
+pub mod log_entry {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum LogEntry {
+        /// An individual entry in a log stored in Cloud Logging.
+        #[prost(message, tag = "1")]
+        CloudLoggingEntry(super::CloudLoggingEntry),
+    }
+}
+/// Metadata taken from a [Cloud Logging
+/// LogEntry](<https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry>)
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudLoggingEntry {
+    /// A unique identifier for the log entry.
+    #[prost(string, tag = "1")]
+    pub insert_id: ::prost::alloc::string::String,
+    /// The type of the log (part of `log_name`. `log_name` is the resource name of
+    /// the log to which this log entry belongs). For example:
+    /// `cloudresourcemanager.googleapis.com/activity`. Note that this field is not
+    /// URL-encoded, unlike the `LOG_ID` field in `LogEntry`.
+    #[prost(string, tag = "2")]
+    pub log_id: ::prost::alloc::string::String,
+    /// The organization, folder, or project of the monitored resource that
+    /// produced this log entry.
+    #[prost(string, tag = "3")]
+    pub resource_container: ::prost::alloc::string::String,
+    /// The time the event described by the log entry occurred.
+    #[prost(message, optional, tag = "4")]
+    pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// MITRE ATT&CK tactics and techniques related to this finding.
 /// See: <https://attack.mitre.org>
@@ -1429,6 +1657,7 @@ pub mod mitre_attack {
     }
     /// MITRE ATT&CK techniques that can be referenced by SCC findings.
     /// See: <https://attack.mitre.org/techniques/enterprise/>
+    /// Next ID: 59
     #[derive(
         Clone,
         Copy,
@@ -1444,76 +1673,122 @@ pub mod mitre_attack {
     pub enum Technique {
         /// Unspecified value.
         Unspecified = 0,
-        /// T1595
-        ActiveScanning = 1,
-        /// T1595.001
-        ScanningIpBlocks = 2,
-        /// T1105
-        IngressToolTransfer = 3,
-        /// T1106
-        NativeApi = 4,
-        /// T1129
-        SharedModules = 5,
+        /// T1036
+        Masquerading = 49,
+        /// T1036.005
+        MatchLegitimateNameOrLocation = 50,
+        /// T1037
+        BootOrLogonInitializationScripts = 37,
+        /// T1037.005
+        StartupItems = 38,
+        /// T1046
+        NetworkServiceDiscovery = 32,
+        /// T1057
+        ProcessDiscovery = 56,
         /// T1059
         CommandAndScriptingInterpreter = 6,
         /// T1059.004
         UnixShell = 7,
-        /// T1496
-        ResourceHijacking = 8,
+        /// T1069
+        PermissionGroupsDiscovery = 18,
+        /// T1069.003
+        CloudGroups = 19,
+        /// T1071
+        ApplicationLayerProtocol = 45,
+        /// T1071.004
+        Dns = 46,
+        /// T1072
+        SoftwareDeploymentTools = 47,
+        /// T1078
+        ValidAccounts = 14,
+        /// T1078.001
+        DefaultAccounts = 35,
+        /// T1078.003
+        LocalAccounts = 15,
+        /// T1078.004
+        CloudAccounts = 16,
         /// T1090
         Proxy = 9,
         /// T1090.002
         ExternalProxy = 10,
         /// T1090.003
         MultiHopProxy = 11,
-        /// T1568
-        DynamicResolution = 12,
-        /// T1552
-        UnsecuredCredentials = 13,
-        /// T1078
-        ValidAccounts = 14,
-        /// T1078.003
-        LocalAccounts = 15,
-        /// T1078.004
-        CloudAccounts = 16,
+        /// T1098
+        AccountManipulation = 22,
+        /// T1098.001
+        AdditionalCloudCredentials = 40,
+        /// T1098.004
+        SshAuthorizedKeys = 23,
+        /// T1098.006
+        AdditionalContainerClusterRoles = 58,
+        /// T1105
+        IngressToolTransfer = 3,
+        /// T1106
+        NativeApi = 4,
+        /// T1110
+        BruteForce = 44,
+        /// T1129
+        SharedModules = 5,
+        /// T1134
+        AccessTokenManipulation = 33,
+        /// T1134.001
+        TokenImpersonationOrTheft = 39,
+        /// T1190
+        ExploitPublicFacingApplication = 27,
+        /// T1484
+        DomainPolicyModification = 30,
+        /// T1485
+        DataDestruction = 29,
+        /// T1489
+        ServiceStop = 52,
+        /// T1490
+        InhibitSystemRecovery = 36,
+        /// T1496
+        ResourceHijacking = 8,
         /// T1498
         NetworkDenialOfService = 17,
-        /// T1069
-        PermissionGroupsDiscovery = 18,
-        /// T1069.003
-        CloudGroups = 19,
+        /// T1526
+        CloudServiceDiscovery = 48,
+        /// T1528
+        StealApplicationAccessToken = 42,
+        /// T1531
+        AccountAccessRemoval = 51,
+        /// T1539
+        StealWebSessionCookie = 25,
+        /// T1543
+        CreateOrModifySystemProcess = 24,
+        /// T1548
+        AbuseElevationControlMechanism = 34,
+        /// T1552
+        UnsecuredCredentials = 13,
+        /// T1556
+        ModifyAuthenticationProcess = 28,
+        /// T1562
+        ImpairDefenses = 31,
+        /// T1562.001
+        DisableOrModifyTools = 55,
         /// T1567
         ExfiltrationOverWebService = 20,
         /// T1567.002
         ExfiltrationToCloudStorage = 21,
-        /// T1098
-        AccountManipulation = 22,
-        /// T1098.004
-        SshAuthorizedKeys = 23,
-        /// T1543
-        CreateOrModifySystemProcess = 24,
-        /// T1539
-        StealWebSessionCookie = 25,
+        /// T1568
+        DynamicResolution = 12,
+        /// T1570
+        LateralToolTransfer = 41,
         /// T1578
         ModifyCloudComputeInfrastructure = 26,
-        /// T1190
-        ExploitPublicFacingApplication = 27,
-        /// T1556
-        ModifyAuthenticationProcess = 28,
-        /// T1485
-        DataDestruction = 29,
-        /// T1484
-        DomainPolicyModification = 30,
-        /// T1562
-        ImpairDefenses = 31,
-        /// T1046
-        NetworkServiceDiscovery = 32,
-        /// T1134
-        AccessTokenManipulation = 33,
-        /// T1548
-        AbuseElevationControlMechanism = 34,
-        /// T1078.001
-        DefaultAccounts = 35,
+        /// T1578.001
+        CreateSnapshot = 54,
+        /// T1580
+        CloudInfrastructureDiscovery = 53,
+        /// T1588
+        ObtainCapabilities = 43,
+        /// T1595
+        ActiveScanning = 1,
+        /// T1595.001
+        ScanningIpBlocks = 2,
+        /// T1613
+        ContainerAndResourceDiscovery = 57,
     }
     impl Technique {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1523,108 +1798,188 @@ pub mod mitre_attack {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Technique::Unspecified => "TECHNIQUE_UNSPECIFIED",
-                Technique::ActiveScanning => "ACTIVE_SCANNING",
-                Technique::ScanningIpBlocks => "SCANNING_IP_BLOCKS",
-                Technique::IngressToolTransfer => "INGRESS_TOOL_TRANSFER",
-                Technique::NativeApi => "NATIVE_API",
-                Technique::SharedModules => "SHARED_MODULES",
+                Technique::Masquerading => "MASQUERADING",
+                Technique::MatchLegitimateNameOrLocation => {
+                    "MATCH_LEGITIMATE_NAME_OR_LOCATION"
+                }
+                Technique::BootOrLogonInitializationScripts => {
+                    "BOOT_OR_LOGON_INITIALIZATION_SCRIPTS"
+                }
+                Technique::StartupItems => "STARTUP_ITEMS",
+                Technique::NetworkServiceDiscovery => "NETWORK_SERVICE_DISCOVERY",
+                Technique::ProcessDiscovery => "PROCESS_DISCOVERY",
                 Technique::CommandAndScriptingInterpreter => {
                     "COMMAND_AND_SCRIPTING_INTERPRETER"
                 }
                 Technique::UnixShell => "UNIX_SHELL",
-                Technique::ResourceHijacking => "RESOURCE_HIJACKING",
+                Technique::PermissionGroupsDiscovery => "PERMISSION_GROUPS_DISCOVERY",
+                Technique::CloudGroups => "CLOUD_GROUPS",
+                Technique::ApplicationLayerProtocol => "APPLICATION_LAYER_PROTOCOL",
+                Technique::Dns => "DNS",
+                Technique::SoftwareDeploymentTools => "SOFTWARE_DEPLOYMENT_TOOLS",
+                Technique::ValidAccounts => "VALID_ACCOUNTS",
+                Technique::DefaultAccounts => "DEFAULT_ACCOUNTS",
+                Technique::LocalAccounts => "LOCAL_ACCOUNTS",
+                Technique::CloudAccounts => "CLOUD_ACCOUNTS",
                 Technique::Proxy => "PROXY",
                 Technique::ExternalProxy => "EXTERNAL_PROXY",
                 Technique::MultiHopProxy => "MULTI_HOP_PROXY",
-                Technique::DynamicResolution => "DYNAMIC_RESOLUTION",
-                Technique::UnsecuredCredentials => "UNSECURED_CREDENTIALS",
-                Technique::ValidAccounts => "VALID_ACCOUNTS",
-                Technique::LocalAccounts => "LOCAL_ACCOUNTS",
-                Technique::CloudAccounts => "CLOUD_ACCOUNTS",
-                Technique::NetworkDenialOfService => "NETWORK_DENIAL_OF_SERVICE",
-                Technique::PermissionGroupsDiscovery => "PERMISSION_GROUPS_DISCOVERY",
-                Technique::CloudGroups => "CLOUD_GROUPS",
-                Technique::ExfiltrationOverWebService => "EXFILTRATION_OVER_WEB_SERVICE",
-                Technique::ExfiltrationToCloudStorage => "EXFILTRATION_TO_CLOUD_STORAGE",
                 Technique::AccountManipulation => "ACCOUNT_MANIPULATION",
+                Technique::AdditionalCloudCredentials => "ADDITIONAL_CLOUD_CREDENTIALS",
                 Technique::SshAuthorizedKeys => "SSH_AUTHORIZED_KEYS",
-                Technique::CreateOrModifySystemProcess => {
-                    "CREATE_OR_MODIFY_SYSTEM_PROCESS"
+                Technique::AdditionalContainerClusterRoles => {
+                    "ADDITIONAL_CONTAINER_CLUSTER_ROLES"
                 }
-                Technique::StealWebSessionCookie => "STEAL_WEB_SESSION_COOKIE",
-                Technique::ModifyCloudComputeInfrastructure => {
-                    "MODIFY_CLOUD_COMPUTE_INFRASTRUCTURE"
-                }
+                Technique::IngressToolTransfer => "INGRESS_TOOL_TRANSFER",
+                Technique::NativeApi => "NATIVE_API",
+                Technique::BruteForce => "BRUTE_FORCE",
+                Technique::SharedModules => "SHARED_MODULES",
+                Technique::AccessTokenManipulation => "ACCESS_TOKEN_MANIPULATION",
+                Technique::TokenImpersonationOrTheft => "TOKEN_IMPERSONATION_OR_THEFT",
                 Technique::ExploitPublicFacingApplication => {
                     "EXPLOIT_PUBLIC_FACING_APPLICATION"
                 }
-                Technique::ModifyAuthenticationProcess => "MODIFY_AUTHENTICATION_PROCESS",
-                Technique::DataDestruction => "DATA_DESTRUCTION",
                 Technique::DomainPolicyModification => "DOMAIN_POLICY_MODIFICATION",
-                Technique::ImpairDefenses => "IMPAIR_DEFENSES",
-                Technique::NetworkServiceDiscovery => "NETWORK_SERVICE_DISCOVERY",
-                Technique::AccessTokenManipulation => "ACCESS_TOKEN_MANIPULATION",
+                Technique::DataDestruction => "DATA_DESTRUCTION",
+                Technique::ServiceStop => "SERVICE_STOP",
+                Technique::InhibitSystemRecovery => "INHIBIT_SYSTEM_RECOVERY",
+                Technique::ResourceHijacking => "RESOURCE_HIJACKING",
+                Technique::NetworkDenialOfService => "NETWORK_DENIAL_OF_SERVICE",
+                Technique::CloudServiceDiscovery => "CLOUD_SERVICE_DISCOVERY",
+                Technique::StealApplicationAccessToken => {
+                    "STEAL_APPLICATION_ACCESS_TOKEN"
+                }
+                Technique::AccountAccessRemoval => "ACCOUNT_ACCESS_REMOVAL",
+                Technique::StealWebSessionCookie => "STEAL_WEB_SESSION_COOKIE",
+                Technique::CreateOrModifySystemProcess => {
+                    "CREATE_OR_MODIFY_SYSTEM_PROCESS"
+                }
                 Technique::AbuseElevationControlMechanism => {
                     "ABUSE_ELEVATION_CONTROL_MECHANISM"
                 }
-                Technique::DefaultAccounts => "DEFAULT_ACCOUNTS",
+                Technique::UnsecuredCredentials => "UNSECURED_CREDENTIALS",
+                Technique::ModifyAuthenticationProcess => "MODIFY_AUTHENTICATION_PROCESS",
+                Technique::ImpairDefenses => "IMPAIR_DEFENSES",
+                Technique::DisableOrModifyTools => "DISABLE_OR_MODIFY_TOOLS",
+                Technique::ExfiltrationOverWebService => "EXFILTRATION_OVER_WEB_SERVICE",
+                Technique::ExfiltrationToCloudStorage => "EXFILTRATION_TO_CLOUD_STORAGE",
+                Technique::DynamicResolution => "DYNAMIC_RESOLUTION",
+                Technique::LateralToolTransfer => "LATERAL_TOOL_TRANSFER",
+                Technique::ModifyCloudComputeInfrastructure => {
+                    "MODIFY_CLOUD_COMPUTE_INFRASTRUCTURE"
+                }
+                Technique::CreateSnapshot => "CREATE_SNAPSHOT",
+                Technique::CloudInfrastructureDiscovery => {
+                    "CLOUD_INFRASTRUCTURE_DISCOVERY"
+                }
+                Technique::ObtainCapabilities => "OBTAIN_CAPABILITIES",
+                Technique::ActiveScanning => "ACTIVE_SCANNING",
+                Technique::ScanningIpBlocks => "SCANNING_IP_BLOCKS",
+                Technique::ContainerAndResourceDiscovery => {
+                    "CONTAINER_AND_RESOURCE_DISCOVERY"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "TECHNIQUE_UNSPECIFIED" => Some(Self::Unspecified),
-                "ACTIVE_SCANNING" => Some(Self::ActiveScanning),
-                "SCANNING_IP_BLOCKS" => Some(Self::ScanningIpBlocks),
-                "INGRESS_TOOL_TRANSFER" => Some(Self::IngressToolTransfer),
-                "NATIVE_API" => Some(Self::NativeApi),
-                "SHARED_MODULES" => Some(Self::SharedModules),
+                "MASQUERADING" => Some(Self::Masquerading),
+                "MATCH_LEGITIMATE_NAME_OR_LOCATION" => {
+                    Some(Self::MatchLegitimateNameOrLocation)
+                }
+                "BOOT_OR_LOGON_INITIALIZATION_SCRIPTS" => {
+                    Some(Self::BootOrLogonInitializationScripts)
+                }
+                "STARTUP_ITEMS" => Some(Self::StartupItems),
+                "NETWORK_SERVICE_DISCOVERY" => Some(Self::NetworkServiceDiscovery),
+                "PROCESS_DISCOVERY" => Some(Self::ProcessDiscovery),
                 "COMMAND_AND_SCRIPTING_INTERPRETER" => {
                     Some(Self::CommandAndScriptingInterpreter)
                 }
                 "UNIX_SHELL" => Some(Self::UnixShell),
-                "RESOURCE_HIJACKING" => Some(Self::ResourceHijacking),
+                "PERMISSION_GROUPS_DISCOVERY" => Some(Self::PermissionGroupsDiscovery),
+                "CLOUD_GROUPS" => Some(Self::CloudGroups),
+                "APPLICATION_LAYER_PROTOCOL" => Some(Self::ApplicationLayerProtocol),
+                "DNS" => Some(Self::Dns),
+                "SOFTWARE_DEPLOYMENT_TOOLS" => Some(Self::SoftwareDeploymentTools),
+                "VALID_ACCOUNTS" => Some(Self::ValidAccounts),
+                "DEFAULT_ACCOUNTS" => Some(Self::DefaultAccounts),
+                "LOCAL_ACCOUNTS" => Some(Self::LocalAccounts),
+                "CLOUD_ACCOUNTS" => Some(Self::CloudAccounts),
                 "PROXY" => Some(Self::Proxy),
                 "EXTERNAL_PROXY" => Some(Self::ExternalProxy),
                 "MULTI_HOP_PROXY" => Some(Self::MultiHopProxy),
-                "DYNAMIC_RESOLUTION" => Some(Self::DynamicResolution),
-                "UNSECURED_CREDENTIALS" => Some(Self::UnsecuredCredentials),
-                "VALID_ACCOUNTS" => Some(Self::ValidAccounts),
-                "LOCAL_ACCOUNTS" => Some(Self::LocalAccounts),
-                "CLOUD_ACCOUNTS" => Some(Self::CloudAccounts),
-                "NETWORK_DENIAL_OF_SERVICE" => Some(Self::NetworkDenialOfService),
-                "PERMISSION_GROUPS_DISCOVERY" => Some(Self::PermissionGroupsDiscovery),
-                "CLOUD_GROUPS" => Some(Self::CloudGroups),
-                "EXFILTRATION_OVER_WEB_SERVICE" => Some(Self::ExfiltrationOverWebService),
-                "EXFILTRATION_TO_CLOUD_STORAGE" => Some(Self::ExfiltrationToCloudStorage),
                 "ACCOUNT_MANIPULATION" => Some(Self::AccountManipulation),
+                "ADDITIONAL_CLOUD_CREDENTIALS" => Some(Self::AdditionalCloudCredentials),
                 "SSH_AUTHORIZED_KEYS" => Some(Self::SshAuthorizedKeys),
-                "CREATE_OR_MODIFY_SYSTEM_PROCESS" => {
-                    Some(Self::CreateOrModifySystemProcess)
+                "ADDITIONAL_CONTAINER_CLUSTER_ROLES" => {
+                    Some(Self::AdditionalContainerClusterRoles)
                 }
-                "STEAL_WEB_SESSION_COOKIE" => Some(Self::StealWebSessionCookie),
-                "MODIFY_CLOUD_COMPUTE_INFRASTRUCTURE" => {
-                    Some(Self::ModifyCloudComputeInfrastructure)
-                }
+                "INGRESS_TOOL_TRANSFER" => Some(Self::IngressToolTransfer),
+                "NATIVE_API" => Some(Self::NativeApi),
+                "BRUTE_FORCE" => Some(Self::BruteForce),
+                "SHARED_MODULES" => Some(Self::SharedModules),
+                "ACCESS_TOKEN_MANIPULATION" => Some(Self::AccessTokenManipulation),
+                "TOKEN_IMPERSONATION_OR_THEFT" => Some(Self::TokenImpersonationOrTheft),
                 "EXPLOIT_PUBLIC_FACING_APPLICATION" => {
                     Some(Self::ExploitPublicFacingApplication)
                 }
-                "MODIFY_AUTHENTICATION_PROCESS" => {
-                    Some(Self::ModifyAuthenticationProcess)
-                }
-                "DATA_DESTRUCTION" => Some(Self::DataDestruction),
                 "DOMAIN_POLICY_MODIFICATION" => Some(Self::DomainPolicyModification),
-                "IMPAIR_DEFENSES" => Some(Self::ImpairDefenses),
-                "NETWORK_SERVICE_DISCOVERY" => Some(Self::NetworkServiceDiscovery),
-                "ACCESS_TOKEN_MANIPULATION" => Some(Self::AccessTokenManipulation),
+                "DATA_DESTRUCTION" => Some(Self::DataDestruction),
+                "SERVICE_STOP" => Some(Self::ServiceStop),
+                "INHIBIT_SYSTEM_RECOVERY" => Some(Self::InhibitSystemRecovery),
+                "RESOURCE_HIJACKING" => Some(Self::ResourceHijacking),
+                "NETWORK_DENIAL_OF_SERVICE" => Some(Self::NetworkDenialOfService),
+                "CLOUD_SERVICE_DISCOVERY" => Some(Self::CloudServiceDiscovery),
+                "STEAL_APPLICATION_ACCESS_TOKEN" => {
+                    Some(Self::StealApplicationAccessToken)
+                }
+                "ACCOUNT_ACCESS_REMOVAL" => Some(Self::AccountAccessRemoval),
+                "STEAL_WEB_SESSION_COOKIE" => Some(Self::StealWebSessionCookie),
+                "CREATE_OR_MODIFY_SYSTEM_PROCESS" => {
+                    Some(Self::CreateOrModifySystemProcess)
+                }
                 "ABUSE_ELEVATION_CONTROL_MECHANISM" => {
                     Some(Self::AbuseElevationControlMechanism)
                 }
-                "DEFAULT_ACCOUNTS" => Some(Self::DefaultAccounts),
+                "UNSECURED_CREDENTIALS" => Some(Self::UnsecuredCredentials),
+                "MODIFY_AUTHENTICATION_PROCESS" => {
+                    Some(Self::ModifyAuthenticationProcess)
+                }
+                "IMPAIR_DEFENSES" => Some(Self::ImpairDefenses),
+                "DISABLE_OR_MODIFY_TOOLS" => Some(Self::DisableOrModifyTools),
+                "EXFILTRATION_OVER_WEB_SERVICE" => Some(Self::ExfiltrationOverWebService),
+                "EXFILTRATION_TO_CLOUD_STORAGE" => Some(Self::ExfiltrationToCloudStorage),
+                "DYNAMIC_RESOLUTION" => Some(Self::DynamicResolution),
+                "LATERAL_TOOL_TRANSFER" => Some(Self::LateralToolTransfer),
+                "MODIFY_CLOUD_COMPUTE_INFRASTRUCTURE" => {
+                    Some(Self::ModifyCloudComputeInfrastructure)
+                }
+                "CREATE_SNAPSHOT" => Some(Self::CreateSnapshot),
+                "CLOUD_INFRASTRUCTURE_DISCOVERY" => {
+                    Some(Self::CloudInfrastructureDiscovery)
+                }
+                "OBTAIN_CAPABILITIES" => Some(Self::ObtainCapabilities),
+                "ACTIVE_SCANNING" => Some(Self::ActiveScanning),
+                "SCANNING_IP_BLOCKS" => Some(Self::ScanningIpBlocks),
+                "CONTAINER_AND_RESOURCE_DISCOVERY" => {
+                    Some(Self::ContainerAndResourceDiscovery)
+                }
                 _ => None,
             }
         }
     }
+}
+/// Contains information about the org policies associated with the finding.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OrgPolicy {
+    /// The resource name of the org policy.
+    /// Example:
+    /// "organizations/{organization_id}/policies/{constraint_name}"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Represents an operating system process.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1685,9 +2040,20 @@ pub struct Vulnerability {
     /// (<https://cve.mitre.org/about/>)
     #[prost(message, optional, tag = "1")]
     pub cve: ::core::option::Option<Cve>,
+    /// The offending package is relevant to the finding.
+    #[prost(message, optional, tag = "2")]
+    pub offending_package: ::core::option::Option<Package>,
+    /// The fixed package is relevant to the finding.
+    #[prost(message, optional, tag = "3")]
+    pub fixed_package: ::core::option::Option<Package>,
+    /// The security bulletin is relevant to this finding.
+    #[prost(message, optional, tag = "4")]
+    pub security_bulletin: ::core::option::Option<SecurityBulletin>,
 }
 /// CVE stands for Common Vulnerabilities and Exposures.
-/// More information: <https://cve.mitre.org>
+/// Information from the [CVE
+/// record](<https://www.cve.org/ResourcesSupport/Glossary>) that describes this
+/// vulnerability.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cve {
@@ -1705,6 +2071,135 @@ pub struct Cve {
     /// Whether upstream fix is available for the CVE.
     #[prost(bool, tag = "4")]
     pub upstream_fix_available: bool,
+    /// The potential impact of the vulnerability if it was to be exploited.
+    #[prost(enumeration = "cve::RiskRating", tag = "5")]
+    pub impact: i32,
+    /// The exploitation activity of the vulnerability in the wild.
+    #[prost(enumeration = "cve::ExploitationActivity", tag = "6")]
+    pub exploitation_activity: i32,
+    /// Whether or not the vulnerability has been observed in the wild.
+    #[prost(bool, tag = "7")]
+    pub observed_in_the_wild: bool,
+    /// Whether or not the vulnerability was zero day when the finding was
+    /// published.
+    #[prost(bool, tag = "8")]
+    pub zero_day: bool,
+}
+/// Nested message and enum types in `Cve`.
+pub mod cve {
+    /// The possible values of impact of the vulnerability if it was to be
+    /// exploited.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RiskRating {
+        /// Invalid or empty value.
+        Unspecified = 0,
+        /// Exploitation would have little to no security impact.
+        Low = 1,
+        /// Exploitation would enable attackers to perform activities, or could allow
+        /// attackers to have a direct impact, but would require additional steps.
+        Medium = 2,
+        /// Exploitation would enable attackers to have a notable direct impact
+        /// without needing to overcome any major mitigating factors.
+        High = 3,
+        /// Exploitation would fundamentally undermine the security of affected
+        /// systems, enable actors to perform significant attacks with minimal
+        /// effort, with little to no mitigating factors to overcome.
+        Critical = 4,
+    }
+    impl RiskRating {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RiskRating::Unspecified => "RISK_RATING_UNSPECIFIED",
+                RiskRating::Low => "LOW",
+                RiskRating::Medium => "MEDIUM",
+                RiskRating::High => "HIGH",
+                RiskRating::Critical => "CRITICAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RISK_RATING_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOW" => Some(Self::Low),
+                "MEDIUM" => Some(Self::Medium),
+                "HIGH" => Some(Self::High),
+                "CRITICAL" => Some(Self::Critical),
+                _ => None,
+            }
+        }
+    }
+    /// The possible values of exploitation activity of the vulnerability in the
+    /// wild.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ExploitationActivity {
+        /// Invalid or empty value.
+        Unspecified = 0,
+        /// Exploitation has been reported or confirmed to widely occur.
+        Wide = 1,
+        /// Limited reported or confirmed exploitation activities.
+        Confirmed = 2,
+        /// Exploit is publicly available.
+        Available = 3,
+        /// No known exploitation activity, but has a high potential for
+        /// exploitation.
+        Anticipated = 4,
+        /// No known exploitation activity.
+        NoKnown = 5,
+    }
+    impl ExploitationActivity {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ExploitationActivity::Unspecified => "EXPLOITATION_ACTIVITY_UNSPECIFIED",
+                ExploitationActivity::Wide => "WIDE",
+                ExploitationActivity::Confirmed => "CONFIRMED",
+                ExploitationActivity::Available => "AVAILABLE",
+                ExploitationActivity::Anticipated => "ANTICIPATED",
+                ExploitationActivity::NoKnown => "NO_KNOWN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXPLOITATION_ACTIVITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "WIDE" => Some(Self::Wide),
+                "CONFIRMED" => Some(Self::Confirmed),
+                "AVAILABLE" => Some(Self::Available),
+                "ANTICIPATED" => Some(Self::Anticipated),
+                "NO_KNOWN" => Some(Self::NoKnown),
+                _ => None,
+            }
+        }
+    }
 }
 /// Additional Links
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2069,6 +2564,38 @@ pub mod cvssv3 {
         }
     }
 }
+/// Package is a generic definition of a package.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Package {
+    /// The name of the package where the vulnerability was detected.
+    #[prost(string, tag = "1")]
+    pub package_name: ::prost::alloc::string::String,
+    /// The CPE URI where the vulnerability was detected.
+    #[prost(string, tag = "2")]
+    pub cpe_uri: ::prost::alloc::string::String,
+    /// Type of package, for example, os, maven, or go.
+    #[prost(string, tag = "3")]
+    pub package_type: ::prost::alloc::string::String,
+    /// The version of the package.
+    #[prost(string, tag = "4")]
+    pub package_version: ::prost::alloc::string::String,
+}
+/// SecurityBulletin are notifications of vulnerabilities of Google products.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecurityBulletin {
+    /// ID of the bulletin corresponding to the vulnerability.
+    #[prost(string, tag = "1")]
+    pub bulletin_id: ::prost::alloc::string::String,
+    /// Submission time of this Security Bulletin.
+    #[prost(message, optional, tag = "2")]
+    pub submission_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// This represents a version that the cluster receiving this notification
+    /// should be upgraded to, based on its current version. For example, 1.15.0
+    #[prost(string, tag = "3")]
+    pub suggested_upgrade_version: ::prost::alloc::string::String,
+}
 /// Security Command Center finding.
 ///
 /// A finding is a record of assessment data like security, risk, health, or
@@ -2272,6 +2799,21 @@ pub struct Finding {
     /// Signature of the kernel rootkit.
     #[prost(message, optional, tag = "50")]
     pub kernel_rootkit: ::core::option::Option<KernelRootkit>,
+    /// Contains information about the org policies associated with the finding.
+    #[prost(message, repeated, tag = "51")]
+    pub org_policies: ::prost::alloc::vec::Vec<OrgPolicy>,
+    /// Represents an application associated with the finding.
+    #[prost(message, optional, tag = "53")]
+    pub application: ::core::option::Option<Application>,
+    /// Fields related to Backup and DR findings.
+    #[prost(message, optional, tag = "55")]
+    pub backup_disaster_recovery: ::core::option::Option<BackupDisasterRecovery>,
+    /// Log entries that are relevant to the finding.
+    #[prost(message, repeated, tag = "57")]
+    pub log_entries: ::prost::alloc::vec::Vec<LogEntry>,
+    /// The load balancers associated with the finding.
+    #[prost(message, repeated, tag = "58")]
+    pub load_balancers: ::prost::alloc::vec::Vec<LoadBalancer>,
 }
 /// Nested message and enum types in `Finding`.
 pub mod finding {
@@ -2990,9 +3532,9 @@ pub struct Source {
     /// outdated or insecure libraries."
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// The canonical name of the finding. It's either
+    /// The canonical name of the finding source. It's either
     /// "organizations/{organization_id}/sources/{source_id}",
-    /// "folders/{folder_id}/sources/{source_id}" or
+    /// "folders/{folder_id}/sources/{source_id}", or
     /// "projects/{project_number}/sources/{source_id}",
     /// depending on the closest CRM ancestor of the resource associated with the
     /// finding.

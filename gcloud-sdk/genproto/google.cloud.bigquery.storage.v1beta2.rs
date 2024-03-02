@@ -593,7 +593,7 @@ pub struct ReadRowsResponse {
     pub rows: ::core::option::Option<read_rows_response::Rows>,
     /// The schema for the read. If read_options.selected_fields is set, the
     /// schema may be different from the table schema as it will only contain
-    /// the selected fields. This schema is equivelant to the one returned by
+    /// the selected fields. This schema is equivalent to the one returned by
     /// CreateSession. This field is only populated in the first ReadRowsResponse
     /// RPC.
     #[prost(oneof = "read_rows_response::Schema", tags = "7, 8")]
@@ -614,7 +614,7 @@ pub mod read_rows_response {
     }
     /// The schema for the read. If read_options.selected_fields is set, the
     /// schema may be different from the table schema as it will only contain
-    /// the selected fields. This schema is equivelant to the one returned by
+    /// the selected fields. This schema is equivalent to the one returned by
     /// CreateSession. This field is only populated in the first ReadRowsResponse
     /// RPC.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1159,6 +1159,7 @@ pub mod big_query_write_client {
     /// BigQuery Write API.
     ///
     /// The Write API can be used to write data to BigQuery.
+    ///
     ///
     /// The [google.cloud.bigquery.storage.v1
     ///   API](/bigquery/docs/reference/storage/rpc/google.cloud.bigquery.storage.v1)

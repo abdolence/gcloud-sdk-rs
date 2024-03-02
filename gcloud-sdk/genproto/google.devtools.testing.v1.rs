@@ -250,6 +250,11 @@ pub struct TestMatrix {
     /// Only useful for matrices in the INVALID state.
     #[prost(enumeration = "InvalidMatrixDetails", tag = "11")]
     pub invalid_matrix_details: i32,
+    /// Output only. Details about why a matrix was deemed invalid.
+    /// If multiple checks can be safely performed, they will be reported but no
+    /// assumptions should be made about the length of this list.
+    #[prost(message, repeated, tag = "22")]
+    pub extended_invalid_matrix_details: ::prost::alloc::vec::Vec<MatrixErrorDetail>,
     /// The number of times a TestExecution should be re-attempted if one or more
     /// of its test cases fail for any reason.
     /// The maximum number of reruns allowed is 10.
@@ -272,6 +277,20 @@ pub struct TestMatrix {
     /// and support is more limited because of that expectation.
     #[prost(bool, tag = "17")]
     pub fail_fast: bool,
+}
+/// Describes a single error or issue with a matrix.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MatrixErrorDetail {
+    /// Output only. The reason for the error. This is a constant value in
+    /// UPPER_SNAKE_CASE that identifies the cause of the error.
+    #[prost(string, tag = "1")]
+    pub reason: ::prost::alloc::string::String,
+    /// Output only. A human-readable message about how the error in the
+    /// TestMatrix. Expands on the `reason` field with additional details and
+    /// possible options to fix the issue.
+    #[prost(string, tag = "2")]
+    pub message: ::prost::alloc::string::String,
 }
 /// A single test executed in a single environment.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2168,7 +2187,7 @@ pub mod test_execution_service_client {
         }
     }
 }
-/// Android application details based on application manifest and apk archive
+/// Android application details based on application manifest and archive
 /// contents.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2269,19 +2288,22 @@ pub struct UsesFeature {
     #[prost(bool, tag = "2")]
     pub is_required: bool,
 }
-/// A request to get the details of an Android application APK.
+/// A request to get the details of an Android application.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetApkDetailsRequest {
-    /// The APK to be parsed for details.
+    /// Optional. The APK to be parsed for details.
     #[prost(message, optional, tag = "1")]
     pub location: ::core::option::Option<FileReference>,
+    /// Optional. The App Bundle to be parsed for details.
+    #[prost(message, optional, tag = "2")]
+    pub bundle_location: ::core::option::Option<FileReference>,
 }
-/// Response containing the details of the specified Android application APK.
+/// Response containing the details of the specified Android application.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetApkDetailsResponse {
-    /// Details of the Android APK.
+    /// Details of the Android App.
     #[prost(message, optional, tag = "1")]
     pub apk_detail: ::core::option::Option<ApkDetail>,
 }
@@ -3173,6 +3195,12 @@ pub struct PerAndroidVersionInfo {
     /// The number of online devices for an Android version.
     #[prost(enumeration = "DeviceCapacity", tag = "2")]
     pub device_capacity: i32,
+    /// Output only. The estimated wait time for a single interactive device
+    /// session using Direct Access.
+    #[prost(message, optional, tag = "3")]
+    pub interactive_device_availability_estimate: ::core::option::Option<
+        ::prost_types::Duration,
+    >,
     /// Output only. Identifies supported clients for DirectAccess for this Android
     /// version.
     #[prost(message, optional, tag = "4")]

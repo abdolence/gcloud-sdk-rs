@@ -1896,8 +1896,8 @@ pub struct SearchAllResourcesRequest {
     #[prost(string, tag = "2")]
     pub query: ::prost::alloc::string::String,
     /// Optional. A list of asset types that this request searches for. If empty,
-    /// it will search all the [searchable asset
-    /// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>).
+    /// it will search all the asset types [supported by search
+    /// APIs](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>).
     ///
     /// Regular expressions are also supported. For example:
     ///
@@ -2067,9 +2067,9 @@ pub struct SearchAllIamPoliciesRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. A list of asset types that the IAM policies are attached to. If
-    /// empty, it will search the IAM policies that are attached to all the
-    /// [searchable asset
-    /// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>).
+    /// empty, it will search the IAM policies that are attached to all the asset
+    /// types [supported by search
+    /// APIs](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
     ///
     /// Regular expressions are also supported. For example:
     ///
@@ -3147,8 +3147,8 @@ pub struct BatchGetEffectiveIamPoliciesRequest {
     pub scope: ::prost::alloc::string::String,
     /// Required. The names refer to the \[full_resource_names\]
     /// (<https://cloud.google.com/asset-inventory/docs/resource-name-format>)
-    /// of [searchable asset
-    /// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>).
+    /// of the asset types [supported by search
+    /// APIs](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>).
     /// A maximum of 20 resources' effective policies can be retrieved in a batch.
     #[prost(string, repeated, tag = "3")]
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -4782,9 +4782,8 @@ pub mod asset_service_client {
         /// * compute.requireOsLogin
         /// * compute.disableNestedVirtualization
         ///
-        /// This RPC only returns either resources of types supported by [searchable
-        /// asset
-        /// types](https://cloud.google.com/asset-inventory/docs/supported-asset-types),
+        /// This RPC only returns either resources of types [supported by search
+        /// APIs](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
         /// or IAM policies.
         pub async fn analyze_org_policy_governed_assets(
             &mut self,

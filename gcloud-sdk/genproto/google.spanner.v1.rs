@@ -743,6 +743,22 @@ pub struct QueryPlan {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionOptions {
+    /// When `exclude_txn_from_change_streams` is set to `true`:
+    ///   * Mutations from this transaction will not be recorded in change streams
+    ///   with DDL option `allow_txn_exclusion=true` that are tracking columns
+    ///   modified by these transactions.
+    ///   * Mutations from this transaction will be recorded in change streams with
+    ///   DDL option `allow_txn_exclusion=false or not set` that are tracking
+    ///   columns modified by these transactions.
+    ///
+    /// When `exclude_txn_from_change_streams` is set to `false` or not set,
+    /// mutations from this transaction will be recorded in all change streams that
+    /// are tracking columns modified by these transactions.
+    /// `exclude_txn_from_change_streams` may only be specified for read-write or
+    /// partitioned-dml transactions, otherwise the API will return an
+    /// `INVALID_ARGUMENT` error.
+    #[prost(bool, tag = "5")]
+    pub exclude_txn_from_change_streams: bool,
     /// Required. The type of transaction.
     #[prost(oneof = "transaction_options::Mode", tags = "1, 3, 2")]
     pub mode: ::core::option::Option<transaction_options::Mode>,
@@ -1489,6 +1505,15 @@ pub struct Session {
     /// The database role which created this session.
     #[prost(string, tag = "5")]
     pub creator_role: ::prost::alloc::string::String,
+    /// Optional. If true, specifies a multiplexed session. A multiplexed session
+    /// may be used for multiple, concurrent read-only operations but can not be
+    /// used for read-write transactions, partitioned reads, or partitioned
+    /// queries. Multiplexed sessions can be created via
+    /// [CreateSession][google.spanner.v1.Spanner.CreateSession] but not via
+    /// [BatchCreateSessions][google.spanner.v1.Spanner.BatchCreateSessions].
+    /// Multiplexed sessions may not be deleted nor listed.
+    #[prost(bool, tag = "6")]
+    pub multiplexed: bool,
 }
 /// The request for [GetSession][google.spanner.v1.Spanner.GetSession].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1655,8 +1680,7 @@ pub mod request_options {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DirectedReadOptions {
-    /// Required. Replicas indicates the order in which replicas should be
-    /// considered. At most one of either include_replicas or exclude_replicas
+    /// Required. At most one of either include_replicas or exclude_replicas
     /// should be present in the message.
     #[prost(oneof = "directed_read_options::Replicas", tags = "1, 2")]
     pub replicas: ::core::option::Option<directed_read_options::Replicas>,
@@ -1676,7 +1700,7 @@ pub mod directed_read_options {
     ///    * `location:us-east1` --> The "us-east1" replica(s) of any available type
     ///                              will be used to process the request.
     ///    * `type:READ_ONLY`    --> The "READ_ONLY" type replica(s) in nearest
-    /// .                            available location will be used to process the
+    ///                              available location will be used to process the
     ///                              request.
     ///    * `location:us-east1 type:READ_ONLY` --> The "READ_ONLY" type replica(s)
     ///                           in location "us-east1" will be used to process
@@ -1760,8 +1784,7 @@ pub mod directed_read_options {
         #[prost(message, repeated, tag = "1")]
         pub replica_selections: ::prost::alloc::vec::Vec<ReplicaSelection>,
     }
-    /// Required. Replicas indicates the order in which replicas should be
-    /// considered. At most one of either include_replicas or exclude_replicas
+    /// Required. At most one of either include_replicas or exclude_replicas
     /// should be present in the message.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1773,8 +1796,9 @@ pub mod directed_read_options {
         /// may fail due to `DEADLINE_EXCEEDED` errors.
         #[prost(message, tag = "1")]
         IncludeReplicas(IncludeReplicas),
-        /// Exclude_replicas indicates that should be excluded from serving
-        /// requests. Spanner will not route requests to the replicas in this list.
+        /// Exclude_replicas indicates that specified replicas should be excluded
+        /// from serving requests. Spanner will not route requests to the replicas
+        /// in this list.
         #[prost(message, tag = "2")]
         ExcludeReplicas(ExcludeReplicas),
     }
@@ -2425,6 +2449,20 @@ pub struct BatchWriteRequest {
     /// Required. The groups of mutations to be applied.
     #[prost(message, repeated, tag = "4")]
     pub mutation_groups: ::prost::alloc::vec::Vec<batch_write_request::MutationGroup>,
+    /// Optional. When `exclude_txn_from_change_streams` is set to `true`:
+    ///   * Mutations from all transactions in this batch write operation will not
+    ///   be recorded in change streams with DDL option `allow_txn_exclusion=true`
+    ///   that are tracking columns modified by these transactions.
+    ///   * Mutations from all transactions in this batch write operation will be
+    ///   recorded in change streams with DDL option `allow_txn_exclusion=false or
+    ///   not set` that are tracking columns modified by these transactions.
+    ///
+    /// When `exclude_txn_from_change_streams` is set to `false` or not set,
+    /// mutations from all transactions in this batch write operation will be
+    /// recorded in all change streams that are tracking columns modified by these
+    /// transactions.
+    #[prost(bool, tag = "5")]
+    pub exclude_txn_from_change_streams: bool,
 }
 /// Nested message and enum types in `BatchWriteRequest`.
 pub mod batch_write_request {

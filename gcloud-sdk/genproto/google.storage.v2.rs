@@ -2148,6 +2148,18 @@ pub struct Object {
     /// A user-specified timestamp set on an object.
     #[prost(message, optional, tag = "26")]
     pub custom_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. This is the time when the object became soft-deleted.
+    ///
+    /// Soft-deleted objects are only accessible if a soft_delete_policy is
+    /// enabled. Also see hard_delete_time.
+    #[prost(message, optional, tag = "28")]
+    pub soft_delete_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the object will be permanently deleted.
+    ///
+    /// Only set when an object becomes soft-deleted with a soft_delete_policy.
+    /// Otherwise, the object will not be accessible.
+    #[prost(message, optional, tag = "29")]
+    pub hard_delete_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// An access-control entry.
 #[allow(clippy::derive_partial_eq_without_eq)]

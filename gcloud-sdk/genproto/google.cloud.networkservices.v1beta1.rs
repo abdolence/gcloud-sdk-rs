@@ -203,7 +203,7 @@ pub mod extension_chain {
         ///
         /// For more information, see
         /// [CEL matcher language
-        /// reference](<https://cloud.google.com/service-extensions/docs/cel-matcher-language-reference>).
+        /// reference](/service-extensions/docs/cel-matcher-language-reference).
         #[prost(string, tag = "1")]
         pub cel_expression: ::prost::alloc::string::String,
     }
@@ -219,15 +219,15 @@ pub mod extension_chain {
         /// last a letter or a number.
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
-        /// Required. The `:authority` header in the gRPC request sent from Envoy
+        /// Optional. The `:authority` header in the gRPC request sent from Envoy
         /// to the extension service.
         #[prost(string, tag = "2")]
         pub authority: ::prost::alloc::string::String,
         /// Required. The reference to the service that runs the extension.
         ///
-        /// Currently only Callout extensions are supported here.
+        /// Currently only callout extensions are supported here.
         ///
-        /// To configure a Callout extension, `service` must be a fully-qualified
+        /// To configure a callout extension, `service` must be a fully-qualified
         /// reference
         /// to a [backend
         /// service](<https://cloud.google.com/compute/docs/reference/rest/v1/backendServices>)
@@ -254,17 +254,17 @@ pub mod extension_chain {
         pub timeout: ::core::option::Option<::prost_types::Duration>,
         /// Optional. Determines how the proxy behaves if the call to the extension
         /// fails or times out.
+        ///
         /// When set to `TRUE`, request or response processing continues without
         /// error. Any subsequent extensions in the extension chain are also
-        /// executed. When set to `FALSE`:
-        /// * If response headers have not been delivered to the downstream
-        ///   client, a generic 500 error is returned to the client. The error
-        ///   response can be tailored by configuring a custom error response
-        ///   in the load balancer.
+        /// executed. When set to `FALSE` or the default setting of `FALSE` is used,
+        /// one of the following happens:
+        /// * If response headers have not been delivered to the downstream client,
+        /// a generic 500 error is returned to the client. The error response can be
+        /// tailored by configuring a custom error response in the load balancer.
         ///
-        /// * If response headers have been delivered, then the HTTP stream to
-        ///   the downstream client is reset.
-        /// Default is `FALSE`.
+        /// * If response headers have been delivered, then the HTTP stream to the
+        /// downstream client is reset.
         #[prost(bool, tag = "6")]
         pub fail_open: bool,
         /// Optional. List of the HTTP headers to forward to the extension
@@ -275,7 +275,7 @@ pub mod extension_chain {
     }
     /// Nested message and enum types in `Extension`.
     pub mod extension {
-        /// Defines the part of the request or response for which this extension
+        /// The part of the request or response for which this extension
         /// is called.
         /// The valid values are:
         /// `REQUEST_HEADERS`, `REQUEST_BODY`, `RESPONSE_HEADERS`, `RESPONSE_BODY`.
@@ -358,8 +358,9 @@ pub struct LbTrafficExtension {
     pub description: ::prost::alloc::string::String,
     /// Optional. Set of labels associated with the `LbTrafficExtension` resource.
     ///
-    /// The format must comply with [the following
-    /// requirements](/compute/docs/labeling-resources#requirements).
+    /// The format must comply with [the requirements for
+    /// labels](/compute/docs/labeling-resources#requirements) for Google Cloud
+    /// resources.
     #[prost(map = "string, string", tag = "4")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -540,8 +541,9 @@ pub struct LbRouteExtension {
     pub description: ::prost::alloc::string::String,
     /// Optional. Set of labels associated with the `LbRouteExtension` resource.
     ///
-    /// The format must comply with [the following
-    /// requirements](/compute/docs/labeling-resources#requirements).
+    /// The format must comply with [the requirements for
+    /// labels](/compute/docs/labeling-resources#requirements) for Google Cloud
+    /// resources.
     #[prost(map = "string, string", tag = "4")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -702,7 +704,7 @@ pub struct DeleteLbRouteExtensionRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Load balancing schemes supported by the `LbTrafficExtension` resource and
-/// `LbRouteExtension` resource. The valid values are: `INTERNAL_MANAGED`,
+/// `LbRouteExtension` resource. The valid values are `INTERNAL_MANAGED` and
 /// `EXTERNAL_MANAGED`.
 /// For more information, refer to [Choosing a load
 /// balancer](<https://cloud.google.com/load-balancing/docs/backend-service>).

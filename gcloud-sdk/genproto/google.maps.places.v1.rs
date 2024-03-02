@@ -350,8 +350,8 @@ pub struct Review {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Place {
-    /// An ID representing this place which may be used to look up this place
-    /// again (a.k.a. the API "resource" name: places/place_id).
+    /// This Place's resource name, in `places/{place_id}` format.  Can be used to
+    /// look up the Place.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The unique identifier of a place.
@@ -1166,7 +1166,6 @@ pub mod search_nearby_request {
 }
 /// Response proto for Search Nearby.
 ///
-///
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchNearbyResponse {
@@ -1251,6 +1250,9 @@ pub struct SearchTextRequest {
     pub location_restriction: ::core::option::Option<
         search_text_request::LocationRestriction,
     >,
+    /// Optional. Set the searchable EV options of a place search request.
+    #[prost(message, optional, tag = "15")]
+    pub ev_options: ::core::option::Option<search_text_request::EvOptions>,
 }
 /// Nested message and enum types in `SearchTextRequest`.
 pub mod search_text_request {
@@ -1302,6 +1304,24 @@ pub mod search_text_request {
             #[prost(message, tag = "1")]
             Rectangle(super::super::super::super::super::geo::r#type::Viewport),
         }
+    }
+    /// Searchable EV options of a place search request.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EvOptions {
+        /// Optional. Filtering places by minimum charging rate. Any places with
+        /// charging a rate less than the minimum charging rate are filtered out.
+        #[prost(double, tag = "1")]
+        pub minimum_charging_rate_kw: f64,
+        /// Optional. The list of preferred EV connector types. A place that does not
+        /// support any of the listed connector types are filter out.
+        #[prost(
+            enumeration = "super::EvConnectorType",
+            repeated,
+            packed = "false",
+            tag = "2"
+        )]
+        pub connector_types: ::prost::alloc::vec::Vec<i32>,
     }
     /// How results will be ranked in the response.
     #[derive(
@@ -1415,13 +1435,12 @@ pub struct PhotoMedia {
     #[prost(string, tag = "2")]
     pub photo_uri: ::prost::alloc::string::String,
 }
-/// Request for fetching a Place with a place id (in a name) string.
+/// Request for fetching a Place based on its resource name, which is a string in
+/// the `places/{place_id}` format.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPlaceRequest {
-    /// Required. A place ID returned in a Place (with "places/" prefix), or
-    /// equivalently the name in the same Place. Format:
-    /// `places/{place_id}`.
+    /// Required. The resource name of a place, in the `places/{place_id}` format.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Place details will be displayed with the preferred language if
@@ -1442,6 +1461,335 @@ pub struct GetPlaceRequest {
     /// Note that 3-digit region codes are not currently supported.
     #[prost(string, tag = "3")]
     pub region_code: ::prost::alloc::string::String,
+    /// Optional. An arbitrary string which identifies an autocomplete session for
+    /// billing purposes. Must be at most 36 characters in length. Otherwise an
+    /// INVALID_ARGUMENT error is returned.
+    ///
+    /// The session begins when the user starts typing a query, and concludes when
+    /// they select a place and a call to Place Details or Address Validation is
+    /// made. Each session can have multiple queries, followed by one Place
+    /// selection. The credentials used for each request within a session must
+    /// belong to the same Google Cloud Console project. Once a session has
+    /// concluded, the token is no longer valid; your app must generate a fresh
+    /// token for each session. If the `session_token` parameter is omitted, or if
+    /// you reuse a session token, the session is charged as if no session token
+    /// was provided (each request is billed separately).
+    ///
+    /// We recommend the following guidelines:
+    /// * Use session tokens for all Place Autocomplete calls.
+    /// * Generate a fresh token for each session. Using a version 4 UUID is
+    ///    recommended.
+    /// * Ensure that the credentials used for all Place Autocomplete, Place
+    ///    Details, and Address Validation requests within a session belong to the
+    ///    same Cloud Console project.
+    /// * Be sure to pass a unique session token for each new session. Using the
+    ///    same token for more than one session will result in each request being
+    ///    billed individually.
+    #[prost(string, tag = "4")]
+    pub session_token: ::prost::alloc::string::String,
+}
+/// Request proto for AutocompletePlaces.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutocompletePlacesRequest {
+    /// Required. The text string on which to search.
+    #[prost(string, tag = "1")]
+    pub input: ::prost::alloc::string::String,
+    /// Optional. Bias results to a specified location.
+    ///
+    /// At most one of `location_bias` or `location_restriction` should be set. If
+    /// neither are set, the results will be biased by IP address, meaning the IP
+    /// address will be mapped to an imprecise location and used as a biasing
+    /// signal.
+    #[prost(message, optional, tag = "2")]
+    pub location_bias: ::core::option::Option<autocomplete_places_request::LocationBias>,
+    /// Optional. Restrict results to a specified location.
+    ///
+    /// At most one of `location_bias` or `location_restriction` should be set. If
+    /// neither are set, the results will be biased by IP address, meaning the IP
+    /// address will be mapped to an imprecise location and used as a biasing
+    /// signal.
+    #[prost(message, optional, tag = "3")]
+    pub location_restriction: ::core::option::Option<
+        autocomplete_places_request::LocationRestriction,
+    >,
+    /// Optional. Included primary Place type (e.g. "restaurant" or "gas_station")
+    /// from
+    /// <https://developers.google.com/maps/documentation/places/web-service/place-types.>
+    /// A Place is only returned if its primary type is included in this list. Up
+    /// to 5 values can be specified. If no types are specified, all Place types
+    /// are returned.
+    #[prost(string, repeated, tag = "4")]
+    pub included_primary_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Only include results in the specified regions, specified as up to
+    /// 15 CLDR two-character region codes. An empty set will not restrict the
+    /// results. If both `location_restriction` and `included_region_codes` are
+    /// set, the results will be located in the area of intersection.
+    #[prost(string, repeated, tag = "5")]
+    pub included_region_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The language in which to return results. Defaults to en-US. The
+    /// results may be in mixed languages if the language used in `input` is
+    /// different from `language_code` or if the returned Place does not have a
+    /// translation from the local language to `language_code`.
+    #[prost(string, tag = "6")]
+    pub language_code: ::prost::alloc::string::String,
+    /// Optional. The region code, specified as a CLDR two-character region code.
+    /// This affects address formatting, result ranking, and may influence what
+    /// results are returned. This does not restrict results to the specified
+    /// region. To restrict results to a region, use `region_code_restriction`.
+    #[prost(string, tag = "7")]
+    pub region_code: ::prost::alloc::string::String,
+    /// Optional. The origin point from which to calculate geodesic distance to the
+    /// destination (returned as `distance_meters`). If this value is omitted,
+    /// geodesic distance will not be returned.
+    #[prost(message, optional, tag = "8")]
+    pub origin: ::core::option::Option<super::super::super::r#type::LatLng>,
+    /// Optional. A zero-based Unicode character offset of `input` indicating the
+    /// cursor position in `input`. The cursor position may influence what
+    /// predictions are returned.
+    ///
+    /// If empty, defaults to the length of `input`.
+    #[prost(int32, tag = "9")]
+    pub input_offset: i32,
+    /// Optional. If true, the response will include both Place and query
+    /// predictions. Otherwise the response will only return Place predictions.
+    #[prost(bool, tag = "10")]
+    pub include_query_predictions: bool,
+    /// Optional. An arbitrary string which identifies an autocomplete session for
+    /// billing purposes. Must be at most 36 characters in length. Otherwise an
+    /// INVALID_ARGUMENT error is returned.
+    ///
+    /// The session begins when the user starts typing a query, and concludes when
+    /// they select a place and a call to Place Details or Address Validation is
+    /// made. Each session can have multiple queries, followed by one Place
+    /// selection. The credentials used for each request within a session must
+    /// belong to the same Google Cloud Console project. Once a session has
+    /// concluded, the token is no longer valid; your app must generate a fresh
+    /// token for each session. If the `session_token` parameter is omitted, or if
+    /// you reuse a session token, the session is charged as if no session token
+    /// was provided (each request is billed separately).
+    ///
+    /// We recommend the following guidelines:
+    /// * Use session tokens for all Place Autocomplete calls.
+    /// * Generate a fresh token for each session. Using a version 4 UUID is
+    ///    recommended.
+    /// * Ensure that the credentials used for all Place Autocomplete, Place
+    ///    Details, and Address Validation requests within a session belong to the
+    ///    same Cloud Console project.
+    /// * Be sure to pass a unique session token for each new session. Using the
+    ///    same token for more than one session will result in each request being
+    ///    billed individually.
+    #[prost(string, tag = "11")]
+    pub session_token: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `AutocompletePlacesRequest`.
+pub mod autocomplete_places_request {
+    /// The region to search. The results may be biased around the specified
+    /// region.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct LocationBias {
+        #[prost(oneof = "location_bias::Type", tags = "1, 2")]
+        pub r#type: ::core::option::Option<location_bias::Type>,
+    }
+    /// Nested message and enum types in `LocationBias`.
+    pub mod location_bias {
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Type {
+            /// A viewport defined by a northeast and a southwest corner.
+            #[prost(message, tag = "1")]
+            Rectangle(super::super::super::super::super::geo::r#type::Viewport),
+            /// A circle defined by a center point and radius.
+            #[prost(message, tag = "2")]
+            Circle(super::super::Circle),
+        }
+    }
+    /// The region to search. The results will be restricted to the specified
+    /// region.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct LocationRestriction {
+        #[prost(oneof = "location_restriction::Type", tags = "1, 2")]
+        pub r#type: ::core::option::Option<location_restriction::Type>,
+    }
+    /// Nested message and enum types in `LocationRestriction`.
+    pub mod location_restriction {
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Type {
+            /// A viewport defined by a northeast and a southwest corner.
+            #[prost(message, tag = "1")]
+            Rectangle(super::super::super::super::super::geo::r#type::Viewport),
+            /// A circle defined by a center point and radius.
+            #[prost(message, tag = "2")]
+            Circle(super::super::Circle),
+        }
+    }
+}
+/// Response proto for AutocompletePlaces.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutocompletePlacesResponse {
+    /// Contains a list of suggestions, ordered in descending order of relevance.
+    #[prost(message, repeated, tag = "1")]
+    pub suggestions: ::prost::alloc::vec::Vec<autocomplete_places_response::Suggestion>,
+}
+/// Nested message and enum types in `AutocompletePlacesResponse`.
+pub mod autocomplete_places_response {
+    /// An Autocomplete suggestion result.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Suggestion {
+        #[prost(oneof = "suggestion::Kind", tags = "1, 2")]
+        pub kind: ::core::option::Option<suggestion::Kind>,
+    }
+    /// Nested message and enum types in `Suggestion`.
+    pub mod suggestion {
+        /// Identifies a substring within a given text.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct StringRange {
+            /// Zero-based offset of the first Unicode character of the string
+            /// (inclusive).
+            #[prost(int32, tag = "1")]
+            pub start_offset: i32,
+            /// Zero-based offset of the last Unicode character (exclusive).
+            #[prost(int32, tag = "2")]
+            pub end_offset: i32,
+        }
+        /// Text representing a Place or query prediction. The text may be used as is
+        /// or formatted.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct FormattableText {
+            /// Text that may be used as is or formatted with `matches`.
+            #[prost(string, tag = "1")]
+            pub text: ::prost::alloc::string::String,
+            /// A list of string ranges identifying where the input request matched in
+            /// `text`. The ranges can be used to format specific parts of `text`. The
+            /// substrings may not be exact matches of `input` if the matching was
+            /// determined by criteria other than string matching (e.g. spell
+            /// corrections or transliterations).
+            ///
+            /// These values are Unicode character offsets of `text`. The ranges are
+            /// guaranteed to be ordered in increasing offset values.
+            #[prost(message, repeated, tag = "2")]
+            pub matches: ::prost::alloc::vec::Vec<StringRange>,
+        }
+        /// Contains a breakdown of a Place or query prediction into main text
+        /// and secondary text.
+        ///
+        /// For Place predictions, the main text contains the specific name of the
+        /// Place. For query predictions, the main text contains the query.
+        ///
+        /// The secondary text contains additional disambiguating features (such as a
+        /// city or region) to further identify the Place or refine the query.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct StructuredFormat {
+            /// Represents the name of the Place or query.
+            #[prost(message, optional, tag = "1")]
+            pub main_text: ::core::option::Option<FormattableText>,
+            /// Represents additional disambiguating features (such as a city or
+            /// region) to further identify the Place or refine the query.
+            #[prost(message, optional, tag = "2")]
+            pub secondary_text: ::core::option::Option<FormattableText>,
+        }
+        /// Prediction results for a Place Autocomplete prediction.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct PlacePrediction {
+            /// The resource name of the suggested Place. This name can be used in
+            /// other APIs that accept Place names.
+            #[prost(string, tag = "1")]
+            pub place: ::prost::alloc::string::String,
+            /// The unique identifier of the suggested Place. This identifier can be
+            /// used in other APIs that accept Place IDs.
+            #[prost(string, tag = "2")]
+            pub place_id: ::prost::alloc::string::String,
+            /// Contains the human-readable name for the returned result. For
+            /// establishment results, this is usually the business name and address.
+            ///
+            /// `text` is recommended for developers who wish to show a single UI
+            /// element. Developers who wish to show two separate, but related, UI
+            /// elements may want to use `structured_format` instead. They are two
+            /// different ways to represent a Place prediction. Users should not try to
+            /// parse `structured_format` into `text` or vice versa.
+            ///
+            /// This text may be different from the `display_name` returned by
+            /// GetPlace.
+            ///
+            /// May be in mixed languages if the request `input` and `language_code`
+            /// are in different languages or if the Place does not have a translation
+            /// from the local language to `language_code`.
+            #[prost(message, optional, tag = "3")]
+            pub text: ::core::option::Option<FormattableText>,
+            /// A breakdown of the Place prediction into main text containing the name
+            /// of the Place and secondary text containing additional disambiguating
+            /// features (such as a city or region).
+            ///
+            /// `structured_format` is recommended for developers who wish to show two
+            /// separate, but related, UI elements. Developers who wish to show a
+            /// single UI element may want to use `text` instead. They are two
+            /// different ways to represent a Place prediction. Users should not try to
+            /// parse `structured_format` into `text` or vice versa.
+            #[prost(message, optional, tag = "4")]
+            pub structured_format: ::core::option::Option<StructuredFormat>,
+            /// List of types that apply to this Place from Table A or Table B in
+            /// <https://developers.google.com/maps/documentation/places/web-service/place-types.>
+            ///
+            /// A type is a categorization of a Place. Places with shared types will
+            /// share similar characteristics.
+            #[prost(string, repeated, tag = "5")]
+            pub types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// The length of the geodesic in meters from `origin` if `origin` is
+            /// specified. Certain predictions such as routes may not populate this
+            /// field.
+            #[prost(int32, tag = "6")]
+            pub distance_meters: i32,
+        }
+        /// Prediction results for a Query Autocomplete prediction.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct QueryPrediction {
+            /// The predicted text. This text does not represent a Place, but rather a
+            /// text query that could be used in a search endpoint (e.g. TextSearch).
+            ///
+            /// `text` is recommended for developers who wish to show a single UI
+            /// element. Developers who wish to show two separate, but related, UI
+            /// elements may want to use `structured_format` instead. They are two
+            /// different ways to represent a query prediction. Users should not try to
+            /// parse `structured_format` into `text` or vice versa.
+            ///
+            /// May be in mixed languages if the request `input` and `language_code`
+            /// are in different languages or if part of the query does not have a
+            /// translation from the local language to `language_code`.
+            #[prost(message, optional, tag = "1")]
+            pub text: ::core::option::Option<FormattableText>,
+            /// A breakdown of the query prediction into main text containing the query
+            /// and secondary text containing additional disambiguating features (such
+            /// as a city or region).
+            ///
+            /// `structured_format` is recommended for developers who wish to show two
+            /// separate, but related, UI elements. Developers who wish to show a
+            /// single UI element may want to use `text` instead. They are two
+            /// different ways to represent a query prediction. Users should not try to
+            /// parse `structured_format` into `text` or vice versa.
+            #[prost(message, optional, tag = "2")]
+            pub structured_format: ::core::option::Option<StructuredFormat>,
+        }
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Kind {
+            /// A prediction for a Place.
+            #[prost(message, tag = "1")]
+            PlacePrediction(PlacePrediction),
+            /// A prediction for a query.
+            #[prost(message, tag = "2")]
+            QueryPrediction(QueryPrediction),
+        }
+    }
 }
 /// Generated client implementations.
 pub mod places_client {
@@ -1611,7 +1959,8 @@ pub mod places_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Get place details with a place id (in a name) string.
+        /// Get the details of a place based on its resource name, which is a string
+        /// in the `places/{place_id}` format.
         pub async fn get_place(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPlaceRequest>,
@@ -1632,6 +1981,34 @@ pub mod places_client {
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("google.maps.places.v1.Places", "GetPlace"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns predictions for the given input.
+        pub async fn autocomplete_places(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AutocompletePlacesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AutocompletePlacesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.maps.places.v1.Places/AutocompletePlaces",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.maps.places.v1.Places", "AutocompletePlaces"),
+                );
             self.inner.unary(req, path, codec).await
         }
     }

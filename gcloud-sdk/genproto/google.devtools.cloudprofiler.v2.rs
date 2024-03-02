@@ -77,6 +77,10 @@ pub struct Profile {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Output only. Start time for the profile.
+    /// This output is only present in response from the ListProfiles method.
+    #[prost(message, optional, tag = "7")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Deployment contains the deployment identification information.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -124,7 +128,7 @@ pub struct ListProfilesRequest {
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
     /// Default page_size is 1000.
-    /// Max limit is 10000.
+    /// Max limit is 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The token to continue pagination and get profiles from a particular page.
@@ -221,9 +225,8 @@ pub mod profiler_service_client {
     /// Manage the collection of continuous profiling data provided by profiling
     /// agents running in the cloud or by an offline provider of profiling data.
     ///
-    /// General guidelines:
-    /// * Profiles for a single deployment must be created in ascending time order.
-    /// * Profiles can be created in either online or offline mode, see below.
+    /// __The APIs listed in this service are intended for use within our profiler
+    /// agents only.__
     #[derive(Debug, Clone)]
     pub struct ProfilerServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -306,6 +309,11 @@ pub mod profiler_service_client {
         }
         /// CreateProfile creates a new profile resource in the online mode.
         ///
+        /// _Direct use of this API is discouraged, please use a [supported
+        /// profiler
+        /// agent](https://cloud.google.com/profiler/docs/about-profiler#profiling_agent)
+        /// instead for profile collection._
+        ///
         /// The server ensures that the new profiles are created at a constant rate per
         /// deployment, so the creation request may hang for some time until the next
         /// profile session is available.
@@ -345,9 +353,14 @@ pub mod profiler_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// CreateOfflineProfile creates a new profile resource in the offline mode.
-        /// The client provides the profile to create along with the profile bytes, the
-        /// server records it.
+        /// CreateOfflineProfile creates a new profile resource in the offline
+        /// mode. The client provides the profile to create along with the profile
+        /// bytes, the server records it.
+        ///
+        /// _Direct use of this API is discouraged, please use a [supported
+        /// profiler
+        /// agent](https://cloud.google.com/profiler/docs/about-profiler#profiling_agent)
+        /// instead for profile collection._
         pub async fn create_offline_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateOfflineProfileRequest>,
@@ -379,6 +392,11 @@ pub mod profiler_service_client {
         /// created in the online mode. Updating the bytes for profiles created in the
         /// offline mode is currently not supported: the profile content must be
         /// provided at the time of the profile creation.
+        ///
+        /// _Direct use of this API is discouraged, please use a [supported
+        /// profiler
+        /// agent](https://cloud.google.com/profiler/docs/about-profiler#profiling_agent)
+        /// instead for profile collection._
         pub async fn update_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateProfileRequest>,

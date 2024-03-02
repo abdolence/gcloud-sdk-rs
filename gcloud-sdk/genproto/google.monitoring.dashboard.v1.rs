@@ -478,6 +478,9 @@ pub struct PickTimeSeriesFilter {
     /// How to use the ranking to select time series that pass through the filter.
     #[prost(enumeration = "pick_time_series_filter::Direction", tag = "3")]
     pub direction: i32,
+    /// Select the top N streams/time series within this time interval
+    #[prost(message, optional, tag = "4")]
+    pub interval: ::core::option::Option<super::super::super::r#type::Interval>,
 }
 /// Nested message and enum types in `PickTimeSeriesFilter`.
 pub mod pick_time_series_filter {
@@ -726,6 +729,52 @@ pub mod dashboard_filter {
         StringValue(::prost::alloc::string::String),
     }
 }
+/// A widget that displays a list of error groups.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ErrorReportingPanel {
+    /// The resource name of the Google Cloud Platform project. Written
+    /// as `projects/{projectID}` or `projects/{projectNumber}`, where
+    /// `{projectID}` and `{projectNumber}` can be found in the
+    /// [Google Cloud console](<https://support.google.com/cloud/answer/6158840>).
+    ///
+    /// Examples: `projects/my-project-123`, `projects/5551234`.
+    #[prost(string, repeated, tag = "1")]
+    pub project_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// An identifier of the service, such as the name of the
+    /// executable, job, or Google App Engine service name. This field is expected
+    /// to have a low number of values that are relatively stable over time, as
+    /// opposed to `version`, which can be changed whenever new code is deployed.
+    ///
+    /// Contains the service name for error reports extracted from Google
+    /// App Engine logs or `default` if the App Engine default service is used.
+    #[prost(string, repeated, tag = "2")]
+    pub services: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Represents the source code version that the developer provided,
+    /// which could represent a version label or a Git SHA-1 hash, for example.
+    /// For App Engine standard environment, the version is set to the version of
+    /// the app.
+    #[prost(string, repeated, tag = "3")]
+    pub versions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A widget that displays a list of incidents
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IncidentList {
+    /// Optional. The monitored resource for which incidents are listed.
+    /// The resource doesn't need to be fully specified. That is, you can specify
+    /// the resource type but not the values of the resource labels.
+    /// The resource type and labels are used for filtering.
+    #[prost(message, repeated, tag = "1")]
+    pub monitored_resources: ::prost::alloc::vec::Vec<
+        super::super::super::api::MonitoredResource,
+    >,
+    /// Optional. A list of alert policy names to filter the incident list by.
+    /// Don't include the project ID prefix in the policy name. For
+    /// example, use `alertPolicies/utilization`.
+    #[prost(string, repeated, tag = "2")]
+    pub policy_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// A widget that displays a stream of log.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -753,6 +802,15 @@ pub struct TimeSeriesQuery {
     /// field in `MetricDescriptor`.
     #[prost(string, tag = "5")]
     pub unit_override: ::prost::alloc::string::String,
+    /// Optional. If set, Cloud Monitoring will treat the full query duration as
+    /// the alignment period so that there will be only 1 output value.
+    ///
+    /// *Note: This could override the configured alignment period except for
+    /// the cases where a series of data points are expected, like
+    ///    - XyChart
+    ///    - Scorecard's spark chart
+    #[prost(bool, tag = "7")]
+    pub output_full_duration: bool,
     /// Parameters needed to obtain data for the chart.
     #[prost(oneof = "time_series_query::Source", tags = "1, 2, 3, 6")]
     pub source: ::core::option::Option<time_series_query::Source>,
@@ -1061,6 +1119,90 @@ impl SparkChartType {
         }
     }
 }
+/// A widget that displays timeseries data as a pie or a donut.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PieChart {
+    /// Required. The queries for the chart's data.
+    #[prost(message, repeated, tag = "1")]
+    pub data_sets: ::prost::alloc::vec::Vec<pie_chart::PieChartDataSet>,
+    /// Required. Indicates the visualization type for the PieChart.
+    #[prost(enumeration = "pie_chart::PieChartType", tag = "2")]
+    pub chart_type: i32,
+    /// Optional. Indicates whether or not the pie chart should show slices' labels
+    #[prost(bool, tag = "4")]
+    pub show_labels: bool,
+}
+/// Nested message and enum types in `PieChart`.
+pub mod pie_chart {
+    /// Groups a time series query definition.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PieChartDataSet {
+        /// Required. The query for the PieChart. See,
+        /// `google.monitoring.dashboard.v1.TimeSeriesQuery`.
+        #[prost(message, optional, tag = "1")]
+        pub time_series_query: ::core::option::Option<super::TimeSeriesQuery>,
+        /// Optional. A template for the name of the slice. This name will be
+        /// displayed in the legend and the tooltip of the pie chart. It replaces the
+        /// auto-generated names for the slices. For example, if the template is set
+        /// to
+        /// `${resource.labels.zone}`, the zone's value will be used for the name
+        /// instead of the default name.
+        #[prost(string, tag = "2")]
+        pub slice_name_template: ::prost::alloc::string::String,
+        /// Optional. The lower bound on data point frequency for this data set,
+        /// implemented by specifying the minimum alignment period to use in a time
+        /// series query. For example, if the data is published once every 10
+        /// minutes, the `min_alignment_period` should be at least 10 minutes. It
+        /// would not make sense to fetch and align data at one minute intervals.
+        #[prost(message, optional, tag = "3")]
+        pub min_alignment_period: ::core::option::Option<::prost_types::Duration>,
+    }
+    /// Types for the pie chart.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PieChartType {
+        /// The zero value. No type specified. Do not use.
+        Unspecified = 0,
+        /// A Pie type PieChart.
+        Pie = 1,
+        /// Similar to PIE, but the DONUT type PieChart has a hole in the middle.
+        Donut = 2,
+    }
+    impl PieChartType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                PieChartType::Unspecified => "PIE_CHART_TYPE_UNSPECIFIED",
+                PieChartType::Pie => "PIE",
+                PieChartType::Donut => "DONUT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PIE_CHART_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PIE" => Some(Self::Pie),
+                "DONUT" => Some(Self::Donut),
+                _ => None,
+            }
+        }
+    }
+}
 /// A widget showing the latest value of a metric, and how this value relates to
 /// one or more thresholds.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1112,7 +1254,7 @@ pub struct Scorecard {
     pub thresholds: ::prost::alloc::vec::Vec<Threshold>,
     /// Defines the optional additional chart shown on the scorecard. If
     /// neither is included - then a default scorecard is shown.
-    #[prost(oneof = "scorecard::DataView", tags = "4, 5")]
+    #[prost(oneof = "scorecard::DataView", tags = "4, 5, 7")]
     pub data_view: ::core::option::Option<scorecard::DataView>,
 }
 /// Nested message and enum types in `Scorecard`.
@@ -1161,8 +1303,30 @@ pub mod scorecard {
         /// Will cause the scorecard to show a spark chart.
         #[prost(message, tag = "5")]
         SparkChartView(SparkChartView),
+        /// Will cause the `Scorecard` to show only the value, with no indicator to
+        /// its value relative to its thresholds.
+        #[prost(message, tag = "7")]
+        BlankView(()),
     }
 }
+/// A widget that defines a new section header. Sections populate a table of
+/// contents and allow easier navigation of long-form content.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SectionHeader {
+    /// The subtitle of the section
+    #[prost(string, tag = "1")]
+    pub subtitle: ::prost::alloc::string::String,
+    /// Whether to insert a divider below the section in the table of contents
+    #[prost(bool, tag = "2")]
+    pub divider_below: bool,
+}
+/// A widget that groups the other widgets by using a dropdown menu. All widgets
+/// that are within the area spanned by the grouping widget are considered
+/// member widgets.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SingleViewGroup {}
 /// Table display options that can be reused.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1280,9 +1444,332 @@ pub struct Text {
     /// How the text content is formatted.
     #[prost(enumeration = "text::Format", tag = "2")]
     pub format: i32,
+    /// How the text is styled
+    #[prost(message, optional, tag = "3")]
+    pub style: ::core::option::Option<text::TextStyle>,
 }
 /// Nested message and enum types in `Text`.
 pub mod text {
+    /// Properties that determine how the title and content are styled
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TextStyle {
+        /// The background color as a hex string. "#RRGGBB" or "#RGB"
+        #[prost(string, tag = "1")]
+        pub background_color: ::prost::alloc::string::String,
+        /// The text color as a hex string. "#RRGGBB" or "#RGB"
+        #[prost(string, tag = "2")]
+        pub text_color: ::prost::alloc::string::String,
+        /// The horizontal alignment of both the title and content
+        #[prost(enumeration = "text_style::HorizontalAlignment", tag = "3")]
+        pub horizontal_alignment: i32,
+        /// The vertical alignment of both the title and content
+        #[prost(enumeration = "text_style::VerticalAlignment", tag = "4")]
+        pub vertical_alignment: i32,
+        /// The amount of padding around the widget
+        #[prost(enumeration = "text_style::PaddingSize", tag = "5")]
+        pub padding: i32,
+        /// Font sizes for both the title and content. The title will still be larger
+        /// relative to the content.
+        #[prost(enumeration = "text_style::FontSize", tag = "6")]
+        pub font_size: i32,
+        /// The pointer location for this widget (also sometimes called a "tail")
+        #[prost(enumeration = "text_style::PointerLocation", tag = "7")]
+        pub pointer_location: i32,
+    }
+    /// Nested message and enum types in `TextStyle`.
+    pub mod text_style {
+        /// The horizontal alignment of both the title and content on a text widget
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum HorizontalAlignment {
+            /// No horizontal alignment specified, will default to H_LEFT
+            Unspecified = 0,
+            /// Left-align
+            HLeft = 1,
+            /// Center-align
+            HCenter = 2,
+            /// Right-align
+            HRight = 3,
+        }
+        impl HorizontalAlignment {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    HorizontalAlignment::Unspecified => {
+                        "HORIZONTAL_ALIGNMENT_UNSPECIFIED"
+                    }
+                    HorizontalAlignment::HLeft => "H_LEFT",
+                    HorizontalAlignment::HCenter => "H_CENTER",
+                    HorizontalAlignment::HRight => "H_RIGHT",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "HORIZONTAL_ALIGNMENT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "H_LEFT" => Some(Self::HLeft),
+                    "H_CENTER" => Some(Self::HCenter),
+                    "H_RIGHT" => Some(Self::HRight),
+                    _ => None,
+                }
+            }
+        }
+        /// The vertical alignment of both the title and content on a text widget
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum VerticalAlignment {
+            /// No vertical alignment specified, will default to V_TOP
+            Unspecified = 0,
+            /// Top-align
+            VTop = 1,
+            /// Center-align
+            VCenter = 2,
+            /// Bottom-align
+            VBottom = 3,
+        }
+        impl VerticalAlignment {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    VerticalAlignment::Unspecified => "VERTICAL_ALIGNMENT_UNSPECIFIED",
+                    VerticalAlignment::VTop => "V_TOP",
+                    VerticalAlignment::VCenter => "V_CENTER",
+                    VerticalAlignment::VBottom => "V_BOTTOM",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "VERTICAL_ALIGNMENT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "V_TOP" => Some(Self::VTop),
+                    "V_CENTER" => Some(Self::VCenter),
+                    "V_BOTTOM" => Some(Self::VBottom),
+                    _ => None,
+                }
+            }
+        }
+        /// Specifies padding size around a text widget
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum PaddingSize {
+            /// No padding size specified, will default to P_EXTRA_SMALL
+            Unspecified = 0,
+            /// Extra small padding
+            PExtraSmall = 1,
+            /// Small padding
+            PSmall = 2,
+            /// Medium padding
+            PMedium = 3,
+            /// Large padding
+            PLarge = 4,
+            /// Extra large padding
+            PExtraLarge = 5,
+        }
+        impl PaddingSize {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    PaddingSize::Unspecified => "PADDING_SIZE_UNSPECIFIED",
+                    PaddingSize::PExtraSmall => "P_EXTRA_SMALL",
+                    PaddingSize::PSmall => "P_SMALL",
+                    PaddingSize::PMedium => "P_MEDIUM",
+                    PaddingSize::PLarge => "P_LARGE",
+                    PaddingSize::PExtraLarge => "P_EXTRA_LARGE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "PADDING_SIZE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "P_EXTRA_SMALL" => Some(Self::PExtraSmall),
+                    "P_SMALL" => Some(Self::PSmall),
+                    "P_MEDIUM" => Some(Self::PMedium),
+                    "P_LARGE" => Some(Self::PLarge),
+                    "P_EXTRA_LARGE" => Some(Self::PExtraLarge),
+                    _ => None,
+                }
+            }
+        }
+        /// Specifies a font size for the title and content of a text widget
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum FontSize {
+            /// No font size specified, will default to FS_LARGE
+            Unspecified = 0,
+            /// Extra small font size
+            FsExtraSmall = 1,
+            /// Small font size
+            FsSmall = 2,
+            /// Medium font size
+            FsMedium = 3,
+            /// Large font size
+            FsLarge = 4,
+            /// Extra large font size
+            FsExtraLarge = 5,
+        }
+        impl FontSize {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    FontSize::Unspecified => "FONT_SIZE_UNSPECIFIED",
+                    FontSize::FsExtraSmall => "FS_EXTRA_SMALL",
+                    FontSize::FsSmall => "FS_SMALL",
+                    FontSize::FsMedium => "FS_MEDIUM",
+                    FontSize::FsLarge => "FS_LARGE",
+                    FontSize::FsExtraLarge => "FS_EXTRA_LARGE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "FONT_SIZE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "FS_EXTRA_SMALL" => Some(Self::FsExtraSmall),
+                    "FS_SMALL" => Some(Self::FsSmall),
+                    "FS_MEDIUM" => Some(Self::FsMedium),
+                    "FS_LARGE" => Some(Self::FsLarge),
+                    "FS_EXTRA_LARGE" => Some(Self::FsExtraLarge),
+                    _ => None,
+                }
+            }
+        }
+        /// Specifies where a visual pointer is placed on a text widget (also
+        /// sometimes called a "tail")
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum PointerLocation {
+            /// No visual pointer
+            Unspecified = 0,
+            /// Placed in the middle of the top of the widget
+            PlTop = 1,
+            /// Placed in the middle of the right side of the widget
+            PlRight = 2,
+            /// Placed in the middle of the bottom of the widget
+            PlBottom = 3,
+            /// Placed in the middle of the left side of the widget
+            PlLeft = 4,
+            /// Placed on the left side of the top of the widget
+            PlTopLeft = 5,
+            /// Placed on the right side of the top of the widget
+            PlTopRight = 6,
+            /// Placed on the top of the right side of the widget
+            PlRightTop = 7,
+            /// Placed on the bottom of the right side of the widget
+            PlRightBottom = 8,
+            /// Placed on the right side of the bottom of the widget
+            PlBottomRight = 9,
+            /// Placed on the left side of the bottom of the widget
+            PlBottomLeft = 10,
+            /// Placed on the bottom of the left side of the widget
+            PlLeftBottom = 11,
+            /// Placed on the top of the left side of the widget
+            PlLeftTop = 12,
+        }
+        impl PointerLocation {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    PointerLocation::Unspecified => "POINTER_LOCATION_UNSPECIFIED",
+                    PointerLocation::PlTop => "PL_TOP",
+                    PointerLocation::PlRight => "PL_RIGHT",
+                    PointerLocation::PlBottom => "PL_BOTTOM",
+                    PointerLocation::PlLeft => "PL_LEFT",
+                    PointerLocation::PlTopLeft => "PL_TOP_LEFT",
+                    PointerLocation::PlTopRight => "PL_TOP_RIGHT",
+                    PointerLocation::PlRightTop => "PL_RIGHT_TOP",
+                    PointerLocation::PlRightBottom => "PL_RIGHT_BOTTOM",
+                    PointerLocation::PlBottomRight => "PL_BOTTOM_RIGHT",
+                    PointerLocation::PlBottomLeft => "PL_BOTTOM_LEFT",
+                    PointerLocation::PlLeftBottom => "PL_LEFT_BOTTOM",
+                    PointerLocation::PlLeftTop => "PL_LEFT_TOP",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "POINTER_LOCATION_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PL_TOP" => Some(Self::PlTop),
+                    "PL_RIGHT" => Some(Self::PlRight),
+                    "PL_BOTTOM" => Some(Self::PlBottom),
+                    "PL_LEFT" => Some(Self::PlLeft),
+                    "PL_TOP_LEFT" => Some(Self::PlTopLeft),
+                    "PL_TOP_RIGHT" => Some(Self::PlTopRight),
+                    "PL_RIGHT_TOP" => Some(Self::PlRightTop),
+                    "PL_RIGHT_BOTTOM" => Some(Self::PlRightBottom),
+                    "PL_BOTTOM_RIGHT" => Some(Self::PlBottomRight),
+                    "PL_BOTTOM_LEFT" => Some(Self::PlBottomLeft),
+                    "PL_LEFT_BOTTOM" => Some(Self::PlLeftBottom),
+                    "PL_LEFT_TOP" => Some(Self::PlLeftTop),
+                    _ => None,
+                }
+            }
+        }
+    }
     /// The format type of the text content.
     #[derive(
         Clone,
@@ -1344,13 +1831,13 @@ pub struct XyChart {
     /// Threshold lines drawn horizontally across the chart.
     #[prost(message, repeated, tag = "5")]
     pub thresholds: ::prost::alloc::vec::Vec<Threshold>,
-    /// The properties applied to the X axis.
+    /// The properties applied to the x-axis.
     #[prost(message, optional, tag = "6")]
     pub x_axis: ::core::option::Option<xy_chart::Axis>,
-    /// The properties applied to the Y axis.
+    /// The properties applied to the y-axis.
     #[prost(message, optional, tag = "7")]
     pub y_axis: ::core::option::Option<xy_chart::Axis>,
-    /// The properties applied to the Y2 axis.
+    /// The properties applied to the y2-axis.
     #[prost(message, optional, tag = "9")]
     pub y2_axis: ::core::option::Option<xy_chart::Axis>,
     /// Display options for the chart.
@@ -1408,12 +1895,12 @@ pub mod xy_chart {
             Line = 1,
             /// The data is plotted as a set of filled areas (one area per series),
             /// with the areas stacked vertically (the base of each area is the top of
-            /// its predecessor, and the base of the first area is the X axis). Since
+            /// its predecessor, and the base of the first area is the x-axis). Since
             /// the areas do not overlap, each is filled with a different opaque color.
             StackedArea = 2,
             /// The data is plotted as a set of rectangular boxes (one box per series),
             /// with the boxes stacked vertically (the base of each box is the top of
-            /// its predecessor, and the base of the first box is the X axis). Since
+            /// its predecessor, and the base of the first box is the x-axis). Since
             /// the boxes do not overlap, each is filled with a different opaque color.
             StackedBar = 3,
             /// The data is plotted as a heatmap. The series being plotted must have a
@@ -1619,8 +2106,15 @@ pub struct Widget {
     /// Optional. The title of the widget.
     #[prost(string, tag = "1")]
     pub title: ::prost::alloc::string::String,
+    /// Optional. The widget id. Ids may be made up of alphanumerics, dashes and
+    /// underscores. Widget ids are optional.
+    #[prost(string, tag = "17")]
+    pub id: ::prost::alloc::string::String,
     /// Content defines the component used to populate the widget.
-    #[prost(oneof = "widget::Content", tags = "2, 3, 4, 5, 7, 8, 9, 10")]
+    #[prost(
+        oneof = "widget::Content",
+        tags = "2, 3, 4, 5, 7, 8, 9, 10, 12, 14, 19, 21, 22"
+    )]
     pub content: ::core::option::Option<widget::Content>,
 }
 /// Nested message and enum types in `Widget`.
@@ -1654,6 +2148,22 @@ pub mod widget {
         /// A widget that shows a stream of logs.
         #[prost(message, tag = "10")]
         LogsPanel(super::LogsPanel),
+        /// A widget that shows list of incidents.
+        #[prost(message, tag = "12")]
+        IncidentList(super::IncidentList),
+        /// A widget that displays timeseries data as a pie chart.
+        #[prost(message, tag = "14")]
+        PieChart(super::PieChart),
+        /// A widget that displays a list of error groups.
+        #[prost(message, tag = "19")]
+        ErrorReportingPanel(super::ErrorReportingPanel),
+        /// A widget that defines a section header for easier navigation of the
+        /// dashboard.
+        #[prost(message, tag = "21")]
+        SectionHeader(super::SectionHeader),
+        /// A widget that groups the other widgets by using a dropdown menu.
+        #[prost(message, tag = "22")]
+        SingleViewGroup(super::SingleViewGroup),
     }
 }
 /// A basic layout divides the available space into vertical columns of equal
@@ -1769,7 +2279,7 @@ pub mod column_layout {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dashboard {
-    /// Immutable. The resource name of the dashboard.
+    /// Identifier. The resource name of the dashboard.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The mutable, human-readable name.
@@ -1853,9 +2363,10 @@ pub struct ListDashboardsRequest {
     /// If unspecified, a default of 1000 is used.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// If this field is not empty then it must contain the `nextPageToken` value
-    /// returned by a previous call to this method.  Using this field causes the
-    /// method to return additional results from the previous method call.
+    /// Optional. If this field is not empty then it must contain the
+    /// `nextPageToken` value returned by a previous call to this method.  Using
+    /// this field causes the method to return additional results from the previous
+    /// method call.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }

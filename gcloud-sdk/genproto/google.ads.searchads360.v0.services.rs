@@ -600,6 +600,26 @@ pub struct SearchSearchAds360Response {
     /// The headers of the custom columns in the results.
     #[prost(message, repeated, tag = "7")]
     pub custom_column_headers: ::prost::alloc::vec::Vec<CustomColumnHeader>,
+    /// The headers of the conversion custom metrics in the results.
+    #[prost(message, repeated, tag = "9")]
+    pub conversion_custom_metric_headers: ::prost::alloc::vec::Vec<
+        ConversionCustomMetricHeader,
+    >,
+    /// The headers of the conversion custom dimensions in the results.
+    #[prost(message, repeated, tag = "10")]
+    pub conversion_custom_dimension_headers: ::prost::alloc::vec::Vec<
+        ConversionCustomDimensionHeader,
+    >,
+    /// The headers of the raw event conversion metrics in the results.
+    #[prost(message, repeated, tag = "11")]
+    pub raw_event_conversion_metric_headers: ::prost::alloc::vec::Vec<
+        RawEventConversionMetricHeader,
+    >,
+    /// The headers of the raw event conversion dimensions in the results.
+    #[prost(message, repeated, tag = "12")]
+    pub raw_event_conversion_dimension_headers: ::prost::alloc::vec::Vec<
+        RawEventConversionDimensionHeader,
+    >,
 }
 /// Request message for
 /// [SearchAds360Service.SearchStream][google.ads.searchads360.v0.services.SearchAds360Service.SearchStream].
@@ -645,6 +665,26 @@ pub struct SearchSearchAds360StreamResponse {
     /// The headers of the custom columns in the results.
     #[prost(message, repeated, tag = "5")]
     pub custom_column_headers: ::prost::alloc::vec::Vec<CustomColumnHeader>,
+    /// The headers of the conversion custom metrics in the results.
+    #[prost(message, repeated, tag = "7")]
+    pub conversion_custom_metric_headers: ::prost::alloc::vec::Vec<
+        ConversionCustomMetricHeader,
+    >,
+    /// The headers of the conversion custom dimension in the results.
+    #[prost(message, repeated, tag = "8")]
+    pub conversion_custom_dimension_headers: ::prost::alloc::vec::Vec<
+        ConversionCustomDimensionHeader,
+    >,
+    /// The headers of the raw event conversion metrics in the results.
+    #[prost(message, repeated, tag = "9")]
+    pub raw_event_conversion_metric_headers: ::prost::alloc::vec::Vec<
+        RawEventConversionMetricHeader,
+    >,
+    /// The headers of the raw event conversion dimensions in the results.
+    #[prost(message, repeated, tag = "10")]
+    pub raw_event_conversion_dimension_headers: ::prost::alloc::vec::Vec<
+        RawEventConversionDimensionHeader,
+    >,
     /// The unique id of the request that is used for debugging purposes.
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
@@ -757,6 +797,11 @@ pub struct SearchAds360Row {
     /// The conversion action referenced in the query.
     #[prost(message, optional, tag = "103")]
     pub conversion_action: ::core::option::Option<super::resources::ConversionAction>,
+    /// The conversion custom variable referenced in the query.
+    #[prost(message, optional, tag = "153")]
+    pub conversion_custom_variable: ::core::option::Option<
+        super::resources::ConversionCustomVariable,
+    >,
     /// The customer referenced in the query.
     #[prost(message, optional, tag = "1")]
     pub customer: ::core::option::Option<super::resources::Customer>,
@@ -845,6 +890,50 @@ pub struct CustomColumnHeader {
     /// True when the custom column references metrics.
     #[prost(bool, tag = "3")]
     pub references_metrics: bool,
+}
+/// Message for conversion custom metric header.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionCustomMetricHeader {
+    /// The conversion custom metric ID.
+    #[prost(int64, tag = "1")]
+    pub id: i64,
+    /// The user defined name of the conversion custom metric.
+    #[prost(string, tag = "2")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Message for conversion custom dimension header.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionCustomDimensionHeader {
+    /// The conversion custom dimension ID.
+    #[prost(int64, tag = "1")]
+    pub id: i64,
+    /// The user defined name of the conversion custom dimension.
+    #[prost(string, tag = "2")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Message for raw event conversion metric header.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RawEventConversionMetricHeader {
+    /// The conversion custom variable ID.
+    #[prost(int64, tag = "1")]
+    pub id: i64,
+    /// The user defined name of the raw event metric.
+    #[prost(string, tag = "2")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Message for raw event conversion dimension header.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RawEventConversionDimensionHeader {
+    /// The conversion custom variable ID.
+    #[prost(int64, tag = "1")]
+    pub id: i64,
+    /// The user defined name of the raw event dimension.
+    #[prost(string, tag = "2")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod search_ads360_service_client {

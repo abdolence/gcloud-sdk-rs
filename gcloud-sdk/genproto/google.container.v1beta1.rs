@@ -417,11 +417,12 @@ pub struct NodeConfig {
     /// A map of resource manager tag keys and values to be attached to the nodes.
     #[prost(message, optional, tag = "45")]
     pub resource_manager_tags: ::core::option::Option<ResourceManagerTags>,
-    /// Optional. Enable confidential storage on Hyperdisk.
-    /// boot_disk_kms_key is required when enable_confidential_storage is true.
-    /// This is only available for private preview.
+    /// Optional. Reserved for future use.
     #[prost(bool, tag = "46")]
     pub enable_confidential_storage: bool,
+    /// List of secondary boot disks attached to the nodes.
+    #[prost(message, repeated, tag = "48")]
+    pub secondary_boot_disks: ::prost::alloc::vec::Vec<SecondaryBootDisk>,
 }
 /// Specifies options for controlling advanced machine features.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3695,6 +3696,9 @@ pub struct UpdateNodePoolRequest {
     /// Existing tags will be replaced with new values.
     #[prost(message, optional, tag = "39")]
     pub resource_manager_tags: ::core::option::Option<ResourceManagerTags>,
+    /// Specifies the configuration of queued provisioning.
+    #[prost(message, optional, tag = "42")]
+    pub queued_provisioning: ::core::option::Option<node_pool::QueuedProvisioning>,
 }
 /// SetNodePoolAutoscalingRequest sets the autoscaler settings of a node pool.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -7758,6 +7762,62 @@ pub mod enterprise_config {
                 "CLUSTER_TIER_UNSPECIFIED" => Some(Self::Unspecified),
                 "STANDARD" => Some(Self::Standard),
                 "ENTERPRISE" => Some(Self::Enterprise),
+                _ => None,
+            }
+        }
+    }
+}
+/// SecondaryBootDisk represents a persistent disk attached to a node
+/// with special configurations based on its mode.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecondaryBootDisk {
+    /// Disk mode (container image cache, etc.)
+    #[prost(enumeration = "secondary_boot_disk::Mode", tag = "1")]
+    pub mode: i32,
+    /// Fully-qualified resource ID for an existing disk image.
+    #[prost(string, tag = "2")]
+    pub disk_image: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `SecondaryBootDisk`.
+pub mod secondary_boot_disk {
+    /// Mode specifies how the secondary boot disk will be used.
+    /// This triggers mode-specified logic in the control plane.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Mode {
+        /// MODE_UNSPECIFIED is when mode is not set.
+        Unspecified = 0,
+        /// CONTAINER_IMAGE_CACHE is for using the secondary boot disk as
+        /// a container image cache.
+        ContainerImageCache = 1,
+    }
+    impl Mode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Mode::Unspecified => "MODE_UNSPECIFIED",
+                Mode::ContainerImageCache => "CONTAINER_IMAGE_CACHE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONTAINER_IMAGE_CACHE" => Some(Self::ContainerImageCache),
                 _ => None,
             }
         }

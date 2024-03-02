@@ -346,14 +346,39 @@ pub mod runnable {
         /// `container.options` field.
         #[prost(bool, tag = "9")]
         pub block_external_network: bool,
-        /// Optional username for logging in to a docker registry. If username
-        /// matches `projects/*/secrets/*/versions/*` then Batch will read the
-        /// username from the Secret Manager.
+        /// Required if the container image is from a private Docker registry. The
+        /// username to login to the Docker registry that contains the image.
+        ///
+        /// You can either specify the username directly by using plain text or
+        /// specify an encrypted username by using a Secret Manager secret:
+        /// `projects/*/secrets/*/versions/*`. However, using a secret is
+        /// recommended for enhanced security.
+        ///
+        /// Caution: If you specify the username using plain text, you risk the
+        /// username being exposed to any users who can view the job or its logs.
+        /// To avoid this risk, specify a secret that contains the username instead.
+        ///
+        /// Learn more about [Secret
+        /// Manager](<https://cloud.google.com/secret-manager/docs/>) and [using
+        /// Secret Manager with
+        /// Batch](<https://cloud.google.com/batch/docs/create-run-job-secret-manager>).
         #[prost(string, tag = "10")]
         pub username: ::prost::alloc::string::String,
-        /// Optional password for logging in to a docker registry. If password
-        /// matches `projects/*/secrets/*/versions/*` then Batch will read the
-        /// password from the Secret Manager;
+        /// Required if the container image is from a private Docker registry. The
+        /// password to login to the Docker registry that contains the image.
+        ///
+        /// For security, it is strongly recommended to specify an
+        /// encrypted password by using a Secret Manager secret:
+        /// `projects/*/secrets/*/versions/*`.
+        ///
+        /// Warning: If you specify the password using plain text, you risk the
+        /// password being exposed to any users who can view the job or its logs.
+        /// To avoid this risk, specify a secret that contains the password instead.
+        ///
+        /// Learn more about [Secret
+        /// Manager](<https://cloud.google.com/secret-manager/docs/>) and [using
+        /// Secret Manager with
+        /// Batch](<https://cloud.google.com/batch/docs/create-run-job-secret-manager>).
         #[prost(string, tag = "11")]
         pub password: ::prost::alloc::string::String,
         /// Optional. If set to true, this container runnable uses Image streaming.
@@ -395,7 +420,7 @@ pub mod runnable {
             /// first line of the file.(For example, to execute the script using bash,
             /// `#!/bin/bash` should be the first line of the file. To execute the
             /// script using`Python3`, `#!/usr/bin/env python3` should be the first
-            /// line of the file.) Otherwise, the file will by default be excuted by
+            /// line of the file.) Otherwise, the file will by default be executed by
             /// `/bin/sh`.
             #[prost(string, tag = "1")]
             Path(::prost::alloc::string::String),
@@ -405,7 +430,7 @@ pub mod runnable {
             /// beginning of the text.(For example, to execute the script using bash,
             /// `#!/bin/bash\n` should be added. To execute the script using`Python3`,
             /// `#!/usr/bin/env python3\n` should be added.) Otherwise, the script will
-            /// by default be excuted by `/bin/sh`.
+            /// by default be executed by `/bin/sh`.
             #[prost(string, tag = "2")]
             Text(::prost::alloc::string::String),
         }
@@ -617,7 +642,7 @@ pub struct Job {
     /// For example: "projects/123456/locations/us-central1/jobs/job01".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. A system generated unique ID (in UUID4 format) for the Job.
+    /// Output only. A system generated unique ID for the Job.
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
     /// Priority of the Job.
@@ -1548,17 +1573,18 @@ pub struct TaskGroup {
     pub task_count_per_node: i64,
     /// When true, Batch will populate a file with a list of all VMs assigned to
     /// the TaskGroup and set the BATCH_HOSTS_FILE environment variable to the path
-    /// of that file. Defaults to false.
+    /// of that file. Defaults to false. The host file supports up to 1000 VMs.
     #[prost(bool, tag = "11")]
     pub require_hosts_file: bool,
     /// When true, Batch will configure SSH to allow passwordless login between
     /// VMs running the Batch tasks in the same TaskGroup.
     #[prost(bool, tag = "12")]
     pub permissive_ssh: bool,
-    /// Optional. If not set or set to false, Batch will use root user to execute
-    /// runnables. If set to true, Batch will make sure to run the runnables using
-    /// non-root user. Currently, the non-root user Batch used is generated by OS
-    /// login. Reference: <https://cloud.google.com/compute/docs/oslogin>
+    /// Optional. If not set or set to false, Batch uses the root user to execute
+    /// runnables. If set to true, Batch runs the runnables using a non-root user.
+    /// Currently, the non-root user Batch used is generated by OS Login. For more
+    /// information, see [About OS
+    /// Login](<https://cloud.google.com/compute/docs/oslogin>).
     #[prost(bool, tag = "14")]
     pub run_as_non_root: bool,
 }
