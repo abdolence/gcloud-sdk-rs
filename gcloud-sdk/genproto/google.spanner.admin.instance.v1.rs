@@ -784,6 +784,14 @@ pub struct ListInstancesRequest {
     ///                                   containing "dev".
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
+    /// Deadline used while retrieving metadata for instances.
+    /// Instances whose metadata cannot be retrieved within this deadline will be
+    /// added to
+    /// [unreachable][google.spanner.admin.instance.v1.ListInstancesResponse.unreachable]
+    /// in
+    /// [ListInstancesResponse][google.spanner.admin.instance.v1.ListInstancesResponse].
+    #[prost(message, optional, tag = "5")]
+    pub instance_deadline: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The response for
 /// [ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances].
@@ -798,6 +806,12 @@ pub struct ListInstancesResponse {
     /// call to fetch more of the matching instances.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// The list of unreachable instances.
+    /// It includes the names of instances whose metadata could not be retrieved
+    /// within
+    /// [instance_deadline][google.spanner.admin.instance.v1.ListInstancesRequest.instance_deadline].
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request for
 /// [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance].
@@ -905,6 +919,409 @@ pub struct UpdateInstanceConfigMetadata {
     /// The time at which this operation was cancelled.
     #[prost(message, optional, tag = "3")]
     pub cancel_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// An isolated set of Cloud Spanner resources that databases can define
+/// placements on.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InstancePartition {
+    /// Required. A unique identifier for the instance partition. Values are of the
+    /// form
+    /// `projects/<project>/instances/<instance>/instancePartitions/[a-z][-a-z0-9]*\[a-z0-9\]`.
+    /// The final segment of the name must be between 2 and 64 characters in
+    /// length. An instance partition's name cannot be changed after the instance
+    /// partition is created.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The name of the instance partition's configuration. Values are of
+    /// the form `projects/<project>/instanceConfigs/<configuration>`. See also
+    /// [InstanceConfig][google.spanner.admin.instance.v1.InstanceConfig] and
+    /// [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs].
+    #[prost(string, tag = "2")]
+    pub config: ::prost::alloc::string::String,
+    /// Required. The descriptive name for this instance partition as it appears in
+    /// UIs. Must be unique per project and between 4 and 30 characters in length.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The current instance partition state.
+    #[prost(enumeration = "instance_partition::State", tag = "7")]
+    pub state: i32,
+    /// Output only. The time at which the instance partition was created.
+    #[prost(message, optional, tag = "8")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time at which the instance partition was most recently
+    /// updated.
+    #[prost(message, optional, tag = "9")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The names of the databases that reference this
+    /// instance partition. Referencing databases should share the parent instance.
+    /// The existence of any referencing database prevents the instance partition
+    /// from being deleted.
+    #[prost(string, repeated, tag = "10")]
+    pub referencing_databases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The names of the backups that reference this instance
+    /// partition. Referencing backups should share the parent instance. The
+    /// existence of any referencing backup prevents the instance partition from
+    /// being deleted.
+    #[prost(string, repeated, tag = "11")]
+    pub referencing_backups: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Used for optimistic concurrency control as a way
+    /// to help prevent simultaneous updates of a instance partition from
+    /// overwriting each other. It is strongly suggested that systems make use of
+    /// the etag in the read-modify-write cycle to perform instance partition
+    /// updates in order to avoid race conditions: An etag is returned in the
+    /// response which contains instance partitions, and systems are expected to
+    /// put that etag in the request to update instance partitions to ensure that
+    /// their change will be applied to the same version of the instance partition.
+    /// If no etag is provided in the call to update instance partition, then the
+    /// existing instance partition is overwritten blindly.
+    #[prost(string, tag = "12")]
+    pub etag: ::prost::alloc::string::String,
+    /// Compute capacity defines amount of server and storage resources that are
+    /// available to the databases in an instance partition. At most one of either
+    /// node_count or processing_units should be present in the message. See [the
+    /// documentation](<https://cloud.google.com/spanner/docs/compute-capacity>)
+    /// for more information about nodes and processing units.
+    #[prost(oneof = "instance_partition::ComputeCapacity", tags = "5, 6")]
+    pub compute_capacity: ::core::option::Option<instance_partition::ComputeCapacity>,
+}
+/// Nested message and enum types in `InstancePartition`.
+pub mod instance_partition {
+    /// Indicates the current state of the instance partition.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Not specified.
+        Unspecified = 0,
+        /// The instance partition is still being created. Resources may not be
+        /// available yet, and operations such as creating placements using this
+        /// instance partition may not work.
+        Creating = 1,
+        /// The instance partition is fully created and ready to do work such as
+        /// creating placements and using in databases.
+        Ready = 2,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Creating => "CREATING",
+                State::Ready => "READY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                _ => None,
+            }
+        }
+    }
+    /// Compute capacity defines amount of server and storage resources that are
+    /// available to the databases in an instance partition. At most one of either
+    /// node_count or processing_units should be present in the message. See [the
+    /// documentation](<https://cloud.google.com/spanner/docs/compute-capacity>)
+    /// for more information about nodes and processing units.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ComputeCapacity {
+        /// The number of nodes allocated to this instance partition.
+        ///
+        /// Users can set the node_count field to specify the target number of nodes
+        /// allocated to the instance partition.
+        ///
+        /// This may be zero in API responses for instance partitions that are not
+        /// yet in state `READY`.
+        #[prost(int32, tag = "5")]
+        NodeCount(i32),
+        /// The number of processing units allocated to this instance partition.
+        ///
+        /// Users can set the processing_units field to specify the target number of
+        /// processing units allocated to the instance partition.
+        ///
+        /// This may be zero in API responses for instance partitions that are not
+        /// yet in state `READY`.
+        #[prost(int32, tag = "6")]
+        ProcessingUnits(i32),
+    }
+}
+/// Metadata type for the operation returned by
+/// [CreateInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstancePartition].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateInstancePartitionMetadata {
+    /// The instance partition being created.
+    #[prost(message, optional, tag = "1")]
+    pub instance_partition: ::core::option::Option<InstancePartition>,
+    /// The time at which the
+    /// [CreateInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstancePartition]
+    /// request was received.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time at which this operation was cancelled. If set, this operation is
+    /// in the process of undoing itself (which is guaranteed to succeed) and
+    /// cannot be cancelled again.
+    #[prost(message, optional, tag = "3")]
+    pub cancel_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time at which this operation failed or was completed successfully.
+    #[prost(message, optional, tag = "4")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// The request for
+/// [CreateInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstancePartition].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateInstancePartitionRequest {
+    /// Required. The name of the instance in which to create the instance
+    /// partition. Values are of the form
+    /// `projects/<project>/instances/<instance>`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID of the instance partition to create. Valid identifiers are
+    /// of the form `[a-z][-a-z0-9]*\[a-z0-9\]` and must be between 2 and 64
+    /// characters in length.
+    #[prost(string, tag = "2")]
+    pub instance_partition_id: ::prost::alloc::string::String,
+    /// Required. The instance partition to create. The instance_partition.name may
+    /// be omitted, but if specified must be
+    /// `<parent>/instancePartitions/<instance_partition_id>`.
+    #[prost(message, optional, tag = "3")]
+    pub instance_partition: ::core::option::Option<InstancePartition>,
+}
+/// The request for
+/// [DeleteInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstancePartition].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteInstancePartitionRequest {
+    /// Required. The name of the instance partition to be deleted.
+    /// Values are of the form
+    /// `projects/{project}/instances/{instance}/instancePartitions/{instance_partition}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. If not empty, the API only deletes the instance partition when
+    /// the etag provided matches the current status of the requested instance
+    /// partition. Otherwise, deletes the instance partition without checking the
+    /// current status of the requested instance partition.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// The request for
+/// [GetInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.GetInstancePartition].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetInstancePartitionRequest {
+    /// Required. The name of the requested instance partition. Values are of
+    /// the form
+    /// `projects/{project}/instances/{instance}/instancePartitions/{instance_partition}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for
+/// [UpdateInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstancePartition].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateInstancePartitionRequest {
+    /// Required. The instance partition to update, which must always include the
+    /// instance partition name. Otherwise, only fields mentioned in
+    /// [field_mask][google.spanner.admin.instance.v1.UpdateInstancePartitionRequest.field_mask]
+    /// need be included.
+    #[prost(message, optional, tag = "1")]
+    pub instance_partition: ::core::option::Option<InstancePartition>,
+    /// Required. A mask specifying which fields in
+    /// [InstancePartition][google.spanner.admin.instance.v1.InstancePartition]
+    /// should be updated. The field mask must always be specified; this prevents
+    /// any future fields in
+    /// [InstancePartition][google.spanner.admin.instance.v1.InstancePartition]
+    /// from being erased accidentally by clients that do not know about them.
+    #[prost(message, optional, tag = "2")]
+    pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Metadata type for the operation returned by
+/// [UpdateInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstancePartition].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateInstancePartitionMetadata {
+    /// The desired end state of the update.
+    #[prost(message, optional, tag = "1")]
+    pub instance_partition: ::core::option::Option<InstancePartition>,
+    /// The time at which
+    /// [UpdateInstancePartition][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstancePartition]
+    /// request was received.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time at which this operation was cancelled. If set, this operation is
+    /// in the process of undoing itself (which is guaranteed to succeed) and
+    /// cannot be cancelled again.
+    #[prost(message, optional, tag = "3")]
+    pub cancel_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time at which this operation failed or was completed successfully.
+    #[prost(message, optional, tag = "4")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// The request for
+/// [ListInstancePartitions][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitions].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListInstancePartitionsRequest {
+    /// Required. The instance whose instance partitions should be listed. Values
+    /// are of the form `projects/<project>/instances/<instance>`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Number of instance partitions to be returned in the response. If 0 or less,
+    /// defaults to the server's maximum allowed page size.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// If non-empty, `page_token` should contain a
+    /// [next_page_token][google.spanner.admin.instance.v1.ListInstancePartitionsResponse.next_page_token]
+    /// from a previous
+    /// [ListInstancePartitionsResponse][google.spanner.admin.instance.v1.ListInstancePartitionsResponse].
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Deadline used while retrieving metadata for instance partitions.
+    /// Instance partitions whose metadata cannot be retrieved within this deadline
+    /// will be added to
+    /// [unreachable][google.spanner.admin.instance.v1.ListInstancePartitionsResponse.unreachable]
+    /// in
+    /// [ListInstancePartitionsResponse][google.spanner.admin.instance.v1.ListInstancePartitionsResponse].
+    #[prost(message, optional, tag = "4")]
+    pub instance_partition_deadline: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// The response for
+/// [ListInstancePartitions][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitions].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListInstancePartitionsResponse {
+    /// The list of requested instancePartitions.
+    #[prost(message, repeated, tag = "1")]
+    pub instance_partitions: ::prost::alloc::vec::Vec<InstancePartition>,
+    /// `next_page_token` can be sent in a subsequent
+    /// [ListInstancePartitions][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitions]
+    /// call to fetch more of the matching instance partitions.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// The list of unreachable instance partitions.
+    /// It includes the names of instance partitions whose metadata could
+    /// not be retrieved within
+    /// [instance_partition_deadline][google.spanner.admin.instance.v1.ListInstancePartitionsRequest.instance_partition_deadline].
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The request for
+/// [ListInstancePartitionOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitionOperations].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListInstancePartitionOperationsRequest {
+    /// Required. The parent instance of the instance partition operations.
+    /// Values are of the form `projects/<project>/instances/<instance>`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. An expression that filters the list of returned operations.
+    ///
+    /// A filter expression consists of a field name, a
+    /// comparison operator, and a value for filtering.
+    /// The value must be a string, a number, or a boolean. The comparison operator
+    /// must be one of: `<`, `>`, `<=`, `>=`, `!=`, `=`, or `:`.
+    /// Colon `:` is the contains operator. Filter rules are not case sensitive.
+    ///
+    /// The following fields in the [Operation][google.longrunning.Operation]
+    /// are eligible for filtering:
+    ///
+    ///    * `name` - The name of the long-running operation
+    ///    * `done` - False if the operation is in progress, else true.
+    ///    * `metadata.@type` - the type of metadata. For example, the type string
+    ///       for
+    ///       [CreateInstancePartitionMetadata][google.spanner.admin.instance.v1.CreateInstancePartitionMetadata]
+    ///       is
+    ///       `type.googleapis.com/google.spanner.admin.instance.v1.CreateInstancePartitionMetadata`.
+    ///    * `metadata.<field_name>` - any field in metadata.value.
+    ///       `metadata.@type` must be specified first, if filtering on metadata
+    ///       fields.
+    ///    * `error` - Error associated with the long-running operation.
+    ///    * `response.@type` - the type of response.
+    ///    * `response.<field_name>` - any field in response.value.
+    ///
+    /// You can combine multiple expressions by enclosing each expression in
+    /// parentheses. By default, expressions are combined with AND logic. However,
+    /// you can specify AND, OR, and NOT logic explicitly.
+    ///
+    /// Here are a few examples:
+    ///
+    ///    * `done:true` - The operation is complete.
+    ///    * `(metadata.@type=` \
+    ///      `type.googleapis.com/google.spanner.admin.instance.v1.CreateInstancePartitionMetadata)
+    ///      AND` \
+    ///      `(metadata.instance_partition.name:custom-instance-partition) AND` \
+    ///      `(metadata.start_time < \"2021-03-28T14:50:00Z\") AND` \
+    ///      `(error:*)` - Return operations where:
+    ///      * The operation's metadata type is
+    ///      [CreateInstancePartitionMetadata][google.spanner.admin.instance.v1.CreateInstancePartitionMetadata].
+    ///      * The instance partition name contains "custom-instance-partition".
+    ///      * The operation started before 2021-03-28T14:50:00Z.
+    ///      * The operation resulted in an error.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Number of operations to be returned in the response. If 0 or
+    /// less, defaults to the server's maximum allowed page size.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. If non-empty, `page_token` should contain a
+    /// [next_page_token][google.spanner.admin.instance.v1.ListInstancePartitionOperationsResponse.next_page_token]
+    /// from a previous
+    /// [ListInstancePartitionOperationsResponse][google.spanner.admin.instance.v1.ListInstancePartitionOperationsResponse]
+    /// to the same `parent` and with the same `filter`.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Deadline used while retrieving metadata for instance partition
+    /// operations. Instance partitions whose operation metadata cannot be
+    /// retrieved within this deadline will be added to
+    /// [unreachable][ListInstancePartitionOperationsResponse.unreachable] in
+    /// [ListInstancePartitionOperationsResponse][google.spanner.admin.instance.v1.ListInstancePartitionOperationsResponse].
+    #[prost(message, optional, tag = "5")]
+    pub instance_partition_deadline: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// The response for
+/// [ListInstancePartitionOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitionOperations].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListInstancePartitionOperationsResponse {
+    /// The list of matching instance partition [long-running
+    /// operations][google.longrunning.Operation]. Each operation's name will be
+    /// prefixed by the instance partition's name. The operation's
+    /// [metadata][google.longrunning.Operation.metadata] field type
+    /// `metadata.type_url` describes the type of the metadata.
+    #[prost(message, repeated, tag = "1")]
+    pub operations: ::prost::alloc::vec::Vec<
+        super::super::super::super::longrunning::Operation,
+    >,
+    /// `next_page_token` can be sent in a subsequent
+    /// [ListInstancePartitionOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstancePartitionOperations]
+    /// call to fetch more of the matching metadata.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// The list of unreachable instance partitions.
+    /// It includes the names of instance partitions whose operation metadata could
+    /// not be retrieved within
+    /// [instance_partition_deadline][google.spanner.admin.instance.v1.ListInstancePartitionOperationsRequest.instance_partition_deadline].
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable_instance_partitions: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
 }
 /// Generated client implementations.
 pub mod instance_admin_client {
@@ -1323,6 +1740,37 @@ pub mod instance_admin_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Lists all instance partitions for the given instance.
+        pub async fn list_instance_partitions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListInstancePartitionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListInstancePartitionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstancePartitions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "ListInstancePartitions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Gets information about a particular instance.
         pub async fn get_instance(
             &mut self,
@@ -1633,6 +2081,259 @@ pub mod instance_admin_client {
                     GrpcMethod::new(
                         "google.spanner.admin.instance.v1.InstanceAdmin",
                         "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets information about a particular instance partition.
+        pub async fn get_instance_partition(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetInstancePartitionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::InstancePartition>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.spanner.admin.instance.v1.InstanceAdmin/GetInstancePartition",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "GetInstancePartition",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates an instance partition and begins preparing it to be used. The
+        /// returned [long-running operation][google.longrunning.Operation]
+        /// can be used to track the progress of preparing the new instance partition.
+        /// The instance partition name is assigned by the caller. If the named
+        /// instance partition already exists, `CreateInstancePartition` returns
+        /// `ALREADY_EXISTS`.
+        ///
+        /// Immediately upon completion of this request:
+        ///
+        ///   * The instance partition is readable via the API, with all requested
+        ///     attributes but no allocated resources. Its state is `CREATING`.
+        ///
+        /// Until completion of the returned operation:
+        ///
+        ///   * Cancelling the operation renders the instance partition immediately
+        ///     unreadable via the API.
+        ///   * The instance partition can be deleted.
+        ///   * All other attempts to modify the instance partition are rejected.
+        ///
+        /// Upon completion of the returned operation:
+        ///
+        ///   * Billing for all successfully-allocated resources begins (some types
+        ///     may have lower than the requested levels).
+        ///   * Databases can start using this instance partition.
+        ///   * The instance partition's allocated resource levels are readable via the
+        ///     API.
+        ///   * The instance partition's state becomes `READY`.
+        ///
+        /// The returned [long-running operation][google.longrunning.Operation] will
+        /// have a name of the format
+        /// `<instance_partition_name>/operations/<operation_id>` and can be used to
+        /// track creation of the instance partition.  The
+        /// [metadata][google.longrunning.Operation.metadata] field type is
+        /// [CreateInstancePartitionMetadata][google.spanner.admin.instance.v1.CreateInstancePartitionMetadata].
+        /// The [response][google.longrunning.Operation.response] field type is
+        /// [InstancePartition][google.spanner.admin.instance.v1.InstancePartition], if
+        /// successful.
+        pub async fn create_instance_partition(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateInstancePartitionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.spanner.admin.instance.v1.InstanceAdmin/CreateInstancePartition",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "CreateInstancePartition",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes an existing instance partition. Requires that the
+        /// instance partition is not used by any database or backup and is not the
+        /// default instance partition of an instance.
+        ///
+        /// Authorization requires `spanner.instancePartitions.delete` permission on
+        /// the resource
+        /// [name][google.spanner.admin.instance.v1.InstancePartition.name].
+        pub async fn delete_instance_partition(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteInstancePartitionRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.spanner.admin.instance.v1.InstanceAdmin/DeleteInstancePartition",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "DeleteInstancePartition",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an instance partition, and begins allocating or releasing resources
+        /// as requested. The returned [long-running
+        /// operation][google.longrunning.Operation] can be used to track the
+        /// progress of updating the instance partition. If the named instance
+        /// partition does not exist, returns `NOT_FOUND`.
+        ///
+        /// Immediately upon completion of this request:
+        ///
+        ///   * For resource types for which a decrease in the instance partition's
+        ///   allocation has been requested, billing is based on the newly-requested
+        ///   level.
+        ///
+        /// Until completion of the returned operation:
+        ///
+        ///   * Cancelling the operation sets its metadata's
+        ///     [cancel_time][google.spanner.admin.instance.v1.UpdateInstancePartitionMetadata.cancel_time],
+        ///     and begins restoring resources to their pre-request values. The
+        ///     operation is guaranteed to succeed at undoing all resource changes,
+        ///     after which point it terminates with a `CANCELLED` status.
+        ///   * All other attempts to modify the instance partition are rejected.
+        ///   * Reading the instance partition via the API continues to give the
+        ///     pre-request resource levels.
+        ///
+        /// Upon completion of the returned operation:
+        ///
+        ///   * Billing begins for all successfully-allocated resources (some types
+        ///     may have lower than the requested levels).
+        ///   * All newly-reserved resources are available for serving the instance
+        ///     partition's tables.
+        ///   * The instance partition's new resource levels are readable via the API.
+        ///
+        /// The returned [long-running operation][google.longrunning.Operation] will
+        /// have a name of the format
+        /// `<instance_partition_name>/operations/<operation_id>` and can be used to
+        /// track the instance partition modification. The
+        /// [metadata][google.longrunning.Operation.metadata] field type is
+        /// [UpdateInstancePartitionMetadata][google.spanner.admin.instance.v1.UpdateInstancePartitionMetadata].
+        /// The [response][google.longrunning.Operation.response] field type is
+        /// [InstancePartition][google.spanner.admin.instance.v1.InstancePartition], if
+        /// successful.
+        ///
+        /// Authorization requires `spanner.instancePartitions.update` permission on
+        /// the resource
+        /// [name][google.spanner.admin.instance.v1.InstancePartition.name].
+        pub async fn update_instance_partition(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateInstancePartitionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.spanner.admin.instance.v1.InstanceAdmin/UpdateInstancePartition",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "UpdateInstancePartition",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists instance partition [long-running
+        /// operations][google.longrunning.Operation] in the given instance.
+        /// An instance partition operation has a name of the form
+        /// `projects/<project>/instances/<instance>/instancePartitions/<instance_partition>/operations/<operation>`.
+        /// The long-running operation
+        /// [metadata][google.longrunning.Operation.metadata] field type
+        /// `metadata.type_url` describes the type of the metadata. Operations returned
+        /// include those that have completed/failed/canceled within the last 7 days,
+        /// and pending operations. Operations returned are ordered by
+        /// `operation.metadata.value.start_time` in descending order starting from the
+        /// most recently started operation.
+        ///
+        /// Authorization requires `spanner.instancePartitionOperations.list`
+        /// permission on the resource
+        /// [parent][google.spanner.admin.instance.v1.ListInstancePartitionOperationsRequest.parent].
+        pub async fn list_instance_partition_operations(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListInstancePartitionOperationsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ListInstancePartitionOperationsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstancePartitionOperations",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "ListInstancePartitionOperations",
                     ),
                 );
             self.inner.unary(req, path, codec).await

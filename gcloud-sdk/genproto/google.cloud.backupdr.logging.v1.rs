@@ -290,3 +290,71 @@ pub struct BackupStorageUtilizationReportLog {
     #[prost(string, tag = "7")]
     pub appliance_id: ::prost::alloc::string::String,
 }
+/// Holds information for the Protected Resource
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProtectedResource {
+    /// Required. Resource name.
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Required. Resource Type.
+    #[prost(string, tag = "2")]
+    pub resource_type: ::prost::alloc::string::String,
+    /// Required. Resource ID.
+    #[prost(string, tag = "3")]
+    pub resource_id: ::prost::alloc::string::String,
+    /// Optional. Backup Inclusion/Exclusion.
+    #[prost(string, tag = "4")]
+    pub backup_inclusion_or_exclusion: ::prost::alloc::string::String,
+    /// Required. Host Id.
+    #[prost(string, tag = "5")]
+    pub host_id: ::prost::alloc::string::String,
+    /// Required. Host Name.
+    #[prost(string, tag = "6")]
+    pub host_name: ::prost::alloc::string::String,
+    /// Required. Backup Template ID.
+    #[prost(string, tag = "7")]
+    pub backup_plan_policy_template_id: ::prost::alloc::string::String,
+    /// Required. Backup Template.
+    #[prost(string, tag = "8")]
+    pub backup_plan_policy_template: ::prost::alloc::string::String,
+    /// Required. Sla Id.
+    #[prost(string, tag = "9")]
+    pub sla_id: ::prost::alloc::string::String,
+    /// Required. Backup Plan restrictions.
+    #[prost(string, tag = "10")]
+    pub backup_plan_restrictions: ::prost::alloc::string::String,
+    /// Required. Protected On.
+    #[prost(string, tag = "11")]
+    pub protected_on: ::prost::alloc::string::String,
+    /// Optional. Policy Overrides.
+    #[prost(string, tag = "12")]
+    pub policy_overrides: ::prost::alloc::string::String,
+    /// Optional. Source Appliance in case of streamsnap.
+    #[prost(string, tag = "13")]
+    pub source_appliance: ::prost::alloc::string::String,
+    /// Optional. Source Appliance Id in case of streamsnap.
+    #[prost(string, tag = "14")]
+    pub source_appliance_id: ::prost::alloc::string::String,
+    /// Required. Protected Data (GiB).
+    #[prost(double, tag = "15")]
+    pub protected_data_in_gib: f64,
+    /// Optional. Onvault (GiB) .
+    #[prost(double, tag = "16")]
+    pub onvault_in_gib: f64,
+    /// Optional. Originating Appliance in case of streamsnap.
+    #[prost(string, tag = "17")]
+    pub appliance_name: ::prost::alloc::string::String,
+    /// Optional. Originating Appliance id in case of streamsnap.
+    #[prost(string, tag = "18")]
+    pub appliance_id: ::prost::alloc::string::String,
+    /// Optional. Remote Appliance in case of streamsnap.
+    #[prost(string, tag = "19")]
+    pub remote_appliance: ::prost::alloc::string::String,
+    /// Optional. Remote Appliance id in case of streamsnap.
+    #[prost(string, tag = "20")]
+    pub remote_appliance_id: ::prost::alloc::string::String,
+    /// Optional. Recovery Point.
+    #[prost(string, tag = "21")]
+    pub recovery_point: ::prost::alloc::string::String,
+}

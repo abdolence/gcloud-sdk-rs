@@ -1444,6 +1444,23 @@ pub struct DeleteFirewallPolicyRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// The reorder firewall policies request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReorderFirewallPoliciesRequest {
+    /// Required. The name of the project to list the policies for, in the format
+    /// `projects/{project}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. A list containing all policy names, in the new order. Each name
+    /// is in the format `projects/{project}/firewallpolicies/{firewallpolicy}`.
+    #[prost(string, repeated, tag = "2")]
+    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The reorder firewall policies response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReorderFirewallPoliciesResponse {}
 /// The migrate key request message.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2770,6 +2787,37 @@ pub mod recaptcha_enterprise_service_client {
                     GrpcMethod::new(
                         "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
                         "DeleteFirewallPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Reorders all firewall policies.
+        pub async fn reorder_firewall_policies(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ReorderFirewallPoliciesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ReorderFirewallPoliciesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ReorderFirewallPolicies",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
+                        "ReorderFirewallPolicies",
                     ),
                 );
             self.inner.unary(req, path, codec).await

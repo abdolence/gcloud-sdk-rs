@@ -782,7 +782,7 @@ pub mod ingestion_data_source_settings {
     }
     /// Nested message and enum types in `AwsKinesis`.
     pub mod aws_kinesis {
-        /// Possible states for managed ingestion from Amazon Kinesis Data Streams.
+        /// Possible states for ingestion from Amazon Kinesis Data Streams.
         #[derive(
             Clone,
             Copy,
@@ -908,8 +908,7 @@ pub struct Topic {
     /// Output only. An output-only field indicating the state of the topic.
     #[prost(enumeration = "topic::State", tag = "9")]
     pub state: i32,
-    /// Optional. Settings for managed ingestion from a data source into this
-    /// topic.
+    /// Optional. Settings for ingestion from a data source into this topic.
     #[prost(message, optional, tag = "10")]
     pub ingestion_data_source_settings: ::core::option::Option<
         IngestionDataSourceSettings,

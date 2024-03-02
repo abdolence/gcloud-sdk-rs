@@ -1175,6 +1175,11 @@ pub mod check_response {
         /// Consumer info of this check.
         #[prost(message, optional, tag = "2")]
         pub consumer_info: ::core::option::Option<ConsumerInfo>,
+        /// The unique id of the api key in the format of "apikey:<UID>".
+        /// This field will be populated when the consumer passed to Service Control
+        /// is an API key and all the API key related validations are successful.
+        #[prost(string, tag = "5")]
+        pub api_key_uid: ::prost::alloc::string::String,
     }
     /// `ConsumerInfo` provides information about the consumer.
     #[allow(clippy::derive_partial_eq_without_eq)]

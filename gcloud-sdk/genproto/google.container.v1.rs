@@ -407,6 +407,9 @@ pub struct NodeConfig {
     /// A map of resource manager tag keys and values to be attached to the nodes.
     #[prost(message, optional, tag = "45")]
     pub resource_manager_tags: ::core::option::Option<ResourceManagerTags>,
+    /// Optional. Reserved for future use.
+    #[prost(bool, tag = "46")]
+    pub enable_confidential_storage: bool,
 }
 /// Specifies options for controlling advanced machine features.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1032,6 +1035,9 @@ pub struct AddonsConfig {
     /// Configuration for the Cloud Storage Fuse CSI driver.
     #[prost(message, optional, tag = "17")]
     pub gcs_fuse_csi_driver_config: ::core::option::Option<GcsFuseCsiDriverConfig>,
+    /// Optional. Configuration for the StatefulHA add-on.
+    #[prost(message, optional, tag = "18")]
+    pub stateful_ha_config: ::core::option::Option<StatefulHaConfig>,
 }
 /// Configuration options for the HTTP (L7) load balancing controller addon,
 /// which makes it easy to set up HTTP load balancers for services in a cluster.
@@ -1234,6 +1240,14 @@ pub struct GcsFuseCsiDriverConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GkeBackupAgentConfig {
     /// Whether the Backup for GKE agent is enabled for this cluster.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+}
+/// Configuration for the Stateful HA add-on.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StatefulHaConfig {
+    /// Whether the Stateful HA add-on is enabled for this cluster.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }
@@ -2995,6 +3009,9 @@ pub struct UpdateNodePoolRequest {
     /// Existing tags will be replaced with new values.
     #[prost(message, optional, tag = "39")]
     pub resource_manager_tags: ::core::option::Option<ResourceManagerTags>,
+    /// Specifies the configuration of queued provisioning.
+    #[prost(message, optional, tag = "42")]
+    pub queued_provisioning: ::core::option::Option<node_pool::QueuedProvisioning>,
 }
 /// SetNodePoolAutoscalingRequest sets the autoscaler settings of a node pool.
 #[allow(clippy::derive_partial_eq_without_eq)]

@@ -1065,6 +1065,14 @@ pub struct Explanation {
     /// [Attribution.output_index][google.cloud.aiplatform.v1beta1.Attribution.output_index]
     /// can be used to identify which output this attribution is explaining.
     ///
+    /// By default, we provide Shapley values for the predicted class. However,
+    /// you can configure the explanation request to generate Shapley values for
+    /// any other classes too. For example, if a model predicts a probability of
+    /// `0.4` for approving a loan application, the model's decision is to reject
+    /// the application since `p(reject) = 0.6 > p(approve) = 0.4`, and the default
+    /// Shapley values would be computed for rejection decision and not approval,
+    /// even though the latter might be the positive class.
+    ///
     /// If users set
     /// [ExplanationParameters.top_k][google.cloud.aiplatform.v1beta1.ExplanationParameters.top_k],
     /// the attributions are sorted by
@@ -2738,6 +2746,10 @@ pub struct ModelDeploymentMonitoringBigQueryTable {
     /// `bq://<project_id>.model_deployment_monitoring_<endpoint_id>.<tolower(log_source)>_<tolower(log_type)>`
     #[prost(string, tag = "3")]
     pub bigquery_table_path: ::prost::alloc::string::String,
+    /// Output only. The schema version of the request/response logging BigQuery
+    /// table. Default to v1 if unset.
+    #[prost(string, tag = "4")]
+    pub request_response_logging_schema_version: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `ModelDeploymentMonitoringBigQueryTable`.
 pub mod model_deployment_monitoring_big_query_table {
@@ -3061,11 +3073,11 @@ pub struct Model {
     /// deploying this Model. The specification is ingested upon
     /// [ModelService.UploadModel][google.cloud.aiplatform.v1beta1.ModelService.UploadModel],
     /// and all binaries it contains are copied and stored internally by Vertex AI.
-    /// Not present for AutoML Models or Large Models.
+    /// Not required for AutoML Models.
     #[prost(message, optional, tag = "9")]
     pub container_spec: ::core::option::Option<ModelContainerSpec>,
     /// Immutable. The path to the directory containing the Model artifact and any
-    /// of its supporting files. Not present for AutoML Models or Large Models.
+    /// of its supporting files. Not required for AutoML Models.
     #[prost(string, tag = "26")]
     pub artifact_uri: ::prost::alloc::string::String,
     /// Output only. When this Model is deployed, its prediction resources are
@@ -3251,7 +3263,8 @@ pub struct Model {
     #[prost(message, optional, tag = "24")]
     pub encryption_spec: ::core::option::Option<EncryptionSpec>,
     /// Output only. Source of a model. It can either be automl training pipeline,
-    /// custom training pipeline, BigQuery ML, or existing Vertex AI Model.
+    /// custom training pipeline, BigQuery ML, or saved and tuned from Genie or
+    /// Model Garden.
     #[prost(message, optional, tag = "38")]
     pub model_source_info: ::core::option::Option<ModelSourceInfo>,
     /// Output only. If this Model is a copy of another Model, this contains info
@@ -3761,6 +3774,10 @@ pub struct ModelSourceInfo {
 /// Nested message and enum types in `ModelSourceInfo`.
 pub mod model_source_info {
     /// Source of the model.
+    /// Different from `objective` field, this `ModelSourceType` enum
+    /// indicates the source from which the model was accessed or obtained,
+    /// whereas the `objective` indicates the overall aim or function of this
+    /// model.
     #[derive(
         Clone,
         Copy,
@@ -3788,6 +3805,8 @@ pub mod model_source_info {
         Genie = 5,
         /// The Model is uploaded by text embedding finetuning pipeline.
         CustomTextEmbedding = 6,
+        /// The Model is saved or tuned from Marketplace.
+        Marketplace = 7,
     }
     impl ModelSourceType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3803,6 +3822,7 @@ pub mod model_source_info {
                 ModelSourceType::ModelGarden => "MODEL_GARDEN",
                 ModelSourceType::Genie => "GENIE",
                 ModelSourceType::CustomTextEmbedding => "CUSTOM_TEXT_EMBEDDING",
+                ModelSourceType::Marketplace => "MARKETPLACE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3815,6 +3835,7 @@ pub mod model_source_info {
                 "MODEL_GARDEN" => Some(Self::ModelGarden),
                 "GENIE" => Some(Self::Genie),
                 "CUSTOM_TEXT_EMBEDDING" => Some(Self::CustomTextEmbedding),
+                "MARKETPLACE" => Some(Self::Marketplace),
                 _ => None,
             }
         }
@@ -4438,7 +4459,8 @@ impl Type {
 ///
 /// A `Tool` is a piece of code that enables the system to interact with
 /// external systems to perform an action, or set of actions, outside of
-/// knowledge and scope of the model.
+/// knowledge and scope of the model. A Tool object should contain exactly
+/// one type of Tool.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tool {
@@ -4452,6 +4474,14 @@ pub struct Tool {
     /// provided.
     #[prost(message, repeated, tag = "1")]
     pub function_declarations: ::prost::alloc::vec::Vec<FunctionDeclaration>,
+    /// Optional. System will always execute the provided retrieval tool(s) to get
+    /// external knowledge to answer the prompt. Retrieval results are presented to
+    /// the model for generation.
+    #[prost(message, optional, tag = "2")]
+    pub retrieval: ::core::option::Option<Retrieval>,
+    /// Optional. Specialized retrieval tool that is powered by Google search.
+    #[prost(message, optional, tag = "3")]
+    pub google_search_retrieval: ::core::option::Option<GoogleSearchRetrieval>,
 }
 /// Structured representation of a function declaration as defined by the
 /// [OpenAPI 3.0 specification](<https://spec.openapis.org/oas/v3.0.3>). Included
@@ -4515,6 +4545,48 @@ pub struct FunctionResponse {
     /// Required. The function response in JSON object format.
     #[prost(message, optional, tag = "2")]
     pub response: ::core::option::Option<::prost_types::Struct>,
+}
+/// Defines a retrieval tool that model can call to access external knowledge.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Retrieval {
+    /// Optional. Disable using the result from this tool in detecting grounding
+    /// attribution. This does not affect how the result is given to the model for
+    /// generation.
+    #[prost(bool, tag = "3")]
+    pub disable_attribution: bool,
+    #[prost(oneof = "retrieval::Source", tags = "2")]
+    pub source: ::core::option::Option<retrieval::Source>,
+}
+/// Nested message and enum types in `Retrieval`.
+pub mod retrieval {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Set to use data source powered by Vertex AI Search.
+        #[prost(message, tag = "2")]
+        VertexAiSearch(super::VertexAiSearch),
+    }
+}
+/// Retrieve from Vertex AI Search datastore for grounding.
+/// See <https://cloud.google.com/vertex-ai-search-and-conversation>
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VertexAiSearch {
+    /// Required. Fully-qualified Vertex AI Search's datastore resource ID.
+    /// projects/<>/locations/<>/collections/<>/dataStores/<>
+    #[prost(string, tag = "1")]
+    pub datastore: ::prost::alloc::string::String,
+}
+/// Tool to retrieve public web data for grounding, powered by Google.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GoogleSearchRetrieval {
+    /// Optional. Disable using the result from this tool in detecting grounding
+    /// attribution. This does not affect how the result is given to the model for
+    /// generation.
+    #[prost(bool, tag = "1")]
+    pub disable_attribution: bool,
 }
 /// The base structured datatype containing multi-part content of a message.
 ///
@@ -4834,6 +4906,9 @@ pub struct Candidate {
     /// Output only. Source attribution of the generated content.
     #[prost(message, optional, tag = "6")]
     pub citation_metadata: ::core::option::Option<CitationMetadata>,
+    /// Output only. Metadata specifies sources used to ground generated content.
+    #[prost(message, optional, tag = "7")]
+    pub grounding_metadata: ::core::option::Option<GroundingMetadata>,
 }
 /// Nested message and enum types in `Candidate`.
 pub mod candidate {
@@ -4896,6 +4971,68 @@ pub mod candidate {
             }
         }
     }
+}
+/// Segment of the content.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Segment {
+    /// Output only. The index of a Part object within its parent Content object.
+    #[prost(int32, tag = "1")]
+    pub part_index: i32,
+    /// Output only. Start index in the given Part, measured in bytes. Offset from
+    /// the start of the Part, inclusive, starting at zero.
+    #[prost(int32, tag = "2")]
+    pub start_index: i32,
+    /// Output only. End index in the given Part, measured in bytes. Offset from
+    /// the start of the Part, exclusive, starting at zero.
+    #[prost(int32, tag = "3")]
+    pub end_index: i32,
+}
+/// Grounding attribution.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GroundingAttribution {
+    /// Output only. Segment of the content this attribution belongs to.
+    #[prost(message, optional, tag = "1")]
+    pub segment: ::core::option::Option<Segment>,
+    /// Optional. Output only. Confidence score of the attribution. Ranges from 0
+    /// to 1. 1 is the most confident.
+    #[prost(float, optional, tag = "2")]
+    pub confidence_score: ::core::option::Option<f32>,
+    #[prost(oneof = "grounding_attribution::Reference", tags = "3")]
+    pub reference: ::core::option::Option<grounding_attribution::Reference>,
+}
+/// Nested message and enum types in `GroundingAttribution`.
+pub mod grounding_attribution {
+    /// Attribution from the web.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Web {
+        /// Output only. URI reference of the attribution.
+        #[prost(string, tag = "1")]
+        pub uri: ::prost::alloc::string::String,
+        /// Output only. Title of the attribution.
+        #[prost(string, tag = "2")]
+        pub title: ::prost::alloc::string::String,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Reference {
+        /// Optional. Attribution from the web.
+        #[prost(message, tag = "3")]
+        Web(Web),
+    }
+}
+/// Metadata returned to client when grounding is enabled.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GroundingMetadata {
+    /// Optional. Web search queries for the following-up web search.
+    #[prost(string, repeated, tag = "1")]
+    pub web_search_queries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. List of grounding attributions.
+    #[prost(message, repeated, tag = "2")]
+    pub grounding_attributions: ::prost::alloc::vec::Vec<GroundingAttribution>,
 }
 /// Harm categories that will block the content.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -5310,10 +5447,6 @@ pub struct Scheduling {
     /// `Scheduling.restart_job_on_worker_restart` to false.
     #[prost(bool, tag = "5")]
     pub disable_retries: bool,
-    /// Optional. This is the maximum time a user will wait in the QRM queue for
-    /// resources. Default is 1 day
-    #[prost(message, optional, tag = "6")]
-    pub max_wait_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// A piece of data in a Dataset. Could be an image, a video, a document or plain
 /// text.
@@ -7867,6 +8000,7 @@ pub struct ListEndpointsRequest {
     ///      * A key including a space must be quoted. `labels."a key"`.
     ///
     /// Some examples:
+    ///
     ///    * `endpoint=1`
     ///    * `displayName="myDisplayName"`
     ///    * `labels.myKey="myValue"`
@@ -9226,6 +9360,10 @@ pub struct Feature {
     /// If no value is provided, will use feature_id.
     #[prost(string, tag = "106")]
     pub version_column_name: ::prost::alloc::string::String,
+    /// Entity responsible for maintaining this feature. Can be comma separated
+    /// list of email addresses or URIs.
+    #[prost(string, tag = "107")]
+    pub point_of_contact: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Feature`.
 pub mod feature {
@@ -9445,6 +9583,21 @@ pub struct PrivateServiceConnectConfig {
     /// attachment.
     #[prost(string, repeated, tag = "2")]
     pub project_allowlist: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// PscAutomatedEndpoints defines the output of the forwarding rule
+/// automatically created by each PscAutomationConfig.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PscAutomatedEndpoints {
+    /// Corresponding project_id in pscAutomationConfigs
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Corresponding network in pscAutomationConfigs.
+    #[prost(string, tag = "2")]
+    pub network: ::prost::alloc::string::String,
+    /// Ip Address created by the automated forwarding rule.
+    #[prost(string, tag = "3")]
+    pub match_address: ::prost::alloc::string::String,
 }
 /// Vertex AI Feature Online Store provides a centralized repository for serving
 /// ML features and embedding indexes at low latency. The Feature Online Store is
@@ -9683,6 +9836,19 @@ pub struct FeatureView {
     /// online serving.
     #[prost(message, optional, tag = "8")]
     pub vector_search_config: ::core::option::Option<feature_view::VectorSearchConfig>,
+    /// Optional. Service agent type used during data sync. By default, the Vertex
+    /// AI Service Agent is used. When using an IAM Policy to isolate this
+    /// FeatureView within a project, a separate service account should be
+    /// provisioned by setting this field to `SERVICE_AGENT_TYPE_FEATURE_VIEW`.
+    /// This will generate a separate service account to access the BigQuery source
+    /// table.
+    #[prost(enumeration = "feature_view::ServiceAgentType", tag = "14")]
+    pub service_agent_type: i32,
+    /// Output only. A Service Account unique to this FeatureView. The role
+    /// bigquery.dataViewer should be granted to this service account to allow
+    /// Vertex AI Feature Store to sync data to the online store.
+    #[prost(string, tag = "13")]
+    pub service_account_email: ::prost::alloc::string::String,
     #[prost(oneof = "feature_view::Source", tags = "6, 9")]
     pub source: ::core::option::Option<feature_view::Source>,
 }
@@ -9856,6 +10022,53 @@ pub mod feature_view {
             pub feature_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
     }
+    /// Service agent type used during data sync.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ServiceAgentType {
+        /// By default, the project-level Vertex AI Service Agent is enabled.
+        Unspecified = 0,
+        /// Indicates the project-level Vertex AI Service Agent
+        /// (<https://cloud.google.com/vertex-ai/docs/general/access-control#service-agents>)
+        /// will be used during sync jobs.
+        Project = 1,
+        /// Enable a FeatureView service account to be created by Vertex AI and
+        /// output in the field `service_account_email`. This service account will
+        /// be used to read from the source BigQuery table during sync.
+        FeatureView = 2,
+    }
+    impl ServiceAgentType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ServiceAgentType::Unspecified => "SERVICE_AGENT_TYPE_UNSPECIFIED",
+                ServiceAgentType::Project => "SERVICE_AGENT_TYPE_PROJECT",
+                ServiceAgentType::FeatureView => "SERVICE_AGENT_TYPE_FEATURE_VIEW",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SERVICE_AGENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SERVICE_AGENT_TYPE_PROJECT" => Some(Self::Project),
+                "SERVICE_AGENT_TYPE_FEATURE_VIEW" => Some(Self::FeatureView),
+                _ => None,
+            }
+        }
+    }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
@@ -10011,6 +10224,7 @@ pub struct UpdateFeatureOnlineStoreRequest {
     /// Updatable fields:
     ///
     ///    * `big_query_source`
+    ///    * `bigtable`
     ///    * `labels`
     ///    * `sync_config`
     #[prost(message, optional, tag = "2")]
@@ -10164,6 +10378,7 @@ pub struct UpdateFeatureViewRequest {
     /// Updatable fields:
     ///
     ///    * `labels`
+    ///    * `serviceAgentType`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -11411,17 +11626,30 @@ pub mod featurestore_online_serving_service_client {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureViewDataKey {
-    #[prost(oneof = "feature_view_data_key::KeyOneof", tags = "1")]
+    #[prost(oneof = "feature_view_data_key::KeyOneof", tags = "1, 2")]
     pub key_oneof: ::core::option::Option<feature_view_data_key::KeyOneof>,
 }
 /// Nested message and enum types in `FeatureViewDataKey`.
 pub mod feature_view_data_key {
+    /// ID that is comprised from several parts (columns).
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CompositeKey {
+        /// Parts to construct Entity ID. Should match with the same ID columns as
+        /// defined in FeatureView in the same order.
+        #[prost(string, repeated, tag = "1")]
+        pub parts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum KeyOneof {
         /// String key to use for lookup.
         #[prost(string, tag = "1")]
         Key(::prost::alloc::string::String),
+        /// The actual Entity ID will be composed from this struct. This should match
+        /// with the way ID is defined in the FeatureView spec.
+        #[prost(message, tag = "2")]
+        CompositeKey(CompositeKey),
     }
 }
 /// Request message for
@@ -11600,12 +11828,13 @@ pub mod nearest_neighbor_query {
         pub value: ::prost::alloc::vec::Vec<f32>,
     }
     /// String filter is used to search a subset of the entities by using boolean
-    /// rules. For example: if a query specifies string filter with 'name
-    /// = color, allow_tokens = {red, blue}, deny_tokens = {purple}','  then that
-    /// query will match entities that are red or blue, but if those points are
-    /// also purple, then they will be excluded even if they are red/blue. Only
-    /// string filter is supported for now, numeric filter will be supported in the
-    /// near future.
+    /// rules on string columns.
+    /// For example: if a query specifies string filter
+    /// with 'name = color, allow_tokens = {red, blue}, deny_tokens = {purple}','
+    /// then that query will match entities that are red or blue, but if those
+    /// points are also purple, then they will be excluded even if they are
+    /// red/blue. Only string filter is supported for now, numeric filter will be
+    /// supported in the near future.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StringFilter {
@@ -16256,6 +16485,10 @@ pub struct IndexPrivateEndpoints {
     /// private service connect is enabled.
     #[prost(string, tag = "2")]
     pub service_attachment: ::prost::alloc::string::String,
+    /// Output only. PscAutomatedEndpoints is populated if private service connect
+    /// is enabled if PscAutomatedConfig is set.
+    #[prost(message, repeated, tag = "3")]
+    pub psc_automated_endpoints: ::prost::alloc::vec::Vec<PscAutomatedEndpoints>,
 }
 /// Request message for
 /// [IndexEndpointService.CreateIndexEndpoint][google.cloud.aiplatform.v1beta1.IndexEndpointService.CreateIndexEndpoint].
@@ -16939,6 +17172,15 @@ pub struct UpsertDatapointsRequest {
     /// A list of datapoints to be created/updated.
     #[prost(message, repeated, tag = "2")]
     pub datapoints: ::prost::alloc::vec::Vec<IndexDatapoint>,
+    /// Optional. Update mask is used to specify the fields to be overwritten in
+    /// the datapoints by the update. The fields specified in the update_mask are
+    /// relative to each IndexDatapoint inside datapoints, not the full request.
+    ///
+    /// Updatable fields:
+    ///
+    ///    * Use `all_restricts` to update both restricts and numeric_restricts.
+    #[prost(message, optional, tag = "3")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for
 /// [IndexService.UpsertDatapoints][google.cloud.aiplatform.v1beta1.IndexService.UpsertDatapoints]
@@ -17037,6 +17279,19 @@ pub mod nearest_neighbor_search_operation_metadata {
             EmbeddingSizeMismatch = 6,
             /// The `namespace` field is missing.
             NamespaceMissing = 7,
+            /// Generic catch-all error. Only used for validation failure where the
+            /// root cause cannot be easily retrieved programmatically.
+            ParsingError = 8,
+            /// There are multiple restricts with the same `namespace` value.
+            DuplicateNamespace = 9,
+            /// Numeric restrict has operator specified in datapoint.
+            OpInDatapoint = 10,
+            /// Numeric restrict has multiple values specified.
+            MultipleValues = 11,
+            /// Numeric restrict has invalid numeric value specified.
+            InvalidNumericValue = 12,
+            /// File is not in UTF_8 format.
+            InvalidEncoding = 13,
         }
         impl RecordErrorType {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -17053,6 +17308,12 @@ pub mod nearest_neighbor_search_operation_metadata {
                     RecordErrorType::InvalidEmbeddingId => "INVALID_EMBEDDING_ID",
                     RecordErrorType::EmbeddingSizeMismatch => "EMBEDDING_SIZE_MISMATCH",
                     RecordErrorType::NamespaceMissing => "NAMESPACE_MISSING",
+                    RecordErrorType::ParsingError => "PARSING_ERROR",
+                    RecordErrorType::DuplicateNamespace => "DUPLICATE_NAMESPACE",
+                    RecordErrorType::OpInDatapoint => "OP_IN_DATAPOINT",
+                    RecordErrorType::MultipleValues => "MULTIPLE_VALUES",
+                    RecordErrorType::InvalidNumericValue => "INVALID_NUMERIC_VALUE",
+                    RecordErrorType::InvalidEncoding => "INVALID_ENCODING",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -17066,6 +17327,12 @@ pub mod nearest_neighbor_search_operation_metadata {
                     "INVALID_EMBEDDING_ID" => Some(Self::InvalidEmbeddingId),
                     "EMBEDDING_SIZE_MISMATCH" => Some(Self::EmbeddingSizeMismatch),
                     "NAMESPACE_MISSING" => Some(Self::NamespaceMissing),
+                    "PARSING_ERROR" => Some(Self::ParsingError),
+                    "DUPLICATE_NAMESPACE" => Some(Self::DuplicateNamespace),
+                    "OP_IN_DATAPOINT" => Some(Self::OpInDatapoint),
+                    "MULTIPLE_VALUES" => Some(Self::MultipleValues),
+                    "INVALID_NUMERIC_VALUE" => Some(Self::InvalidNumericValue),
+                    "INVALID_ENCODING" => Some(Self::InvalidEncoding),
                     _ => None,
                 }
             }
@@ -19865,1105 +20132,6 @@ pub struct LineageSubgraph {
     #[prost(message, repeated, tag = "3")]
     pub events: ::prost::alloc::vec::Vec<Event>,
 }
-/// Request message for
-/// [PredictionService.Predict][google.cloud.aiplatform.v1beta1.PredictionService.Predict].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PredictRequest {
-    /// Required. The name of the Endpoint requested to serve the prediction.
-    /// Format:
-    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
-    /// Required. The instances that are the input to the prediction call.
-    /// A DeployedModel may have an upper limit on the number of instances it
-    /// supports per request, and when it is exceeded the prediction call errors
-    /// in case of AutoML Models, or, in case of customer created Models, the
-    /// behaviour is as documented by that Model.
-    /// The schema of any single instance may be specified via Endpoint's
-    /// DeployedModels'
-    /// [Model's][google.cloud.aiplatform.v1beta1.DeployedModel.model]
-    /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
-    /// [instance_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.instance_schema_uri].
-    #[prost(message, repeated, tag = "2")]
-    pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
-    /// The parameters that govern the prediction. The schema of the parameters may
-    /// be specified via Endpoint's DeployedModels' [Model's
-    /// ][google.cloud.aiplatform.v1beta1.DeployedModel.model]
-    /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
-    /// [parameters_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.parameters_schema_uri].
-    #[prost(message, optional, tag = "3")]
-    pub parameters: ::core::option::Option<::prost_types::Value>,
-}
-/// Response message for
-/// [PredictionService.Predict][google.cloud.aiplatform.v1beta1.PredictionService.Predict].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PredictResponse {
-    /// The predictions that are the output of the predictions call.
-    /// The schema of any single prediction may be specified via Endpoint's
-    /// DeployedModels' [Model's
-    /// ][google.cloud.aiplatform.v1beta1.DeployedModel.model]
-    /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
-    /// [prediction_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.prediction_schema_uri].
-    #[prost(message, repeated, tag = "1")]
-    pub predictions: ::prost::alloc::vec::Vec<::prost_types::Value>,
-    /// ID of the Endpoint's DeployedModel that served this prediction.
-    #[prost(string, tag = "2")]
-    pub deployed_model_id: ::prost::alloc::string::String,
-    /// Output only. The resource name of the Model which is deployed as the
-    /// DeployedModel that this prediction hits.
-    #[prost(string, tag = "3")]
-    pub model: ::prost::alloc::string::String,
-    /// Output only. The version ID of the Model which is deployed as the
-    /// DeployedModel that this prediction hits.
-    #[prost(string, tag = "5")]
-    pub model_version_id: ::prost::alloc::string::String,
-    /// Output only. The [display
-    /// name][google.cloud.aiplatform.v1beta1.Model.display_name] of the Model
-    /// which is deployed as the DeployedModel that this prediction hits.
-    #[prost(string, tag = "4")]
-    pub model_display_name: ::prost::alloc::string::String,
-    /// Output only. Request-level metadata returned by the model. The metadata
-    /// type will be dependent upon the model implementation.
-    #[prost(message, optional, tag = "6")]
-    pub metadata: ::core::option::Option<::prost_types::Value>,
-}
-/// Request message for
-/// [PredictionService.RawPredict][google.cloud.aiplatform.v1beta1.PredictionService.RawPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RawPredictRequest {
-    /// Required. The name of the Endpoint requested to serve the prediction.
-    /// Format:
-    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
-    /// The prediction input. Supports HTTP headers and arbitrary data payload.
-    ///
-    /// A [DeployedModel][google.cloud.aiplatform.v1beta1.DeployedModel] may have
-    /// an upper limit on the number of instances it supports per request. When
-    /// this limit it is exceeded for an AutoML model, the
-    /// [RawPredict][google.cloud.aiplatform.v1beta1.PredictionService.RawPredict]
-    /// method returns an error. When this limit is exceeded for a custom-trained
-    /// model, the behavior varies depending on the model.
-    ///
-    /// You can specify the schema for each instance in the
-    /// [predict_schemata.instance_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.instance_schema_uri]
-    /// field when you create a [Model][google.cloud.aiplatform.v1beta1.Model].
-    /// This schema applies when you deploy the `Model` as a `DeployedModel` to an
-    /// [Endpoint][google.cloud.aiplatform.v1beta1.Endpoint] and use the
-    /// `RawPredict` method.
-    #[prost(message, optional, tag = "2")]
-    pub http_body: ::core::option::Option<super::super::super::api::HttpBody>,
-}
-/// Request message for
-/// [PredictionService.DirectPredict][google.cloud.aiplatform.v1beta1.PredictionService.DirectPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DirectPredictRequest {
-    /// Required. The name of the Endpoint requested to serve the prediction.
-    /// Format:
-    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
-    /// The prediction input.
-    #[prost(message, repeated, tag = "2")]
-    pub inputs: ::prost::alloc::vec::Vec<Tensor>,
-    /// The parameters that govern the prediction.
-    #[prost(message, optional, tag = "3")]
-    pub parameters: ::core::option::Option<Tensor>,
-}
-/// Response message for
-/// [PredictionService.DirectPredict][google.cloud.aiplatform.v1beta1.PredictionService.DirectPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DirectPredictResponse {
-    /// The prediction output.
-    #[prost(message, repeated, tag = "1")]
-    pub outputs: ::prost::alloc::vec::Vec<Tensor>,
-    /// The parameters that govern the prediction.
-    #[prost(message, optional, tag = "2")]
-    pub parameters: ::core::option::Option<Tensor>,
-}
-/// Request message for
-/// [PredictionService.DirectRawPredict][google.cloud.aiplatform.v1beta1.PredictionService.DirectRawPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DirectRawPredictRequest {
-    /// Required. The name of the Endpoint requested to serve the prediction.
-    /// Format:
-    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
-    /// Fully qualified name of the API method being invoked to perform
-    /// predictions.
-    ///
-    /// Format:
-    /// `/namespace.Service/Method/`
-    /// Example:
-    /// `/tensorflow.serving.PredictionService/Predict`
-    #[prost(string, tag = "2")]
-    pub method_name: ::prost::alloc::string::String,
-    /// The prediction input.
-    #[prost(bytes = "vec", tag = "3")]
-    pub input: ::prost::alloc::vec::Vec<u8>,
-}
-/// Response message for
-/// [PredictionService.DirectRawPredict][google.cloud.aiplatform.v1beta1.PredictionService.DirectRawPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DirectRawPredictResponse {
-    /// The prediction output.
-    #[prost(bytes = "vec", tag = "1")]
-    pub output: ::prost::alloc::vec::Vec<u8>,
-}
-/// Request message for
-/// [PredictionService.StreamDirectPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamDirectPredict].
-///
-/// The first message must contain
-/// [endpoint][google.cloud.aiplatform.v1beta1.StreamDirectPredictRequest.endpoint]
-/// field and optionally [input][]. The subsequent messages must contain
-/// [input][].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamDirectPredictRequest {
-    /// Required. The name of the Endpoint requested to serve the prediction.
-    /// Format:
-    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
-    /// Optional. The prediction input.
-    #[prost(message, repeated, tag = "2")]
-    pub inputs: ::prost::alloc::vec::Vec<Tensor>,
-    /// Optional. The parameters that govern the prediction.
-    #[prost(message, optional, tag = "3")]
-    pub parameters: ::core::option::Option<Tensor>,
-}
-/// Response message for
-/// [PredictionService.StreamDirectPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamDirectPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamDirectPredictResponse {
-    /// The prediction output.
-    #[prost(message, repeated, tag = "1")]
-    pub outputs: ::prost::alloc::vec::Vec<Tensor>,
-    /// The parameters that govern the prediction.
-    #[prost(message, optional, tag = "2")]
-    pub parameters: ::core::option::Option<Tensor>,
-}
-/// Request message for
-/// [PredictionService.StreamDirectRawPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamDirectRawPredict].
-///
-/// The first message must contain
-/// [endpoint][google.cloud.aiplatform.v1beta1.StreamDirectRawPredictRequest.endpoint]
-/// and
-/// [method_name][google.cloud.aiplatform.v1beta1.StreamDirectRawPredictRequest.method_name]
-/// fields and optionally
-/// [input][google.cloud.aiplatform.v1beta1.StreamDirectRawPredictRequest.input].
-/// The subsequent messages must contain
-/// [input][google.cloud.aiplatform.v1beta1.StreamDirectRawPredictRequest.input].
-/// [method_name][google.cloud.aiplatform.v1beta1.StreamDirectRawPredictRequest.method_name]
-/// in the subsequent messages have no effect.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamDirectRawPredictRequest {
-    /// Required. The name of the Endpoint requested to serve the prediction.
-    /// Format:
-    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
-    /// Optional. Fully qualified name of the API method being invoked to perform
-    /// predictions.
-    ///
-    /// Format:
-    /// `/namespace.Service/Method/`
-    /// Example:
-    /// `/tensorflow.serving.PredictionService/Predict`
-    #[prost(string, tag = "2")]
-    pub method_name: ::prost::alloc::string::String,
-    /// Optional. The prediction input.
-    #[prost(bytes = "vec", tag = "3")]
-    pub input: ::prost::alloc::vec::Vec<u8>,
-}
-/// Response message for
-/// [PredictionService.StreamDirectRawPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamDirectRawPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamDirectRawPredictResponse {
-    /// The prediction output.
-    #[prost(bytes = "vec", tag = "1")]
-    pub output: ::prost::alloc::vec::Vec<u8>,
-}
-/// Request message for
-/// [PredictionService.StreamingPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamingPredict].
-///
-/// The first message must contain
-/// [endpoint][google.cloud.aiplatform.v1beta1.StreamingPredictRequest.endpoint]
-/// field and optionally [input][]. The subsequent messages must contain
-/// [input][].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingPredictRequest {
-    /// Required. The name of the Endpoint requested to serve the prediction.
-    /// Format:
-    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
-    /// The prediction input.
-    #[prost(message, repeated, tag = "2")]
-    pub inputs: ::prost::alloc::vec::Vec<Tensor>,
-    /// The parameters that govern the prediction.
-    #[prost(message, optional, tag = "3")]
-    pub parameters: ::core::option::Option<Tensor>,
-}
-/// Response message for
-/// [PredictionService.StreamingPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamingPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingPredictResponse {
-    /// The prediction output.
-    #[prost(message, repeated, tag = "1")]
-    pub outputs: ::prost::alloc::vec::Vec<Tensor>,
-    /// The parameters that govern the prediction.
-    #[prost(message, optional, tag = "2")]
-    pub parameters: ::core::option::Option<Tensor>,
-}
-/// Request message for
-/// [PredictionService.StreamingRawPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamingRawPredict].
-///
-/// The first message must contain
-/// [endpoint][google.cloud.aiplatform.v1beta1.StreamingRawPredictRequest.endpoint]
-/// and
-/// [method_name][google.cloud.aiplatform.v1beta1.StreamingRawPredictRequest.method_name]
-/// fields and optionally
-/// [input][google.cloud.aiplatform.v1beta1.StreamingRawPredictRequest.input].
-/// The subsequent messages must contain
-/// [input][google.cloud.aiplatform.v1beta1.StreamingRawPredictRequest.input].
-/// [method_name][google.cloud.aiplatform.v1beta1.StreamingRawPredictRequest.method_name]
-/// in the subsequent messages have no effect.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingRawPredictRequest {
-    /// Required. The name of the Endpoint requested to serve the prediction.
-    /// Format:
-    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
-    /// Fully qualified name of the API method being invoked to perform
-    /// predictions.
-    ///
-    /// Format:
-    /// `/namespace.Service/Method/`
-    /// Example:
-    /// `/tensorflow.serving.PredictionService/Predict`
-    #[prost(string, tag = "2")]
-    pub method_name: ::prost::alloc::string::String,
-    /// The prediction input.
-    #[prost(bytes = "vec", tag = "3")]
-    pub input: ::prost::alloc::vec::Vec<u8>,
-}
-/// Response message for
-/// [PredictionService.StreamingRawPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamingRawPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingRawPredictResponse {
-    /// The prediction output.
-    #[prost(bytes = "vec", tag = "1")]
-    pub output: ::prost::alloc::vec::Vec<u8>,
-}
-/// Request message for
-/// [PredictionService.Explain][google.cloud.aiplatform.v1beta1.PredictionService.Explain].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExplainRequest {
-    /// Required. The name of the Endpoint requested to serve the explanation.
-    /// Format:
-    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
-    /// Required. The instances that are the input to the explanation call.
-    /// A DeployedModel may have an upper limit on the number of instances it
-    /// supports per request, and when it is exceeded the explanation call errors
-    /// in case of AutoML Models, or, in case of customer created Models, the
-    /// behaviour is as documented by that Model.
-    /// The schema of any single instance may be specified via Endpoint's
-    /// DeployedModels'
-    /// [Model's][google.cloud.aiplatform.v1beta1.DeployedModel.model]
-    /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
-    /// [instance_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.instance_schema_uri].
-    #[prost(message, repeated, tag = "2")]
-    pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
-    /// The parameters that govern the prediction. The schema of the parameters may
-    /// be specified via Endpoint's DeployedModels' [Model's
-    /// ][google.cloud.aiplatform.v1beta1.DeployedModel.model]
-    /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
-    /// [parameters_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.parameters_schema_uri].
-    #[prost(message, optional, tag = "4")]
-    pub parameters: ::core::option::Option<::prost_types::Value>,
-    /// If specified, overrides the
-    /// [explanation_spec][google.cloud.aiplatform.v1beta1.DeployedModel.explanation_spec]
-    /// of the DeployedModel. Can be used for explaining prediction results with
-    /// different configurations, such as:
-    ///   - Explaining top-5 predictions results as opposed to top-1;
-    ///   - Increasing path count or step count of the attribution methods to reduce
-    ///     approximate errors;
-    ///   - Using different baselines for explaining the prediction results.
-    #[prost(message, optional, tag = "5")]
-    pub explanation_spec_override: ::core::option::Option<ExplanationSpecOverride>,
-    /// Optional. This field is the same as the one above, but supports multiple
-    /// explanations to occur in parallel. The key can be any string. Each override
-    /// will be run against the model, then its explanations will be grouped
-    /// together.
-    ///
-    /// Note - these explanations are run **In Addition** to the default
-    /// Explanation in the deployed model.
-    #[prost(map = "string, message", tag = "6")]
-    pub concurrent_explanation_spec_override: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ExplanationSpecOverride,
-    >,
-    /// If specified, this ExplainRequest will be served by the chosen
-    /// DeployedModel, overriding
-    /// [Endpoint.traffic_split][google.cloud.aiplatform.v1beta1.Endpoint.traffic_split].
-    #[prost(string, tag = "3")]
-    pub deployed_model_id: ::prost::alloc::string::String,
-}
-/// Response message for
-/// [PredictionService.Explain][google.cloud.aiplatform.v1beta1.PredictionService.Explain].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExplainResponse {
-    /// The explanations of the Model's
-    /// [PredictResponse.predictions][google.cloud.aiplatform.v1beta1.PredictResponse.predictions].
-    ///
-    /// It has the same number of elements as
-    /// [instances][google.cloud.aiplatform.v1beta1.ExplainRequest.instances] to be
-    /// explained.
-    #[prost(message, repeated, tag = "1")]
-    pub explanations: ::prost::alloc::vec::Vec<Explanation>,
-    /// This field stores the results of the explanations run in parallel with
-    /// The default explanation strategy/method.
-    #[prost(map = "string, message", tag = "4")]
-    pub concurrent_explanations: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        explain_response::ConcurrentExplanation,
-    >,
-    /// ID of the Endpoint's DeployedModel that served this explanation.
-    #[prost(string, tag = "2")]
-    pub deployed_model_id: ::prost::alloc::string::String,
-    /// The predictions that are the output of the predictions call.
-    /// Same as
-    /// [PredictResponse.predictions][google.cloud.aiplatform.v1beta1.PredictResponse.predictions].
-    #[prost(message, repeated, tag = "3")]
-    pub predictions: ::prost::alloc::vec::Vec<::prost_types::Value>,
-}
-/// Nested message and enum types in `ExplainResponse`.
-pub mod explain_response {
-    /// This message is a wrapper grouping Concurrent Explanations.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ConcurrentExplanation {
-        /// The explanations of the Model's
-        /// [PredictResponse.predictions][google.cloud.aiplatform.v1beta1.PredictResponse.predictions].
-        ///
-        /// It has the same number of elements as
-        /// [instances][google.cloud.aiplatform.v1beta1.ExplainRequest.instances] to
-        /// be explained.
-        #[prost(message, repeated, tag = "1")]
-        pub explanations: ::prost::alloc::vec::Vec<super::Explanation>,
-    }
-}
-/// Request message for
-/// [PredictionService.CountTokens][google.cloud.aiplatform.v1beta1.PredictionService.CountTokens].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CountTokensRequest {
-    /// Required. The name of the Endpoint requested to perform token counting.
-    /// Format:
-    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
-    #[prost(string, tag = "1")]
-    pub endpoint: ::prost::alloc::string::String,
-    /// Required. The name of the publisher model requested to serve the
-    /// prediction. Format:
-    /// `projects/{project}/locations/{location}/publishers/*/models/*`
-    #[prost(string, tag = "3")]
-    pub model: ::prost::alloc::string::String,
-    /// Required. The instances that are the input to token counting call.
-    /// Schema is identical to the prediction schema of the underlying model.
-    #[prost(message, repeated, tag = "2")]
-    pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
-    /// Required. Input content.
-    #[prost(message, repeated, tag = "4")]
-    pub contents: ::prost::alloc::vec::Vec<Content>,
-}
-/// Response message for
-/// [PredictionService.CountTokens][google.cloud.aiplatform.v1beta1.PredictionService.CountTokens].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CountTokensResponse {
-    /// The total number of tokens counted across all instances from the request.
-    #[prost(int32, tag = "1")]
-    pub total_tokens: i32,
-    /// The total number of billable characters counted across all instances from
-    /// the request.
-    #[prost(int32, tag = "2")]
-    pub total_billable_characters: i32,
-}
-/// Request message for \[PredictionService.GenerateContent\].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GenerateContentRequest {
-    /// Required. The name of the publisher model requested to serve the
-    /// prediction. Format:
-    /// `projects/{project}/locations/{location}/publishers/*/models/*`
-    #[prost(string, tag = "5")]
-    pub model: ::prost::alloc::string::String,
-    /// Required. The content of the current conversation with the model.
-    ///
-    /// For single-turn queries, this is a single instance. For multi-turn queries,
-    /// this is a repeated field that contains conversation history + latest
-    /// request.
-    #[prost(message, repeated, tag = "2")]
-    pub contents: ::prost::alloc::vec::Vec<Content>,
-    /// Optional. A list of `Tools` the model may use to generate the next
-    /// response.
-    ///
-    /// A `Tool` is a piece of code that enables the system to interact with
-    /// external systems to perform an action, or set of actions, outside of
-    /// knowledge and scope of the model. The only supported tool is currently
-    /// `Function`
-    #[prost(message, repeated, tag = "6")]
-    pub tools: ::prost::alloc::vec::Vec<Tool>,
-    /// Optional. Per request settings for blocking unsafe content.
-    /// Enforced on GenerateContentResponse.candidates.
-    #[prost(message, repeated, tag = "3")]
-    pub safety_settings: ::prost::alloc::vec::Vec<SafetySetting>,
-    /// Optional. Generation config.
-    #[prost(message, optional, tag = "4")]
-    pub generation_config: ::core::option::Option<GenerationConfig>,
-}
-/// Response message for \[PredictionService.GenerateContent\].
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GenerateContentResponse {
-    /// Output only. Generated candidates.
-    #[prost(message, repeated, tag = "2")]
-    pub candidates: ::prost::alloc::vec::Vec<Candidate>,
-    /// Output only. Content filter results for a prompt sent in the request.
-    /// Note: Sent only in the first stream chunk.
-    /// Only happens when no candidates were generated due to content violations.
-    #[prost(message, optional, tag = "3")]
-    pub prompt_feedback: ::core::option::Option<
-        generate_content_response::PromptFeedback,
-    >,
-    /// Usage metadata about the response(s).
-    #[prost(message, optional, tag = "4")]
-    pub usage_metadata: ::core::option::Option<generate_content_response::UsageMetadata>,
-}
-/// Nested message and enum types in `GenerateContentResponse`.
-pub mod generate_content_response {
-    /// Content filter results for a prompt sent in the request.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct PromptFeedback {
-        /// Output only. Blocked reason.
-        #[prost(enumeration = "prompt_feedback::BlockedReason", tag = "1")]
-        pub block_reason: i32,
-        /// Output only. Safety ratings.
-        #[prost(message, repeated, tag = "2")]
-        pub safety_ratings: ::prost::alloc::vec::Vec<super::SafetyRating>,
-        /// Output only. A readable block reason message.
-        #[prost(string, tag = "3")]
-        pub block_reason_message: ::prost::alloc::string::String,
-    }
-    /// Nested message and enum types in `PromptFeedback`.
-    pub mod prompt_feedback {
-        /// Blocked reason enumeration.
-        #[derive(
-            Clone,
-            Copy,
-            Debug,
-            PartialEq,
-            Eq,
-            Hash,
-            PartialOrd,
-            Ord,
-            ::prost::Enumeration
-        )]
-        #[repr(i32)]
-        pub enum BlockedReason {
-            /// Unspecified blocked reason.
-            Unspecified = 0,
-            /// Candidates blocked due to safety.
-            Safety = 1,
-            /// Candidates blocked due to other reason.
-            Other = 2,
-        }
-        impl BlockedReason {
-            /// String value of the enum field names used in the ProtoBuf definition.
-            ///
-            /// The values are not transformed in any way and thus are considered stable
-            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-            pub fn as_str_name(&self) -> &'static str {
-                match self {
-                    BlockedReason::Unspecified => "BLOCKED_REASON_UNSPECIFIED",
-                    BlockedReason::Safety => "SAFETY",
-                    BlockedReason::Other => "OTHER",
-                }
-            }
-            /// Creates an enum from field names used in the ProtoBuf definition.
-            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-                match value {
-                    "BLOCKED_REASON_UNSPECIFIED" => Some(Self::Unspecified),
-                    "SAFETY" => Some(Self::Safety),
-                    "OTHER" => Some(Self::Other),
-                    _ => None,
-                }
-            }
-        }
-    }
-    /// Usage metadata about response(s).
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct UsageMetadata {
-        /// Number of tokens in the request.
-        #[prost(int32, tag = "1")]
-        pub prompt_token_count: i32,
-        /// Number of tokens in the response(s).
-        #[prost(int32, tag = "2")]
-        pub candidates_token_count: i32,
-        #[prost(int32, tag = "3")]
-        pub total_token_count: i32,
-    }
-}
-/// Generated client implementations.
-pub mod prediction_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
-    use tonic::codegen::*;
-    use tonic::codegen::http::Uri;
-    /// A service for online predictions and explanations.
-    #[derive(Debug, Clone)]
-    pub struct PredictionServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl PredictionServiceClient<tonic::transport::Channel> {
-        /// Attempt to create a new client by connecting to a given endpoint.
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
-    impl<T> PredictionServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_origin(inner: T, origin: Uri) -> Self {
-            let inner = tonic::client::Grpc::with_origin(inner, origin);
-            Self { inner }
-        }
-        pub fn with_interceptor<F>(
-            inner: T,
-            interceptor: F,
-        ) -> PredictionServiceClient<InterceptedService<T, F>>
-        where
-            F: tonic::service::Interceptor,
-            T::ResponseBody: Default,
-            T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-                Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
-                >,
-            >,
-            <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
-        {
-            PredictionServiceClient::new(InterceptedService::new(inner, interceptor))
-        }
-        /// Compress requests with the given encoding.
-        ///
-        /// This requires the server to support it otherwise it might respond with an
-        /// error.
-        #[must_use]
-        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.send_compressed(encoding);
-            self
-        }
-        /// Enable decompressing responses.
-        #[must_use]
-        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.accept_compressed(encoding);
-            self
-        }
-        /// Limits the maximum size of a decoded message.
-        ///
-        /// Default: `4MB`
-        #[must_use]
-        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_decoding_message_size(limit);
-            self
-        }
-        /// Limits the maximum size of an encoded message.
-        ///
-        /// Default: `usize::MAX`
-        #[must_use]
-        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_encoding_message_size(limit);
-            self
-        }
-        /// Perform an online prediction.
-        pub async fn predict(
-            &mut self,
-            request: impl tonic::IntoRequest<super::PredictRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::PredictResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1beta1.PredictionService/Predict",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1beta1.PredictionService",
-                        "Predict",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Perform an online prediction with an arbitrary HTTP payload.
-        ///
-        /// The response includes the following HTTP headers:
-        ///
-        /// * `X-Vertex-AI-Endpoint-Id`: ID of the
-        /// [Endpoint][google.cloud.aiplatform.v1beta1.Endpoint] that served this
-        /// prediction.
-        ///
-        /// * `X-Vertex-AI-Deployed-Model-Id`: ID of the Endpoint's
-        /// [DeployedModel][google.cloud.aiplatform.v1beta1.DeployedModel] that served
-        /// this prediction.
-        pub async fn raw_predict(
-            &mut self,
-            request: impl tonic::IntoRequest<super::RawPredictRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::api::HttpBody>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1beta1.PredictionService/RawPredict",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1beta1.PredictionService",
-                        "RawPredict",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Perform an unary online prediction request to a gRPC model server for
-        /// Vertex first-party products and frameworks.
-        pub async fn direct_predict(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DirectPredictRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::DirectPredictResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1beta1.PredictionService/DirectPredict",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1beta1.PredictionService",
-                        "DirectPredict",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Perform an unary online prediction request to a gRPC model server for
-        /// custom containers.
-        pub async fn direct_raw_predict(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DirectRawPredictRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::DirectRawPredictResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1beta1.PredictionService/DirectRawPredict",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1beta1.PredictionService",
-                        "DirectRawPredict",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Perform a streaming online prediction request to a gRPC model server for
-        /// Vertex first-party products and frameworks.
-        pub async fn stream_direct_predict(
-            &mut self,
-            request: impl tonic::IntoStreamingRequest<
-                Message = super::StreamDirectPredictRequest,
-            >,
-        ) -> std::result::Result<
-            tonic::Response<tonic::codec::Streaming<super::StreamDirectPredictResponse>>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1beta1.PredictionService/StreamDirectPredict",
-            );
-            let mut req = request.into_streaming_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1beta1.PredictionService",
-                        "StreamDirectPredict",
-                    ),
-                );
-            self.inner.streaming(req, path, codec).await
-        }
-        /// Perform a streaming online prediction request to a gRPC model server for
-        /// custom containers.
-        pub async fn stream_direct_raw_predict(
-            &mut self,
-            request: impl tonic::IntoStreamingRequest<
-                Message = super::StreamDirectRawPredictRequest,
-            >,
-        ) -> std::result::Result<
-            tonic::Response<
-                tonic::codec::Streaming<super::StreamDirectRawPredictResponse>,
-            >,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1beta1.PredictionService/StreamDirectRawPredict",
-            );
-            let mut req = request.into_streaming_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1beta1.PredictionService",
-                        "StreamDirectRawPredict",
-                    ),
-                );
-            self.inner.streaming(req, path, codec).await
-        }
-        /// Perform a streaming online prediction request for Vertex first-party
-        /// products and frameworks.
-        pub async fn streaming_predict(
-            &mut self,
-            request: impl tonic::IntoStreamingRequest<
-                Message = super::StreamingPredictRequest,
-            >,
-        ) -> std::result::Result<
-            tonic::Response<tonic::codec::Streaming<super::StreamingPredictResponse>>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1beta1.PredictionService/StreamingPredict",
-            );
-            let mut req = request.into_streaming_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1beta1.PredictionService",
-                        "StreamingPredict",
-                    ),
-                );
-            self.inner.streaming(req, path, codec).await
-        }
-        /// Perform a server-side streaming online prediction request for Vertex
-        /// LLM streaming.
-        pub async fn server_streaming_predict(
-            &mut self,
-            request: impl tonic::IntoRequest<super::StreamingPredictRequest>,
-        ) -> std::result::Result<
-            tonic::Response<tonic::codec::Streaming<super::StreamingPredictResponse>>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1beta1.PredictionService/ServerStreamingPredict",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1beta1.PredictionService",
-                        "ServerStreamingPredict",
-                    ),
-                );
-            self.inner.server_streaming(req, path, codec).await
-        }
-        /// Perform a streaming online prediction request through gRPC.
-        pub async fn streaming_raw_predict(
-            &mut self,
-            request: impl tonic::IntoStreamingRequest<
-                Message = super::StreamingRawPredictRequest,
-            >,
-        ) -> std::result::Result<
-            tonic::Response<tonic::codec::Streaming<super::StreamingRawPredictResponse>>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1beta1.PredictionService/StreamingRawPredict",
-            );
-            let mut req = request.into_streaming_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1beta1.PredictionService",
-                        "StreamingRawPredict",
-                    ),
-                );
-            self.inner.streaming(req, path, codec).await
-        }
-        /// Perform an online explanation.
-        ///
-        /// If
-        /// [deployed_model_id][google.cloud.aiplatform.v1beta1.ExplainRequest.deployed_model_id]
-        /// is specified, the corresponding DeployModel must have
-        /// [explanation_spec][google.cloud.aiplatform.v1beta1.DeployedModel.explanation_spec]
-        /// populated. If
-        /// [deployed_model_id][google.cloud.aiplatform.v1beta1.ExplainRequest.deployed_model_id]
-        /// is not specified, all DeployedModels must have
-        /// [explanation_spec][google.cloud.aiplatform.v1beta1.DeployedModel.explanation_spec]
-        /// populated.
-        pub async fn explain(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ExplainRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ExplainResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1beta1.PredictionService/Explain",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1beta1.PredictionService",
-                        "Explain",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Perform a token counting.
-        pub async fn count_tokens(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CountTokensRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::CountTokensResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1beta1.PredictionService/CountTokens",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1beta1.PredictionService",
-                        "CountTokens",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Generate content with multimodal inputs.
-        pub async fn generate_content(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GenerateContentRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::GenerateContentResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1beta1.PredictionService/GenerateContent",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1beta1.PredictionService",
-                        "GenerateContent",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Generate content with multimodal inputs with streaming support.
-        pub async fn stream_generate_content(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GenerateContentRequest>,
-        ) -> std::result::Result<
-            tonic::Response<tonic::codec::Streaming<super::GenerateContentResponse>>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1beta1.PredictionService/StreamGenerateContent",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1beta1.PredictionService",
-                        "StreamGenerateContent",
-                    ),
-                );
-            self.inner.server_streaming(req, path, codec).await
-        }
-    }
-}
 /// Request message for ComputeTokens RPC call.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -21084,37 +20252,6 @@ pub mod llm_utility_service_client {
         pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
-        }
-        /// Perform a token counting.
-        pub async fn count_tokens(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CountTokensRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::CountTokensResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.aiplatform.v1beta1.LlmUtilityService/CountTokens",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.aiplatform.v1beta1.LlmUtilityService",
-                        "CountTokens",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
         }
         /// Return a list of tokens based on the input text.
         pub async fn compute_tokens(
@@ -24511,6 +23648,9 @@ pub mod publisher_model {
         pub open_notebook: ::core::option::Option<
             call_to_action::RegionalResourceReferences,
         >,
+        /// Optional. Open notebooks of the PublisherModel.
+        #[prost(message, optional, tag = "12")]
+        pub open_notebooks: ::core::option::Option<call_to_action::OpenNotebooks>,
         /// Optional. Create application using the PublisherModel.
         #[prost(message, optional, tag = "3")]
         pub create_application: ::core::option::Option<
@@ -24520,6 +23660,11 @@ pub mod publisher_model {
         #[prost(message, optional, tag = "4")]
         pub open_fine_tuning_pipeline: ::core::option::Option<
             call_to_action::RegionalResourceReferences,
+        >,
+        /// Optional. Open fine-tuning pipelines of the PublisherModel.
+        #[prost(message, optional, tag = "13")]
+        pub open_fine_tuning_pipelines: ::core::option::Option<
+            call_to_action::OpenFineTuningPipelines,
         >,
         /// Optional. Open prompt-tuning pipeline of the PublisherModel.
         #[prost(message, optional, tag = "5")]
@@ -24534,6 +23679,9 @@ pub mod publisher_model {
         /// Optional. Deploy the PublisherModel to Vertex Endpoint.
         #[prost(message, optional, tag = "7")]
         pub deploy: ::core::option::Option<call_to_action::Deploy>,
+        /// Optional. Deploy PublisherModel to Google Kubernetes Engine.
+        #[prost(message, optional, tag = "14")]
+        pub deploy_gke: ::core::option::Option<call_to_action::DeployGke>,
         /// Optional. Open in Generation AI Studio.
         #[prost(message, optional, tag = "8")]
         pub open_generation_ai_studio: ::core::option::Option<
@@ -24563,9 +23711,22 @@ pub mod publisher_model {
                 ::prost::alloc::string::String,
                 super::ResourceReference,
             >,
-            /// Required. The title of the regional resource reference.
+            /// Required.
             #[prost(string, tag = "2")]
             pub title: ::prost::alloc::string::String,
+            /// Optional. Title of the resource.
+            #[prost(string, optional, tag = "3")]
+            pub resource_title: ::core::option::Option<::prost::alloc::string::String>,
+            /// Optional. Use case (CUJ) of the resource.
+            #[prost(string, optional, tag = "4")]
+            pub resource_use_case: ::core::option::Option<
+                ::prost::alloc::string::String,
+            >,
+            /// Optional. Description of the resource.
+            #[prost(string, optional, tag = "5")]
+            pub resource_description: ::core::option::Option<
+                ::prost::alloc::string::String,
+            >,
         }
         /// Rest API docs.
         #[allow(clippy::derive_partial_eq_without_eq)]
@@ -24577,6 +23738,24 @@ pub mod publisher_model {
             /// Required. The title of the view rest API.
             #[prost(string, tag = "2")]
             pub title: ::prost::alloc::string::String,
+        }
+        /// Open notebooks.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct OpenNotebooks {
+            /// Required. Regional resource references to notebooks.
+            #[prost(message, repeated, tag = "1")]
+            pub notebooks: ::prost::alloc::vec::Vec<RegionalResourceReferences>,
+        }
+        /// Open fine tuning pipelines.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct OpenFineTuningPipelines {
+            /// Required. Regional resource references to fine tuning pipelines.
+            #[prost(message, repeated, tag = "1")]
+            pub fine_tuning_pipelines: ::prost::alloc::vec::Vec<
+                RegionalResourceReferences,
+            >,
         }
         /// Model metadata that is needed for UploadModel or
         /// DeployModel/CreateEndpoint requests.
@@ -24635,6 +23814,16 @@ pub mod publisher_model {
                 #[prost(string, tag = "7")]
                 SharedResources(::prost::alloc::string::String),
             }
+        }
+        /// Configurations for PublisherModel GKE deployment
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct DeployGke {
+            /// Optional. GKE deployment configuration in yaml format.
+            #[prost(string, repeated, tag = "1")]
+            pub gke_yaml_configs: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
         }
     }
     /// An enum representing the open source category of a PublisherModel.
@@ -26582,6 +25771,9 @@ pub struct RaySpec {
     /// set.
     #[prost(string, tag = "7")]
     pub head_node_resource_pool_id: ::prost::alloc::string::String,
+    /// Optional. Ray metrics configurations.
+    #[prost(message, optional, tag = "8")]
+    pub ray_metric_spec: ::core::option::Option<RayMetricSpec>,
 }
 /// Persistent Cluster runtime information as output
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -26623,6 +25815,14 @@ pub struct ServiceAccountSpec {
     /// Required if any containers are specified in `ResourceRuntimeSpec`.
     #[prost(string, tag = "2")]
     pub service_account: ::prost::alloc::string::String,
+}
+/// Configuration for the Ray metrics.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RayMetricSpec {
+    /// Optional. Flag to disable the Ray metrics collection.
+    #[prost(bool, tag = "1")]
+    pub disabled: bool,
 }
 /// Request message for
 /// [PersistentResourceService.CreatePersistentResource][google.cloud.aiplatform.v1beta1.PersistentResourceService.CreatePersistentResource].
@@ -28001,6 +27201,15 @@ pub struct StratifiedSplit {
     #[prost(string, tag = "4")]
     pub key: ::prost::alloc::string::String,
 }
+/// Runtime operation information for
+/// [PipelineService.BatchCancelPipelineJobs][google.cloud.aiplatform.v1beta1.PipelineService.BatchCancelPipelineJobs].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCancelPipelineJobsOperationMetadata {
+    /// The common part of the operation metadata.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
 /// Request message for
 /// [PipelineService.CreateTrainingPipeline][google.cloud.aiplatform.v1beta1.PipelineService.CreateTrainingPipeline].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -28128,6 +27337,10 @@ pub struct CreatePipelineJobRequest {
     /// are `/[a-z][0-9]-/`.
     #[prost(string, tag = "3")]
     pub pipeline_job_id: ::prost::alloc::string::String,
+    /// Optional. Whether to do component level validations before job creation.
+    /// Currently we only support Google First Party Component/Pipelines.
+    #[prost(bool, tag = "4")]
+    pub preflight_validations: bool,
 }
 /// Request message for
 /// [PipelineService.GetPipelineJob][google.cloud.aiplatform.v1beta1.PipelineService.GetPipelineJob].
@@ -28276,6 +27489,31 @@ pub struct CancelPipelineJobRequest {
     /// `projects/{project}/locations/{location}/pipelineJobs/{pipeline_job}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [PipelineService.BatchCancelPipelineJobs][google.cloud.aiplatform.v1beta1.PipelineService.BatchCancelPipelineJobs].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCancelPipelineJobsRequest {
+    /// Required. The name of the PipelineJobs' parent resource.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The names of the PipelineJobs to cancel.
+    /// A maximum of 32 PipelineJobs can be cancelled in a batch.
+    /// Format:
+    /// `projects/{project}/locations/{location}/pipelineJobs/{pipelineJob}`
+    #[prost(string, repeated, tag = "2")]
+    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Response message for
+/// [PipelineService.BatchCancelPipelineJobs][google.cloud.aiplatform.v1beta1.PipelineService.BatchCancelPipelineJobs].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCancelPipelineJobsResponse {
+    /// PipelineJobs cancelled.
+    #[prost(message, repeated, tag = "1")]
+    pub pipeline_jobs: ::prost::alloc::vec::Vec<PipelineJob>,
 }
 /// Generated client implementations.
 pub mod pipeline_service_client {
@@ -28721,6 +27959,1141 @@ pub mod pipeline_service_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
+        }
+        /// Batch cancel PipelineJobs.
+        /// Firstly the server will check if all the jobs are in non-terminal states,
+        /// and skip the jobs that are already terminated.
+        /// If the operation failed, none of the pipeline jobs are cancelled.
+        /// The server will poll the states of all the pipeline jobs periodically
+        /// to check the cancellation status.
+        /// This operation will return an LRO.
+        pub async fn batch_cancel_pipeline_jobs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchCancelPipelineJobsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PipelineService/BatchCancelPipelineJobs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PipelineService",
+                        "BatchCancelPipelineJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Request message for
+/// [PredictionService.Predict][google.cloud.aiplatform.v1beta1.PredictionService.Predict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PredictRequest {
+    /// Required. The name of the Endpoint requested to serve the prediction.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Required. The instances that are the input to the prediction call.
+    /// A DeployedModel may have an upper limit on the number of instances it
+    /// supports per request, and when it is exceeded the prediction call errors
+    /// in case of AutoML Models, or, in case of customer created Models, the
+    /// behaviour is as documented by that Model.
+    /// The schema of any single instance may be specified via Endpoint's
+    /// DeployedModels'
+    /// [Model's][google.cloud.aiplatform.v1beta1.DeployedModel.model]
+    /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
+    /// [instance_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.instance_schema_uri].
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
+    /// The parameters that govern the prediction. The schema of the parameters may
+    /// be specified via Endpoint's DeployedModels' [Model's
+    /// ][google.cloud.aiplatform.v1beta1.DeployedModel.model]
+    /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
+    /// [parameters_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.parameters_schema_uri].
+    #[prost(message, optional, tag = "3")]
+    pub parameters: ::core::option::Option<::prost_types::Value>,
+}
+/// Response message for
+/// [PredictionService.Predict][google.cloud.aiplatform.v1beta1.PredictionService.Predict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PredictResponse {
+    /// The predictions that are the output of the predictions call.
+    /// The schema of any single prediction may be specified via Endpoint's
+    /// DeployedModels' [Model's
+    /// ][google.cloud.aiplatform.v1beta1.DeployedModel.model]
+    /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
+    /// [prediction_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.prediction_schema_uri].
+    #[prost(message, repeated, tag = "1")]
+    pub predictions: ::prost::alloc::vec::Vec<::prost_types::Value>,
+    /// ID of the Endpoint's DeployedModel that served this prediction.
+    #[prost(string, tag = "2")]
+    pub deployed_model_id: ::prost::alloc::string::String,
+    /// Output only. The resource name of the Model which is deployed as the
+    /// DeployedModel that this prediction hits.
+    #[prost(string, tag = "3")]
+    pub model: ::prost::alloc::string::String,
+    /// Output only. The version ID of the Model which is deployed as the
+    /// DeployedModel that this prediction hits.
+    #[prost(string, tag = "5")]
+    pub model_version_id: ::prost::alloc::string::String,
+    /// Output only. The [display
+    /// name][google.cloud.aiplatform.v1beta1.Model.display_name] of the Model
+    /// which is deployed as the DeployedModel that this prediction hits.
+    #[prost(string, tag = "4")]
+    pub model_display_name: ::prost::alloc::string::String,
+    /// Output only. Request-level metadata returned by the model. The metadata
+    /// type will be dependent upon the model implementation.
+    #[prost(message, optional, tag = "6")]
+    pub metadata: ::core::option::Option<::prost_types::Value>,
+}
+/// Request message for
+/// [PredictionService.RawPredict][google.cloud.aiplatform.v1beta1.PredictionService.RawPredict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RawPredictRequest {
+    /// Required. The name of the Endpoint requested to serve the prediction.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// The prediction input. Supports HTTP headers and arbitrary data payload.
+    ///
+    /// A [DeployedModel][google.cloud.aiplatform.v1beta1.DeployedModel] may have
+    /// an upper limit on the number of instances it supports per request. When
+    /// this limit it is exceeded for an AutoML model, the
+    /// [RawPredict][google.cloud.aiplatform.v1beta1.PredictionService.RawPredict]
+    /// method returns an error. When this limit is exceeded for a custom-trained
+    /// model, the behavior varies depending on the model.
+    ///
+    /// You can specify the schema for each instance in the
+    /// [predict_schemata.instance_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.instance_schema_uri]
+    /// field when you create a [Model][google.cloud.aiplatform.v1beta1.Model].
+    /// This schema applies when you deploy the `Model` as a `DeployedModel` to an
+    /// [Endpoint][google.cloud.aiplatform.v1beta1.Endpoint] and use the
+    /// `RawPredict` method.
+    #[prost(message, optional, tag = "2")]
+    pub http_body: ::core::option::Option<super::super::super::api::HttpBody>,
+}
+/// Request message for
+/// [PredictionService.DirectPredict][google.cloud.aiplatform.v1beta1.PredictionService.DirectPredict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DirectPredictRequest {
+    /// Required. The name of the Endpoint requested to serve the prediction.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// The prediction input.
+    #[prost(message, repeated, tag = "2")]
+    pub inputs: ::prost::alloc::vec::Vec<Tensor>,
+    /// The parameters that govern the prediction.
+    #[prost(message, optional, tag = "3")]
+    pub parameters: ::core::option::Option<Tensor>,
+}
+/// Response message for
+/// [PredictionService.DirectPredict][google.cloud.aiplatform.v1beta1.PredictionService.DirectPredict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DirectPredictResponse {
+    /// The prediction output.
+    #[prost(message, repeated, tag = "1")]
+    pub outputs: ::prost::alloc::vec::Vec<Tensor>,
+    /// The parameters that govern the prediction.
+    #[prost(message, optional, tag = "2")]
+    pub parameters: ::core::option::Option<Tensor>,
+}
+/// Request message for
+/// [PredictionService.DirectRawPredict][google.cloud.aiplatform.v1beta1.PredictionService.DirectRawPredict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DirectRawPredictRequest {
+    /// Required. The name of the Endpoint requested to serve the prediction.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Fully qualified name of the API method being invoked to perform
+    /// predictions.
+    ///
+    /// Format:
+    /// `/namespace.Service/Method/`
+    /// Example:
+    /// `/tensorflow.serving.PredictionService/Predict`
+    #[prost(string, tag = "2")]
+    pub method_name: ::prost::alloc::string::String,
+    /// The prediction input.
+    #[prost(bytes = "vec", tag = "3")]
+    pub input: ::prost::alloc::vec::Vec<u8>,
+}
+/// Response message for
+/// [PredictionService.DirectRawPredict][google.cloud.aiplatform.v1beta1.PredictionService.DirectRawPredict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DirectRawPredictResponse {
+    /// The prediction output.
+    #[prost(bytes = "vec", tag = "1")]
+    pub output: ::prost::alloc::vec::Vec<u8>,
+}
+/// Request message for
+/// [PredictionService.StreamDirectPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamDirectPredict].
+///
+/// The first message must contain
+/// [endpoint][google.cloud.aiplatform.v1beta1.StreamDirectPredictRequest.endpoint]
+/// field and optionally [input][]. The subsequent messages must contain
+/// [input][].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamDirectPredictRequest {
+    /// Required. The name of the Endpoint requested to serve the prediction.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Optional. The prediction input.
+    #[prost(message, repeated, tag = "2")]
+    pub inputs: ::prost::alloc::vec::Vec<Tensor>,
+    /// Optional. The parameters that govern the prediction.
+    #[prost(message, optional, tag = "3")]
+    pub parameters: ::core::option::Option<Tensor>,
+}
+/// Response message for
+/// [PredictionService.StreamDirectPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamDirectPredict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamDirectPredictResponse {
+    /// The prediction output.
+    #[prost(message, repeated, tag = "1")]
+    pub outputs: ::prost::alloc::vec::Vec<Tensor>,
+    /// The parameters that govern the prediction.
+    #[prost(message, optional, tag = "2")]
+    pub parameters: ::core::option::Option<Tensor>,
+}
+/// Request message for
+/// [PredictionService.StreamDirectRawPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamDirectRawPredict].
+///
+/// The first message must contain
+/// [endpoint][google.cloud.aiplatform.v1beta1.StreamDirectRawPredictRequest.endpoint]
+/// and
+/// [method_name][google.cloud.aiplatform.v1beta1.StreamDirectRawPredictRequest.method_name]
+/// fields and optionally
+/// [input][google.cloud.aiplatform.v1beta1.StreamDirectRawPredictRequest.input].
+/// The subsequent messages must contain
+/// [input][google.cloud.aiplatform.v1beta1.StreamDirectRawPredictRequest.input].
+/// [method_name][google.cloud.aiplatform.v1beta1.StreamDirectRawPredictRequest.method_name]
+/// in the subsequent messages have no effect.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamDirectRawPredictRequest {
+    /// Required. The name of the Endpoint requested to serve the prediction.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Optional. Fully qualified name of the API method being invoked to perform
+    /// predictions.
+    ///
+    /// Format:
+    /// `/namespace.Service/Method/`
+    /// Example:
+    /// `/tensorflow.serving.PredictionService/Predict`
+    #[prost(string, tag = "2")]
+    pub method_name: ::prost::alloc::string::String,
+    /// Optional. The prediction input.
+    #[prost(bytes = "vec", tag = "3")]
+    pub input: ::prost::alloc::vec::Vec<u8>,
+}
+/// Response message for
+/// [PredictionService.StreamDirectRawPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamDirectRawPredict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamDirectRawPredictResponse {
+    /// The prediction output.
+    #[prost(bytes = "vec", tag = "1")]
+    pub output: ::prost::alloc::vec::Vec<u8>,
+}
+/// Request message for
+/// [PredictionService.StreamingPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamingPredict].
+///
+/// The first message must contain
+/// [endpoint][google.cloud.aiplatform.v1beta1.StreamingPredictRequest.endpoint]
+/// field and optionally [input][]. The subsequent messages must contain
+/// [input][].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingPredictRequest {
+    /// Required. The name of the Endpoint requested to serve the prediction.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// The prediction input.
+    #[prost(message, repeated, tag = "2")]
+    pub inputs: ::prost::alloc::vec::Vec<Tensor>,
+    /// The parameters that govern the prediction.
+    #[prost(message, optional, tag = "3")]
+    pub parameters: ::core::option::Option<Tensor>,
+}
+/// Response message for
+/// [PredictionService.StreamingPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamingPredict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingPredictResponse {
+    /// The prediction output.
+    #[prost(message, repeated, tag = "1")]
+    pub outputs: ::prost::alloc::vec::Vec<Tensor>,
+    /// The parameters that govern the prediction.
+    #[prost(message, optional, tag = "2")]
+    pub parameters: ::core::option::Option<Tensor>,
+}
+/// Request message for
+/// [PredictionService.StreamingRawPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamingRawPredict].
+///
+/// The first message must contain
+/// [endpoint][google.cloud.aiplatform.v1beta1.StreamingRawPredictRequest.endpoint]
+/// and
+/// [method_name][google.cloud.aiplatform.v1beta1.StreamingRawPredictRequest.method_name]
+/// fields and optionally
+/// [input][google.cloud.aiplatform.v1beta1.StreamingRawPredictRequest.input].
+/// The subsequent messages must contain
+/// [input][google.cloud.aiplatform.v1beta1.StreamingRawPredictRequest.input].
+/// [method_name][google.cloud.aiplatform.v1beta1.StreamingRawPredictRequest.method_name]
+/// in the subsequent messages have no effect.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingRawPredictRequest {
+    /// Required. The name of the Endpoint requested to serve the prediction.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Fully qualified name of the API method being invoked to perform
+    /// predictions.
+    ///
+    /// Format:
+    /// `/namespace.Service/Method/`
+    /// Example:
+    /// `/tensorflow.serving.PredictionService/Predict`
+    #[prost(string, tag = "2")]
+    pub method_name: ::prost::alloc::string::String,
+    /// The prediction input.
+    #[prost(bytes = "vec", tag = "3")]
+    pub input: ::prost::alloc::vec::Vec<u8>,
+}
+/// Response message for
+/// [PredictionService.StreamingRawPredict][google.cloud.aiplatform.v1beta1.PredictionService.StreamingRawPredict].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingRawPredictResponse {
+    /// The prediction output.
+    #[prost(bytes = "vec", tag = "1")]
+    pub output: ::prost::alloc::vec::Vec<u8>,
+}
+/// Request message for
+/// [PredictionService.Explain][google.cloud.aiplatform.v1beta1.PredictionService.Explain].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExplainRequest {
+    /// Required. The name of the Endpoint requested to serve the explanation.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Required. The instances that are the input to the explanation call.
+    /// A DeployedModel may have an upper limit on the number of instances it
+    /// supports per request, and when it is exceeded the explanation call errors
+    /// in case of AutoML Models, or, in case of customer created Models, the
+    /// behaviour is as documented by that Model.
+    /// The schema of any single instance may be specified via Endpoint's
+    /// DeployedModels'
+    /// [Model's][google.cloud.aiplatform.v1beta1.DeployedModel.model]
+    /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
+    /// [instance_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.instance_schema_uri].
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
+    /// The parameters that govern the prediction. The schema of the parameters may
+    /// be specified via Endpoint's DeployedModels' [Model's
+    /// ][google.cloud.aiplatform.v1beta1.DeployedModel.model]
+    /// [PredictSchemata's][google.cloud.aiplatform.v1beta1.Model.predict_schemata]
+    /// [parameters_schema_uri][google.cloud.aiplatform.v1beta1.PredictSchemata.parameters_schema_uri].
+    #[prost(message, optional, tag = "4")]
+    pub parameters: ::core::option::Option<::prost_types::Value>,
+    /// If specified, overrides the
+    /// [explanation_spec][google.cloud.aiplatform.v1beta1.DeployedModel.explanation_spec]
+    /// of the DeployedModel. Can be used for explaining prediction results with
+    /// different configurations, such as:
+    ///   - Explaining top-5 predictions results as opposed to top-1;
+    ///   - Increasing path count or step count of the attribution methods to reduce
+    ///     approximate errors;
+    ///   - Using different baselines for explaining the prediction results.
+    #[prost(message, optional, tag = "5")]
+    pub explanation_spec_override: ::core::option::Option<ExplanationSpecOverride>,
+    /// Optional. This field is the same as the one above, but supports multiple
+    /// explanations to occur in parallel. The key can be any string. Each override
+    /// will be run against the model, then its explanations will be grouped
+    /// together.
+    ///
+    /// Note - these explanations are run **In Addition** to the default
+    /// Explanation in the deployed model.
+    #[prost(map = "string, message", tag = "6")]
+    pub concurrent_explanation_spec_override: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ExplanationSpecOverride,
+    >,
+    /// If specified, this ExplainRequest will be served by the chosen
+    /// DeployedModel, overriding
+    /// [Endpoint.traffic_split][google.cloud.aiplatform.v1beta1.Endpoint.traffic_split].
+    #[prost(string, tag = "3")]
+    pub deployed_model_id: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [PredictionService.Explain][google.cloud.aiplatform.v1beta1.PredictionService.Explain].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExplainResponse {
+    /// The explanations of the Model's
+    /// [PredictResponse.predictions][google.cloud.aiplatform.v1beta1.PredictResponse.predictions].
+    ///
+    /// It has the same number of elements as
+    /// [instances][google.cloud.aiplatform.v1beta1.ExplainRequest.instances] to be
+    /// explained.
+    #[prost(message, repeated, tag = "1")]
+    pub explanations: ::prost::alloc::vec::Vec<Explanation>,
+    /// This field stores the results of the explanations run in parallel with
+    /// The default explanation strategy/method.
+    #[prost(map = "string, message", tag = "4")]
+    pub concurrent_explanations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        explain_response::ConcurrentExplanation,
+    >,
+    /// ID of the Endpoint's DeployedModel that served this explanation.
+    #[prost(string, tag = "2")]
+    pub deployed_model_id: ::prost::alloc::string::String,
+    /// The predictions that are the output of the predictions call.
+    /// Same as
+    /// [PredictResponse.predictions][google.cloud.aiplatform.v1beta1.PredictResponse.predictions].
+    #[prost(message, repeated, tag = "3")]
+    pub predictions: ::prost::alloc::vec::Vec<::prost_types::Value>,
+}
+/// Nested message and enum types in `ExplainResponse`.
+pub mod explain_response {
+    /// This message is a wrapper grouping Concurrent Explanations.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConcurrentExplanation {
+        /// The explanations of the Model's
+        /// [PredictResponse.predictions][google.cloud.aiplatform.v1beta1.PredictResponse.predictions].
+        ///
+        /// It has the same number of elements as
+        /// [instances][google.cloud.aiplatform.v1beta1.ExplainRequest.instances] to
+        /// be explained.
+        #[prost(message, repeated, tag = "1")]
+        pub explanations: ::prost::alloc::vec::Vec<super::Explanation>,
+    }
+}
+/// Request message for
+/// [PredictionService.CountTokens][google.cloud.aiplatform.v1beta1.PredictionService.CountTokens].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CountTokensRequest {
+    /// Required. The name of the Endpoint requested to perform token counting.
+    /// Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub endpoint: ::prost::alloc::string::String,
+    /// Required. The name of the publisher model requested to serve the
+    /// prediction. Format:
+    /// `projects/{project}/locations/{location}/publishers/*/models/*`
+    #[prost(string, tag = "3")]
+    pub model: ::prost::alloc::string::String,
+    /// Required. The instances that are the input to token counting call.
+    /// Schema is identical to the prediction schema of the underlying model.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
+    /// Required. Input content.
+    #[prost(message, repeated, tag = "4")]
+    pub contents: ::prost::alloc::vec::Vec<Content>,
+}
+/// Response message for
+/// [PredictionService.CountTokens][google.cloud.aiplatform.v1beta1.PredictionService.CountTokens].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CountTokensResponse {
+    /// The total number of tokens counted across all instances from the request.
+    #[prost(int32, tag = "1")]
+    pub total_tokens: i32,
+    /// The total number of billable characters counted across all instances from
+    /// the request.
+    #[prost(int32, tag = "2")]
+    pub total_billable_characters: i32,
+}
+/// Request message for \[PredictionService.GenerateContent\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateContentRequest {
+    /// Required. The name of the publisher model requested to serve the
+    /// prediction. Format:
+    /// `projects/{project}/locations/{location}/publishers/*/models/*`
+    #[prost(string, tag = "5")]
+    pub model: ::prost::alloc::string::String,
+    /// Required. The content of the current conversation with the model.
+    ///
+    /// For single-turn queries, this is a single instance. For multi-turn queries,
+    /// this is a repeated field that contains conversation history + latest
+    /// request.
+    #[prost(message, repeated, tag = "2")]
+    pub contents: ::prost::alloc::vec::Vec<Content>,
+    /// Optional. A list of `Tools` the model may use to generate the next
+    /// response.
+    ///
+    /// A `Tool` is a piece of code that enables the system to interact with
+    /// external systems to perform an action, or set of actions, outside of
+    /// knowledge and scope of the model.
+    #[prost(message, repeated, tag = "6")]
+    pub tools: ::prost::alloc::vec::Vec<Tool>,
+    /// Optional. Per request settings for blocking unsafe content.
+    /// Enforced on GenerateContentResponse.candidates.
+    #[prost(message, repeated, tag = "3")]
+    pub safety_settings: ::prost::alloc::vec::Vec<SafetySetting>,
+    /// Optional. Generation config.
+    #[prost(message, optional, tag = "4")]
+    pub generation_config: ::core::option::Option<GenerationConfig>,
+}
+/// Response message for \[PredictionService.GenerateContent\].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateContentResponse {
+    /// Output only. Generated candidates.
+    #[prost(message, repeated, tag = "2")]
+    pub candidates: ::prost::alloc::vec::Vec<Candidate>,
+    /// Output only. Content filter results for a prompt sent in the request.
+    /// Note: Sent only in the first stream chunk.
+    /// Only happens when no candidates were generated due to content violations.
+    #[prost(message, optional, tag = "3")]
+    pub prompt_feedback: ::core::option::Option<
+        generate_content_response::PromptFeedback,
+    >,
+    /// Usage metadata about the response(s).
+    #[prost(message, optional, tag = "4")]
+    pub usage_metadata: ::core::option::Option<generate_content_response::UsageMetadata>,
+}
+/// Nested message and enum types in `GenerateContentResponse`.
+pub mod generate_content_response {
+    /// Content filter results for a prompt sent in the request.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PromptFeedback {
+        /// Output only. Blocked reason.
+        #[prost(enumeration = "prompt_feedback::BlockedReason", tag = "1")]
+        pub block_reason: i32,
+        /// Output only. Safety ratings.
+        #[prost(message, repeated, tag = "2")]
+        pub safety_ratings: ::prost::alloc::vec::Vec<super::SafetyRating>,
+        /// Output only. A readable block reason message.
+        #[prost(string, tag = "3")]
+        pub block_reason_message: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `PromptFeedback`.
+    pub mod prompt_feedback {
+        /// Blocked reason enumeration.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum BlockedReason {
+            /// Unspecified blocked reason.
+            Unspecified = 0,
+            /// Candidates blocked due to safety.
+            Safety = 1,
+            /// Candidates blocked due to other reason.
+            Other = 2,
+        }
+        impl BlockedReason {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    BlockedReason::Unspecified => "BLOCKED_REASON_UNSPECIFIED",
+                    BlockedReason::Safety => "SAFETY",
+                    BlockedReason::Other => "OTHER",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "BLOCKED_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SAFETY" => Some(Self::Safety),
+                    "OTHER" => Some(Self::Other),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Usage metadata about response(s).
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UsageMetadata {
+        /// Number of tokens in the request.
+        #[prost(int32, tag = "1")]
+        pub prompt_token_count: i32,
+        /// Number of tokens in the response(s).
+        #[prost(int32, tag = "2")]
+        pub candidates_token_count: i32,
+        #[prost(int32, tag = "3")]
+        pub total_token_count: i32,
+    }
+}
+/// Generated client implementations.
+pub mod prediction_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// A service for online predictions and explanations.
+    #[derive(Debug, Clone)]
+    pub struct PredictionServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl PredictionServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> PredictionServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> PredictionServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            PredictionServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Perform an online prediction.
+        pub async fn predict(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PredictRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::PredictResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PredictionService/Predict",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PredictionService",
+                        "Predict",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Perform an online prediction with an arbitrary HTTP payload.
+        ///
+        /// The response includes the following HTTP headers:
+        ///
+        /// * `X-Vertex-AI-Endpoint-Id`: ID of the
+        /// [Endpoint][google.cloud.aiplatform.v1beta1.Endpoint] that served this
+        /// prediction.
+        ///
+        /// * `X-Vertex-AI-Deployed-Model-Id`: ID of the Endpoint's
+        /// [DeployedModel][google.cloud.aiplatform.v1beta1.DeployedModel] that served
+        /// this prediction.
+        pub async fn raw_predict(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RawPredictRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::api::HttpBody>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PredictionService/RawPredict",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PredictionService",
+                        "RawPredict",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Perform an unary online prediction request to a gRPC model server for
+        /// Vertex first-party products and frameworks.
+        pub async fn direct_predict(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DirectPredictRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DirectPredictResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PredictionService/DirectPredict",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PredictionService",
+                        "DirectPredict",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Perform an unary online prediction request to a gRPC model server for
+        /// custom containers.
+        pub async fn direct_raw_predict(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DirectRawPredictRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DirectRawPredictResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PredictionService/DirectRawPredict",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PredictionService",
+                        "DirectRawPredict",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Perform a streaming online prediction request to a gRPC model server for
+        /// Vertex first-party products and frameworks.
+        pub async fn stream_direct_predict(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::StreamDirectPredictRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::StreamDirectPredictResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PredictionService/StreamDirectPredict",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PredictionService",
+                        "StreamDirectPredict",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
+        }
+        /// Perform a streaming online prediction request to a gRPC model server for
+        /// custom containers.
+        pub async fn stream_direct_raw_predict(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::StreamDirectRawPredictRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<
+                tonic::codec::Streaming<super::StreamDirectRawPredictResponse>,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PredictionService/StreamDirectRawPredict",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PredictionService",
+                        "StreamDirectRawPredict",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
+        }
+        /// Perform a streaming online prediction request for Vertex first-party
+        /// products and frameworks.
+        pub async fn streaming_predict(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::StreamingPredictRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::StreamingPredictResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PredictionService/StreamingPredict",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PredictionService",
+                        "StreamingPredict",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
+        }
+        /// Perform a server-side streaming online prediction request for Vertex
+        /// LLM streaming.
+        pub async fn server_streaming_predict(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StreamingPredictRequest>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::StreamingPredictResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PredictionService/ServerStreamingPredict",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PredictionService",
+                        "ServerStreamingPredict",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
+        }
+        /// Perform a streaming online prediction request through gRPC.
+        pub async fn streaming_raw_predict(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::StreamingRawPredictRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::StreamingRawPredictResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PredictionService/StreamingRawPredict",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PredictionService",
+                        "StreamingRawPredict",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
+        }
+        /// Perform an online explanation.
+        ///
+        /// If
+        /// [deployed_model_id][google.cloud.aiplatform.v1beta1.ExplainRequest.deployed_model_id]
+        /// is specified, the corresponding DeployModel must have
+        /// [explanation_spec][google.cloud.aiplatform.v1beta1.DeployedModel.explanation_spec]
+        /// populated. If
+        /// [deployed_model_id][google.cloud.aiplatform.v1beta1.ExplainRequest.deployed_model_id]
+        /// is not specified, all DeployedModels must have
+        /// [explanation_spec][google.cloud.aiplatform.v1beta1.DeployedModel.explanation_spec]
+        /// populated.
+        pub async fn explain(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExplainRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ExplainResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PredictionService/Explain",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PredictionService",
+                        "Explain",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Perform a token counting.
+        pub async fn count_tokens(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CountTokensRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CountTokensResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PredictionService/CountTokens",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PredictionService",
+                        "CountTokens",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Generate content with multimodal inputs.
+        pub async fn generate_content(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GenerateContentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerateContentResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PredictionService/GenerateContent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PredictionService",
+                        "GenerateContent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Generate content with multimodal inputs with streaming support.
+        pub async fn stream_generate_content(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GenerateContentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::GenerateContentResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.PredictionService/StreamGenerateContent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.PredictionService",
+                        "StreamGenerateContent",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
         }
     }
 }

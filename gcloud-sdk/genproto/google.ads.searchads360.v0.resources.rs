@@ -1964,6 +1964,86 @@ pub mod conversion_action {
         pub activity_id: i64,
     }
 }
+/// A conversion custom variable.
+/// See "About custom Floodlight metrics and dimensions in the new
+/// Search Ads 360" at <https://support.google.com/sa360/answer/13567857>
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionCustomVariable {
+    /// Immutable. The resource name of the conversion custom variable.
+    /// Conversion custom variable resource names have the form:
+    ///
+    /// `customers/{customer_id}/conversionCustomVariables/{conversion_custom_variable_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. The ID of the conversion custom variable.
+    #[prost(int64, tag = "2")]
+    pub id: i64,
+    /// Required. The name of the conversion custom variable.
+    /// Name should be unique. The maximum length of name is 100 characters.
+    /// There should not be any extra spaces before and after.
+    #[prost(string, tag = "3")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Immutable. The tag of the conversion custom variable.
+    /// Tag should be unique and consist of a "u" character directly followed with
+    /// a number less than ormequal to 100. For example: "u4".
+    #[prost(string, tag = "4")]
+    pub tag: ::prost::alloc::string::String,
+    /// The status of the conversion custom variable for conversion event accrual.
+    #[prost(
+        enumeration = "super::enums::conversion_custom_variable_status_enum::ConversionCustomVariableStatus",
+        tag = "5"
+    )]
+    pub status: i32,
+    /// Output only. The resource name of the customer that owns the conversion
+    /// custom variable.
+    #[prost(string, tag = "6")]
+    pub owner_customer: ::prost::alloc::string::String,
+    /// Output only. Family of the conversion custom variable.
+    #[prost(
+        enumeration = "super::enums::conversion_custom_variable_family_enum::ConversionCustomVariableFamily",
+        tag = "7"
+    )]
+    pub family: i32,
+    /// Output only. Cardinality of the conversion custom variable.
+    #[prost(
+        enumeration = "super::enums::conversion_custom_variable_cardinality_enum::ConversionCustomVariableCardinality",
+        tag = "8"
+    )]
+    pub cardinality: i32,
+    /// Output only. Fields for Search Ads 360 floodlight conversion custom
+    /// variables.
+    #[prost(message, optional, tag = "9")]
+    pub floodlight_conversion_custom_variable_info: ::core::option::Option<
+        conversion_custom_variable::FloodlightConversionCustomVariableInfo,
+    >,
+    /// Output only. The IDs of custom columns that use this conversion custom
+    /// variable.
+    #[prost(int64, repeated, packed = "false", tag = "10")]
+    pub custom_column_ids: ::prost::alloc::vec::Vec<i64>,
+}
+/// Nested message and enum types in `ConversionCustomVariable`.
+pub mod conversion_custom_variable {
+    /// Information for Search Ads 360 Floodlight Conversion Custom Variables.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FloodlightConversionCustomVariableInfo {
+        /// Output only. Floodlight variable type defined in Search Ads 360.
+        #[prost(
+            enumeration = "super::super::enums::floodlight_variable_type_enum::FloodlightVariableType",
+            optional,
+            tag = "1"
+        )]
+        pub floodlight_variable_type: ::core::option::Option<i32>,
+        /// Output only. Floodlight variable data type defined in Search Ads 360.
+        #[prost(
+            enumeration = "super::super::enums::floodlight_variable_data_type_enum::FloodlightVariableDataType",
+            optional,
+            tag = "2"
+        )]
+        pub floodlight_variable_data_type: ::core::option::Option<i32>,
+    }
+}
 /// A custom column.
 /// See Search Ads 360 custom column at
 /// <https://support.google.com/sa360/answer/9633916>

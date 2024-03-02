@@ -1056,6 +1056,14 @@ pub struct Explanation {
     /// [Attribution.output_index][google.cloud.aiplatform.v1.Attribution.output_index]
     /// can be used to identify which output this attribution is explaining.
     ///
+    /// By default, we provide Shapley values for the predicted class. However,
+    /// you can configure the explanation request to generate Shapley values for
+    /// any other classes too. For example, if a model predicts a probability of
+    /// `0.4` for approving a loan application, the model's decision is to reject
+    /// the application since `p(reject) = 0.6 > p(approve) = 0.4`, and the default
+    /// Shapley values would be computed for rejection decision and not approval,
+    /// even though the latter might be the positive class.
+    ///
     /// If users set
     /// [ExplanationParameters.top_k][google.cloud.aiplatform.v1.ExplanationParameters.top_k],
     /// the attributions are sorted by
@@ -2212,11 +2220,11 @@ pub struct Model {
     /// deploying this Model. The specification is ingested upon
     /// [ModelService.UploadModel][google.cloud.aiplatform.v1.ModelService.UploadModel],
     /// and all binaries it contains are copied and stored internally by Vertex AI.
-    /// Not present for AutoML Models or Large Models.
+    /// Not required for AutoML Models.
     #[prost(message, optional, tag = "9")]
     pub container_spec: ::core::option::Option<ModelContainerSpec>,
     /// Immutable. The path to the directory containing the Model artifact and any
-    /// of its supporting files. Not present for AutoML Models or Large Models.
+    /// of its supporting files. Not required for AutoML Models.
     #[prost(string, tag = "26")]
     pub artifact_uri: ::prost::alloc::string::String,
     /// Output only. When this Model is deployed, its prediction resources are
@@ -2405,7 +2413,8 @@ pub struct Model {
     #[prost(message, optional, tag = "24")]
     pub encryption_spec: ::core::option::Option<EncryptionSpec>,
     /// Output only. Source of a model. It can either be automl training pipeline,
-    /// custom training pipeline, BigQuery ML, or existing Vertex AI Model.
+    /// custom training pipeline, BigQuery ML, or saved and tuned from Genie or
+    /// Model Garden.
     #[prost(message, optional, tag = "38")]
     pub model_source_info: ::core::option::Option<ModelSourceInfo>,
     /// Output only. If this Model is a copy of another Model, this contains info
@@ -2939,6 +2948,10 @@ pub struct ModelSourceInfo {
 /// Nested message and enum types in `ModelSourceInfo`.
 pub mod model_source_info {
     /// Source of the model.
+    /// Different from `objective` field, this `ModelSourceType` enum
+    /// indicates the source from which the model was accessed or obtained,
+    /// whereas the `objective` indicates the overall aim or function of this
+    /// model.
     #[derive(
         Clone,
         Copy,
@@ -2966,6 +2979,8 @@ pub mod model_source_info {
         Genie = 5,
         /// The Model is uploaded by text embedding finetuning pipeline.
         CustomTextEmbedding = 6,
+        /// The Model is saved or tuned from Marketplace.
+        Marketplace = 7,
     }
     impl ModelSourceType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2981,6 +2996,7 @@ pub mod model_source_info {
                 ModelSourceType::ModelGarden => "MODEL_GARDEN",
                 ModelSourceType::Genie => "GENIE",
                 ModelSourceType::CustomTextEmbedding => "CUSTOM_TEXT_EMBEDDING",
+                ModelSourceType::Marketplace => "MARKETPLACE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2993,6 +3009,7 @@ pub mod model_source_info {
                 "MODEL_GARDEN" => Some(Self::ModelGarden),
                 "GENIE" => Some(Self::Genie),
                 "CUSTOM_TEXT_EMBEDDING" => Some(Self::CustomTextEmbedding),
+                "MARKETPLACE" => Some(Self::Marketplace),
                 _ => None,
             }
         }
@@ -4461,10 +4478,6 @@ pub struct Scheduling {
     /// `Scheduling.restart_job_on_worker_restart` to false.
     #[prost(bool, tag = "5")]
     pub disable_retries: bool,
-    /// Optional. This is the maximum time a user will wait in the QRM queue for
-    /// resources. Default is 1 day
-    #[prost(message, optional, tag = "6")]
-    pub max_wait_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// A piece of data in a Dataset. Could be an image, a video, a document or plain
 /// text.
@@ -8545,6 +8558,10 @@ pub struct Feature {
     /// If no value is provided, will use feature_id.
     #[prost(string, tag = "106")]
     pub version_column_name: ::prost::alloc::string::String,
+    /// Entity responsible for maintaining this feature. Can be comma separated
+    /// list of email addresses or URIs.
+    #[prost(string, tag = "107")]
+    pub point_of_contact: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Feature`.
 pub mod feature {
@@ -9136,6 +9153,7 @@ pub struct UpdateFeatureOnlineStoreRequest {
     /// Updatable fields:
     ///
     ///    * `big_query_source`
+    ///    * `bigtable`
     ///    * `labels`
     ///    * `sync_config`
     #[prost(message, optional, tag = "2")]
@@ -9289,6 +9307,7 @@ pub struct UpdateFeatureViewRequest {
     /// Updatable fields:
     ///
     ///    * `labels`
+    ///    * `serviceAgentType`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -10536,17 +10555,30 @@ pub mod featurestore_online_serving_service_client {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureViewDataKey {
-    #[prost(oneof = "feature_view_data_key::KeyOneof", tags = "1")]
+    #[prost(oneof = "feature_view_data_key::KeyOneof", tags = "1, 2")]
     pub key_oneof: ::core::option::Option<feature_view_data_key::KeyOneof>,
 }
 /// Nested message and enum types in `FeatureViewDataKey`.
 pub mod feature_view_data_key {
+    /// ID that is comprised from several parts (columns).
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CompositeKey {
+        /// Parts to construct Entity ID. Should match with the same ID columns as
+        /// defined in FeatureView in the same order.
+        #[prost(string, repeated, tag = "1")]
+        pub parts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum KeyOneof {
         /// String key to use for lookup.
         #[prost(string, tag = "1")]
         Key(::prost::alloc::string::String),
+        /// The actual Entity ID will be composed from this struct. This should match
+        /// with the way ID is defined in the FeatureView spec.
+        #[prost(message, tag = "2")]
+        CompositeKey(CompositeKey),
     }
 }
 /// Request message for
@@ -10622,6 +10654,146 @@ pub mod fetch_feature_values_response {
         #[prost(message, tag = "2")]
         ProtoStruct(::prost_types::Struct),
     }
+}
+/// A query to find a number of similar entities.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NearestNeighborQuery {
+    /// Optional. The number of similar entities to be retrieved from feature view
+    /// for each query.
+    #[prost(int32, tag = "3")]
+    pub neighbor_count: i32,
+    /// Optional. The list of string filters.
+    #[prost(message, repeated, tag = "4")]
+    pub string_filters: ::prost::alloc::vec::Vec<nearest_neighbor_query::StringFilter>,
+    /// Optional. Crowding is a constraint on a neighbor list produced by nearest
+    /// neighbor search requiring that no more than
+    /// sper_crowding_attribute_neighbor_count of the k neighbors returned have the
+    /// same value of crowding_attribute. It's used for improving result diversity.
+    #[prost(int32, tag = "5")]
+    pub per_crowding_attribute_neighbor_count: i32,
+    /// Optional. Parameters that can be set to tune query on the fly.
+    #[prost(message, optional, tag = "7")]
+    pub parameters: ::core::option::Option<nearest_neighbor_query::Parameters>,
+    #[prost(oneof = "nearest_neighbor_query::Instance", tags = "1, 2")]
+    pub instance: ::core::option::Option<nearest_neighbor_query::Instance>,
+}
+/// Nested message and enum types in `NearestNeighborQuery`.
+pub mod nearest_neighbor_query {
+    /// The embedding vector.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Embedding {
+        /// Optional. Individual value in the embedding.
+        #[prost(float, repeated, packed = "false", tag = "1")]
+        pub value: ::prost::alloc::vec::Vec<f32>,
+    }
+    /// String filter is used to search a subset of the entities by using boolean
+    /// rules on string columns.
+    /// For example: if a query specifies string filter
+    /// with 'name = color, allow_tokens = {red, blue}, deny_tokens = {purple}','
+    /// then that query will match entities that are red or blue, but if those
+    /// points are also purple, then they will be excluded even if they are
+    /// red/blue. Only string filter is supported for now, numeric filter will be
+    /// supported in the near future.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct StringFilter {
+        /// Required. Column names in BigQuery that used as filters.
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Optional. The allowed tokens.
+        #[prost(string, repeated, tag = "2")]
+        pub allow_tokens: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. The denied tokens.
+        #[prost(string, repeated, tag = "3")]
+        pub deny_tokens: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Parameters that can be overrided in each query to tune query latency and
+    /// recall.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Parameters {
+        /// Optional. The number of neighbors to find via approximate search before
+        /// exact reordering is performed; if set, this value must be >
+        /// neighbor_count.
+        #[prost(int32, tag = "1")]
+        pub approximate_neighbor_candidates: i32,
+        /// Optional. The fraction of the number of leaves to search, set at query
+        /// time allows user to tune search performance. This value increase result
+        /// in both search accuracy and latency increase. The value should be between
+        /// 0.0 and 1.0.
+        #[prost(double, tag = "2")]
+        pub leaf_nodes_search_fraction: f64,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Instance {
+        /// Optional. The entity id whose similar entities should be searched for.
+        /// If embedding is set, search will use embedding instead of
+        /// entity_id.
+        #[prost(string, tag = "1")]
+        EntityId(::prost::alloc::string::String),
+        /// Optional. The embedding vector that be used for similar search.
+        #[prost(message, tag = "2")]
+        Embedding(Embedding),
+    }
+}
+/// The request message for
+/// [FeatureOnlineStoreService.SearchNearestEntities][google.cloud.aiplatform.v1.FeatureOnlineStoreService.SearchNearestEntities].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchNearestEntitiesRequest {
+    /// Required. FeatureView resource format
+    /// `projects/{project}/locations/{location}/featureOnlineStores/{featureOnlineStore}/featureViews/{featureView}`
+    #[prost(string, tag = "1")]
+    pub feature_view: ::prost::alloc::string::String,
+    /// Required. The query.
+    #[prost(message, optional, tag = "2")]
+    pub query: ::core::option::Option<NearestNeighborQuery>,
+    /// Optional. If set to true, the full entities (including all vector values
+    /// and metadata) of the nearest neighbors are returned; otherwise only entity
+    /// id of the nearest neighbors will be returned. Note that returning full
+    /// entities will significantly increase the latency and cost of the query.
+    #[prost(bool, tag = "3")]
+    pub return_full_entity: bool,
+}
+/// Nearest neighbors for one query.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NearestNeighbors {
+    /// All its neighbors.
+    #[prost(message, repeated, tag = "1")]
+    pub neighbors: ::prost::alloc::vec::Vec<nearest_neighbors::Neighbor>,
+}
+/// Nested message and enum types in `NearestNeighbors`.
+pub mod nearest_neighbors {
+    /// A neighbor of the query vector.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Neighbor {
+        /// The id of the similar entity.
+        #[prost(string, tag = "1")]
+        pub entity_id: ::prost::alloc::string::String,
+        /// The distance between the neighbor and the query vector.
+        #[prost(double, tag = "2")]
+        pub distance: f64,
+        /// The attributes of the neighbor, e.g. filters, crowding and metadata
+        /// Note that full entities are returned only when "return_full_entity"
+        /// is set to true. Otherwise, only the "entity_id" and "distance" fields
+        /// are populated.
+        #[prost(message, optional, tag = "3")]
+        pub entity_key_values: ::core::option::Option<super::FetchFeatureValuesResponse>,
+    }
+}
+/// Response message for
+/// [FeatureOnlineStoreService.SearchNearestEntities][google.cloud.aiplatform.v1.FeatureOnlineStoreService.SearchNearestEntities]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchNearestEntitiesResponse {
+    /// The nearest neighbors of the query entity.
+    #[prost(message, optional, tag = "1")]
+    pub nearest_neighbors: ::core::option::Option<NearestNeighbors>,
 }
 /// Format of the data in the Feature View.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -10771,6 +10943,39 @@ pub mod feature_online_store_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1.FeatureOnlineStoreService",
                         "FetchFeatureValues",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Search the nearest entities under a FeatureView.
+        /// Search only works for indexable feature view; if a feature view isn't
+        /// indexable, returns Invalid argument response.
+        pub async fn search_nearest_entities(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SearchNearestEntitiesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SearchNearestEntitiesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureOnlineStoreService/SearchNearestEntities",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureOnlineStoreService",
+                        "SearchNearestEntities",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -14831,6 +15036,21 @@ pub struct PrivateServiceConnectConfig {
     #[prost(string, repeated, tag = "2")]
     pub project_allowlist: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// PscAutomatedEndpoints defines the output of the forwarding rule
+/// automatically created by each PscAutomationConfig.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PscAutomatedEndpoints {
+    /// Corresponding project_id in pscAutomationConfigs
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Corresponding network in pscAutomationConfigs.
+    #[prost(string, tag = "2")]
+    pub network: ::prost::alloc::string::String,
+    /// Ip Address created by the automated forwarding rule.
+    #[prost(string, tag = "3")]
+    pub match_address: ::prost::alloc::string::String,
+}
 /// Indexes are deployed into it. An IndexEndpoint can have multiple
 /// DeployedIndexes.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -15088,6 +15308,10 @@ pub struct IndexPrivateEndpoints {
     /// private service connect is enabled.
     #[prost(string, tag = "2")]
     pub service_attachment: ::prost::alloc::string::String,
+    /// Output only. PscAutomatedEndpoints is populated if private service connect
+    /// is enabled if PscAutomatedConfig is set.
+    #[prost(message, repeated, tag = "3")]
+    pub psc_automated_endpoints: ::prost::alloc::vec::Vec<PscAutomatedEndpoints>,
 }
 /// Request message for
 /// [IndexEndpointService.CreateIndexEndpoint][google.cloud.aiplatform.v1.IndexEndpointService.CreateIndexEndpoint].
@@ -15771,6 +15995,15 @@ pub struct UpsertDatapointsRequest {
     /// A list of datapoints to be created/updated.
     #[prost(message, repeated, tag = "2")]
     pub datapoints: ::prost::alloc::vec::Vec<IndexDatapoint>,
+    /// Optional. Update mask is used to specify the fields to be overwritten in
+    /// the datapoints by the update. The fields specified in the update_mask are
+    /// relative to each IndexDatapoint inside datapoints, not the full request.
+    ///
+    /// Updatable fields:
+    ///
+    ///    * Use `all_restricts` to update both restricts and numeric_restricts.
+    #[prost(message, optional, tag = "3")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for
 /// [IndexService.UpsertDatapoints][google.cloud.aiplatform.v1.IndexService.UpsertDatapoints]
@@ -15869,6 +16102,19 @@ pub mod nearest_neighbor_search_operation_metadata {
             EmbeddingSizeMismatch = 6,
             /// The `namespace` field is missing.
             NamespaceMissing = 7,
+            /// Generic catch-all error. Only used for validation failure where the
+            /// root cause cannot be easily retrieved programmatically.
+            ParsingError = 8,
+            /// There are multiple restricts with the same `namespace` value.
+            DuplicateNamespace = 9,
+            /// Numeric restrict has operator specified in datapoint.
+            OpInDatapoint = 10,
+            /// Numeric restrict has multiple values specified.
+            MultipleValues = 11,
+            /// Numeric restrict has invalid numeric value specified.
+            InvalidNumericValue = 12,
+            /// File is not in UTF_8 format.
+            InvalidEncoding = 13,
         }
         impl RecordErrorType {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -15885,6 +16131,12 @@ pub mod nearest_neighbor_search_operation_metadata {
                     RecordErrorType::InvalidEmbeddingId => "INVALID_EMBEDDING_ID",
                     RecordErrorType::EmbeddingSizeMismatch => "EMBEDDING_SIZE_MISMATCH",
                     RecordErrorType::NamespaceMissing => "NAMESPACE_MISSING",
+                    RecordErrorType::ParsingError => "PARSING_ERROR",
+                    RecordErrorType::DuplicateNamespace => "DUPLICATE_NAMESPACE",
+                    RecordErrorType::OpInDatapoint => "OP_IN_DATAPOINT",
+                    RecordErrorType::MultipleValues => "MULTIPLE_VALUES",
+                    RecordErrorType::InvalidNumericValue => "INVALID_NUMERIC_VALUE",
+                    RecordErrorType::InvalidEncoding => "INVALID_ENCODING",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -15898,6 +16150,12 @@ pub mod nearest_neighbor_search_operation_metadata {
                     "INVALID_EMBEDDING_ID" => Some(Self::InvalidEmbeddingId),
                     "EMBEDDING_SIZE_MISMATCH" => Some(Self::EmbeddingSizeMismatch),
                     "NAMESPACE_MISSING" => Some(Self::NamespaceMissing),
+                    "PARSING_ERROR" => Some(Self::ParsingError),
+                    "DUPLICATE_NAMESPACE" => Some(Self::DuplicateNamespace),
+                    "OP_IN_DATAPOINT" => Some(Self::OpInDatapoint),
+                    "MULTIPLE_VALUES" => Some(Self::MultipleValues),
+                    "INVALID_NUMERIC_VALUE" => Some(Self::InvalidNumericValue),
+                    "INVALID_ENCODING" => Some(Self::InvalidEncoding),
                     _ => None,
                 }
             }
@@ -16759,6 +17017,10 @@ pub struct ModelDeploymentMonitoringBigQueryTable {
     /// `bq://<project_id>.model_deployment_monitoring_<endpoint_id>.<tolower(log_source)>_<tolower(log_type)>`
     #[prost(string, tag = "3")]
     pub bigquery_table_path: ::prost::alloc::string::String,
+    /// Output only. The schema version of the request/response logging BigQuery
+    /// table. Default to v1 if unset.
+    #[prost(string, tag = "4")]
+    pub request_response_logging_schema_version: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `ModelDeploymentMonitoringBigQueryTable`.
 pub mod model_deployment_monitoring_big_query_table {
@@ -19882,8 +20144,7 @@ pub struct GenerateContentRequest {
     ///
     /// A `Tool` is a piece of code that enables the system to interact with
     /// external systems to perform an action, or set of actions, outside of
-    /// knowledge and scope of the model. The only supported tool is currently
-    /// `Function`
+    /// knowledge and scope of the model.
     #[prost(message, repeated, tag = "6")]
     pub tools: ::prost::alloc::vec::Vec<Tool>,
     /// Optional. Per request settings for blocking unsafe content.
@@ -24027,6 +24288,9 @@ pub mod publisher_model {
         pub open_notebook: ::core::option::Option<
             call_to_action::RegionalResourceReferences,
         >,
+        /// Optional. Open notebooks of the PublisherModel.
+        #[prost(message, optional, tag = "12")]
+        pub open_notebooks: ::core::option::Option<call_to_action::OpenNotebooks>,
         /// Optional. Create application using the PublisherModel.
         #[prost(message, optional, tag = "3")]
         pub create_application: ::core::option::Option<
@@ -24036,6 +24300,11 @@ pub mod publisher_model {
         #[prost(message, optional, tag = "4")]
         pub open_fine_tuning_pipeline: ::core::option::Option<
             call_to_action::RegionalResourceReferences,
+        >,
+        /// Optional. Open fine-tuning pipelines of the PublisherModel.
+        #[prost(message, optional, tag = "13")]
+        pub open_fine_tuning_pipelines: ::core::option::Option<
+            call_to_action::OpenFineTuningPipelines,
         >,
         /// Optional. Open prompt-tuning pipeline of the PublisherModel.
         #[prost(message, optional, tag = "5")]
@@ -24050,6 +24319,9 @@ pub mod publisher_model {
         /// Optional. Deploy the PublisherModel to Vertex Endpoint.
         #[prost(message, optional, tag = "7")]
         pub deploy: ::core::option::Option<call_to_action::Deploy>,
+        /// Optional. Deploy PublisherModel to Google Kubernetes Engine.
+        #[prost(message, optional, tag = "14")]
+        pub deploy_gke: ::core::option::Option<call_to_action::DeployGke>,
         /// Optional. Open in Generation AI Studio.
         #[prost(message, optional, tag = "8")]
         pub open_generation_ai_studio: ::core::option::Option<
@@ -24079,9 +24351,22 @@ pub mod publisher_model {
                 ::prost::alloc::string::String,
                 super::ResourceReference,
             >,
-            /// Required. The title of the regional resource reference.
+            /// Required.
             #[prost(string, tag = "2")]
             pub title: ::prost::alloc::string::String,
+            /// Optional. Title of the resource.
+            #[prost(string, optional, tag = "3")]
+            pub resource_title: ::core::option::Option<::prost::alloc::string::String>,
+            /// Optional. Use case (CUJ) of the resource.
+            #[prost(string, optional, tag = "4")]
+            pub resource_use_case: ::core::option::Option<
+                ::prost::alloc::string::String,
+            >,
+            /// Optional. Description of the resource.
+            #[prost(string, optional, tag = "5")]
+            pub resource_description: ::core::option::Option<
+                ::prost::alloc::string::String,
+            >,
         }
         /// Rest API docs.
         #[allow(clippy::derive_partial_eq_without_eq)]
@@ -24093,6 +24378,24 @@ pub mod publisher_model {
             /// Required. The title of the view rest API.
             #[prost(string, tag = "2")]
             pub title: ::prost::alloc::string::String,
+        }
+        /// Open notebooks.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct OpenNotebooks {
+            /// Required. Regional resource references to notebooks.
+            #[prost(message, repeated, tag = "1")]
+            pub notebooks: ::prost::alloc::vec::Vec<RegionalResourceReferences>,
+        }
+        /// Open fine tuning pipelines.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct OpenFineTuningPipelines {
+            /// Required. Regional resource references to fine tuning pipelines.
+            #[prost(message, repeated, tag = "1")]
+            pub fine_tuning_pipelines: ::prost::alloc::vec::Vec<
+                RegionalResourceReferences,
+            >,
         }
         /// Model metadata that is needed for UploadModel or
         /// DeployModel/CreateEndpoint requests.
@@ -24151,6 +24454,16 @@ pub mod publisher_model {
                 #[prost(string, tag = "7")]
                 SharedResources(::prost::alloc::string::String),
             }
+        }
+        /// Configurations for PublisherModel GKE deployment
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct DeployGke {
+            /// Optional. GKE deployment configuration in yaml format.
+            #[prost(string, repeated, tag = "1")]
+            pub gke_yaml_configs: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
         }
     }
     /// An enum representing the open source category of a PublisherModel.

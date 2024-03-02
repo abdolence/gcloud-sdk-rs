@@ -524,13 +524,14 @@ pub struct DatabaseInstance {
     /// Name of the Cloud SQL instance. This does not include the project ID.
     #[prost(string, tag = "23")]
     pub name: ::prost::alloc::string::String,
-    /// The geographical region. Can be:
-    /// *  `us-central` (`FIRST_GEN` instances only)
-    /// *  `us-central1` (`SECOND_GEN` instances only)
-    /// *  `asia-east1` or `europe-west1`.
+    /// The geographical region of the Cloud SQL instance.
     ///
-    /// Defaults to `us-central` or `us-central1` depending on the instance
-    /// type. The region cannot be changed after instance creation.
+    /// It can be one of the
+    /// [regions](<https://cloud.google.com/sql/docs/mysql/locations#location-r>)
+    /// where Cloud SQL operates:
+    ///
+    /// For example,  `asia-east1`, `europe-west1`, and  `us-central1`.
+    /// The default value is `us-central1`.
     #[prost(string, tag = "24")]
     pub region: ::prost::alloc::string::String,
     /// The Compute Engine zone that the instance is currently serving from. This
@@ -784,7 +785,7 @@ pub mod database_instance {
             }
         }
     }
-    /// The current SQL network architecture for the instance.
+    /// The SQL network architecture for the instance.
     #[derive(
         Clone,
         Copy,
@@ -799,9 +800,9 @@ pub mod database_instance {
     #[repr(i32)]
     pub enum SqlNetworkArchitecture {
         Unspecified = 0,
-        /// Instance is a Tenancy Unit (TU) instance.
+        /// The instance uses the new network architecture.
         NewNetworkArchitecture = 1,
-        /// Instance is an Umbrella instance.
+        /// The instance uses the old network architecture.
         OldNetworkArchitecture = 2,
     }
     impl SqlNetworkArchitecture {
@@ -1013,6 +1014,12 @@ pub mod export_context {
         pub mysql_export_options: ::core::option::Option<
             sql_export_options::MysqlExportOptions,
         >,
+        /// Optional. The number of threads to use for parallel export.
+        #[prost(message, optional, tag = "4")]
+        pub threads: ::core::option::Option<i32>,
+        /// Optional. Whether or not the export should be parallel.
+        #[prost(message, optional, tag = "5")]
+        pub parallel: ::core::option::Option<bool>,
     }
     /// Nested message and enum types in `SqlExportOptions`.
     pub mod sql_export_options {
@@ -1514,6 +1521,9 @@ pub mod sql_external_sync_setting_error {
         SourceMaxSubscriptions = 38,
         /// Unable to verify definers on the source for MySQL.
         UnableToVerifyDefiners = 39,
+        /// If a time out occurs while the subscription counts are calculated, then
+        /// this value is set to 1. Otherwise, this value is set to 2.
+        SubscriptionCalculationStatus = 40,
     }
     impl SqlExternalSyncSettingErrorType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1632,6 +1642,9 @@ pub mod sql_external_sync_setting_error {
                 SqlExternalSyncSettingErrorType::UnableToVerifyDefiners => {
                     "UNABLE_TO_VERIFY_DEFINERS"
                 }
+                SqlExternalSyncSettingErrorType::SubscriptionCalculationStatus => {
+                    "SUBSCRIPTION_CALCULATION_STATUS"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1697,6 +1710,9 @@ pub mod sql_external_sync_setting_error {
                 }
                 "SOURCE_MAX_SUBSCRIPTIONS" => Some(Self::SourceMaxSubscriptions),
                 "UNABLE_TO_VERIFY_DEFINERS" => Some(Self::UnableToVerifyDefiners),
+                "SUBSCRIPTION_CALCULATION_STATUS" => {
+                    Some(Self::SubscriptionCalculationStatus)
+                }
                 _ => None,
             }
         }
@@ -1797,6 +1813,13 @@ pub mod ip_configuration {
         /// client certificates.
         /// When this value is used, the legacy `require_ssl` flag must be true or
         /// cleared to avoid the conflict between values of two flags.
+        /// PostgreSQL clients or users that connect using IAM database
+        /// authentication must use either the
+        /// [Cloud SQL Auth
+        /// Proxy](<https://cloud.google.com/sql/docs/postgres/connect-auth-proxy>) or
+        /// [Cloud SQL
+        /// Connectors](<https://cloud.google.com/sql/docs/postgres/connect-connectors>)
+        /// to enforce client identity verification.
         TrustedClientCertificateRequired = 3,
     }
     impl SslMode {
@@ -2428,8 +2451,9 @@ pub struct PasswordValidationPolicy {
     /// Whether the password policy is enabled or not.
     #[prost(message, optional, tag = "6")]
     pub enable_password_policy: ::core::option::Option<bool>,
-    /// Disallow credentials that have been previously compromised by a public data
-    /// breach.
+    /// This field is deprecated and will be removed in a future version of the
+    /// API.
+    #[deprecated]
     #[prost(message, optional, tag = "7")]
     pub disallow_compromised_credentials: ::core::option::Option<bool>,
 }

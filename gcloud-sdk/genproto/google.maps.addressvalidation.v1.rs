@@ -77,9 +77,11 @@ pub struct AddressComponent {
     /// for a complete address.
     #[prost(bool, tag = "4")]
     pub inferred: bool,
-    /// Indicates the spelling of the component name was corrected in a minor way,
-    /// for example by switching two characters that appeared in the wrong order.
-    /// This indicates a cosmetic change.
+    /// Indicates a correction to a misspelling in the component name.  The API
+    /// does not always flag changes from one spelling variant to another, such as
+    /// when changing "centre" to "center". It also does not always flag common
+    /// misspellings, such as when changing "Amphitheater Pkwy" to "Amphitheatre
+    /// Pkwy".
     #[prost(bool, tag = "5")]
     pub spell_corrected: bool,
     /// Indicates the name of the component was replaced with a completely
@@ -287,15 +289,18 @@ pub struct UspsData {
     /// code, and ZIP+4 together should yield a number divisible by 10.
     #[prost(string, tag = "3")]
     pub delivery_point_check_digit: ::prost::alloc::string::String,
-    /// The possible values for DPV confirmation. Returns a single character.
+    /// The possible values for DPV confirmation. Returns a single character or
+    /// returns no value.
     ///
-    /// * `Y`: Address was DPV confirmed for primary and any secondary numbers.
     /// * `N`: Primary and any secondary number information failed to
     /// DPV confirm.
-    /// * `S`: Address was DPV confirmed for the primary number only, and the
-    /// secondary number information was present by not confirmed.
     /// * `D`: Address was DPV confirmed for the primary number only, and the
     /// secondary number information was missing.
+    /// * `S`: Address was DPV confirmed for the primary number only, and the
+    /// secondary number information was present but not confirmed.
+    /// * `Y`: Address was DPV confirmed for primary and any secondary numbers.
+    /// * Empty: If the response does not contain a `dpv_confirmation` value, the
+    /// address was not submitted for DPV confirmation.
     #[prost(string, tag = "4")]
     pub dpv_confirmation: ::prost::alloc::string::String,
     /// The footnotes from delivery point validation.
@@ -304,11 +309,12 @@ pub struct UspsData {
     /// * `AA`: Input address matched to the ZIP+4 file
     /// * `A1`: Input address was not matched to the ZIP+4 file
     /// * `BB`: Matched to DPV (all components)
-    /// * `CC`: Secondary number not matched (present but invalid)
+    /// * `CC`: Secondary number not matched and not required
+    /// * `C1`: Secondary number not matched but required
     /// * `N1`: High-rise address missing secondary number
     /// * `M1`: Primary number missing
     /// * `M3`: Primary number invalid
-    /// * `P1`: Input address RR or HC box number missing
+    /// * `P1`: Input address PO, RR or HC box number missing
     /// * `P3`: Input address PO, RR, or HC Box number invalid
     /// * `F1`: Input address matched to a military address
     /// * `G1`: Input address matched to a general delivery address
@@ -317,6 +323,8 @@ pub struct UspsData {
     /// * `RR`: DPV confirmed address with PMB information
     /// * `R1`: DPV confirmed address without PMB information
     /// * `R7`: Carrier Route R777 or R779 record
+    /// * `IA`: Informed Address identified
+    /// * `TA`: Primary number matched by dropping a trailing alpha
     #[prost(string, tag = "5")]
     pub dpv_footnote: ::prost::alloc::string::String,
     /// Indicates if the address is a CMRA (Commercial Mail Receiving Agency)--a
@@ -341,6 +349,93 @@ pub struct UspsData {
     /// * `N`: The address is active
     #[prost(string, tag = "8")]
     pub dpv_no_stat: ::prost::alloc::string::String,
+    /// Indicates the NoStat type. Returns a reason code as int.
+    ///
+    /// * `1`: IDA (Internal Drop Address) – Addresses that do not receive mail
+    /// directly from the USPS but are delivered to a drop address that services
+    /// them.
+    /// * `2`: CDS - Addresses that have not yet become deliverable. For example, a
+    /// new subdivision where lots and primary numbers have been determined, but no
+    /// structure exists yet for occupancy.
+    /// * `3`: Collision - Addresses that do not actually DPV confirm.
+    /// * `4`: CMZ (College, Military and Other Types) - ZIP + 4 records USPS has
+    /// incorporated into the data.
+    /// * `5`: Regular - Indicates addresses not receiving delivery and the
+    /// addresses are not counted as possible deliveries.
+    /// * `6`: Secondary Required - The address requires secondary information.
+    #[prost(int32, tag = "29")]
+    pub dpv_no_stat_reason_code: i32,
+    /// Flag indicates mail is delivered to a single receptable at a site.
+    /// Returns a single character.
+    ///
+    /// * `Y`: The mail is delivered to a single receptable at a site.
+    /// * `N`: The mail is not delivered to a single receptable at a site.
+    #[prost(string, tag = "30")]
+    pub dpv_drop: ::prost::alloc::string::String,
+    /// Indicates that mail is not delivered to the street address.
+    /// Returns a single character.
+    ///
+    /// * `Y`: The mail is not delivered to the street address.
+    /// * `N`: The mail is delivered to the street address.
+    #[prost(string, tag = "31")]
+    pub dpv_throwback: ::prost::alloc::string::String,
+    /// Flag indicates mail delivery is not performed every day of the week.
+    /// Returns a single character.
+    ///
+    /// * `Y`: The mail delivery is not performed every day of the week.
+    /// * `N`: No indication the mail delivery is not performed every day of the
+    /// week.
+    #[prost(string, tag = "32")]
+    pub dpv_non_delivery_days: ::prost::alloc::string::String,
+    /// Integer identifying non-delivery days. It can be interrogated using bit
+    /// flags:
+    /// 0x40 – Sunday is a non-delivery day
+    /// 0x20 – Monday is a non-delivery day
+    /// 0x10 – Tuesday is a non-delivery day
+    /// 0x08 – Wednesday is a non-delivery day
+    /// 0x04 – Thursday is a non-delivery day
+    /// 0x02 – Friday is a non-delivery day
+    /// 0x01 – Saturday is a non-delivery day
+    #[prost(int32, tag = "33")]
+    pub dpv_non_delivery_days_values: i32,
+    /// Flag indicates door is accessible, but package will not be left due to
+    /// security concerns.
+    /// Returns a single character.
+    ///
+    /// * `Y`: The package will not be left due to security concerns.
+    /// * `N`: No indication the package will not be left due to security concerns.
+    #[prost(string, tag = "34")]
+    pub dpv_no_secure_location: ::prost::alloc::string::String,
+    /// Indicates the address was matched to PBSA record.
+    /// Returns a single character.
+    ///
+    /// * `Y`: The address was matched to PBSA record.
+    /// * `N`: The address was not matched to PBSA record.
+    #[prost(string, tag = "35")]
+    pub dpv_pbsa: ::prost::alloc::string::String,
+    /// Flag indicates addresses where USPS cannot knock on a door to deliver mail.
+    /// Returns a single character.
+    ///
+    /// * `Y`: The door is not accessible.
+    /// * `N`: No indication the door is not accessible.
+    #[prost(string, tag = "36")]
+    pub dpv_door_not_accessible: ::prost::alloc::string::String,
+    /// Indicates that more than one DPV return code is valid for the address.
+    /// Returns a single character.
+    ///
+    /// * `Y`: Address was DPV confirmed for primary and any secondary numbers.
+    /// * `N`: Primary and any secondary number information failed to
+    /// DPV confirm.
+    /// * `S`: Address was DPV confirmed for the primary number only, and the
+    /// secondary number information was present by not confirmed,  or a single
+    /// trailing alpha on a primary number was dropped to make a DPV match and
+    /// secondary information required.
+    /// * `D`: Address was DPV confirmed for the primary number only, and the
+    /// secondary number information was missing.
+    /// * `R`: Address confirmed but assigned to phantom route R777 and R779 and
+    /// USPS delivery is not provided.
+    #[prost(string, tag = "37")]
+    pub dpv_enhanced_delivery_code: ::prost::alloc::string::String,
     /// The carrier route code.
     /// A four character code consisting of a one letter prefix and a three digit
     /// route designator.
@@ -444,8 +539,8 @@ pub struct ValidateAddressRequest {
     /// The total length of the fields in this input must not exceed 280
     /// characters.
     ///
-    /// Supported regions can be found in the
-    /// [FAQ](<https://developers.google.com/maps/documentation/address-validation/faq#which_regions_are_currently_supported>).
+    /// Supported regions can be found
+    /// [here](<https://developers.google.com/maps/documentation/address-validation/coverage>).
     ///
     /// The [language_code][google.type.PostalAddress.language_code] value in the
     /// input address is reserved for future uses and is ignored today. The
@@ -481,6 +576,28 @@ pub struct ValidateAddressRequest {
     /// state, and zip code.
     #[prost(bool, tag = "3")]
     pub enable_usps_cass: bool,
+    /// Optional. A string which identifies an Autocomplete session for billing
+    /// purposes. Must be a URL and filename safe base64 string with at most 36
+    /// ASCII characters in length. Otherwise an INVALID_ARGUMENT error is
+    /// returned.
+    ///
+    /// The session begins when the user starts typing a query, and concludes when
+    /// they select a place and a call to Place Details or Address Validation is
+    /// made. Each session can have multiple autocomplete queries, followed by one
+    /// Place Details or Address Validation request. The credentials used for each
+    /// request within a session must belong to the same Google Cloud Console
+    /// project. Once a session has concluded, the token is no longer valid; your
+    /// app must generate a fresh token for each session. If the `session_token`
+    /// parameter is omitted, or if you reuse a session token, the session is
+    /// charged as if no session token was provided (each request is billed
+    /// separately).
+    ///
+    /// Note: Address Validation can only be used in sessions with the
+    /// Autocomplete (New) API, not the old Autocomplete API. See
+    /// <https://developers.google.com/maps/documentation/places/web-service/session-pricing>
+    /// for more details.
+    #[prost(string, tag = "5")]
+    pub session_token: ::prost::alloc::string::String,
 }
 /// The response to an address validation request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -694,8 +811,7 @@ pub mod verdict {
         SubPremise = 1,
         /// Building-level result.
         Premise = 2,
-        /// A geocode that should be very close to the building-level location of
-        /// the address.
+        /// A geocode that approximates the building-level location of the address.
         PremiseProximity = 3,
         /// The address or geocode indicates a block. Only used in regions which
         /// have block-level addressing, such as Japan.

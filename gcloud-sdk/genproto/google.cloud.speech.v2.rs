@@ -241,7 +241,7 @@ pub struct UndeleteRecognizerRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Recognizer {
-    /// Output only. The resource name of the Recognizer.
+    /// Output only. Identifier. The resource name of the Recognizer.
     /// Format: `projects/{project}/locations/{location}/recognizers/{recognizer}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1154,10 +1154,47 @@ pub struct GcsOutputConfig {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InlineOutputConfig {}
+/// Output configurations for serialized `BatchRecognizeResults` protos.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NativeOutputFileFormatConfig {}
+/// Output configurations for [WebVTT](<https://www.w3.org/TR/webvtt1/>) formatted
+/// subtitle file.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VttOutputFileFormatConfig {}
+/// Output configurations [SubRip
+/// Text](<https://www.matroska.org/technical/subtitles.html#srt-subtitles>)
+/// formatted subtitle file.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SrtOutputFileFormatConfig {}
+/// Configuration for the format of the results stored to `output`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OutputFormatConfig {
+    /// Configuration for the native output format. If this field is set or if no
+    /// other output format field is set then transcripts will be written to the
+    /// sink in the native format.
+    #[prost(message, optional, tag = "1")]
+    pub native: ::core::option::Option<NativeOutputFileFormatConfig>,
+    /// Configuration for the vtt output format. If this field is set then
+    /// transcripts will be written to the sink in the vtt format.
+    #[prost(message, optional, tag = "2")]
+    pub vtt: ::core::option::Option<VttOutputFileFormatConfig>,
+    /// Configuration for the srt output format. If this field is set then
+    /// transcripts will be written to the sink in the srt format.
+    #[prost(message, optional, tag = "3")]
+    pub srt: ::core::option::Option<SrtOutputFileFormatConfig>,
+}
 /// Configuration options for the output(s) of recognition.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecognitionOutputConfig {
+    /// Optional. Configuration for the format of the results stored to `output`.
+    /// If unspecified transcripts will be written in the `NATIVE` format only.
+    #[prost(message, optional, tag = "3")]
+    pub output_format_config: ::core::option::Option<OutputFormatConfig>,
     #[prost(oneof = "recognition_output_config::Output", tags = "1, 2")]
     pub output: ::core::option::Option<recognition_output_config::Output>,
 }
@@ -1216,6 +1253,14 @@ pub struct CloudStorageResult {
     /// The Cloud Storage URI to which recognition results were written.
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
+    /// The Cloud Storage URI to which recognition results were written as VTT
+    /// formatted captions. This is populated only when `VTT` output is requested.
+    #[prost(string, tag = "2")]
+    pub vtt_format_uri: ::prost::alloc::string::String,
+    /// The Cloud Storage URI to which recognition results were written as SRT
+    /// formatted captions. This is populated only when `SRT` output is requested.
+    #[prost(string, tag = "3")]
+    pub srt_format_uri: ::prost::alloc::string::String,
 }
 /// Final results returned inline in the recognition response.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1224,6 +1269,14 @@ pub struct InlineResult {
     /// The transcript for the audio file.
     #[prost(message, optional, tag = "1")]
     pub transcript: ::core::option::Option<BatchRecognizeResults>,
+    /// The transcript for the audio file as VTT formatted captions. This is
+    /// populated only when `VTT` output is requested.
+    #[prost(string, tag = "2")]
+    pub vtt_captions: ::prost::alloc::string::String,
+    /// The transcript for the audio file as SRT formatted captions. This is
+    /// populated only when `SRT` output is requested.
+    #[prost(string, tag = "3")]
+    pub srt_captions: ::prost::alloc::string::String,
 }
 /// Final results for a single file.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1515,8 +1568,8 @@ pub mod streaming_recognize_response {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Config {
-    /// Output only. The name of the config resource. There is exactly one config
-    /// resource per project per location. The expected format is
+    /// Output only. Identifier. The name of the config resource. There is exactly
+    /// one config resource per project per location. The expected format is
     /// `projects/{project}/locations/{location}/config`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1564,7 +1617,7 @@ pub struct UpdateConfigRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomClass {
-    /// Output only. The resource name of the CustomClass.
+    /// Output only. Identifier. The resource name of the CustomClass.
     /// Format:
     /// `projects/{project}/locations/{location}/customClasses/{custom_class}`.
     #[prost(string, tag = "1")]
@@ -1572,8 +1625,8 @@ pub struct CustomClass {
     /// Output only. System-assigned unique identifier for the CustomClass.
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
-    /// User-settable, human-readable name for the CustomClass. Must be 63
-    /// characters or less.
+    /// Optional. User-settable, human-readable name for the CustomClass. Must be
+    /// 63 characters or less.
     #[prost(string, tag = "4")]
     pub display_name: ::prost::alloc::string::String,
     /// A collection of class items.
@@ -1594,7 +1647,7 @@ pub struct CustomClass {
     /// Output only. The time at which this resource will be purged.
     #[prost(message, optional, tag = "9")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Allows users to store small amounts of arbitrary data.
+    /// Optional. Allows users to store small amounts of arbitrary data.
     /// Both the key and the value must be 63 characters or less each.
     /// At most 100 annotations.
     #[prost(map = "string, string", tag = "10")]
@@ -1685,7 +1738,7 @@ pub mod custom_class {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhraseSet {
-    /// Output only. The resource name of the PhraseSet.
+    /// Output only. Identifier. The resource name of the PhraseSet.
     /// Format: `projects/{project}/locations/{location}/phraseSets/{phrase_set}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,

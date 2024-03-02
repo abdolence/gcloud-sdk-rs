@@ -5221,6 +5221,205 @@ pub mod conversion_action_type_enum {
         }
     }
 }
+/// Container for enum describing the family of a conversion custom variable.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionCustomVariableCardinalityEnum {}
+/// Nested message and enum types in `ConversionCustomVariableCardinalityEnum`.
+pub mod conversion_custom_variable_cardinality_enum {
+    /// Cardinality of a conversion custom variable.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConversionCustomVariableCardinality {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// The conversion custom variable has cardinality below all limits. The
+        /// variable can be used for segmentation, and stats can accrue for
+        /// new values if the variable is enabled.
+        BelowAllLimits = 2,
+        /// The conversion custom variable has cardinality that exceeds the
+        /// segmentation limit, but does not exceed the stats limit. Segmentation
+        /// will be disabled, but stats can accrue for new values if the variable is
+        /// enabled.
+        ExceedsSegmentationLimitButNotStatsLimit = 3,
+        /// The conversion custom variable has exceeded the segmentation limits, and
+        /// is approaching the stats limits (> 90%). Segmentation will be disabled,
+        /// but stats can accrue for new values if the variable is enabled.
+        ApproachesStatsLimit = 4,
+        /// The conversion custom variable has exceeded both the segmentation limits
+        /// and stats limits. Segmentation will be disabled, and stats for enabled
+        /// variables can accrue only if the existing values do not increase the
+        /// cardinality of the variable any further.
+        ExceedsStatsLimit = 5,
+    }
+    impl ConversionCustomVariableCardinality {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ConversionCustomVariableCardinality::Unspecified => "UNSPECIFIED",
+                ConversionCustomVariableCardinality::Unknown => "UNKNOWN",
+                ConversionCustomVariableCardinality::BelowAllLimits => "BELOW_ALL_LIMITS",
+                ConversionCustomVariableCardinality::ExceedsSegmentationLimitButNotStatsLimit => {
+                    "EXCEEDS_SEGMENTATION_LIMIT_BUT_NOT_STATS_LIMIT"
+                }
+                ConversionCustomVariableCardinality::ApproachesStatsLimit => {
+                    "APPROACHES_STATS_LIMIT"
+                }
+                ConversionCustomVariableCardinality::ExceedsStatsLimit => {
+                    "EXCEEDS_STATS_LIMIT"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "BELOW_ALL_LIMITS" => Some(Self::BelowAllLimits),
+                "EXCEEDS_SEGMENTATION_LIMIT_BUT_NOT_STATS_LIMIT" => {
+                    Some(Self::ExceedsSegmentationLimitButNotStatsLimit)
+                }
+                "APPROACHES_STATS_LIMIT" => Some(Self::ApproachesStatsLimit),
+                "EXCEEDS_STATS_LIMIT" => Some(Self::ExceedsStatsLimit),
+                _ => None,
+            }
+        }
+    }
+}
+/// Container for enum describing the family of a conversion custom variable.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionCustomVariableFamilyEnum {}
+/// Nested message and enum types in `ConversionCustomVariableFamilyEnum`.
+pub mod conversion_custom_variable_family_enum {
+    /// Family of a conversion custom variable.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConversionCustomVariableFamily {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// The standard conversion custom variable. Customers are required to
+        /// activate before use.
+        Standard = 2,
+        /// The conversion custom variable imported from a custom floodlight
+        /// variable.
+        Floodlight = 3,
+    }
+    impl ConversionCustomVariableFamily {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ConversionCustomVariableFamily::Unspecified => "UNSPECIFIED",
+                ConversionCustomVariableFamily::Unknown => "UNKNOWN",
+                ConversionCustomVariableFamily::Standard => "STANDARD",
+                ConversionCustomVariableFamily::Floodlight => "FLOODLIGHT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "STANDARD" => Some(Self::Standard),
+                "FLOODLIGHT" => Some(Self::Floodlight),
+                _ => None,
+            }
+        }
+    }
+}
+/// Container for enum describing possible statuses of a conversion custom
+/// variable.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionCustomVariableStatusEnum {}
+/// Nested message and enum types in `ConversionCustomVariableStatusEnum`.
+pub mod conversion_custom_variable_status_enum {
+    /// Possible statuses of a conversion custom variable.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConversionCustomVariableStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// The conversion custom variable is pending activation and will not
+        /// accrue stats until set to ENABLED.
+        ///
+        /// This status can't be used in CREATE and UPDATE requests.
+        ActivationNeeded = 2,
+        /// The conversion custom variable is enabled and will accrue stats.
+        Enabled = 3,
+        /// The conversion custom variable is paused and will not accrue stats
+        /// until set to ENABLED again.
+        Paused = 4,
+    }
+    impl ConversionCustomVariableStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ConversionCustomVariableStatus::Unspecified => "UNSPECIFIED",
+                ConversionCustomVariableStatus::Unknown => "UNKNOWN",
+                ConversionCustomVariableStatus::ActivationNeeded => "ACTIVATION_NEEDED",
+                ConversionCustomVariableStatus::Enabled => "ENABLED",
+                ConversionCustomVariableStatus::Paused => "PAUSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ACTIVATION_NEEDED" => Some(Self::ActivationNeeded),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                _ => None,
+            }
+        }
+    }
+}
 /// Container for enum describing possible statuses of a conversion.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5745,6 +5944,124 @@ pub mod data_driven_model_status_enum {
         }
     }
 }
+/// Container for enum describing Floodlight variable type defined in Search Ads
+/// 360.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FloodlightVariableDataTypeEnum {}
+/// Nested message and enum types in `FloodlightVariableDataTypeEnum`.
+pub mod floodlight_variable_data_type_enum {
+    /// The data type of the floodlight variable, as defined in Search Ads 360. See
+    /// <https://support.google.com/searchads/answer/4397154?hl=en> to learn more.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum FloodlightVariableDataType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Represents a floodlight variable of "Number" type. This variable may be
+        /// assigned to floodlight variables of DIMENSION or METRIC types.
+        Number = 2,
+        /// Represents a floodlight variable of "String" type. This variable may be
+        /// assigned to floodlight variables of DIMENSION type.
+        String = 3,
+    }
+    impl FloodlightVariableDataType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                FloodlightVariableDataType::Unspecified => "UNSPECIFIED",
+                FloodlightVariableDataType::Unknown => "UNKNOWN",
+                FloodlightVariableDataType::Number => "NUMBER",
+                FloodlightVariableDataType::String => "STRING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NUMBER" => Some(Self::Number),
+                "STRING" => Some(Self::String),
+                _ => None,
+            }
+        }
+    }
+}
+/// Container for enum describing Floodlight variable type defined in Search Ads
+/// 360.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FloodlightVariableTypeEnum {}
+/// Nested message and enum types in `FloodlightVariableTypeEnum`.
+pub mod floodlight_variable_type_enum {
+    /// Type of the floodlight variable, as defined in the Search Ads 360. See
+    /// <https://support.google.com/searchads/answer/4397154?hl=en> to learn more.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum FloodlightVariableType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Dimension floodlight variable type.
+        Dimension = 2,
+        /// Metric floodlight variable type.
+        Metric = 3,
+        /// Floodlight variable type is unset.
+        Unset = 4,
+    }
+    impl FloodlightVariableType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                FloodlightVariableType::Unspecified => "UNSPECIFIED",
+                FloodlightVariableType::Unknown => "UNKNOWN",
+                FloodlightVariableType::Dimension => "DIMENSION",
+                FloodlightVariableType::Metric => "METRIC",
+                FloodlightVariableType::Unset => "UNSET",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "DIMENSION" => Some(Self::Dimension),
+                "METRIC" => Some(Self::Metric),
+                "UNSET" => Some(Self::Unset),
+                _ => None,
+            }
+        }
+    }
+}
 /// Container for describing the status of a geo target constant.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6250,7 +6567,8 @@ pub mod listing_group_filter_vertical_enum {
         Unspecified = 0,
         /// Used for return value only. Represents value unknown in this version.
         Unknown = 1,
-        /// Represents the shopping vertical.
+        /// Represents the shopping vertical. The vertical is allowed only in
+        /// Performance Max for Retail campaigns.
         Shopping = 2,
     }
     impl ListingGroupFilterVertical {

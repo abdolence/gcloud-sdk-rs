@@ -1456,7 +1456,10 @@ pub mod selection_input {
         /// [`SelectionInput` widget
         /// page](<https://developers.google.com/chat/ui/widgets/selection-input#multiselect-menu>).
         ///
-        /// [Google Chat apps](<https://developers.google.com/chat>):
+        /// [Google Workspace Add-ons and Chat
+        /// apps](<https://developers.google.com/workspace/extend>):
+        /// multiselect for Google Workspace Add-ons are in
+        /// [Developer Preview](<https://developers.google.com/workspace/preview>).
         MultiSelect = 4,
     }
     impl SelectionType {
@@ -2059,9 +2062,9 @@ pub mod grid {
         }
     }
 }
-/// The `Columns` widget displays up to 2 columns in a card message or dialog.
-/// You can add widgets to each column; the widgets appear in the order that
-/// they are specified. For an example in Google Chat apps, see
+/// The `Columns` widget displays up to 2 columns in a card or dialog. You can
+/// add widgets to each column; the widgets appear in the order that they are
+/// specified. For an example in Google Chat apps, see
 /// [Columns](<https://developers.google.com/chat/ui/widgets/columns>).
 ///
 /// The height of each column is determined by the taller column. For example, if
@@ -2084,7 +2087,10 @@ pub mod grid {
 /// To include more than 2 columns, or to use rows, use the
 /// [`Grid`][google.apps.card.v1.Grid] widget.
 ///
-/// [Google Chat apps](<https://developers.google.com/chat>):
+/// [Google Workspace Add-ons and Chat
+/// apps](<https://developers.google.com/workspace/extend>):
+/// Columns for Google Workspace Add-ons are in
+/// [Developer Preview](<https://developers.google.com/workspace/preview>).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Columns {

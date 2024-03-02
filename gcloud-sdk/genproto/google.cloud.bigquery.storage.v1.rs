@@ -231,9 +231,25 @@ pub struct TableFieldSchema {
     /// (<https://cloud.google.com/bigquery/docs/default-values>) for this field.
     #[prost(string, tag = "10")]
     pub default_value_expression: ::prost::alloc::string::String,
+    /// Optional. The subtype of the RANGE, if the type of this field is RANGE. If
+    /// the type is RANGE, this field is required. Possible values for the field
+    /// element type of a RANGE include:
+    /// * DATE
+    /// * DATETIME
+    /// * TIMESTAMP
+    #[prost(message, optional, tag = "11")]
+    pub range_element_type: ::core::option::Option<table_field_schema::FieldElementType>,
 }
 /// Nested message and enum types in `TableFieldSchema`.
 pub mod table_field_schema {
+    /// Represents the type of a field element.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FieldElementType {
+        /// Required. The type of a field element.
+        #[prost(enumeration = "Type", tag = "1")]
+        pub r#type: i32,
+    }
     #[derive(
         Clone,
         Copy,
@@ -279,6 +295,8 @@ pub mod table_field_schema {
         Interval = 14,
         /// JSON, String
         Json = 15,
+        /// RANGE
+        Range = 16,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -303,6 +321,7 @@ pub mod table_field_schema {
                 Type::Bignumeric => "BIGNUMERIC",
                 Type::Interval => "INTERVAL",
                 Type::Json => "JSON",
+                Type::Range => "RANGE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -324,6 +343,7 @@ pub mod table_field_schema {
                 "BIGNUMERIC" => Some(Self::Bignumeric),
                 "INTERVAL" => Some(Self::Interval),
                 "JSON" => Some(Self::Json),
+                "RANGE" => Some(Self::Range),
                 _ => None,
             }
         }

@@ -903,6 +903,11 @@ pub struct Instance {
     /// This is the connection endpoint for an end-user application.
     #[prost(string, tag = "15")]
     pub ip_address: ::prost::alloc::string::String,
+    /// Output only. The public IP addresses for the Instance. This is available
+    /// ONLY when enable_public_ip is set. This is the connection endpoint for an
+    /// end-user application.
+    #[prost(string, tag = "27")]
+    pub public_ip_address: ::prost::alloc::string::String,
     /// Output only. Reconciling (<https://google.aip.dev/128#reconciliation>).
     /// Set to true if the current state of Instance does not match the user's
     /// intended state, and the service is actively updating the resource to
@@ -1365,6 +1370,9 @@ pub struct ConnectionInfo {
     /// Output only. The unique ID of the Instance.
     #[prost(string, tag = "4")]
     pub instance_uid: ::prost::alloc::string::String,
+    /// Output only. The DNS name to use with PSC for the Instance.
+    #[prost(string, tag = "6")]
+    pub psc_dns_name: ::prost::alloc::string::String,
 }
 /// Message describing Backup object
 #[allow(clippy::derive_partial_eq_without_eq)]
