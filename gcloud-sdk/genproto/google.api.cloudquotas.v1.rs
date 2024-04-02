@@ -61,15 +61,9 @@ pub struct QuotaInfo {
     /// on the total number of concurrent operations in flight at any given time.
     #[prost(bool, tag = "15")]
     pub is_concurrent: bool,
-    /// URI to the page where the user can request more quotas for the cloud
-    /// service, such as
-    /// <https://docs.google.com/spreadsheet/viewform?formkey=abc123&entry_0={email}&entry_1={id}.>
-    /// Google Developers Console UI replace {email} with the current
-    /// user's e-mail, {id} with the current project number, or organization ID
-    /// with "organizations/" prefix. For example,
-    /// <https://docs.google.com/spreadsheet/viewform?formkey=abc123&entry_0=johndoe@gmail.com&entry_1=25463754,>
-    /// or
-    /// <https://docs.google.com/spreadsheet/viewform?formkey=abc123&entry_0=johndoe@gmail.com&entry_1=organizations/26474422.>
+    /// URI to the page where users can request more quota for the cloud
+    /// service—for example,
+    /// <https://console.cloud.google.com/iam-admin/quotas.>
     #[prost(string, tag = "17")]
     pub service_request_quota_uri: ::prost::alloc::string::String,
 }
@@ -196,9 +190,9 @@ pub struct QuotaPreference {
     /// `projects/123/locations/global/quotaPreferences/my-config-for-us-east1`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The dimensions that this quota preference applies to. The key of the map
-    /// entry is the name of a dimension, such as "region", "zone", "network_id",
-    /// and the value of the map entry is the dimension value.
+    /// Immutable. The dimensions that this quota preference applies to. The key of
+    /// the map entry is the name of a dimension, such as "region", "zone",
+    /// "network_id", and the value of the map entry is the dimension value.
     ///
     /// If a dimension is missing from the map of dimensions, the quota preference
     /// applies to all the dimension values except for those that have other quota
@@ -244,11 +238,14 @@ pub struct QuotaPreference {
     /// The reason / justification for this quota preference.
     #[prost(string, tag = "11")]
     pub justification: ::prost::alloc::string::String,
-    /// Required. Input only. An email address that can be used for quota related
+    /// Input only. An email address that can be used for quota related
     /// communication between the Google Cloud and the user in case the Google
     /// Cloud needs further information to make a decision on whether the user
     /// preferred quota can be granted.
     ///
+    /// The email address is optional for decrease quota preferences. In another
+    /// word, QuotaConfig.preferred_value is smaller than the
+    /// QuotaDetails.reset_value. It is required for increase quota preferences.
     /// The Google account for the email address must have quota update permission
     /// for the project, folder or organization this quota preference is for.
     #[prost(string, tag = "12")]
@@ -275,9 +272,9 @@ pub struct QuotaConfig {
     /// quota decrease requests do not have a trace id.
     #[prost(string, tag = "4")]
     pub trace_id: ::prost::alloc::string::String,
-    /// The annotations map for clients to store small amounts of arbitrary data.
-    /// Do not put PII or other sensitive information here.
-    /// See <https://google.aip.dev/128#annotations>
+    /// Optional. The annotations map for clients to store small amounts of
+    /// arbitrary data. Do not put PII or other sensitive information here. See
+    /// <https://google.aip.dev/128#annotations>
     #[prost(map = "string, string", tag = "5")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -480,19 +477,16 @@ pub struct ListQuotaPreferencesRequest {
     /// create/update time range.
     ///
     /// Example filters:
-    /// `state=PENDING OR state=PENDING_PARTIALLY_GRANTED`
-    /// `state=PENDING OR state=PENDING_PARTIALLY_GRANTED AND
-    ///   creation_time>2022-12-03T10:30:00`
-    ///
-    /// If no filter is provided, returns all pending quota preferences.
+    /// `reconciling=true AND request_type=CLOUD_CONSOLE`,
+    /// `reconciling=true OR creation_time>2022-12-03T10:30:00`
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. How to order of the results. By default, the results are ordered
     /// by create time.
     ///
     /// Example orders:
-    /// `type`
-    /// `state, create_time`
+    /// `quota_id`,
+    /// `service, create_time`
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }

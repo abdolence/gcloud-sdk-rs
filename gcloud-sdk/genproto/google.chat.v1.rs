@@ -11,6 +11,137 @@ pub struct ActionStatus {
     #[prost(string, tag = "2")]
     pub user_facing_message: ::prost::alloc::string::String,
 }
+/// An attachment in Google Chat.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Attachment {
+    /// Resource name of the attachment, in the form
+    /// `spaces/*/messages/*/attachments/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The original file name for the content, not the full path.
+    #[prost(string, tag = "2")]
+    pub content_name: ::prost::alloc::string::String,
+    /// Output only. The content type (MIME type) of the file.
+    #[prost(string, tag = "3")]
+    pub content_type: ::prost::alloc::string::String,
+    /// Output only. The thumbnail URL which should be used to preview the
+    /// attachment to a human user. Chat apps shouldn't use this URL to download
+    /// attachment content.
+    #[prost(string, tag = "5")]
+    pub thumbnail_uri: ::prost::alloc::string::String,
+    /// Output only. The download URL which should be used to allow a human user to
+    /// download the attachment. Chat apps shouldn't use this URL to download
+    /// attachment content.
+    #[prost(string, tag = "6")]
+    pub download_uri: ::prost::alloc::string::String,
+    /// Output only. The source of the attachment.
+    #[prost(enumeration = "attachment::Source", tag = "9")]
+    pub source: i32,
+    #[prost(oneof = "attachment::DataRef", tags = "4, 7")]
+    pub data_ref: ::core::option::Option<attachment::DataRef>,
+}
+/// Nested message and enum types in `Attachment`.
+pub mod attachment {
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Source {
+        Unspecified = 0,
+        DriveFile = 1,
+        UploadedContent = 2,
+    }
+    impl Source {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Source::Unspecified => "SOURCE_UNSPECIFIED",
+                Source::DriveFile => "DRIVE_FILE",
+                Source::UploadedContent => "UPLOADED_CONTENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SOURCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DRIVE_FILE" => Some(Self::DriveFile),
+                "UPLOADED_CONTENT" => Some(Self::UploadedContent),
+                _ => None,
+            }
+        }
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum DataRef {
+        /// A reference to the attachment data. This field is used with the media API
+        /// to download the attachment data.
+        #[prost(message, tag = "4")]
+        AttachmentDataRef(super::AttachmentDataRef),
+        /// Output only. A reference to the Google Drive attachment. This field is
+        /// used with the Google Drive API.
+        #[prost(message, tag = "7")]
+        DriveDataRef(super::DriveDataRef),
+    }
+}
+/// A reference to the data of a drive attachment.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DriveDataRef {
+    /// The ID for the drive file. Use with the Drive API.
+    #[prost(string, tag = "2")]
+    pub drive_file_id: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AttachmentDataRef {
+    /// The resource name of the attachment data. This field is used with the media
+    /// API to download the attachment data.
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Opaque token containing a reference to an uploaded attachment. Treated by
+    /// clients as an opaque string and used to create or update Chat messages with
+    /// attachments.
+    #[prost(string, tag = "2")]
+    pub attachment_upload_token: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAttachmentRequest {
+    /// Required. Resource name of the attachment, in the form
+    /// `spaces/*/messages/*/attachments/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UploadAttachmentRequest {
+    /// Required. Resource name of the Chat space in which the attachment is
+    /// uploaded. Format "spaces/{space}".
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The filename of the attachment, including the file extension.
+    #[prost(string, tag = "4")]
+    pub filename: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UploadAttachmentResponse {
+    /// Reference to the uploaded attachment.
+    #[prost(message, optional, tag = "1")]
+    pub attachment_data_ref: ::core::option::Option<AttachmentDataRef>,
+}
 /// A user in Google Chat.
 /// When returned as an output from a request, if your Chat app [authenticates as
 /// a user](<https://developers.google.com/chat/api/guides/auth/users>), the output
@@ -143,7 +274,7 @@ pub struct Annotation {
     #[prost(int32, tag = "3")]
     pub length: i32,
     /// Additional metadata about the annotation.
-    #[prost(oneof = "annotation::Metadata", tags = "4, 5")]
+    #[prost(oneof = "annotation::Metadata", tags = "4, 5, 6")]
     pub metadata: ::core::option::Option<annotation::Metadata>,
 }
 /// Nested message and enum types in `Annotation`.
@@ -158,6 +289,9 @@ pub mod annotation {
         /// The metadata for a slash command.
         #[prost(message, tag = "5")]
         SlashCommand(super::SlashCommandMetadata),
+        /// The metadata for a rich link.
+        #[prost(message, tag = "6")]
+        RichLinkMetadata(super::RichLinkMetadata),
     }
 }
 /// Annotation metadata for user mentions (@).
@@ -281,71 +415,23 @@ pub mod slash_command_metadata {
         }
     }
 }
-/// Type of the annotation.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum AnnotationType {
-    /// Default value for the enum. Don't use.
-    Unspecified = 0,
-    /// A user is mentioned.
-    UserMention = 1,
-    /// A slash command is invoked.
-    SlashCommand = 2,
-}
-impl AnnotationType {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            AnnotationType::Unspecified => "ANNOTATION_TYPE_UNSPECIFIED",
-            AnnotationType::UserMention => "USER_MENTION",
-            AnnotationType::SlashCommand => "SLASH_COMMAND",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "ANNOTATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-            "USER_MENTION" => Some(Self::UserMention),
-            "SLASH_COMMAND" => Some(Self::SlashCommand),
-            _ => None,
-        }
-    }
-}
-/// An attachment in Google Chat.
+/// A rich link to a resource.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Attachment {
-    /// Resource name of the attachment, in the form
-    /// `spaces/*/messages/*/attachments/*`.
+pub struct RichLinkMetadata {
+    /// The URI of this link.
     #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Output only. The original file name for the content, not the full path.
-    #[prost(string, tag = "2")]
-    pub content_name: ::prost::alloc::string::String,
-    /// Output only. The content type (MIME type) of the file.
-    #[prost(string, tag = "3")]
-    pub content_type: ::prost::alloc::string::String,
-    /// Output only. The thumbnail URL which should be used to preview the
-    /// attachment to a human user. Chat apps shouldn't use this URL to download
-    /// attachment content.
-    #[prost(string, tag = "5")]
-    pub thumbnail_uri: ::prost::alloc::string::String,
-    /// Output only. The download URL which should be used to allow a human user to
-    /// download the attachment. Chat apps shouldn't use this URL to download
-    /// attachment content.
-    #[prost(string, tag = "6")]
-    pub download_uri: ::prost::alloc::string::String,
-    /// Output only. The source of the attachment.
-    #[prost(enumeration = "attachment::Source", tag = "9")]
-    pub source: i32,
-    #[prost(oneof = "attachment::DataRef", tags = "4, 7")]
-    pub data_ref: ::core::option::Option<attachment::DataRef>,
+    pub uri: ::prost::alloc::string::String,
+    /// The rich link type.
+    #[prost(enumeration = "rich_link_metadata::RichLinkType", tag = "2")]
+    pub rich_link_type: i32,
+    /// Data for the linked resource.
+    #[prost(oneof = "rich_link_metadata::Data", tags = "3")]
+    pub data: ::core::option::Option<rich_link_metadata::Data>,
 }
-/// Nested message and enum types in `Attachment`.
-pub mod attachment {
+/// Nested message and enum types in `RichLinkMetadata`.
+pub mod rich_link_metadata {
+    /// The rich link type. More types might be added in the future.
     #[derive(
         Clone,
         Copy,
@@ -358,92 +444,90 @@ pub mod attachment {
         ::prost::Enumeration
     )]
     #[repr(i32)]
-    pub enum Source {
+    pub enum RichLinkType {
+        /// Default value for the enum. Don't use.
         Unspecified = 0,
+        /// A Google Drive rich link type.
         DriveFile = 1,
-        UploadedContent = 2,
     }
-    impl Source {
+    impl RichLinkType {
         /// String value of the enum field names used in the ProtoBuf definition.
         ///
         /// The values are not transformed in any way and thus are considered stable
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Source::Unspecified => "SOURCE_UNSPECIFIED",
-                Source::DriveFile => "DRIVE_FILE",
-                Source::UploadedContent => "UPLOADED_CONTENT",
+                RichLinkType::Unspecified => "RICH_LINK_TYPE_UNSPECIFIED",
+                RichLinkType::DriveFile => "DRIVE_FILE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
-                "SOURCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RICH_LINK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "DRIVE_FILE" => Some(Self::DriveFile),
-                "UPLOADED_CONTENT" => Some(Self::UploadedContent),
                 _ => None,
             }
         }
     }
+    /// Data for the linked resource.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum DataRef {
-        /// A reference to the attachment data. This field is used with the media API
-        /// to download the attachment data.
-        #[prost(message, tag = "4")]
-        AttachmentDataRef(super::AttachmentDataRef),
-        /// Output only. A reference to the Google Drive attachment. This field is
-        /// used with the Google Drive API.
-        #[prost(message, tag = "7")]
-        DriveDataRef(super::DriveDataRef),
+    pub enum Data {
+        /// Data for a drive link.
+        #[prost(message, tag = "3")]
+        DriveLinkData(super::DriveLinkData),
     }
 }
-/// A reference to the data of a drive attachment.
+/// Data for Google Drive links.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DriveDataRef {
-    /// The ID for the drive file. Use with the Drive API.
-    #[prost(string, tag = "2")]
-    pub drive_file_id: ::prost::alloc::string::String,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AttachmentDataRef {
-    /// The resource name of the attachment data. This field is used with the media
-    /// API to download the attachment data.
-    #[prost(string, tag = "1")]
-    pub resource_name: ::prost::alloc::string::String,
-    /// Opaque token containing a reference to an uploaded attachment. Treated by
-    /// clients as an opaque string and used to create or update Chat messages with
-    /// attachments.
-    #[prost(string, tag = "2")]
-    pub attachment_upload_token: ::prost::alloc::string::String,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetAttachmentRequest {
-    /// Required. Resource name of the attachment, in the form
-    /// `spaces/*/messages/*/attachments/*`.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UploadAttachmentRequest {
-    /// Required. Resource name of the Chat space in which the attachment is
-    /// uploaded. Format "spaces/{space}".
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. The filename of the attachment, including the file extension.
-    #[prost(string, tag = "4")]
-    pub filename: ::prost::alloc::string::String,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UploadAttachmentResponse {
-    /// Reference to the uploaded attachment.
+pub struct DriveLinkData {
+    /// A
+    /// [DriveDataRef](<https://developers.google.com/chat/api/reference/rest/v1/spaces.messages.attachments#drivedataref>)
+    /// which references a Google Drive file.
     #[prost(message, optional, tag = "1")]
-    pub attachment_data_ref: ::core::option::Option<AttachmentDataRef>,
+    pub drive_data_ref: ::core::option::Option<DriveDataRef>,
+    /// The mime type of the linked Google Drive resource.
+    #[prost(string, tag = "2")]
+    pub mime_type: ::prost::alloc::string::String,
+}
+/// Type of the annotation.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum AnnotationType {
+    /// Default value for the enum. Don't use.
+    Unspecified = 0,
+    /// A user is mentioned.
+    UserMention = 1,
+    /// A slash command is invoked.
+    SlashCommand = 2,
+    /// A rich link annotation.
+    RichLink = 3,
+}
+impl AnnotationType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            AnnotationType::Unspecified => "ANNOTATION_TYPE_UNSPECIFIED",
+            AnnotationType::UserMention => "USER_MENTION",
+            AnnotationType::SlashCommand => "SLASH_COMMAND",
+            AnnotationType::RichLink => "RICH_LINK",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ANNOTATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "USER_MENTION" => Some(Self::UserMention),
+            "SLASH_COMMAND" => Some(Self::SlashCommand),
+            "RICH_LINK" => Some(Self::RichLink),
+            _ => None,
+        }
+    }
 }
 /// A Google Group in Google Chat.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2186,6 +2270,71 @@ pub struct Message {
     /// Output only. GIF images that are attached to the message.
     #[prost(message, repeated, tag = "42")]
     pub attached_gifs: ::prost::alloc::vec::Vec<AttachedGif>,
+    /// One or more interactive widgets that appear at the bottom of a message.
+    /// You can add accessory widgets to messages that contain text, cards, or both
+    /// text and cards. Not supported for messages that contain dialogs.
+    ///
+    /// Creating a message with accessory widgets requires [app
+    /// authentication]
+    /// (<https://developers.google.com/chat/api/guides/auth/service-accounts>).
+    ///
+    /// The following example shows a Chat app that uses accessory widgets (thumbs
+    /// up and thumbs down buttons) in a text message:
+    ///
+    /// ![Example accessory widgets
+    /// message](<https://developers.google.com/chat/images/message-accessory-widgets-reference.png>)
+    ///
+    /// The JSON for this example message is the following:
+    ///
+    /// ```
+    /// {
+    ///    "text": "Rate your experience with this Chat app.",
+    ///    "accessoryWidgets": [
+    ///      {
+    ///        "buttonList": {
+    ///          "buttons": [
+    ///            {
+    ///              "icon": {
+    ///                "material_icon": {
+    ///                  "name": "thumb_up"
+    ///                }
+    ///              },
+    ///              "color": {
+    ///                "red": 0,
+    ///                "blue": 255,
+    ///                "green": 0
+    ///              },
+    ///              "onClick": {
+    ///                "action": {
+    ///                  "function": "doUpvote",
+    ///                }
+    ///              }
+    ///            },
+    ///            {
+    ///              "icon": {
+    ///                "material_icon": {
+    ///                  "name": "thumb_down"
+    ///                }
+    ///              },
+    ///              "color": {
+    ///                "red": 0,
+    ///                "blue": 255,
+    ///                "green": 0
+    ///              },
+    ///              "onClick": {
+    ///                "action": {
+    ///                  "function": "doDownvote",
+    ///                }
+    ///              }
+    ///            }
+    ///          ]
+    ///        }
+    ///      }
+    ///    ]
+    /// }
+    /// ```
+    #[prost(message, repeated, tag = "44")]
+    pub accessory_widgets: ::prost::alloc::vec::Vec<AccessoryWidget>,
 }
 /// A GIF image that's specified by a URL.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2353,6 +2502,23 @@ pub mod action_response {
         }
     }
 }
+/// A borderless widget attached to the bottom of an app's message.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessoryWidget {
+    #[prost(oneof = "accessory_widget::Action", tags = "1")]
+    pub action: ::core::option::Option<accessory_widget::Action>,
+}
+/// Nested message and enum types in `AccessoryWidget`.
+pub mod accessory_widget {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Action {
+        /// A list of buttons that are displayed under the message.
+        #[prost(message, tag = "1")]
+        ButtonList(super::super::super::apps::card::v1::ButtonList),
+    }
+}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMessageRequest {
@@ -2411,7 +2577,7 @@ pub struct UpdateMessageRequest {
     /// - `cards_v2`  (Requires [app
     /// authentication](/chat/api/guides/auth/service-accounts).)
     ///
-    /// - Developer Preview: `accessory_widgets`  (Requires [app
+    /// - `accessory_widgets`  (Requires [app
     /// authentication](/chat/api/guides/auth/service-accounts).)
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,

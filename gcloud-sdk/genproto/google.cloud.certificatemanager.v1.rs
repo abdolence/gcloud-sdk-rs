@@ -20,7 +20,7 @@ pub struct ListCertificateIssuanceConfigsRequest {
     pub filter: ::prost::alloc::string::String,
     /// A list of Certificate Config field names used to specify the order of the
     /// returned results. The default sorting order is ascending. To specify
-    /// descending order for a field, add a suffix " desc".
+    /// descending order for a field, add a suffix `" desc"`.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -191,6 +191,195 @@ pub mod certificate_issuance_config {
         }
     }
 }
+/// Request for the `ListTrustConfigs` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTrustConfigsRequest {
+    /// Required. The project and location from which the TrustConfigs should be
+    /// listed, specified in the format `projects/*/locations/*`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Maximum number of TrustConfigs to return per call.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The value returned by the last `ListTrustConfigsResponse`. Indicates
+    /// that this is a continuation of a prior `ListTrustConfigs` call, and that
+    /// the system should return the next page of data.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Filter expression to restrict the TrustConfigs returned.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// A list of TrustConfig field names used to specify the order of the
+    /// returned results. The default sorting order is ascending. To specify
+    /// descending order for a field, add a suffix `" desc"`.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response for the `ListTrustConfigs` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTrustConfigsResponse {
+    /// A list of TrustConfigs for the parent resource.
+    #[prost(message, repeated, tag = "1")]
+    pub trust_configs: ::prost::alloc::vec::Vec<TrustConfig>,
+    /// If there might be more results than those appearing in this response, then
+    /// `next_page_token` is included. To get the next set of results, call this
+    /// method again using the value of `next_page_token` as `page_token`.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for the `GetTrustConfig` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetTrustConfigRequest {
+    /// Required. A name of the TrustConfig to describe. Must be in the format
+    /// `projects/*/locations/*/trustConfigs/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for the `CreateTrustConfig` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateTrustConfigRequest {
+    /// Required. The parent resource of the TrustConfig. Must be in the format
+    /// `projects/*/locations/*`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. A user-provided name of the TrustConfig. Must match the regexp
+    /// `\[a-z0-9-\]{1,63}`.
+    #[prost(string, tag = "2")]
+    pub trust_config_id: ::prost::alloc::string::String,
+    /// Required. A definition of the TrustConfig to create.
+    #[prost(message, optional, tag = "3")]
+    pub trust_config: ::core::option::Option<TrustConfig>,
+}
+/// Request for the `UpdateTrustConfig` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateTrustConfigRequest {
+    /// Required. A definition of the TrustConfig to update.
+    #[prost(message, optional, tag = "1")]
+    pub trust_config: ::core::option::Option<TrustConfig>,
+    /// Required. The update mask applies to the resource. For the `FieldMask`
+    /// definition, see
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.>
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request for the `DeleteTrustConfig` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteTrustConfigRequest {
+    /// Required. A name of the TrustConfig to delete. Must be in the format
+    /// `projects/*/locations/*/trustConfigs/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The current etag of the TrustConfig.
+    /// If an etag is provided and does not match the current etag of the resource,
+    /// deletion will be blocked and an ABORTED error will be returned.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// Defines a trust config.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrustConfig {
+    /// A user-defined name of the trust config. TrustConfig names must be
+    /// unique globally and match pattern
+    /// `projects/*/locations/*/trustConfigs/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The creation timestamp of a TrustConfig.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The last update timestamp of a TrustConfig.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Set of labels associated with a TrustConfig.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// One or more paragraphs of text description of a TrustConfig.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// This checksum is computed by the server based on the value of other
+    /// fields, and may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding.
+    #[prost(string, tag = "6")]
+    pub etag: ::prost::alloc::string::String,
+    /// Set of trust stores to perform validation against.
+    ///
+    /// This field is supported when TrustConfig is configured with Load Balancers,
+    /// currently not supported for SPIFFE certificate validation.
+    ///
+    /// Only one TrustStore specified is currently allowed.
+    #[prost(message, repeated, tag = "8")]
+    pub trust_stores: ::prost::alloc::vec::Vec<trust_config::TrustStore>,
+}
+/// Nested message and enum types in `TrustConfig`.
+pub mod trust_config {
+    /// Defines a trust anchor.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TrustAnchor {
+        #[prost(oneof = "trust_anchor::Kind", tags = "1")]
+        pub kind: ::core::option::Option<trust_anchor::Kind>,
+    }
+    /// Nested message and enum types in `TrustAnchor`.
+    pub mod trust_anchor {
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Kind {
+            /// PEM root certificate of the PKI used for validation.
+            ///
+            /// Each certificate provided in PEM format may occupy up to 5kB.
+            #[prost(string, tag = "1")]
+            PemCertificate(::prost::alloc::string::String),
+        }
+    }
+    /// Defines an intermediate CA.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct IntermediateCa {
+        #[prost(oneof = "intermediate_ca::Kind", tags = "1")]
+        pub kind: ::core::option::Option<intermediate_ca::Kind>,
+    }
+    /// Nested message and enum types in `IntermediateCA`.
+    pub mod intermediate_ca {
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Kind {
+            /// PEM intermediate certificate used for building up paths
+            /// for validation.
+            ///
+            /// Each certificate provided in PEM format may occupy up to 5kB.
+            #[prost(string, tag = "1")]
+            PemCertificate(::prost::alloc::string::String),
+        }
+    }
+    /// Defines a trust store.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TrustStore {
+        /// List of Trust Anchors to be used while performing validation
+        /// against a given TrustStore.
+        #[prost(message, repeated, tag = "1")]
+        pub trust_anchors: ::prost::alloc::vec::Vec<TrustAnchor>,
+        /// Set of intermediate CA certificates used for the path building
+        /// phase of chain validation.
+        ///
+        /// The field is currently not supported if TrustConfig is used for the
+        /// workload certificate feature.
+        #[prost(message, repeated, tag = "2")]
+        pub intermediate_cas: ::prost::alloc::vec::Vec<IntermediateCa>,
+    }
+}
 /// Request for the `ListCertificates` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -212,7 +401,7 @@ pub struct ListCertificatesRequest {
     pub filter: ::prost::alloc::string::String,
     /// A list of Certificate field names used to specify the order of the returned
     /// results. The default sorting order is ascending. To specify descending
-    /// order for a field, add a suffix " desc".
+    /// order for a field, add a suffix `" desc"`.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -299,7 +488,7 @@ pub struct ListCertificateMapsRequest {
     pub filter: ::prost::alloc::string::String,
     /// A list of Certificate Map field names used to specify the order of the
     /// returned results. The default sorting order is ascending. To specify
-    /// descending order for a field, add a suffix " desc".
+    /// descending order for a field, add a suffix `" desc"`.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -391,7 +580,7 @@ pub struct ListCertificateMapEntriesRequest {
     pub filter: ::prost::alloc::string::String,
     /// A list of Certificate Map Entry field names used to specify
     /// the order of the returned results. The default sorting order is ascending.
-    /// To specify descending order for a field, add a suffix " desc".
+    /// To specify descending order for a field, add a suffix `" desc"`.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -478,7 +667,7 @@ pub struct ListDnsAuthorizationsRequest {
     pub filter: ::prost::alloc::string::String,
     /// A list of Dns Authorization field names used to specify the order of the
     /// returned results. The default sorting order is ascending. To specify
-    /// descending order for a field, add a suffix " desc".
+    /// descending order for a field, add a suffix `" desc"`.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -778,8 +967,8 @@ pub mod certificate {
             pub enum State {
                 /// State is unspecified.
                 Unspecified = 0,
-                /// Certificate provisioning for this domain is under way. GCP will
-                /// attempt to authorize the domain.
+                /// Certificate provisioning for this domain is under way. Google Cloud
+                /// will attempt to authorize the domain.
                 Authorizing = 1,
                 /// A managed certificate can be provisioned, no issues for this domain.
                 Authorized = 6,
@@ -935,8 +1124,12 @@ pub mod certificate {
         /// If unsure, choose this option.
         Default = 0,
         /// Certificates with scope EDGE_CACHE are special-purposed certificates,
-        /// served from non-core Google data centers.
+        /// served from Edge Points of Presence.
+        /// See <https://cloud.google.com/vpc/docs/edge-locations.>
         EdgeCache = 1,
+        /// Certificates with ALL_REGIONS scope are served from all Google Cloud
+        /// regions. See <https://cloud.google.com/compute/docs/regions-zones.>
+        AllRegions = 2,
     }
     impl Scope {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -947,6 +1140,7 @@ pub mod certificate {
             match self {
                 Scope::Default => "DEFAULT",
                 Scope::EdgeCache => "EDGE_CACHE",
+                Scope::AllRegions => "ALL_REGIONS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -954,6 +1148,7 @@ pub mod certificate {
             match value {
                 "DEFAULT" => Some(Self::Default),
                 "EDGE_CACHE" => Some(Self::EdgeCache),
+                "ALL_REGIONS" => Some(Self::AllRegions),
                 _ => None,
             }
         }
@@ -1171,6 +1366,11 @@ pub struct DnsAuthorization {
     pub dns_resource_record: ::core::option::Option<
         dns_authorization::DnsResourceRecord,
     >,
+    /// Immutable. Type of DnsAuthorization. If unset during resource creation the
+    /// following default will be used:
+    /// - in location global: FIXED_RECORD.
+    #[prost(enumeration = "dns_authorization::Type", tag = "11")]
+    pub r#type: i32,
 }
 /// Nested message and enum types in `DnsAuthorization`.
 pub mod dns_authorization {
@@ -1191,6 +1391,51 @@ pub mod dns_authorization {
         /// Output only. Data of the DNS Resource Record.
         #[prost(string, tag = "3")]
         pub data: ::prost::alloc::string::String,
+    }
+    /// DnsAuthorization type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Type is unspecified.
+        Unspecified = 0,
+        /// FIXED_RECORD DNS authorization uses DNS-01 validation method.
+        FixedRecord = 1,
+        /// PER_PROJECT_RECORD DNS authorization allows for independent management
+        /// of Google-managed certificates with DNS authorization across multiple
+        /// projects.
+        PerProjectRecord = 2,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Type::Unspecified => "TYPE_UNSPECIFIED",
+                Type::FixedRecord => "FIXED_RECORD",
+                Type::PerProjectRecord => "PER_PROJECT_RECORD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FIXED_RECORD" => Some(Self::FixedRecord),
+                "PER_PROJECT_RECORD" => Some(Self::PerProjectRecord),
+                _ => None,
+            }
+        }
     }
 }
 /// Defines set of serving states associated with a resource.
@@ -2079,6 +2324,158 @@ pub mod certificate_manager_client {
                     GrpcMethod::new(
                         "google.cloud.certificatemanager.v1.CertificateManager",
                         "DeleteCertificateIssuanceConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists TrustConfigs in a given project and location.
+        pub async fn list_trust_configs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListTrustConfigsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListTrustConfigsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.certificatemanager.v1.CertificateManager/ListTrustConfigs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.certificatemanager.v1.CertificateManager",
+                        "ListTrustConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single TrustConfig.
+        pub async fn get_trust_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetTrustConfigRequest>,
+        ) -> std::result::Result<tonic::Response<super::TrustConfig>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.certificatemanager.v1.CertificateManager/GetTrustConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.certificatemanager.v1.CertificateManager",
+                        "GetTrustConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new TrustConfig in a given project and location.
+        pub async fn create_trust_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateTrustConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.certificatemanager.v1.CertificateManager/CreateTrustConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.certificatemanager.v1.CertificateManager",
+                        "CreateTrustConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a TrustConfig.
+        pub async fn update_trust_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateTrustConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.certificatemanager.v1.CertificateManager/UpdateTrustConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.certificatemanager.v1.CertificateManager",
+                        "UpdateTrustConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single TrustConfig.
+        pub async fn delete_trust_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteTrustConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.certificatemanager.v1.CertificateManager/DeleteTrustConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.certificatemanager.v1.CertificateManager",
+                        "DeleteTrustConfig",
                     ),
                 );
             self.inner.unary(req, path, codec).await

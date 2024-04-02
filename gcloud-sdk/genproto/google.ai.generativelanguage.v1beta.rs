@@ -58,7 +58,7 @@ pub struct Content {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Part {
-    #[prost(oneof = "part::Data", tags = "2, 3, 4, 5")]
+    #[prost(oneof = "part::Data", tags = "2, 3, 4, 5, 6")]
     pub data: ::core::option::Option<part::Data>,
 }
 /// Nested message and enum types in `Part`.
@@ -83,6 +83,9 @@ pub mod part {
         /// the model.
         #[prost(message, tag = "5")]
         FunctionResponse(super::FunctionResponse),
+        /// URI based data.
+        #[prost(message, tag = "6")]
+        FileData(super::FileData),
     }
 }
 /// Raw media bytes.
@@ -99,6 +102,17 @@ pub struct Blob {
     /// Raw bytes for media formats.
     #[prost(bytes = "vec", tag = "2")]
     pub data: ::prost::alloc::vec::Vec<u8>,
+}
+/// URI based data.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileData {
+    /// Optional. The IANA standard MIME type of the source data.
+    #[prost(string, tag = "1")]
+    pub mime_type: ::prost::alloc::string::String,
+    /// Required. URI.
+    #[prost(string, tag = "2")]
+    pub file_uri: ::prost::alloc::string::String,
 }
 /// Tool details that the model may use to generate response.
 ///
@@ -122,6 +136,88 @@ pub struct Tool {
     /// turn.
     #[prost(message, repeated, tag = "1")]
     pub function_declarations: ::prost::alloc::vec::Vec<FunctionDeclaration>,
+}
+/// The Tool configuration containing parameters for specifying `Tool` use
+/// in the request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolConfig {
+    /// Optional. Function calling config.
+    #[prost(message, optional, tag = "1")]
+    pub function_calling_config: ::core::option::Option<FunctionCallingConfig>,
+}
+/// Configuration for specifying function calling behavior.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FunctionCallingConfig {
+    /// Optional. Specifies the mode in which function calling should execute. If
+    /// unspecified, the default value will be set to AUTO.
+    #[prost(enumeration = "function_calling_config::Mode", tag = "1")]
+    pub mode: i32,
+    /// Optional. A set of function names that, when provided, limits the functions
+    /// the model will call.
+    ///
+    /// This should only be set when the Mode is ANY. Function names
+    /// should match \[FunctionDeclaration.name\]. With mode set to ANY, model will
+    /// predict a function call from the set of function names provided.
+    #[prost(string, repeated, tag = "2")]
+    pub allowed_function_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `FunctionCallingConfig`.
+pub mod function_calling_config {
+    /// Defines the execution behavior for function calling by defining the
+    /// execution mode.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Mode {
+        /// Unspecified function calling mode. This value should not be used.
+        Unspecified = 0,
+        /// Default model behavior, model decides to predict either a function call
+        /// or a natural language repspose.
+        Auto = 1,
+        /// Model is constrained to always predicting a function call only.
+        /// If "allowed_function_names" are set, the predicted function call will be
+        /// limited to any one of "allowed_function_names", else the predicted
+        /// function call will be any one of the provided "function_declarations".
+        Any = 2,
+        /// Model will not predict any function call. Model behavior is same as when
+        /// not passing any function declarations.
+        None = 3,
+    }
+    impl Mode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Mode::Unspecified => "MODE_UNSPECIFIED",
+                Mode::Auto => "AUTO",
+                Mode::Any => "ANY",
+                Mode::None => "NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTO" => Some(Self::Auto),
+                "ANY" => Some(Self::Any),
+                "NONE" => Some(Self::None),
+                _ => None,
+            }
+        }
+    }
 }
 /// Structured representation of a function declaration as defined by the
 /// [OpenAPI 3.03 specification](<https://spec.openapis.org/oas/v3.0.3>). Included
@@ -519,9 +615,9 @@ pub enum HarmCategory {
     Unspecified = 0,
     /// Negative or harmful comments targeting identity and/or protected attribute.
     Derogatory = 1,
-    /// Content that is rude, disrepspectful, or profane.
+    /// Content that is rude, disrespectful, or profane.
     Toxicity = 2,
-    /// Describes scenarios depictng violence against an individual or group, or
+    /// Describes scenarios depicting violence against an individual or group, or
     /// general descriptions of gore.
     Violence = 3,
     /// Contains references to sexual acts or other lewd content.
@@ -921,6 +1017,309 @@ pub mod discuss_service_client {
         }
     }
 }
+/// A file uploaded to the API.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct File {
+    /// Immutable. Identifier. The `File` resource name. The ID (name excluding the
+    /// "files/" prefix) can contain up to 40 characters that are lowercase
+    /// alphanumeric or dashes (-). The ID cannot start or end with a dash. If the
+    /// name is empty on create, a unique name will be generated. Example:
+    /// `files/123-456`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The human-readable display name for the `File`. The display name
+    /// must be no more than 512 characters in length, including spaces. Example:
+    /// "Welcome Image"
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. MIME type of the file.
+    #[prost(string, tag = "3")]
+    pub mime_type: ::prost::alloc::string::String,
+    /// Output only. Size of the file in bytes.
+    #[prost(int64, tag = "4")]
+    pub size_bytes: i64,
+    /// Output only. The timestamp of when the `File` was created.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp of when the `File` was last updated.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp of when the `File` will be deleted. Only set if
+    /// the `File` is scheduled to expire.
+    #[prost(message, optional, tag = "7")]
+    pub expiration_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. SHA-256 hash of the uploaded bytes.
+    #[prost(bytes = "vec", tag = "8")]
+    pub sha256_hash: ::prost::alloc::vec::Vec<u8>,
+    /// Output only. The uri of the `File`.
+    #[prost(string, tag = "9")]
+    pub uri: ::prost::alloc::string::String,
+}
+/// Request for `CreateFile`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateFileRequest {
+    /// Optional. Metadata for the file to create.
+    #[prost(message, optional, tag = "1")]
+    pub file: ::core::option::Option<File>,
+}
+/// Response for `CreateFile`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateFileResponse {
+    /// Metadata for the created file.
+    #[prost(message, optional, tag = "1")]
+    pub file: ::core::option::Option<File>,
+}
+/// Request for `ListFiles`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFilesRequest {
+    /// Optional. Maximum number of `File`s to return per page.
+    /// If unspecified, defaults to 10. Maximum `page_size` is 100.
+    #[prost(int32, tag = "1")]
+    pub page_size: i32,
+    /// Optional. A page token from a previous `ListFiles` call.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for `ListFiles`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFilesResponse {
+    /// The list of `File`s.
+    #[prost(message, repeated, tag = "1")]
+    pub files: ::prost::alloc::vec::Vec<File>,
+    /// A token that can be sent as a `page_token` into a subsequent `ListFiles`
+    /// call.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request for `GetFile`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetFileRequest {
+    /// Required. The name of the `File` to get.
+    /// Example: `files/abc-123`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for `DeleteFile`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteFileRequest {
+    /// Required. The name of the `File` to delete.
+    /// Example: `files/abc-123`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod file_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// An API for uploading and managing files.
+    #[derive(Debug, Clone)]
+    pub struct FileServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl FileServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> FileServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> FileServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            FileServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a `File`.
+        pub async fn create_file(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateFileRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CreateFileResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ai.generativelanguage.v1beta.FileService/CreateFile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ai.generativelanguage.v1beta.FileService",
+                        "CreateFile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists the metadata for `File`s owned by the requesting project.
+        pub async fn list_files(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListFilesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListFilesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ai.generativelanguage.v1beta.FileService/ListFiles",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ai.generativelanguage.v1beta.FileService",
+                        "ListFiles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the metadata for the given `File`.
+        pub async fn get_file(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetFileRequest>,
+        ) -> std::result::Result<tonic::Response<super::File>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ai.generativelanguage.v1beta.FileService/GetFile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ai.generativelanguage.v1beta.FileService",
+                        "GetFile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the `File`.
+        pub async fn delete_file(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteFileRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ai.generativelanguage.v1beta.FileService/DeleteFile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ai.generativelanguage.v1beta.FileService",
+                        "DeleteFile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// A `Corpus` is a collection of `Document`s.
 /// A project can create up to 5 corpora.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1241,6 +1640,9 @@ pub struct GenerateContentRequest {
     /// Format: `name=models/{model}`.
     #[prost(string, tag = "1")]
     pub model: ::prost::alloc::string::String,
+    /// Optional. Developer set system instruction. Currently, text only.
+    #[prost(message, optional, tag = "8")]
+    pub system_instruction: ::core::option::Option<Content>,
     /// Required. The content of the current conversation with the model.
     ///
     /// For single-turn queries, this is a single instance. For multi-turn queries,
@@ -1257,6 +1659,9 @@ pub struct GenerateContentRequest {
     /// `Function`.
     #[prost(message, repeated, tag = "5")]
     pub tools: ::prost::alloc::vec::Vec<Tool>,
+    /// Optional. Tool configuration for any `Tool` specified in the request.
+    #[prost(message, optional, tag = "7")]
+    pub tool_config: ::core::option::Option<ToolConfig>,
     /// Optional. A list of unique `SafetySetting` instances for blocking unsafe
     /// content.
     ///
@@ -1283,7 +1688,7 @@ pub struct GenerateContentRequest {
 pub struct GenerationConfig {
     /// Optional. Number of generated responses to return.
     ///
-    /// This value must be between \[1, 8\], inclusive. If unset, this will default
+    /// Currently, this value can only be set to 1. If unset, this will default
     /// to 1.
     #[prost(int32, optional, tag = "1")]
     pub candidate_count: ::core::option::Option<i32>,
@@ -1295,18 +1700,16 @@ pub struct GenerationConfig {
     pub stop_sequences: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The maximum number of tokens to include in a candidate.
     ///
-    /// If unset, this will default to output_token_limit specified in the `Model`
-    /// specification.
+    /// Note: The default value varies by model, see the `Model.output_token_limit`
+    /// attribute of the `Model` returned from the `getModel` function.
     #[prost(int32, optional, tag = "4")]
     pub max_output_tokens: ::core::option::Option<i32>,
     /// Optional. Controls the randomness of the output.
-    /// Note: The default value varies by model, see the `Model.temperature`
-    /// attribute of the `Model` returned the `getModel` function.
     ///
-    /// Values can range from \[0.0,1.0\],
-    /// inclusive. A value closer to 1.0 will produce responses that are more
-    /// varied and creative, while a value closer to 0.0 will typically result in
-    /// more straightforward responses from the model.
+    /// Note: The default value varies by model, see the `Model.temperature`
+    /// attribute of the `Model` returned from the `getModel` function.
+    ///
+    /// Values can range from [0.0, infinity).
     #[prost(float, optional, tag = "5")]
     pub temperature: ::core::option::Option<f32>,
     /// Optional. The maximum cumulative probability of tokens to consider when
@@ -1320,7 +1723,7 @@ pub struct GenerationConfig {
     /// of tokens based on the cumulative probability.
     ///
     /// Note: The default value varies by model, see the `Model.top_p`
-    /// attribute of the `Model` returned the `getModel` function.
+    /// attribute of the `Model` returned from the `getModel` function.
     #[prost(float, optional, tag = "6")]
     pub top_p: ::core::option::Option<f32>,
     /// Optional. The maximum number of tokens to consider when sampling.
@@ -1328,10 +1731,9 @@ pub struct GenerationConfig {
     /// The model uses combined Top-k and nucleus sampling.
     ///
     /// Top-k sampling considers the set of `top_k` most probable tokens.
-    /// Defaults to 40.
     ///
     /// Note: The default value varies by model, see the `Model.top_k`
-    /// attribute of the `Model` returned the `getModel` function.
+    /// attribute of the `Model` returned from the `getModel` function.
     #[prost(int32, optional, tag = "7")]
     pub top_k: ::core::option::Option<i32>,
 }
@@ -1630,7 +2032,9 @@ pub struct GenerateAnswerRequest {
     /// overrides the default settings for each `SafetyCategory` specified in the
     /// safety_settings. If there is no `SafetySetting` for a given
     /// `SafetyCategory` provided in the list, the API will use the default safety
-    /// setting for that category.
+    /// setting for that category. Harm categories HARM_CATEGORY_HATE_SPEECH,
+    /// HARM_CATEGORY_SEXUALLY_EXPLICIT, HARM_CATEGORY_DANGEROUS_CONTENT,
+    /// HARM_CATEGORY_HARASSMENT are supported.
     #[prost(message, repeated, tag = "3")]
     pub safety_settings: ::prost::alloc::vec::Vec<SafetySetting>,
     /// Optional. Controls the randomness of the output.
@@ -2478,24 +2882,45 @@ pub struct TuningTask {
     #[prost(message, optional, tag = "5")]
     pub hyperparameters: ::core::option::Option<Hyperparameters>,
 }
-/// Hyperparameters controlling the tuning process.
+/// Hyperparameters controlling the tuning process. Read more at
+/// <https://ai.google.dev/docs/model_tuning_guidance>
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Hyperparameters {
     /// Immutable. The number of training epochs. An epoch is one pass through the
-    /// training data. If not set, a default of 10 will be used.
+    /// training data. If not set, a default of 5 will be used.
     #[prost(int32, optional, tag = "14")]
     pub epoch_count: ::core::option::Option<i32>,
     /// Immutable. The batch size hyperparameter for tuning.
-    /// If not set, a default of 16 or 64 will be used based on the number of
+    /// If not set, a default of 4 or 16 will be used based on the number of
     /// training examples.
     #[prost(int32, optional, tag = "15")]
     pub batch_size: ::core::option::Option<i32>,
-    /// Immutable. The learning rate hyperparameter for tuning.
-    /// If not set, a default of 0.0002 or 0.002 will be calculated based on the
-    /// number of training examples.
-    #[prost(float, optional, tag = "16")]
-    pub learning_rate: ::core::option::Option<f32>,
+    /// Options for specifying learning rate during tuning.
+    #[prost(oneof = "hyperparameters::LearningRateOption", tags = "16, 17")]
+    pub learning_rate_option: ::core::option::Option<
+        hyperparameters::LearningRateOption,
+    >,
+}
+/// Nested message and enum types in `Hyperparameters`.
+pub mod hyperparameters {
+    /// Options for specifying learning rate during tuning.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum LearningRateOption {
+        /// Optional. Immutable. The learning rate hyperparameter for tuning.
+        /// If not set, a default of 0.001 or 0.0002 will be calculated based on the
+        /// number of training examples.
+        #[prost(float, tag = "16")]
+        LearningRate(f32),
+        /// Optional. Immutable. The learning rate multiplier is used to calculate a
+        /// final learning_rate based on the default (recommended) value. Actual
+        /// learning rate := learning_rate_multiplier * default learning rate Default
+        /// learning rate is dependent on base model and dataset size. If not set, a
+        /// default of 1.0 will be used.
+        #[prost(float, tag = "17")]
+        LearningRateMultiplier(f32),
+    }
 }
 /// Dataset for training or validation.
 #[allow(clippy::derive_partial_eq_without_eq)]

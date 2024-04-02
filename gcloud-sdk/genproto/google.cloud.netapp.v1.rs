@@ -120,10 +120,11 @@ pub struct ActiveDirectory {
     /// Required. Password of the Active Directory domain administrator.
     #[prost(string, tag = "11")]
     pub password: ::prost::alloc::string::String,
-    /// Users to be added to the Built-in Backup Operator active directory group.
+    /// Optional. Users to be added to the Built-in Backup Operator active
+    /// directory group.
     #[prost(string, repeated, tag = "12")]
     pub backup_operators: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Domain users to be given the SeSecurityPrivilege.
+    /// Optional. Domain users to be given the SeSecurityPrivilege.
     #[prost(string, repeated, tag = "13")]
     pub security_operators: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Name of the active directory machine. This optional parameter is used only
@@ -1699,7 +1700,7 @@ pub mod snapshot {
         }
     }
 }
-/// The service levels - Storage Pool, Volumes
+/// The service level of a storage pool and its volumes.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ServiceLevel {
@@ -1709,7 +1710,7 @@ pub enum ServiceLevel {
     Premium = 1,
     /// Extreme service level.
     Extreme = 2,
-    /// Standard (Software offering)
+    /// Standard service level.
     Standard = 3,
 }
 impl ServiceLevel {
@@ -1736,11 +1737,11 @@ impl ServiceLevel {
         }
     }
 }
-/// Defined the current volume encryption key source.
+/// The volume encryption key source.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum EncryptionType {
-    /// The source of encryption key is not specified.
+    /// The source of the encryption key is not specified.
     Unspecified = 0,
     /// Google managed encryption key.
     ServiceManaged = 1,
@@ -1784,17 +1785,18 @@ pub struct ListStoragePoolsRequest {
     /// Required. Parent value
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of items to return.
+    /// Optional. The maximum number of items to return.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The next_page_token value to use if there are additional
+    /// Optional. The next_page_token value to use if there are additional
     /// results to retrieve for this list request.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Sort results. Supported values are "name", "name desc" or "" (unsorted).
+    /// Optional. Sort results. Supported values are "name", "name desc" or ""
+    /// (unsorted).
     #[prost(string, tag = "4")]
     pub order_by: ::prost::alloc::string::String,
-    /// List filter.
+    /// Optional. List filter.
     #[prost(string, tag = "5")]
     pub filter: ::prost::alloc::string::String,
 }
@@ -1881,10 +1883,10 @@ pub struct StoragePool {
     /// Output only. Create time of the storage pool
     #[prost(message, optional, tag = "8")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Description of the storage pool
+    /// Optional. Description of the storage pool
     #[prost(string, tag = "9")]
     pub description: ::prost::alloc::string::String,
-    /// Labels as key value pairs
+    /// Optional. Labels as key value pairs
     #[prost(map = "string, string", tag = "10")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1894,17 +1896,18 @@ pub struct StoragePool {
     /// Format: projects/{project}/global/networks/{network}
     #[prost(string, tag = "11")]
     pub network: ::prost::alloc::string::String,
-    /// Specifies the Active Directory to be used for creating a SMB volume.
+    /// Optional. Specifies the Active Directory to be used for creating a SMB
+    /// volume.
     #[prost(string, tag = "12")]
     pub active_directory: ::prost::alloc::string::String,
-    /// Specifies the KMS config to be used for volume encryption.
+    /// Optional. Specifies the KMS config to be used for volume encryption.
     #[prost(string, tag = "13")]
     pub kms_config: ::prost::alloc::string::String,
-    /// Flag indicating if the pool is NFS LDAP enabled or not.
+    /// Optional. Flag indicating if the pool is NFS LDAP enabled or not.
     #[prost(bool, tag = "14")]
     pub ldap_enabled: bool,
-    /// Name of the Private Service Access allocated range. If
-    /// not provided, any available range will be chosen.
+    /// Optional. This field is not implemented. The values provided in this field
+    /// are ignored.
     #[prost(string, tag = "15")]
     pub psa_range: ::prost::alloc::string::String,
     /// Output only. Specifies the current pool encryption key source.
@@ -2102,8 +2105,8 @@ pub struct Volume {
     /// Required. Share name of the volume
     #[prost(string, tag = "5")]
     pub share_name: ::prost::alloc::string::String,
-    /// Output only. Name of the Private Service Access allocated range. This is
-    /// optional. If not provided, any available range will be chosen.
+    /// Output only. This field is not implemented. The values provided in this
+    /// field are ignored.
     #[prost(string, tag = "6")]
     pub psa_range: ::prost::alloc::string::String,
     /// Required. StoragePool name of the volume
@@ -2612,7 +2615,7 @@ pub enum SecurityStyle {
     Unspecified = 0,
     /// SecurityStyle uses NTFS
     Ntfs = 1,
-    /// SecurityStyle uses NTFS
+    /// SecurityStyle uses UNIX
     Unix = 2,
 }
 impl SecurityStyle {

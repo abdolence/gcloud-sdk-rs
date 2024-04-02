@@ -1046,7 +1046,7 @@ pub struct SpeechWordInfo {
 ///    phase.
 ///
 /// The client provides this configuration in terms of the durations of those
-/// two phases. The durations are measured in terms of the audio length fromt the
+/// two phases. The durations are measured in terms of the audio length from
 /// the start of the input audio.
 ///
 /// The flow goes like below:
@@ -1157,6 +1157,12 @@ pub struct InputAudioConfig {
     /// Enable automatic punctuation option at the speech backend.
     #[prost(bool, tag = "17")]
     pub enable_automatic_punctuation: bool,
+    /// If `true`, the request will opt out for STT conformer model migration.
+    /// This field will be deprecated once force migration takes place in June
+    /// 2024. Please refer to [Dialogflow ES Speech model
+    /// migration](<https://cloud.google.com/dialogflow/es/docs/speech-model-migration>).
+    #[prost(bool, tag = "26")]
+    pub opt_out_conformer_model_migration: bool,
 }
 /// Description of which voice to use for speech synthesis.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6465,9 +6471,9 @@ pub mod streaming_recognition_result {
         Transcript = 1,
         /// Message contains DTMF digits.
         DtmfDigits = 3,
-        /// Event indicates that the server has detected the end of the user's speech
-        /// utterance and expects no additional speech. Therefore, the server will
-        /// not process additional audio (although it may subsequently return
+        /// This event indicates that the server has detected the end of the user's
+        /// speech utterance and expects no additional speech. Therefore, the server
+        /// will not process additional audio (although it may subsequently return
         /// additional results). The client should stop sending additional audio
         /// data, half-close the gRPC connection, and wait for any additional results
         /// until the server closes the gRPC connection. This message is only sent if
@@ -7391,7 +7397,7 @@ pub struct AnalyzeContentRequest {
     #[prost(string, tag = "11")]
     pub request_id: ::prost::alloc::string::String,
     /// Required. The input content.
-    #[prost(oneof = "analyze_content_request::Input", tags = "6, 7, 8, 12")]
+    #[prost(oneof = "analyze_content_request::Input", tags = "6, 7, 8, 12, 13")]
     pub input: ::core::option::Option<analyze_content_request::Input>,
 }
 /// Nested message and enum types in `AnalyzeContentRequest`.
@@ -7412,6 +7418,9 @@ pub mod analyze_content_request {
         /// An input representing the selection of a suggestion.
         #[prost(message, tag = "12")]
         SuggestionInput(super::SuggestionInput),
+        /// The intent to be triggered on V3 agent.
+        #[prost(message, tag = "13")]
+        IntentInput(super::IntentInput),
     }
 }
 /// The message in the response that indicates the parameters of DTMF.
@@ -7616,7 +7625,10 @@ pub struct StreamingAnalyzeContentRequest {
     #[prost(oneof = "streaming_analyze_content_request::Config", tags = "2, 3")]
     pub config: ::core::option::Option<streaming_analyze_content_request::Config>,
     /// Required. The input.
-    #[prost(oneof = "streaming_analyze_content_request::Input", tags = "5, 6, 9")]
+    #[prost(
+        oneof = "streaming_analyze_content_request::Input",
+        tags = "5, 6, 9, 17, 20"
+    )]
     pub input: ::core::option::Option<streaming_analyze_content_request::Input>,
 }
 /// Nested message and enum types in `StreamingAnalyzeContentRequest`.
@@ -7653,6 +7665,16 @@ pub mod streaming_analyze_content_request {
         /// is not accepted.
         #[prost(message, tag = "9")]
         InputDtmf(super::TelephonyDtmfEvents),
+        /// The intent to be triggered on V3 agent.
+        /// Format: `projects/<Project ID>/locations/<Location ID>/locations/
+        /// <Location ID>/agents/<Agent ID>/intents/<Intent ID>`.
+        #[prost(string, tag = "17")]
+        InputIntent(::prost::alloc::string::String),
+        /// The input event name.
+        /// This can only be sent once and would cancel the ongoing speech
+        /// recognition if any.
+        #[prost(string, tag = "20")]
+        InputEvent(::prost::alloc::string::String),
     }
 }
 /// The top-level message returned from the `StreamingAnalyzeContent` method.
@@ -9158,6 +9180,12 @@ pub mod agent_assistant_feedback {
         /// Text of actual submitted summary.
         #[prost(string, tag = "3")]
         pub summary_text: ::prost::alloc::string::String,
+        /// Optional. Actual text sections of submitted summary.
+        #[prost(map = "string, string", tag = "4")]
+        pub text_sections: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
     }
     /// Feedback for knowledge search.
     #[allow(clippy::derive_partial_eq_without_eq)]

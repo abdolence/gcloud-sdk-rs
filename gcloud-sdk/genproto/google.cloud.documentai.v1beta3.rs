@@ -4018,6 +4018,8 @@ pub mod import_processor_version_request {
     pub enum Source {
         /// The source processor version to import from. The source processor version
         /// and destination processor need to be in the same environment and region.
+        /// Note that ProcessorVersions with `model_type` `MODEL_TYPE_LLM` are not
+        /// supported.
         #[prost(string, tag = "2")]
         ProcessorVersionSource(::prost::alloc::string::String),
         /// The source processor version to import from. It can be from a different

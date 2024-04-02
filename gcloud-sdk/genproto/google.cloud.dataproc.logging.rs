@@ -1,4 +1,4 @@
-/// The short version of cluster configuration for Cloud logging.
+/// The short version of cluster configuration for Cloud Logging.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClusterSize {
@@ -53,7 +53,7 @@ pub struct AutoscalerRecommendation {
 }
 /// Nested message and enum types in `AutoscalerRecommendation`.
 pub mod autoscaler_recommendation {
-    /// The input values for the Autoscaling recommendation alogirthm.
+    /// The input values for the Autoscaling recommendation algorithm.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Inputs {
@@ -103,6 +103,9 @@ pub mod autoscaler_recommendation {
         /// a support ticket.
         #[prost(string, tag = "6")]
         pub recommendation_id: ::prost::alloc::string::String,
+        /// The metric source deciding the autoscaling recommendation.
+        #[prost(enumeration = "super::MetricType", tag = "7")]
+        pub decision_metric: i32,
     }
 }
 /// The Autoscaler state.
@@ -167,6 +170,10 @@ pub enum ScalingDecisionType {
     NoScale = 3,
     /// Scale the primary and secondary worker groups in different directions.
     Mixed = 4,
+    /// Cancel the ongoing scale down operation.
+    Cancel = 5,
+    /// Do not cancel the ongoing scale down operation.
+    DoNotCancel = 6,
 }
 impl ScalingDecisionType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -180,6 +187,8 @@ impl ScalingDecisionType {
             ScalingDecisionType::ScaleDown => "SCALE_DOWN",
             ScalingDecisionType::NoScale => "NO_SCALE",
             ScalingDecisionType::Mixed => "MIXED",
+            ScalingDecisionType::Cancel => "CANCEL",
+            ScalingDecisionType::DoNotCancel => "DO_NOT_CANCEL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -190,6 +199,8 @@ impl ScalingDecisionType {
             "SCALE_DOWN" => Some(Self::ScaleDown),
             "NO_SCALE" => Some(Self::NoScale),
             "MIXED" => Some(Self::Mixed),
+            "CANCEL" => Some(Self::Cancel),
+            "DO_NOT_CANCEL" => Some(Self::DoNotCancel),
             _ => None,
         }
     }
@@ -209,6 +220,9 @@ pub enum ConstrainingFactor {
     /// issued if workers were able to be removed from another group that had not
     /// reached minimum size.
     ReachedMinimumClusterSize = 3,
+    /// The secondary worker group cannot be scaled down by more than 1k nodes in a
+    /// single update request.
+    SecondaryScaledownSingleRequestLimitReached = 4,
 }
 impl ConstrainingFactor {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -227,6 +241,9 @@ impl ConstrainingFactor {
             ConstrainingFactor::ReachedMinimumClusterSize => {
                 "REACHED_MINIMUM_CLUSTER_SIZE"
             }
+            ConstrainingFactor::SecondaryScaledownSingleRequestLimitReached => {
+                "SECONDARY_SCALEDOWN_SINGLE_REQUEST_LIMIT_REACHED"
+            }
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -238,6 +255,146 @@ impl ConstrainingFactor {
             }
             "REACHED_MAXIMUM_CLUSTER_SIZE" => Some(Self::ReachedMaximumClusterSize),
             "REACHED_MINIMUM_CLUSTER_SIZE" => Some(Self::ReachedMinimumClusterSize),
+            "SECONDARY_SCALEDOWN_SINGLE_REQUEST_LIMIT_REACHED" => {
+                Some(Self::SecondaryScaledownSingleRequestLimitReached)
+            }
+            _ => None,
+        }
+    }
+}
+/// The kind of metric input to the Autoscaling algorithm.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum MetricType {
+    /// Default.
+    Unspecified = 0,
+    /// The yarn memory metric.
+    YarnMemory = 1,
+    /// The yarn cores or vCPUs metric.
+    YarnCores = 2,
+    /// The number of executors in Spark serverless.
+    SparkExecutors = 3,
+}
+impl MetricType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            MetricType::Unspecified => "METRIC_TYPE_UNSPECIFIED",
+            MetricType::YarnMemory => "YARN_MEMORY",
+            MetricType::YarnCores => "YARN_CORES",
+            MetricType::SparkExecutors => "SPARK_EXECUTORS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "METRIC_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "YARN_MEMORY" => Some(Self::YarnMemory),
+            "YARN_CORES" => Some(Self::YarnCores),
+            "SPARK_EXECUTORS" => Some(Self::SparkExecutors),
+            _ => None,
+        }
+    }
+}
+/// Reconciliation log for session ttl event.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReconciliationLog {
+    /// The reconciliation algorithm inputs.
+    #[prost(message, optional, tag = "1")]
+    pub inputs: ::core::option::Option<reconciliation_log::Inputs>,
+    /// The algorithm outputs for the recommended reconciliation operation.
+    #[prost(message, optional, tag = "2")]
+    pub outputs: ::core::option::Option<reconciliation_log::Outputs>,
+}
+/// Nested message and enum types in `ReconciliationLog`.
+pub mod reconciliation_log {
+    /// The input values for the Reconciler recommendation algorithm.
+    /// We could add more details in future if required.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Inputs {
+        /// Idle duration
+        #[prost(message, optional, tag = "1")]
+        pub idle_duration: ::core::option::Option<::prost_types::Duration>,
+        /// Configured idle TTL
+        #[prost(message, optional, tag = "2")]
+        pub idle_ttl: ::core::option::Option<::prost_types::Duration>,
+        /// Total session lifetime
+        #[prost(message, optional, tag = "3")]
+        pub session_lifetime: ::core::option::Option<::prost_types::Duration>,
+        /// Configured ttl
+        #[prost(message, optional, tag = "4")]
+        pub ttl: ::core::option::Option<::prost_types::Duration>,
+    }
+    /// Reconciler recommendations.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Outputs {
+        /// The high-level reconciliation decision.
+        #[prost(enumeration = "super::ReconciliationDecisionType", tag = "1")]
+        pub decision: i32,
+        /// Human readable context messages which explain the reconciler decision.
+        #[prost(string, tag = "2")]
+        pub decision_details: ::prost::alloc::string::String,
+    }
+}
+/// Reconciliation log for cluster heal event.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReconciliationClusterHealLog {
+    /// The algorithm outputs for the recommended reconciliation operation.
+    #[prost(message, optional, tag = "1")]
+    pub outputs: ::core::option::Option<reconciliation_cluster_heal_log::Outputs>,
+}
+/// Nested message and enum types in `ReconciliationClusterHealLog`.
+pub mod reconciliation_cluster_heal_log {
+    /// Autohealer decision.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Outputs {
+        /// The repair operation id triggered by Autohealer if any.
+        #[prost(string, tag = "1")]
+        pub repair_operation_id: ::prost::alloc::string::String,
+        /// Human readable context messages which explain the autohealer decision.
+        #[prost(string, tag = "2")]
+        pub decision_details: ::prost::alloc::string::String,
+    }
+}
+/// Decision type
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ReconciliationDecisionType {
+    /// Unspecified type
+    Unspecified = 0,
+    /// Terminate session
+    ReconciliationTerminateSession = 1,
+}
+impl ReconciliationDecisionType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ReconciliationDecisionType::Unspecified => {
+                "RECONCILIATION_DECISION_TYPE_UNSPECIFIED"
+            }
+            ReconciliationDecisionType::ReconciliationTerminateSession => {
+                "RECONCILIATION_TERMINATE_SESSION"
+            }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "RECONCILIATION_DECISION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "RECONCILIATION_TERMINATE_SESSION" => {
+                Some(Self::ReconciliationTerminateSession)
+            }
             _ => None,
         }
     }

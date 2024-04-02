@@ -88,6 +88,19 @@ pub struct Deployment {
     /// Output only. Current lock state of the deployment.
     #[prost(enumeration = "deployment::LockState", tag = "20")]
     pub lock_state: i32,
+    /// Optional. The user-specified Terraform version constraint.
+    /// Example: "=1.3.10".
+    #[prost(string, optional, tag = "21")]
+    pub tf_version_constraint: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The current Terraform version set on the deployment.
+    /// It is in the format of "Major.Minor.Patch", for example, "1.3.10".
+    #[prost(string, tag = "22")]
+    pub tf_version: ::prost::alloc::string::String,
+    /// Optional. Input to control quota checks for resources in terraform
+    /// configuration files. There are limited resources on which quota validation
+    /// applies.
+    #[prost(enumeration = "QuotaValidation", tag = "23")]
+    pub quota_validation: i32,
     /// Blueprint to deploy.
     #[prost(oneof = "deployment::Blueprint", tags = "6")]
     pub blueprint: ::core::option::Option<deployment::Blueprint>,
@@ -374,8 +387,8 @@ pub struct ListDeploymentsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// When requesting a page of resources, 'page_size' specifies number of
-    /// resources to return. If unspecified or set to 0, all resources will be
-    /// returned.
+    /// resources to return. If unspecified, at most 500 will be returned. The
+    /// maximum value is 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Token returned by previous call to 'ListDeployments' which specifies the
@@ -441,8 +454,8 @@ pub struct ListRevisionsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// When requesting a page of resources, `page_size` specifies number of
-    /// resources to return. If unspecified or set to 0, all resources will be
-    /// returned.
+    /// resources to return. If unspecified, at most 500 will be returned. The
+    /// maximum value is 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Token returned by previous call to 'ListRevisions' which specifies the
@@ -762,6 +775,24 @@ pub struct Revision {
     /// used.
     #[prost(string, tag = "17")]
     pub worker_pool: ::prost::alloc::string::String,
+    /// Output only. The user-specified Terraform version constraint.
+    /// Example: "=1.3.10".
+    #[prost(string, tag = "18")]
+    pub tf_version_constraint: ::prost::alloc::string::String,
+    /// Output only. The version of Terraform used to create the Revision.
+    /// It is in the format of "Major.Minor.Patch", for example, "1.3.10".
+    #[prost(string, tag = "19")]
+    pub tf_version: ::prost::alloc::string::String,
+    /// Output only. Cloud Storage path containing quota validation results. This
+    /// field is set when a user sets Deployment.quota_validation field to ENABLED
+    /// or ENFORCED. Format: `gs://{bucket}/{object}`.
+    #[prost(string, tag = "29")]
+    pub quota_validation_results: ::prost::alloc::string::String,
+    /// Optional. Input to control quota checks for resources in terraform
+    /// configuration files. There are limited resources on which quota validation
+    /// applies.
+    #[prost(enumeration = "QuotaValidation", tag = "20")]
+    pub quota_validation: i32,
     /// Blueprint that was deployed.
     #[prost(oneof = "revision::Blueprint", tags = "6")]
     pub blueprint: ::core::option::Option<revision::Blueprint>,
@@ -886,6 +917,9 @@ pub mod revision {
         /// Cloud Build job associated with creating or updating a deployment was
         /// started but failed.
         ApplyBuildRunFailed = 5,
+        /// quota validation failed for one or more resources in terraform
+        /// configuration files.
+        QuotaValidationFailed = 7,
     }
     impl ErrorCode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -898,6 +932,7 @@ pub mod revision {
                 ErrorCode::CloudBuildPermissionDenied => "CLOUD_BUILD_PERMISSION_DENIED",
                 ErrorCode::ApplyBuildApiFailed => "APPLY_BUILD_API_FAILED",
                 ErrorCode::ApplyBuildRunFailed => "APPLY_BUILD_RUN_FAILED",
+                ErrorCode::QuotaValidationFailed => "QUOTA_VALIDATION_FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -907,6 +942,7 @@ pub mod revision {
                 "CLOUD_BUILD_PERMISSION_DENIED" => Some(Self::CloudBuildPermissionDenied),
                 "APPLY_BUILD_API_FAILED" => Some(Self::ApplyBuildApiFailed),
                 "APPLY_BUILD_RUN_FAILED" => Some(Self::ApplyBuildRunFailed),
+                "QUOTA_VALIDATION_FAILED" => Some(Self::QuotaValidationFailed),
                 _ => None,
             }
         }
@@ -1014,6 +1050,10 @@ pub mod deployment_operation_metadata {
         Succeeded = 9,
         /// Operation failed
         Failed = 10,
+        /// Validating the provided repository.
+        ValidatingRepository = 11,
+        /// Running quota validation
+        RunningQuotaValidation = 12,
     }
     impl DeploymentStep {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1033,6 +1073,8 @@ pub mod deployment_operation_metadata {
                 DeploymentStep::UnlockingDeployment => "UNLOCKING_DEPLOYMENT",
                 DeploymentStep::Succeeded => "SUCCEEDED",
                 DeploymentStep::Failed => "FAILED",
+                DeploymentStep::ValidatingRepository => "VALIDATING_REPOSITORY",
+                DeploymentStep::RunningQuotaValidation => "RUNNING_QUOTA_VALIDATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1049,6 +1091,8 @@ pub mod deployment_operation_metadata {
                 "UNLOCKING_DEPLOYMENT" => Some(Self::UnlockingDeployment),
                 "SUCCEEDED" => Some(Self::Succeeded),
                 "FAILED" => Some(Self::Failed),
+                "VALIDATING_REPOSITORY" => Some(Self::ValidatingRepository),
+                "RUNNING_QUOTA_VALIDATION" => Some(Self::RunningQuotaValidation),
                 _ => None,
             }
         }
@@ -1235,8 +1279,8 @@ pub struct ListResourcesRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// When requesting a page of resources, 'page_size' specifies number of
-    /// resources to return. If unspecified or set to 0, all resources will be
-    /// returned.
+    /// resources to return. If unspecified, at most 500 will be returned. The
+    /// maximum value is 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Token returned by previous call to 'ListResources' which specifies the
@@ -1429,9 +1473,9 @@ pub struct Preview {
     /// Optional. Current mode of preview.
     #[prost(enumeration = "preview::PreviewMode", tag = "15")]
     pub preview_mode: i32,
-    /// Optional. Optional service account. If omitted, the deployment resource
-    /// reference must be provided, and the service account attached to the
-    /// deployment will be used.
+    /// Optional. User-specified Service Account (SA) credentials to be used when
+    /// previewing resources.
+    /// Format: `projects/{projectID}/serviceAccounts/{serviceAccount}`
     #[prost(string, tag = "7")]
     pub service_account: ::prost::alloc::string::String,
     /// Optional. User-defined location of Cloud Build logs, artifacts, and
@@ -1722,6 +1766,8 @@ pub mod preview_operation_metadata {
         Succeeded = 8,
         /// Operation failed.
         Failed = 9,
+        /// Validating the provided repository.
+        ValidatingRepository = 10,
     }
     impl PreviewStep {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1740,6 +1786,7 @@ pub mod preview_operation_metadata {
                 PreviewStep::UnlockingDeployment => "UNLOCKING_DEPLOYMENT",
                 PreviewStep::Succeeded => "SUCCEEDED",
                 PreviewStep::Failed => "FAILED",
+                PreviewStep::ValidatingRepository => "VALIDATING_REPOSITORY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1755,6 +1802,7 @@ pub mod preview_operation_metadata {
                 "UNLOCKING_DEPLOYMENT" => Some(Self::UnlockingDeployment),
                 "SUCCEEDED" => Some(Self::Succeeded),
                 "FAILED" => Some(Self::Failed),
+                "VALIDATING_REPOSITORY" => Some(Self::ValidatingRepository),
                 _ => None,
             }
         }
@@ -1821,8 +1869,8 @@ pub struct ListPreviewsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. When requesting a page of resources, 'page_size' specifies number
-    /// of resources to return. If unspecified or set to 0, all resources will be
-    /// returned.
+    /// of resources to return. If unspecified, at most 500 will be returned. The
+    /// maximum value is 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Token returned by previous call to 'ListDeployments' which
@@ -1924,6 +1972,173 @@ pub struct PreviewResult {
     /// Output only. Plan JSON signed URL
     #[prost(string, tag = "2")]
     pub json_signed_uri: ::prost::alloc::string::String,
+}
+/// The request message for the GetTerraformVersion method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetTerraformVersionRequest {
+    /// Required. The name of the TerraformVersion. Format:
+    /// 'projects/{project_id}/locations/{location}/terraformVersions/{terraform_version}'
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request message for the ListTerraformVersions method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTerraformVersionsRequest {
+    /// Required. The parent in whose context the TerraformVersions are listed. The
+    /// parent value is in the format:
+    /// 'projects/{project_id}/locations/{location}'.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. When requesting a page of resources, 'page_size' specifies number
+    /// of resources to return. If unspecified, at most 500 will be returned. The
+    /// maximum value is 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Token returned by previous call to 'ListTerraformVersions' which
+    /// specifies the position in the list from where to continue listing the
+    /// resources.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Lists the TerraformVersions that match the filter expression. A
+    /// filter expression filters the resources listed in the response. The
+    /// expression must be of the form '{field} {operator} {value}' where
+    /// operators: '<', '>',
+    /// '<=', '>=', '!=', '=', ':' are supported (colon ':' represents a HAS
+    /// operator which is roughly synonymous with equality). {field} can refer to a
+    /// proto or JSON field, or a synthetic field. Field names can be camelCase or
+    /// snake_case.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Field to use to sort the list.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// The response message for the `ListTerraformVersions` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTerraformVersionsResponse {
+    /// List of [TerraformVersion][google.cloud.config.v1.TerraformVersion]s.
+    #[prost(message, repeated, tag = "1")]
+    pub terraform_versions: ::prost::alloc::vec::Vec<TerraformVersion>,
+    /// Token to be supplied to the next ListTerraformVersions request via
+    /// `page_token` to obtain the next set of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable resources, if any.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A TerraformVersion represents the support state the corresponding
+/// Terraform version.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TerraformVersion {
+    /// Identifier. The version name is in the format:
+    /// 'projects/{project_id}/locations/{location}/terraformVersions/{terraform_version}'.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The state of the version, ACTIVE, DEPRECATED or OBSOLETE.
+    #[prost(enumeration = "terraform_version::State", tag = "2")]
+    pub state: i32,
+    /// Output only. When the version is supported.
+    #[prost(message, optional, tag = "3")]
+    pub support_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. When the version is deprecated.
+    #[prost(message, optional, tag = "4")]
+    pub deprecate_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. When the version is obsolete.
+    #[prost(message, optional, tag = "5")]
+    pub obsolete_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `TerraformVersion`.
+pub mod terraform_version {
+    /// Possible states of a TerraformVersion.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The default value. This value is used if the state is omitted.
+        Unspecified = 0,
+        /// The version is actively supported.
+        Active = 1,
+        /// The version is deprecated.
+        Deprecated = 2,
+        /// The version is obsolete.
+        Obsolete = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Active => "ACTIVE",
+                State::Deprecated => "DEPRECATED",
+                State::Obsolete => "OBSOLETE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "DEPRECATED" => Some(Self::Deprecated),
+                "OBSOLETE" => Some(Self::Obsolete),
+                _ => None,
+            }
+        }
+    }
+}
+/// Enum values to control quota checks for resources in terraform
+/// configuration files.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum QuotaValidation {
+    /// The default value.
+    /// QuotaValidation on terraform configuration files will be disabled in
+    /// this case.
+    Unspecified = 0,
+    /// Enable computing quotas for resources in terraform configuration files to
+    /// get visibility on resources with insufficient quotas.
+    Enabled = 1,
+    /// Enforce quota checks so deployment fails if there isn't sufficient quotas
+    /// available to deploy resources in terraform configuration files.
+    Enforced = 2,
+}
+impl QuotaValidation {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            QuotaValidation::Unspecified => "QUOTA_VALIDATION_UNSPECIFIED",
+            QuotaValidation::Enabled => "ENABLED",
+            QuotaValidation::Enforced => "ENFORCED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "QUOTA_VALIDATION_UNSPECIFIED" => Some(Self::Unspecified),
+            "ENABLED" => Some(Self::Enabled),
+            "ENFORCED" => Some(Self::Enforced),
+            _ => None,
+        }
+    }
 }
 /// Generated client implementations.
 pub mod config_client {
@@ -2576,6 +2791,70 @@ pub mod config_client {
                     GrpcMethod::new(
                         "google.cloud.config.v1.Config",
                         "ExportPreviewResult",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists [TerraformVersion][google.cloud.config.v1.TerraformVersion]s in a
+        /// given project and location.
+        pub async fn list_terraform_versions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListTerraformVersionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListTerraformVersionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.config.v1.Config/ListTerraformVersions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.config.v1.Config",
+                        "ListTerraformVersions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details about a
+        /// [TerraformVersion][google.cloud.config.v1.TerraformVersion].
+        pub async fn get_terraform_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetTerraformVersionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::TerraformVersion>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.config.v1.Config/GetTerraformVersion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.config.v1.Config",
+                        "GetTerraformVersion",
                     ),
                 );
             self.inner.unary(req, path, codec).await

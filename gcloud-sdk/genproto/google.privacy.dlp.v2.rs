@@ -4,9 +4,11 @@
 pub struct InfoType {
     /// Name of the information type. Either a name of your choosing when
     /// creating a CustomInfoType, or one of the names listed
-    /// at <https://cloud.google.com/dlp/docs/infotypes-reference> when specifying
-    /// a built-in type.  When sending Cloud DLP results to Data Catalog, infoType
-    /// names should conform to the pattern `\[A-Za-z0-9$_-\]{1,64}`.
+    /// at
+    /// <https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference>
+    /// when specifying a built-in type.  When sending Cloud DLP results to Data
+    /// Catalog, infoType names should conform to the pattern
+    /// `\[A-Za-z0-9$_-\]{1,64}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional version name for this InfoType.
@@ -135,6 +137,7 @@ pub struct CustomInfoType {
     /// This only applies to data profiling.
     #[prost(message, optional, tag = "9")]
     pub sensitivity_score: ::core::option::Option<SensitivityScore>,
+    /// Type of custom detector.
     #[prost(oneof = "custom_info_type::Type", tags = "2, 3, 4, 5")]
     pub r#type: ::core::option::Option<custom_info_type::Type>,
 }
@@ -159,13 +162,14 @@ pub mod custom_info_type {
     /// Dictionary words containing a large number of characters that are not
     /// letters or digits may result in unexpected findings because such characters
     /// are treated as whitespace. The
-    /// [limits](<https://cloud.google.com/dlp/limits>) page contains details about
-    /// the size limits of dictionaries. For dictionaries that do not fit within
-    /// these constraints, consider using `LargeCustomDictionaryConfig` in the
-    /// `StoredInfoType` API.
+    /// [limits](<https://cloud.google.com/sensitive-data-protection/limits>) page
+    /// contains details about the size limits of dictionaries. For dictionaries
+    /// that do not fit within these constraints, consider using
+    /// `LargeCustomDictionaryConfig` in the `StoredInfoType` API.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Dictionary {
+        /// The potential places the data can be read from.
         #[prost(oneof = "dictionary::Source", tags = "1, 3")]
         pub source: ::core::option::Option<dictionary::Source>,
     }
@@ -181,6 +185,7 @@ pub mod custom_info_type {
             #[prost(string, repeated, tag = "1")]
             pub words: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
+        /// The potential places the data can be read from.
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Source {
@@ -209,7 +214,7 @@ pub mod custom_info_type {
     }
     /// Message for detecting output from deidentification transformations
     /// such as
-    /// [`CryptoReplaceFfxFpeConfig`](<https://cloud.google.com/dlp/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig>).
+    /// [`CryptoReplaceFfxFpeConfig`](<https://cloud.google.com/sensitive-data-protection/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig>).
     /// These types of transformations are
     /// those that perform pseudonymization, thereby producing a "surrogate" as
     /// output. This should be used in conjunction with a field on the
@@ -225,6 +230,7 @@ pub mod custom_info_type {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetectionRule {
+        /// Type of hotword rule.
         #[prost(oneof = "detection_rule::Type", tags = "1")]
         pub r#type: ::core::option::Option<detection_rule::Type>,
     }
@@ -239,7 +245,7 @@ pub mod custom_info_type {
             /// if you want to modify the likelihood of an entire column of findngs,
             /// set this to 1. For more information, see
             /// \[Hotword example: Set the match likelihood of a table column\]
-            /// (<https://cloud.google.com/dlp/docs/creating-custom-infotypes-likelihood#match-column-values>).
+            /// (<https://cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes-likelihood#match-column-values>).
             #[prost(int32, tag = "1")]
             pub window_before: i32,
             /// Number of characters after the finding to consider.
@@ -251,11 +257,13 @@ pub mod custom_info_type {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct LikelihoodAdjustment {
+            /// How the likelihood will be modified.
             #[prost(oneof = "likelihood_adjustment::Adjustment", tags = "1, 2")]
             pub adjustment: ::core::option::Option<likelihood_adjustment::Adjustment>,
         }
         /// Nested message and enum types in `LikelihoodAdjustment`.
         pub mod likelihood_adjustment {
+            /// How the likelihood will be modified.
             #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum Adjustment {
@@ -294,13 +302,14 @@ pub mod custom_info_type {
             /// For tabular data, if you want to modify the likelihood of an entire
             /// column of findngs, see
             /// \[Hotword example: Set the match likelihood of a table column\]
-            /// (<https://cloud.google.com/dlp/docs/creating-custom-infotypes-likelihood#match-column-values>).
+            /// (<https://cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes-likelihood#match-column-values>).
             #[prost(message, optional, tag = "2")]
             pub proximity: ::core::option::Option<Proximity>,
             /// Likelihood adjustment to apply to all matching findings.
             #[prost(message, optional, tag = "3")]
             pub likelihood_adjustment: ::core::option::Option<LikelihoodAdjustment>,
         }
+        /// Type of hotword rule.
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Type {
@@ -309,6 +318,7 @@ pub mod custom_info_type {
             HotwordRule(HotwordRule),
         }
     }
+    /// Type of exclusion rule.
     #[derive(
         Clone,
         Copy,
@@ -348,6 +358,7 @@ pub mod custom_info_type {
             }
         }
     }
+    /// Type of custom detector.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
@@ -484,7 +495,7 @@ pub struct CloudStorageOptions {
     /// This field can't be set if de-identification is requested. For certain file
     /// types, setting this field has no effect. For more information, see [Limits
     /// on bytes scanned per
-    /// file](<https://cloud.google.com/dlp/docs/supported-file-types#max-byte-size-per-file>).
+    /// file](<https://cloud.google.com/sensitive-data-protection/docs/supported-file-types#max-byte-size-per-file>).
     #[prost(int64, tag = "4")]
     pub bytes_limit_per_file: i64,
     /// Max percentage of bytes to scan from a file. The rest are omitted. The
@@ -494,7 +505,7 @@ pub struct CloudStorageOptions {
     /// This field can't be set if de-identification is requested. For certain file
     /// types, setting this field has no effect. For more information, see [Limits
     /// on bytes scanned per
-    /// file](<https://cloud.google.com/dlp/docs/supported-file-types#max-byte-size-per-file>).
+    /// file](<https://cloud.google.com/sensitive-data-protection/docs/supported-file-types#max-byte-size-per-file>).
     #[prost(int32, tag = "8")]
     pub bytes_limit_per_file_percent: i32,
     /// List of file type groups to include in the scan.
@@ -506,6 +517,7 @@ pub struct CloudStorageOptions {
     /// Image inspection is restricted to 'global', 'us', 'asia', and 'europe'.
     #[prost(enumeration = "FileType", repeated, tag = "5")]
     pub file_types: ::prost::alloc::vec::Vec<i32>,
+    /// How to sample the data.
     #[prost(enumeration = "cloud_storage_options::SampleMethod", tag = "6")]
     pub sample_method: i32,
     /// Limits the number of files to scan to this percentage of the input FileSet.
@@ -553,6 +565,7 @@ pub mod cloud_storage_options {
     )]
     #[repr(i32)]
     pub enum SampleMethod {
+        /// No sampling.
         Unspecified = 0,
         /// Scan from the top (default).
         Top = 1,
@@ -596,8 +609,8 @@ pub struct CloudStorageFileSet {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudStoragePath {
-    /// A url representing a file or path (no wildcards) in Cloud Storage.
-    /// Example: gs://\[BUCKET_NAME\]/dictionary.txt
+    /// A URL representing a file or path (no wildcards) in Cloud Storage.
+    /// Example: `gs://\[BUCKET_NAME\]/dictionary.txt`
     #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
 }
@@ -626,8 +639,14 @@ pub struct BigQueryOptions {
     /// 100 means no limit. Defaults to 0. Only one of rows_limit and
     /// rows_limit_percent can be specified. Cannot be used in conjunction with
     /// TimespanConfig.
+    ///
+    /// Caution: A [known
+    /// issue](<https://cloud.google.com/sensitive-data-protection/docs/known-issues#bq-sampling>)
+    /// is causing the `rowsLimitPercent` field to behave unexpectedly. We
+    /// recommend using `rowsLimit` instead.
     #[prost(int32, tag = "6")]
     pub rows_limit_percent: i32,
+    /// How to sample the data.
     #[prost(enumeration = "big_query_options::SampleMethod", tag = "4")]
     pub sample_method: i32,
     /// References to fields excluded from scanning. This allows you to skip
@@ -662,6 +681,7 @@ pub mod big_query_options {
     )]
     #[repr(i32)]
     pub enum SampleMethod {
+        /// No sampling.
         Unspecified = 0,
         /// Scan groups of rows in the order BigQuery provides (default). Multiple
         /// groups of rows may be scanned in parallel, so results may not appear in
@@ -697,8 +717,10 @@ pub mod big_query_options {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StorageConfig {
+    /// Configuration of the timespan of the items to include in scanning.
     #[prost(message, optional, tag = "6")]
     pub timespan_config: ::core::option::Option<storage_config::TimespanConfig>,
+    /// Type of storage system to inspect.
     #[prost(oneof = "storage_config::Type", tags = "2, 3, 4, 9")]
     pub r#type: ::core::option::Option<storage_config::Type>,
 }
@@ -749,7 +771,8 @@ pub mod storage_config {
         /// Valid data types of the provided timestamp property are: `TIMESTAMP`.
         ///
         /// See the
-        /// [known issue](<https://cloud.google.com/dlp/docs/known-issues#bq-timespan>)
+        /// [known
+        /// issue](<https://cloud.google.com/sensitive-data-protection/docs/known-issues#bq-timespan>)
         /// related to this operation.
         #[prost(message, optional, tag = "3")]
         pub timestamp_field: ::core::option::Option<super::FieldId>,
@@ -761,6 +784,7 @@ pub mod storage_config {
         #[prost(bool, tag = "4")]
         pub enable_auto_population_of_timespan_config: bool,
     }
+    /// Type of storage system to inspect.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
@@ -916,16 +940,20 @@ pub struct RecordKey {
     /// the order of `identifying_fields` specified in the scanning request.
     #[prost(string, repeated, tag = "5")]
     pub id_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Type of key
     #[prost(oneof = "record_key::Type", tags = "2, 3")]
     pub r#type: ::core::option::Option<record_key::Type>,
 }
 /// Nested message and enum types in `RecordKey`.
 pub mod record_key {
+    /// Type of key
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
+        /// BigQuery key
         #[prost(message, tag = "2")]
         DatastoreKey(super::DatastoreKey),
+        /// Datastore key
         #[prost(message, tag = "3")]
         BigQueryKey(super::BigQueryKey),
     }
@@ -997,7 +1025,7 @@ pub struct TableOptions {
 ///
 /// For more information about each likelihood level
 /// and how likelihood works, see [Match
-/// likelihood](<https://cloud.google.com/dlp/docs/likelihood>).
+/// likelihood](<https://cloud.google.com/sensitive-data-protection/docs/likelihood>).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Likelihood {
@@ -1060,8 +1088,9 @@ pub enum FileType {
     ///    dat, dot, eml,, epbub, ged, go, h, hh, hpp, hxx, h++, hs, html, htm,
     ///    mkd, markdown, m, ml, mli, perl, pl, plist, pm, php, phtml, pht,
     ///    properties, py, pyw, rb, rbw, rs, rss,  rc, scala, sh, sql, swift, tex,
-    ///    shtml, shtm, xhtml, lhs, ics, ini, java, js, json, kix, kml, ocaml, md,
-    ///    txt, text, tsv, vb, vcard, vcs, wml, xcodeproj, xml, xsl, xsd, yml, yaml.
+    ///    shtml, shtm, xhtml, lhs, ics, ini, java, js, json, jsonl, kix, kml,
+    ///    ocaml, md, txt, text, tsv, vb, vcard, vcs, wml, xcodeproj, xml, xsl, xsd,
+    ///    yml, yaml.
     TextFile = 2,
     /// Included file extensions:
     ///    bmp, gif, jpg, jpeg, jpe, png. Setting
@@ -1247,7 +1276,7 @@ pub struct InspectionRuleSet {
 pub struct InspectConfig {
     /// Restricts what info_types to look for. The values must correspond to
     /// InfoType values returned by ListInfoTypes or listed at
-    /// <https://cloud.google.com/dlp/docs/infotypes-reference.>
+    /// <https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference.>
     ///
     /// When no InfoTypes or CustomInfoTypes are specified in a request, the
     /// system may automatically choose a default list of detectors to run, which
@@ -1263,7 +1292,8 @@ pub struct InspectConfig {
     ///
     /// In general, the highest likelihood setting yields the fewest findings in
     /// results and the lowest chance of a false positive. For more information,
-    /// see [Match likelihood](<https://cloud.google.com/dlp/docs/likelihood>).
+    /// see [Match
+    /// likelihood](<https://cloud.google.com/sensitive-data-protection/docs/likelihood>).
     #[prost(enumeration = "Likelihood", tag = "2")]
     pub min_likelihood: i32,
     /// Minimum likelihood per infotype. For each infotype, a user can specify a
@@ -1302,7 +1332,8 @@ pub struct InspectConfig {
     #[prost(bool, tag = "5")]
     pub exclude_info_types: bool,
     /// CustomInfoTypes provided by the user. See
-    /// <https://cloud.google.com/dlp/docs/creating-custom-infotypes> to learn more.
+    /// <https://cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes>
+    /// to learn more.
     #[prost(message, repeated, tag = "6")]
     pub custom_info_types: ::prost::alloc::vec::Vec<CustomInfoType>,
     /// Deprecated and unused.
@@ -1410,7 +1441,7 @@ pub struct ByteContentItem {
 pub mod byte_content_item {
     /// The type of data being sent for inspection. To learn more, see
     /// [Supported file
-    /// types](<https://cloud.google.com/dlp/docs/supported-file-types>).
+    /// types](<https://cloud.google.com/sensitive-data-protection/docs/supported-file-types>).
     #[derive(
         Clone,
         Copy,
@@ -1498,6 +1529,7 @@ pub mod byte_content_item {
         }
     }
 }
+/// Type of content to inspect.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContentItem {
@@ -1515,8 +1547,8 @@ pub mod content_item {
         #[prost(string, tag = "3")]
         Value(::prost::alloc::string::String),
         /// Structured content for inspection. See
-        /// <https://cloud.google.com/dlp/docs/inspecting-text#inspecting_a_table> to
-        /// learn more.
+        /// <https://cloud.google.com/sensitive-data-protection/docs/inspecting-text#inspecting_a_table>
+        /// to learn more.
         #[prost(message, tag = "4")]
         Table(super::Table),
         /// Content data to inspect or redact. Replaces `type` and `data`.
@@ -1525,7 +1557,7 @@ pub mod content_item {
     }
 }
 /// Structured content to inspect. Up to 50,000 `Value`s per request allowed. See
-/// <https://cloud.google.com/dlp/docs/inspecting-structured-text#inspecting_a_table>
+/// <https://cloud.google.com/sensitive-data-protection/docs/inspecting-structured-text#inspecting_a_table>
 /// to learn more.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1735,6 +1767,7 @@ pub mod metadata_location {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StorageMetadataLabel {
+    /// Label name.
     #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
 }
@@ -1866,7 +1899,7 @@ pub struct RedactImageRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
+    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -1970,7 +2003,7 @@ pub struct DeidentifyContentRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
+    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -2041,7 +2074,7 @@ pub struct ReidentifyContentRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
+    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -2112,7 +2145,7 @@ pub struct InspectContentRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
+    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -2315,6 +2348,7 @@ pub mod inspect_data_source_details {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfileBigQueryRowSchema {
+    /// Data profile type.
     #[prost(oneof = "data_profile_big_query_row_schema::DataProfile", tags = "1, 2")]
     pub data_profile: ::core::option::Option<
         data_profile_big_query_row_schema::DataProfile,
@@ -2322,6 +2356,7 @@ pub struct DataProfileBigQueryRowSchema {
 }
 /// Nested message and enum types in `DataProfileBigQueryRowSchema`.
 pub mod data_profile_big_query_row_schema {
+    /// Data profile type.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DataProfile {
@@ -2458,6 +2493,7 @@ pub struct InfoTypeDescription {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InfoTypeCategory {
+    /// Categories of infotypes.
     #[prost(oneof = "info_type_category::Category", tags = "1, 2, 3")]
     pub category: ::core::option::Option<info_type_category::Category>,
 }
@@ -2788,6 +2824,7 @@ pub mod info_type_category {
             }
         }
     }
+    /// Categories of infotypes.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Category {
@@ -2847,7 +2884,8 @@ pub struct ListInfoTypesResponse {
     pub info_types: ::prost::alloc::vec::Vec<InfoTypeDescription>,
 }
 /// Configuration for a risk analysis job. See
-/// <https://cloud.google.com/dlp/docs/concepts-risk-analysis> to learn more.
+/// <https://cloud.google.com/sensitive-data-protection/docs/concepts-risk-analysis>
+/// to learn more.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RiskAnalysisJobConfig {
@@ -3616,11 +3654,13 @@ pub struct DeidentifyConfig {
     pub transformation_error_handling: ::core::option::Option<
         TransformationErrorHandling,
     >,
+    /// Type of transformation
     #[prost(oneof = "deidentify_config::Transformation", tags = "1, 2, 4")]
     pub transformation: ::core::option::Option<deidentify_config::Transformation>,
 }
 /// Nested message and enum types in `DeidentifyConfig`.
 pub mod deidentify_config {
+    /// Type of transformation
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Transformation {
@@ -3642,6 +3682,7 @@ pub mod deidentify_config {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageTransformations {
+    /// List of transforms to make.
     #[prost(message, repeated, tag = "2")]
     pub transforms: ::prost::alloc::vec::Vec<image_transformations::ImageTransformation>,
 }
@@ -3655,6 +3696,7 @@ pub mod image_transformations {
         /// specified, the default is black.
         #[prost(message, optional, tag = "3")]
         pub redaction_color: ::core::option::Option<super::Color>,
+        /// Part of the image to transform.
         #[prost(oneof = "image_transformation::Target", tags = "4, 5, 6")]
         pub target: ::core::option::Option<image_transformation::Target>,
     }
@@ -3677,6 +3719,7 @@ pub mod image_transformations {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct AllText {}
+        /// Part of the image to transform.
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Target {
@@ -3739,6 +3782,7 @@ pub mod transformation_error_handling {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrimitiveTransformation {
+    /// Type of transformation.
     #[prost(
         oneof = "primitive_transformation::Transformation",
         tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13"
@@ -3747,6 +3791,7 @@ pub struct PrimitiveTransformation {
 }
 /// Nested message and enum types in `PrimitiveTransformation`.
 pub mod primitive_transformation {
+    /// Type of transformation.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Transformation {
@@ -3865,7 +3910,8 @@ pub mod time_part_config {
 /// Outputs a base64 encoded representation of the hashed output
 /// (for example, L7k0BHmF1ha5U3NfGykjro4xWi1MPVQPjhMAZbSV9mM=).
 /// Currently, only string and integer values can be hashed.
-/// See <https://cloud.google.com/dlp/docs/pseudonymization> to learn more.
+/// See <https://cloud.google.com/sensitive-data-protection/docs/pseudonymization>
+/// to learn more.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CryptoHashConfig {
@@ -3951,17 +3997,19 @@ pub struct ReplaceValueConfig {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplaceDictionaryConfig {
+    /// Type of dictionary.
     #[prost(oneof = "replace_dictionary_config::Type", tags = "1")]
     pub r#type: ::core::option::Option<replace_dictionary_config::Type>,
 }
 /// Nested message and enum types in `ReplaceDictionaryConfig`.
 pub mod replace_dictionary_config {
+    /// Type of dictionary.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// A list of words to select from for random replacement. The
-        /// [limits](<https://cloud.google.com/dlp/limits>) page contains details about
-        /// the size limits of dictionaries.
+        /// [limits](<https://cloud.google.com/sensitive-data-protection/limits>) page
+        /// contains details about the size limits of dictionaries.
         #[prost(message, tag = "1")]
         WordList(super::custom_info_type::dictionary::WordList),
     }
@@ -3981,6 +4029,7 @@ pub struct RedactConfig {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CharsToIgnore {
+    /// Type of characters to skip.
     #[prost(oneof = "chars_to_ignore::Characters", tags = "1, 2")]
     pub characters: ::core::option::Option<chars_to_ignore::Characters>,
 }
@@ -4041,6 +4090,7 @@ pub mod chars_to_ignore {
             }
         }
     }
+    /// Type of characters to skip.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Characters {
@@ -4116,7 +4166,9 @@ pub struct CharacterMaskConfig {
 /// being transformed, we will first attempt converting the type of the data to
 /// be transformed to match the type of the bound before comparing.
 ///
-/// See <https://cloud.google.com/dlp/docs/concepts-bucketing> to learn more.
+/// See
+/// <https://cloud.google.com/sensitive-data-protection/docs/concepts-bucketing> to
+/// learn more.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FixedSizeBucketingConfig {
@@ -4145,7 +4197,9 @@ pub struct FixedSizeBucketingConfig {
 /// If the bound `Value` type differs from the type of data being transformed, we
 /// will first attempt converting the type of the data to be transformed to match
 /// the type of the bound before comparing.
-/// See <https://cloud.google.com/dlp/docs/concepts-bucketing> to learn more.
+/// See
+/// <https://cloud.google.com/sensitive-data-protection/docs/concepts-bucketing> to
+/// learn more.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BucketingConfig {
@@ -4178,8 +4232,9 @@ pub mod bucketing_config {
 /// encoded as ASCII. For a given crypto key and context, the same identifier
 /// will be replaced with the same surrogate. Identifiers must be at least two
 /// characters long. In the case that the identifier is the empty string, it will
-/// be skipped. See <https://cloud.google.com/dlp/docs/pseudonymization> to learn
-/// more.
+/// be skipped. See
+/// <https://cloud.google.com/sensitive-data-protection/docs/pseudonymization> to
+/// learn more.
 ///
 /// Note: We recommend using  CryptoDeterministicConfig for all use cases which
 /// do not require preserving the input alphabet space and size, plus warrant
@@ -4224,7 +4279,7 @@ pub struct CryptoReplaceFfxFpeConfig {
     ///
     /// This annotation identifies the surrogate when inspecting content using the
     /// custom infoType
-    /// [`SurrogateType`](<https://cloud.google.com/dlp/docs/reference/rest/v2/InspectConfig#surrogatetype>).
+    /// [`SurrogateType`](<https://cloud.google.com/sensitive-data-protection/docs/reference/rest/v2/InspectConfig#surrogatetype>).
     /// This facilitates reversal of the surrogate when it occurs in free text.
     ///
     /// In order for inspection to work properly, the name of this infoType must
@@ -4386,7 +4441,7 @@ pub struct UnwrappedCryptoKey {
 /// dlp.kms.encrypt
 ///
 /// For more information, see \[Creating a wrapped key\]
-/// (<https://cloud.google.com/dlp/docs/create-wrapped-key>).
+/// (<https://cloud.google.com/sensitive-data-protection/docs/create-wrapped-key>).
 ///
 /// Note: When you use Cloud KMS for cryptographic operations,
 /// [charges apply](<https://cloud.google.com/kms/pricing>).
@@ -4401,7 +4456,8 @@ pub struct KmsWrappedCryptoKey {
     pub crypto_key_name: ::prost::alloc::string::String,
 }
 /// Shifts dates by random number of days, with option to be consistent for the
-/// same context. See <https://cloud.google.com/dlp/docs/concepts-date-shifting>
+/// same context. See
+/// <https://cloud.google.com/sensitive-data-protection/docs/concepts-date-shifting>
 /// to learn more.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4829,11 +4885,13 @@ pub struct TransformationLocation {
     /// occurred, if available.
     #[prost(enumeration = "TransformationContainerType", tag = "3")]
     pub container_type: i32,
+    /// Location type.
     #[prost(oneof = "transformation_location::LocationType", tags = "1, 2")]
     pub location_type: ::core::option::Option<transformation_location::LocationType>,
 }
 /// Nested message and enum types in `TransformationLocation`.
 pub mod transformation_location {
+    /// Location type.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum LocationType {
@@ -4849,6 +4907,7 @@ pub mod transformation_location {
         RecordTransformation(super::RecordTransformation),
     }
 }
+/// The field in a record to transform.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecordTransformation {
@@ -4862,6 +4921,7 @@ pub struct RecordTransformation {
     #[prost(string, tag = "3")]
     pub container_version: ::prost::alloc::string::String,
 }
+/// The outcome of a transformation.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransformationResultStatus {
@@ -4901,11 +4961,13 @@ pub mod transformation_details_storage_config {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schedule {
+    /// Type of schedule.
     #[prost(oneof = "schedule::Option", tags = "1")]
     pub option: ::core::option::Option<schedule::Option>,
 }
 /// Nested message and enum types in `Schedule`.
 pub mod schedule {
+    /// Type of schedule.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Option {
@@ -4928,8 +4990,9 @@ pub mod schedule {
 pub struct Manual {}
 /// The inspectTemplate contains a configuration (set of types of sensitive data
 /// to be detected) to be used anywhere you otherwise would normally specify
-/// InspectConfig. See <https://cloud.google.com/dlp/docs/concepts-templates>
-/// to learn more.
+/// InspectConfig. See
+/// <https://cloud.google.com/sensitive-data-protection/docs/concepts-templates> to
+/// learn more.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectTemplate {
@@ -4957,7 +5020,9 @@ pub struct InspectTemplate {
     pub inspect_config: ::core::option::Option<InspectConfig>,
 }
 /// DeidentifyTemplates contains instructions on how to de-identify content.
-/// See <https://cloud.google.com/dlp/docs/concepts-templates> to learn more.
+/// See
+/// <https://cloud.google.com/sensitive-data-protection/docs/concepts-templates> to
+/// learn more.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeidentifyTemplate {
@@ -4998,7 +5063,9 @@ pub struct Error {
     pub timestamps: ::prost::alloc::vec::Vec<::prost_types::Timestamp>,
 }
 /// Contains a configuration to make dlp api calls on a repeating basis.
-/// See <https://cloud.google.com/dlp/docs/concepts-job-triggers> to learn more.
+/// See
+/// <https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers>
+/// to learn more.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobTrigger {
@@ -5046,11 +5113,13 @@ pub mod job_trigger {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Trigger {
+        /// What event needs to occur for a new job to be started.
         #[prost(oneof = "trigger::Trigger", tags = "1, 2")]
         pub trigger: ::core::option::Option<trigger::Trigger>,
     }
     /// Nested message and enum types in `Trigger`.
     pub mod trigger {
+        /// What event needs to occur for a new job to be started.
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Trigger {
@@ -5122,10 +5191,12 @@ pub mod job_trigger {
     }
 }
 /// A task to execute on the completion of a job.
-/// See <https://cloud.google.com/dlp/docs/concepts-actions> to learn more.
+/// See <https://cloud.google.com/sensitive-data-protection/docs/concepts-actions>
+/// to learn more.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Action {
+    /// Extra events to execute after the job has finished.
     #[prost(oneof = "action::Action", tags = "1, 2, 3, 5, 7, 8, 9")]
     pub action: ::core::option::Option<action::Action>,
 }
@@ -5145,7 +5216,7 @@ pub mod action {
     /// Publish a message into a given Pub/Sub topic when DlpJob has completed. The
     /// message contains a single field, `DlpJobName`, which is equal to the
     /// finished job's
-    /// [`DlpJob.name`](<https://cloud.google.com/dlp/docs/reference/rest/v2/projects.dlpJobs#DlpJob>).
+    /// [`DlpJob.name`](<https://cloud.google.com/sensitive-data-protection/docs/reference/rest/v2/projects.dlpJobs#DlpJob>).
     /// Compatible with: Inspect, Risk
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5230,11 +5301,13 @@ pub mod action {
         /// IMAGES, TEXT_FILES, CSV, TSV.
         #[prost(enumeration = "super::FileType", repeated, tag = "8")]
         pub file_types_to_transform: ::prost::alloc::vec::Vec<i32>,
+        /// Where to store the output.
         #[prost(oneof = "deidentify::Output", tags = "9")]
         pub output: ::core::option::Option<deidentify::Output>,
     }
     /// Nested message and enum types in `Deidentify`.
     pub mod deidentify {
+        /// Where to store the output.
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Output {
@@ -5262,6 +5335,7 @@ pub mod action {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PublishToStackdriver {}
+    /// Extra events to execute after the job has finished.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Action {
@@ -5328,7 +5402,7 @@ pub struct CreateInspectTemplateRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
+    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -5393,7 +5467,7 @@ pub struct ListInspectTemplatesRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
+    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -5468,7 +5542,7 @@ pub struct CreateJobTriggerRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
+    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -5648,7 +5722,7 @@ pub struct CreateDlpJobRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
+    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -5698,7 +5772,7 @@ pub struct ListJobTriggersRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
+    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -5814,6 +5888,7 @@ pub struct InspectJobConfig {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfileAction {
+    /// Type of action to execute when a profile is generated.
     #[prost(oneof = "data_profile_action::Action", tags = "1, 2")]
     pub action: ::core::option::Option<data_profile_action::Action>,
 }
@@ -5957,6 +6032,7 @@ pub mod data_profile_action {
             }
         }
     }
+    /// Type of action to execute when a profile is generated.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Action {
@@ -5974,7 +6050,7 @@ pub mod data_profile_action {
 ///
 /// The generated data profiles are retained according to the
 /// \[data retention policy\]
-/// (<https://cloud.google.com/dlp/docs/data-profiles#retention>).
+/// (<https://cloud.google.com/sensitive-data-protection/docs/data-profiles#retention>).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfileJobConfig {
@@ -6001,7 +6077,7 @@ pub struct DataProfileJobConfig {
     /// scanned.
     ///
     /// For more information, see
-    /// <https://cloud.google.com/dlp/docs/data-profiles#data-residency.>
+    /// <https://cloud.google.com/sensitive-data-protection/docs/data-profiles#data-residency.>
     #[prost(string, repeated, tag = "7")]
     pub inspect_templates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Actions to execute at the completion of the job.
@@ -6077,7 +6153,7 @@ pub mod data_profile_location {
 ///
 /// The generated data profiles are retained according to the
 /// \[data retention policy\]
-/// (<https://cloud.google.com/dlp/docs/data-profiles#retention>).
+/// (<https://cloud.google.com/sensitive-data-protection/docs/data-profiles#retention>).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoveryConfig {
@@ -6107,7 +6183,7 @@ pub struct DiscoveryConfig {
     /// scanned.
     ///
     /// For more information, see
-    /// <https://cloud.google.com/dlp/docs/data-profiles#data-residency.>
+    /// <https://cloud.google.com/sensitive-data-protection/docs/data-profiles#data-residency.>
     #[prost(string, repeated, tag = "3")]
     pub inspect_templates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Actions to execute at the completion of scanning.
@@ -6469,6 +6545,7 @@ pub struct DlpJob {
     /// Events that should occur after the job has completed.
     #[prost(message, repeated, tag = "12")]
     pub action_details: ::prost::alloc::vec::Vec<ActionDetails>,
+    /// Job details.
     #[prost(oneof = "dlp_job::Details", tags = "4, 5")]
     pub details: ::core::option::Option<dlp_job::Details>,
 }
@@ -6537,6 +6614,7 @@ pub mod dlp_job {
             }
         }
     }
+    /// Job details.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
@@ -6564,7 +6642,7 @@ pub struct ListDlpJobsRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
+    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -6659,7 +6737,7 @@ pub struct CancelDlpJobRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinishDlpJobRequest {
-    /// Required. The name of the DlpJob resource to be cancelled.
+    /// Required. The name of the DlpJob resource to be finished.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -6679,7 +6757,7 @@ pub struct CreateDeidentifyTemplateRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
+    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -6745,7 +6823,7 @@ pub struct ListDeidentifyTemplatesRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
+    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -6816,8 +6894,8 @@ pub struct DeleteDeidentifyTemplateRequest {
 }
 /// Configuration for a custom dictionary created from a data source of any size
 /// up to the maximum size defined in the
-/// [limits](<https://cloud.google.com/dlp/limits>) page. The artifacts of
-/// dictionary creation are stored in the specified Cloud Storage
+/// [limits](<https://cloud.google.com/sensitive-data-protection/limits>) page. The
+/// artifacts of dictionary creation are stored in the specified Cloud Storage
 /// location. Consider using `CustomInfoType.Dictionary` for smaller dictionaries
 /// that satisfy the size requirements.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6829,11 +6907,13 @@ pub struct LargeCustomDictionaryConfig {
     /// longer be used.
     #[prost(message, optional, tag = "1")]
     pub output_path: ::core::option::Option<CloudStoragePath>,
+    /// Source of the dictionary.
     #[prost(oneof = "large_custom_dictionary_config::Source", tags = "2, 3")]
     pub source: ::core::option::Option<large_custom_dictionary_config::Source>,
 }
 /// Nested message and enum types in `LargeCustomDictionaryConfig`.
 pub mod large_custom_dictionary_config {
+    /// Source of the dictionary.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
@@ -6855,7 +6935,7 @@ pub struct LargeCustomDictionaryStats {
 }
 /// Configuration for stored infoTypes. All fields and subfield are provided
 /// by the user. For more information, see
-/// <https://cloud.google.com/dlp/docs/creating-custom-infotypes.>
+/// <https://cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes.>
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoredInfoTypeConfig {
@@ -6964,7 +7044,7 @@ pub struct CreateStoredInfoTypeRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
+    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -7031,7 +7111,7 @@ pub struct ListStoredInfoTypesRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
+    /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -7182,6 +7262,234 @@ pub struct HybridFindingDetails {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HybridInspectResponse {}
+/// Request to list the profiles generated for a given organization or project.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListProjectDataProfilesRequest {
+    /// Required. organizations/{org_id}/locations/{loc_id}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Page token to continue retrieval.
+    #[prost(string, tag = "2")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Size of the page. This value can be limited by the server. If zero, server
+    /// returns a page of max size 100.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Comma separated list of fields to order by, followed by `asc` or `desc`
+    /// postfix. This list is case insensitive. The default sorting order is
+    /// ascending. Redundant space characters are insignificant. Only one order
+    /// field at a time is allowed.
+    ///
+    /// Examples:
+    /// * `project_id`
+    /// * `sensitivity_level desc`
+    ///
+    /// Supported fields are:
+    ///
+    /// - `project_id`: GCP project ID
+    /// - `sensitivity_level`: How sensitive the data in a project is, at most.
+    /// - `data_risk_level`: How much risk is associated with this data.
+    /// - `profile_last_generated`: When the profile was last updated in epoch
+    /// seconds.
+    #[prost(string, tag = "4")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Allows filtering.
+    ///
+    /// Supported syntax:
+    ///
+    /// * Filter expressions are made up of one or more restrictions.
+    /// * Restrictions can be combined by `AND` or `OR` logical operators. A
+    /// sequence of restrictions implicitly uses `AND`.
+    /// * A restriction has the form of `{field} {operator} {value}`.
+    /// * Supported fields/values:
+    ///      - `sensitivity_level` - HIGH|MODERATE|LOW
+    ///      - `data_risk_level` - HIGH|MODERATE|LOW
+    ///      - `status_code` - an RPC status code as defined in
+    ///      <https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto>
+    /// * The operator must be `=` or `!=`.
+    ///
+    /// Examples:
+    ///
+    /// * `project_id = 12345 AND status_code = 1`
+    /// * `project_id = 12345 AND sensitivity_level = HIGH`
+    ///
+    /// The length of this field should be no more than 500 characters.
+    #[prost(string, tag = "5")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// List of profiles generated for a given organization or project.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListProjectDataProfilesResponse {
+    /// List of data profiles.
+    #[prost(message, repeated, tag = "1")]
+    pub project_data_profiles: ::prost::alloc::vec::Vec<ProjectDataProfile>,
+    /// The next page token.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request to list the profiles generated for a given organization or project.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTableDataProfilesRequest {
+    /// Required. Resource name of the organization or project, for
+    /// example `organizations/433245324/locations/europe` or
+    /// `projects/project-id/locations/asia`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Page token to continue retrieval.
+    #[prost(string, tag = "2")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Size of the page. This value can be limited by the server. If zero, server
+    /// returns a page of max size 100.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Comma separated list of fields to order by, followed by `asc` or `desc`
+    /// postfix. This list is case insensitive. The default sorting order is
+    /// ascending. Redundant space characters are insignificant. Only one order
+    /// field at a time is allowed.
+    ///
+    /// Examples:
+    /// * `project_id asc`
+    /// * `table_id`
+    /// * `sensitivity_level desc`
+    ///
+    /// Supported fields are:
+    ///
+    /// - `project_id`: The GCP project ID.
+    /// - `dataset_id`: The ID of a BigQuery dataset.
+    /// - `table_id`: The ID of a BigQuery table.
+    /// - `sensitivity_level`: How sensitive the data in a table is, at most.
+    /// - `data_risk_level`: How much risk is associated with this data.
+    /// - `profile_last_generated`: When the profile was last updated in epoch
+    /// seconds.
+    /// - `last_modified`: The last time the resource was modified.
+    /// - `resource_visibility`: Visibility restriction for this resource.
+    /// - `row_count`: Number of rows in this resource.
+    #[prost(string, tag = "4")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Allows filtering.
+    ///
+    /// Supported syntax:
+    ///
+    /// * Filter expressions are made up of one or more restrictions.
+    /// * Restrictions can be combined by `AND` or `OR` logical operators. A
+    /// sequence of restrictions implicitly uses `AND`.
+    /// * A restriction has the form of `{field} {operator} {value}`.
+    /// * Supported fields/values:
+    ///      - `project_id` - The GCP project ID.
+    ///      - `dataset_id` - The BigQuery dataset ID.
+    ///      - `table_id` - The ID of the BigQuery table.
+    ///      - `sensitivity_level` - HIGH|MODERATE|LOW
+    ///      - `data_risk_level` - HIGH|MODERATE|LOW
+    ///      - `resource_visibility`: PUBLIC|RESTRICTED
+    ///      - `status_code` - an RPC status code as defined in
+    ///      <https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto>
+    /// * The operator must be `=` or `!=`.
+    ///
+    /// Examples:
+    ///
+    /// * `project_id = 12345 AND status_code = 1`
+    /// * `project_id = 12345 AND sensitivity_level = HIGH`
+    /// * `project_id = 12345 AND resource_visibility = PUBLIC`
+    ///
+    /// The length of this field should be no more than 500 characters.
+    #[prost(string, tag = "5")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// List of profiles generated for a given organization or project.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTableDataProfilesResponse {
+    /// List of data profiles.
+    #[prost(message, repeated, tag = "1")]
+    pub table_data_profiles: ::prost::alloc::vec::Vec<TableDataProfile>,
+    /// The next page token.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request to list the profiles generated for a given organization or project.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListColumnDataProfilesRequest {
+    /// Required. Resource name of the organization or project, for
+    /// example `organizations/433245324/locations/europe` or
+    /// `projects/project-id/locations/asia`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Page token to continue retrieval.
+    #[prost(string, tag = "2")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Size of the page. This value can be limited by the server. If zero, server
+    /// returns a page of max size 100.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Comma separated list of fields to order by, followed by `asc` or `desc`
+    /// postfix. This list is case insensitive. The default sorting order is
+    /// ascending. Redundant space characters are insignificant. Only one order
+    /// field at a time is allowed.
+    ///
+    /// Examples:
+    /// * `project_id asc`
+    /// * `table_id`
+    /// * `sensitivity_level desc`
+    ///
+    /// Supported fields are:
+    ///
+    /// - `project_id`: The Google Cloud project ID.
+    /// - `dataset_id`: The ID of a BigQuery dataset.
+    /// - `table_id`: The ID of a BigQuery table.
+    /// - `sensitivity_level`: How sensitive the data in a column is, at most.
+    /// - `data_risk_level`: How much risk is associated with this data.
+    /// - `profile_last_generated`: When the profile was last updated in epoch
+    /// seconds.
+    #[prost(string, tag = "4")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Allows filtering.
+    ///
+    /// Supported syntax:
+    ///
+    /// * Filter expressions are made up of one or more restrictions.
+    /// * Restrictions can be combined by `AND` or `OR` logical operators. A
+    /// sequence of restrictions implicitly uses `AND`.
+    /// * A restriction has the form of `{field} {operator} {value}`.
+    /// * Supported fields/values:
+    ///      - `table_data_profile_name` - The name of the related table data
+    ///      profile.
+    ///      - `project_id` - The Google Cloud project ID. (REQUIRED)
+    ///      - `dataset_id` - The BigQuery dataset ID. (REQUIRED)
+    ///      - `table_id` - The BigQuery table ID. (REQUIRED)
+    ///      - `field_id` - The ID of the BigQuery field.
+    ///      - `info_type` - The infotype detected in the resource.
+    ///      - `sensitivity_level` - HIGH|MEDIUM|LOW
+    ///      - `data_risk_level`: How much risk is associated with this data.
+    ///      - `status_code` - an RPC status code as defined in
+    ///      <https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto>
+    /// * The operator must be `=` for project_id, dataset_id, and table_id. Other
+    ///    filters also support `!=`.
+    ///
+    /// Examples:
+    ///
+    /// * project_id = 12345 AND status_code = 1
+    /// * project_id = 12345 AND sensitivity_level = HIGH
+    /// * project_id = 12345 AND info_type = STREET_ADDRESS
+    ///
+    /// The length of this field should be no more than 500 characters.
+    #[prost(string, tag = "5")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// List of profiles generated for a given organization or project.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListColumnDataProfilesResponse {
+    /// List of data profiles.
+    #[prost(message, repeated, tag = "1")]
+    pub column_data_profiles: ::prost::alloc::vec::Vec<ColumnDataProfile>,
+    /// The next page token.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// Score is a summary of all elements in the data profile.
 /// A higher number means more risk.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -7247,6 +7555,30 @@ pub mod data_risk_level {
         }
     }
 }
+/// An aggregated profile for this project, based on the resources profiled
+/// within it.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProjectDataProfile {
+    /// The resource name of the profile.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Project ID that was profiled.
+    #[prost(string, tag = "2")]
+    pub project_id: ::prost::alloc::string::String,
+    /// The last time the profile was generated.
+    #[prost(message, optional, tag = "3")]
+    pub profile_last_generated: ::core::option::Option<::prost_types::Timestamp>,
+    /// The sensitivity score of this project.
+    #[prost(message, optional, tag = "4")]
+    pub sensitivity_score: ::core::option::Option<SensitivityScore>,
+    /// The data risk level of this project.
+    #[prost(message, optional, tag = "5")]
+    pub data_risk_level: ::core::option::Option<DataRiskLevel>,
+    /// Success or error status of the last attempt to profile the project.
+    #[prost(message, optional, tag = "7")]
+    pub profile_status: ::core::option::Option<ProfileStatus>,
+}
 /// Snapshot of the configurations used to generate the profile.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7255,9 +7587,23 @@ pub struct DataProfileConfigSnapshot {
     /// is a copy of the inspect_template specified in `DataProfileJobConfig`.
     #[prost(message, optional, tag = "2")]
     pub inspect_config: ::core::option::Option<InspectConfig>,
-    /// A copy of the configuration used to generate this profile.
+    /// A copy of the configuration used to generate this profile. This is
+    /// deprecated, and the DiscoveryConfig field is preferred moving forward.
+    /// DataProfileJobConfig will still be written here for Discovery in BigQuery
+    /// for backwards compatibility, but will not be updated with new fields, while
+    /// DiscoveryConfig will.
+    #[deprecated]
     #[prost(message, optional, tag = "3")]
     pub data_profile_job: ::core::option::Option<DataProfileJobConfig>,
+    /// A copy of the configuration used to generate this profile.
+    #[prost(message, optional, tag = "4")]
+    pub discovery_config: ::core::option::Option<DiscoveryConfig>,
+    /// Name of the inspection template used to generate this profile
+    #[prost(string, tag = "5")]
+    pub inspect_template_name: ::prost::alloc::string::String,
+    /// Timestamp when the template was modified
+    #[prost(message, optional, tag = "6")]
+    pub inspect_template_modified_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The profile for a scanned table.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -7266,24 +7612,27 @@ pub struct TableDataProfile {
     /// The name of the profile.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// The resource type that was profiled.
+    #[prost(message, optional, tag = "36")]
+    pub data_source_type: ::core::option::Option<DataSourceType>,
     /// The resource name to the project data profile for this table.
     #[prost(string, tag = "2")]
     pub project_data_profile: ::prost::alloc::string::String,
-    /// The Google Cloud project ID that owns the BigQuery dataset.
+    /// The Google Cloud project ID that owns the resource.
     #[prost(string, tag = "24")]
     pub dataset_project_id: ::prost::alloc::string::String,
-    /// The BigQuery location where the dataset's data is stored.
+    /// If supported, the location where the dataset's data is stored.
     /// See <https://cloud.google.com/bigquery/docs/locations> for supported
     /// locations.
     #[prost(string, tag = "29")]
     pub dataset_location: ::prost::alloc::string::String,
-    /// The BigQuery dataset ID.
+    /// If the resource is BigQuery, the  dataset ID.
     #[prost(string, tag = "25")]
     pub dataset_id: ::prost::alloc::string::String,
-    /// The BigQuery table ID.
+    /// If the resource is BigQuery, the BigQuery table ID.
     #[prost(string, tag = "26")]
     pub table_id: ::prost::alloc::string::String,
-    /// The resource name of the table.
+    /// The resource name of the resource profiled.
     /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
     #[prost(string, tag = "3")]
     pub full_resource: ::prost::alloc::string::String,
@@ -7396,6 +7745,7 @@ pub mod table_data_profile {
         }
     }
 }
+/// Success or errors for the profile generation.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProfileStatus {
@@ -7455,10 +7805,10 @@ pub struct ColumnDataProfile {
     /// The resource name of the table data profile.
     #[prost(string, tag = "4")]
     pub table_data_profile: ::prost::alloc::string::String,
-    /// The resource name of the table this column is within.
+    /// The resource name of the resource this column is within.
     #[prost(string, tag = "5")]
     pub table_full_resource: ::prost::alloc::string::String,
-    /// The Google Cloud project ID that owns the BigQuery dataset.
+    /// The Google Cloud project ID that owns the profiled resource.
     #[prost(string, tag = "19")]
     pub dataset_project_id: ::prost::alloc::string::String,
     /// The BigQuery location where the dataset's data is stored.
@@ -7688,6 +8038,33 @@ pub mod column_data_profile {
         }
     }
 }
+/// Request to get a project data profile.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetProjectDataProfileRequest {
+    /// Required. Resource name, for example
+    /// `organizations/12345/locations/us/projectDataProfiles/53234423`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request to get a table data profile.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetTableDataProfileRequest {
+    /// Required. Resource name, for example
+    /// `organizations/12345/locations/us/tableDataProfiles/53234423`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request to get a column data profile.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetColumnDataProfileRequest {
+    /// Required. Resource name, for example
+    /// `organizations/12345/locations/us/columnDataProfiles/53234423`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// A condition for determining whether a Pub/Sub should be triggered.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7842,12 +8219,22 @@ pub struct DataProfilePubSubMessage {
     #[prost(enumeration = "data_profile_action::EventType", tag = "2")]
     pub event: i32,
 }
+/// Message used to identify the type of resource being profiled.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataSourceType {
+    /// Output only. An identifying string to the type of resource being profiled.
+    /// Current values: google/bigquery/table, google/project
+    #[prost(string, tag = "1")]
+    pub data_source: ::prost::alloc::string::String,
+}
 /// Enum of possible outcomes of transformations. SUCCESS if transformation and
 /// storing of transformation was successful, otherwise, reason for not
 /// transforming.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TransformationResultStatusType {
+    /// Unused.
     StateTypeUnspecified = 0,
     /// This will be set when a finding could not be transformed (i.e. outside user
     /// set bucket range).
@@ -7899,9 +8286,13 @@ impl TransformationResultStatusType {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TransformationContainerType {
+    /// Unused.
     TransformUnknownContainer = 0,
+    /// Body of a file.
     TransformBody = 1,
+    /// Metadata for a file.
     TransformMetadata = 2,
+    /// A table.
     TransformTable = 3,
 }
 impl TransformationContainerType {
@@ -8493,8 +8884,8 @@ impl StoredInfoTypeState {
         }
     }
 }
-/// How broadly a resource has been shared. New items may be added over time.
-/// A higher number means more restricted.
+/// How broadly the data in the resource has been shared. New items may be added
+/// over time. A higher number means more restricted.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ResourceVisibility {
@@ -8571,6 +8962,7 @@ pub enum NullPercentageLevel {
     NullPercentageVeryLow = 1,
     /// Some null entries.
     NullPercentageLow = 2,
+    /// A few null entries.
     NullPercentageMedium = 3,
     /// A lot of null entries.
     NullPercentageHigh = 4,
@@ -8655,7 +9047,7 @@ pub mod dlp_service_client {
     /// scheduling of data scans on Google Cloud Platform based data sets.
     ///
     /// To learn more about concepts and find how-to guides see
-    /// https://cloud.google.com/dlp/docs/.
+    /// https://cloud.google.com/sensitive-data-protection/docs/.
     #[derive(Debug, Clone)]
     pub struct DlpServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -8743,8 +9135,10 @@ pub mod dlp_service_client {
         /// system will automatically choose what detectors to run. By default this may
         /// be all types, but may change over time as detectors are updated.
         ///
-        /// For how to guides, see https://cloud.google.com/dlp/docs/inspecting-images
-        /// and https://cloud.google.com/dlp/docs/inspecting-text,
+        /// For how to guides, see
+        /// https://cloud.google.com/sensitive-data-protection/docs/inspecting-images
+        /// and
+        /// https://cloud.google.com/sensitive-data-protection/docs/inspecting-text,
         pub async fn inspect_content(
             &mut self,
             request: impl tonic::IntoRequest<super::InspectContentRequest>,
@@ -8774,8 +9168,9 @@ pub mod dlp_service_client {
         }
         /// Redacts potentially sensitive info from an image.
         /// This method has limits on input size, processing time, and output size.
-        /// See https://cloud.google.com/dlp/docs/redacting-sensitive-data-images to
-        /// learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/redacting-sensitive-data-images
+        /// to learn more.
         ///
         /// When no InfoTypes or CustomInfoTypes are specified in this request, the
         /// system will automatically choose what detectors to run. By default this may
@@ -8809,8 +9204,9 @@ pub mod dlp_service_client {
         }
         /// De-identifies potentially sensitive info from a ContentItem.
         /// This method has limits on input size and output size.
-        /// See https://cloud.google.com/dlp/docs/deidentify-sensitive-data to
-        /// learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/deidentify-sensitive-data
+        /// to learn more.
         ///
         /// When no InfoTypes or CustomInfoTypes are specified in this request, the
         /// system will automatically choose what detectors to run. By default this may
@@ -8847,7 +9243,7 @@ pub mod dlp_service_client {
         }
         /// Re-identifies content that has been de-identified.
         /// See
-        /// https://cloud.google.com/dlp/docs/pseudonymization#re-identification_in_free_text_code_example
+        /// https://cloud.google.com/sensitive-data-protection/docs/pseudonymization#re-identification_in_free_text_code_example
         /// to learn more.
         pub async fn reidentify_content(
             &mut self,
@@ -8880,8 +9276,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Returns a list of the sensitive information types that DLP API
-        /// supports. See https://cloud.google.com/dlp/docs/infotypes-reference to
-        /// learn more.
+        /// supports. See
+        /// https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference
+        /// to learn more.
         pub async fn list_info_types(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInfoTypesRequest>,
@@ -8911,7 +9308,9 @@ pub mod dlp_service_client {
         }
         /// Creates an InspectTemplate for reusing frequently used configuration
         /// for inspecting content, images, and storage.
-        /// See https://cloud.google.com/dlp/docs/creating-templates to learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates
+        /// to learn more.
         pub async fn create_inspect_template(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateInspectTemplateRequest>,
@@ -8943,7 +9342,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Updates the InspectTemplate.
-        /// See https://cloud.google.com/dlp/docs/creating-templates to learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates
+        /// to learn more.
         pub async fn update_inspect_template(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateInspectTemplateRequest>,
@@ -8975,7 +9376,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Gets an InspectTemplate.
-        /// See https://cloud.google.com/dlp/docs/creating-templates to learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates
+        /// to learn more.
         pub async fn get_inspect_template(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInspectTemplateRequest>,
@@ -9007,7 +9410,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Lists InspectTemplates.
-        /// See https://cloud.google.com/dlp/docs/creating-templates to learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates
+        /// to learn more.
         pub async fn list_inspect_templates(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInspectTemplatesRequest>,
@@ -9039,7 +9444,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Deletes an InspectTemplate.
-        /// See https://cloud.google.com/dlp/docs/creating-templates to learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates
+        /// to learn more.
         pub async fn delete_inspect_template(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteInspectTemplateRequest>,
@@ -9069,8 +9476,9 @@ pub mod dlp_service_client {
         }
         /// Creates a DeidentifyTemplate for reusing frequently used configuration
         /// for de-identifying content, images, and storage.
-        /// See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
-        /// more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
+        /// to learn more.
         pub async fn create_deidentify_template(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDeidentifyTemplateRequest>,
@@ -9102,8 +9510,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Updates the DeidentifyTemplate.
-        /// See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
-        /// more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
+        /// to learn more.
         pub async fn update_deidentify_template(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDeidentifyTemplateRequest>,
@@ -9135,8 +9544,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Gets a DeidentifyTemplate.
-        /// See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
-        /// more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
+        /// to learn more.
         pub async fn get_deidentify_template(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDeidentifyTemplateRequest>,
@@ -9168,8 +9578,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Lists DeidentifyTemplates.
-        /// See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
-        /// more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
+        /// to learn more.
         pub async fn list_deidentify_templates(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDeidentifyTemplatesRequest>,
@@ -9201,8 +9612,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Deletes a DeidentifyTemplate.
-        /// See https://cloud.google.com/dlp/docs/creating-templates-deid to learn
-        /// more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
+        /// to learn more.
         pub async fn delete_deidentify_template(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDeidentifyTemplateRequest>,
@@ -9232,7 +9644,9 @@ pub mod dlp_service_client {
         }
         /// Creates a job trigger to run DLP actions such as scanning storage for
         /// sensitive information on a set schedule.
-        /// See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
+        /// to learn more.
         pub async fn create_job_trigger(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateJobTriggerRequest>,
@@ -9261,7 +9675,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Updates a job trigger.
-        /// See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
+        /// to learn more.
         pub async fn update_job_trigger(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateJobTriggerRequest>,
@@ -9323,7 +9739,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Gets a job trigger.
-        /// See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
+        /// to learn more.
         pub async fn get_job_trigger(
             &mut self,
             request: impl tonic::IntoRequest<super::GetJobTriggerRequest>,
@@ -9349,7 +9767,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Lists job triggers.
-        /// See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
+        /// to learn more.
         pub async fn list_job_triggers(
             &mut self,
             request: impl tonic::IntoRequest<super::ListJobTriggersRequest>,
@@ -9381,7 +9801,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Deletes a job trigger.
-        /// See https://cloud.google.com/dlp/docs/creating-job-triggers to learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
+        /// to learn more.
         pub async fn delete_job_trigger(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteJobTriggerRequest>,
@@ -9591,8 +10013,11 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Creates a new job to inspect storage or calculate risk metrics.
-        /// See https://cloud.google.com/dlp/docs/inspecting-storage and
-        /// https://cloud.google.com/dlp/docs/compute-risk-analysis to learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
+        /// and
+        /// https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
+        /// to learn more.
         ///
         /// When no InfoTypes or CustomInfoTypes are specified in inspect jobs, the
         /// system will automatically choose what detectors to run. By default this may
@@ -9622,8 +10047,11 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Lists DlpJobs that match the specified filter in the request.
-        /// See https://cloud.google.com/dlp/docs/inspecting-storage and
-        /// https://cloud.google.com/dlp/docs/compute-risk-analysis to learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
+        /// and
+        /// https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
+        /// to learn more.
         pub async fn list_dlp_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDlpJobsRequest>,
@@ -9652,8 +10080,11 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Gets the latest state of a long-running DlpJob.
-        /// See https://cloud.google.com/dlp/docs/inspecting-storage and
-        /// https://cloud.google.com/dlp/docs/compute-risk-analysis to learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
+        /// and
+        /// https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
+        /// to learn more.
         pub async fn get_dlp_job(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDlpJobRequest>,
@@ -9681,8 +10112,11 @@ pub mod dlp_service_client {
         /// Deletes a long-running DlpJob. This method indicates that the client is
         /// no longer interested in the DlpJob result. The job will be canceled if
         /// possible.
-        /// See https://cloud.google.com/dlp/docs/inspecting-storage and
-        /// https://cloud.google.com/dlp/docs/compute-risk-analysis to learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
+        /// and
+        /// https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
+        /// to learn more.
         pub async fn delete_dlp_job(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDlpJobRequest>,
@@ -9710,8 +10144,11 @@ pub mod dlp_service_client {
         /// Starts asynchronous cancellation on a long-running DlpJob. The server
         /// makes a best effort to cancel the DlpJob, but success is not
         /// guaranteed.
-        /// See https://cloud.google.com/dlp/docs/inspecting-storage and
-        /// https://cloud.google.com/dlp/docs/compute-risk-analysis to learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
+        /// and
+        /// https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
+        /// to learn more.
         pub async fn cancel_dlp_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CancelDlpJobRequest>,
@@ -9737,8 +10174,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Creates a pre-built stored infoType to be used for inspection.
-        /// See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
-        /// learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
+        /// to learn more.
         pub async fn create_stored_info_type(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateStoredInfoTypeRequest>,
@@ -9768,8 +10206,9 @@ pub mod dlp_service_client {
         }
         /// Updates the stored infoType by creating a new version. The existing version
         /// will continue to be used until the new version is ready.
-        /// See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
-        /// learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
+        /// to learn more.
         pub async fn update_stored_info_type(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateStoredInfoTypeRequest>,
@@ -9798,8 +10237,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Gets a stored infoType.
-        /// See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
-        /// learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
+        /// to learn more.
         pub async fn get_stored_info_type(
             &mut self,
             request: impl tonic::IntoRequest<super::GetStoredInfoTypeRequest>,
@@ -9828,8 +10268,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Lists stored infoTypes.
-        /// See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
-        /// learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
+        /// to learn more.
         pub async fn list_stored_info_types(
             &mut self,
             request: impl tonic::IntoRequest<super::ListStoredInfoTypesRequest>,
@@ -9861,8 +10302,9 @@ pub mod dlp_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Deletes a stored infoType.
-        /// See https://cloud.google.com/dlp/docs/creating-stored-infotypes to
-        /// learn more.
+        /// See
+        /// https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
+        /// to learn more.
         pub async fn delete_stored_info_type(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteStoredInfoTypeRequest>,
@@ -9886,6 +10328,192 @@ pub mod dlp_service_client {
                     GrpcMethod::new(
                         "google.privacy.dlp.v2.DlpService",
                         "DeleteStoredInfoType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists data profiles for an organization.
+        pub async fn list_project_data_profiles(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListProjectDataProfilesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListProjectDataProfilesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/ListProjectDataProfiles",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "ListProjectDataProfiles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists data profiles for an organization.
+        pub async fn list_table_data_profiles(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListTableDataProfilesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListTableDataProfilesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/ListTableDataProfiles",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "ListTableDataProfiles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists data profiles for an organization.
+        pub async fn list_column_data_profiles(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListColumnDataProfilesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListColumnDataProfilesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/ListColumnDataProfiles",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "ListColumnDataProfiles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a project data profile.
+        pub async fn get_project_data_profile(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetProjectDataProfileRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ProjectDataProfile>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/GetProjectDataProfile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "GetProjectDataProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a table data profile.
+        pub async fn get_table_data_profile(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetTableDataProfileRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::TableDataProfile>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/GetTableDataProfile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "GetTableDataProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a column data profile.
+        pub async fn get_column_data_profile(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetColumnDataProfileRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ColumnDataProfile>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/GetColumnDataProfile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "GetColumnDataProfile",
                     ),
                 );
             self.inner.unary(req, path, codec).await

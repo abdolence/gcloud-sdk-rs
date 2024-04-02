@@ -896,6 +896,10 @@ pub struct Publishing {
     /// <https://cloud.google.com/pubsub/lite/docs/reference/rpc>
     #[prost(string, tag = "110")]
     pub proto_reference_documentation_uri: ::prost::alloc::string::String,
+    /// Optional link to REST reference documentation.  Example:
+    /// <https://cloud.google.com/pubsub/lite/docs/reference/rest>
+    #[prost(string, tag = "111")]
+    pub rest_reference_documentation_uri: ::prost::alloc::string::String,
 }
 /// Settings for Java client libraries.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2265,7 +2269,7 @@ pub mod distribution {
 ///      content: &#40;== include google/foo/overview.md ==&#41;
 ///    - name: Tutorial
 ///      content: &#40;== include google/foo/tutorial.md ==&#41;
-///      subpages;
+///      subpages:
 ///      - name: Java
 ///        content: &#40;== include google/foo/tutorial_java.md ==&#41;
 ///    rules:
@@ -2975,6 +2979,24 @@ pub enum ErrorReason {
     ///
     /// This response indicates the associated GCP account has been suspended.
     GcpSuspended = 30,
+    /// The request violates the location policies when creating resources in
+    /// the restricted region.
+    ///
+    /// Example of an ErrorInfo when creating the Cloud Storage Bucket by
+    /// "projects/123" for service storage.googleapis.com:
+    ///
+    ///      { "reason": "LOCATION_POLICY_VIOLATED",
+    ///        "domain": "googleapis.com",
+    ///        "metadata": {
+    ///          "consumer": "projects/123",
+    ///          "service": "storage.googleapis.com",
+    ///        }
+    ///      }
+    ///
+    /// This response indicates creating the Cloud Storage Bucket in
+    /// "locations/asia-northeast3" violates at least one location policy.
+    /// The troubleshooting guidance is provided in the Help links.
+    LocationPolicyViolated = 31,
 }
 impl ErrorReason {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -3017,6 +3039,7 @@ impl ErrorReason {
             ErrorReason::OrgRestrictionHeaderInvalid => "ORG_RESTRICTION_HEADER_INVALID",
             ErrorReason::ServiceNotVisible => "SERVICE_NOT_VISIBLE",
             ErrorReason::GcpSuspended => "GCP_SUSPENDED",
+            ErrorReason::LocationPolicyViolated => "LOCATION_POLICY_VIOLATED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3054,6 +3077,7 @@ impl ErrorReason {
             "ORG_RESTRICTION_HEADER_INVALID" => Some(Self::OrgRestrictionHeaderInvalid),
             "SERVICE_NOT_VISIBLE" => Some(Self::ServiceNotVisible),
             "GCP_SUSPENDED" => Some(Self::GcpSuspended),
+            "LOCATION_POLICY_VIOLATED" => Some(Self::LocationPolicyViolated),
             _ => None,
         }
     }
@@ -3100,9 +3124,9 @@ pub mod field_info {
         Ipv4 = 2,
         /// Internet Protocol v6 value as defined by [RFC
         /// 2460](<https://datatracker.ietf.org/doc/html/rfc2460>). The value may be
-        /// normalized to entirely lowercase letters, and zero-padded partial and
-        /// empty octets. For example, the value `2001:DB8::` would be normalized to
-        /// `2001:0db8:0:0`.
+        /// normalized to entirely lowercase letters with zeros compressed, following
+        /// [RFC 5952](<https://datatracker.ietf.org/doc/html/rfc5952>). For example,
+        /// the value `2001:0DB8:0::0` would be normalized to `2001:db8::`.
         Ipv6 = 3,
         /// An IP address in either v4 or v6 format as described by the individual
         /// values defined herein. See the comments on the IPV4 and IPV6 types for
@@ -3696,7 +3720,7 @@ pub struct MonitoredResourceDescriptor {
     pub name: ::prost::alloc::string::String,
     /// Required. The monitored resource type. For example, the type
     /// `"cloudsql_database"` represents databases in Google Cloud SQL.
-    ///   For a list of types, see [Monitoring resource
+    ///   For a list of types, see [Monitored resource
     ///   types](<https://cloud.google.com/monitoring/api/resources>)
     /// and [Logging resource
     /// types](<https://cloud.google.com/logging/docs/api/v2/resource-list>).

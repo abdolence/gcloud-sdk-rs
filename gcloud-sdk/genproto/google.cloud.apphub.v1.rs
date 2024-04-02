@@ -670,7 +670,9 @@ pub struct DiscoveredWorkload {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupServiceProjectAttachmentRequest {
-    /// Required. Value for name.
+    /// Required. Service project ID and location to lookup service project
+    /// attachment for. Only global location is supported. Expected format:
+    /// `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -686,7 +688,9 @@ pub struct LookupServiceProjectAttachmentResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceProjectAttachmentsRequest {
-    /// Required. Value for parent.
+    /// Required. Host project ID and location to list service project attachments.
+    /// Only global location is supported. Expected format:
+    /// `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
@@ -696,10 +700,10 @@ pub struct ListServiceProjectAttachmentsRequest {
     /// Optional. A token identifying a page of results the server should return.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filtering results
+    /// Optional. Filtering results.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. Hint for how to order the results
+    /// Optional. Hint for how to order the results.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -721,13 +725,14 @@ pub struct ListServiceProjectAttachmentsResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceProjectAttachmentRequest {
-    /// Required. Value for parent.
+    /// Required. Host project ID and location to which service project is being
+    /// attached. Only global location is supported. Expected format:
+    /// `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The service project attachment identifier must contain the
-    /// project_id of the service project specified in the
-    /// service_project_attachment.service_project field. Hint:
-    /// "projects/{project_id}"
+    /// project id of the service project specified in the
+    /// service_project_attachment.service_project field.
     #[prost(string, tag = "2")]
     pub service_project_attachment_id: ::prost::alloc::string::String,
     /// Required. The resource being created.
@@ -753,7 +758,9 @@ pub struct CreateServiceProjectAttachmentRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceProjectAttachmentRequest {
-    /// Required. Value for name.
+    /// Required. Fully qualified name of the service project attachment to
+    /// retrieve. Expected format:
+    /// `projects/{project}/locations/{location}/serviceProjectAttachments/{serviceProjectAttachment}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -761,7 +768,9 @@ pub struct GetServiceProjectAttachmentRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceProjectAttachmentRequest {
-    /// Required. Value for name.
+    /// Required. Fully qualified name of the service project attachment to delete.
+    /// Expected format:
+    /// `projects/{project}/locations/{location}/serviceProjectAttachments/{serviceProjectAttachment}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique
@@ -784,7 +793,9 @@ pub struct DeleteServiceProjectAttachmentRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetachServiceProjectAttachmentRequest {
-    /// Required. Value for name.
+    /// Required. Service project id and location to detach from a host project.
+    /// Only global location is supported. Expected format:
+    /// `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -796,7 +807,9 @@ pub struct DetachServiceProjectAttachmentResponse {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
-    /// Required. Value for parent.
+    /// Required. Fully qualified name of the parent Application to list Services
+    /// for. Expected format:
+    /// `projects/{project}/locations/{location}/applications/{application}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
@@ -831,7 +844,8 @@ pub struct ListServicesResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDiscoveredServicesRequest {
-    /// Required. Value for parent.
+    /// Required. Project and location to list Discovered Services on.
+    /// Expected format: `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
@@ -841,10 +855,10 @@ pub struct ListDiscoveredServicesRequest {
     /// Optional. A token identifying a page of results the server should return.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filtering results
+    /// Optional. Filtering results.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. Hint for how to order the results
+    /// Optional. Hint for how to order the results.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -852,7 +866,7 @@ pub struct ListDiscoveredServicesRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDiscoveredServicesResponse {
-    /// List of discovered services.
+    /// List of Discovered Services.
     #[prost(message, repeated, tag = "1")]
     pub discovered_services: ::prost::alloc::vec::Vec<DiscoveredService>,
     /// A token identifying a page of results the server should return.
@@ -866,7 +880,9 @@ pub struct ListDiscoveredServicesResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceRequest {
-    /// Required. Value for parent.
+    /// Required. Fully qualified name of the parent Application to create the
+    /// Service in. Expected format:
+    /// `projects/{project}/locations/{location}/applications/{application}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Service identifier.
@@ -898,7 +914,9 @@ pub struct CreateServiceRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRequest {
-    /// Required. Value for name.
+    /// Required. Fully qualified name of the Service to fetch.
+    /// Expected format:
+    /// `projects/{project}/locations/{location}/applications/{application}/services/{service}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -906,7 +924,9 @@ pub struct GetServiceRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDiscoveredServiceRequest {
-    /// Required. Value for name.
+    /// Required. Fully qualified name of the Discovered Service to fetch.
+    /// Expected format:
+    /// `projects/{project}/locations/{location}/discoveredServices/{discoveredService}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -914,11 +934,12 @@ pub struct GetDiscoveredServiceRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupDiscoveredServiceRequest {
-    /// Required. Value for parent.
+    /// Required. Host project ID and location to lookup Discovered Service in.
+    /// Expected format: `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. GCP resource URI to find service for
-    /// Accepts both project number and project id and does translation when
+    /// Required. Resource URI to find DiscoveredService for.
+    /// Accepts both project number and project ID and does translation when
     /// needed.
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
@@ -927,7 +948,7 @@ pub struct LookupDiscoveredServiceRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupDiscoveredServiceResponse {
-    /// Discovered service if exists, empty otherwise.
+    /// Discovered Service if exists, empty otherwise.
     #[prost(message, optional, tag = "1")]
     pub discovered_service: ::core::option::Option<DiscoveredService>,
 }
@@ -969,7 +990,9 @@ pub struct UpdateServiceRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceRequest {
-    /// Required. Value for name.
+    /// Required. Fully qualified name of the Service to delete from an
+    /// Application. Expected format:
+    /// `projects/{project}/locations/{location}/applications/{application}/services/{service}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique
@@ -992,7 +1015,8 @@ pub struct DeleteServiceRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApplicationsRequest {
-    /// Required. Value for parent.
+    /// Required. Project and location to list Applications on.
+    /// Expected format: `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
@@ -1002,10 +1026,10 @@ pub struct ListApplicationsRequest {
     /// Optional. A token identifying a page of results the server should return.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filtering results
+    /// Optional. Filtering results.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. Hint for how to order the results
+    /// Optional. Hint for how to order the results.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -1027,7 +1051,8 @@ pub struct ListApplicationsResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateApplicationRequest {
-    /// Required. Value for parent.
+    /// Required. Project and location to create Application in.
+    /// Expected format: `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Application identifier.
@@ -1059,7 +1084,9 @@ pub struct CreateApplicationRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetApplicationRequest {
-    /// Required. Value for name.
+    /// Required. Fully qualified name of the Application to fetch.
+    /// Expected format:
+    /// `projects/{project}/locations/{location}/applications/{application}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1101,7 +1128,9 @@ pub struct UpdateApplicationRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteApplicationRequest {
-    /// Required. Value for name.
+    /// Required. Fully qualified name of the Application to delete.
+    /// Expected format:
+    /// `projects/{project}/locations/{location}/applications/{application}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique
@@ -1124,7 +1153,9 @@ pub struct DeleteApplicationRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkloadsRequest {
-    /// Required. Value for parent.
+    /// Required. Fully qualified name of the parent Application to list Workloads
+    /// for. Expected format:
+    /// `projects/{project}/locations/{location}/applications/{application}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
@@ -1134,10 +1165,10 @@ pub struct ListWorkloadsRequest {
     /// Optional. A token identifying a page of results the server should return.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filtering results
+    /// Optional. Filtering results.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. Hint for how to order the results
+    /// Optional. Hint for how to order the results.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -1159,7 +1190,8 @@ pub struct ListWorkloadsResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDiscoveredWorkloadsRequest {
-    /// Required. Value for parent.
+    /// Required. Project and location to list Discovered Workloads on.
+    /// Expected format: `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
@@ -1169,10 +1201,10 @@ pub struct ListDiscoveredWorkloadsRequest {
     /// Optional. A token identifying a page of results the server should return.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filtering results
+    /// Optional. Filtering results.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. Hint for how to order the results
+    /// Optional. Hint for how to order the results.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -1180,7 +1212,7 @@ pub struct ListDiscoveredWorkloadsRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDiscoveredWorkloadsResponse {
-    /// List of discovered workloads.
+    /// List of Discovered Workloads.
     #[prost(message, repeated, tag = "1")]
     pub discovered_workloads: ::prost::alloc::vec::Vec<DiscoveredWorkload>,
     /// A token identifying a page of results the server should return.
@@ -1194,7 +1226,9 @@ pub struct ListDiscoveredWorkloadsResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkloadRequest {
-    /// Required. Value for parent.
+    /// Required. Fully qualified name of the Application to create Workload in.
+    /// Expected format:
+    /// `projects/{project}/locations/{location}/applications/{application}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Workload identifier.
@@ -1226,7 +1260,9 @@ pub struct CreateWorkloadRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkloadRequest {
-    /// Required. Value for name.
+    /// Required. Fully qualified name of the Workload to fetch.
+    /// Expected format:
+    /// `projects/{project}/locations/{location}/applications/{application}/workloads/{workload}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1234,7 +1270,9 @@ pub struct GetWorkloadRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDiscoveredWorkloadRequest {
-    /// Required. Value for name.
+    /// Required. Fully qualified name of the Discovered Workload to fetch.
+    /// Expected format:
+    /// `projects/{project}/locations/{location}/discoveredWorkloads/{discoveredWorkload}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1242,11 +1280,12 @@ pub struct GetDiscoveredWorkloadRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupDiscoveredWorkloadRequest {
-    /// Required. Value for parent.
+    /// Required. Host project ID and location to lookup Discovered Workload in.
+    /// Expected format: `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. GCP resource URI to find workload for.
-    /// Accepts both project number and project id and does translation when
+    /// Required. Resource URI to find Discovered Workload for.
+    /// Accepts both project number and project ID and does translation when
     /// needed.
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
@@ -1255,7 +1294,7 @@ pub struct LookupDiscoveredWorkloadRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupDiscoveredWorkloadResponse {
-    /// Discovered workload if exists, empty otherwise.
+    /// Discovered Workload if exists, empty otherwise.
     #[prost(message, optional, tag = "1")]
     pub discovered_workload: ::core::option::Option<DiscoveredWorkload>,
 }
@@ -1297,7 +1336,9 @@ pub struct UpdateWorkloadRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkloadRequest {
-    /// Required. Value for name.
+    /// Required. Fully qualified name of the Workload to delete from an
+    /// Application. Expected format:
+    /// `projects/{project}/locations/{location}/applications/{application}/workloads/{workload}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique
@@ -1351,8 +1392,7 @@ pub mod app_hub_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// The AppHub services allows users to enable toplogy and telemetry
-    /// configuration.
+    /// The App Hub API allows you to manage App Hub resources.
     #[derive(Debug, Clone)]
     pub struct AppHubClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -1433,8 +1473,8 @@ pub mod app_hub_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Looks up a service project attachment. You can call this API from either a
-        /// host or service project.
+        /// Lists a service project attachment for a given service project. You can
+        /// call this API from any project to find if it is attached to a host project.
         pub async fn lookup_service_project_attachment(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -1467,7 +1507,7 @@ pub mod app_hub_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// List service projects attached to the host project.
+        /// Lists service projects attached to the host project.
         pub async fn list_service_project_attachments(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServiceProjectAttachmentsRequest>,
@@ -1531,7 +1571,7 @@ pub mod app_hub_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets a service project attached to the host project.
+        /// Gets a service project attachment.
         pub async fn get_service_project_attachment(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServiceProjectAttachmentRequest>,
@@ -1562,7 +1602,7 @@ pub mod app_hub_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes a service project attached to the host project.
+        /// Deletes a service project attachment.
         pub async fn delete_service_project_attachment(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -1595,8 +1635,9 @@ pub mod app_hub_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Detaches a service project from a host project. You can call this API from
-        /// either a host or service project.
+        /// Detaches a service project from a host project.
+        /// You can call this API from any service project without needing access to
+        /// the host project that it is attached to.
         pub async fn detach_service_project_attachment(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -1629,7 +1670,7 @@ pub mod app_hub_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists discovered services that can be added to an application in a host
+        /// Lists Discovered Services that can be added to an Application in a host
         /// project and location.
         pub async fn list_discovered_services(
             &mut self,
@@ -1661,7 +1702,7 @@ pub mod app_hub_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets a discovered service in a host project and location.
+        /// Gets a Discovered Service in a host project and location.
         pub async fn get_discovered_service(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDiscoveredServiceRequest>,
@@ -1692,7 +1733,7 @@ pub mod app_hub_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Looks up a discovered service in a host project and location and with a
+        /// Lists a Discovered Service in a host project and location, with a
         /// given resource URI.
         pub async fn lookup_discovered_service(
             &mut self,
@@ -1724,7 +1765,7 @@ pub mod app_hub_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// List Services in an Application.
+        /// Lists Services in an Application.
         pub async fn list_services(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServicesRequest>,
@@ -1831,7 +1872,7 @@ pub mod app_hub_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes a Service in an Application.
+        /// Deletes a Service from an Application.
         pub async fn delete_service(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteServiceRequest>,
@@ -1859,7 +1900,7 @@ pub mod app_hub_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists discovered workloads that can be added to an application in a host
+        /// Lists Discovered Workloads that can be added to an Application in a host
         /// project and location.
         pub async fn list_discovered_workloads(
             &mut self,
@@ -1891,7 +1932,7 @@ pub mod app_hub_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets a discovered workload in a host project and location.
+        /// Gets a Discovered Workload in a host project and location.
         pub async fn get_discovered_workload(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDiscoveredWorkloadRequest>,
@@ -1922,7 +1963,7 @@ pub mod app_hub_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Looks up a discovered Workload in a host project and location and with a
+        /// Lists a Discovered Workload in a host project and location, with a
         /// given resource URI.
         pub async fn lookup_discovered_workload(
             &mut self,
@@ -2061,7 +2102,7 @@ pub mod app_hub_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes a Workload in an Application.
+        /// Deletes a Workload from an Application.
         pub async fn delete_workload(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteWorkloadRequest>,

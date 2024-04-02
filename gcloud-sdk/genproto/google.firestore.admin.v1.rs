@@ -1,3 +1,107 @@
+/// A Backup of a Cloud Firestore Database.
+///
+/// The backup contains all documents and index configurations for the given
+/// database at a specific point in time.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Backup {
+    /// Output only. The unique resource name of the Backup.
+    ///
+    /// Format is `projects/{project}/locations/{location}/backups/{backup}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Name of the Firestore database that the backup is from.
+    ///
+    /// Format is `projects/{project}/databases/{database}`.
+    #[prost(string, tag = "2")]
+    pub database: ::prost::alloc::string::String,
+    /// Output only. The system-generated UUID4 for the Firestore database that the
+    /// backup is from.
+    #[prost(string, tag = "7")]
+    pub database_uid: ::prost::alloc::string::String,
+    /// Output only. The backup contains an externally consistent copy of the
+    /// database at this time.
+    #[prost(message, optional, tag = "3")]
+    pub snapshot_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp at which this backup expires.
+    #[prost(message, optional, tag = "4")]
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Statistics about the backup.
+    ///
+    /// This data only becomes available after the backup is fully materialized to
+    /// secondary storage. This field will be empty till then.
+    #[prost(message, optional, tag = "6")]
+    pub stats: ::core::option::Option<backup::Stats>,
+    /// Output only. The current state of the backup.
+    #[prost(enumeration = "backup::State", tag = "8")]
+    pub state: i32,
+}
+/// Nested message and enum types in `Backup`.
+pub mod backup {
+    /// Backup specific statistics.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Stats {
+        /// Output only. Summation of the size of all documents and index entries in
+        /// the backup, measured in bytes.
+        #[prost(int64, tag = "1")]
+        pub size_bytes: i64,
+        /// Output only. The total number of documents contained in the backup.
+        #[prost(int64, tag = "2")]
+        pub document_count: i64,
+        /// Output only. The total number of index entries contained in the backup.
+        #[prost(int64, tag = "3")]
+        pub index_count: i64,
+    }
+    /// Indicate the current state of the backup.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The state is unspecified.
+        Unspecified = 0,
+        /// The pending backup is still being created. Operations on the
+        /// backup will be rejected in this state.
+        Creating = 1,
+        /// The backup is complete and ready to use.
+        Ready = 2,
+        /// The backup is not available at this moment.
+        NotAvailable = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Creating => "CREATING",
+                State::Ready => "READY",
+                State::NotAvailable => "NOT_AVAILABLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "NOT_AVAILABLE" => Some(Self::NotAvailable),
+                _ => None,
+            }
+        }
+    }
+}
 /// A Cloud Firestore Database.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -401,11 +505,41 @@ pub mod index {
         #[prost(string, tag = "1")]
         pub field_path: ::prost::alloc::string::String,
         /// How the field value is indexed.
-        #[prost(oneof = "index_field::ValueMode", tags = "2, 3")]
+        #[prost(oneof = "index_field::ValueMode", tags = "2, 3, 4")]
         pub value_mode: ::core::option::Option<index_field::ValueMode>,
     }
     /// Nested message and enum types in `IndexField`.
     pub mod index_field {
+        /// The index configuration to support vector search operations
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct VectorConfig {
+            /// Required. The vector dimension this configuration applies to.
+            ///
+            /// The resulting index will only include vectors of this dimension, and
+            /// can be used for vector search with the same dimension.
+            #[prost(int32, tag = "1")]
+            pub dimension: i32,
+            /// The type of index used.
+            #[prost(oneof = "vector_config::Type", tags = "2")]
+            pub r#type: ::core::option::Option<vector_config::Type>,
+        }
+        /// Nested message and enum types in `VectorConfig`.
+        pub mod vector_config {
+            /// An index that stores vectors in a flat data structure, and supports
+            /// exhaustive search.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct FlatIndex {}
+            /// The type of index used.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum Type {
+                /// Indicates the vector index is a flat index.
+                #[prost(message, tag = "2")]
+                Flat(FlatIndex),
+            }
+        }
         /// The supported orderings.
         #[derive(
             Clone,
@@ -499,6 +633,10 @@ pub mod index {
             /// Indicates that this field supports operations on `array_value`s.
             #[prost(enumeration = "ArrayConfig", tag = "3")]
             ArrayConfig(i32),
+            /// Indicates that this field supports nearest neighbors and distance
+            /// operations on vector.
+            #[prost(message, tag = "4")]
+            VectorConfig(VectorConfig),
         }
     }
     /// Query Scope defines the scope at which a query is run. This is specified on
@@ -1063,6 +1201,30 @@ pub struct ExportDocumentsResponse {
     #[prost(string, tag = "1")]
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
+/// Metadata for the [long-running operation][google.longrunning.Operation] from
+/// the [RestoreDatabase][google.firestore.admin.v1.RestoreDatabase] request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestoreDatabaseMetadata {
+    /// The time the restore was started.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time the restore finished, unset for ongoing restores.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The operation state of the restore.
+    #[prost(enumeration = "OperationState", tag = "3")]
+    pub operation_state: i32,
+    /// The name of the database being restored to.
+    #[prost(string, tag = "4")]
+    pub database: ::prost::alloc::string::String,
+    /// The name of the backup restoring from.
+    #[prost(string, tag = "5")]
+    pub backup: ::prost::alloc::string::String,
+    /// How far along the restore is as an estimated percentage of remaining time.
+    #[prost(message, optional, tag = "8")]
+    pub progress_percentage: ::core::option::Option<Progress>,
+}
 /// Describes the progress of the operation.
 /// Unit of work is generic and must be interpreted based on where
 /// [Progress][google.firestore.admin.v1.Progress] is used.
@@ -1130,6 +1292,73 @@ impl OperationState {
             _ => None,
         }
     }
+}
+/// A backup schedule for a Cloud Firestore Database.
+///
+/// This resource is owned by the database it is backing up, and is deleted along
+/// with the database. The actual backups are not though.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BackupSchedule {
+    /// Output only. The unique backup schedule identifier across all locations and
+    /// databases for the given project.
+    ///
+    /// This will be auto-assigned.
+    ///
+    /// Format is
+    /// `projects/{project}/databases/{database}/backupSchedules/{backup_schedule}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The timestamp at which this backup schedule was created and
+    /// effective since.
+    ///
+    /// No backups will be created for this schedule before this time.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp at which this backup schedule was most recently
+    /// updated. When a backup schedule is first created, this is the same as
+    /// create_time.
+    #[prost(message, optional, tag = "10")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// At what relative time in the future, compared to its creation time,
+    /// the backup should be deleted, e.g. keep backups for 7 days.
+    #[prost(message, optional, tag = "6")]
+    pub retention: ::core::option::Option<::prost_types::Duration>,
+    /// A oneof field to represent when backups will be taken.
+    #[prost(oneof = "backup_schedule::Recurrence", tags = "7, 8")]
+    pub recurrence: ::core::option::Option<backup_schedule::Recurrence>,
+}
+/// Nested message and enum types in `BackupSchedule`.
+pub mod backup_schedule {
+    /// A oneof field to represent when backups will be taken.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Recurrence {
+        /// For a schedule that runs daily.
+        #[prost(message, tag = "7")]
+        DailyRecurrence(super::DailyRecurrence),
+        /// For a schedule that runs weekly on a specific day.
+        #[prost(message, tag = "8")]
+        WeeklyRecurrence(super::WeeklyRecurrence),
+    }
+}
+/// Represents a recurring schedule that runs at a specific time every day.
+///
+/// The time zone is UTC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DailyRecurrence {}
+/// Represents a recurring schedule that runs on a specified day of the week.
+///
+/// The time zone is UTC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WeeklyRecurrence {
+    /// The day of week to run.
+    ///
+    /// DAY_OF_WEEK_UNSPECIFIED is not allowed.
+    #[prost(enumeration = "super::super::super::r#type::DayOfWeek", tag = "2")]
+    pub day: i32,
 }
 /// A request to list the Firestore Databases in all locations for a project.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1231,6 +1460,75 @@ pub struct DeleteDatabaseRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDatabaseMetadata {}
+/// The request for
+/// [FirestoreAdmin.CreateBackupSchedule][google.firestore.admin.v1.FirestoreAdmin.CreateBackupSchedule].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateBackupScheduleRequest {
+    /// Required. The parent database.
+    ///
+    ///   Format `projects/{project}/databases/{database}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The backup schedule to create.
+    #[prost(message, optional, tag = "2")]
+    pub backup_schedule: ::core::option::Option<BackupSchedule>,
+}
+/// The request for
+/// [FirestoreAdmin.GetBackupSchedule][google.firestore.admin.v1.FirestoreAdmin.GetBackupSchedule].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetBackupScheduleRequest {
+    /// Required. The name of the backup schedule.
+    ///
+    /// Format
+    /// `projects/{project}/databases/{database}/backupSchedules/{backup_schedule}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for
+/// [FirestoreAdmin.UpdateBackupSchedule][google.firestore.admin.v1.FirestoreAdmin.UpdateBackupSchedule].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateBackupScheduleRequest {
+    /// Required. The backup schedule to update.
+    #[prost(message, optional, tag = "1")]
+    pub backup_schedule: ::core::option::Option<BackupSchedule>,
+    /// The list of fields to be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The request for
+/// [FirestoreAdmin.ListBackupSchedules][google.firestore.admin.v1.FirestoreAdmin.ListBackupSchedules].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupSchedulesRequest {
+    /// Required. The parent database.
+    ///
+    /// Format is `projects/{project}/databases/{database}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+}
+/// The response for
+/// [FirestoreAdmin.ListBackupSchedules][google.firestore.admin.v1.FirestoreAdmin.ListBackupSchedules].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupSchedulesResponse {
+    /// List of all backup schedules.
+    #[prost(message, repeated, tag = "1")]
+    pub backup_schedules: ::prost::alloc::vec::Vec<BackupSchedule>,
+}
+/// The request for [FirestoreAdmin.DeleteBackupSchedules][].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteBackupScheduleRequest {
+    /// Required. The name of the backup schedule.
+    ///
+    /// Format
+    /// `projects/{project}/databases/{database}/backupSchedules/{backup_schedule}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// The request for
 /// [FirestoreAdmin.CreateIndex][google.firestore.admin.v1.FirestoreAdmin.CreateIndex].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1428,6 +1726,86 @@ pub struct ImportDocumentsRequest {
     /// to include them. Each namespace in this list must be unique.
     #[prost(string, repeated, tag = "4")]
     pub namespace_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The request for
+/// [FirestoreAdmin.GetBackup][google.firestore.admin.v1.FirestoreAdmin.GetBackup].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetBackupRequest {
+    /// Required. Name of the backup to fetch.
+    ///
+    /// Format is `projects/{project}/locations/{location}/backups/{backup}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for
+/// [FirestoreAdmin.ListBackups][google.firestore.admin.v1.FirestoreAdmin.ListBackups].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupsRequest {
+    /// Required. The location to list backups from.
+    ///
+    /// Format is `projects/{project}/locations/{location}`.
+    /// Use `{location} = '-'` to list backups from all locations for the given
+    /// project. This allows listing backups from a single location or from all
+    /// locations.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+}
+/// The response for
+/// [FirestoreAdmin.ListBackups][google.firestore.admin.v1.FirestoreAdmin.ListBackups].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupsResponse {
+    /// List of all backups for the project.
+    #[prost(message, repeated, tag = "1")]
+    pub backups: ::prost::alloc::vec::Vec<Backup>,
+    /// List of locations that existing backups were not able to be fetched from.
+    ///
+    /// Instead of failing the entire requests when a single location is
+    /// unreachable, this response returns a partial result set and list of
+    /// locations unable to be reached here. The request can be retried against a
+    /// single location to get a concrete error.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The request for
+/// [FirestoreAdmin.DeleteBackup][google.firestore.admin.v1.FirestoreAdmin.DeleteBackup].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteBackupRequest {
+    /// Required. Name of the backup to delete.
+    ///
+    /// format is `projects/{project}/locations/{location}/backups/{backup}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request message for
+/// [FirestoreAdmin.RestoreDatabase][google.firestore.admin.v1.RestoreDatabase].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestoreDatabaseRequest {
+    /// Required. The project to restore the database in. Format is
+    /// `projects/{project_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID to use for the database, which will become the final
+    /// component of the database's resource name. This database id must not be
+    /// associated with an existing database.
+    ///
+    /// This value should be 4-63 characters. Valid characters are /[a-z][0-9]-/
+    /// with first character a letter and the last a letter or a number. Must not
+    /// be UUID-like /\[0-9a-f\]{8}(-\[0-9a-f\]{4}){3}-\[0-9a-f\]{12}/.
+    ///
+    /// "(default)" database id is also valid.
+    #[prost(string, tag = "2")]
+    pub database_id: ::prost::alloc::string::String,
+    /// Required. Backup to restore from. Must be from the same project as the
+    /// parent.
+    ///
+    /// Format is: `projects/{project_id}/locations/{location}/backups/{backup}`
+    #[prost(string, tag = "3")]
+    pub backup: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod firestore_admin_client {
@@ -2001,6 +2379,286 @@ pub mod firestore_admin_client {
                     GrpcMethod::new(
                         "google.firestore.admin.v1.FirestoreAdmin",
                         "DeleteDatabase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets information about a backup.
+        pub async fn get_backup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetBackupRequest>,
+        ) -> std::result::Result<tonic::Response<super::Backup>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/GetBackup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "GetBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the backups.
+        pub async fn list_backups(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListBackupsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListBackupsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/ListBackups",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "ListBackups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a backup.
+        pub async fn delete_backup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteBackupRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/DeleteBackup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "DeleteBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new database by restoring from an existing backup.
+        ///
+        /// The new database must be in the same cloud region or multi-region location
+        /// as the existing backup. This behaves similar to
+        /// [FirestoreAdmin.CreateDatabase][google.firestore.admin.v1.CreateDatabase]
+        /// except instead of creating a new empty database, a new database is created
+        /// with the database type, index configuration, and documents from an existing
+        /// backup.
+        ///
+        /// The [long-running operation][google.longrunning.Operation] can be used to
+        /// track the progress of the restore, with the Operation's
+        /// [metadata][google.longrunning.Operation.metadata] field type being the
+        /// [RestoreDatabaseMetadata][google.firestore.admin.v1.RestoreDatabaseMetadata].
+        /// The [response][google.longrunning.Operation.response] type is the
+        /// [Database][google.firestore.admin.v1.Database] if the restore was
+        /// successful. The new database is not readable or writeable until the LRO has
+        /// completed.
+        pub async fn restore_database(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RestoreDatabaseRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/RestoreDatabase",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "RestoreDatabase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a backup schedule on a database.
+        /// At most two backup schedules can be configured on a database, one daily
+        /// backup schedule with retention up to 7 days and one weekly backup schedule
+        /// with retention up to 14 weeks.
+        pub async fn create_backup_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateBackupScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<super::BackupSchedule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/CreateBackupSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "CreateBackupSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets information about a backup schedule.
+        pub async fn get_backup_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetBackupScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<super::BackupSchedule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/GetBackupSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "GetBackupSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List backup schedules.
+        pub async fn list_backup_schedules(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListBackupSchedulesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListBackupSchedulesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/ListBackupSchedules",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "ListBackupSchedules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a backup schedule.
+        pub async fn update_backup_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateBackupScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<super::BackupSchedule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/UpdateBackupSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "UpdateBackupSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a backup schedule.
+        pub async fn delete_backup_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteBackupScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/DeleteBackupSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "DeleteBackupSchedule",
                     ),
                 );
             self.inner.unary(req, path, codec).await

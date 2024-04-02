@@ -442,6 +442,62 @@ pub mod ca_pool {
         /// rebuilt shortly after a certificate is revoked.
         #[prost(bool, tag = "2")]
         pub publish_crl: bool,
+        /// Optional. Specifies the encoding format of each
+        /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+        /// resource's CA certificate and CRLs. If this is omitted, CA certificates
+        /// and CRLs will be published in PEM.
+        #[prost(enumeration = "publishing_options::EncodingFormat", tag = "3")]
+        pub encoding_format: i32,
+    }
+    /// Nested message and enum types in `PublishingOptions`.
+    pub mod publishing_options {
+        /// Supported encoding formats for publishing.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum EncodingFormat {
+            /// Not specified. By default, PEM format will be used.
+            Unspecified = 0,
+            /// The
+            /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
+            /// CA certificate and CRLs will be published in PEM format.
+            Pem = 1,
+            /// The
+            /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
+            /// CA certificate and CRLs will be published in DER format.
+            Der = 2,
+        }
+        impl EncodingFormat {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    EncodingFormat::Unspecified => "ENCODING_FORMAT_UNSPECIFIED",
+                    EncodingFormat::Pem => "PEM",
+                    EncodingFormat::Der => "DER",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ENCODING_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PEM" => Some(Self::Pem),
+                    "DER" => Some(Self::Der),
+                    _ => None,
+                }
+            }
+        }
     }
     /// Defines controls over all certificate issuance within a
     /// [CaPool][google.cloud.security.privateca.v1.CaPool].
@@ -459,9 +515,9 @@ pub mod ca_pool {
         /// if the issuing
         /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
         /// expires before a
-        /// [Certificate][google.cloud.security.privateca.v1.Certificate]'s requested
-        /// maximum_lifetime, the effective lifetime will be explicitly truncated to
-        /// match it.
+        /// [Certificate][google.cloud.security.privateca.v1.Certificate] resource's
+        /// requested maximum_lifetime, the effective lifetime will be explicitly
+        /// truncated to match it.
         #[prost(message, optional, tag = "2")]
         pub maximum_lifetime: ::core::option::Option<::prost_types::Duration>,
         /// Optional. If specified, then only methods allowed in the
@@ -935,6 +991,23 @@ pub struct CertificateTemplate {
     /// in the format `projects/*/locations/*/certificateTemplates/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. The maximum lifetime allowed for issued
+    /// [Certificates][google.cloud.security.privateca.v1.Certificate] that use
+    /// this template. If the issuing
+    /// [CaPool][google.cloud.security.privateca.v1.CaPool] resource's
+    /// [IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy]
+    /// specifies a
+    /// [maximum_lifetime][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.maximum_lifetime]
+    /// the minimum of the two durations will be the maximum lifetime for issued
+    /// [Certificates][google.cloud.security.privateca.v1.Certificate]. Note that
+    /// if the issuing
+    /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+    /// expires before a
+    /// [Certificate][google.cloud.security.privateca.v1.Certificate]'s requested
+    /// maximum_lifetime, the effective lifetime will be explicitly truncated
+    ///   to match it.
+    #[prost(message, optional, tag = "9")]
+    pub maximum_lifetime: ::core::option::Option<::prost_types::Duration>,
     /// Optional. A set of X.509 values that will be applied to all issued
     /// certificates that use this template. If the certificate request includes
     /// conflicting values for the same properties, they will be overwritten by the
@@ -1244,6 +1317,12 @@ pub struct CertificateConfig {
     /// CSR.
     #[prost(message, optional, tag = "3")]
     pub public_key: ::core::option::Option<PublicKey>,
+    /// Optional. When specified this provides a custom SKI to be used in the
+    /// certificate. This should only be used to maintain a SKI of an existing CA
+    /// originally created outside CA service, which was not generated using method
+    /// (1) described in RFC 5280 section 4.2.1.2.
+    #[prost(message, optional, tag = "4")]
+    pub subject_key_id: ::core::option::Option<certificate_config::KeyId>,
 }
 /// Nested message and enum types in `CertificateConfig`.
 pub mod certificate_config {
@@ -1252,13 +1331,23 @@ pub mod certificate_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SubjectConfig {
-        /// Required. Contains distinguished name fields such as the common name,
+        /// Optional. Contains distinguished name fields such as the common name,
         /// location and organization.
         #[prost(message, optional, tag = "1")]
         pub subject: ::core::option::Option<super::Subject>,
         /// Optional. The subject alternative name fields.
         #[prost(message, optional, tag = "2")]
         pub subject_alt_name: ::core::option::Option<super::SubjectAltNames>,
+    }
+    /// A KeyId identifies a specific public key, usually by hashing the public
+    /// key.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct KeyId {
+        /// Required. The value of this KeyId encoded in lowercase hexadecimal. This
+        /// is most likely the 160 bit SHA-1 hash of the public key.
+        #[prost(string, tag = "1")]
+        pub key_id: ::prost::alloc::string::String,
     }
 }
 /// A
@@ -2091,7 +2180,7 @@ pub struct DisableCertificateAuthorityRequest {
     pub request_id: ::prost::alloc::string::String,
     /// Optional. This field allows this CA to be disabled even if it's being
     /// depended on by another resource. However, doing so may result in unintended
-    /// and unrecoverable effects on any dependent resource(s) since the CA will
+    /// and unrecoverable effects on any dependent resources since the CA will
     /// no longer be able to issue certificates.
     #[prost(bool, tag = "3")]
     pub ignore_dependent_resources: bool,
@@ -2264,9 +2353,9 @@ pub struct DeleteCertificateAuthorityRequest {
     /// been allowed. If you proceed, there will be no way to recover this CA.
     #[prost(bool, tag = "5")]
     pub skip_grace_period: bool,
-    /// Optional. This field allows this ca to be deleted even if it's being
+    /// Optional. This field allows this CA to be deleted even if it's being
     /// depended on by another resource. However, doing so may result in unintended
-    /// and unrecoverable effects on any dependent resource(s) since the CA will
+    /// and unrecoverable effects on any dependent resources since the CA will
     /// no longer be able to issue certificates.
     #[prost(bool, tag = "6")]
     pub ignore_dependent_resources: bool,
@@ -2389,7 +2478,7 @@ pub struct DeleteCaPoolRequest {
     pub request_id: ::prost::alloc::string::String,
     /// Optional. This field allows this pool to be deleted even if it's being
     /// depended on by another resource. However, doing so may result in unintended
-    /// and unrecoverable effects on any dependent resource(s) since the pool will
+    /// and unrecoverable effects on any dependent resources since the pool will
     /// no longer be able to issue certificates.
     #[prost(bool, tag = "4")]
     pub ignore_dependent_resources: bool,
@@ -2425,10 +2514,9 @@ pub struct FetchCaCertsRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchCaCertsResponse {
-    /// The PEM encoded CA certificate chains of all
-    /// [ACTIVE][CertificateAuthority.State.ACTIVE]
-    /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
-    /// resources in this [CaPool][google.cloud.security.privateca.v1.CaPool].
+    /// The PEM encoded CA certificate chains of all certificate authorities in
+    /// this [CaPool][google.cloud.security.privateca.v1.CaPool] in the ENABLED,
+    /// DISABLED, or STAGED states.
     #[prost(message, repeated, tag = "1")]
     pub ca_certs: ::prost::alloc::vec::Vec<fetch_ca_certs_response::CertChain>,
 }
@@ -3503,9 +3591,8 @@ pub mod certificate_authority_service_client {
         }
         /// FetchCaCerts returns the current trust anchor for the
         /// [CaPool][google.cloud.security.privateca.v1.CaPool]. This will include CA
-        /// certificate chains for all ACTIVE
-        /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
-        /// resources in the [CaPool][google.cloud.security.privateca.v1.CaPool].
+        /// certificate chains for all certificate authorities in the ENABLED,
+        /// DISABLED, or STAGED states.
         pub async fn fetch_ca_certs(
             &mut self,
             request: impl tonic::IntoRequest<super::FetchCaCertsRequest>,

@@ -201,9 +201,8 @@ pub mod extension_chain {
         /// Required. A Common Expression Language (CEL) expression that is used to
         /// match requests for which the extension chain is executed.
         ///
-        /// For more information, see
-        /// [CEL matcher language
-        /// reference](/service-extensions/docs/cel-matcher-language-reference).
+        /// For more information, see [CEL matcher language
+        /// reference](<https://cloud.google.com/service-extensions/docs/cel-matcher-language-reference>).
         #[prost(string, tag = "1")]
         pub cel_expression: ::prost::alloc::string::String,
     }
@@ -221,6 +220,7 @@ pub mod extension_chain {
         pub name: ::prost::alloc::string::String,
         /// Optional. The `:authority` header in the gRPC request sent from Envoy
         /// to the extension service.
+        /// Required for Callout extensions.
         #[prost(string, tag = "2")]
         pub authority: ::prost::alloc::string::String,
         /// Required. The reference to the service that runs the extension.
@@ -241,15 +241,11 @@ pub mod extension_chain {
         /// this extension is called. This field is required for the
         /// `LbTrafficExtension` resource. It's not relevant for the
         /// `LbRouteExtension` resource.
-        #[prost(
-            enumeration = "extension::EventType",
-            repeated,
-            packed = "false",
-            tag = "4"
-        )]
+        #[prost(enumeration = "super::EventType", repeated, packed = "false", tag = "4")]
         pub supported_events: ::prost::alloc::vec::Vec<i32>,
-        /// Required. Specifies the timeout for each individual message on the
-        /// stream. The timeout must be between 10-1000 milliseconds.
+        /// Optional. Specifies the timeout for each individual message on the
+        /// stream. The timeout must be between 10-1000 milliseconds. Required for
+        /// Callout extensions.
         #[prost(message, optional, tag = "5")]
         pub timeout: ::core::option::Option<::prost_types::Duration>,
         /// Optional. Determines how the proxy behaves if the call to the extension
@@ -272,67 +268,6 @@ pub mod extension_chain {
         /// Each element is a string indicating the header name.
         #[prost(string, repeated, tag = "7")]
         pub forward_headers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    }
-    /// Nested message and enum types in `Extension`.
-    pub mod extension {
-        /// The part of the request or response for which this extension
-        /// is called.
-        /// The valid values are:
-        /// `REQUEST_HEADERS`, `REQUEST_BODY`, `RESPONSE_HEADERS`, `RESPONSE_BODY`.
-        #[derive(
-            Clone,
-            Copy,
-            Debug,
-            PartialEq,
-            Eq,
-            Hash,
-            PartialOrd,
-            Ord,
-            ::prost::Enumeration
-        )]
-        #[repr(i32)]
-        pub enum EventType {
-            /// Unspecified value. Do not use.
-            Unspecified = 0,
-            /// If included in `supported_events`,
-            /// the extension is called when the HTTP request headers arrive.
-            RequestHeaders = 1,
-            /// If included in `supported_events`,
-            /// the extension is called when the HTTP request body arrives.
-            RequestBody = 2,
-            /// If included in `supported_events`,
-            /// the extension is called when the HTTP response headers arrive.
-            ResponseHeaders = 3,
-            /// If included in `supported_events`,
-            /// the extension is called when the HTTP response body arrives.
-            ResponseBody = 4,
-        }
-        impl EventType {
-            /// String value of the enum field names used in the ProtoBuf definition.
-            ///
-            /// The values are not transformed in any way and thus are considered stable
-            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-            pub fn as_str_name(&self) -> &'static str {
-                match self {
-                    EventType::Unspecified => "EVENT_TYPE_UNSPECIFIED",
-                    EventType::RequestHeaders => "REQUEST_HEADERS",
-                    EventType::RequestBody => "REQUEST_BODY",
-                    EventType::ResponseHeaders => "RESPONSE_HEADERS",
-                    EventType::ResponseBody => "RESPONSE_BODY",
-                }
-            }
-            /// Creates an enum from field names used in the ProtoBuf definition.
-            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-                match value {
-                    "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                    "REQUEST_HEADERS" => Some(Self::RequestHeaders),
-                    "REQUEST_BODY" => Some(Self::RequestBody),
-                    "RESPONSE_HEADERS" => Some(Self::ResponseHeaders),
-                    "RESPONSE_BODY" => Some(Self::ResponseBody),
-                    _ => None,
-                }
-            }
-        }
     }
 }
 /// `LbTrafficExtension` is a resource that lets the extension service modify the
@@ -359,8 +294,8 @@ pub struct LbTrafficExtension {
     /// Optional. Set of labels associated with the `LbTrafficExtension` resource.
     ///
     /// The format must comply with [the requirements for
-    /// labels](/compute/docs/labeling-resources#requirements) for Google Cloud
-    /// resources.
+    /// labels](<https://cloud.google.com/compute/docs/labeling-resources#requirements>)
+    /// for Google Cloud resources.
     #[prost(map = "string, string", tag = "4")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -542,8 +477,8 @@ pub struct LbRouteExtension {
     /// Optional. Set of labels associated with the `LbRouteExtension` resource.
     ///
     /// The format must comply with [the requirements for
-    /// labels](/compute/docs/labeling-resources#requirements) for Google Cloud
-    /// resources.
+    /// labels](<https://cloud.google.com/compute/docs/labeling-resources#requirements>)
+    /// for Google Cloud resources.
     #[prost(map = "string, string", tag = "4")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -703,9 +638,63 @@ pub struct DeleteLbRouteExtensionRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// The part of the request or response for which the extension is called.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum EventType {
+    /// Unspecified value. Do not use.
+    Unspecified = 0,
+    /// If included in `supported_events`,
+    /// the extension is called when the HTTP request headers arrive.
+    RequestHeaders = 1,
+    /// If included in `supported_events`,
+    /// the extension is called when the HTTP request body arrives.
+    RequestBody = 2,
+    /// If included in `supported_events`,
+    /// the extension is called when the HTTP response headers arrive.
+    ResponseHeaders = 3,
+    /// If included in `supported_events`,
+    /// the extension is called when the HTTP response body arrives.
+    ResponseBody = 4,
+    /// If included in `supported_events`,
+    /// the extension is called when the HTTP request trailers arrives.
+    RequestTrailers = 5,
+    /// If included in `supported_events`,
+    /// the extension is called when the HTTP response trailers arrives.
+    ResponseTrailers = 6,
+}
+impl EventType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            EventType::Unspecified => "EVENT_TYPE_UNSPECIFIED",
+            EventType::RequestHeaders => "REQUEST_HEADERS",
+            EventType::RequestBody => "REQUEST_BODY",
+            EventType::ResponseHeaders => "RESPONSE_HEADERS",
+            EventType::ResponseBody => "RESPONSE_BODY",
+            EventType::RequestTrailers => "REQUEST_TRAILERS",
+            EventType::ResponseTrailers => "RESPONSE_TRAILERS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "REQUEST_HEADERS" => Some(Self::RequestHeaders),
+            "REQUEST_BODY" => Some(Self::RequestBody),
+            "RESPONSE_HEADERS" => Some(Self::ResponseHeaders),
+            "RESPONSE_BODY" => Some(Self::ResponseBody),
+            "REQUEST_TRAILERS" => Some(Self::RequestTrailers),
+            "RESPONSE_TRAILERS" => Some(Self::ResponseTrailers),
+            _ => None,
+        }
+    }
+}
 /// Load balancing schemes supported by the `LbTrafficExtension` resource and
-/// `LbRouteExtension` resource. The valid values are `INTERNAL_MANAGED` and
-/// `EXTERNAL_MANAGED`.
+/// `LbRouteExtension` resource.
 /// For more information, refer to [Choosing a load
 /// balancer](<https://cloud.google.com/load-balancing/docs/backend-service>).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

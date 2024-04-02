@@ -1524,6 +1524,18 @@ pub mod sql_external_sync_setting_error {
         /// If a time out occurs while the subscription counts are calculated, then
         /// this value is set to 1. Otherwise, this value is set to 2.
         SubscriptionCalculationStatus = 40,
+        /// Count of subscriptions needed to sync source data for PostgreSQL
+        /// database.
+        PgSubscriptionCount = 41,
+        /// Final parallel level that is used to do migration.
+        PgSyncParallelLevel = 42,
+        /// The disk size of the replica instance is smaller than the data size of
+        /// the source instance.
+        InsufficientDiskSize = 43,
+        /// The data size of the source instance is greater than 1 TB, the number of
+        /// cores of the replica instance is less than 8, and the memory of the
+        /// replica is less than 32 GB.
+        InsufficientMachineTier = 44,
     }
     impl SqlExternalSyncSettingErrorType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1645,6 +1657,18 @@ pub mod sql_external_sync_setting_error {
                 SqlExternalSyncSettingErrorType::SubscriptionCalculationStatus => {
                     "SUBSCRIPTION_CALCULATION_STATUS"
                 }
+                SqlExternalSyncSettingErrorType::PgSubscriptionCount => {
+                    "PG_SUBSCRIPTION_COUNT"
+                }
+                SqlExternalSyncSettingErrorType::PgSyncParallelLevel => {
+                    "PG_SYNC_PARALLEL_LEVEL"
+                }
+                SqlExternalSyncSettingErrorType::InsufficientDiskSize => {
+                    "INSUFFICIENT_DISK_SIZE"
+                }
+                SqlExternalSyncSettingErrorType::InsufficientMachineTier => {
+                    "INSUFFICIENT_MACHINE_TIER"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1713,6 +1737,10 @@ pub mod sql_external_sync_setting_error {
                 "SUBSCRIPTION_CALCULATION_STATUS" => {
                     Some(Self::SubscriptionCalculationStatus)
                 }
+                "PG_SUBSCRIPTION_COUNT" => Some(Self::PgSubscriptionCount),
+                "PG_SYNC_PARALLEL_LEVEL" => Some(Self::PgSyncParallelLevel),
+                "INSUFFICIENT_DISK_SIZE" => Some(Self::InsufficientDiskSize),
+                "INSUFFICIENT_MACHINE_TIER" => Some(Self::InsufficientMachineTier),
                 _ => None,
             }
         }

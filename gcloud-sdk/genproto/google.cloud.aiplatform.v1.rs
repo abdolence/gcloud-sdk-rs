@@ -20,6 +20,8 @@ pub enum AcceleratorType {
     NvidiaA10080gb = 9,
     /// Nvidia L4 GPU.
     NvidiaL4 = 11,
+    /// Nvidia H100 80Gb GPU.
+    NvidiaH10080gb = 13,
     /// TPU v2.
     TpuV2 = 6,
     /// TPU v3.
@@ -43,6 +45,7 @@ impl AcceleratorType {
             AcceleratorType::NvidiaTeslaA100 => "NVIDIA_TESLA_A100",
             AcceleratorType::NvidiaA10080gb => "NVIDIA_A100_80GB",
             AcceleratorType::NvidiaL4 => "NVIDIA_L4",
+            AcceleratorType::NvidiaH10080gb => "NVIDIA_H100_80GB",
             AcceleratorType::TpuV2 => "TPU_V2",
             AcceleratorType::TpuV3 => "TPU_V3",
             AcceleratorType::TpuV4Pod => "TPU_V4_POD",
@@ -60,6 +63,7 @@ impl AcceleratorType {
             "NVIDIA_TESLA_A100" => Some(Self::NvidiaTeslaA100),
             "NVIDIA_A100_80GB" => Some(Self::NvidiaA10080gb),
             "NVIDIA_L4" => Some(Self::NvidiaL4),
+            "NVIDIA_H100_80GB" => Some(Self::NvidiaH10080gb),
             "TPU_V2" => Some(Self::TpuV2),
             "TPU_V3" => Some(Self::TpuV3),
             "TPU_V4_POD" => Some(Self::TpuV4Pod),
@@ -2096,6 +2100,22 @@ pub struct AutoscalingMetricSpec {
     #[prost(int32, tag = "2")]
     pub target: i32,
 }
+/// A set of Shielded Instance options.
+/// See [Images using supported Shielded VM
+/// features](<https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>).
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ShieldedVmConfig {
+    /// Defines whether the instance has [Secure
+    /// Boot](<https://cloud.google.com/compute/shielded-vm/docs/shielded-vm#secure-boot>)
+    /// enabled.
+    ///
+    /// Secure Boot helps ensure that the system only runs authentic software by
+    /// verifying the digital signature of all boot components, and halting the
+    /// boot process if signature verification fails.
+    #[prost(bool, tag = "1")]
+    pub enable_secure_boot: bool,
+}
 /// Manual batch tuning parameters.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2427,6 +2447,10 @@ pub struct Model {
     /// `projects/{project}/locations/{location}/metadataStores/{metadata_store}/artifacts/{artifact}`.
     #[prost(string, tag = "44")]
     pub metadata_artifact: ::prost::alloc::string::String,
+    /// Optional. User input field to specify the base model source. Currently it
+    /// only supports specifing the Model Garden models and Genie models.
+    #[prost(message, optional, tag = "50")]
+    pub base_model_source: ::core::option::Option<model::BaseModelSource>,
 }
 /// Nested message and enum types in `Model`.
 pub mod model {
@@ -2561,6 +2585,27 @@ pub mod model {
         #[prost(string, tag = "1")]
         pub model: ::prost::alloc::string::String,
     }
+    /// User input field to specify the base model source. Currently it only
+    /// supports specifing the Model Garden models and Genie models.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct BaseModelSource {
+        #[prost(oneof = "base_model_source::Source", tags = "1, 2")]
+        pub source: ::core::option::Option<base_model_source::Source>,
+    }
+    /// Nested message and enum types in `BaseModelSource`.
+    pub mod base_model_source {
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Source {
+            /// Source information of Model Garden models.
+            #[prost(message, tag = "1")]
+            ModelGardenSource(super::super::ModelGardenSource),
+            /// Information about the base model of Genie models.
+            #[prost(message, tag = "2")]
+            GenieSource(super::super::GenieSource),
+        }
+    }
     /// Identifies a type of Model's prediction resources.
     #[derive(
         Clone,
@@ -2627,6 +2672,24 @@ pub struct LargeModelReference {
     /// "chat-bison@001", "text-bison@005", etc.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Contains information about the source of the models generated from Model
+/// Garden.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModelGardenSource {
+    /// Required. The model garden source model resource name.
+    #[prost(string, tag = "1")]
+    pub public_model_name: ::prost::alloc::string::String,
+}
+/// Contains information about the source of the models generated from Generative
+/// AI Studio.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenieSource {
+    /// Required. The public base model URI.
+    #[prost(string, tag = "1")]
+    pub base_model_uri: ::prost::alloc::string::String,
 }
 /// Contains the schemata used in Model's predictions and explanations via
 /// [PredictionService.Predict][google.cloud.aiplatform.v1.PredictionService.Predict],
@@ -3532,30 +3595,69 @@ pub struct Schema {
     pub r#type: i32,
     /// Optional. The format of the data.
     /// Supported formats:
-    ///   for NUMBER type: float, double
-    ///   for INTEGER type: int32, int64
+    ///   for NUMBER type: "float", "double"
+    ///   for INTEGER type: "int32", "int64"
+    ///   for STRING type: "email", "byte", etc
     #[prost(string, tag = "7")]
     pub format: ::prost::alloc::string::String,
+    /// Optional. The title of the Schema.
+    #[prost(string, tag = "24")]
+    pub title: ::prost::alloc::string::String,
     /// Optional. The description of the data.
     #[prost(string, tag = "8")]
     pub description: ::prost::alloc::string::String,
     /// Optional. Indicates if the value may be null.
     #[prost(bool, tag = "6")]
     pub nullable: bool,
-    /// Optional. Schema of the elements of Type.ARRAY.
+    /// Optional. Default value of the data.
+    #[prost(message, optional, tag = "23")]
+    pub default: ::core::option::Option<::prost_types::Value>,
+    /// Optional. SCHEMA FIELDS FOR TYPE ARRAY
+    /// Schema of the elements of Type.ARRAY.
     #[prost(message, optional, boxed, tag = "2")]
     pub items: ::core::option::Option<::prost::alloc::boxed::Box<Schema>>,
+    /// Optional. Minimum number of the elements for Type.ARRAY.
+    #[prost(int64, tag = "21")]
+    pub min_items: i64,
+    /// Optional. Maximum number of the elements for Type.ARRAY.
+    #[prost(int64, tag = "22")]
+    pub max_items: i64,
     /// Optional. Possible values of the element of Type.STRING with enum format.
     /// For example we can define an Enum Direction as :
     /// {type:STRING, format:enum, enum:\["EAST", NORTH", "SOUTH", "WEST"\]}
     #[prost(string, repeated, tag = "9")]
     pub r#enum: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. Properties of Type.OBJECT.
+    /// Optional. SCHEMA FIELDS FOR TYPE OBJECT
+    /// Properties of Type.OBJECT.
     #[prost(map = "string, message", tag = "3")]
     pub properties: ::std::collections::HashMap<::prost::alloc::string::String, Schema>,
     /// Optional. Required properties of Type.OBJECT.
     #[prost(string, repeated, tag = "5")]
     pub required: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Minimum number of the properties for Type.OBJECT.
+    #[prost(int64, tag = "14")]
+    pub min_properties: i64,
+    /// Optional. Maximum number of the properties for Type.OBJECT.
+    #[prost(int64, tag = "15")]
+    pub max_properties: i64,
+    /// Optional. SCHEMA FIELDS FOR TYPE INTEGER and NUMBER
+    /// Minimum value of the Type.INTEGER and Type.NUMBER
+    #[prost(double, tag = "16")]
+    pub minimum: f64,
+    /// Optional. Maximum value of the Type.INTEGER and Type.NUMBER
+    #[prost(double, tag = "17")]
+    pub maximum: f64,
+    /// Optional. SCHEMA FIELDS FOR TYPE STRING
+    /// Minimum length of the Type.STRING
+    #[prost(int64, tag = "18")]
+    pub min_length: i64,
+    /// Optional. Maximum length of the Type.STRING
+    #[prost(int64, tag = "19")]
+    pub max_length: i64,
+    /// Optional. Pattern of the Type.STRING to restrict a string to a regular
+    /// expression.
+    #[prost(string, tag = "20")]
+    pub pattern: ::prost::alloc::string::String,
     /// Optional. Example of the object. Will only populated when the object is the
     /// root.
     #[prost(message, optional, tag = "4")]
@@ -3615,20 +3717,32 @@ impl Type {
 ///
 /// A `Tool` is a piece of code that enables the system to interact with
 /// external systems to perform an action, or set of actions, outside of
-/// knowledge and scope of the model.
+/// knowledge and scope of the model. A Tool object should contain exactly
+/// one type of Tool (e.g FunctionDeclaration, Retrieval or
+/// GoogleSearchRetrieval).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tool {
-    /// Optional. One or more function declarations to be passed to the model along
-    /// with the current user query. Model may decide to call a subset of these
-    /// functions by populating [FunctionCall][content.part.function_call] in the
-    /// response. User should provide a
-    /// [FunctionResponse][content.part.function_response] for each function call
-    /// in the next turn. Based on the function responses, Model will generate the
-    /// final response back to the user. Maximum 64 function declarations can be
-    /// provided.
+    /// Optional. Function tool type.
+    /// One or more function declarations to be passed to the model along with the
+    /// current user query. Model may decide to call a subset of these functions
+    /// by populating [FunctionCall][content.part.function_call] in the response.
+    /// User should provide a [FunctionResponse][content.part.function_response]
+    /// for each function call in the next turn. Based on the function responses,
+    /// Model will generate the final response back to the user.
+    /// Maximum 64 function declarations can be provided.
     #[prost(message, repeated, tag = "1")]
     pub function_declarations: ::prost::alloc::vec::Vec<FunctionDeclaration>,
+    /// Optional. Retrieval tool type.
+    /// System will always execute the provided retrieval tool(s) to get external
+    /// knowledge to answer the prompt. Retrieval results are presented to the
+    /// model for generation.
+    #[prost(message, optional, tag = "2")]
+    pub retrieval: ::core::option::Option<Retrieval>,
+    /// Optional. GoogleSearchRetrieval tool type.
+    /// Specialized retrieval tool that is powered by Google search.
+    #[prost(message, optional, tag = "3")]
+    pub google_search_retrieval: ::core::option::Option<GoogleSearchRetrieval>,
 }
 /// Structured representation of a function declaration as defined by the
 /// [OpenAPI 3.0 specification](<https://spec.openapis.org/oas/v3.0.3>). Included
@@ -3640,8 +3754,8 @@ pub struct Tool {
 pub struct FunctionDeclaration {
     /// Required. The name of the function to call.
     /// Must start with a letter or an underscore.
-    /// Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum
-    /// length of 64.
+    /// Must be a-z, A-Z, 0-9, or contain underscores, dots and dashes, with a
+    /// maximum length of 64.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Description and purpose of the function.
@@ -3652,8 +3766,10 @@ pub struct FunctionDeclaration {
     /// format. Reflects the Open API 3.03 Parameter Object. string Key: the name
     /// of the parameter. Parameter names are case sensitive. Schema Value: the
     /// Schema defining the type used for the parameter. For function with no
-    /// parameters, this can be left unset. Example with 1 required and 1 optional
-    /// parameter: type: OBJECT properties:
+    /// parameters, this can be left unset. Parameter names must start with a
+    /// letter or an underscore and must only contain chars a-z, A-Z, 0-9, or
+    /// underscores with a maximum length of 64. Example with 1 required and 1
+    /// optional parameter: type: OBJECT properties:
     ///   param1:
     ///     type: STRING
     ///   param2:
@@ -3692,6 +3808,49 @@ pub struct FunctionResponse {
     /// Required. The function response in JSON object format.
     #[prost(message, optional, tag = "2")]
     pub response: ::core::option::Option<::prost_types::Struct>,
+}
+/// Defines a retrieval tool that model can call to access external knowledge.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Retrieval {
+    /// Optional. Disable using the result from this tool in detecting grounding
+    /// attribution. This does not affect how the result is given to the model for
+    /// generation.
+    #[prost(bool, tag = "3")]
+    pub disable_attribution: bool,
+    #[prost(oneof = "retrieval::Source", tags = "2")]
+    pub source: ::core::option::Option<retrieval::Source>,
+}
+/// Nested message and enum types in `Retrieval`.
+pub mod retrieval {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Set to use data source powered by Vertex AI Search.
+        #[prost(message, tag = "2")]
+        VertexAiSearch(super::VertexAiSearch),
+    }
+}
+/// Retrieve from Vertex AI Search datastore for grounding.
+/// See <https://cloud.google.com/vertex-ai-search-and-conversation>
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VertexAiSearch {
+    /// Required. Fully-qualified Vertex AI Search's datastore resource ID.
+    /// Format:
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}`
+    #[prost(string, tag = "1")]
+    pub datastore: ::prost::alloc::string::String,
+}
+/// Tool to retrieve public web data for grounding, powered by Google.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GoogleSearchRetrieval {
+    /// Optional. Disable using the result from this tool in detecting grounding
+    /// attribution. This does not affect how the result is given to the model for
+    /// generation.
+    #[prost(bool, tag = "1")]
+    pub disable_attribution: bool,
 }
 /// The base structured datatype containing multi-part content of a message.
 ///
@@ -3762,16 +3921,17 @@ pub mod part {
         VideoMetadata(super::VideoMetadata),
     }
 }
-/// Raw media bytes.
+/// Content blob.
 ///
-/// Text should not be sent as raw bytes, use the 'text' field.
+/// It's preferred to send as [text][google.cloud.aiplatform.v1.Part.text]
+/// directly rather than raw bytes.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Blob {
     /// Required. The IANA standard MIME type of the source data.
     #[prost(string, tag = "1")]
     pub mime_type: ::prost::alloc::string::String,
-    /// Required. Raw bytes for media formats.
+    /// Required. Raw bytes.
     #[prost(bytes = "vec", tag = "2")]
     pub data: ::prost::alloc::vec::Vec<u8>,
 }
@@ -3819,6 +3979,21 @@ pub struct GenerationConfig {
     /// Optional. Stop sequences.
     #[prost(string, repeated, tag = "6")]
     pub stop_sequences: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Positive penalties.
+    #[prost(float, optional, tag = "8")]
+    pub presence_penalty: ::core::option::Option<f32>,
+    /// Optional. Frequency penalties.
+    #[prost(float, optional, tag = "9")]
+    pub frequency_penalty: ::core::option::Option<f32>,
+    /// Optional. Output response mimetype of the generated candidate text.
+    /// Supported mimetype:
+    /// - `text/plain`: (default) Text output.
+    /// - `application/json`: JSON response in the candidates.
+    /// The model needs to be prompted to output the appropriate response type,
+    /// otherwise the behavior is undefined.
+    /// This is a preview feature.
+    #[prost(string, tag = "13")]
+    pub response_mime_type: ::prost::alloc::string::String,
 }
 /// Safety settings.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3830,6 +4005,10 @@ pub struct SafetySetting {
     /// Required. The harm block threshold.
     #[prost(enumeration = "safety_setting::HarmBlockThreshold", tag = "2")]
     pub threshold: i32,
+    /// Optional. Specify if the threshold is used for probability or severity
+    /// score. If not specified, the threshold is used for probability score.
+    #[prost(enumeration = "safety_setting::HarmBlockMethod", tag = "4")]
+    pub method: i32,
 }
 /// Nested message and enum types in `SafetySetting`.
 pub mod safety_setting {
@@ -3884,6 +4063,49 @@ pub mod safety_setting {
             }
         }
     }
+    /// Probability vs severity.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HarmBlockMethod {
+        /// The harm block method is unspecified.
+        Unspecified = 0,
+        /// The harm block method uses both probability and severity scores.
+        Severity = 1,
+        /// The harm block method uses the probability score.
+        Probability = 2,
+    }
+    impl HarmBlockMethod {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                HarmBlockMethod::Unspecified => "HARM_BLOCK_METHOD_UNSPECIFIED",
+                HarmBlockMethod::Severity => "SEVERITY",
+                HarmBlockMethod::Probability => "PROBABILITY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HARM_BLOCK_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "SEVERITY" => Some(Self::Severity),
+                "PROBABILITY" => Some(Self::Probability),
+                _ => None,
+            }
+        }
+    }
 }
 /// Safety rating corresponding to the generated content.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3895,6 +4117,15 @@ pub struct SafetyRating {
     /// Output only. Harm probability levels in the content.
     #[prost(enumeration = "safety_rating::HarmProbability", tag = "2")]
     pub probability: i32,
+    /// Output only. Harm probability score.
+    #[prost(float, tag = "5")]
+    pub probability_score: f32,
+    /// Output only. Harm severity levels in the content.
+    #[prost(enumeration = "safety_rating::HarmSeverity", tag = "6")]
+    pub severity: i32,
+    /// Output only. Harm severity score.
+    #[prost(float, tag = "7")]
+    pub severity_score: f32,
     /// Output only. Indicates whether the content was filtered out because of this
     /// rating.
     #[prost(bool, tag = "3")]
@@ -3949,6 +4180,57 @@ pub mod safety_rating {
                 "LOW" => Some(Self::Low),
                 "MEDIUM" => Some(Self::Medium),
                 "HIGH" => Some(Self::High),
+                _ => None,
+            }
+        }
+    }
+    /// Harm severity levels.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HarmSeverity {
+        /// Harm severity unspecified.
+        Unspecified = 0,
+        /// Negligible level of harm severity.
+        Negligible = 1,
+        /// Low level of harm severity.
+        Low = 2,
+        /// Medium level of harm severity.
+        Medium = 3,
+        /// High level of harm severity.
+        High = 4,
+    }
+    impl HarmSeverity {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                HarmSeverity::Unspecified => "HARM_SEVERITY_UNSPECIFIED",
+                HarmSeverity::Negligible => "HARM_SEVERITY_NEGLIGIBLE",
+                HarmSeverity::Low => "HARM_SEVERITY_LOW",
+                HarmSeverity::Medium => "HARM_SEVERITY_MEDIUM",
+                HarmSeverity::High => "HARM_SEVERITY_HIGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HARM_SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "HARM_SEVERITY_NEGLIGIBLE" => Some(Self::Negligible),
+                "HARM_SEVERITY_LOW" => Some(Self::Low),
+                "HARM_SEVERITY_MEDIUM" => Some(Self::Medium),
+                "HARM_SEVERITY_HIGH" => Some(Self::High),
                 _ => None,
             }
         }
@@ -4011,6 +4293,9 @@ pub struct Candidate {
     /// Output only. Source attribution of the generated content.
     #[prost(message, optional, tag = "6")]
     pub citation_metadata: ::core::option::Option<CitationMetadata>,
+    /// Output only. Metadata specifies sources used to ground generated content.
+    #[prost(message, optional, tag = "7")]
+    pub grounding_metadata: ::core::option::Option<GroundingMetadata>,
 }
 /// Nested message and enum types in `Candidate`.
 pub mod candidate {
@@ -4044,6 +4329,15 @@ pub mod candidate {
         Recitation = 4,
         /// All other reasons that stopped the token generation
         Other = 5,
+        /// The token generation was stopped as the response was flagged for the
+        /// terms which are included from the terminology blocklist.
+        Blocklist = 6,
+        /// The token generation was stopped as the response was flagged for
+        /// the prohibited contents.
+        ProhibitedContent = 7,
+        /// The token generation was stopped as the response was flagged for
+        /// Sensitive Personally Identifiable Information (SPII) contents.
+        Spii = 8,
     }
     impl FinishReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -4058,6 +4352,9 @@ pub mod candidate {
                 FinishReason::Safety => "SAFETY",
                 FinishReason::Recitation => "RECITATION",
                 FinishReason::Other => "OTHER",
+                FinishReason::Blocklist => "BLOCKLIST",
+                FinishReason::ProhibitedContent => "PROHIBITED_CONTENT",
+                FinishReason::Spii => "SPII",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4069,10 +4366,75 @@ pub mod candidate {
                 "SAFETY" => Some(Self::Safety),
                 "RECITATION" => Some(Self::Recitation),
                 "OTHER" => Some(Self::Other),
+                "BLOCKLIST" => Some(Self::Blocklist),
+                "PROHIBITED_CONTENT" => Some(Self::ProhibitedContent),
+                "SPII" => Some(Self::Spii),
                 _ => None,
             }
         }
     }
+}
+/// Segment of the content.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Segment {
+    /// Output only. The index of a Part object within its parent Content object.
+    #[prost(int32, tag = "1")]
+    pub part_index: i32,
+    /// Output only. Start index in the given Part, measured in bytes. Offset from
+    /// the start of the Part, inclusive, starting at zero.
+    #[prost(int32, tag = "2")]
+    pub start_index: i32,
+    /// Output only. End index in the given Part, measured in bytes. Offset from
+    /// the start of the Part, exclusive, starting at zero.
+    #[prost(int32, tag = "3")]
+    pub end_index: i32,
+}
+/// Grounding attribution.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GroundingAttribution {
+    /// Output only. Segment of the content this attribution belongs to.
+    #[prost(message, optional, tag = "1")]
+    pub segment: ::core::option::Option<Segment>,
+    /// Optional. Output only. Confidence score of the attribution. Ranges from 0
+    /// to 1. 1 is the most confident.
+    #[prost(float, optional, tag = "2")]
+    pub confidence_score: ::core::option::Option<f32>,
+    #[prost(oneof = "grounding_attribution::Reference", tags = "3")]
+    pub reference: ::core::option::Option<grounding_attribution::Reference>,
+}
+/// Nested message and enum types in `GroundingAttribution`.
+pub mod grounding_attribution {
+    /// Attribution from the web.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Web {
+        /// Output only. URI reference of the attribution.
+        #[prost(string, tag = "1")]
+        pub uri: ::prost::alloc::string::String,
+        /// Output only. Title of the attribution.
+        #[prost(string, tag = "2")]
+        pub title: ::prost::alloc::string::String,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Reference {
+        /// Optional. Attribution from the web.
+        #[prost(message, tag = "3")]
+        Web(Web),
+    }
+}
+/// Metadata returned to client when grounding is enabled.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GroundingMetadata {
+    /// Optional. Web search queries for the following-up web search.
+    #[prost(string, repeated, tag = "1")]
+    pub web_search_queries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. List of grounding attributions.
+    #[prost(message, repeated, tag = "2")]
+    pub grounding_attributions: ::prost::alloc::vec::Vec<GroundingAttribution>,
 }
 /// Harm categories that will block the content.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4253,6 +4615,15 @@ pub struct CustomJob {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomJobSpec {
+    /// Optional. The ID of the PersistentResource in the same Project and Location
+    /// which to run
+    ///
+    /// If this is specified, the job will be run on existing machines held by the
+    /// PersistentResource instead of on-demand short-live machines.
+    /// The network and CMEK configs on the job should be consistent with those on
+    /// the PersistentResource, otherwise, the job will be rejected.
+    #[prost(string, tag = "14")]
+    pub persistent_resource_id: ::prost::alloc::string::String,
     /// Required. The spec of the worker pools including machine type and Docker
     /// image. All worker pools except the first one are optional and can be
     /// skipped by providing an empty value.
@@ -5164,6 +5535,14 @@ pub struct DatasetVersion {
     /// Output only. Name of the associated BigQuery dataset.
     #[prost(string, tag = "4")]
     pub big_query_dataset_name: ::prost::alloc::string::String,
+    /// The user-defined name of the DatasetVersion.
+    /// The name can be up to 128 characters long and can consist of any UTF-8
+    /// characters.
+    #[prost(string, tag = "7")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Required. Output only. Additional information about the DatasetVersion.
+    #[prost(message, optional, tag = "8")]
+    pub metadata: ::core::option::Option<::prost_types::Value>,
 }
 /// Generic Metadata shared by all operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6597,6 +6976,13 @@ pub struct DeployedModel {
     /// will be used for the explanation configuration.
     #[prost(message, optional, tag = "9")]
     pub explanation_spec: ::core::option::Option<ExplanationSpec>,
+    /// If true, deploy the model without explainable feature, regardless the
+    /// existence of
+    /// [Model.explanation_spec][google.cloud.aiplatform.v1.Model.explanation_spec]
+    /// or
+    /// [explanation_spec][google.cloud.aiplatform.v1.DeployedModel.explanation_spec].
+    #[prost(bool, tag = "19")]
+    pub disable_explanations: bool,
     /// The service account that the DeployedModel's container runs as. Specify the
     /// email address of the service account. If this service account is not
     /// specified, the container runs as a service account that doesn't have access
@@ -7151,20 +7537,22 @@ pub struct ListEndpointsRequest {
     /// Optional. An expression for filtering the results of the request. For field
     /// names both snake_case and camelCase are supported.
     ///
-    ///    * `endpoint` supports = and !=. `endpoint` represents the Endpoint ID,
-    ///      i.e. the last segment of the Endpoint's [resource
-    ///      name][google.cloud.aiplatform.v1.Endpoint.name].
-    ///    * `display_name` supports = and, !=
+    ///    * `endpoint` supports `=` and `!=`. `endpoint` represents the Endpoint
+    ///      ID, i.e. the last segment of the Endpoint's
+    ///      [resource name][google.cloud.aiplatform.v1.Endpoint.name].
+    ///    * `display_name` supports `=` and `!=`.
     ///    * `labels` supports general map functions that is:
     ///      * `labels.key=value` - key:value equality
-    ///      * `labels.key:* or labels:key - key existence
+    ///      * `labels.key:*` or `labels:key` - key existence
     ///      * A key including a space must be quoted. `labels."a key"`.
+    ///    * `base_model_name` only supports `=`.
     ///
     /// Some examples:
     ///
     ///    * `endpoint=1`
     ///    * `displayName="myDisplayName"`
     ///    * `labels.myKey="myValue"`
+    ///    * `baseModelName="text-bison"`
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The standard list page size.
@@ -8754,8 +9142,8 @@ pub mod feature_group {
         /// BigQuery Table or View.
         #[prost(message, optional, tag = "1")]
         pub big_query_source: ::core::option::Option<super::BigQuerySource>,
-        /// Optional. Columns to construct entity_id / row keys. Currently only
-        /// supports 1 entity_id_column. If not provided defaults to `entity_id`.
+        /// Optional. Columns to construct entity_id / row keys.
+        /// If not provided defaults to `entity_id`.
         #[prost(string, repeated, tag = "2")]
         pub entity_id_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
@@ -8809,7 +9197,13 @@ pub struct FeatureOnlineStore {
     /// Output only. State of the featureOnlineStore.
     #[prost(enumeration = "feature_online_store::State", tag = "7")]
     pub state: i32,
-    #[prost(oneof = "feature_online_store::StorageType", tags = "8")]
+    /// Optional. The dedicated serving endpoint for this FeatureOnlineStore, which
+    /// is different from common Vertex service endpoint.
+    #[prost(message, optional, tag = "10")]
+    pub dedicated_serving_endpoint: ::core::option::Option<
+        feature_online_store::DedicatedServingEndpoint,
+    >,
+    #[prost(oneof = "feature_online_store::StorageType", tags = "8, 12")]
     pub storage_type: ::core::option::Option<feature_online_store::StorageType>,
 }
 /// Nested message and enum types in `FeatureOnlineStore`.
@@ -8843,6 +9237,21 @@ pub mod feature_online_store {
             #[prost(int32, tag = "3")]
             pub cpu_utilization_target: i32,
         }
+    }
+    /// Optimized storage type
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Optimized {}
+    /// The dedicated serving endpoint for this FeatureOnlineStore. Only need to
+    /// set when you choose Optimized storage type. Public endpoint is provisioned
+    /// by default.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DedicatedServingEndpoint {
+        /// Output only. This field will be populated with the domain name to use for
+        /// this FeatureOnlineStore
+        #[prost(string, tag = "2")]
+        pub public_endpoint_domain_name: ::prost::alloc::string::String,
     }
     /// Possible states a featureOnlineStore can have.
     #[derive(
@@ -8900,6 +9309,13 @@ pub mod feature_online_store {
         /// FeatureOnlineStore.
         #[prost(message, tag = "8")]
         Bigtable(Bigtable),
+        /// Contains settings for the Optimized store that will be created
+        /// to serve featureValues for all FeatureViews under this
+        /// FeatureOnlineStore. When choose Optimized storage type, need to set
+        /// [PrivateServiceConnectConfig.enable_private_service_connect][google.cloud.aiplatform.v1.PrivateServiceConnectConfig.enable_private_service_connect]
+        /// to use private endpoint. Otherwise will use public endpoint by default.
+        #[prost(message, tag = "12")]
+        Optimized(Optimized),
     }
 }
 /// FeatureView is representation of values that the FeatureOnlineStore will
@@ -8942,6 +9358,12 @@ pub struct FeatureView {
     /// FeatureView are made ready for online serving.
     #[prost(message, optional, tag = "7")]
     pub sync_config: ::core::option::Option<feature_view::SyncConfig>,
+    /// Optional. Configuration for index preparation for vector search. It
+    /// contains the required configurations to create an index from source data,
+    /// so that approximate nearest neighbor (a.k.a ANN) algorithms search can be
+    /// performed during online serving.
+    #[prost(message, optional, tag = "15")]
+    pub index_config: ::core::option::Option<feature_view::IndexConfig>,
     #[prost(oneof = "feature_view::Source", tags = "6, 9")]
     pub source: ::core::option::Option<feature_view::Source>,
 }
@@ -8954,8 +9376,7 @@ pub mod feature_view {
         /// trigger based on FeatureView.SyncConfig.
         #[prost(string, tag = "1")]
         pub uri: ::prost::alloc::string::String,
-        /// Required. Columns to construct entity_id / row keys. Start by supporting
-        /// 1 only.
+        /// Required. Columns to construct entity_id / row keys.
         #[prost(string, repeated, tag = "2")]
         pub entity_id_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
@@ -8972,6 +9393,129 @@ pub mod feature_view {
         #[prost(string, tag = "1")]
         pub cron: ::prost::alloc::string::String,
     }
+    /// Configuration for vector indexing.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct IndexConfig {
+        /// Optional. Column of embedding. This column contains the source data to
+        /// create index for vector search. embedding_column must be set when using
+        /// vector search.
+        #[prost(string, tag = "1")]
+        pub embedding_column: ::prost::alloc::string::String,
+        /// Optional. Columns of features that're used to filter vector search
+        /// results.
+        #[prost(string, repeated, tag = "2")]
+        pub filter_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. Column of crowding. This column contains crowding attribute
+        /// which is a constraint on a neighbor list produced by
+        /// [FeatureOnlineStoreService.SearchNearestEntities][google.cloud.aiplatform.v1.FeatureOnlineStoreService.SearchNearestEntities]
+        /// to diversify search results. If
+        /// [NearestNeighborQuery.per_crowding_attribute_neighbor_count][google.cloud.aiplatform.v1.NearestNeighborQuery.per_crowding_attribute_neighbor_count]
+        /// is set to K in
+        /// [SearchNearestEntitiesRequest][google.cloud.aiplatform.v1.SearchNearestEntitiesRequest],
+        /// it's guaranteed that no more than K entities of the same crowding
+        /// attribute are returned in the response.
+        #[prost(string, tag = "3")]
+        pub crowding_column: ::prost::alloc::string::String,
+        /// Optional. The number of dimensions of the input embedding.
+        #[prost(int32, optional, tag = "4")]
+        pub embedding_dimension: ::core::option::Option<i32>,
+        /// Optional. The distance measure used in nearest neighbor search.
+        #[prost(enumeration = "index_config::DistanceMeasureType", tag = "5")]
+        pub distance_measure_type: i32,
+        /// The configuration with regard to the algorithms used for efficient
+        /// search.
+        #[prost(oneof = "index_config::AlgorithmConfig", tags = "6, 7")]
+        pub algorithm_config: ::core::option::Option<index_config::AlgorithmConfig>,
+    }
+    /// Nested message and enum types in `IndexConfig`.
+    pub mod index_config {
+        /// Configuration options for using brute force search.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BruteForceConfig {}
+        /// Configuration options for the tree-AH algorithm.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct TreeAhConfig {
+            /// Optional. Number of embeddings on each leaf node. The default value is
+            /// 1000 if not set.
+            #[prost(int64, optional, tag = "1")]
+            pub leaf_node_embedding_count: ::core::option::Option<i64>,
+        }
+        /// The distance measure used in nearest neighbor search.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum DistanceMeasureType {
+            /// Should not be set.
+            Unspecified = 0,
+            /// Euclidean (L_2) Distance.
+            SquaredL2Distance = 1,
+            /// Cosine Distance. Defined as 1 - cosine similarity.
+            ///
+            /// We strongly suggest using DOT_PRODUCT_DISTANCE + UNIT_L2_NORM instead
+            /// of COSINE distance. Our algorithms have been more optimized for
+            /// DOT_PRODUCT distance which, when combined with UNIT_L2_NORM, is
+            /// mathematically equivalent to COSINE distance and results in the same
+            /// ranking.
+            CosineDistance = 2,
+            /// Dot Product Distance. Defined as a negative of the dot product.
+            DotProductDistance = 3,
+        }
+        impl DistanceMeasureType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    DistanceMeasureType::Unspecified => {
+                        "DISTANCE_MEASURE_TYPE_UNSPECIFIED"
+                    }
+                    DistanceMeasureType::SquaredL2Distance => "SQUARED_L2_DISTANCE",
+                    DistanceMeasureType::CosineDistance => "COSINE_DISTANCE",
+                    DistanceMeasureType::DotProductDistance => "DOT_PRODUCT_DISTANCE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "DISTANCE_MEASURE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SQUARED_L2_DISTANCE" => Some(Self::SquaredL2Distance),
+                    "COSINE_DISTANCE" => Some(Self::CosineDistance),
+                    "DOT_PRODUCT_DISTANCE" => Some(Self::DotProductDistance),
+                    _ => None,
+                }
+            }
+        }
+        /// The configuration with regard to the algorithms used for efficient
+        /// search.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum AlgorithmConfig {
+            /// Optional. Configuration options for the tree-AH algorithm (Shallow tree
+            /// + Asymmetric Hashing). Please refer to this paper for more details:
+            /// <https://arxiv.org/abs/1908.10396>
+            #[prost(message, tag = "6")]
+            TreeAhConfig(TreeAhConfig),
+            /// Optional. Configuration options for using brute force search, which
+            /// simply implements the standard linear search in the database for each
+            /// query. It is primarily meant for benchmarking and to generate the
+            /// ground truth for approximate search.
+            #[prost(message, tag = "7")]
+            BruteForceConfig(BruteForceConfig),
+        }
+    }
     /// A Feature Registry source for features that need to be synced to Online
     /// Store.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8982,6 +9526,9 @@ pub mod feature_view {
         pub feature_groups: ::prost::alloc::vec::Vec<
             feature_registry_source::FeatureGroup,
         >,
+        /// Optional. The project number of the parent project of the Feature Groups.
+        #[prost(int64, optional, tag = "2")]
+        pub project_number: ::core::option::Option<i64>,
     }
     /// Nested message and enum types in `FeatureRegistrySource`.
     pub mod feature_registry_source {
@@ -9031,6 +9578,24 @@ pub struct FeatureViewSync {
     /// Output only. Final status of the FeatureViewSync.
     #[prost(message, optional, tag = "4")]
     pub final_status: ::core::option::Option<super::super::super::rpc::Status>,
+    /// Output only. Summary of the sync job.
+    #[prost(message, optional, tag = "6")]
+    pub sync_summary: ::core::option::Option<feature_view_sync::SyncSummary>,
+}
+/// Nested message and enum types in `FeatureViewSync`.
+pub mod feature_view_sync {
+    /// Summary from the Sync job. For continuous syncs, the summary is updated
+    /// periodically. For batch syncs, it gets updated on completion of the sync.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SyncSummary {
+        /// Output only. Total number of rows synced.
+        #[prost(int64, tag = "1")]
+        pub row_synced: i64,
+        /// Output only. BigQuery slot milliseconds consumed for the sync job.
+        #[prost(int64, tag = "2")]
+        pub total_slot: i64,
+    }
 }
 /// Request message for
 /// [FeatureOnlineStoreAdminService.CreateFeatureOnlineStore][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.CreateFeatureOnlineStore].
@@ -10605,6 +11170,11 @@ pub struct FetchFeatureValuesRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchFeatureValuesResponse {
+    /// The data key associated with this response.
+    /// Will only be populated for
+    /// [FeatureOnlineStoreService.StreamingFetchFeatureValues][] RPCs.
+    #[prost(message, optional, tag = "4")]
+    pub data_key: ::core::option::Option<FeatureViewDataKey>,
     #[prost(oneof = "fetch_feature_values_response::Format", tags = "3, 2")]
     pub format: ::core::option::Option<fetch_feature_values_response::Format>,
 }
@@ -13688,6 +14258,582 @@ pub mod feature_registry_service_client {
         }
     }
 }
+/// Represents a TuningJob that runs with Google owned models.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TuningJob {
+    /// Output only. Identifier. Resource name of a TuningJob. Format:
+    /// `projects/{project}/locations/{location}/tuningJobs/{tuning_job}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The display name of the
+    /// [TunedModel][google.cloud.aiplatform.v1.Model]. The name can be up to
+    /// 128 characters long and can consist of any UTF-8 characters.
+    #[prost(string, tag = "2")]
+    pub tuned_model_display_name: ::prost::alloc::string::String,
+    /// Optional. The description of the
+    /// [TuningJob][google.cloud.aiplatform.v1.TuningJob].
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. The detailed state of the job.
+    #[prost(enumeration = "JobState", tag = "6")]
+    pub state: i32,
+    /// Output only. Time when the
+    /// [TuningJob][google.cloud.aiplatform.v1.TuningJob] was created.
+    #[prost(message, optional, tag = "7")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the
+    /// [TuningJob][google.cloud.aiplatform.v1.TuningJob] for the first time
+    /// entered the `JOB_STATE_RUNNING` state.
+    #[prost(message, optional, tag = "8")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the TuningJob entered any of the following
+    /// [JobStates][google.cloud.aiplatform.v1.JobState]: `JOB_STATE_SUCCEEDED`,
+    /// `JOB_STATE_FAILED`, `JOB_STATE_CANCELLED`, `JOB_STATE_EXPIRED`.
+    #[prost(message, optional, tag = "9")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the
+    /// [TuningJob][google.cloud.aiplatform.v1.TuningJob] was most recently
+    /// updated.
+    #[prost(message, optional, tag = "10")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Only populated when job's state is `JOB_STATE_FAILED` or
+    /// `JOB_STATE_CANCELLED`.
+    #[prost(message, optional, tag = "11")]
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
+    /// Optional. The labels with user-defined metadata to organize
+    /// [TuningJob][google.cloud.aiplatform.v1.TuningJob] and generated resources
+    /// such as [Model][google.cloud.aiplatform.v1.Model] and
+    /// [Endpoint][google.cloud.aiplatform.v1.Endpoint].
+    ///
+    /// Label keys and values can be no longer than 64 characters
+    /// (Unicode codepoints), can only contain lowercase letters, numeric
+    /// characters, underscores and dashes. International characters are allowed.
+    ///
+    /// See <https://goo.gl/xmQnxf> for more information and examples of labels.
+    #[prost(map = "string, string", tag = "12")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The Experiment associated with this
+    /// [TuningJob][google.cloud.aiplatform.v1.TuningJob].
+    #[prost(string, tag = "13")]
+    pub experiment: ::prost::alloc::string::String,
+    /// Output only. The tuned model resources assiociated with this
+    /// [TuningJob][google.cloud.aiplatform.v1.TuningJob].
+    #[prost(message, optional, tag = "14")]
+    pub tuned_model: ::core::option::Option<TunedModel>,
+    /// Output only. The tuning data statistics associated with this
+    /// [TuningJob][google.cloud.aiplatform.v1.TuningJob].
+    #[prost(message, optional, tag = "15")]
+    pub tuning_data_stats: ::core::option::Option<TuningDataStats>,
+    #[prost(oneof = "tuning_job::SourceModel", tags = "4")]
+    pub source_model: ::core::option::Option<tuning_job::SourceModel>,
+    #[prost(oneof = "tuning_job::TuningSpec", tags = "5")]
+    pub tuning_spec: ::core::option::Option<tuning_job::TuningSpec>,
+}
+/// Nested message and enum types in `TuningJob`.
+pub mod tuning_job {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SourceModel {
+        /// Model name for tuning, e.g., "gemini-1.0-pro-002".
+        #[prost(string, tag = "4")]
+        BaseModel(::prost::alloc::string::String),
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TuningSpec {
+        /// Tuning Spec for Supervised Fine Tuning.
+        #[prost(message, tag = "5")]
+        SupervisedTuningSpec(super::SupervisedTuningSpec),
+    }
+}
+/// The Model Registry Model and Online Prediction Endpoint assiociated with
+/// this [TuningJob][google.cloud.aiplatform.v1.TuningJob].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TunedModel {
+    /// Output only. The resource name of the TunedModel. Format:
+    /// `projects/{project}/locations/{location}/models/{model}`.
+    #[prost(string, tag = "1")]
+    pub model: ::prost::alloc::string::String,
+    /// Output only. A resource name of an Endpoint. Format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`.
+    #[prost(string, tag = "2")]
+    pub endpoint: ::prost::alloc::string::String,
+}
+/// Dataset distribution for Supervised Tuning.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SupervisedTuningDatasetDistribution {
+    /// Output only. Sum of a given population of values.
+    #[prost(int64, tag = "1")]
+    pub sum: i64,
+    /// Output only. The minimum of the population values.
+    #[prost(double, tag = "2")]
+    pub min: f64,
+    /// Output only. The maximum of the population values.
+    #[prost(double, tag = "3")]
+    pub max: f64,
+    /// Output only. The arithmetic mean of the values in the population.
+    #[prost(double, tag = "4")]
+    pub mean: f64,
+    /// Output only. The median of the values in the population.
+    #[prost(double, tag = "5")]
+    pub median: f64,
+    /// Output only. The 5th percentile of the values in the population.
+    #[prost(double, tag = "6")]
+    pub p5: f64,
+    /// Output only. The 95th percentile of the values in the population.
+    #[prost(double, tag = "7")]
+    pub p95: f64,
+    /// Output only. Defines the histogram bucket.
+    #[prost(message, repeated, tag = "8")]
+    pub buckets: ::prost::alloc::vec::Vec<
+        supervised_tuning_dataset_distribution::DatasetBucket,
+    >,
+}
+/// Nested message and enum types in `SupervisedTuningDatasetDistribution`.
+pub mod supervised_tuning_dataset_distribution {
+    /// Dataset bucket used to create a histogram for the distribution given a
+    /// population of values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DatasetBucket {
+        /// Output only. Number of values in the bucket.
+        #[prost(double, tag = "1")]
+        pub count: f64,
+        /// Output only. Left bound of the bucket.
+        #[prost(double, tag = "2")]
+        pub left: f64,
+        /// Output only. Right bound of the bucket.
+        #[prost(double, tag = "3")]
+        pub right: f64,
+    }
+}
+/// Tuning data statistics for Supervised Tuning.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SupervisedTuningDataStats {
+    /// Output only. Number of examples in the tuning dataset.
+    #[prost(int64, tag = "1")]
+    pub tuning_dataset_example_count: i64,
+    /// Output only. Number of tuning characters in the tuning dataset.
+    #[prost(int64, tag = "2")]
+    pub total_tuning_character_count: i64,
+    /// Output only. Number of billable characters in the tuning dataset.
+    #[prost(int64, tag = "3")]
+    pub total_billable_character_count: i64,
+    /// Output only. Number of tuning steps for this Tuning Job.
+    #[prost(int64, tag = "4")]
+    pub tuning_step_count: i64,
+    /// Output only. Dataset distributions for the user input tokens.
+    #[prost(message, optional, tag = "5")]
+    pub user_input_token_distribution: ::core::option::Option<
+        SupervisedTuningDatasetDistribution,
+    >,
+    /// Output only. Dataset distributions for the user output tokens.
+    #[prost(message, optional, tag = "6")]
+    pub user_output_token_distribution: ::core::option::Option<
+        SupervisedTuningDatasetDistribution,
+    >,
+    /// Output only. Dataset distributions for the messages per example.
+    #[prost(message, optional, tag = "7")]
+    pub user_message_per_example_distribution: ::core::option::Option<
+        SupervisedTuningDatasetDistribution,
+    >,
+    /// Output only. Sample user messages in the training dataset uri.
+    #[prost(message, repeated, tag = "8")]
+    pub user_dataset_examples: ::prost::alloc::vec::Vec<Content>,
+}
+/// The tuning data statistic values for
+/// [TuningJob][google.cloud.aiplatform.v1.TuningJob].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TuningDataStats {
+    #[prost(oneof = "tuning_data_stats::TuningDataStats", tags = "1")]
+    pub tuning_data_stats: ::core::option::Option<tuning_data_stats::TuningDataStats>,
+}
+/// Nested message and enum types in `TuningDataStats`.
+pub mod tuning_data_stats {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TuningDataStats {
+        /// The SFT Tuning data stats.
+        #[prost(message, tag = "1")]
+        SupervisedTuningDataStats(super::SupervisedTuningDataStats),
+    }
+}
+/// Hyperparameters for SFT.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SupervisedHyperParameters {
+    /// Optional. Number of training epoches for this tuning job.
+    #[prost(int64, tag = "1")]
+    pub epoch_count: i64,
+    /// Optional. Learning rate multiplier for tuning.
+    #[prost(double, tag = "2")]
+    pub learning_rate_multiplier: f64,
+    /// Optional. Adapter size for tuning.
+    #[prost(enumeration = "supervised_hyper_parameters::AdapterSize", tag = "3")]
+    pub adapter_size: i32,
+}
+/// Nested message and enum types in `SupervisedHyperParameters`.
+pub mod supervised_hyper_parameters {
+    /// Supported adapter sizes for tuning.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AdapterSize {
+        /// Adapter size is unspecified.
+        Unspecified = 0,
+        /// Adapter size 1.
+        One = 1,
+        /// Adapter size 4.
+        Four = 2,
+        /// Adapter size 8.
+        Eight = 3,
+        /// Adapter size 16.
+        Sixteen = 4,
+    }
+    impl AdapterSize {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                AdapterSize::Unspecified => "ADAPTER_SIZE_UNSPECIFIED",
+                AdapterSize::One => "ADAPTER_SIZE_ONE",
+                AdapterSize::Four => "ADAPTER_SIZE_FOUR",
+                AdapterSize::Eight => "ADAPTER_SIZE_EIGHT",
+                AdapterSize::Sixteen => "ADAPTER_SIZE_SIXTEEN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ADAPTER_SIZE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ADAPTER_SIZE_ONE" => Some(Self::One),
+                "ADAPTER_SIZE_FOUR" => Some(Self::Four),
+                "ADAPTER_SIZE_EIGHT" => Some(Self::Eight),
+                "ADAPTER_SIZE_SIXTEEN" => Some(Self::Sixteen),
+                _ => None,
+            }
+        }
+    }
+}
+/// Tuning Spec for Supervised Tuning.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SupervisedTuningSpec {
+    /// Required. Cloud Storage path to file containing training dataset for
+    /// tuning.
+    #[prost(string, tag = "1")]
+    pub training_dataset_uri: ::prost::alloc::string::String,
+    /// Optional. Cloud Storage path to file containing validation dataset for
+    /// tuning.
+    #[prost(string, tag = "2")]
+    pub validation_dataset_uri: ::prost::alloc::string::String,
+    /// Optional. Hyperparameters for SFT.
+    #[prost(message, optional, tag = "3")]
+    pub hyper_parameters: ::core::option::Option<SupervisedHyperParameters>,
+}
+/// Request message for
+/// [GenAiTuningService.CreateTuningJob][google.cloud.aiplatform.v1.GenAiTuningService.CreateTuningJob].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateTuningJobRequest {
+    /// Required. The resource name of the Location to create the TuningJob in.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The TuningJob to create.
+    #[prost(message, optional, tag = "2")]
+    pub tuning_job: ::core::option::Option<TuningJob>,
+}
+/// Request message for
+/// [GenAiTuningService.GetTuningJob][google.cloud.aiplatform.v1.GenAiTuningService.GetTuningJob].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetTuningJobRequest {
+    /// Required. The name of the TuningJob resource. Format:
+    /// `projects/{project}/locations/{location}/tuningJobs/{tuning_job}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [GenAiTuningService.ListTuningJobs][google.cloud.aiplatform.v1.GenAiTuningService.ListTuningJobs].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTuningJobsRequest {
+    /// Required. The resource name of the Location to list the TuningJobs from.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The standard list filter.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The standard list page size.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. The standard list page token.
+    /// Typically obtained via [ListTuningJob.next_page_token][] of the
+    /// previous GenAiTuningService.ListTuningJob][] call.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [GenAiTuningService.ListTuningJobs][google.cloud.aiplatform.v1.GenAiTuningService.ListTuningJobs]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTuningJobsResponse {
+    /// List of TuningJobs in the requested page.
+    #[prost(message, repeated, tag = "1")]
+    pub tuning_jobs: ::prost::alloc::vec::Vec<TuningJob>,
+    /// A token to retrieve the next page of results.
+    /// Pass to
+    /// [ListTuningJobsRequest.page_token][google.cloud.aiplatform.v1.ListTuningJobsRequest.page_token]
+    /// to obtain that page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [GenAiTuningService.CancelTuningJob][google.cloud.aiplatform.v1.GenAiTuningService.CancelTuningJob].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CancelTuningJobRequest {
+    /// Required. The name of the TuningJob to cancel. Format:
+    /// `projects/{project}/locations/{location}/tuningJobs/{tuning_job}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod gen_ai_tuning_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// A service for creating and managing GenAI Tuning Jobs.
+    #[derive(Debug, Clone)]
+    pub struct GenAiTuningServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl GenAiTuningServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> GenAiTuningServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> GenAiTuningServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            GenAiTuningServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a TuningJob. A created TuningJob right away will be attempted to
+        /// be run.
+        pub async fn create_tuning_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateTuningJobRequest>,
+        ) -> std::result::Result<tonic::Response<super::TuningJob>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.GenAiTuningService/CreateTuningJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.GenAiTuningService",
+                        "CreateTuningJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a TuningJob.
+        pub async fn get_tuning_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetTuningJobRequest>,
+        ) -> std::result::Result<tonic::Response<super::TuningJob>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.GenAiTuningService/GetTuningJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.GenAiTuningService",
+                        "GetTuningJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists TuningJobs in a Location.
+        pub async fn list_tuning_jobs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListTuningJobsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListTuningJobsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.GenAiTuningService/ListTuningJobs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.GenAiTuningService",
+                        "ListTuningJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Cancels a TuningJob.
+        /// Starts asynchronous cancellation on the TuningJob. The server makes a best
+        /// effort to cancel the job, but success is not guaranteed. Clients can use
+        /// [GenAiTuningService.GetTuningJob][google.cloud.aiplatform.v1.GenAiTuningService.GetTuningJob]
+        /// or other methods to check whether the cancellation succeeded or whether the
+        /// job completed despite cancellation. On successful cancellation, the
+        /// TuningJob is not deleted; instead it becomes a job with a
+        /// [TuningJob.error][google.cloud.aiplatform.v1.TuningJob.error] value with a
+        /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+        /// `Code.CANCELLED`, and
+        /// [TuningJob.state][google.cloud.aiplatform.v1.TuningJob.state] is set to
+        /// `CANCELLED`.
+        pub async fn cancel_tuning_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CancelTuningJobRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.GenAiTuningService/CancelTuningJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.GenAiTuningService",
+                        "CancelTuningJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// A message representing a Study.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -14953,6 +16099,8 @@ pub mod index_datapoint {
             GreaterEqual = 4,
             /// Datapoints are eligible iff their value is > the query's.
             Greater = 5,
+            /// Datapoints are eligible iff their value is != the query's.
+            NotEqual = 6,
         }
         impl Operator {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -14967,6 +16115,7 @@ pub mod index_datapoint {
                     Operator::Equal => "EQUAL",
                     Operator::GreaterEqual => "GREATER_EQUAL",
                     Operator::Greater => "GREATER",
+                    Operator::NotEqual => "NOT_EQUAL",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -14978,6 +16127,7 @@ pub mod index_datapoint {
                     "EQUAL" => Some(Self::Equal),
                     "GREATER_EQUAL" => Some(Self::GreaterEqual),
                     "GREATER" => Some(Self::Greater),
+                    "NOT_EQUAL" => Some(Self::NotEqual),
                     _ => None,
                 }
             }
@@ -20139,6 +21289,11 @@ pub struct GenerateContentRequest {
     /// request.
     #[prost(message, repeated, tag = "2")]
     pub contents: ::prost::alloc::vec::Vec<Content>,
+    /// Optional. The user provided system instructions for the model.
+    /// Note: only text should be used in parts and content in each part will be in
+    /// a separate paragraph.
+    #[prost(message, optional, tag = "8")]
+    pub system_instruction: ::core::option::Option<Content>,
     /// Optional. A list of `Tools` the model may use to generate the next
     /// response.
     ///
@@ -20211,6 +21366,11 @@ pub mod generate_content_response {
             Safety = 1,
             /// Candidates blocked due to other reason.
             Other = 2,
+            /// Candidates blocked due to the terms which are included from the
+            /// terminology blocklist.
+            Blocklist = 3,
+            /// Candidates blocked due to prohibited content.
+            ProhibitedContent = 4,
         }
         impl BlockedReason {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -20222,6 +21382,8 @@ pub mod generate_content_response {
                     BlockedReason::Unspecified => "BLOCKED_REASON_UNSPECIFIED",
                     BlockedReason::Safety => "SAFETY",
                     BlockedReason::Other => "OTHER",
+                    BlockedReason::Blocklist => "BLOCKLIST",
+                    BlockedReason::ProhibitedContent => "PROHIBITED_CONTENT",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -20230,6 +21392,8 @@ pub mod generate_content_response {
                     "BLOCKED_REASON_UNSPECIFIED" => Some(Self::Unspecified),
                     "SAFETY" => Some(Self::Safety),
                     "OTHER" => Some(Self::Other),
+                    "BLOCKLIST" => Some(Self::Blocklist),
+                    "PROHIBITED_CONTENT" => Some(Self::ProhibitedContent),
                     _ => None,
                 }
             }
@@ -24548,13 +25712,20 @@ pub mod publisher_model {
     pub enum LaunchStage {
         /// The model launch stage is unspecified.
         Unspecified = 0,
-        /// Used to indicate the PublisherModel is at Experimental launch stage.
+        /// Used to indicate the PublisherModel is at Experimental launch stage,
+        /// available to a small set of customers.
         Experimental = 1,
-        /// Used to indicate the PublisherModel is at Private Preview launch stage.
+        /// Used to indicate the PublisherModel is at Private Preview launch stage,
+        /// only available to a small set of customers, although a larger set of
+        /// customers than an Experimental launch. Previews are the first launch
+        /// stage used to get feedback from customers.
         PrivatePreview = 2,
-        /// Used to indicate the PublisherModel is at Public Preview launch stage.
+        /// Used to indicate the PublisherModel is at Public Preview launch stage,
+        /// available to all customers, although not supported for production
+        /// workloads.
         PublicPreview = 3,
-        /// Used to indicate the PublisherModel is at GA launch stage.
+        /// Used to indicate the PublisherModel is at GA launch stage, available to
+        /// all customers and ready for production workload.
         Ga = 4,
     }
     impl LaunchStage {
@@ -24900,12 +26071,14 @@ pub struct ListModelsRequest {
     ///      * `labels.key=value` - key:value equality
     ///      * `labels.key:* or labels:key - key existence
     ///      * A key including a space must be quoted. `labels."a key"`.
+    ///    * `base_model_name` only supports =
     ///
     /// Some examples:
     ///
     ///    * `model=1234`
     ///    * `displayName="myDisplayName"`
     ///    * `labels.myKey="myValue"`
+    ///    * `baseModelName="text-bison"`
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
@@ -26103,6 +27276,1762 @@ pub mod model_service_client {
         }
     }
 }
+/// Network spec.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NetworkSpec {
+    /// Whether to enable public internet access. Default false.
+    #[prost(bool, tag = "1")]
+    pub enable_internet_access: bool,
+    /// The full name of the Google Compute Engine
+    /// [network](<https://cloud.google.com//compute/docs/networks-and-firewalls#networks>)
+    #[prost(string, tag = "2")]
+    pub network: ::prost::alloc::string::String,
+    /// The name of the subnet that this instance is in.
+    /// Format:
+    /// `projects/{project_id_or_number}/regions/{region}/subnetworks/{subnetwork_id}`
+    #[prost(string, tag = "3")]
+    pub subnetwork: ::prost::alloc::string::String,
+}
+/// The euc configuration of NotebookRuntimeTemplate.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NotebookEucConfig {
+    /// Input only. Whether EUC is disabled in this NotebookRuntimeTemplate.
+    /// In proto3, the default value of a boolean is false. In this way, by default
+    /// EUC will be enabled for NotebookRuntimeTemplate.
+    #[prost(bool, tag = "1")]
+    pub euc_disabled: bool,
+    /// Output only. Whether ActAs check is bypassed for service account attached
+    /// to the VM. If false, we need ActAs check for the default Compute Engine
+    /// Service account. When a Runtime is created, a VM is allocated using Default
+    /// Compute Engine Service Account. Any user requesting to use this Runtime
+    /// requires Service Account User (ActAs) permission over this SA. If true,
+    /// Runtime owner is using EUC and does not require the above permission as VM
+    /// no longer use default Compute Engine SA, but a P4SA.
+    #[prost(bool, tag = "2")]
+    pub bypass_actas_check: bool,
+}
+/// The idle shutdown configuration of NotebookRuntimeTemplate, which contains
+/// the idle_timeout as required field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NotebookIdleShutdownConfig {
+    /// Required. Duration is accurate to the second. In Notebook, Idle Timeout is
+    /// accurate to minute so the range of idle_timeout (second) is: 10 * 60 ~ 1440
+    /// * 60.
+    #[prost(message, optional, tag = "1")]
+    pub idle_timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Whether Idle Shutdown is disabled in this NotebookRuntimeTemplate.
+    #[prost(bool, tag = "2")]
+    pub idle_shutdown_disabled: bool,
+}
+/// Points to a NotebookRuntimeTemplateRef.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NotebookRuntimeTemplateRef {
+    /// Immutable. A resource name of the NotebookRuntimeTemplate.
+    #[prost(string, tag = "1")]
+    pub notebook_runtime_template: ::prost::alloc::string::String,
+}
+/// A template that specifies runtime configurations such as machine type,
+/// runtime version, network configurations, etc.
+/// Multiple runtimes can be created from a runtime template.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NotebookRuntimeTemplate {
+    /// Output only. The resource name of the NotebookRuntimeTemplate.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The display name of the NotebookRuntimeTemplate.
+    /// The name can be up to 128 characters long and can consist of any UTF-8
+    /// characters.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// The description of the NotebookRuntimeTemplate.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. The default template to use if not specified.
+    #[prost(bool, tag = "4")]
+    pub is_default: bool,
+    /// Optional. Immutable. The specification of a single machine for the
+    /// template.
+    #[prost(message, optional, tag = "5")]
+    pub machine_spec: ::core::option::Option<MachineSpec>,
+    /// Optional. The specification of [persistent
+    /// disk][<https://cloud.google.com/compute/docs/disks/persistent-disks]>
+    /// attached to the runtime as data disk storage.
+    #[prost(message, optional, tag = "8")]
+    pub data_persistent_disk_spec: ::core::option::Option<PersistentDiskSpec>,
+    /// Optional. Network spec.
+    #[prost(message, optional, tag = "12")]
+    pub network_spec: ::core::option::Option<NetworkSpec>,
+    /// The service account that the runtime workload runs as.
+    /// You can use any service account within the same project, but you
+    /// must have the service account user permission to use the instance.
+    ///
+    /// If not specified, the [Compute Engine default service
+    /// account](<https://cloud.google.com/compute/docs/access/service-accounts#default_service_account>)
+    /// is used.
+    #[prost(string, tag = "13")]
+    pub service_account: ::prost::alloc::string::String,
+    /// Used to perform consistent read-modify-write updates. If not set, a blind
+    /// "overwrite" update happens.
+    #[prost(string, tag = "14")]
+    pub etag: ::prost::alloc::string::String,
+    /// The labels with user-defined metadata to organize the
+    /// NotebookRuntimeTemplates.
+    ///
+    /// Label keys and values can be no longer than 64 characters
+    /// (Unicode codepoints), can only contain lowercase letters, numeric
+    /// characters, underscores and dashes. International characters are allowed.
+    ///
+    /// See <https://goo.gl/xmQnxf> for more information and examples of labels.
+    #[prost(map = "string, string", tag = "15")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// The idle shutdown configuration of NotebookRuntimeTemplate. This config
+    /// will only be set when idle shutdown is enabled.
+    #[prost(message, optional, tag = "17")]
+    pub idle_shutdown_config: ::core::option::Option<NotebookIdleShutdownConfig>,
+    /// EUC configuration of the NotebookRuntimeTemplate.
+    #[prost(message, optional, tag = "18")]
+    pub euc_config: ::core::option::Option<NotebookEucConfig>,
+    /// Output only. Timestamp when this NotebookRuntimeTemplate was created.
+    #[prost(message, optional, tag = "10")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this NotebookRuntimeTemplate was most recently
+    /// updated.
+    #[prost(message, optional, tag = "11")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Immutable. The type of the notebook runtime template.
+    #[prost(enumeration = "NotebookRuntimeType", tag = "19")]
+    pub notebook_runtime_type: i32,
+    /// Optional. Immutable. Runtime Shielded VM spec.
+    #[prost(message, optional, tag = "20")]
+    pub shielded_vm_config: ::core::option::Option<ShieldedVmConfig>,
+    /// Optional. The Compute Engine tags to add to runtime (see [Tagging
+    /// instances](<https://cloud.google.com/vpc/docs/add-remove-network-tags>)).
+    #[prost(string, repeated, tag = "21")]
+    pub network_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A runtime is a virtual machine allocated to a particular user for a
+/// particular Notebook file on temporary basis with lifetime limited to 24
+/// hours.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NotebookRuntime {
+    /// Output only. The resource name of the NotebookRuntime.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The user email of the NotebookRuntime.
+    #[prost(string, tag = "2")]
+    pub runtime_user: ::prost::alloc::string::String,
+    /// Output only. The pointer to NotebookRuntimeTemplate this NotebookRuntime is
+    /// created from.
+    #[prost(message, optional, tag = "3")]
+    pub notebook_runtime_template_ref: ::core::option::Option<
+        NotebookRuntimeTemplateRef,
+    >,
+    /// Output only. The proxy endpoint used to access the NotebookRuntime.
+    #[prost(string, tag = "5")]
+    pub proxy_uri: ::prost::alloc::string::String,
+    /// Output only. Timestamp when this NotebookRuntime was created.
+    #[prost(message, optional, tag = "6")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this NotebookRuntime was most recently updated.
+    #[prost(message, optional, tag = "7")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The health state of the NotebookRuntime.
+    #[prost(enumeration = "notebook_runtime::HealthState", tag = "8")]
+    pub health_state: i32,
+    /// Required. The display name of the NotebookRuntime.
+    /// The name can be up to 128 characters long and can consist of any UTF-8
+    /// characters.
+    #[prost(string, tag = "10")]
+    pub display_name: ::prost::alloc::string::String,
+    /// The description of the NotebookRuntime.
+    #[prost(string, tag = "11")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. The service account that the NotebookRuntime workload runs as.
+    #[prost(string, tag = "13")]
+    pub service_account: ::prost::alloc::string::String,
+    /// Output only. The runtime (instance) state of the NotebookRuntime.
+    #[prost(enumeration = "notebook_runtime::RuntimeState", tag = "14")]
+    pub runtime_state: i32,
+    /// Output only. Whether NotebookRuntime is upgradable.
+    #[prost(bool, tag = "15")]
+    pub is_upgradable: bool,
+    /// The labels with user-defined metadata to organize your
+    /// NotebookRuntime.
+    ///
+    /// Label keys and values can be no longer than 64 characters
+    /// (Unicode codepoints), can only contain lowercase letters, numeric
+    /// characters, underscores and dashes. International characters are allowed.
+    /// No more than 64 user labels can be associated with one NotebookRuntime
+    /// (System labels are excluded).
+    ///
+    /// See <https://goo.gl/xmQnxf> for more information and examples of labels.
+    /// System reserved label keys are prefixed with "aiplatform.googleapis.com/"
+    /// and are immutable. Following system labels exist for NotebookRuntime:
+    ///
+    /// * "aiplatform.googleapis.com/notebook_runtime_gce_instance_id": output
+    /// only, its value is the Compute Engine instance id.
+    /// * "aiplatform.googleapis.com/colab_enterprise_entry_service": its value is
+    /// either "bigquery" or "vertex"; if absent, it should be "vertex". This is to
+    /// describe the entry service, either BigQuery or Vertex.
+    #[prost(map = "string, string", tag = "16")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. Timestamp when this NotebookRuntime will be expired:
+    /// 1. System Predefined NotebookRuntime: 24 hours after creation. After
+    /// expiration, system predifined runtime will be deleted.
+    /// 2. User created NotebookRuntime: 6 months after last upgrade. After
+    /// expiration, user created runtime will be stopped and allowed for upgrade.
+    #[prost(message, optional, tag = "17")]
+    pub expiration_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The VM os image version of NotebookRuntime.
+    #[prost(string, tag = "18")]
+    pub version: ::prost::alloc::string::String,
+    /// Output only. The type of the notebook runtime.
+    #[prost(enumeration = "NotebookRuntimeType", tag = "19")]
+    pub notebook_runtime_type: i32,
+    /// Optional. The Compute Engine tags to add to runtime (see [Tagging
+    /// instances](<https://cloud.google.com/vpc/docs/add-remove-network-tags>)).
+    #[prost(string, repeated, tag = "25")]
+    pub network_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `NotebookRuntime`.
+pub mod notebook_runtime {
+    /// The substate of the NotebookRuntime to display health information.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HealthState {
+        /// Unspecified health state.
+        Unspecified = 0,
+        /// NotebookRuntime is in healthy state. Applies to ACTIVE state.
+        Healthy = 1,
+        /// NotebookRuntime is in unhealthy state. Applies to ACTIVE state.
+        Unhealthy = 2,
+    }
+    impl HealthState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                HealthState::Unspecified => "HEALTH_STATE_UNSPECIFIED",
+                HealthState::Healthy => "HEALTHY",
+                HealthState::Unhealthy => "UNHEALTHY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HEALTH_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "HEALTHY" => Some(Self::Healthy),
+                "UNHEALTHY" => Some(Self::Unhealthy),
+                _ => None,
+            }
+        }
+    }
+    /// The substate of the NotebookRuntime to display state of runtime.
+    /// The resource of NotebookRuntime is in ACTIVE state for these sub state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RuntimeState {
+        /// Unspecified runtime state.
+        Unspecified = 0,
+        /// NotebookRuntime is in running state.
+        Running = 1,
+        /// NotebookRuntime is in starting state.
+        BeingStarted = 2,
+        /// NotebookRuntime is in stopping state.
+        BeingStopped = 3,
+        /// NotebookRuntime is in stopped state.
+        Stopped = 4,
+        /// NotebookRuntime is in upgrading state. It is in the middle of upgrading
+        /// process.
+        BeingUpgraded = 5,
+        /// NotebookRuntime was unable to start/stop properly.
+        Error = 100,
+        /// NotebookRuntime is in invalid state. Cannot be recovered.
+        Invalid = 101,
+    }
+    impl RuntimeState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RuntimeState::Unspecified => "RUNTIME_STATE_UNSPECIFIED",
+                RuntimeState::Running => "RUNNING",
+                RuntimeState::BeingStarted => "BEING_STARTED",
+                RuntimeState::BeingStopped => "BEING_STOPPED",
+                RuntimeState::Stopped => "STOPPED",
+                RuntimeState::BeingUpgraded => "BEING_UPGRADED",
+                RuntimeState::Error => "ERROR",
+                RuntimeState::Invalid => "INVALID",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RUNTIME_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNING" => Some(Self::Running),
+                "BEING_STARTED" => Some(Self::BeingStarted),
+                "BEING_STOPPED" => Some(Self::BeingStopped),
+                "STOPPED" => Some(Self::Stopped),
+                "BEING_UPGRADED" => Some(Self::BeingUpgraded),
+                "ERROR" => Some(Self::Error),
+                "INVALID" => Some(Self::Invalid),
+                _ => None,
+            }
+        }
+    }
+}
+/// Represents a notebook runtime type.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum NotebookRuntimeType {
+    /// Unspecified notebook runtime type, NotebookRuntimeType will default to
+    /// USER_DEFINED.
+    Unspecified = 0,
+    /// runtime or template with coustomized configurations from user.
+    UserDefined = 1,
+    /// runtime or template with system defined configurations.
+    OneClick = 2,
+}
+impl NotebookRuntimeType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            NotebookRuntimeType::Unspecified => "NOTEBOOK_RUNTIME_TYPE_UNSPECIFIED",
+            NotebookRuntimeType::UserDefined => "USER_DEFINED",
+            NotebookRuntimeType::OneClick => "ONE_CLICK",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "NOTEBOOK_RUNTIME_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "USER_DEFINED" => Some(Self::UserDefined),
+            "ONE_CLICK" => Some(Self::OneClick),
+            _ => None,
+        }
+    }
+}
+/// Request message for
+/// [NotebookService.CreateNotebookRuntimeTemplate][google.cloud.aiplatform.v1.NotebookService.CreateNotebookRuntimeTemplate].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateNotebookRuntimeTemplateRequest {
+    /// Required. The resource name of the Location to create the
+    /// NotebookRuntimeTemplate. Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The NotebookRuntimeTemplate to create.
+    #[prost(message, optional, tag = "2")]
+    pub notebook_runtime_template: ::core::option::Option<NotebookRuntimeTemplate>,
+    /// Optional. User specified ID for the notebook runtime template.
+    #[prost(string, tag = "3")]
+    pub notebook_runtime_template_id: ::prost::alloc::string::String,
+}
+/// Metadata information for
+/// [NotebookService.CreateNotebookRuntimeTemplate][google.cloud.aiplatform.v1.NotebookService.CreateNotebookRuntimeTemplate].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateNotebookRuntimeTemplateOperationMetadata {
+    /// The operation generic information.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Request message for
+/// [NotebookService.GetNotebookRuntimeTemplate][google.cloud.aiplatform.v1.NotebookService.GetNotebookRuntimeTemplate]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetNotebookRuntimeTemplateRequest {
+    /// Required. The name of the NotebookRuntimeTemplate resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}/notebookRuntimeTemplates/{notebook_runtime_template}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [NotebookService.ListNotebookRuntimeTemplates][google.cloud.aiplatform.v1.NotebookService.ListNotebookRuntimeTemplates].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNotebookRuntimeTemplatesRequest {
+    /// Required. The resource name of the Location from which to list the
+    /// NotebookRuntimeTemplates.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request. For field
+    /// names both snake_case and camelCase are supported.
+    ///
+    ///    * `notebookRuntimeTemplate` supports = and !=. `notebookRuntimeTemplate`
+    ///      represents the NotebookRuntimeTemplate ID,
+    ///      i.e. the last segment of the NotebookRuntimeTemplate's \[resource name\]
+    ///      \[google.cloud.aiplatform.v1.NotebookRuntimeTemplate.name\].
+    ///    * `display_name` supports = and !=
+    ///    * `labels` supports general map functions that is:
+    ///      * `labels.key=value` - key:value equality
+    ///      * `labels.key:* or labels:key - key existence
+    ///      * A key including a space must be quoted. `labels."a key"`.
+    ///    * `notebookRuntimeType` supports = and !=. notebookRuntimeType enum:
+    ///    \[USER_DEFINED, ONE_CLICK\].
+    ///
+    /// Some examples:
+    ///
+    ///    * `notebookRuntimeTemplate=notebookRuntimeTemplate123`
+    ///    * `displayName="myDisplayName"`
+    ///    * `labels.myKey="myValue"`
+    ///    * `notebookRuntimeType=USER_DEFINED`
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The standard list page size.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. The standard list page token.
+    /// Typically obtained via
+    /// [ListNotebookRuntimeTemplatesResponse.next_page_token][google.cloud.aiplatform.v1.ListNotebookRuntimeTemplatesResponse.next_page_token]
+    /// of the previous
+    /// [NotebookService.ListNotebookRuntimeTemplates][google.cloud.aiplatform.v1.NotebookService.ListNotebookRuntimeTemplates]
+    /// call.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Mask specifying which fields to read.
+    #[prost(message, optional, tag = "5")]
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. A comma-separated list of fields to order by, sorted in ascending
+    /// order. Use "desc" after a field name for descending. Supported fields:
+    ///
+    ///    * `display_name`
+    ///    * `create_time`
+    ///    * `update_time`
+    ///
+    /// Example: `display_name, create_time desc`.
+    #[prost(string, tag = "6")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [NotebookService.ListNotebookRuntimeTemplates][google.cloud.aiplatform.v1.NotebookService.ListNotebookRuntimeTemplates].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNotebookRuntimeTemplatesResponse {
+    /// List of NotebookRuntimeTemplates in the requested page.
+    #[prost(message, repeated, tag = "1")]
+    pub notebook_runtime_templates: ::prost::alloc::vec::Vec<NotebookRuntimeTemplate>,
+    /// A token to retrieve next page of results.
+    /// Pass to
+    /// [ListNotebookRuntimeTemplatesRequest.page_token][google.cloud.aiplatform.v1.ListNotebookRuntimeTemplatesRequest.page_token]
+    /// to obtain that page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [NotebookService.DeleteNotebookRuntimeTemplate][google.cloud.aiplatform.v1.NotebookService.DeleteNotebookRuntimeTemplate].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteNotebookRuntimeTemplateRequest {
+    /// Required. The name of the NotebookRuntimeTemplate resource to be deleted.
+    /// Format:
+    /// `projects/{project}/locations/{location}/notebookRuntimeTemplates/{notebook_runtime_template}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [NotebookService.AssignNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.AssignNotebookRuntime].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssignNotebookRuntimeRequest {
+    /// Required. The resource name of the Location to get the NotebookRuntime
+    /// assignment. Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The resource name of the NotebookRuntimeTemplate based on which a
+    /// NotebookRuntime will be assigned (reuse or create a new one).
+    #[prost(string, tag = "2")]
+    pub notebook_runtime_template: ::prost::alloc::string::String,
+    /// Required. Provide runtime specific information (e.g. runtime owner,
+    /// notebook id) used for NotebookRuntime assignment.
+    #[prost(message, optional, tag = "3")]
+    pub notebook_runtime: ::core::option::Option<NotebookRuntime>,
+    /// Optional. User specified ID for the notebook runtime.
+    #[prost(string, tag = "4")]
+    pub notebook_runtime_id: ::prost::alloc::string::String,
+}
+/// Metadata information for
+/// [NotebookService.AssignNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.AssignNotebookRuntime].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssignNotebookRuntimeOperationMetadata {
+    /// The operation generic information.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+    /// A human-readable message that shows the intermediate progress details of
+    /// NotebookRuntime.
+    #[prost(string, tag = "2")]
+    pub progress_message: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [NotebookService.GetNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.GetNotebookRuntime]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetNotebookRuntimeRequest {
+    /// Required. The name of the NotebookRuntime resource.
+    /// Instead of checking whether the name is in valid NotebookRuntime resource
+    /// name format, directly throw NotFound exception if there is no such
+    /// NotebookRuntime in spanner.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [NotebookService.ListNotebookRuntimes][google.cloud.aiplatform.v1.NotebookService.ListNotebookRuntimes].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNotebookRuntimesRequest {
+    /// Required. The resource name of the Location from which to list the
+    /// NotebookRuntimes.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request. For field
+    /// names both snake_case and camelCase are supported.
+    ///
+    ///    * `notebookRuntime` supports = and !=. `notebookRuntime` represents the
+    ///      NotebookRuntime ID,
+    ///      i.e. the last segment of the NotebookRuntime's \[resource name\]
+    ///      \[google.cloud.aiplatform.v1.NotebookRuntime.name\].
+    ///    * `displayName` supports = and != and regex.
+    ///    * `notebookRuntimeTemplate` supports = and !=. `notebookRuntimeTemplate`
+    ///      represents the NotebookRuntimeTemplate ID,
+    ///      i.e. the last segment of the NotebookRuntimeTemplate's \[resource name\]
+    ///      \[google.cloud.aiplatform.v1.NotebookRuntimeTemplate.name\].
+    ///    * `healthState` supports = and !=. healthState enum: [HEALTHY, UNHEALTHY,
+    ///    HEALTH_STATE_UNSPECIFIED].
+    ///    * `runtimeState` supports = and !=. runtimeState enum:
+    ///    [RUNTIME_STATE_UNSPECIFIED, RUNNING, BEING_STARTED, BEING_STOPPED,
+    ///    STOPPED, BEING_UPGRADED, ERROR, INVALID].
+    ///    * `runtimeUser` supports = and !=.
+    ///    * API version is UI only: `uiState` supports = and !=. uiState enum:
+    ///    [UI_RESOURCE_STATE_UNSPECIFIED, UI_RESOURCE_STATE_BEING_CREATED,
+    ///    UI_RESOURCE_STATE_ACTIVE, UI_RESOURCE_STATE_BEING_DELETED,
+    ///    UI_RESOURCE_STATE_CREATION_FAILED].
+    ///    * `notebookRuntimeType` supports = and !=. notebookRuntimeType enum:
+    ///    \[USER_DEFINED, ONE_CLICK\].
+    ///
+    /// Some examples:
+    ///
+    ///    * `notebookRuntime="notebookRuntime123"`
+    ///    * `displayName="myDisplayName"` and `displayName=~"myDisplayNameRegex"`
+    ///    * `notebookRuntimeTemplate="notebookRuntimeTemplate321"`
+    ///    * `healthState=HEALTHY`
+    ///    * `runtimeState=RUNNING`
+    ///    * `runtimeUser="test@google.com"`
+    ///    * `uiState=UI_RESOURCE_STATE_BEING_DELETED`
+    ///    * `notebookRuntimeType=USER_DEFINED`
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The standard list page size.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. The standard list page token.
+    /// Typically obtained via
+    /// [ListNotebookRuntimesResponse.next_page_token][google.cloud.aiplatform.v1.ListNotebookRuntimesResponse.next_page_token]
+    /// of the previous
+    /// [NotebookService.ListNotebookRuntimes][google.cloud.aiplatform.v1.NotebookService.ListNotebookRuntimes]
+    /// call.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Mask specifying which fields to read.
+    #[prost(message, optional, tag = "5")]
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. A comma-separated list of fields to order by, sorted in ascending
+    /// order. Use "desc" after a field name for descending. Supported fields:
+    ///
+    ///    * `display_name`
+    ///    * `create_time`
+    ///    * `update_time`
+    ///
+    /// Example: `display_name, create_time desc`.
+    #[prost(string, tag = "6")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [NotebookService.ListNotebookRuntimes][google.cloud.aiplatform.v1.NotebookService.ListNotebookRuntimes].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNotebookRuntimesResponse {
+    /// List of NotebookRuntimes in the requested page.
+    #[prost(message, repeated, tag = "1")]
+    pub notebook_runtimes: ::prost::alloc::vec::Vec<NotebookRuntime>,
+    /// A token to retrieve next page of results.
+    /// Pass to
+    /// [ListNotebookRuntimesRequest.page_token][google.cloud.aiplatform.v1.ListNotebookRuntimesRequest.page_token]
+    /// to obtain that page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [NotebookService.DeleteNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.DeleteNotebookRuntime].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteNotebookRuntimeRequest {
+    /// Required. The name of the NotebookRuntime resource to be deleted.
+    /// Instead of checking whether the name is in valid NotebookRuntime resource
+    /// name format, directly throw NotFound exception if there is no such
+    /// NotebookRuntime in spanner.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [NotebookService.UpgradeNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.UpgradeNotebookRuntime].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpgradeNotebookRuntimeRequest {
+    /// Required. The name of the NotebookRuntime resource to be upgrade.
+    /// Instead of checking whether the name is in valid NotebookRuntime resource
+    /// name format, directly throw NotFound exception if there is no such
+    /// NotebookRuntime in spanner.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Metadata information for
+/// [NotebookService.UpgradeNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.UpgradeNotebookRuntime].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpgradeNotebookRuntimeOperationMetadata {
+    /// The operation generic information.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+    /// A human-readable message that shows the intermediate progress details of
+    /// NotebookRuntime.
+    #[prost(string, tag = "2")]
+    pub progress_message: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [NotebookService.UpgradeNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.UpgradeNotebookRuntime].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpgradeNotebookRuntimeResponse {}
+/// Request message for
+/// [NotebookService.StartNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.StartNotebookRuntime].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StartNotebookRuntimeRequest {
+    /// Required. The name of the NotebookRuntime resource to be started.
+    /// Instead of checking whether the name is in valid NotebookRuntime resource
+    /// name format, directly throw NotFound exception if there is no such
+    /// NotebookRuntime in spanner.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Metadata information for
+/// [NotebookService.StartNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.StartNotebookRuntime].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StartNotebookRuntimeOperationMetadata {
+    /// The operation generic information.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+    /// A human-readable message that shows the intermediate progress details of
+    /// NotebookRuntime.
+    #[prost(string, tag = "2")]
+    pub progress_message: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [NotebookService.StartNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.StartNotebookRuntime].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StartNotebookRuntimeResponse {}
+/// Generated client implementations.
+pub mod notebook_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The interface for Vertex Notebook service (a.k.a. Colab on Workbench).
+    #[derive(Debug, Clone)]
+    pub struct NotebookServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl NotebookServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> NotebookServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> NotebookServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            NotebookServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a NotebookRuntimeTemplate.
+        pub async fn create_notebook_runtime_template(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateNotebookRuntimeTemplateRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.NotebookService/CreateNotebookRuntimeTemplate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.NotebookService",
+                        "CreateNotebookRuntimeTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a NotebookRuntimeTemplate.
+        pub async fn get_notebook_runtime_template(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetNotebookRuntimeTemplateRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::NotebookRuntimeTemplate>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.NotebookService/GetNotebookRuntimeTemplate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.NotebookService",
+                        "GetNotebookRuntimeTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists NotebookRuntimeTemplates in a Location.
+        pub async fn list_notebook_runtime_templates(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListNotebookRuntimeTemplatesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListNotebookRuntimeTemplatesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.NotebookService/ListNotebookRuntimeTemplates",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.NotebookService",
+                        "ListNotebookRuntimeTemplates",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a NotebookRuntimeTemplate.
+        pub async fn delete_notebook_runtime_template(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteNotebookRuntimeTemplateRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.NotebookService/DeleteNotebookRuntimeTemplate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.NotebookService",
+                        "DeleteNotebookRuntimeTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Assigns a NotebookRuntime to a user for a particular Notebook file. This
+        /// method will either returns an existing assignment or generates a new one.
+        pub async fn assign_notebook_runtime(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AssignNotebookRuntimeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.NotebookService/AssignNotebookRuntime",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.NotebookService",
+                        "AssignNotebookRuntime",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a NotebookRuntime.
+        pub async fn get_notebook_runtime(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetNotebookRuntimeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::NotebookRuntime>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.NotebookService/GetNotebookRuntime",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.NotebookService",
+                        "GetNotebookRuntime",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists NotebookRuntimes in a Location.
+        pub async fn list_notebook_runtimes(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListNotebookRuntimesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListNotebookRuntimesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.NotebookService/ListNotebookRuntimes",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.NotebookService",
+                        "ListNotebookRuntimes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a NotebookRuntime.
+        pub async fn delete_notebook_runtime(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteNotebookRuntimeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.NotebookService/DeleteNotebookRuntime",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.NotebookService",
+                        "DeleteNotebookRuntime",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Upgrades a NotebookRuntime.
+        pub async fn upgrade_notebook_runtime(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpgradeNotebookRuntimeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.NotebookService/UpgradeNotebookRuntime",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.NotebookService",
+                        "UpgradeNotebookRuntime",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Starts a NotebookRuntime.
+        pub async fn start_notebook_runtime(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StartNotebookRuntimeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.NotebookService/StartNotebookRuntime",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.NotebookService",
+                        "StartNotebookRuntime",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Represents long-lasting resources that are dedicated to users to runs custom
+/// workloads.
+/// A PersistentResource can have multiple node pools and each node
+/// pool can have its own machine spec.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PersistentResource {
+    /// Immutable. Resource name of a PersistentResource.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The display name of the PersistentResource.
+    /// The name can be up to 128 characters long and can consist of any UTF-8
+    /// characters.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Required. The spec of the pools of different resources.
+    #[prost(message, repeated, tag = "4")]
+    pub resource_pools: ::prost::alloc::vec::Vec<ResourcePool>,
+    /// Output only. The detailed state of a Study.
+    #[prost(enumeration = "persistent_resource::State", tag = "5")]
+    pub state: i32,
+    /// Output only. Only populated when persistent resource's state is `STOPPING`
+    /// or `ERROR`.
+    #[prost(message, optional, tag = "6")]
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
+    /// Output only. Time when the PersistentResource was created.
+    #[prost(message, optional, tag = "7")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the PersistentResource for the first time entered
+    /// the `RUNNING` state.
+    #[prost(message, optional, tag = "8")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the PersistentResource was most recently updated.
+    #[prost(message, optional, tag = "9")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The labels with user-defined metadata to organize
+    /// PersistentResource.
+    ///
+    /// Label keys and values can be no longer than 64 characters
+    /// (Unicode codepoints), can only contain lowercase letters, numeric
+    /// characters, underscores and dashes. International characters are allowed.
+    ///
+    /// See <https://goo.gl/xmQnxf> for more information and examples of labels.
+    #[prost(map = "string, string", tag = "10")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The full name of the Compute Engine
+    /// [network](/compute/docs/networks-and-firewalls#networks) to peered with
+    /// Vertex AI to host the persistent resources.
+    /// For example, `projects/12345/global/networks/myVPC`.
+    /// [Format](/compute/docs/reference/rest/v1/networks/insert)
+    /// is of the form `projects/{project}/global/networks/{network}`.
+    /// Where {project} is a project number, as in `12345`, and {network} is a
+    /// network name.
+    ///
+    /// To specify this field, you must have already [configured VPC Network
+    /// Peering for Vertex
+    /// AI](<https://cloud.google.com/vertex-ai/docs/general/vpc-peering>).
+    ///
+    /// If this field is left unspecified, the resources aren't peered with any
+    /// network.
+    #[prost(string, tag = "11")]
+    pub network: ::prost::alloc::string::String,
+    /// Optional. Customer-managed encryption key spec for a PersistentResource.
+    /// If set, this PersistentResource and all sub-resources of this
+    /// PersistentResource will be secured by this key.
+    #[prost(message, optional, tag = "12")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+    /// Optional. Persistent Resource runtime spec.
+    /// For example, used for Ray cluster configuration.
+    #[prost(message, optional, tag = "13")]
+    pub resource_runtime_spec: ::core::option::Option<ResourceRuntimeSpec>,
+    /// Output only. Runtime information of the Persistent Resource.
+    #[prost(message, optional, tag = "14")]
+    pub resource_runtime: ::core::option::Option<ResourceRuntime>,
+    /// Optional. A list of names for the reserved IP ranges under the VPC network
+    /// that can be used for this persistent resource.
+    ///
+    /// If set, we will deploy the persistent resource within the provided IP
+    /// ranges. Otherwise, the persistent resource is deployed to any IP
+    /// ranges under the provided VPC network.
+    ///
+    /// Example: \['vertex-ai-ip-range'\].
+    #[prost(string, repeated, tag = "15")]
+    pub reserved_ip_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `PersistentResource`.
+pub mod persistent_resource {
+    /// Describes the PersistentResource state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Not set.
+        Unspecified = 0,
+        /// The PROVISIONING state indicates the persistent resources is being
+        /// created.
+        Provisioning = 1,
+        /// The RUNNING state indicates the persistent resource is healthy and fully
+        /// usable.
+        Running = 3,
+        /// The STOPPING state indicates the persistent resource is being deleted.
+        Stopping = 4,
+        /// The ERROR state indicates the persistent resource may be unusable.
+        /// Details can be found in the `error` field.
+        Error = 5,
+        /// The REBOOTING state indicates the persistent resource is being rebooted
+        /// (PR is not available right now but is expected to be ready again later).
+        Rebooting = 6,
+        /// The UPDATING state indicates the persistent resource is being updated.
+        Updating = 7,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Provisioning => "PROVISIONING",
+                State::Running => "RUNNING",
+                State::Stopping => "STOPPING",
+                State::Error => "ERROR",
+                State::Rebooting => "REBOOTING",
+                State::Updating => "UPDATING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "RUNNING" => Some(Self::Running),
+                "STOPPING" => Some(Self::Stopping),
+                "ERROR" => Some(Self::Error),
+                "REBOOTING" => Some(Self::Rebooting),
+                "UPDATING" => Some(Self::Updating),
+                _ => None,
+            }
+        }
+    }
+}
+/// Represents the spec of a group of resources of the same type,
+/// for example machine type, disk, and accelerators, in a PersistentResource.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourcePool {
+    /// Immutable. The unique ID in a PersistentResource for referring to this
+    /// resource pool. User can specify it if necessary. Otherwise, it's generated
+    /// automatically.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Required. Immutable. The specification of a single machine.
+    #[prost(message, optional, tag = "2")]
+    pub machine_spec: ::core::option::Option<MachineSpec>,
+    /// Optional. The total number of machines to use for this resource pool.
+    #[prost(int64, optional, tag = "3")]
+    pub replica_count: ::core::option::Option<i64>,
+    /// Optional. Disk spec for the machine in this node pool.
+    #[prost(message, optional, tag = "4")]
+    pub disk_spec: ::core::option::Option<DiskSpec>,
+    /// Output only. The number of machines currently in use by training jobs for
+    /// this resource pool. Will replace idle_replica_count.
+    #[prost(int64, tag = "6")]
+    pub used_replica_count: i64,
+    /// Optional. Optional spec to configure GKE autoscaling
+    #[prost(message, optional, tag = "7")]
+    pub autoscaling_spec: ::core::option::Option<resource_pool::AutoscalingSpec>,
+}
+/// Nested message and enum types in `ResourcePool`.
+pub mod resource_pool {
+    /// The min/max number of replicas allowed if enabling autoscaling
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AutoscalingSpec {
+        /// Optional. min replicas in the node pool,
+        /// must be ≤ replica_count and < max_replica_count or will throw error
+        #[prost(int64, optional, tag = "1")]
+        pub min_replica_count: ::core::option::Option<i64>,
+        /// Optional. max replicas in the node pool,
+        /// must be ≥ replica_count and > min_replica_count or will throw error
+        #[prost(int64, optional, tag = "2")]
+        pub max_replica_count: ::core::option::Option<i64>,
+    }
+}
+/// Configuration for the runtime on a PersistentResource instance, including
+/// but not limited to:
+///
+/// * Service accounts used to run the workloads.
+/// * Whether to make it a dedicated Ray Cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceRuntimeSpec {
+    /// Optional. Configure the use of workload identity on the PersistentResource
+    #[prost(message, optional, tag = "2")]
+    pub service_account_spec: ::core::option::Option<ServiceAccountSpec>,
+    /// Optional. Ray cluster configuration.
+    /// Required when creating a dedicated RayCluster on the PersistentResource.
+    #[prost(message, optional, tag = "1")]
+    pub ray_spec: ::core::option::Option<RaySpec>,
+}
+/// Configuration information for the Ray cluster.
+/// For experimental launch, Ray cluster creation and Persistent
+/// cluster creation are 1:1 mapping: We will provision all the nodes within the
+/// Persistent cluster as Ray nodes.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RaySpec {}
+/// Persistent Cluster runtime information as output
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceRuntime {}
+/// Configuration for the use of custom service account to run the workloads.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceAccountSpec {
+    /// Required. If true, custom user-managed service account is enforced to run
+    /// any workloads (for example, Vertex Jobs) on the resource. Otherwise, uses
+    /// the [Vertex AI Custom Code Service
+    /// Agent](<https://cloud.google.com/vertex-ai/docs/general/access-control#service-agents>).
+    #[prost(bool, tag = "1")]
+    pub enable_custom_service_account: bool,
+    /// Optional. Required when all below conditions are met
+    ///   * `enable_custom_service_account` is true;
+    ///   * any runtime is specified via `ResourceRuntimeSpec` on creation time,
+    ///     for example, Ray
+    ///
+    /// The users must have `iam.serviceAccounts.actAs` permission on this service
+    /// account and then the specified runtime containers will run as it.
+    ///
+    /// Do not set this field if you want to submit jobs using custom service
+    /// account to this PersistentResource after creation, but only specify the
+    /// `service_account` inside the job.
+    #[prost(string, tag = "2")]
+    pub service_account: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [PersistentResourceService.CreatePersistentResource][google.cloud.aiplatform.v1.PersistentResourceService.CreatePersistentResource].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreatePersistentResourceRequest {
+    /// Required. The resource name of the Location to create the
+    /// PersistentResource in. Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The PersistentResource to create.
+    #[prost(message, optional, tag = "2")]
+    pub persistent_resource: ::core::option::Option<PersistentResource>,
+    /// Required. The ID to use for the PersistentResource, which become the final
+    /// component of the PersistentResource's resource name.
+    ///
+    /// The maximum length is 63 characters, and valid characters
+    /// are `/^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$/`.
+    #[prost(string, tag = "3")]
+    pub persistent_resource_id: ::prost::alloc::string::String,
+}
+/// Details of operations that perform create PersistentResource.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreatePersistentResourceOperationMetadata {
+    /// Operation metadata for PersistentResource.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+    /// Progress Message for Create LRO
+    #[prost(string, tag = "2")]
+    pub progress_message: ::prost::alloc::string::String,
+}
+/// Details of operations that perform update PersistentResource.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdatePersistentResourceOperationMetadata {
+    /// Operation metadata for PersistentResource.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+    /// Progress Message for Update LRO
+    #[prost(string, tag = "2")]
+    pub progress_message: ::prost::alloc::string::String,
+}
+/// Details of operations that perform reboot PersistentResource.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RebootPersistentResourceOperationMetadata {
+    /// Operation metadata for PersistentResource.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+    /// Progress Message for Reboot LRO
+    #[prost(string, tag = "2")]
+    pub progress_message: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [PersistentResourceService.GetPersistentResource][google.cloud.aiplatform.v1.PersistentResourceService.GetPersistentResource].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetPersistentResourceRequest {
+    /// Required. The name of the PersistentResource resource.
+    /// Format:
+    /// `projects/{project_id_or_number}/locations/{location_id}/persistentResources/{persistent_resource_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for [PersistentResourceService.ListPersistentResource][].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPersistentResourcesRequest {
+    /// Required. The resource name of the Location to list the PersistentResources
+    /// from. Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The standard list page size.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. The standard list page token.
+    /// Typically obtained via
+    /// [ListPersistentResourceResponse.next_page_token][] of the previous
+    /// [PersistentResourceService.ListPersistentResource][] call.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [PersistentResourceService.ListPersistentResources][google.cloud.aiplatform.v1.PersistentResourceService.ListPersistentResources]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPersistentResourcesResponse {
+    #[prost(message, repeated, tag = "1")]
+    pub persistent_resources: ::prost::alloc::vec::Vec<PersistentResource>,
+    /// A token to retrieve next page of results.
+    /// Pass to
+    /// [ListPersistentResourcesRequest.page_token][google.cloud.aiplatform.v1.ListPersistentResourcesRequest.page_token]
+    /// to obtain that page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [PersistentResourceService.DeletePersistentResource][google.cloud.aiplatform.v1.PersistentResourceService.DeletePersistentResource].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeletePersistentResourceRequest {
+    /// Required. The name of the PersistentResource to be deleted.
+    /// Format:
+    /// `projects/{project}/locations/{location}/persistentResources/{persistent_resource}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for UpdatePersistentResource method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdatePersistentResourceRequest {
+    /// Required. The PersistentResource to update.
+    ///
+    /// The PersistentResource's `name` field is used to identify the
+    /// PersistentResource to update. Format:
+    /// `projects/{project}/locations/{location}/persistentResources/{persistent_resource}`
+    #[prost(message, optional, tag = "1")]
+    pub persistent_resource: ::core::option::Option<PersistentResource>,
+    /// Required. Specify the fields to be overwritten in the PersistentResource by
+    /// the update method.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for
+/// [PersistentResourceService.RebootPersistentResource][google.cloud.aiplatform.v1.PersistentResourceService.RebootPersistentResource].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RebootPersistentResourceRequest {
+    /// Required. The name of the PersistentResource resource.
+    /// Format:
+    /// `projects/{project_id_or_number}/locations/{location_id}/persistentResources/{persistent_resource_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod persistent_resource_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// A service for managing Vertex AI's machine learning PersistentResource.
+    #[derive(Debug, Clone)]
+    pub struct PersistentResourceServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl PersistentResourceServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> PersistentResourceServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> PersistentResourceServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            PersistentResourceServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a PersistentResource.
+        pub async fn create_persistent_resource(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreatePersistentResourceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PersistentResourceService/CreatePersistentResource",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PersistentResourceService",
+                        "CreatePersistentResource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a PersistentResource.
+        pub async fn get_persistent_resource(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetPersistentResourceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::PersistentResource>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PersistentResourceService/GetPersistentResource",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PersistentResourceService",
+                        "GetPersistentResource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists PersistentResources in a Location.
+        pub async fn list_persistent_resources(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListPersistentResourcesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListPersistentResourcesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PersistentResourceService/ListPersistentResources",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PersistentResourceService",
+                        "ListPersistentResources",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a PersistentResource.
+        pub async fn delete_persistent_resource(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeletePersistentResourceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PersistentResourceService/DeletePersistentResource",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PersistentResourceService",
+                        "DeletePersistentResource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a PersistentResource.
+        pub async fn update_persistent_resource(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdatePersistentResourceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PersistentResourceService/UpdatePersistentResource",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PersistentResourceService",
+                        "UpdatePersistentResource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Reboots a PersistentResource.
+        pub async fn reboot_persistent_resource(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RebootPersistentResourceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PersistentResourceService/RebootPersistentResource",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PersistentResourceService",
+                        "RebootPersistentResource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// Represents the failure policy of a pipeline. Currently, the default of a
 /// pipeline is that the pipeline will continue to run until no more tasks can be
 /// executed, also known as PIPELINE_FAILURE_POLICY_FAIL_SLOW. However, if a
@@ -27127,6 +30056,15 @@ pub struct StratifiedSplit {
     #[prost(string, tag = "4")]
     pub key: ::prost::alloc::string::String,
 }
+/// Runtime operation information for
+/// [PipelineService.BatchCancelPipelineJobs][google.cloud.aiplatform.v1.PipelineService.BatchCancelPipelineJobs].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCancelPipelineJobsOperationMetadata {
+    /// The common part of the operation metadata.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
 /// Request message for
 /// [PipelineService.CreateTrainingPipeline][google.cloud.aiplatform.v1.PipelineService.CreateTrainingPipeline].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -27368,6 +30306,31 @@ pub struct DeletePipelineJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
+/// [PipelineService.BatchDeletePipelineJobs][google.cloud.aiplatform.v1.PipelineService.BatchDeletePipelineJobs].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchDeletePipelineJobsRequest {
+    /// Required. The name of the PipelineJobs' parent resource.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The names of the PipelineJobs to delete.
+    /// A maximum of 32 PipelineJobs can be deleted in a batch.
+    /// Format:
+    /// `projects/{project}/locations/{location}/pipelineJobs/{pipelineJob}`
+    #[prost(string, repeated, tag = "2")]
+    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Response message for
+/// [PipelineService.BatchDeletePipelineJobs][google.cloud.aiplatform.v1.PipelineService.BatchDeletePipelineJobs].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchDeletePipelineJobsResponse {
+    /// PipelineJobs deleted.
+    #[prost(message, repeated, tag = "1")]
+    pub pipeline_jobs: ::prost::alloc::vec::Vec<PipelineJob>,
+}
+/// Request message for
 /// [PipelineService.CancelPipelineJob][google.cloud.aiplatform.v1.PipelineService.CancelPipelineJob].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -27377,6 +30340,31 @@ pub struct CancelPipelineJobRequest {
     /// `projects/{project}/locations/{location}/pipelineJobs/{pipeline_job}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [PipelineService.BatchCancelPipelineJobs][google.cloud.aiplatform.v1.PipelineService.BatchCancelPipelineJobs].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCancelPipelineJobsRequest {
+    /// Required. The name of the PipelineJobs' parent resource.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The names of the PipelineJobs to cancel.
+    /// A maximum of 32 PipelineJobs can be cancelled in a batch.
+    /// Format:
+    /// `projects/{project}/locations/{location}/pipelineJobs/{pipelineJob}`
+    #[prost(string, repeated, tag = "2")]
+    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Response message for
+/// [PipelineService.BatchCancelPipelineJobs][google.cloud.aiplatform.v1.PipelineService.BatchCancelPipelineJobs].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCancelPipelineJobsResponse {
+    /// PipelineJobs cancelled.
+    #[prost(message, repeated, tag = "1")]
+    pub pipeline_jobs: ::prost::alloc::vec::Vec<PipelineJob>,
 }
 /// Generated client implementations.
 pub mod pipeline_service_client {
@@ -27750,6 +30738,39 @@ pub mod pipeline_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Batch deletes PipelineJobs
+        /// The Operation is atomic. If it fails, none of the PipelineJobs are deleted.
+        /// If it succeeds, all of the PipelineJobs are deleted.
+        pub async fn batch_delete_pipeline_jobs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchDeletePipelineJobsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PipelineService/BatchDeletePipelineJobs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PipelineService",
+                        "BatchDeletePipelineJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Cancels a PipelineJob.
         /// Starts asynchronous cancellation on the PipelineJob. The server
         /// makes a best effort to cancel the pipeline, but success is not
@@ -27786,6 +30807,43 @@ pub mod pipeline_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1.PipelineService",
                         "CancelPipelineJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Batch cancel PipelineJobs.
+        /// Firstly the server will check if all the jobs are in non-terminal states,
+        /// and skip the jobs that are already terminated.
+        /// If the operation failed, none of the pipeline jobs are cancelled.
+        /// The server will poll the states of all the pipeline jobs periodically
+        /// to check the cancellation status.
+        /// This operation will return an LRO.
+        pub async fn batch_cancel_pipeline_jobs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchCancelPipelineJobsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.PipelineService/BatchCancelPipelineJobs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.PipelineService",
+                        "BatchCancelPipelineJobs",
                     ),
                 );
             self.inner.unary(req, path, codec).await

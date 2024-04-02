@@ -2,7 +2,7 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Namespaces {
-    /// A list of Kubernetes Namespaces
+    /// Optional. A list of Kubernetes Namespaces
     #[prost(string, repeated, tag = "1")]
     pub namespaces: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -10,10 +10,10 @@ pub struct Namespaces {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NamespacedName {
-    /// The Namespace of the Kubernetes resource.
+    /// Optional. The Namespace of the Kubernetes resource.
     #[prost(string, tag = "1")]
     pub namespace: ::prost::alloc::string::String,
-    /// The name of the Kubernetes resource.
+    /// Optional. The name of the Kubernetes resource.
     #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
 }
@@ -21,7 +21,7 @@ pub struct NamespacedName {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NamespacedNames {
-    /// A list of namespaced Kubernetes resources.
+    /// Optional. A list of namespaced Kubernetes resources.
     #[prost(message, repeated, tag = "1")]
     pub namespaced_names: ::prost::alloc::vec::Vec<NamespacedName>,
 }
@@ -30,7 +30,7 @@ pub struct NamespacedNames {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptionKey {
-    /// Google Cloud KMS encryption key. Format:
+    /// Optional. Google Cloud KMS encryption key. Format:
     /// `projects/*/locations/*/keyRings/*/cryptoKeys/*`
     #[prost(string, tag = "1")]
     pub gcp_kms_encryption_key: ::prost::alloc::string::String,
@@ -39,7 +39,6 @@ pub struct EncryptionKey {
 /// some portion of the state of a GKE cluster, the record of the backup
 /// operation itself, and an anchor for the underlying artifacts that
 /// comprise the Backup (the config backup and VolumeBackups).
-/// Next id: 28
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Backup {
@@ -62,15 +61,15 @@ pub struct Backup {
     /// means that the Backup was created manually.
     #[prost(bool, tag = "5")]
     pub manual: bool,
-    /// A set of custom labels supplied by user.
+    /// Optional. A set of custom labels supplied by user.
     #[prost(map = "string, string", tag = "6")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Minimum age for this Backup (in days). If this field is set to a non-zero
-    /// value, the Backup will be "locked" against deletion (either manual or
-    /// automatic deletion) for the number of days provided (measured from the
+    /// Optional. Minimum age for this Backup (in days). If this field is set to a
+    /// non-zero value, the Backup will be "locked" against deletion (either manual
+    /// or automatic deletion) for the number of days provided (measured from the
     /// creation time of the Backup).  MUST be an integer value between 0-90
     /// (inclusive).
     ///
@@ -85,8 +84,8 @@ pub struct Backup {
     /// [delete_lock_days][google.cloud.gkebackup.v1.Backup.delete_lock_days]).
     #[prost(message, optional, tag = "8")]
     pub delete_lock_expire_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The age (in days) after which this Backup will be automatically deleted.
-    /// Must be an integer value >= 0:
+    /// Optional. The age (in days) after which this Backup will be automatically
+    /// deleted. Must be an integer value >= 0:
     ///
     /// - If 0, no automatic deletion will occur for this Backup.
     /// - If not 0, this must be >=
@@ -158,7 +157,7 @@ pub struct Backup {
     /// applied to the same version of the resource.
     #[prost(string, tag = "24")]
     pub etag: ::prost::alloc::string::String,
-    /// User specified descriptive string for this Backup.
+    /// Optional. User specified descriptive string for this Backup.
     #[prost(string, tag = "25")]
     pub description: ::prost::alloc::string::String,
     /// Output only. The total number of Kubernetes Pods contained in the Backup.
@@ -181,7 +180,7 @@ pub mod backup {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClusterMetadata {
-        /// The source cluster from which this Backup was created.
+        /// Output only. The source cluster from which this Backup was created.
         /// Valid formats:
         ///
         ///    - `projects/*/locations/*/clusters/*`
@@ -191,10 +190,11 @@ pub mod backup {
         /// [cluster][google.cloud.gkebackup.v1.BackupPlan.cluster] field.
         #[prost(string, tag = "1")]
         pub cluster: ::prost::alloc::string::String,
-        /// The Kubernetes server version of the source cluster.
+        /// Output only. The Kubernetes server version of the source cluster.
         #[prost(string, tag = "2")]
         pub k8s_version: ::prost::alloc::string::String,
-        /// A list of the Backup for GKE CRD versions found in the cluster.
+        /// Output only. A list of the Backup for GKE CRD versions found in the
+        /// cluster.
         #[prost(map = "string, string", tag = "3")]
         pub backup_crd_versions: ::std::collections::HashMap<
             ::prost::alloc::string::String,
@@ -210,10 +210,10 @@ pub mod backup {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum PlatformVersion {
-            /// GKE version
+            /// Output only. GKE version
             #[prost(string, tag = "4")]
             GkeVersion(::prost::alloc::string::String),
-            /// Anthos version
+            /// Output only. Anthos version
             #[prost(string, tag = "5")]
             AnthosVersion(::prost::alloc::string::String),
         }
@@ -316,7 +316,7 @@ pub struct BackupPlan {
     /// updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// User specified descriptive string for this BackupPlan.
+    /// Optional. User specified descriptive string for this BackupPlan.
     #[prost(string, tag = "5")]
     pub description: ::prost::alloc::string::String,
     /// Required. Immutable. The source cluster from which Backups will be created
@@ -326,16 +326,18 @@ pub struct BackupPlan {
     /// - `projects/*/zones/*/clusters/*`
     #[prost(string, tag = "6")]
     pub cluster: ::prost::alloc::string::String,
-    /// RetentionPolicy governs lifecycle of Backups created under this plan.
+    /// Optional. RetentionPolicy governs lifecycle of Backups created under this
+    /// plan.
     #[prost(message, optional, tag = "7")]
     pub retention_policy: ::core::option::Option<backup_plan::RetentionPolicy>,
-    /// A set of custom labels supplied by user.
+    /// Optional. A set of custom labels supplied by user.
     #[prost(map = "string, string", tag = "8")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Defines a schedule for automatic Backup creation via this BackupPlan.
+    /// Optional. Defines a schedule for automatic Backup creation via this
+    /// BackupPlan.
     #[prost(message, optional, tag = "9")]
     pub backup_schedule: ::core::option::Option<backup_plan::Schedule>,
     /// Output only. `etag` is used for optimistic concurrency control as a way to
@@ -348,7 +350,7 @@ pub struct BackupPlan {
     /// will be applied to the same version of the resource.
     #[prost(string, tag = "10")]
     pub etag: ::prost::alloc::string::String,
-    /// This flag indicates whether this BackupPlan has been deactivated.
+    /// Optional. This flag indicates whether this BackupPlan has been deactivated.
     /// Setting this field to True locks the BackupPlan such that no further
     /// updates will be allowed (except deletes), including the deactivated field
     /// itself. It also prevents any new Backups from being created via this
@@ -357,7 +359,7 @@ pub struct BackupPlan {
     /// Default: False
     #[prost(bool, tag = "11")]
     pub deactivated: bool,
-    /// Defines the configuration of Backups created via this BackupPlan.
+    /// Optional. Defines the configuration of Backups created via this BackupPlan.
     #[prost(message, optional, tag = "12")]
     pub backup_config: ::core::option::Option<backup_plan::BackupConfig>,
     /// Output only. The number of Kubernetes Pods backed up in the
@@ -374,6 +376,15 @@ pub struct BackupPlan {
     /// `state`
     #[prost(string, tag = "15")]
     pub state_reason: ::prost::alloc::string::String,
+    /// Output only. A number that represents the current risk level of this
+    /// BackupPlan from RPO perspective with 1 being no risk and 5 being highest
+    /// risk.
+    #[prost(int32, tag = "16")]
+    pub rpo_risk_level: i32,
+    /// Output only. Human-readable description of why the BackupPlan is in the
+    /// current rpo_risk_level and action items if any.
+    #[prost(string, tag = "17")]
+    pub rpo_risk_reason: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `BackupPlan`.
 pub mod backup_plan {
@@ -381,7 +392,7 @@ pub mod backup_plan {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RetentionPolicy {
-        /// Minimum age for Backups created via this BackupPlan (in days).
+        /// Optional. Minimum age for Backups created via this BackupPlan (in days).
         /// This field MUST be an integer value between 0-90 (inclusive).
         /// A Backup created under this BackupPlan will NOT be deletable until it
         /// reaches Backup's (create_time + backup_delete_lock_days).
@@ -392,29 +403,30 @@ pub mod backup_plan {
         /// Default: 0 (no delete blocking)
         #[prost(int32, tag = "1")]
         pub backup_delete_lock_days: i32,
-        /// The default maximum age of a Backup created via this BackupPlan.
-        /// This field MUST be an integer value >= 0 and <= 365.
-        /// If specified, a Backup created under this BackupPlan will be
-        /// automatically deleted after its age reaches (create_time +
-        /// backup_retain_days).
-        /// If not specified, Backups created under this BackupPlan will NOT be
-        /// subject to automatic deletion.
-        /// Updating this field does NOT affect existing Backups under it. Backups
-        /// created AFTER a successful update will automatically pick up the new
-        /// value.
-        /// NOTE: backup_retain_days must be >=
+        /// Optional. The default maximum age of a Backup created via this
+        /// BackupPlan. This field MUST be an integer value >= 0 and <= 365. If
+        /// specified, a Backup created under this BackupPlan will be automatically
+        /// deleted after its age reaches (create_time + backup_retain_days). If not
+        /// specified, Backups created under this BackupPlan will NOT be subject to
+        /// automatic deletion. Updating this field does NOT affect existing Backups
+        /// under it. Backups created AFTER a successful update will automatically
+        /// pick up the new value. NOTE: backup_retain_days must be >=
         /// [backup_delete_lock_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_delete_lock_days].
         /// If
         /// [cron_schedule][google.cloud.gkebackup.v1.BackupPlan.Schedule.cron_schedule]
         /// is defined, then this must be
-        /// <= 360 * the creation interval.
+        /// <= 360 * the creation interval. If
+        /// [rpo_config][google.cloud.gkebackup.v1.BackupPlan.Schedule.rpo_config] is
+        /// defined, then this must be
+        /// <= 360 * [target_rpo_minutes][Schedule.rpo_config.target_rpo_minutes] /
+        /// (1440minutes/day).
         ///
         /// Default: 0 (no automatic deletion)
         #[prost(int32, tag = "2")]
         pub backup_retain_days: i32,
-        /// This flag denotes whether the retention policy of this BackupPlan is
-        /// locked.  If set to True, no further update is allowed on this policy,
-        /// including the `locked` field itself.
+        /// Optional. This flag denotes whether the retention policy of this
+        /// BackupPlan is locked.  If set to True, no further update is allowed on
+        /// this policy, including the `locked` field itself.
         ///
         /// Default: False
         #[prost(bool, tag = "3")]
@@ -425,42 +437,60 @@ pub mod backup_plan {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Schedule {
-        /// A standard [cron](<https://wikipedia.com/wiki/cron>) string that defines a
-        /// repeating schedule for creating Backups via this BackupPlan. If this is
-        /// defined, then
+        /// Optional. A standard [cron](<https://wikipedia.com/wiki/cron>) string that
+        /// defines a repeating schedule for creating Backups via this BackupPlan.
+        /// This is mutually exclusive with the
+        /// [rpo_config][google.cloud.gkebackup.v1.BackupPlan.Schedule.rpo_config]
+        /// field since at most one schedule can be defined for a BackupPlan. If this
+        /// is defined, then
         /// [backup_retain_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_retain_days]
         /// must also be defined.
         ///
         /// Default (empty): no automatic backup creation will occur.
         #[prost(string, tag = "1")]
         pub cron_schedule: ::prost::alloc::string::String,
-        /// This flag denotes whether automatic Backup creation is paused for this
-        /// BackupPlan.
+        /// Optional. This flag denotes whether automatic Backup creation is paused
+        /// for this BackupPlan.
         ///
         /// Default: False
         #[prost(bool, tag = "2")]
         pub paused: bool,
+        /// Optional. Defines the RPO schedule configuration for this BackupPlan.
+        /// This is mutually exclusive with the
+        /// [cron_schedule][google.cloud.gkebackup.v1.BackupPlan.Schedule.cron_schedule]
+        /// field since at most one schedule can be defined for a BackupPLan. If this
+        /// is defined, then
+        /// [backup_retain_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_retain_days]
+        /// must also be defined.
+        ///
+        /// Default (empty): no automatic backup creation will occur.
+        #[prost(message, optional, tag = "3")]
+        pub rpo_config: ::core::option::Option<super::RpoConfig>,
+        /// Output only. Start time of next scheduled backup under this BackupPlan by
+        /// either cron_schedule or rpo config.
+        #[prost(message, optional, tag = "4")]
+        pub next_scheduled_backup_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// BackupConfig defines the configuration of Backups created via this
     /// BackupPlan.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BackupConfig {
-        /// This flag specifies whether volume data should be backed up when
-        /// PVCs are included in the scope of a Backup.
+        /// Optional. This flag specifies whether volume data should be backed up
+        /// when PVCs are included in the scope of a Backup.
         ///
         /// Default: False
         #[prost(bool, tag = "4")]
         pub include_volume_data: bool,
-        /// This flag specifies whether Kubernetes Secret resources should be
-        /// included when they fall into the scope of Backups.
+        /// Optional. This flag specifies whether Kubernetes Secret resources should
+        /// be included when they fall into the scope of Backups.
         ///
         /// Default: False
         #[prost(bool, tag = "5")]
         pub include_secrets: bool,
-        /// This defines a customer managed encryption key that will be used to
-        /// encrypt the "config" portion (the Kubernetes resources) of Backups
-        /// created via this plan.
+        /// Optional. This defines a customer managed encryption key that will be
+        /// used to encrypt the "config" portion (the Kubernetes resources) of
+        /// Backups created via this plan.
         ///
         /// Default (empty): Config backup artifacts will not be encrypted.
         #[prost(message, optional, tag = "6")]
@@ -551,9 +581,89 @@ pub mod backup_plan {
         }
     }
 }
+/// Defines RPO scheduling configuration for automatically creating
+/// Backups via this BackupPlan.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RpoConfig {
+    /// Required. Defines the target RPO for the BackupPlan in minutes, which means
+    /// the target maximum data loss in time that is acceptable for this
+    /// BackupPlan. This must be at least 60, i.e., 1 hour, and at most 86400,
+    /// i.e., 60 days.
+    #[prost(int32, tag = "1")]
+    pub target_rpo_minutes: i32,
+    /// Optional. User specified time windows during which backup can NOT happen
+    /// for this BackupPlan - backups should start and finish outside of any given
+    /// exclusion window. Note: backup jobs will be scheduled to start and
+    /// finish outside the duration of the window as much as possible, but
+    /// running jobs will not get canceled when it runs into the window.
+    /// All the time and date values in exclusion_windows entry in the API are in
+    /// UTC.
+    /// We only allow <=1 recurrence (daily or weekly) exclusion window for a
+    /// BackupPlan while no restriction on number of single occurrence
+    /// windows.
+    #[prost(message, repeated, tag = "2")]
+    pub exclusion_windows: ::prost::alloc::vec::Vec<ExclusionWindow>,
+}
+/// Defines a time window during which no backup should
+/// happen. All time and date are in UTC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExclusionWindow {
+    /// Required. Specifies the start time of the window using time of the day in
+    /// UTC.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<super::super::super::r#type::TimeOfDay>,
+    /// Required. Specifies duration of the window. Restrictions for duration based
+    /// on the recurrence type to allow some time for backup to happen:
+    /// - single_occurrence_date:  no restriction, but UI may warn about this when
+    /// duration >= target RPO
+    /// - daily window: duration < 24 hours
+    /// - weekly window:
+    ///    - days of week includes all seven days of a week: duration < 24 hours
+    ///    - all other weekly window: duration < 168 hours (i.e., 24 * 7 hours)
+    #[prost(message, optional, tag = "2")]
+    pub duration: ::core::option::Option<::prost_types::Duration>,
+    /// Required. Specifies the day(s) on which the exclusion window takes
+    /// effect. Exactly one of the fields MUST be specified.
+    #[prost(oneof = "exclusion_window::Recurrence", tags = "3, 4, 5")]
+    pub recurrence: ::core::option::Option<exclusion_window::Recurrence>,
+}
+/// Nested message and enum types in `ExclusionWindow`.
+pub mod exclusion_window {
+    /// Holds repeated DaysOfWeek values as a container.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DayOfWeekList {
+        /// Optional. A list of days of week.
+        #[prost(
+            enumeration = "super::super::super::super::r#type::DayOfWeek",
+            repeated,
+            packed = "false",
+            tag = "1"
+        )]
+        pub days_of_week: ::prost::alloc::vec::Vec<i32>,
+    }
+    /// Required. Specifies the day(s) on which the exclusion window takes
+    /// effect. Exactly one of the fields MUST be specified.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Recurrence {
+        /// No recurrence. The exclusion window occurs only once and on this
+        /// date in UTC.
+        #[prost(message, tag = "3")]
+        SingleOccurrenceDate(super::super::super::super::r#type::Date),
+        /// The exclusion window occurs every day if set to "True".
+        /// Specifying this field to "False" is an error.
+        #[prost(bool, tag = "4")]
+        Daily(bool),
+        /// The exclusion window occurs on these days of each week in UTC.
+        #[prost(message, tag = "5")]
+        DaysOfWeek(DayOfWeekList),
+    }
+}
 /// Represents both a request to Restore some portion of a Backup into
 /// a target GKE cluster and a record of the restore operation itself.
-/// Next id: 18
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Restore {
@@ -700,44 +810,45 @@ pub mod restore {
     }
 }
 /// Configuration of a restore.
-/// Next id: 12
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreConfig {
-    /// Specifies the mechanism to be used to restore volume data.
+    /// Optional. Specifies the mechanism to be used to restore volume data.
     /// Default: VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED (will be treated as
     /// NO_VOLUME_DATA_RESTORATION).
     #[prost(enumeration = "restore_config::VolumeDataRestorePolicy", tag = "1")]
     pub volume_data_restore_policy: i32,
-    /// Defines the behavior for handling the situation where cluster-scoped
-    /// resources being restored already exist in the target cluster. This MUST be
-    /// set to a value other than CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED if
+    /// Optional. Defines the behavior for handling the situation where
+    /// cluster-scoped resources being restored already exist in the target
+    /// cluster. This MUST be set to a value other than
+    /// CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED if
     /// [cluster_resource_restore_scope][google.cloud.gkebackup.v1.RestoreConfig.cluster_resource_restore_scope]
     /// is not empty.
     #[prost(enumeration = "restore_config::ClusterResourceConflictPolicy", tag = "2")]
     pub cluster_resource_conflict_policy: i32,
-    /// Defines the behavior for handling the situation where sets of namespaced
-    /// resources being restored already exist in the target cluster. This MUST be
-    /// set to a value other than NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED.
+    /// Optional. Defines the behavior for handling the situation where sets of
+    /// namespaced resources being restored already exist in the target cluster.
+    /// This MUST be set to a value other than
+    /// NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED.
     #[prost(enumeration = "restore_config::NamespacedResourceRestoreMode", tag = "3")]
     pub namespaced_resource_restore_mode: i32,
-    /// Identifies the cluster-scoped resources to restore from the Backup.
-    /// Not specifying it means NO cluster resource will be restored.
+    /// Optional. Identifies the cluster-scoped resources to restore from the
+    /// Backup. Not specifying it means NO cluster resource will be restored.
     #[prost(message, optional, tag = "4")]
     pub cluster_resource_restore_scope: ::core::option::Option<
         restore_config::ClusterResourceRestoreScope,
     >,
-    /// A list of transformation rules to be applied against Kubernetes resources
-    /// as they are selected for restoration from a Backup. Rules are executed in
-    /// order defined - this order matters, as changes made by a rule may impact
-    /// the filtering logic of subsequent rules. An empty list means no
+    /// Optional. A list of transformation rules to be applied against Kubernetes
+    /// resources as they are selected for restoration from a Backup. Rules are
+    /// executed in order defined - this order matters, as changes made by a rule
+    /// may impact the filtering logic of subsequent rules. An empty list means no
     /// substitution will occur.
     #[prost(message, repeated, tag = "8")]
     pub substitution_rules: ::prost::alloc::vec::Vec<restore_config::SubstitutionRule>,
-    /// A list of transformation rules to be applied against Kubernetes resources
-    /// as they are selected for restoration from a Backup. Rules are executed in
-    /// order defined - this order matters, as changes made by a rule may impact
-    /// the filtering logic of subsequent rules. An empty list means no
+    /// Optional. A list of transformation rules to be applied against Kubernetes
+    /// resources as they are selected for restoration from a Backup. Rules are
+    /// executed in order defined - this order matters, as changes made by a rule
+    /// may impact the filtering logic of subsequent rules. An empty list means no
     /// transformation will occur.
     #[prost(message, repeated, tag = "11")]
     pub transformation_rules: ::prost::alloc::vec::Vec<
@@ -768,13 +879,14 @@ pub mod restore_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GroupKind {
-        /// API group string of a Kubernetes resource, e.g.
+        /// Optional. API group string of a Kubernetes resource, e.g.
         /// "apiextensions.k8s.io", "storage.k8s.io", etc.
         /// Note: use empty string for core API group
         #[prost(string, tag = "1")]
         pub resource_group: ::prost::alloc::string::String,
-        /// Kind of a Kubernetes resource, e.g.
-        /// "CustomResourceDefinition", "StorageClass", etc.
+        /// Optional. Kind of a Kubernetes resource, must be in UpperCamelCase
+        /// (PascalCase) and singular form. E.g. "CustomResourceDefinition",
+        /// "StorageClass", etc.
         #[prost(string, tag = "2")]
         pub resource_kind: ::prost::alloc::string::String,
     }
@@ -799,22 +911,22 @@ pub mod restore_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClusterResourceRestoreScope {
-        /// A list of cluster-scoped resource group kinds to restore from the
-        /// backup. If specified, only the selected resources will be restored.
+        /// Optional. A list of cluster-scoped resource group kinds to restore from
+        /// the backup. If specified, only the selected resources will be restored.
         /// Mutually exclusive to any other field in the message.
         #[prost(message, repeated, tag = "1")]
         pub selected_group_kinds: ::prost::alloc::vec::Vec<GroupKind>,
-        /// A list of cluster-scoped resource group kinds to NOT restore from the
-        /// backup. If specified, all valid cluster-scoped resources will be
+        /// Optional. A list of cluster-scoped resource group kinds to NOT restore
+        /// from the backup. If specified, all valid cluster-scoped resources will be
         /// restored except for those specified in the list.
         /// Mutually exclusive to any other field in the message.
         #[prost(message, repeated, tag = "2")]
         pub excluded_group_kinds: ::prost::alloc::vec::Vec<GroupKind>,
-        /// If True, all valid cluster-scoped resources will be restored.
+        /// Optional. If True, all valid cluster-scoped resources will be restored.
         /// Mutually exclusive to any other field in the message.
         #[prost(bool, tag = "3")]
         pub all_group_kinds: bool,
-        /// If True, no cluster-scoped resources will be restored.
+        /// Optional. If True, no cluster-scoped resources will be restored.
         /// This has the same restore scope as if the message is not defined.
         /// Mutually exclusive to any other field in the message.
         #[prost(bool, tag = "4")]
@@ -826,8 +938,8 @@ pub mod restore_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SubstitutionRule {
-        /// (Filtering parameter) Any resource subject to substitution must be
-        /// contained within one of the listed Kubernetes Namespace in the Backup.
+        /// Optional. (Filtering parameter) Any resource subject to substitution must
+        /// be contained within one of the listed Kubernetes Namespace in the Backup.
         /// If this field is not provided, no namespace filtering will be performed
         /// (all resources in all Namespaces, including all cluster-scoped resources,
         /// will be candidates for substitution).
@@ -835,11 +947,10 @@ pub mod restore_config {
         /// empty string ("") as one of the target namespaces.
         #[prost(string, repeated, tag = "1")]
         pub target_namespaces: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// (Filtering parameter) Any resource subject to substitution must belong to
-        /// one of the listed "types".
-        /// If this field is not provided, no type filtering will be performed (all
-        /// resources of all types matching previous filtering parameters will be
-        /// candidates for substitution).
+        /// Optional. (Filtering parameter) Any resource subject to substitution must
+        /// belong to one of the listed "types". If this field is not provided, no
+        /// type filtering will be performed (all resources of all types matching
+        /// previous filtering parameters will be candidates for substitution).
         #[prost(message, repeated, tag = "2")]
         pub target_group_kinds: ::prost::alloc::vec::Vec<GroupKind>,
         /// Required. This is a \[JSONPath\]
@@ -851,7 +962,7 @@ pub mod restore_config {
         /// fields out of the candidate resources will be modified).
         #[prost(string, tag = "3")]
         pub target_json_path: ::prost::alloc::string::String,
-        /// (Filtering parameter) This is a \[regular expression\]
+        /// Optional. (Filtering parameter) This is a \[regular expression\]
         /// (<https://en.wikipedia.org/wiki/Regular_expression>)
         /// that is compared against the fields matched by the target_json_path
         /// expression (and must also have passed the previous filters).
@@ -862,9 +973,10 @@ pub mod restore_config {
         /// value for this field will only match empty fields.
         #[prost(string, tag = "4")]
         pub original_value_pattern: ::prost::alloc::string::String,
-        /// This is the new value to set for any fields that pass the filtering and
-        /// selection criteria. To remove a value from a Kubernetes resource, either
-        /// leave this field unspecified, or set it to the empty string ("").
+        /// Optional. This is the new value to set for any fields that pass the
+        /// filtering and selection criteria. To remove a value from a Kubernetes
+        /// resource, either leave this field unspecified, or set it to the empty
+        /// string ("").
         #[prost(string, tag = "5")]
         pub new_value: ::prost::alloc::string::String,
     }
@@ -876,15 +988,15 @@ pub mod restore_config {
         /// Required. op specifies the operation to perform.
         #[prost(enumeration = "transformation_rule_action::Op", tag = "1")]
         pub op: i32,
-        /// A string containing a JSON Pointer value that references the location in
-        /// the target document to move the value from.
+        /// Optional. A string containing a JSON Pointer value that references the
+        /// location in the target document to move the value from.
         #[prost(string, tag = "2")]
         pub from_path: ::prost::alloc::string::String,
-        /// A string containing a JSON-Pointer value that references a location
-        /// within the target document where the operation is performed.
+        /// Optional. A string containing a JSON-Pointer value that references a
+        /// location within the target document where the operation is performed.
         #[prost(string, tag = "3")]
         pub path: ::prost::alloc::string::String,
-        /// A string that specifies the desired value in string format to
+        /// Optional. A string that specifies the desired value in string format to
         /// use for transformation.
         #[prost(string, tag = "4")]
         pub value: ::prost::alloc::string::String,
@@ -969,22 +1081,20 @@ pub mod restore_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceFilter {
-        /// (Filtering parameter) Any resource subject to transformation must be
-        /// contained within one of the listed Kubernetes Namespace in the Backup.
-        /// If this field is not provided, no namespace filtering will be performed
-        /// (all resources in all Namespaces, including all cluster-scoped resources,
-        /// will be candidates for transformation).
-        /// To mix cluster-scoped and namespaced resources in the same rule, use an
-        /// empty string ("") as one of the target namespaces.
+        /// Optional. (Filtering parameter) Any resource subject to transformation
+        /// must be contained within one of the listed Kubernetes Namespace in the
+        /// Backup. If this field is not provided, no namespace filtering will be
+        /// performed (all resources in all Namespaces, including all cluster-scoped
+        /// resources, will be candidates for transformation).
         #[prost(string, repeated, tag = "1")]
         pub namespaces: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// (Filtering parameter) Any resource subject to transformation must belong
-        /// to one of the listed "types". If this field is not provided, no type
-        /// filtering will be performed (all resources of all types matching previous
-        /// filtering parameters will be candidates for transformation).
+        /// Optional. (Filtering parameter) Any resource subject to transformation
+        /// must belong to one of the listed "types". If this field is not provided,
+        /// no type filtering will be performed (all resources of all types matching
+        /// previous filtering parameters will be candidates for transformation).
         #[prost(message, repeated, tag = "2")]
         pub group_kinds: ::prost::alloc::vec::Vec<GroupKind>,
-        /// This is a \[JSONPath\]
+        /// Optional. This is a \[JSONPath\]
         /// (<https://github.com/json-path/JsonPath/blob/master/README.md>)
         /// expression that matches specific fields of candidate
         /// resources and it operates as a filtering parameter (resources that
@@ -1005,13 +1115,13 @@ pub mod restore_config {
         /// could affect the outcome of the second operation.
         #[prost(message, repeated, tag = "1")]
         pub field_actions: ::prost::alloc::vec::Vec<TransformationRuleAction>,
-        /// This field is used to specify a set of fields that should be used to
-        /// determine which resources in backup should be acted upon by the supplied
-        /// transformation rule actions, and this will ensure that only specific
-        /// resources are affected by transformation rule actions.
+        /// Optional. This field is used to specify a set of fields that should be
+        /// used to determine which resources in backup should be acted upon by the
+        /// supplied transformation rule actions, and this will ensure that only
+        /// specific resources are affected by transformation rule actions.
         #[prost(message, optional, tag = "2")]
         pub resource_filter: ::core::option::Option<ResourceFilter>,
-        /// The description is a user specified string description of the
+        /// Optional. The description is a user specified string description of the
         /// transformation rule.
         #[prost(string, tag = "3")]
         pub description: ::prost::alloc::string::String,
@@ -1226,7 +1336,6 @@ pub mod restore_config {
 }
 /// The configuration of a potential series of Restore operations to be performed
 /// against Backups belong to a particular BackupPlan.
-/// Next id: 13
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestorePlan {
@@ -1246,7 +1355,7 @@ pub struct RestorePlan {
     /// updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// User specified descriptive string for this RestorePlan.
+    /// Optional. User specified descriptive string for this RestorePlan.
     #[prost(string, tag = "5")]
     pub description: ::prost::alloc::string::String,
     /// Required. Immutable. A reference to the
@@ -1266,7 +1375,7 @@ pub struct RestorePlan {
     /// Required. Configuration of Restores created via this RestorePlan.
     #[prost(message, optional, tag = "8")]
     pub restore_config: ::core::option::Option<RestoreConfig>,
-    /// A set of custom labels supplied by user.
+    /// Optional. A set of custom labels supplied by user.
     #[prost(map = "string, string", tag = "9")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1349,7 +1458,6 @@ pub mod restore_plan {
 /// Represents the backup of a specific persistent volume as a component of a
 /// Backup - both the record of the operation and a pointer to the underlying
 /// storage-specific artifacts.
-/// Next id: 14
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VolumeBackup {
@@ -1518,7 +1626,6 @@ pub mod volume_backup {
     }
 }
 /// Represents the operation of restoring a volume from a VolumeBackup.
-/// Next id: 13
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VolumeRestore {
@@ -1730,15 +1837,15 @@ pub struct ListBackupPlansRequest {
     /// Format: `projects/*/locations/*`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The target number of results to return in a single response.
+    /// Optional. The target number of results to return in a single response.
     /// If not specified, a default value will be chosen by the service.
-    /// Note that the response may inclue a partial list and a caller should
+    /// Note that the response may include a partial list and a caller should
     /// only rely on the response's
     /// [next_page_token][google.cloud.gkebackup.v1.ListBackupPlansResponse.next_page_token]
     /// to determine if there are more instances left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The value of
+    /// Optional. The value of
     /// [next_page_token][google.cloud.gkebackup.v1.ListBackupPlansResponse.next_page_token]
     /// received from a previous `ListBackupPlans` call.
     /// Provide this to retrieve the subsequent page in a multi-page list of
@@ -1746,10 +1853,10 @@ pub struct ListBackupPlansRequest {
     /// `ListBackupPlans` must match the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Field match expression used to filter the results.
+    /// Optional. Field match expression used to filter the results.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Field by which to sort the results.
+    /// Optional. Field by which to sort the results.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -1788,7 +1895,7 @@ pub struct UpdateBackupPlanRequest {
     /// fields. This may be sparsely populated if an `update_mask` is provided.
     #[prost(message, optional, tag = "1")]
     pub backup_plan: ::core::option::Option<BackupPlan>,
-    /// This is used to specify the fields to be overwritten in the
+    /// Optional. This is used to specify the fields to be overwritten in the
     /// BackupPlan targeted for update. The values for each of these
     /// updated fields will be taken from the `backup_plan` provided
     /// with this request. Field names are relative to the root of the resource
@@ -1808,7 +1915,7 @@ pub struct DeleteBackupPlanRequest {
     /// Format: `projects/*/locations/*/backupPlans/*`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// If provided, this value must match the current value of the
+    /// Optional. If provided, this value must match the current value of the
     /// target BackupPlan's [etag][google.cloud.gkebackup.v1.BackupPlan.etag] field
     /// or the request is rejected.
     #[prost(string, tag = "2")]
@@ -1822,10 +1929,10 @@ pub struct CreateBackupRequest {
     /// Format: `projects/*/locations/*/backupPlans/*`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The Backup resource to create.
+    /// Optional. The Backup resource to create.
     #[prost(message, optional, tag = "2")]
     pub backup: ::core::option::Option<Backup>,
-    /// The client-provided short name for the Backup resource.
+    /// Optional. The client-provided short name for the Backup resource.
     /// This name must:
     ///
     /// - be between 1 and 63 characters long (inclusive)
@@ -1844,15 +1951,15 @@ pub struct ListBackupsRequest {
     /// Format: `projects/*/locations/*/backupPlans/*`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The target number of results to return in a single response.
+    /// Optional. The target number of results to return in a single response.
     /// If not specified, a default value will be chosen by the service.
-    /// Note that the response may inclue a partial list and a caller should
+    /// Note that the response may include a partial list and a caller should
     /// only rely on the response's
     /// [next_page_token][google.cloud.gkebackup.v1.ListBackupsResponse.next_page_token]
     /// to determine if there are more instances left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The value of
+    /// Optional. The value of
     /// [next_page_token][google.cloud.gkebackup.v1.ListBackupsResponse.next_page_token]
     /// received from a previous `ListBackups` call.
     /// Provide this to retrieve the subsequent page in a multi-page list of
@@ -1860,10 +1967,10 @@ pub struct ListBackupsRequest {
     /// `ListBackups` must match the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Field match expression used to filter the results.
+    /// Optional. Field match expression used to filter the results.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Field by which to sort the results.
+    /// Optional. Field by which to sort the results.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -1898,7 +2005,7 @@ pub struct UpdateBackupRequest {
     /// fields. This may be sparsely populated if an `update_mask` is provided.
     #[prost(message, optional, tag = "1")]
     pub backup: ::core::option::Option<Backup>,
-    /// This is used to specify the fields to be overwritten in the
+    /// Optional. This is used to specify the fields to be overwritten in the
     /// Backup targeted for update. The values for each of these
     /// updated fields will be taken from the `backup_plan` provided
     /// with this request. Field names are relative to the root of the resource.
@@ -1917,13 +2024,13 @@ pub struct DeleteBackupRequest {
     /// Format: `projects/*/locations/*/backupPlans/*/backups/*`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// If provided, this value must match the current value of the
+    /// Optional. If provided, this value must match the current value of the
     /// target Backup's [etag][google.cloud.gkebackup.v1.Backup.etag] field or the
     /// request is rejected.
     #[prost(string, tag = "2")]
     pub etag: ::prost::alloc::string::String,
-    /// If set to true, any VolumeBackups below this Backup will also be deleted.
-    /// Otherwise, the request will only succeed if the Backup has no
+    /// Optional. If set to true, any VolumeBackups below this Backup will also be
+    /// deleted. Otherwise, the request will only succeed if the Backup has no
     /// VolumeBackups.
     #[prost(bool, tag = "3")]
     pub force: bool,
@@ -1936,15 +2043,15 @@ pub struct ListVolumeBackupsRequest {
     /// Format: `projects/*/locations/*/backupPlans/*/backups/*`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The target number of results to return in a single response.
+    /// Optional. The target number of results to return in a single response.
     /// If not specified, a default value will be chosen by the service.
-    /// Note that the response may inclue a partial list and a caller should
+    /// Note that the response may include a partial list and a caller should
     /// only rely on the response's
     /// [next_page_token][google.cloud.gkebackup.v1.ListVolumeBackupsResponse.next_page_token]
     /// to determine if there are more instances left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The value of
+    /// Optional. The value of
     /// [next_page_token][google.cloud.gkebackup.v1.ListVolumeBackupsResponse.next_page_token]
     /// received from a previous `ListVolumeBackups` call.
     /// Provide this to retrieve the subsequent page in a multi-page list of
@@ -1952,10 +2059,10 @@ pub struct ListVolumeBackupsRequest {
     /// `ListVolumeBackups` must match the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Field match expression used to filter the results.
+    /// Optional. Field match expression used to filter the results.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Field by which to sort the results.
+    /// Optional. Field by which to sort the results.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -2013,15 +2120,15 @@ pub struct ListRestorePlansRequest {
     /// Format: `projects/*/locations/*`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The target number of results to return in a single response.
+    /// Optional. The target number of results to return in a single response.
     /// If not specified, a default value will be chosen by the service.
-    /// Note that the response may inclue a partial list and a caller should
+    /// Note that the response may include a partial list and a caller should
     /// only rely on the response's
     /// [next_page_token][google.cloud.gkebackup.v1.ListRestorePlansResponse.next_page_token]
     /// to determine if there are more instances left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The value of
+    /// Optional. The value of
     /// [next_page_token][google.cloud.gkebackup.v1.ListRestorePlansResponse.next_page_token]
     /// received from a previous `ListRestorePlans` call.
     /// Provide this to retrieve the subsequent page in a multi-page list of
@@ -2029,10 +2136,10 @@ pub struct ListRestorePlansRequest {
     /// `ListRestorePlans` must match the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Field match expression used to filter the results.
+    /// Optional. Field match expression used to filter the results.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Field by which to sort the results.
+    /// Optional. Field by which to sort the results.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -2071,7 +2178,7 @@ pub struct UpdateRestorePlanRequest {
     /// fields. This may be sparsely populated if an `update_mask` is provided.
     #[prost(message, optional, tag = "1")]
     pub restore_plan: ::core::option::Option<RestorePlan>,
-    /// This is used to specify the fields to be overwritten in the
+    /// Optional. This is used to specify the fields to be overwritten in the
     /// RestorePlan targeted for update. The values for each of these
     /// updated fields will be taken from the `restore_plan` provided
     /// with this request. Field names are relative to the root of the resource.
@@ -2090,13 +2197,13 @@ pub struct DeleteRestorePlanRequest {
     /// Format: `projects/*/locations/*/restorePlans/*`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// If provided, this value must match the current value of the
+    /// Optional. If provided, this value must match the current value of the
     /// target RestorePlan's [etag][google.cloud.gkebackup.v1.RestorePlan.etag]
     /// field or the request is rejected.
     #[prost(string, tag = "2")]
     pub etag: ::prost::alloc::string::String,
-    /// If set to true, any Restores below this RestorePlan will also be deleted.
-    /// Otherwise, the request will only succeed if the RestorePlan has no
+    /// Optional. If set to true, any Restores below this RestorePlan will also be
+    /// deleted. Otherwise, the request will only succeed if the RestorePlan has no
     /// Restores.
     #[prost(bool, tag = "3")]
     pub force: bool,
@@ -2131,15 +2238,15 @@ pub struct ListRestoresRequest {
     /// Format: `projects/*/locations/*/restorePlans/*`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The target number of results to return in a single response.
+    /// Optional. The target number of results to return in a single response.
     /// If not specified, a default value will be chosen by the service.
-    /// Note that the response may inclue a partial list and a caller should
+    /// Note that the response may include a partial list and a caller should
     /// only rely on the response's
     /// [next_page_token][google.cloud.gkebackup.v1.ListRestoresResponse.next_page_token]
     /// to determine if there are more instances left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The value of
+    /// Optional. The value of
     /// [next_page_token][google.cloud.gkebackup.v1.ListRestoresResponse.next_page_token]
     /// received from a previous `ListRestores` call.
     /// Provide this to retrieve the subsequent page in a multi-page list of
@@ -2147,10 +2254,10 @@ pub struct ListRestoresRequest {
     /// must match the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Field match expression used to filter the results.
+    /// Optional. Field match expression used to filter the results.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Field by which to sort the results.
+    /// Optional. Field by which to sort the results.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -2188,7 +2295,7 @@ pub struct UpdateRestoreRequest {
     /// fields. This may be sparsely populated if an `update_mask` is provided.
     #[prost(message, optional, tag = "1")]
     pub restore: ::core::option::Option<Restore>,
-    /// This is used to specify the fields to be overwritten in the
+    /// Optional. This is used to specify the fields to be overwritten in the
     /// Restore targeted for update. The values for each of these
     /// updated fields will be taken from the `restore` provided
     /// with this request. Field names are relative to the root of the resource.
@@ -2207,13 +2314,13 @@ pub struct DeleteRestoreRequest {
     /// Format: `projects/*/locations/*/restorePlans/*/restores/*`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// If provided, this value must match the current value of the
+    /// Optional. If provided, this value must match the current value of the
     /// target Restore's [etag][google.cloud.gkebackup.v1.Restore.etag] field or
     /// the request is rejected.
     #[prost(string, tag = "2")]
     pub etag: ::prost::alloc::string::String,
-    /// If set to true, any VolumeRestores below this restore will also be deleted.
-    /// Otherwise, the request will only succeed if the restore has no
+    /// Optional. If set to true, any VolumeRestores below this restore will also
+    /// be deleted. Otherwise, the request will only succeed if the restore has no
     /// VolumeRestores.
     #[prost(bool, tag = "3")]
     pub force: bool,
@@ -2226,15 +2333,15 @@ pub struct ListVolumeRestoresRequest {
     /// Format: `projects/*/locations/*/restorePlans/*/restores/*`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The target number of results to return in a single response.
+    /// Optional. The target number of results to return in a single response.
     /// If not specified, a default value will be chosen by the service.
-    /// Note that the response may inclue a partial list and a caller should
+    /// Note that the response may include a partial list and a caller should
     /// only rely on the response's
     /// [next_page_token][google.cloud.gkebackup.v1.ListVolumeRestoresResponse.next_page_token]
     /// to determine if there are more instances left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The value of
+    /// Optional. The value of
     /// [next_page_token][google.cloud.gkebackup.v1.ListVolumeRestoresResponse.next_page_token]
     /// received from a previous `ListVolumeRestores` call.
     /// Provide this to retrieve the subsequent page in a multi-page list of
@@ -2242,10 +2349,10 @@ pub struct ListVolumeRestoresRequest {
     /// `ListVolumeRestores` must match the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Field match expression used to filter the results.
+    /// Optional. Field match expression used to filter the results.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Field by which to sort the results.
+    /// Optional. Field by which to sort the results.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -2272,6 +2379,23 @@ pub struct GetVolumeRestoreRequest {
     /// Format: `projects/*/locations/*/restorePlans/*/restores/*/volumeRestores/*`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Request message for GetBackupIndexDownloadUrl.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetBackupIndexDownloadUrlRequest {
+    /// Required. Full name of Backup resource.
+    /// Format:
+    /// projects/{project}/locations/{location}/backupPlans/{backup_plan}/backups/{backup}
+    #[prost(string, tag = "1")]
+    pub backup: ::prost::alloc::string::String,
+}
+/// Response message for GetBackupIndexDownloadUrl.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetBackupIndexDownloadUrlResponse {
+    #[prost(string, tag = "1")]
+    pub signed_url: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod backup_for_gke_client {
@@ -3082,6 +3206,37 @@ pub mod backup_for_gke_client {
                     GrpcMethod::new(
                         "google.cloud.gkebackup.v1.BackupForGKE",
                         "GetVolumeRestore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieve the link to the backupIndex.
+        pub async fn get_backup_index_download_url(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetBackupIndexDownloadUrlRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GetBackupIndexDownloadUrlResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.gkebackup.v1.BackupForGKE/GetBackupIndexDownloadUrl",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gkebackup.v1.BackupForGKE",
+                        "GetBackupIndexDownloadUrl",
                     ),
                 );
             self.inner.unary(req, path, codec).await
