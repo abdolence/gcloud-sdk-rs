@@ -423,6 +423,11 @@ pub struct NodeConfig {
     /// List of secondary boot disks attached to the nodes.
     #[prost(message, repeated, tag = "48")]
     pub secondary_boot_disks: ::prost::alloc::vec::Vec<SecondaryBootDisk>,
+    /// Secondary boot disk update strategy.
+    #[prost(message, optional, tag = "50")]
+    pub secondary_boot_disk_update_strategy: ::core::option::Option<
+        SecondaryBootDiskUpdateStrategy,
+    >,
 }
 /// Specifies options for controlling advanced machine features.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2462,6 +2467,9 @@ pub struct Cluster {
     /// GKE Enterprise Configuration.
     #[prost(message, optional, tag = "149")]
     pub enterprise_config: ::core::option::Option<EnterpriseConfig>,
+    /// Secret CSI driver configuration.
+    #[prost(message, optional, tag = "150")]
+    pub secret_manager_config: ::core::option::Option<SecretManagerConfig>,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
@@ -3082,6 +3090,9 @@ pub struct ClusterUpdate {
     /// Google Compute Engine hosts.
     #[prost(message, optional, tag = "132")]
     pub desired_host_maintenance_policy: ::core::option::Option<HostMaintenancePolicy>,
+    /// Enable/Disable Multi-Networking for the cluster
+    #[prost(bool, optional, tag = "135")]
+    pub desired_enable_multi_networking: ::core::option::Option<bool>,
     /// The desired resource manager tags that apply to all auto-provisioned node
     /// pools in autopilot clusters and node auto-provisioning enabled clusters.
     #[prost(message, optional, tag = "136")]
@@ -3091,6 +3102,12 @@ pub struct ClusterUpdate {
     /// Specify the details of in-transit encryption.
     #[prost(enumeration = "InTransitEncryptionConfig", optional, tag = "137")]
     pub desired_in_transit_encryption_config: ::core::option::Option<i32>,
+    /// Enable/Disable Cilium Clusterwide Network Policy for the cluster.
+    #[prost(bool, optional, tag = "138")]
+    pub desired_enable_cilium_clusterwide_network_policy: ::core::option::Option<bool>,
+    /// Enable/Disable Secret Manager Config.
+    #[prost(message, optional, tag = "139")]
+    pub desired_secret_manager_config: ::core::option::Option<SecretManagerConfig>,
 }
 /// AdditionalPodRangesConfig is the configuration for additional pod secondary
 /// ranges supporting the ClusterUpdate message.
@@ -6196,6 +6213,9 @@ pub struct NetworkConfig {
     /// Specify the details of in-transit encryption.
     #[prost(enumeration = "InTransitEncryptionConfig", optional, tag = "20")]
     pub in_transit_encryption_config: ::core::option::Option<i32>,
+    /// Whether CiliumClusterWideNetworkPolicy is enabled on this cluster.
+    #[prost(bool, optional, tag = "21")]
+    pub enable_cilium_clusterwide_network_policy: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `NetworkConfig`.
 pub mod network_config {
@@ -6685,9 +6705,39 @@ pub struct DatabaseEncryption {
     /// The desired state of etcd encryption.
     #[prost(enumeration = "database_encryption::State", tag = "2")]
     pub state: i32,
+    /// Output only. The current state of etcd encryption.
+    #[prost(enumeration = "database_encryption::CurrentState", optional, tag = "3")]
+    pub current_state: ::core::option::Option<i32>,
+    /// Output only. Keys in use by the cluster for decrypting
+    /// existing objects, in addition to the key in `key_name`.
+    ///
+    /// Each item is a CloudKMS key resource.
+    #[prost(string, repeated, tag = "4")]
+    pub decryption_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Records errors seen during DatabaseEncryption update
+    /// operations.
+    #[prost(message, repeated, tag = "5")]
+    pub last_operation_errors: ::prost::alloc::vec::Vec<
+        database_encryption::OperationError,
+    >,
 }
 /// Nested message and enum types in `DatabaseEncryption`.
 pub mod database_encryption {
+    /// OperationError records errors seen from CloudKMS keys
+    /// encountered during updates to DatabaseEncryption configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct OperationError {
+        /// CloudKMS key resource that had the error.
+        #[prost(string, tag = "1")]
+        pub key_name: ::prost::alloc::string::String,
+        /// Description of the error seen during the operation.
+        #[prost(string, tag = "2")]
+        pub error_message: ::prost::alloc::string::String,
+        /// Time when the CloudKMS error was seen.
+        #[prost(message, optional, tag = "3")]
+        pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
+    }
     /// State of etcd encryption.
     #[derive(
         Clone,
@@ -6728,6 +6778,68 @@ pub mod database_encryption {
                 "UNKNOWN" => Some(Self::Unknown),
                 "ENCRYPTED" => Some(Self::Encrypted),
                 "DECRYPTED" => Some(Self::Decrypted),
+                _ => None,
+            }
+        }
+    }
+    /// Current State of etcd encryption.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CurrentState {
+        /// Should never be set
+        Unspecified = 0,
+        /// Secrets in etcd are encrypted.
+        Encrypted = 7,
+        /// Secrets in etcd are stored in plain text (at etcd level) - this is
+        /// unrelated to Compute Engine level full disk encryption.
+        Decrypted = 2,
+        /// Encryption (or re-encryption with a different CloudKMS key)
+        /// of Secrets is in progress.
+        EncryptionPending = 3,
+        /// Encryption (or re-encryption with a different CloudKMS key) of Secrets in
+        /// etcd encountered an error.
+        EncryptionError = 4,
+        /// De-crypting Secrets to plain text in etcd is in progress.
+        DecryptionPending = 5,
+        /// De-crypting Secrets to plain text in etcd encountered an error.
+        DecryptionError = 6,
+    }
+    impl CurrentState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                CurrentState::Unspecified => "CURRENT_STATE_UNSPECIFIED",
+                CurrentState::Encrypted => "CURRENT_STATE_ENCRYPTED",
+                CurrentState::Decrypted => "CURRENT_STATE_DECRYPTED",
+                CurrentState::EncryptionPending => "CURRENT_STATE_ENCRYPTION_PENDING",
+                CurrentState::EncryptionError => "CURRENT_STATE_ENCRYPTION_ERROR",
+                CurrentState::DecryptionPending => "CURRENT_STATE_DECRYPTION_PENDING",
+                CurrentState::DecryptionError => "CURRENT_STATE_DECRYPTION_ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CURRENT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CURRENT_STATE_ENCRYPTED" => Some(Self::Encrypted),
+                "CURRENT_STATE_DECRYPTED" => Some(Self::Decrypted),
+                "CURRENT_STATE_ENCRYPTION_PENDING" => Some(Self::EncryptionPending),
+                "CURRENT_STATE_ENCRYPTION_ERROR" => Some(Self::EncryptionError),
+                "CURRENT_STATE_DECRYPTION_PENDING" => Some(Self::DecryptionPending),
+                "CURRENT_STATE_DECRYPTION_ERROR" => Some(Self::DecryptionError),
                 _ => None,
             }
         }
@@ -7767,6 +7879,14 @@ pub mod enterprise_config {
         }
     }
 }
+/// SecretManagerConfig is config for secret manager enablement.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecretManagerConfig {
+    /// Whether the cluster is configured to use secret manager CSI component.
+    #[prost(bool, optional, tag = "1")]
+    pub enabled: ::core::option::Option<bool>,
+}
 /// SecondaryBootDisk represents a persistent disk attached to a node
 /// with special configurations based on its mode.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -7823,6 +7943,11 @@ pub mod secondary_boot_disk {
         }
     }
 }
+/// SecondaryBootDiskUpdateStrategy is a placeholder which will be extended
+/// in the future to define different options for updating secondary boot disks.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecondaryBootDiskUpdateStrategy {}
 /// PrivateIPv6GoogleAccess controls whether and how the pods can communicate
 /// with Google Services through gRPC over IPv6.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

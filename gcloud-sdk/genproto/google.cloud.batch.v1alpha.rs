@@ -480,6 +480,8 @@ pub struct TaskSpec {
     pub compute_resource: ::core::option::Option<ComputeResource>,
     /// Maximum duration the task should run.
     /// The task will be killed and marked as FAILED if over this limit.
+    /// The valid value range for max_run_duration in seconds is [0,
+    /// 315576000000.999999999],
     #[prost(message, optional, tag = "4")]
     pub max_run_duration: ::core::option::Option<::prost_types::Duration>,
     /// Maximum number of retries on failures.
@@ -1652,6 +1654,278 @@ pub struct ServiceAccount {
     #[prost(string, repeated, tag = "2")]
     pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Notification on resource state change.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Notification {
+    /// Required. The Pub/Sub topic where notifications like the resource allowance
+    /// state changes will be published. The topic must exist in the same project
+    /// as the job and billings will be charged to this project. If not specified,
+    /// no Pub/Sub messages will be sent. Topic format:
+    /// `projects/{project}/topics/{topic}`.
+    #[prost(string, tag = "1")]
+    pub pubsub_topic: ::prost::alloc::string::String,
+}
+/// The Resource Allowance description for Cloud Batch.
+/// Only one Resource Allowance is supported now under a specific location and
+/// project.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceAllowance {
+    /// Identifier. ResourceAllowance name.
+    /// For example:
+    /// "projects/123456/locations/us-central1/resourceAllowances/resource-allowance-1".
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. A system generated unique ID (in UUID4 format) for the
+    /// ResourceAllowance.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Output only. Time when the ResourceAllowance was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Labels are attributes that can be set and used by both the
+    /// user and by Batch. Labels must meet the following constraints:
+    ///
+    /// * Keys and values can contain only lowercase letters, numeric characters,
+    /// underscores, and dashes.
+    /// * All characters must use UTF-8 encoding, and international characters are
+    /// allowed.
+    /// * Keys must start with a lowercase letter or international character.
+    /// * Each resource is limited to a maximum of 64 labels.
+    ///
+    /// Both keys and values are additionally constrained to be <= 128 bytes.
+    #[prost(map = "string, string", tag = "5")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Notification configurations.
+    #[prost(message, repeated, tag = "6")]
+    pub notifications: ::prost::alloc::vec::Vec<Notification>,
+    /// ResourceAllowance detail.
+    #[prost(oneof = "resource_allowance::ResourceAllowance", tags = "4")]
+    pub resource_allowance: ::core::option::Option<
+        resource_allowance::ResourceAllowance,
+    >,
+}
+/// Nested message and enum types in `ResourceAllowance`.
+pub mod resource_allowance {
+    /// ResourceAllowance detail.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ResourceAllowance {
+        /// The detail of usage resource allowance.
+        #[prost(message, tag = "4")]
+        UsageResourceAllowance(super::UsageResourceAllowance),
+    }
+}
+/// UsageResourceAllowance describes the detail of usage resource allowance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UsageResourceAllowance {
+    /// Required. Spec of a usage ResourceAllowance.
+    #[prost(message, optional, tag = "1")]
+    pub spec: ::core::option::Option<UsageResourceAllowanceSpec>,
+    /// Output only. Status of a usage ResourceAllowance.
+    #[prost(message, optional, tag = "2")]
+    pub status: ::core::option::Option<UsageResourceAllowanceStatus>,
+}
+/// Spec of a usage ResourceAllowance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UsageResourceAllowanceSpec {
+    /// Required. Spec type is unique for each usage ResourceAllowance.
+    /// Batch now only supports type as "cpu-core-hours" for CPU usage consumption
+    /// tracking.
+    #[prost(string, tag = "1")]
+    pub r#type: ::prost::alloc::string::String,
+    /// Required. Threshold of a UsageResourceAllowance limiting how many resources
+    /// can be consumed for each type.
+    #[prost(message, optional, tag = "2")]
+    pub limit: ::core::option::Option<usage_resource_allowance_spec::Limit>,
+}
+/// Nested message and enum types in `UsageResourceAllowanceSpec`.
+pub mod usage_resource_allowance_spec {
+    /// UsageResourceAllowance limitation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Limit {
+        /// Required. Limit value of a UsageResourceAllowance within its one
+        /// duration.
+        ///
+        /// Limit cannot be a negative value. Default is 0.
+        /// For example, you can set `limit` as 10000.0 with duration of the current
+        /// month by setting `calendar_period` field as monthly. That means in your
+        /// current month, 10000.0 is the core hour limitation that your resources
+        /// are allowed to consume.
+        #[prost(double, optional, tag = "2")]
+        pub limit: ::core::option::Option<f64>,
+        #[prost(oneof = "limit::Duration", tags = "1")]
+        pub duration: ::core::option::Option<limit::Duration>,
+    }
+    /// Nested message and enum types in `Limit`.
+    pub mod limit {
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Duration {
+            /// Optional. A CalendarPeriod represents the abstract concept of a time
+            /// period that has a canonical start.
+            #[prost(enumeration = "super::super::CalendarPeriod", tag = "1")]
+            CalendarPeriod(i32),
+        }
+    }
+}
+/// Status of a usage ResourceAllowance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UsageResourceAllowanceStatus {
+    /// Output only. ResourceAllowance state.
+    #[prost(enumeration = "ResourceAllowanceState", tag = "1")]
+    pub state: i32,
+    /// Output only. ResourceAllowance consumption status for usage resources.
+    #[prost(message, optional, tag = "2")]
+    pub limit_status: ::core::option::Option<
+        usage_resource_allowance_status::LimitStatus,
+    >,
+    /// Output only. The report of ResourceAllowance consumptions in a time period.
+    #[prost(message, optional, tag = "3")]
+    pub report: ::core::option::Option<
+        usage_resource_allowance_status::ConsumptionReport,
+    >,
+}
+/// Nested message and enum types in `UsageResourceAllowanceStatus`.
+pub mod usage_resource_allowance_status {
+    /// UsageResourceAllowanceStatus detail about usage consumption.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct LimitStatus {
+        /// Output only. The consumption interval.
+        #[prost(message, optional, tag = "1")]
+        pub consumption_interval: ::core::option::Option<
+            super::super::super::super::r#type::Interval,
+        >,
+        /// Output only. Limit value of a UsageResourceAllowance within its one
+        /// duration.
+        #[prost(double, tag = "2")]
+        pub limit: f64,
+        /// Output only. Accumulated consumption during `consumption_interval`.
+        #[prost(double, tag = "3")]
+        pub consumed: f64,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PeriodConsumption {
+        /// Output only. The consumption interval.
+        #[prost(message, optional, tag = "1")]
+        pub consumption_interval: ::core::option::Option<
+            super::super::super::super::r#type::Interval,
+        >,
+        /// Output only. Accumulated consumption during `consumption_interval`.
+        #[prost(double, tag = "2")]
+        pub consumed: f64,
+    }
+    /// ConsumptionReport is the report of ResourceAllowance consumptions in a time
+    /// period.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConsumptionReport {
+        /// Output only. ResourceAllowance consumptions in the latest calendar
+        /// period. Key is the calendar period in string format. Batch currently
+        /// supports HOUR, DAY, MONTH and YEAR.
+        #[prost(map = "string, message", tag = "1")]
+        pub latest_period_consumptions: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            PeriodConsumption,
+        >,
+    }
+}
+/// A `CalendarPeriod` represents the abstract concept of a time period that
+/// has a canonical start. All calendar times begin at 12 AM US and Canadian
+/// Pacific Time (UTC-8).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum CalendarPeriod {
+    /// Unspecified.
+    Unspecified = 0,
+    /// The month starts on the first date of the month and resets at the beginning
+    /// of each month.
+    Month = 1,
+    /// The quarter starts on dates January 1, April 1, July 1, and October 1 of
+    /// each year and resets at the beginning of the next quarter.
+    Quarter = 2,
+    /// The year starts on January 1 and resets at the beginning of the next year.
+    Year = 3,
+    /// The week period starts and resets every Monday.
+    Week = 4,
+    /// The day starts at 12:00am.
+    Day = 5,
+}
+impl CalendarPeriod {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            CalendarPeriod::Unspecified => "CALENDAR_PERIOD_UNSPECIFIED",
+            CalendarPeriod::Month => "MONTH",
+            CalendarPeriod::Quarter => "QUARTER",
+            CalendarPeriod::Year => "YEAR",
+            CalendarPeriod::Week => "WEEK",
+            CalendarPeriod::Day => "DAY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CALENDAR_PERIOD_UNSPECIFIED" => Some(Self::Unspecified),
+            "MONTH" => Some(Self::Month),
+            "QUARTER" => Some(Self::Quarter),
+            "YEAR" => Some(Self::Year),
+            "WEEK" => Some(Self::Week),
+            "DAY" => Some(Self::Day),
+            _ => None,
+        }
+    }
+}
+/// ResourceAllowance valid state.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ResourceAllowanceState {
+    /// Unspecified.
+    Unspecified = 0,
+    /// ResourceAllowance is active and in use.
+    ResourceAllowanceActive = 1,
+    /// ResourceAllowance limit is reached.
+    ResourceAllowanceDepleted = 2,
+}
+impl ResourceAllowanceState {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ResourceAllowanceState::Unspecified => "RESOURCE_ALLOWANCE_STATE_UNSPECIFIED",
+            ResourceAllowanceState::ResourceAllowanceActive => {
+                "RESOURCE_ALLOWANCE_ACTIVE"
+            }
+            ResourceAllowanceState::ResourceAllowanceDepleted => {
+                "RESOURCE_ALLOWANCE_DEPLETED"
+            }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "RESOURCE_ALLOWANCE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "RESOURCE_ALLOWANCE_ACTIVE" => Some(Self::ResourceAllowanceActive),
+            "RESOURCE_ALLOWANCE_DEPLETED" => Some(Self::ResourceAllowanceDepleted),
+            _ => None,
+        }
+    }
+}
 /// CreateJob Request.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1804,6 +2078,143 @@ pub struct GetTaskRequest {
     /// Required. Task name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// CreateResourceAllowance Request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateResourceAllowanceRequest {
+    /// Required. The parent resource name where the ResourceAllowance will be
+    /// created. Pattern: "projects/{project}/locations/{location}"
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// ID used to uniquely identify the ResourceAllowance within its parent scope.
+    /// This field should contain at most 63 characters and must start with
+    /// lowercase characters.
+    /// Only lowercase characters, numbers and '-' are accepted.
+    /// The '-' character cannot be the first or the last one.
+    /// A system generated ID will be used if the field is not set.
+    ///
+    /// The resource_allowance.name field in the request will be ignored and the
+    /// created resource name of the ResourceAllowance will be
+    /// "{parent}/resourceAllowances/{resource_allowance_id}".
+    #[prost(string, tag = "2")]
+    pub resource_allowance_id: ::prost::alloc::string::String,
+    /// Required. The ResourceAllowance to create.
+    #[prost(message, optional, tag = "3")]
+    pub resource_allowance: ::core::option::Option<ResourceAllowance>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// GetResourceAllowance Request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetResourceAllowanceRequest {
+    /// Required. ResourceAllowance name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// DeleteResourceAllowance Request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteResourceAllowanceRequest {
+    /// Required. ResourceAllowance name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Reason for this deletion.
+    #[prost(string, tag = "2")]
+    pub reason: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// ListResourceAllowances Request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListResourceAllowancesRequest {
+    /// Required. Parent path.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Page size.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// ListResourceAllowances Response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListResourceAllowancesResponse {
+    /// ResourceAllowances.
+    #[prost(message, repeated, tag = "1")]
+    pub resource_allowances: ::prost::alloc::vec::Vec<ResourceAllowance>,
+    /// Next page token.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// UpdateResourceAllowance Request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateResourceAllowanceRequest {
+    /// Required. The ResourceAllowance to update.
+    /// Update description.
+    /// Only fields specified in `update_mask` are updated.
+    #[prost(message, optional, tag = "1")]
+    pub resource_allowance: ::core::option::Option<ResourceAllowance>,
+    /// Required. Mask of fields to update.
+    ///
+    /// Field mask is used to specify the fields to be overwritten in the
+    /// ResourceAllowance resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
+    ///
+    /// UpdateResourceAllowance request now only supports update on `limit` field.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2090,6 +2501,161 @@ pub mod batch_service_client {
                     GrpcMethod::new(
                         "google.cloud.batch.v1alpha.BatchService",
                         "ListTasks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Create a Resource Allowance.
+        pub async fn create_resource_allowance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateResourceAllowanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ResourceAllowance>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.batch.v1alpha.BatchService/CreateResourceAllowance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.batch.v1alpha.BatchService",
+                        "CreateResourceAllowance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get a ResourceAllowance specified by its resource name.
+        pub async fn get_resource_allowance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetResourceAllowanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ResourceAllowance>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.batch.v1alpha.BatchService/GetResourceAllowance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.batch.v1alpha.BatchService",
+                        "GetResourceAllowance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Delete a ResourceAllowance.
+        pub async fn delete_resource_allowance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteResourceAllowanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.batch.v1alpha.BatchService/DeleteResourceAllowance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.batch.v1alpha.BatchService",
+                        "DeleteResourceAllowance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List all ResourceAllowances for a project within a region.
+        pub async fn list_resource_allowances(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListResourceAllowancesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListResourceAllowancesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.batch.v1alpha.BatchService/ListResourceAllowances",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.batch.v1alpha.BatchService",
+                        "ListResourceAllowances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update a Resource Allowance.
+        pub async fn update_resource_allowance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateResourceAllowanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ResourceAllowance>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.batch.v1alpha.BatchService/UpdateResourceAllowance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.batch.v1alpha.BatchService",
+                        "UpdateResourceAllowance",
                     ),
                 );
             self.inner.unary(req, path, codec).await

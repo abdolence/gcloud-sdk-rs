@@ -469,7 +469,7 @@ pub struct Container {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceRequirements {
-    /// Only ´memory´ and 'cpu' are supported.
+    /// Only `memory` and `cpu` keys in the map are supported.
     ///
     /// <p>Notes:
     ///   * The only supported values for CPU are '1', '2', '4', and '8'. Setting 4
@@ -482,7 +482,9 @@ pub struct ResourceRequirements {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Determines whether CPU should be throttled or not outside of requests.
+    /// Determines whether CPU is only allocated during requests (true by default).
+    /// However, if ResourceRequirements is set, the caller must explicitly
+    /// set this field to true to preserve the default behavior.
     #[prost(bool, tag = "2")]
     pub cpu_idle: bool,
     /// Determines whether CPU should be boosted on startup of a new container
@@ -581,7 +583,7 @@ pub struct Volume {
     /// Required. Volume's name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    #[prost(oneof = "volume::VolumeType", tags = "2, 3, 4")]
+    #[prost(oneof = "volume::VolumeType", tags = "2, 3, 4, 5, 6")]
     pub volume_type: ::core::option::Option<volume::VolumeType>,
 }
 /// Nested message and enum types in `Volume`.
@@ -600,6 +602,12 @@ pub mod volume {
         /// Ephemeral storage used as a shared volume.
         #[prost(message, tag = "4")]
         EmptyDir(super::EmptyDirVolumeSource),
+        /// For NFS Voumes, contains the path to the nfs Volume
+        #[prost(message, tag = "5")]
+        Nfs(super::NfsVolumeSource),
+        /// Persistent storage backed by a Google Cloud Storage bucket.
+        #[prost(message, tag = "6")]
+        Gcs(super::GcsVolumeSource),
     }
 }
 /// The secret's value will be presented as the content of a file whose
@@ -753,6 +761,31 @@ pub mod empty_dir_volume_source {
             }
         }
     }
+}
+/// Represents an NFS mount.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NfsVolumeSource {
+    /// Hostname or IP address of the NFS server
+    #[prost(string, tag = "1")]
+    pub server: ::prost::alloc::string::String,
+    /// Path that is exported by the NFS server.
+    #[prost(string, tag = "2")]
+    pub path: ::prost::alloc::string::String,
+    /// If true, mount the NFS volume as read only
+    #[prost(bool, tag = "3")]
+    pub read_only: bool,
+}
+/// Represents a GCS Bucket mounted as a volume.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GcsVolumeSource {
+    /// GCS Bucket name
+    #[prost(string, tag = "1")]
+    pub bucket: ::prost::alloc::string::String,
+    /// If true, mount the GCS bucket as read-only
+    #[prost(bool, tag = "2")]
+    pub read_only: bool,
 }
 /// Probe describes a health check to be performed against a container to
 /// determine whether it is alive or ready to receive traffic.
@@ -977,6 +1010,17 @@ pub struct RevisionScaling {
     /// Maximum number of serving instances that this resource should have.
     #[prost(int32, tag = "2")]
     pub max_instance_count: i32,
+}
+/// Scaling settings applied at the service level rather than
+/// at the revision level.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceScaling {
+    /// total min instances for the service. This number of instances is
+    /// divided among all revisions with specified traffic based on the percent
+    /// of traffic they are receiving. (BETA)
+    #[prost(int32, tag = "1")]
+    pub min_instance_count: i32,
 }
 /// Allowed ingress traffic for the Container.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2263,6 +2307,14 @@ pub mod jobs_client {
         }
     }
 }
+/// Effective settings for the current revision
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RevisionScalingStatus {
+    /// The current number of min instances provisioned for this revision.
+    #[prost(int32, tag = "1")]
+    pub desired_min_instance_count: i32,
+}
 /// Request message for obtaining a Revision by its full name.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2458,6 +2510,9 @@ pub struct Revision {
     /// Enable session affinity.
     #[prost(bool, tag = "38")]
     pub session_affinity: bool,
+    /// Output only. The current effective scaling settings for the revision.
+    #[prost(message, optional, tag = "39")]
+    pub scaling_status: ::core::option::Option<RevisionScalingStatus>,
     /// Output only. A system-generated fingerprint for this version of the
     /// resource. May be used to detect modification conflict during updates.
     #[prost(string, tag = "99")]
@@ -2706,9 +2761,12 @@ pub struct RevisionTemplate {
     /// Sets the maximum number of requests that each serving instance can receive.
     #[prost(int32, tag = "15")]
     pub max_instance_request_concurrency: i32,
-    /// Enable session affinity.
+    /// Optional. Enable session affinity.
     #[prost(bool, tag = "19")]
     pub session_affinity: bool,
+    /// Optional. Disables health checking containers during deployment.
+    #[prost(bool, tag = "20")]
+    pub health_check_disabled: bool,
 }
 /// Holds a single traffic routing entry for the Service. Allocations can be done
 /// to a specific Revision name, or pointing to the latest Ready Revision.
@@ -2921,11 +2979,10 @@ pub struct Service {
     /// APIs, its JSON representation will be a `string` instead of an `integer`.
     #[prost(int64, tag = "4")]
     pub generation: i64,
-    /// Unstructured key value map that can be used to organize and categorize
-    /// objects.
-    /// User-provided labels are shared with Google's billing system, so they can
-    /// be used to filter, or break down billing charges by team, component,
-    /// environment, state, etc. For more information, visit
+    /// Optional. Unstructured key value map that can be used to organize and
+    /// categorize objects. User-provided labels are shared with Google's billing
+    /// system, so they can be used to filter, or break down billing charges by
+    /// team, component, environment, state, etc. For more information, visit
     /// <https://cloud.google.com/resource-manager/docs/creating-managing-labels> or
     /// <https://cloud.google.com/run/docs/configuring/labels.>
     ///
@@ -2938,9 +2995,9 @@ pub struct Service {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Unstructured key value map that may be set by external tools to store and
-    /// arbitrary metadata. They are not queryable and should be preserved
-    /// when modifying objects.
+    /// Optional. Unstructured key value map that may be set by external tools to
+    /// store and arbitrary metadata. They are not queryable and should be
+    /// preserved when modifying objects.
     ///
     /// <p>Cloud Run API v2 does not support annotations with `run.googleapis.com`,
     /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
@@ -3007,6 +3064,12 @@ pub struct Service {
     /// 100% traffic to the latest `Ready` Revision.
     #[prost(message, repeated, tag = "19")]
     pub traffic: ::prost::alloc::vec::Vec<TrafficTarget>,
+    /// Optional. Specifies service-level scaling settings
+    #[prost(message, optional, tag = "20")]
+    pub scaling: ::core::option::Option<ServiceScaling>,
+    /// Optional. Disables public resolution of the default URI of this service.
+    #[prost(bool, tag = "22")]
+    pub default_uri_disabled: bool,
     /// Output only. The generation of this Service currently serving traffic. See
     /// comments in `reconciling` for additional information on reconciliation
     /// process in Cloud Run. Please note that unlike v1, this is an int64 value.

@@ -1065,6 +1065,12 @@ pub struct InputAudioConfig {
     /// Enable automatic punctuation option at the speech backend.
     #[prost(bool, tag = "17")]
     pub enable_automatic_punctuation: bool,
+    /// If `true`, the request will opt out for STT conformer model migration.
+    /// This field will be deprecated once force migration takes place in June
+    /// 2024. Please refer to [Dialogflow ES Speech model
+    /// migration](<https://cloud.google.com/dialogflow/es/docs/speech-model-migration>).
+    #[prost(bool, tag = "26")]
+    pub opt_out_conformer_model_migration: bool,
 }
 /// Description of which voice to use for speech synthesis.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5532,8 +5538,8 @@ pub mod streaming_recognition_result {
         Unspecified = 0,
         /// Message contains a (possibly partial) transcript.
         Transcript = 1,
-        /// Event indicates that the server has detected the end of the user's speech
-        /// utterance and expects no additional inputs.
+        /// This event indicates that the server has detected the end of the user's
+        /// speech utterance and expects no additional inputs.
         /// Therefore, the server will not process additional audio (although it may
         /// subsequently return additional results). The client should stop sending
         /// additional audio data, half-close the gRPC connection, and wait for any
@@ -7578,6 +7584,12 @@ pub mod agent_assistant_feedback {
         /// Text of actual submitted summary.
         #[prost(string, tag = "3")]
         pub summary_text: ::prost::alloc::string::String,
+        /// Optional. Actual text sections of submitted summary.
+        #[prost(map = "string, string", tag = "4")]
+        pub text_sections: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
     }
     /// Feedback for knowledge search.
     #[allow(clippy::derive_partial_eq_without_eq)]

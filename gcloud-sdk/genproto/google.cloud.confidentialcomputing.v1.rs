@@ -240,6 +240,10 @@ pub enum TokenType {
     Unspecified = 0,
     /// OpenID Connect (OIDC) token type
     Oidc = 1,
+    /// Public Key Infrastructure (PKI) token type
+    Pki = 2,
+    /// Limited claim token type for AWS integration
+    LimitedAws = 3,
 }
 impl TokenType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -250,6 +254,8 @@ impl TokenType {
         match self {
             TokenType::Unspecified => "TOKEN_TYPE_UNSPECIFIED",
             TokenType::Oidc => "TOKEN_TYPE_OIDC",
+            TokenType::Pki => "TOKEN_TYPE_PKI",
+            TokenType::LimitedAws => "TOKEN_TYPE_LIMITED_AWS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -257,6 +263,8 @@ impl TokenType {
         match value {
             "TOKEN_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
             "TOKEN_TYPE_OIDC" => Some(Self::Oidc),
+            "TOKEN_TYPE_PKI" => Some(Self::Pki),
+            "TOKEN_TYPE_LIMITED_AWS" => Some(Self::LimitedAws),
             _ => None,
         }
     }

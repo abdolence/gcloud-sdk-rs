@@ -58,8 +58,8 @@ pub struct RunWorkflowCustomOperationMetadata {
     #[prost(string, tag = "7")]
     pub pipeline_run_id: ::prost::alloc::string::String,
 }
-/// A connection to a SCM like GitHub, GitHub Enterprise, Bitbucket Server or
-/// GitLab.
+/// A connection to a SCM like GitHub, GitHub Enterprise, Bitbucket Data Center,
+/// Bitbucket Cloud or GitLab.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Connection {
@@ -97,7 +97,7 @@ pub struct Connection {
     #[prost(string, tag = "16")]
     pub etag: ::prost::alloc::string::String,
     /// Configuration for the connection depending on the type of provider.
-    #[prost(oneof = "connection::ConnectionConfig", tags = "5, 6, 7")]
+    #[prost(oneof = "connection::ConnectionConfig", tags = "5, 6, 7, 8, 9")]
     pub connection_config: ::core::option::Option<connection::ConnectionConfig>,
 }
 /// Nested message and enum types in `Connection`.
@@ -116,6 +116,12 @@ pub mod connection {
         /// Enterprise.
         #[prost(message, tag = "7")]
         GitlabConfig(super::GitLabConfig),
+        /// Configuration for connections to Bitbucket Data Center.
+        #[prost(message, tag = "8")]
+        BitbucketDataCenterConfig(super::BitbucketDataCenterConfig),
+        /// Configuration for connections to Bitbucket Cloud.
+        #[prost(message, tag = "9")]
+        BitbucketCloudConfig(super::BitbucketCloudConfig),
     }
 }
 /// Describes stage and necessary actions to be taken by the
@@ -306,6 +312,64 @@ pub struct GitLabConfig {
     /// `host_uri`.
     #[prost(string, tag = "7")]
     pub server_version: ::prost::alloc::string::String,
+}
+/// Configuration for connections to Bitbucket Data Center.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BitbucketDataCenterConfig {
+    /// Required. The URI of the Bitbucket Data Center instance or cluster this
+    /// connection is for.
+    #[prost(string, tag = "1")]
+    pub host_uri: ::prost::alloc::string::String,
+    /// Required. Immutable. SecretManager resource containing the webhook secret
+    /// used to verify webhook events, formatted as
+    /// `projects/*/secrets/*/versions/*`.
+    #[prost(string, tag = "2")]
+    pub webhook_secret_secret_version: ::prost::alloc::string::String,
+    /// Required. A http access token with the `REPO_READ` access.
+    #[prost(message, optional, tag = "3")]
+    pub read_authorizer_credential: ::core::option::Option<UserCredential>,
+    /// Required. A http access token with the `REPO_ADMIN` scope access.
+    #[prost(message, optional, tag = "4")]
+    pub authorizer_credential: ::core::option::Option<UserCredential>,
+    /// Optional. Configuration for using Service Directory to privately connect to
+    /// a Bitbucket Data Center. This should only be set if the Bitbucket Data
+    /// Center is hosted on-premises and not reachable by public internet. If this
+    /// field is left empty, calls to the Bitbucket Data Center will be made over
+    /// the public internet.
+    #[prost(message, optional, tag = "5")]
+    pub service_directory_config: ::core::option::Option<ServiceDirectoryConfig>,
+    /// Optional. SSL certificate to use for requests to the Bitbucket Data Center.
+    #[prost(string, tag = "6")]
+    pub ssl_ca: ::prost::alloc::string::String,
+    /// Output only. Version of the Bitbucket Data Center running on the
+    /// `host_uri`.
+    #[prost(string, tag = "7")]
+    pub server_version: ::prost::alloc::string::String,
+}
+/// Configuration for connections to Bitbucket Cloud.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BitbucketCloudConfig {
+    /// Required. The Bitbucket Cloud Workspace ID to be connected to Google Cloud
+    /// Platform.
+    #[prost(string, tag = "1")]
+    pub workspace: ::prost::alloc::string::String,
+    /// Required. SecretManager resource containing the webhook secret used to
+    /// verify webhook events, formatted as `projects/*/secrets/*/versions/*`.
+    #[prost(string, tag = "2")]
+    pub webhook_secret_secret_version: ::prost::alloc::string::String,
+    /// Required. An access token with the `repository` access. It can be either a
+    /// workspace, project or repository access token. It's recommended to use a
+    /// system account to generate the credentials.
+    #[prost(message, optional, tag = "3")]
+    pub read_authorizer_credential: ::core::option::Option<UserCredential>,
+    /// Required. An access token with the `webhook`, `repository`,
+    /// `repository:admin` and `pullrequest` scope access. It can be either a
+    /// workspace, project or repository access token. It's recommended to use a
+    /// system account to generate these credentials.
+    #[prost(message, optional, tag = "4")]
+    pub authorizer_credential: ::core::option::Option<UserCredential>,
 }
 /// ServiceDirectoryConfig represents Service Directory configuration for a
 /// connection.

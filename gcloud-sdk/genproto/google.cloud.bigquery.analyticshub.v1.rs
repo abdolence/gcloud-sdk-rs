@@ -59,7 +59,23 @@ pub mod sharing_environment_config {
     /// Data Clean Room (DCR), used for privacy-safe and secured data sharing.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct DcrExchangeConfig {}
+    pub struct DcrExchangeConfig {
+        /// Output only. If True, this DCR restricts the contributors to sharing
+        /// only a single resource in a Listing. And no two resources should have the
+        /// same IDs. So if a contributor adds a view with a conflicting name, the
+        /// CreateListing API will reject the request. if False, the data contributor
+        /// can publish an entire dataset (as before). This is not configurable, and
+        /// by default, all new DCRs will have the restriction set to True.
+        #[prost(bool, optional, tag = "1")]
+        pub single_selected_resource_sharing_restriction: ::core::option::Option<bool>,
+        /// Output only. If True, when subscribing to this DCR, it will create only
+        /// one linked dataset containing all resources shared within the
+        /// cleanroom. If False, when subscribing to this DCR, it will
+        /// create 1 linked dataset per listing. This is not configurable, and by
+        /// default, all new DCRs will have the restriction set to True.
+        #[prost(bool, optional, tag = "2")]
+        pub single_linked_dataset_per_cleanroom: ::core::option::Option<bool>,
+    }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Environment {
@@ -218,6 +234,36 @@ pub mod listing {
         /// e.g. `projects/myproject/datasets/123`
         #[prost(string, tag = "1")]
         pub dataset: ::prost::alloc::string::String,
+        /// Optional. Resources in this dataset that are selectively shared.
+        /// If this field is empty, then the entire dataset (all resources) are
+        /// shared. This field is only valid for data clean room exchanges.
+        #[prost(message, repeated, tag = "2")]
+        pub selected_resources: ::prost::alloc::vec::Vec<
+            big_query_dataset_source::SelectedResource,
+        >,
+    }
+    /// Nested message and enum types in `BigQueryDatasetSource`.
+    pub mod big_query_dataset_source {
+        /// Resource in this dataset that are selectively shared.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct SelectedResource {
+            #[prost(oneof = "selected_resource::Resource", tags = "1")]
+            pub resource: ::core::option::Option<selected_resource::Resource>,
+        }
+        /// Nested message and enum types in `SelectedResource`.
+        pub mod selected_resource {
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum Resource {
+                /// Optional. Format:
+                /// For table:
+                /// `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`
+                /// Example:"projects/test_project/datasets/test_dataset/tables/test_table"
+                #[prost(string, tag = "1")]
+                Table(::prost::alloc::string::String),
+            }
+        }
     }
     /// Restricted export config, used to configure restricted export on linked
     /// dataset.

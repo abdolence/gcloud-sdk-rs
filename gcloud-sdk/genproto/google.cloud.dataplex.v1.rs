@@ -1545,1503 +1545,6 @@ pub struct Session {
     #[prost(enumeration = "State", tag = "4")]
     pub state: i32,
 }
-/// Create content request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateContentRequest {
-    /// Required. The resource name of the parent lake:
-    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. Content resource.
-    #[prost(message, optional, tag = "2")]
-    pub content: ::core::option::Option<Content>,
-    /// Optional. Only validate the request, but do not perform mutations.
-    /// The default is false.
-    #[prost(bool, tag = "3")]
-    pub validate_only: bool,
-}
-/// Update content request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateContentRequest {
-    /// Required. Mask of fields to update.
-    #[prost(message, optional, tag = "1")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Required. Update description.
-    /// Only fields specified in `update_mask` are updated.
-    #[prost(message, optional, tag = "2")]
-    pub content: ::core::option::Option<Content>,
-    /// Optional. Only validate the request, but do not perform mutations.
-    /// The default is false.
-    #[prost(bool, tag = "3")]
-    pub validate_only: bool,
-}
-/// Delete content request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteContentRequest {
-    /// Required. The resource name of the content:
-    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// List content request. Returns the BASIC Content view.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListContentRequest {
-    /// Required. The resource name of the parent lake:
-    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of content to return. The service may return fewer
-    /// than this value. If unspecified, at most 10 content will be returned. The
-    /// maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. Page token received from a previous `ListContent` call. Provide
-    /// this to retrieve the subsequent page. When paginating, all other parameters
-    /// provided to `ListContent` must match the call that provided the page
-    /// token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filter request. Filters are case-sensitive.
-    /// The following formats are supported:
-    ///
-    /// labels.key1 = "value1"
-    /// labels:key1
-    /// type = "NOTEBOOK"
-    /// type = "SQL_SCRIPT"
-    ///
-    /// These restrictions can be coinjoined with AND, OR and NOT conjunctions.
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-}
-/// List content response.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListContentResponse {
-    /// Content under the given parent lake.
-    #[prost(message, repeated, tag = "1")]
-    pub content: ::prost::alloc::vec::Vec<Content>,
-    /// Token to retrieve the next page of results, or empty if there are no more
-    /// results in the list.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Get content request.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetContentRequest {
-    /// Required. The resource name of the content:
-    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Optional. Specify content view to make a partial request.
-    #[prost(enumeration = "get_content_request::ContentView", tag = "2")]
-    pub view: i32,
-}
-/// Nested message and enum types in `GetContentRequest`.
-pub mod get_content_request {
-    /// Specifies whether the request should return the full or the partial
-    /// representation.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum ContentView {
-        /// Content view not specified. Defaults to BASIC.
-        /// The API will default to the BASIC view.
-        Unspecified = 0,
-        /// Will not return the `data_text` field.
-        Basic = 1,
-        /// Returns the complete proto.
-        Full = 2,
-    }
-    impl ContentView {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                ContentView::Unspecified => "CONTENT_VIEW_UNSPECIFIED",
-                ContentView::Basic => "BASIC",
-                ContentView::Full => "FULL",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "CONTENT_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
-                "BASIC" => Some(Self::Basic),
-                "FULL" => Some(Self::Full),
-                _ => None,
-            }
-        }
-    }
-}
-/// Generated client implementations.
-pub mod content_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
-    use tonic::codegen::*;
-    use tonic::codegen::http::Uri;
-    /// ContentService manages Notebook and SQL Scripts for Dataplex.
-    #[derive(Debug, Clone)]
-    pub struct ContentServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl ContentServiceClient<tonic::transport::Channel> {
-        /// Attempt to create a new client by connecting to a given endpoint.
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
-    impl<T> ContentServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_origin(inner: T, origin: Uri) -> Self {
-            let inner = tonic::client::Grpc::with_origin(inner, origin);
-            Self { inner }
-        }
-        pub fn with_interceptor<F>(
-            inner: T,
-            interceptor: F,
-        ) -> ContentServiceClient<InterceptedService<T, F>>
-        where
-            F: tonic::service::Interceptor,
-            T::ResponseBody: Default,
-            T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-                Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
-                >,
-            >,
-            <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
-        {
-            ContentServiceClient::new(InterceptedService::new(inner, interceptor))
-        }
-        /// Compress requests with the given encoding.
-        ///
-        /// This requires the server to support it otherwise it might respond with an
-        /// error.
-        #[must_use]
-        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.send_compressed(encoding);
-            self
-        }
-        /// Enable decompressing responses.
-        #[must_use]
-        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.accept_compressed(encoding);
-            self
-        }
-        /// Limits the maximum size of a decoded message.
-        ///
-        /// Default: `4MB`
-        #[must_use]
-        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_decoding_message_size(limit);
-            self
-        }
-        /// Limits the maximum size of an encoded message.
-        ///
-        /// Default: `usize::MAX`
-        #[must_use]
-        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_encoding_message_size(limit);
-            self
-        }
-        /// Create a content.
-        pub async fn create_content(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateContentRequest>,
-        ) -> std::result::Result<tonic::Response<super::Content>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.ContentService/CreateContent",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.ContentService",
-                        "CreateContent",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Update a content. Only supports full resource update.
-        pub async fn update_content(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateContentRequest>,
-        ) -> std::result::Result<tonic::Response<super::Content>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.ContentService/UpdateContent",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.ContentService",
-                        "UpdateContent",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Delete a content.
-        pub async fn delete_content(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteContentRequest>,
-        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.ContentService/DeleteContent",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.ContentService",
-                        "DeleteContent",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Get a content resource.
-        pub async fn get_content(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetContentRequest>,
-        ) -> std::result::Result<tonic::Response<super::Content>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.ContentService/GetContent",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.ContentService",
-                        "GetContent",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Gets the access control policy for a contentitem resource. A `NOT_FOUND`
-        /// error is returned if the resource does not exist. An empty policy is
-        /// returned if the resource exists but does not have a policy set on it.
-        ///
-        /// Caller must have Google IAM `dataplex.content.getIamPolicy` permission
-        /// on the resource.
-        pub async fn get_iam_policy(
-            &mut self,
-            request: impl tonic::IntoRequest<
-                super::super::super::super::iam::v1::GetIamPolicyRequest,
-            >,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::iam::v1::Policy>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.ContentService/GetIamPolicy",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.ContentService",
-                        "GetIamPolicy",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Sets the access control policy on the specified contentitem resource.
-        /// Replaces any existing policy.
-        ///
-        /// Caller must have Google IAM `dataplex.content.setIamPolicy` permission
-        /// on the resource.
-        pub async fn set_iam_policy(
-            &mut self,
-            request: impl tonic::IntoRequest<
-                super::super::super::super::iam::v1::SetIamPolicyRequest,
-            >,
-        ) -> std::result::Result<
-            tonic::Response<super::super::super::super::iam::v1::Policy>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.ContentService/SetIamPolicy",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.ContentService",
-                        "SetIamPolicy",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Returns the caller's permissions on a resource.
-        /// If the resource does not exist, an empty set of
-        /// permissions is returned (a `NOT_FOUND` error is not returned).
-        ///
-        /// A caller is not required to have Google IAM permission to make this
-        /// request.
-        ///
-        /// Note: This operation is designed to be used for building permission-aware
-        /// UIs and command-line tools, not for authorization checking. This operation
-        /// may "fail open" without warning.
-        pub async fn test_iam_permissions(
-            &mut self,
-            request: impl tonic::IntoRequest<
-                super::super::super::super::iam::v1::TestIamPermissionsRequest,
-            >,
-        ) -> std::result::Result<
-            tonic::Response<
-                super::super::super::super::iam::v1::TestIamPermissionsResponse,
-            >,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.ContentService/TestIamPermissions",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.ContentService",
-                        "TestIamPermissions",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// List content.
-        pub async fn list_content(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListContentRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListContentResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dataplex.v1.ContentService/ListContent",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dataplex.v1.ContentService",
-                        "ListContent",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-    }
-}
-/// DataScan scheduling and trigger settings.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Trigger {
-    /// DataScan scheduling and trigger settings.
-    ///
-    /// If not specified, the default is `onDemand`.
-    #[prost(oneof = "trigger::Mode", tags = "100, 101")]
-    pub mode: ::core::option::Option<trigger::Mode>,
-}
-/// Nested message and enum types in `Trigger`.
-pub mod trigger {
-    /// The scan runs once via `RunDataScan` API.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct OnDemand {}
-    /// The scan is scheduled to run periodically.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Schedule {
-        /// Required. [Cron](<https://en.wikipedia.org/wiki/Cron>) schedule for running
-        /// scans periodically.
-        ///
-        /// To explicitly set a timezone in the cron tab, apply a prefix in the
-        /// cron tab: **"CRON_TZ=${IANA_TIME_ZONE}"** or **"TZ=${IANA_TIME_ZONE}"**.
-        /// The **${IANA_TIME_ZONE}** may only be a valid string from IANA time zone
-        /// database
-        /// ([wikipedia](<https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List>)).
-        /// For example, `CRON_TZ=America/New_York 1 * * * *`, or
-        /// `TZ=America/New_York 1 * * * *`.
-        ///
-        /// This field is required for Schedule scans.
-        #[prost(string, tag = "1")]
-        pub cron: ::prost::alloc::string::String,
-    }
-    /// DataScan scheduling and trigger settings.
-    ///
-    /// If not specified, the default is `onDemand`.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Mode {
-        /// The scan runs once via `RunDataScan` API.
-        #[prost(message, tag = "100")]
-        OnDemand(OnDemand),
-        /// The scan is scheduled to run periodically.
-        #[prost(message, tag = "101")]
-        Schedule(Schedule),
-    }
-}
-/// The data source for DataScan.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DataSource {
-    /// The source is required and immutable. Once it is set, it cannot be change
-    /// to others.
-    #[prost(oneof = "data_source::Source", tags = "100, 101")]
-    pub source: ::core::option::Option<data_source::Source>,
-}
-/// Nested message and enum types in `DataSource`.
-pub mod data_source {
-    /// The source is required and immutable. Once it is set, it cannot be change
-    /// to others.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Source {
-        /// Immutable. The Dataplex entity that represents the data source (e.g.
-        /// BigQuery table) for DataScan, of the form:
-        /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.
-        #[prost(string, tag = "100")]
-        Entity(::prost::alloc::string::String),
-        /// Immutable. The service-qualified full resource name of the cloud resource
-        /// for a DataScan job to scan against. The field could be: BigQuery table of
-        /// type "TABLE" for DataProfileScan/DataQualityScan Format:
-        /// //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
-        #[prost(string, tag = "101")]
-        Resource(::prost::alloc::string::String),
-    }
-}
-/// The data scanned during processing (e.g. in incremental DataScan)
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ScannedData {
-    /// The range of scanned data
-    #[prost(oneof = "scanned_data::DataRange", tags = "1")]
-    pub data_range: ::core::option::Option<scanned_data::DataRange>,
-}
-/// Nested message and enum types in `ScannedData`.
-pub mod scanned_data {
-    /// A data range denoted by a pair of start/end values of a field.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct IncrementalField {
-        /// The field that contains values which monotonically increases over time
-        /// (e.g. a timestamp column).
-        #[prost(string, tag = "1")]
-        pub field: ::prost::alloc::string::String,
-        /// Value that marks the start of the range.
-        #[prost(string, tag = "2")]
-        pub start: ::prost::alloc::string::String,
-        /// Value that marks the end of the range.
-        #[prost(string, tag = "3")]
-        pub end: ::prost::alloc::string::String,
-    }
-    /// The range of scanned data
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum DataRange {
-        /// The range denoted by values of an incremental field
-        #[prost(message, tag = "1")]
-        IncrementalField(IncrementalField),
-    }
-}
-/// DataProfileScan related setting.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DataProfileSpec {
-    /// Optional. The percentage of the records to be selected from the dataset for
-    /// DataScan.
-    ///
-    /// * Value can range between 0.0 and 100.0 with up to 3 significant decimal
-    /// digits.
-    /// * Sampling is not applied if `sampling_percent` is not specified, 0 or
-    /// 100.
-    #[prost(float, tag = "2")]
-    pub sampling_percent: f32,
-    /// Optional. A filter applied to all rows in a single DataScan job.
-    /// The filter needs to be a valid SQL expression for a WHERE clause in
-    /// BigQuery standard SQL syntax.
-    /// Example: col1 >= 0 AND col2 < 10
-    #[prost(string, tag = "3")]
-    pub row_filter: ::prost::alloc::string::String,
-    /// Optional. Actions to take upon job completion..
-    #[prost(message, optional, tag = "4")]
-    pub post_scan_actions: ::core::option::Option<data_profile_spec::PostScanActions>,
-    /// Optional. The fields to include in data profile.
-    ///
-    /// If not specified, all fields at the time of profile scan job execution are
-    /// included, except for ones listed in `exclude_fields`.
-    #[prost(message, optional, tag = "5")]
-    pub include_fields: ::core::option::Option<data_profile_spec::SelectedFields>,
-    /// Optional. The fields to exclude from data profile.
-    ///
-    /// If specified, the fields will be excluded from data profile, regardless of
-    /// `include_fields` value.
-    #[prost(message, optional, tag = "6")]
-    pub exclude_fields: ::core::option::Option<data_profile_spec::SelectedFields>,
-}
-/// Nested message and enum types in `DataProfileSpec`.
-pub mod data_profile_spec {
-    /// The configuration of post scan actions of DataProfileScan job.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct PostScanActions {
-        /// Optional. If set, results will be exported to the provided BigQuery
-        /// table.
-        #[prost(message, optional, tag = "1")]
-        pub bigquery_export: ::core::option::Option<post_scan_actions::BigQueryExport>,
-    }
-    /// Nested message and enum types in `PostScanActions`.
-    pub mod post_scan_actions {
-        /// The configuration of BigQuery export post scan action.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct BigQueryExport {
-            /// Optional. The BigQuery table to export DataProfileScan results to.
-            /// Format:
-            /// //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
-            #[prost(string, tag = "1")]
-            pub results_table: ::prost::alloc::string::String,
-        }
-    }
-    /// The specification for fields to include or exclude in data profile scan.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct SelectedFields {
-        /// Optional. Expected input is a list of fully qualified names of fields as
-        /// in the schema.
-        ///
-        /// Only top-level field names for nested fields are supported.
-        /// For instance, if 'x' is of nested field type, listing 'x' is supported
-        /// but 'x.y.z' is not supported. Here 'y' and 'y.z' are nested fields of
-        /// 'x'.
-        #[prost(string, repeated, tag = "1")]
-        pub field_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    }
-}
-/// DataProfileResult defines the output of DataProfileScan. Each field of the
-/// table will have field type specific profile result.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DataProfileResult {
-    /// The count of rows scanned.
-    #[prost(int64, tag = "3")]
-    pub row_count: i64,
-    /// The profile information per field.
-    #[prost(message, optional, tag = "4")]
-    pub profile: ::core::option::Option<data_profile_result::Profile>,
-    /// The data scanned for this result.
-    #[prost(message, optional, tag = "5")]
-    pub scanned_data: ::core::option::Option<ScannedData>,
-    /// Output only. The result of post scan actions.
-    #[prost(message, optional, tag = "6")]
-    pub post_scan_actions_result: ::core::option::Option<
-        data_profile_result::PostScanActionsResult,
-    >,
-}
-/// Nested message and enum types in `DataProfileResult`.
-pub mod data_profile_result {
-    /// Contains name, type, mode and field type specific profile information.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Profile {
-        /// List of fields with structural and profile information for each field.
-        #[prost(message, repeated, tag = "2")]
-        pub fields: ::prost::alloc::vec::Vec<profile::Field>,
-    }
-    /// Nested message and enum types in `Profile`.
-    pub mod profile {
-        /// A field within a table.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct Field {
-            /// The name of the field.
-            #[prost(string, tag = "1")]
-            pub name: ::prost::alloc::string::String,
-            /// The data type retrieved from the schema of the data source. For
-            /// instance, for a BigQuery native table, it is the [BigQuery Table
-            /// Schema](<https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablefieldschema>).
-            /// For a Dataplex Entity, it is the [Entity
-            /// Schema](<https://cloud.google.com/dataplex/docs/reference/rpc/google.cloud.dataplex.v1#type_3>).
-            #[prost(string, tag = "2")]
-            pub r#type: ::prost::alloc::string::String,
-            /// The mode of the field. Possible values include:
-            ///
-            /// * REQUIRED, if it is a required field.
-            /// * NULLABLE, if it is an optional field.
-            /// * REPEATED, if it is a repeated field.
-            #[prost(string, tag = "3")]
-            pub mode: ::prost::alloc::string::String,
-            /// Profile information for the corresponding field.
-            #[prost(message, optional, tag = "4")]
-            pub profile: ::core::option::Option<field::ProfileInfo>,
-        }
-        /// Nested message and enum types in `Field`.
-        pub mod field {
-            /// The profile information for each field type.
-            #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
-            pub struct ProfileInfo {
-                /// Ratio of rows with null value against total scanned rows.
-                #[prost(double, tag = "2")]
-                pub null_ratio: f64,
-                /// Ratio of rows with distinct values against total scanned rows.
-                /// Not available for complex non-groupable field type RECORD and fields
-                /// with REPEATABLE mode.
-                #[prost(double, tag = "3")]
-                pub distinct_ratio: f64,
-                /// The list of top N non-null values, frequency and ratio with which
-                /// they occur in the scanned data. N is 10 or equal to the number of
-                /// distinct values in the field, whichever is smaller. Not available for
-                /// complex non-groupable field type RECORD and fields with REPEATABLE
-                /// mode.
-                #[prost(message, repeated, tag = "4")]
-                pub top_n_values: ::prost::alloc::vec::Vec<profile_info::TopNValue>,
-                /// Structural and profile information for specific field type. Not
-                /// available, if mode is REPEATABLE.
-                #[prost(oneof = "profile_info::FieldInfo", tags = "101, 102, 103")]
-                pub field_info: ::core::option::Option<profile_info::FieldInfo>,
-            }
-            /// Nested message and enum types in `ProfileInfo`.
-            pub mod profile_info {
-                /// The profile information for a string type field.
-                #[allow(clippy::derive_partial_eq_without_eq)]
-                #[derive(Clone, PartialEq, ::prost::Message)]
-                pub struct StringFieldInfo {
-                    /// Minimum length of non-null values in the scanned data.
-                    #[prost(int64, tag = "1")]
-                    pub min_length: i64,
-                    /// Maximum length of non-null values in the scanned data.
-                    #[prost(int64, tag = "2")]
-                    pub max_length: i64,
-                    /// Average length of non-null values in the scanned data.
-                    #[prost(double, tag = "3")]
-                    pub average_length: f64,
-                }
-                /// The profile information for an integer type field.
-                #[allow(clippy::derive_partial_eq_without_eq)]
-                #[derive(Clone, PartialEq, ::prost::Message)]
-                pub struct IntegerFieldInfo {
-                    /// Average of non-null values in the scanned data. NaN, if the field
-                    /// has a NaN.
-                    #[prost(double, tag = "1")]
-                    pub average: f64,
-                    /// Standard deviation of non-null values in the scanned data. NaN, if
-                    /// the field has a NaN.
-                    #[prost(double, tag = "3")]
-                    pub standard_deviation: f64,
-                    /// Minimum of non-null values in the scanned data. NaN, if the field
-                    /// has a NaN.
-                    #[prost(int64, tag = "4")]
-                    pub min: i64,
-                    /// A quartile divides the number of data points into four parts, or
-                    /// quarters, of more-or-less equal size. Three main quartiles used
-                    /// are: The first quartile (Q1) splits off the lowest 25% of data from
-                    /// the highest 75%. It is also known as the lower or 25th empirical
-                    /// quartile, as 25% of the data is below this point. The second
-                    /// quartile (Q2) is the median of a data set. So, 50% of the data lies
-                    /// below this point. The third quartile (Q3) splits off the highest
-                    /// 25% of data from the lowest 75%. It is known as the upper or 75th
-                    /// empirical quartile, as 75% of the data lies below this point.
-                    /// Here, the quartiles is provided as an ordered list of approximate
-                    /// quartile values for the scanned data, occurring in order Q1,
-                    /// median, Q3.
-                    #[prost(int64, repeated, tag = "6")]
-                    pub quartiles: ::prost::alloc::vec::Vec<i64>,
-                    /// Maximum of non-null values in the scanned data. NaN, if the field
-                    /// has a NaN.
-                    #[prost(int64, tag = "5")]
-                    pub max: i64,
-                }
-                /// The profile information for a double type field.
-                #[allow(clippy::derive_partial_eq_without_eq)]
-                #[derive(Clone, PartialEq, ::prost::Message)]
-                pub struct DoubleFieldInfo {
-                    /// Average of non-null values in the scanned data. NaN, if the field
-                    /// has a NaN.
-                    #[prost(double, tag = "1")]
-                    pub average: f64,
-                    /// Standard deviation of non-null values in the scanned data. NaN, if
-                    /// the field has a NaN.
-                    #[prost(double, tag = "3")]
-                    pub standard_deviation: f64,
-                    /// Minimum of non-null values in the scanned data. NaN, if the field
-                    /// has a NaN.
-                    #[prost(double, tag = "4")]
-                    pub min: f64,
-                    /// A quartile divides the number of data points into four parts, or
-                    /// quarters, of more-or-less equal size. Three main quartiles used
-                    /// are: The first quartile (Q1) splits off the lowest 25% of data from
-                    /// the highest 75%. It is also known as the lower or 25th empirical
-                    /// quartile, as 25% of the data is below this point. The second
-                    /// quartile (Q2) is the median of a data set. So, 50% of the data lies
-                    /// below this point. The third quartile (Q3) splits off the highest
-                    /// 25% of data from the lowest 75%. It is known as the upper or 75th
-                    /// empirical quartile, as 75% of the data lies below this point.
-                    /// Here, the quartiles is provided as an ordered list of quartile
-                    /// values for the scanned data, occurring in order Q1, median, Q3.
-                    #[prost(double, repeated, tag = "6")]
-                    pub quartiles: ::prost::alloc::vec::Vec<f64>,
-                    /// Maximum of non-null values in the scanned data. NaN, if the field
-                    /// has a NaN.
-                    #[prost(double, tag = "5")]
-                    pub max: f64,
-                }
-                /// Top N non-null values in the scanned data.
-                #[allow(clippy::derive_partial_eq_without_eq)]
-                #[derive(Clone, PartialEq, ::prost::Message)]
-                pub struct TopNValue {
-                    /// String value of a top N non-null value.
-                    #[prost(string, tag = "1")]
-                    pub value: ::prost::alloc::string::String,
-                    /// Count of the corresponding value in the scanned data.
-                    #[prost(int64, tag = "2")]
-                    pub count: i64,
-                    /// Ratio of the corresponding value in the field against the total
-                    /// number of rows in the scanned data.
-                    #[prost(double, tag = "3")]
-                    pub ratio: f64,
-                }
-                /// Structural and profile information for specific field type. Not
-                /// available, if mode is REPEATABLE.
-                #[allow(clippy::derive_partial_eq_without_eq)]
-                #[derive(Clone, PartialEq, ::prost::Oneof)]
-                pub enum FieldInfo {
-                    /// String type field information.
-                    #[prost(message, tag = "101")]
-                    StringProfile(StringFieldInfo),
-                    /// Integer type field information.
-                    #[prost(message, tag = "102")]
-                    IntegerProfile(IntegerFieldInfo),
-                    /// Double type field information.
-                    #[prost(message, tag = "103")]
-                    DoubleProfile(DoubleFieldInfo),
-                }
-            }
-        }
-    }
-    /// The result of post scan actions of DataProfileScan job.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct PostScanActionsResult {
-        /// Output only. The result of BigQuery export post scan action.
-        #[prost(message, optional, tag = "1")]
-        pub bigquery_export_result: ::core::option::Option<
-            post_scan_actions_result::BigQueryExportResult,
-        >,
-    }
-    /// Nested message and enum types in `PostScanActionsResult`.
-    pub mod post_scan_actions_result {
-        /// The result of BigQuery export post scan action.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct BigQueryExportResult {
-            /// Output only. Execution state for the BigQuery exporting.
-            #[prost(enumeration = "big_query_export_result::State", tag = "1")]
-            pub state: i32,
-            /// Output only. Additional information about the BigQuery exporting.
-            #[prost(string, tag = "2")]
-            pub message: ::prost::alloc::string::String,
-        }
-        /// Nested message and enum types in `BigQueryExportResult`.
-        pub mod big_query_export_result {
-            /// Execution state for the exporting.
-            #[derive(
-                Clone,
-                Copy,
-                Debug,
-                PartialEq,
-                Eq,
-                Hash,
-                PartialOrd,
-                Ord,
-                ::prost::Enumeration
-            )]
-            #[repr(i32)]
-            pub enum State {
-                /// The exporting state is unspecified.
-                Unspecified = 0,
-                /// The exporting completed successfully.
-                Succeeded = 1,
-                /// The exporting is no longer running due to an error.
-                Failed = 2,
-                /// The exporting is skipped due to no valid scan result to export
-                /// (usually caused by scan failed).
-                Skipped = 3,
-            }
-            impl State {
-                /// String value of the enum field names used in the ProtoBuf definition.
-                ///
-                /// The values are not transformed in any way and thus are considered stable
-                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-                pub fn as_str_name(&self) -> &'static str {
-                    match self {
-                        State::Unspecified => "STATE_UNSPECIFIED",
-                        State::Succeeded => "SUCCEEDED",
-                        State::Failed => "FAILED",
-                        State::Skipped => "SKIPPED",
-                    }
-                }
-                /// Creates an enum from field names used in the ProtoBuf definition.
-                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-                    match value {
-                        "STATE_UNSPECIFIED" => Some(Self::Unspecified),
-                        "SUCCEEDED" => Some(Self::Succeeded),
-                        "FAILED" => Some(Self::Failed),
-                        "SKIPPED" => Some(Self::Skipped),
-                        _ => None,
-                    }
-                }
-            }
-        }
-    }
-}
-/// DataQualityScan related setting.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DataQualitySpec {
-    /// Required. The list of rules to evaluate against a data source. At least one
-    /// rule is required.
-    #[prost(message, repeated, tag = "1")]
-    pub rules: ::prost::alloc::vec::Vec<DataQualityRule>,
-    /// Optional. The percentage of the records to be selected from the dataset for
-    /// DataScan.
-    ///
-    /// * Value can range between 0.0 and 100.0 with up to 3 significant decimal
-    /// digits.
-    /// * Sampling is not applied if `sampling_percent` is not specified, 0 or
-    /// 100.
-    #[prost(float, tag = "4")]
-    pub sampling_percent: f32,
-    /// Optional. A filter applied to all rows in a single DataScan job.
-    /// The filter needs to be a valid SQL expression for a WHERE clause in
-    /// BigQuery standard SQL syntax.
-    /// Example: col1 >= 0 AND col2 < 10
-    #[prost(string, tag = "5")]
-    pub row_filter: ::prost::alloc::string::String,
-    /// Optional. Actions to take upon job completion.
-    #[prost(message, optional, tag = "6")]
-    pub post_scan_actions: ::core::option::Option<data_quality_spec::PostScanActions>,
-}
-/// Nested message and enum types in `DataQualitySpec`.
-pub mod data_quality_spec {
-    /// The configuration of post scan actions of DataQualityScan.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct PostScanActions {
-        /// Optional. If set, results will be exported to the provided BigQuery
-        /// table.
-        #[prost(message, optional, tag = "1")]
-        pub bigquery_export: ::core::option::Option<post_scan_actions::BigQueryExport>,
-    }
-    /// Nested message and enum types in `PostScanActions`.
-    pub mod post_scan_actions {
-        /// The configuration of BigQuery export post scan action.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct BigQueryExport {
-            /// Optional. The BigQuery table to export DataQualityScan results to.
-            /// Format:
-            /// //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
-            #[prost(string, tag = "1")]
-            pub results_table: ::prost::alloc::string::String,
-        }
-    }
-}
-/// The output of a DataQualityScan.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DataQualityResult {
-    /// Overall data quality result -- `true` if all rules passed.
-    #[prost(bool, tag = "5")]
-    pub passed: bool,
-    /// Output only. The overall data quality score.
-    ///
-    /// The score ranges between \[0, 100\] (up to two decimal points).
-    #[prost(float, optional, tag = "9")]
-    pub score: ::core::option::Option<f32>,
-    /// A list of results at the dimension level.
-    ///
-    /// A dimension will have a corresponding `DataQualityDimensionResult` if and
-    /// only if there is at least one rule with the 'dimension' field set to it.
-    #[prost(message, repeated, tag = "2")]
-    pub dimensions: ::prost::alloc::vec::Vec<DataQualityDimensionResult>,
-    /// Output only. A list of results at the column level.
-    ///
-    /// A column will have a corresponding `DataQualityColumnResult` if and only if
-    /// there is at least one rule with the 'column' field set to it.
-    #[prost(message, repeated, tag = "10")]
-    pub columns: ::prost::alloc::vec::Vec<DataQualityColumnResult>,
-    /// A list of all the rules in a job, and their results.
-    #[prost(message, repeated, tag = "3")]
-    pub rules: ::prost::alloc::vec::Vec<DataQualityRuleResult>,
-    /// The count of rows processed.
-    #[prost(int64, tag = "4")]
-    pub row_count: i64,
-    /// The data scanned for this result.
-    #[prost(message, optional, tag = "7")]
-    pub scanned_data: ::core::option::Option<ScannedData>,
-    /// Output only. The result of post scan actions.
-    #[prost(message, optional, tag = "8")]
-    pub post_scan_actions_result: ::core::option::Option<
-        data_quality_result::PostScanActionsResult,
-    >,
-}
-/// Nested message and enum types in `DataQualityResult`.
-pub mod data_quality_result {
-    /// The result of post scan actions of DataQualityScan job.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct PostScanActionsResult {
-        /// Output only. The result of BigQuery export post scan action.
-        #[prost(message, optional, tag = "1")]
-        pub bigquery_export_result: ::core::option::Option<
-            post_scan_actions_result::BigQueryExportResult,
-        >,
-    }
-    /// Nested message and enum types in `PostScanActionsResult`.
-    pub mod post_scan_actions_result {
-        /// The result of BigQuery export post scan action.
-        #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct BigQueryExportResult {
-            /// Output only. Execution state for the BigQuery exporting.
-            #[prost(enumeration = "big_query_export_result::State", tag = "1")]
-            pub state: i32,
-            /// Output only. Additional information about the BigQuery exporting.
-            #[prost(string, tag = "2")]
-            pub message: ::prost::alloc::string::String,
-        }
-        /// Nested message and enum types in `BigQueryExportResult`.
-        pub mod big_query_export_result {
-            /// Execution state for the exporting.
-            #[derive(
-                Clone,
-                Copy,
-                Debug,
-                PartialEq,
-                Eq,
-                Hash,
-                PartialOrd,
-                Ord,
-                ::prost::Enumeration
-            )]
-            #[repr(i32)]
-            pub enum State {
-                /// The exporting state is unspecified.
-                Unspecified = 0,
-                /// The exporting completed successfully.
-                Succeeded = 1,
-                /// The exporting is no longer running due to an error.
-                Failed = 2,
-                /// The exporting is skipped due to no valid scan result to export
-                /// (usually caused by scan failed).
-                Skipped = 3,
-            }
-            impl State {
-                /// String value of the enum field names used in the ProtoBuf definition.
-                ///
-                /// The values are not transformed in any way and thus are considered stable
-                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-                pub fn as_str_name(&self) -> &'static str {
-                    match self {
-                        State::Unspecified => "STATE_UNSPECIFIED",
-                        State::Succeeded => "SUCCEEDED",
-                        State::Failed => "FAILED",
-                        State::Skipped => "SKIPPED",
-                    }
-                }
-                /// Creates an enum from field names used in the ProtoBuf definition.
-                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-                    match value {
-                        "STATE_UNSPECIFIED" => Some(Self::Unspecified),
-                        "SUCCEEDED" => Some(Self::Succeeded),
-                        "FAILED" => Some(Self::Failed),
-                        "SKIPPED" => Some(Self::Skipped),
-                        _ => None,
-                    }
-                }
-            }
-        }
-    }
-}
-/// DataQualityRuleResult provides a more detailed, per-rule view of the results.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DataQualityRuleResult {
-    /// The rule specified in the DataQualitySpec, as is.
-    #[prost(message, optional, tag = "1")]
-    pub rule: ::core::option::Option<DataQualityRule>,
-    /// Whether the rule passed or failed.
-    #[prost(bool, tag = "7")]
-    pub passed: bool,
-    /// The number of rows a rule was evaluated against.
-    ///
-    /// This field is only valid for row-level type rules.
-    ///
-    /// Evaluated count can be configured to either
-    ///
-    /// * include all rows (default) - with `null` rows automatically failing rule
-    /// evaluation, or
-    /// * exclude `null` rows from the `evaluated_count`, by setting
-    /// `ignore_nulls = true`.
-    #[prost(int64, tag = "9")]
-    pub evaluated_count: i64,
-    /// The number of rows which passed a rule evaluation.
-    ///
-    /// This field is only valid for row-level type rules.
-    #[prost(int64, tag = "8")]
-    pub passed_count: i64,
-    /// The number of rows with null values in the specified column.
-    #[prost(int64, tag = "5")]
-    pub null_count: i64,
-    /// The ratio of **passed_count / evaluated_count**.
-    ///
-    /// This field is only valid for row-level type rules.
-    #[prost(double, tag = "6")]
-    pub pass_ratio: f64,
-    /// The query to find rows that did not pass this rule.
-    ///
-    /// This field is only valid for row-level type rules.
-    #[prost(string, tag = "10")]
-    pub failing_rows_query: ::prost::alloc::string::String,
-}
-/// DataQualityDimensionResult provides a more detailed, per-dimension view of
-/// the results.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DataQualityDimensionResult {
-    /// Output only. The dimension config specified in the DataQualitySpec, as is.
-    #[prost(message, optional, tag = "1")]
-    pub dimension: ::core::option::Option<DataQualityDimension>,
-    /// Whether the dimension passed or failed.
-    #[prost(bool, tag = "3")]
-    pub passed: bool,
-    /// Output only. The dimension-level data quality score for this data scan job
-    /// if and only if the 'dimension' field is set.
-    ///
-    /// The score ranges between \[0, 100\] (up to two decimal
-    /// points).
-    #[prost(float, optional, tag = "4")]
-    pub score: ::core::option::Option<f32>,
-}
-/// A dimension captures data quality intent about a defined subset of the rules
-/// specified.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DataQualityDimension {
-    /// The dimension name a rule belongs to. Supported dimensions are
-    /// ["COMPLETENESS", "ACCURACY", "CONSISTENCY", "VALIDITY", "UNIQUENESS",
-    /// "INTEGRITY"]
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// A rule captures data quality intent about a data source.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DataQualityRule {
-    /// Optional. The unnested column which this rule is evaluated against.
-    #[prost(string, tag = "500")]
-    pub column: ::prost::alloc::string::String,
-    /// Optional. Rows with `null` values will automatically fail a rule, unless
-    /// `ignore_null` is `true`. In that case, such `null` rows are trivially
-    /// considered passing.
-    ///
-    /// This field is only valid for the following type of rules:
-    ///
-    /// * RangeExpectation
-    /// * RegexExpectation
-    /// * SetExpectation
-    /// * UniquenessExpectation
-    #[prost(bool, tag = "501")]
-    pub ignore_null: bool,
-    /// Required. The dimension a rule belongs to. Results are also aggregated at
-    /// the dimension level. Supported dimensions are **["COMPLETENESS",
-    /// "ACCURACY", "CONSISTENCY", "VALIDITY", "UNIQUENESS", "INTEGRITY"]**
-    #[prost(string, tag = "502")]
-    pub dimension: ::prost::alloc::string::String,
-    /// Optional. The minimum ratio of **passing_rows / total_rows** required to
-    /// pass this rule, with a range of \[0.0, 1.0\].
-    ///
-    /// 0 indicates default value (i.e. 1.0).
-    ///
-    /// This field is only valid for row-level type rules.
-    #[prost(double, tag = "503")]
-    pub threshold: f64,
-    /// Optional. A mutable name for the rule.
-    ///
-    /// * The name must contain only letters (a-z, A-Z), numbers (0-9), or
-    /// hyphens (-).
-    /// * The maximum length is 63 characters.
-    /// * Must start with a letter.
-    /// * Must end with a number or a letter.
-    #[prost(string, tag = "504")]
-    pub name: ::prost::alloc::string::String,
-    /// Optional. Description of the rule.
-    ///
-    /// * The maximum length is 1,024 characters.
-    #[prost(string, tag = "505")]
-    pub description: ::prost::alloc::string::String,
-    /// The rule-specific configuration.
-    #[prost(
-        oneof = "data_quality_rule::RuleType",
-        tags = "1, 2, 3, 4, 100, 101, 200, 201"
-    )]
-    pub rule_type: ::core::option::Option<data_quality_rule::RuleType>,
-}
-/// Nested message and enum types in `DataQualityRule`.
-pub mod data_quality_rule {
-    /// Evaluates whether each column value lies between a specified range.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct RangeExpectation {
-        /// Optional. The minimum column value allowed for a row to pass this
-        /// validation. At least one of `min_value` and `max_value` need to be
-        /// provided.
-        #[prost(string, tag = "1")]
-        pub min_value: ::prost::alloc::string::String,
-        /// Optional. The maximum column value allowed for a row to pass this
-        /// validation. At least one of `min_value` and `max_value` need to be
-        /// provided.
-        #[prost(string, tag = "2")]
-        pub max_value: ::prost::alloc::string::String,
-        /// Optional. Whether each value needs to be strictly greater than ('>') the
-        /// minimum, or if equality is allowed.
-        ///
-        /// Only relevant if a `min_value` has been defined. Default = false.
-        #[prost(bool, tag = "3")]
-        pub strict_min_enabled: bool,
-        /// Optional. Whether each value needs to be strictly lesser than ('<') the
-        /// maximum, or if equality is allowed.
-        ///
-        /// Only relevant if a `max_value` has been defined. Default = false.
-        #[prost(bool, tag = "4")]
-        pub strict_max_enabled: bool,
-    }
-    /// Evaluates whether each column value is null.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct NonNullExpectation {}
-    /// Evaluates whether each column value is contained by a specified set.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct SetExpectation {
-        /// Optional. Expected values for the column value.
-        #[prost(string, repeated, tag = "1")]
-        pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    }
-    /// Evaluates whether each column value matches a specified regex.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct RegexExpectation {
-        /// Optional. A regular expression the column value is expected to match.
-        #[prost(string, tag = "1")]
-        pub regex: ::prost::alloc::string::String,
-    }
-    /// Evaluates whether the column has duplicates.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct UniquenessExpectation {}
-    /// Evaluates whether the column aggregate statistic lies between a specified
-    /// range.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct StatisticRangeExpectation {
-        /// Optional. The aggregate metric to evaluate.
-        #[prost(enumeration = "statistic_range_expectation::ColumnStatistic", tag = "1")]
-        pub statistic: i32,
-        /// Optional. The minimum column statistic value allowed for a row to pass
-        /// this validation.
-        ///
-        /// At least one of `min_value` and `max_value` need to be provided.
-        #[prost(string, tag = "2")]
-        pub min_value: ::prost::alloc::string::String,
-        /// Optional. The maximum column statistic value allowed for a row to pass
-        /// this validation.
-        ///
-        /// At least one of `min_value` and `max_value` need to be provided.
-        #[prost(string, tag = "3")]
-        pub max_value: ::prost::alloc::string::String,
-        /// Optional. Whether column statistic needs to be strictly greater than
-        /// ('>') the minimum, or if equality is allowed.
-        ///
-        /// Only relevant if a `min_value` has been defined. Default = false.
-        #[prost(bool, tag = "4")]
-        pub strict_min_enabled: bool,
-        /// Optional. Whether column statistic needs to be strictly lesser than ('<')
-        /// the maximum, or if equality is allowed.
-        ///
-        /// Only relevant if a `max_value` has been defined. Default = false.
-        #[prost(bool, tag = "5")]
-        pub strict_max_enabled: bool,
-    }
-    /// Nested message and enum types in `StatisticRangeExpectation`.
-    pub mod statistic_range_expectation {
-        /// The list of aggregate metrics a rule can be evaluated against.
-        #[derive(
-            Clone,
-            Copy,
-            Debug,
-            PartialEq,
-            Eq,
-            Hash,
-            PartialOrd,
-            Ord,
-            ::prost::Enumeration
-        )]
-        #[repr(i32)]
-        pub enum ColumnStatistic {
-            /// Unspecified statistic type
-            StatisticUndefined = 0,
-            /// Evaluate the column mean
-            Mean = 1,
-            /// Evaluate the column min
-            Min = 2,
-            /// Evaluate the column max
-            Max = 3,
-        }
-        impl ColumnStatistic {
-            /// String value of the enum field names used in the ProtoBuf definition.
-            ///
-            /// The values are not transformed in any way and thus are considered stable
-            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-            pub fn as_str_name(&self) -> &'static str {
-                match self {
-                    ColumnStatistic::StatisticUndefined => "STATISTIC_UNDEFINED",
-                    ColumnStatistic::Mean => "MEAN",
-                    ColumnStatistic::Min => "MIN",
-                    ColumnStatistic::Max => "MAX",
-                }
-            }
-            /// Creates an enum from field names used in the ProtoBuf definition.
-            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-                match value {
-                    "STATISTIC_UNDEFINED" => Some(Self::StatisticUndefined),
-                    "MEAN" => Some(Self::Mean),
-                    "MIN" => Some(Self::Min),
-                    "MAX" => Some(Self::Max),
-                    _ => None,
-                }
-            }
-        }
-    }
-    /// Evaluates whether each row passes the specified condition.
-    ///
-    /// The SQL expression needs to use BigQuery standard SQL syntax and should
-    /// produce a boolean value per row as the result.
-    ///
-    /// Example: col1 >= 0 AND col2 < 10
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct RowConditionExpectation {
-        /// Optional. The SQL expression.
-        #[prost(string, tag = "1")]
-        pub sql_expression: ::prost::alloc::string::String,
-    }
-    /// Evaluates whether the provided expression is true.
-    ///
-    /// The SQL expression needs to use BigQuery standard SQL syntax and should
-    /// produce a scalar boolean result.
-    ///
-    /// Example: MIN(col1) >= 0
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct TableConditionExpectation {
-        /// Optional. The SQL expression.
-        #[prost(string, tag = "1")]
-        pub sql_expression: ::prost::alloc::string::String,
-    }
-    /// The rule-specific configuration.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum RuleType {
-        /// Row-level rule which evaluates whether each column value lies between a
-        /// specified range.
-        #[prost(message, tag = "1")]
-        RangeExpectation(RangeExpectation),
-        /// Row-level rule which evaluates whether each column value is null.
-        #[prost(message, tag = "2")]
-        NonNullExpectation(NonNullExpectation),
-        /// Row-level rule which evaluates whether each column value is contained by
-        /// a specified set.
-        #[prost(message, tag = "3")]
-        SetExpectation(SetExpectation),
-        /// Row-level rule which evaluates whether each column value matches a
-        /// specified regex.
-        #[prost(message, tag = "4")]
-        RegexExpectation(RegexExpectation),
-        /// Row-level rule which evaluates whether each column value is unique.
-        #[prost(message, tag = "100")]
-        UniquenessExpectation(UniquenessExpectation),
-        /// Aggregate rule which evaluates whether the column aggregate
-        /// statistic lies between a specified range.
-        #[prost(message, tag = "101")]
-        StatisticRangeExpectation(StatisticRangeExpectation),
-        /// Row-level rule which evaluates whether each row in a table passes the
-        /// specified condition.
-        #[prost(message, tag = "200")]
-        RowConditionExpectation(RowConditionExpectation),
-        /// Aggregate rule which evaluates whether the provided expression is true
-        /// for a table.
-        #[prost(message, tag = "201")]
-        TableConditionExpectation(TableConditionExpectation),
-    }
-}
-/// DataQualityColumnResult provides a more detailed, per-column view of
-/// the results.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DataQualityColumnResult {
-    /// Output only. The column specified in the DataQualityRule.
-    #[prost(string, tag = "1")]
-    pub column: ::prost::alloc::string::String,
-    /// Output only. The column-level data quality score for this data scan job if
-    /// and only if the 'column' field is set.
-    ///
-    /// The score ranges between between \[0, 100\] (up to two decimal
-    /// points).
-    #[prost(float, optional, tag = "2")]
-    pub score: ::core::option::Option<f32>,
-}
-/// ResourceAccessSpec holds the access control configuration to be enforced
-/// on the resources, for example, Cloud Storage bucket, BigQuery dataset,
-/// BigQuery table.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResourceAccessSpec {
-    /// Optional. The format of strings follows the pattern followed by IAM in the
-    /// bindings. user:{email}, serviceAccount:{email} group:{email}.
-    /// The set of principals to be granted reader role on the resource.
-    #[prost(string, repeated, tag = "1")]
-    pub readers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. The set of principals to be granted writer role on the resource.
-    #[prost(string, repeated, tag = "2")]
-    pub writers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. The set of principals to be granted owner role on the resource.
-    #[prost(string, repeated, tag = "3")]
-    pub owners: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// DataAccessSpec holds the access control configuration to be enforced on data
-/// stored within resources (eg: rows, columns in BigQuery Tables). When
-/// associated with data, the data is only accessible to
-/// principals explicitly granted access through the DataAccessSpec. Principals
-/// with access to the containing resource are not implicitly granted access.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DataAccessSpec {
-    /// Optional. The format of strings follows the pattern followed by IAM in the
-    /// bindings. user:{email}, serviceAccount:{email} group:{email}.
-    /// The set of principals to be granted reader role on data
-    /// stored within resources.
-    #[prost(string, repeated, tag = "1")]
-    pub readers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
 /// A task represents a user-visible job.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5440,6 +3943,3380 @@ pub mod dataplex_service_client {
         }
     }
 }
+/// Aspect Type is a template for creating Aspects, and represents the
+/// JSON-schema for a given Entry, e.g., BigQuery Table Schema.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AspectType {
+    /// Output only. The relative resource name of the AspectType, of the form:
+    /// projects/{project_number}/locations/{location_id}/aspectTypes/{aspect_type_id}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. System generated globally unique ID for the AspectType. This
+    /// ID will be different if the AspectType is deleted and re-created with the
+    /// same name.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Output only. The time when the AspectType was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the AspectType was last updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Description of the AspectType.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. User friendly display name.
+    #[prost(string, tag = "6")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. User-defined labels for the AspectType.
+    #[prost(map = "string, string", tag = "7")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// This checksum is computed by the server based on the value of other
+    /// fields, and may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding.
+    #[prost(string, tag = "8")]
+    pub etag: ::prost::alloc::string::String,
+    /// Immutable. Authorization defined for this type.
+    #[prost(message, optional, tag = "52")]
+    pub authorization: ::core::option::Option<aspect_type::Authorization>,
+    /// Required. MetadataTemplate of the aspect.
+    #[prost(message, optional, tag = "53")]
+    pub metadata_template: ::core::option::Option<aspect_type::MetadataTemplate>,
+    /// Output only. Denotes the transfer status of the Aspect Type. It is
+    /// unspecified for Aspect Types created from Dataplex API.
+    #[prost(enumeration = "TransferStatus", tag = "202")]
+    pub transfer_status: i32,
+}
+/// Nested message and enum types in `AspectType`.
+pub mod aspect_type {
+    /// Autorization for an Aspect Type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Authorization {
+        /// Immutable. The IAM permission grantable on the Entry Group to allow
+        /// access to instantiate Aspects of Dataplex owned Aspect Types, only
+        /// settable for Dataplex owned Types.
+        #[prost(string, tag = "1")]
+        pub alternate_use_permission: ::prost::alloc::string::String,
+    }
+    /// MetadataTemplate definition for AspectType
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MetadataTemplate {
+        /// Optional. Index is used to encode Template messages. The value of index
+        /// can range between 1 and 2,147,483,647. Index must be unique within all
+        /// fields in a Template. (Nested Templates can reuse indexes). Once a
+        /// Template is defined, the index cannot be changed, because it identifies
+        /// the field in the actual storage format. Index is a mandatory field, but
+        /// it is optional for top level fields, and map/array "values" definitions.
+        #[prost(int32, tag = "1")]
+        pub index: i32,
+        /// Required. The name of the field.
+        #[prost(string, tag = "2")]
+        pub name: ::prost::alloc::string::String,
+        /// Required. The datatype of this field. The following values are supported:
+        /// Primitive types (string, integer, boolean, double, datetime); datetime
+        /// must be of the format RFC3339 UTC "Zulu" (Examples:
+        /// "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z"). Complex
+        /// types (enum, array, map, record).
+        #[prost(string, tag = "5")]
+        pub r#type: ::prost::alloc::string::String,
+        /// Optional. Field definition, needs to be specified if the type is record.
+        /// Defines the nested fields.
+        #[prost(message, repeated, tag = "6")]
+        pub record_fields: ::prost::alloc::vec::Vec<MetadataTemplate>,
+        /// Optional. The list of values for an enum type. Needs to be defined if the
+        /// type is enum.
+        #[prost(message, repeated, tag = "8")]
+        pub enum_values: ::prost::alloc::vec::Vec<metadata_template::EnumValue>,
+        /// Optional. map_items needs to be set if the type is map. map_items can
+        /// refer to a primitive field or a complex (record only) field. To specify a
+        /// primitive field, just name and type needs to be set in the nested
+        /// MetadataTemplate. The recommended value for the name field is item, as
+        /// this is not used in the actual payload.
+        #[prost(message, optional, boxed, tag = "10")]
+        pub map_items: ::core::option::Option<
+            ::prost::alloc::boxed::Box<MetadataTemplate>,
+        >,
+        /// Optional. array_items needs to be set if the type is array. array_items
+        /// can refer to a primitive field or a complex (record only) field. To
+        /// specify a primitive field, just name and type needs to be set in the
+        /// nested MetadataTemplate. The recommended value for the name field is
+        /// item, as this is not used in the actual payload.
+        #[prost(message, optional, boxed, tag = "11")]
+        pub array_items: ::core::option::Option<
+            ::prost::alloc::boxed::Box<MetadataTemplate>,
+        >,
+        /// Optional. Id can be used if this definition of the field needs to be
+        /// reused later. Id needs to be unique across the entire template. Id can
+        /// only be specified if the field type is record.
+        #[prost(string, tag = "12")]
+        pub type_id: ::prost::alloc::string::String,
+        /// Optional. A reference to another field definition (instead of an inline
+        /// definition). The value must be equal to the value of an id field defined
+        /// elsewhere in the MetadataTemplate. Only fields with type as record can
+        /// refer to other fields.
+        #[prost(string, tag = "13")]
+        pub type_ref: ::prost::alloc::string::String,
+        /// Optional. Specifies the constraints on this field.
+        #[prost(message, optional, tag = "50")]
+        pub constraints: ::core::option::Option<metadata_template::Constraints>,
+        /// Optional. Specifies annotations on this field.
+        #[prost(message, optional, tag = "51")]
+        pub annotations: ::core::option::Option<metadata_template::Annotations>,
+    }
+    /// Nested message and enum types in `MetadataTemplate`.
+    pub mod metadata_template {
+        /// Definition of Enumvalue (to be used by enum fields)
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct EnumValue {
+            /// Required. Index for the enum. Cannot be modified.
+            #[prost(int32, tag = "1")]
+            pub index: i32,
+            /// Required. Name of the enumvalue. This is the actual value that the
+            /// aspect will contain.
+            #[prost(string, tag = "2")]
+            pub name: ::prost::alloc::string::String,
+            /// Optional. Optional deprecation message to be set if an enum value needs
+            /// to be deprecated.
+            #[prost(string, tag = "3")]
+            pub deprecated: ::prost::alloc::string::String,
+        }
+        /// Definition of the constraints of a field
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Constraints {
+            /// Optional. Marks this as an optional/required field.
+            #[prost(bool, tag = "1")]
+            pub required: bool,
+        }
+        /// Definition of the annotations of a field
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Annotations {
+            /// Optional. Marks a field as deprecated, a deprecation message can be
+            /// included.
+            #[prost(string, tag = "1")]
+            pub deprecated: ::prost::alloc::string::String,
+            /// Optional. Specify a displayname for a field.
+            #[prost(string, tag = "2")]
+            pub display_name: ::prost::alloc::string::String,
+            /// Optional. Specify a description for a field
+            #[prost(string, tag = "3")]
+            pub description: ::prost::alloc::string::String,
+            /// Optional. Specify a display order for a field. Display order can be
+            /// used to reorder where a field is rendered
+            #[prost(int32, tag = "4")]
+            pub display_order: i32,
+            /// Optional. String Type annotations can be used to specify special
+            /// meaning to string fields. The following values are supported: richText:
+            /// The field must be interpreted as a rich text field. url: A fully
+            /// qualified url link. resource: A service qualified resource reference.
+            #[prost(string, tag = "6")]
+            pub string_type: ::prost::alloc::string::String,
+            /// Optional. Suggested hints for string fields. These can be used to
+            /// suggest values to users, through an UI for example.
+            #[prost(string, repeated, tag = "7")]
+            pub string_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
+    }
+}
+/// An Entry Group represents a logical grouping of one or more Entries.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EntryGroup {
+    /// Output only. The relative resource name of the EntryGroup, of the form:
+    /// projects/{project_number}/locations/{location_id}/entryGroups/{entry_group_id}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. System generated globally unique ID for the EntryGroup. This
+    /// ID will be different if the EntryGroup is deleted and re-created with the
+    /// same name.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Output only. The time when the EntryGroup was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the EntryGroup was last updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Description of the EntryGroup.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. User friendly display name.
+    #[prost(string, tag = "6")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. User-defined labels for the EntryGroup.
+    #[prost(map = "string, string", tag = "7")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// This checksum is computed by the server based on the value of other
+    /// fields, and may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding.
+    #[prost(string, tag = "8")]
+    pub etag: ::prost::alloc::string::String,
+    /// Output only. Denotes the transfer status of the Entry Group. It is
+    /// unspecified for Entry Group created from Dataplex API.
+    #[prost(enumeration = "TransferStatus", tag = "202")]
+    pub transfer_status: i32,
+}
+/// Entry Type is a template for creating Entries.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EntryType {
+    /// Output only. The relative resource name of the EntryType, of the form:
+    /// projects/{project_number}/locations/{location_id}/entryTypes/{entry_type_id}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. System generated globally unique ID for the EntryType. This ID
+    /// will be different if the EntryType is deleted and re-created with the same
+    /// name.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Output only. The time when the EntryType was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the EntryType was last updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Description of the EntryType.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. User friendly display name.
+    #[prost(string, tag = "6")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. User-defined labels for the EntryType.
+    #[prost(map = "string, string", tag = "7")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. This checksum is computed by the server based on the value of
+    /// other fields, and may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding.
+    #[prost(string, tag = "8")]
+    pub etag: ::prost::alloc::string::String,
+    /// Optional. Indicates the class this Entry Type belongs to, for example,
+    /// TABLE, DATABASE, MODEL.
+    #[prost(string, repeated, tag = "9")]
+    pub type_aliases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The platform that Entries of this type belongs to.
+    #[prost(string, tag = "10")]
+    pub platform: ::prost::alloc::string::String,
+    /// Optional. The system that Entries of this type belongs to. Examples include
+    /// CloudSQL, MariaDB etc
+    #[prost(string, tag = "11")]
+    pub system: ::prost::alloc::string::String,
+    /// AspectInfo for the entry type.
+    #[prost(message, repeated, tag = "50")]
+    pub required_aspects: ::prost::alloc::vec::Vec<entry_type::AspectInfo>,
+    /// Immutable. Authorization defined for this type.
+    #[prost(message, optional, tag = "51")]
+    pub authorization: ::core::option::Option<entry_type::Authorization>,
+}
+/// Nested message and enum types in `EntryType`.
+pub mod entry_type {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AspectInfo {
+        /// Required aspect type for the entry type.
+        #[prost(string, tag = "1")]
+        pub r#type: ::prost::alloc::string::String,
+    }
+    /// Authorization for an Entry Type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Authorization {
+        /// Immutable. The IAM permission grantable on the Entry Group to allow
+        /// access to instantiate Entries of Dataplex owned Entry Types, only
+        /// settable for Dataplex owned Types.
+        #[prost(string, tag = "1")]
+        pub alternate_use_permission: ::prost::alloc::string::String,
+    }
+}
+/// An aspect is a single piece of metadata describing an entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Aspect {
+    /// Output only. The resource name of the type used to create this Aspect.
+    #[prost(string, tag = "1")]
+    pub aspect_type: ::prost::alloc::string::String,
+    /// Output only. The path in the entry under which the aspect is attached.
+    #[prost(string, tag = "2")]
+    pub path: ::prost::alloc::string::String,
+    /// Output only. The time when the Aspect was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the Aspect was last updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. The content of the aspect, according to its aspect type schema.
+    /// This will replace `content`.
+    /// The maximum size of the field is 120KB (encoded as UTF-8).
+    #[prost(message, optional, tag = "8")]
+    pub data: ::core::option::Option<::prost_types::Struct>,
+    #[prost(message, optional, tag = "9")]
+    pub aspect_source: ::core::option::Option<AspectSource>,
+}
+/// AspectSource contains source system related information for the
+/// aspect.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AspectSource {
+    /// The create time of the aspect in the source system.
+    #[prost(message, optional, tag = "10")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The update time of the aspect in the source system.
+    #[prost(message, optional, tag = "11")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// An entry is a representation of a data asset which can be described by
+/// various metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Entry {
+    /// Identifier. The relative resource name of the Entry, of the form:
+    /// projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Immutable. The resource name of the EntryType used to create this
+    /// Entry.
+    #[prost(string, tag = "4")]
+    pub entry_type: ::prost::alloc::string::String,
+    /// Output only. The time when the Entry was created.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the Entry was last updated.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The Aspects attached to the Entry. The key is either the resource
+    /// name of the aspect type (if the aspect is attached directly to the entry)
+    /// or "aspectType@path" if the aspect is attached to an entry's path.
+    #[prost(map = "string, message", tag = "9")]
+    pub aspects: ::std::collections::HashMap<::prost::alloc::string::String, Aspect>,
+    /// Optional. Immutable. The resource name of the parent entry.
+    #[prost(string, tag = "10")]
+    pub parent_entry: ::prost::alloc::string::String,
+    /// Optional. A name for the entry that can reference it in an external system.
+    /// The maximum size of the field is 4000 characters.
+    #[prost(string, tag = "12")]
+    pub fully_qualified_name: ::prost::alloc::string::String,
+    /// Optional. Source system related information for an entry.
+    #[prost(message, optional, tag = "15")]
+    pub entry_source: ::core::option::Option<EntrySource>,
+}
+/// EntrySource contains source system related information for the
+/// entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EntrySource {
+    /// The name of the resource in the source system.
+    /// The maximum size of the field is 4000 characters.
+    #[prost(string, tag = "1")]
+    pub resource: ::prost::alloc::string::String,
+    /// The name of the source system.
+    /// The maximum size of the field is 64 characters.
+    #[prost(string, tag = "2")]
+    pub system: ::prost::alloc::string::String,
+    /// The platform containing the source system.
+    /// The maximum size of the field is 64 characters.
+    #[prost(string, tag = "3")]
+    pub platform: ::prost::alloc::string::String,
+    /// User friendly display name.
+    /// The maximum size of the field is 500 characters.
+    #[prost(string, tag = "5")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Description of the Entry.
+    /// The maximum size of the field is 2000 characters.
+    #[prost(string, tag = "6")]
+    pub description: ::prost::alloc::string::String,
+    /// User-defined labels.
+    /// The maximum size of keys and values is 128 characters each.
+    #[prost(map = "string, string", tag = "7")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Immutable. The ancestors of the Entry in the source system.
+    #[prost(message, repeated, tag = "9")]
+    pub ancestors: ::prost::alloc::vec::Vec<entry_source::Ancestor>,
+    /// The create time of the resource in the source system.
+    #[prost(message, optional, tag = "10")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The update time of the resource in the source system.
+    #[prost(message, optional, tag = "11")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `EntrySource`.
+pub mod entry_source {
+    /// Ancestor contains information about individual items in the hierarchy of
+    /// an Entry.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Ancestor {
+        /// Optional. The name of the ancestor resource.
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Optional. The type of the ancestor resource.
+        #[prost(string, tag = "2")]
+        pub r#type: ::prost::alloc::string::String,
+    }
+}
+/// Create EntryGroup Request
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateEntryGroupRequest {
+    /// Required. The resource name of the entryGroup, of the form:
+    /// projects/{project_number}/locations/{location_id}
+    /// where `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. EntryGroup identifier.
+    #[prost(string, tag = "2")]
+    pub entry_group_id: ::prost::alloc::string::String,
+    /// Required. EntryGroup Resource
+    #[prost(message, optional, tag = "3")]
+    pub entry_group: ::core::option::Option<EntryGroup>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// Update EntryGroup Request
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateEntryGroupRequest {
+    /// Required. EntryGroup Resource
+    #[prost(message, optional, tag = "1")]
+    pub entry_group: ::core::option::Option<EntryGroup>,
+    /// Required. Mask of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Delele EntryGroup Request
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteEntryGroupRequest {
+    /// Required. The resource name of the EntryGroup:
+    /// `projects/{project_number}/locations/{location_id}/entryGroups/{entry_group_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. If the client provided etag value does not match the current etag
+    /// value, the DeleteEntryGroupRequest method returns an ABORTED error response
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// List entryGroups request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEntryGroupsRequest {
+    /// Required. The resource name of the entryGroup location, of the form:
+    /// `projects/{project_number}/locations/{location_id}`
+    /// where `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of EntryGroups to return. The service may return
+    /// fewer than this value. If unspecified, at most 10 EntryGroups will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListEntryGroups` call.
+    /// Provide this to retrieve the subsequent page. When paginating, all other
+    /// parameters provided to `ListEntryGroups` must match the call that provided
+    /// the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter request.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Order by fields for the result.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// List ListEntryGroups response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEntryGroupsResponse {
+    /// ListEntryGroups under the given parent location.
+    #[prost(message, repeated, tag = "1")]
+    pub entry_groups: ::prost::alloc::vec::Vec<EntryGroup>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Get EntryGroup request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetEntryGroupRequest {
+    /// Required. The resource name of the EntryGroup:
+    /// `projects/{project_number}/locations/{location_id}/entryGroups/{entry_group_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Create EntryType Request
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateEntryTypeRequest {
+    /// Required. The resource name of the EntryType, of the form:
+    /// projects/{project_number}/locations/{location_id}
+    /// where `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. EntryType identifier.
+    #[prost(string, tag = "2")]
+    pub entry_type_id: ::prost::alloc::string::String,
+    /// Required. EntryType Resource
+    #[prost(message, optional, tag = "3")]
+    pub entry_type: ::core::option::Option<EntryType>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// Update EntryType Request
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateEntryTypeRequest {
+    /// Required. EntryType Resource
+    #[prost(message, optional, tag = "1")]
+    pub entry_type: ::core::option::Option<EntryType>,
+    /// Required. Mask of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Delele EntryType Request
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteEntryTypeRequest {
+    /// Required. The resource name of the EntryType:
+    /// `projects/{project_number}/locations/{location_id}/entryTypes/{entry_type_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. If the client provided etag value does not match the current etag
+    /// value, the DeleteEntryTypeRequest method returns an ABORTED error response
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// List EntryTypes request
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEntryTypesRequest {
+    /// Required. The resource name of the EntryType location, of the form:
+    /// `projects/{project_number}/locations/{location_id}`
+    /// where `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of EntryTypes to return. The service may return
+    /// fewer than this value. If unspecified, at most 10 EntryTypes will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListEntryTypes` call.
+    /// Provide this to retrieve the subsequent page. When paginating, all other
+    /// parameters provided to `ListEntryTypes` must match the call that provided
+    /// the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter request. Filters are case-sensitive.
+    /// The following formats are supported:
+    ///
+    /// labels.key1 = "value1"
+    /// labels:key1
+    /// name = "value"
+    /// These restrictions can be coinjoined with AND, OR and NOT conjunctions.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Order by fields (`name` or `create_time`) for the result.
+    /// If not specified, the ordering is undefined.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// List EntryTypes response
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEntryTypesResponse {
+    /// ListEntryTypes under the given parent location.
+    #[prost(message, repeated, tag = "1")]
+    pub entry_types: ::prost::alloc::vec::Vec<EntryType>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Get EntryType request
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetEntryTypeRequest {
+    /// Required. The resource name of the EntryType:
+    /// `projects/{project_number}/locations/{location_id}/entryTypes/{entry_type_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Create AspectType Request
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateAspectTypeRequest {
+    /// Required. The resource name of the AspectType, of the form:
+    /// projects/{project_number}/locations/{location_id}
+    /// where `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. AspectType identifier.
+    #[prost(string, tag = "2")]
+    pub aspect_type_id: ::prost::alloc::string::String,
+    /// Required. AspectType Resource
+    #[prost(message, optional, tag = "3")]
+    pub aspect_type: ::core::option::Option<AspectType>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+}
+/// Update AspectType Request
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAspectTypeRequest {
+    /// Required. AspectType Resource
+    #[prost(message, optional, tag = "1")]
+    pub aspect_type: ::core::option::Option<AspectType>,
+    /// Required. Mask of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Delele AspectType Request
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteAspectTypeRequest {
+    /// Required. The resource name of the AspectType:
+    /// `projects/{project_number}/locations/{location_id}/aspectTypes/{aspect_type_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. If the client provided etag value does not match the current etag
+    /// value, the DeleteAspectTypeRequest method returns an ABORTED error response
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// List AspectTypes request
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAspectTypesRequest {
+    /// Required. The resource name of the AspectType location, of the form:
+    /// `projects/{project_number}/locations/{location_id}`
+    /// where `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of AspectTypes to return. The service may return
+    /// fewer than this value. If unspecified, at most 10 AspectTypes will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListAspectTypes` call.
+    /// Provide this to retrieve the subsequent page. When paginating, all other
+    /// parameters provided to `ListAspectTypes` must match the call that provided
+    /// the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter request. Filters are case-sensitive.
+    /// The following formats are supported:
+    ///
+    /// labels.key1 = "value1"
+    /// labels:key1
+    /// name = "value"
+    /// These restrictions can be coinjoined with AND, OR and NOT conjunctions.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Order by fields (`name` or `create_time`) for the result.
+    /// If not specified, the ordering is undefined.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// List AspectTypes response
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAspectTypesResponse {
+    /// ListAspectTypes under the given parent location.
+    #[prost(message, repeated, tag = "1")]
+    pub aspect_types: ::prost::alloc::vec::Vec<AspectType>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Get AspectType request
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAspectTypeRequest {
+    /// Required. The resource name of the AspectType:
+    /// `projects/{project_number}/locations/{location_id}/aspectTypes/{aspect_type_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateEntryRequest {
+    /// Required. The resource name of the parent Entry Group:
+    /// `projects/{project}/locations/{location}/entryGroups/{entry_group}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Entry identifier. It has to be unique within an Entry Group.
+    ///
+    /// Entries corresponding to Google Cloud resources use Entry ID format based
+    /// on Full Resource Names
+    /// (<https://cloud.google.com/apis/design/resource_names#full_resource_name>).
+    /// The format is a Full Resource Name of the resource without the
+    /// prefix double slashes in the API Service Name part of Full Resource Name.
+    /// This allows retrieval of entries using their associated resource name.
+    ///
+    /// For example if the Full Resource Name of a resource is
+    /// `//library.googleapis.com/shelves/shelf1/books/book2`,
+    /// then the suggested entry_id is
+    /// `library.googleapis.com/shelves/shelf1/books/book2`.
+    ///
+    /// It is also suggested to follow the same convention for entries
+    /// corresponding to resources from other providers or systems than Google
+    /// Cloud.
+    ///
+    /// The maximum size of the field is 4000 characters.
+    #[prost(string, tag = "2")]
+    pub entry_id: ::prost::alloc::string::String,
+    /// Required. Entry resource.
+    #[prost(message, optional, tag = "3")]
+    pub entry: ::core::option::Option<Entry>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateEntryRequest {
+    /// Required. Entry resource.
+    #[prost(message, optional, tag = "1")]
+    pub entry: ::core::option::Option<Entry>,
+    /// Optional. Mask of fields to update. To update Aspects, the update_mask must
+    /// contain the value "aspects".
+    ///
+    /// If the update_mask is empty, all modifiable fields present in the request
+    /// will be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. If set to true and the entry does not exist, it will be created.
+    #[prost(bool, tag = "3")]
+    pub allow_missing: bool,
+    /// Optional. If set to true and the aspect_keys specify aspect ranges, any
+    /// existing aspects from that range not provided in the request will be
+    /// deleted.
+    #[prost(bool, tag = "4")]
+    pub delete_missing_aspects: bool,
+    /// Optional. The map keys of the Aspects which should be modified. Supports
+    /// the following syntaxes:
+    /// * <aspect_type_reference> - matches aspect on given type and empty path
+    /// * <aspect_type_reference>@path - matches aspect on given type and specified
+    /// path
+    /// * <aspect_type_reference>* - matches aspects on given type for all paths
+    /// * *@path - matches aspects of all types on the given path
+    ///
+    /// Existing aspects matching the syntax will not be removed unless
+    /// `delete_missing_aspects` is set to true.
+    ///
+    /// If this field is left empty, it will be treated as specifying exactly those
+    /// Aspects present in the request.
+    #[prost(string, repeated, tag = "5")]
+    pub aspect_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteEntryRequest {
+    /// Required. The resource name of the Entry:
+    /// `projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEntriesRequest {
+    /// Required. The resource name of the parent Entry Group:
+    /// `projects/{project}/locations/{location}/entryGroups/{entry_group}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The pagination token returned by a previous request.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. A filter on the entries to return.
+    /// Filters are case-sensitive.
+    /// The request can be filtered by the following fields:
+    /// entry_type, display_name.
+    /// The comparison operators are =, !=, <, >, <=, >= (strings are compared
+    /// according to lexical order)
+    /// The logical operators AND, OR, NOT can be used
+    /// in the filter. Example filter expressions:
+    /// "display_name=AnExampleDisplayName"
+    /// "entry_type=projects/example-project/locations/global/entryTypes/example-entry_type"
+    /// "entry_type=projects/a* OR "entry_type=projects/k*"
+    /// "NOT display_name=AnotherExampleDisplayName"
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEntriesResponse {
+    /// The list of entries.
+    #[prost(message, repeated, tag = "1")]
+    pub entries: ::prost::alloc::vec::Vec<Entry>,
+    /// Pagination token.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetEntryRequest {
+    /// Required. The resource name of the Entry:
+    /// `projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. View for controlling which parts of an entry are to be returned.
+    #[prost(enumeration = "EntryView", tag = "2")]
+    pub view: i32,
+    /// Optional. Limits the aspects returned to the provided aspect types.
+    /// Only works if the CUSTOM view is selected.
+    #[prost(string, repeated, tag = "3")]
+    pub aspect_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Limits the aspects returned to those associated with the provided
+    /// paths within the Entry. Only works if the CUSTOM view is selected.
+    #[prost(string, repeated, tag = "4")]
+    pub paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupEntryRequest {
+    /// Required. The project to which the request should be attributed in the
+    /// following form: `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. View for controlling which parts of an entry are to be returned.
+    #[prost(enumeration = "EntryView", tag = "2")]
+    pub view: i32,
+    /// Optional. Limits the aspects returned to the provided aspect types.
+    /// Only works if the CUSTOM view is selected.
+    #[prost(string, repeated, tag = "3")]
+    pub aspect_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Limits the aspects returned to those associated with the provided
+    /// paths within the Entry. Only works if the CUSTOM view is selected.
+    #[prost(string, repeated, tag = "4")]
+    pub paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Required. The resource name of the Entry:
+    /// `projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}`.
+    #[prost(string, tag = "5")]
+    pub entry: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchEntriesRequest {
+    /// Required. The project to which the request should be attributed in the
+    /// following form: `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The query against which entries in scope should be matched.
+    #[prost(string, tag = "2")]
+    pub query: ::prost::alloc::string::String,
+    /// Optional. Pagination.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Ordering of the results. Supported options to be added later.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. The scope under which the search should be operating. Should
+    /// either be organizations/<org_id> or projects/<project_ref>. If left
+    /// unspecified, it will default to the organization where the project provided
+    /// in `name` is located.
+    #[prost(string, tag = "7")]
+    pub scope: ::prost::alloc::string::String,
+}
+/// A single result of a SearchEntries request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchEntriesResult {
+    /// Resource name of the entry.
+    #[deprecated]
+    #[prost(string, tag = "1")]
+    pub entry: ::prost::alloc::string::String,
+    /// Display name.
+    #[deprecated]
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// The entry type.
+    #[deprecated]
+    #[prost(string, tag = "3")]
+    pub entry_type: ::prost::alloc::string::String,
+    /// The last modification timestamp.
+    #[deprecated]
+    #[prost(message, optional, tag = "4")]
+    pub modify_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Fully qualified name.
+    #[deprecated]
+    #[prost(string, tag = "5")]
+    pub fully_qualified_name: ::prost::alloc::string::String,
+    /// Entry description.
+    #[deprecated]
+    #[prost(string, tag = "6")]
+    pub description: ::prost::alloc::string::String,
+    /// Relative resource name.
+    #[deprecated]
+    #[prost(string, tag = "7")]
+    pub relative_resource: ::prost::alloc::string::String,
+    /// Linked resource name.
+    #[prost(string, tag = "8")]
+    pub linked_resource: ::prost::alloc::string::String,
+    /// Entry format of the result.
+    #[prost(message, optional, tag = "9")]
+    pub dataplex_entry: ::core::option::Option<Entry>,
+    /// Snippets.
+    #[prost(message, optional, tag = "12")]
+    pub snippets: ::core::option::Option<search_entries_result::Snippets>,
+}
+/// Nested message and enum types in `SearchEntriesResult`.
+pub mod search_entries_result {
+    /// Snippets for the entry, contains HTML-style highlighting for
+    /// matched tokens, will be used in UI.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Snippets {
+        /// Entry
+        #[prost(message, optional, tag = "1")]
+        pub dataplex_entry: ::core::option::Option<super::Entry>,
+    }
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchEntriesResponse {
+    /// The results matching the search query.
+    #[prost(message, repeated, tag = "1")]
+    pub results: ::prost::alloc::vec::Vec<SearchEntriesResult>,
+    /// The estimated total number of matching entries. Not guaranteed to be
+    /// accurate.
+    #[prost(int32, tag = "2")]
+    pub total_size: i32,
+    /// Pagination token.
+    #[prost(string, tag = "3")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable locations. Search results don't include data from those
+    /// locations.
+    #[prost(string, repeated, tag = "4")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// View for controlling which parts of an entry are to be returned.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum EntryView {
+    /// Unspecified EntryView. Defaults to FULL.
+    Unspecified = 0,
+    /// Returns entry only, without aspects.
+    Basic = 1,
+    /// Returns all required aspects as well as the keys of all non-required
+    /// aspects.
+    Full = 2,
+    /// Returns aspects matching custom fields in GetEntryRequest. If the number of
+    /// aspects would exceed 100, the first 100 will be returned.
+    Custom = 3,
+    /// Returns all aspects. If the number of aspects would exceed 100, the first
+    /// 100 will be returned.
+    All = 4,
+}
+impl EntryView {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            EntryView::Unspecified => "ENTRY_VIEW_UNSPECIFIED",
+            EntryView::Basic => "BASIC",
+            EntryView::Full => "FULL",
+            EntryView::Custom => "CUSTOM",
+            EntryView::All => "ALL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ENTRY_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "BASIC" => Some(Self::Basic),
+            "FULL" => Some(Self::Full),
+            "CUSTOM" => Some(Self::Custom),
+            "ALL" => Some(Self::All),
+            _ => None,
+        }
+    }
+}
+/// Denotes the transfer status of a resource. It is unspecified for resources
+/// created from Dataplex API.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum TransferStatus {
+    /// The default value. It is set for resources that were not subject for
+    /// migration from Data Catalog service.
+    Unspecified = 0,
+    /// Indicates that a resource was migrated from Data Catalog service but it
+    /// hasn't been transferred yet. In particular the resource cannot be updated
+    /// from Dataplex API.
+    Migrated = 1,
+    /// Indicates that a resource was transferred from Data Catalog service. The
+    /// resource can only be updated from Dataplex API.
+    Transferred = 2,
+}
+impl TransferStatus {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            TransferStatus::Unspecified => "TRANSFER_STATUS_UNSPECIFIED",
+            TransferStatus::Migrated => "TRANSFER_STATUS_MIGRATED",
+            TransferStatus::Transferred => "TRANSFER_STATUS_TRANSFERRED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TRANSFER_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+            "TRANSFER_STATUS_MIGRATED" => Some(Self::Migrated),
+            "TRANSFER_STATUS_TRANSFERRED" => Some(Self::Transferred),
+            _ => None,
+        }
+    }
+}
+/// Generated client implementations.
+pub mod catalog_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The primary resources offered by this service are EntryGroups, EntryTypes,
+    /// AspectTypes, Entry and Aspect which collectively allow a data administrator
+    /// to organize, manage, secure and catalog data across their organization
+    /// located across cloud projects in a variety of storage systems including Cloud
+    /// Storage and BigQuery.
+    #[derive(Debug, Clone)]
+    pub struct CatalogServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl CatalogServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> CatalogServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> CatalogServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            CatalogServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates an EntryType
+        pub async fn create_entry_type(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateEntryTypeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/CreateEntryType",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "CreateEntryType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a EntryType resource.
+        pub async fn update_entry_type(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateEntryTypeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/UpdateEntryType",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "UpdateEntryType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a EntryType resource.
+        pub async fn delete_entry_type(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteEntryTypeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/DeleteEntryType",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "DeleteEntryType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists EntryType resources in a project and location.
+        pub async fn list_entry_types(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListEntryTypesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListEntryTypesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/ListEntryTypes",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "ListEntryTypes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves a EntryType resource.
+        pub async fn get_entry_type(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetEntryTypeRequest>,
+        ) -> std::result::Result<tonic::Response<super::EntryType>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/GetEntryType",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "GetEntryType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates an AspectType
+        pub async fn create_aspect_type(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateAspectTypeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/CreateAspectType",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "CreateAspectType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a AspectType resource.
+        pub async fn update_aspect_type(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAspectTypeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/UpdateAspectType",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "UpdateAspectType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a AspectType resource.
+        pub async fn delete_aspect_type(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteAspectTypeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/DeleteAspectType",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "DeleteAspectType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists AspectType resources in a project and location.
+        pub async fn list_aspect_types(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAspectTypesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAspectTypesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/ListAspectTypes",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "ListAspectTypes",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves a AspectType resource.
+        pub async fn get_aspect_type(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAspectTypeRequest>,
+        ) -> std::result::Result<tonic::Response<super::AspectType>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/GetAspectType",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "GetAspectType",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates an EntryGroup
+        pub async fn create_entry_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateEntryGroupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/CreateEntryGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "CreateEntryGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a EntryGroup resource.
+        pub async fn update_entry_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateEntryGroupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/UpdateEntryGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "UpdateEntryGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a EntryGroup resource.
+        pub async fn delete_entry_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteEntryGroupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/DeleteEntryGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "DeleteEntryGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists EntryGroup resources in a project and location.
+        pub async fn list_entry_groups(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListEntryGroupsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListEntryGroupsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/ListEntryGroups",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "ListEntryGroups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves a EntryGroup resource.
+        pub async fn get_entry_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetEntryGroupRequest>,
+        ) -> std::result::Result<tonic::Response<super::EntryGroup>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/GetEntryGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "GetEntryGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates an Entry.
+        pub async fn create_entry(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateEntryRequest>,
+        ) -> std::result::Result<tonic::Response<super::Entry>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/CreateEntry",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "CreateEntry",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an Entry.
+        pub async fn update_entry(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateEntryRequest>,
+        ) -> std::result::Result<tonic::Response<super::Entry>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/UpdateEntry",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "UpdateEntry",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes an Entry.
+        pub async fn delete_entry(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteEntryRequest>,
+        ) -> std::result::Result<tonic::Response<super::Entry>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/DeleteEntry",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "DeleteEntry",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists entries within an entry group.
+        pub async fn list_entries(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListEntriesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListEntriesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/ListEntries",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "ListEntries",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a single entry.
+        pub async fn get_entry(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetEntryRequest>,
+        ) -> std::result::Result<tonic::Response<super::Entry>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/GetEntry",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "GetEntry",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Looks up a single entry.
+        pub async fn lookup_entry(
+            &mut self,
+            request: impl tonic::IntoRequest<super::LookupEntryRequest>,
+        ) -> std::result::Result<tonic::Response<super::Entry>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/LookupEntry",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "LookupEntry",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Searches for entries matching given query and scope.
+        pub async fn search_entries(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SearchEntriesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SearchEntriesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CatalogService/SearchEntries",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CatalogService",
+                        "SearchEntries",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Create content request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateContentRequest {
+    /// Required. The resource name of the parent lake:
+    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Content resource.
+    #[prost(message, optional, tag = "2")]
+    pub content: ::core::option::Option<Content>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Update content request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateContentRequest {
+    /// Required. Mask of fields to update.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. Update description.
+    /// Only fields specified in `update_mask` are updated.
+    #[prost(message, optional, tag = "2")]
+    pub content: ::core::option::Option<Content>,
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Delete content request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteContentRequest {
+    /// Required. The resource name of the content:
+    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// List content request. Returns the BASIC Content view.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListContentRequest {
+    /// Required. The resource name of the parent lake:
+    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of content to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 content will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListContent` call. Provide
+    /// this to retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListContent` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter request. Filters are case-sensitive.
+    /// The following formats are supported:
+    ///
+    /// labels.key1 = "value1"
+    /// labels:key1
+    /// type = "NOTEBOOK"
+    /// type = "SQL_SCRIPT"
+    ///
+    /// These restrictions can be coinjoined with AND, OR and NOT conjunctions.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// List content response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListContentResponse {
+    /// Content under the given parent lake.
+    #[prost(message, repeated, tag = "1")]
+    pub content: ::prost::alloc::vec::Vec<Content>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Get content request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetContentRequest {
+    /// Required. The resource name of the content:
+    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Specify content view to make a partial request.
+    #[prost(enumeration = "get_content_request::ContentView", tag = "2")]
+    pub view: i32,
+}
+/// Nested message and enum types in `GetContentRequest`.
+pub mod get_content_request {
+    /// Specifies whether the request should return the full or the partial
+    /// representation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ContentView {
+        /// Content view not specified. Defaults to BASIC.
+        /// The API will default to the BASIC view.
+        Unspecified = 0,
+        /// Will not return the `data_text` field.
+        Basic = 1,
+        /// Returns the complete proto.
+        Full = 2,
+    }
+    impl ContentView {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ContentView::Unspecified => "CONTENT_VIEW_UNSPECIFIED",
+                ContentView::Basic => "BASIC",
+                ContentView::Full => "FULL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONTENT_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASIC" => Some(Self::Basic),
+                "FULL" => Some(Self::Full),
+                _ => None,
+            }
+        }
+    }
+}
+/// Generated client implementations.
+pub mod content_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// ContentService manages Notebook and SQL Scripts for Dataplex.
+    #[derive(Debug, Clone)]
+    pub struct ContentServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl ContentServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> ContentServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ContentServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            ContentServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Create a content.
+        pub async fn create_content(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateContentRequest>,
+        ) -> std::result::Result<tonic::Response<super::Content>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.ContentService/CreateContent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.ContentService",
+                        "CreateContent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update a content. Only supports full resource update.
+        pub async fn update_content(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateContentRequest>,
+        ) -> std::result::Result<tonic::Response<super::Content>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.ContentService/UpdateContent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.ContentService",
+                        "UpdateContent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Delete a content.
+        pub async fn delete_content(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteContentRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.ContentService/DeleteContent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.ContentService",
+                        "DeleteContent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get a content resource.
+        pub async fn get_content(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetContentRequest>,
+        ) -> std::result::Result<tonic::Response<super::Content>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.ContentService/GetContent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.ContentService",
+                        "GetContent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the access control policy for a contentitem resource. A `NOT_FOUND`
+        /// error is returned if the resource does not exist. An empty policy is
+        /// returned if the resource exists but does not have a policy set on it.
+        ///
+        /// Caller must have Google IAM `dataplex.content.getIamPolicy` permission
+        /// on the resource.
+        pub async fn get_iam_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::super::super::super::iam::v1::GetIamPolicyRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::iam::v1::Policy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.ContentService/GetIamPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.ContentService",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Sets the access control policy on the specified contentitem resource.
+        /// Replaces any existing policy.
+        ///
+        /// Caller must have Google IAM `dataplex.content.setIamPolicy` permission
+        /// on the resource.
+        pub async fn set_iam_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::super::super::super::iam::v1::SetIamPolicyRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::iam::v1::Policy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.ContentService/SetIamPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.ContentService",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the caller's permissions on a resource.
+        /// If the resource does not exist, an empty set of
+        /// permissions is returned (a `NOT_FOUND` error is not returned).
+        ///
+        /// A caller is not required to have Google IAM permission to make this
+        /// request.
+        ///
+        /// Note: This operation is designed to be used for building permission-aware
+        /// UIs and command-line tools, not for authorization checking. This operation
+        /// may "fail open" without warning.
+        pub async fn test_iam_permissions(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::super::super::super::iam::v1::TestIamPermissionsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<
+                super::super::super::super::iam::v1::TestIamPermissionsResponse,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.ContentService/TestIamPermissions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.ContentService",
+                        "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List content.
+        pub async fn list_content(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListContentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListContentResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.ContentService/ListContent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.ContentService",
+                        "ListContent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// DataScan scheduling and trigger settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Trigger {
+    /// DataScan scheduling and trigger settings.
+    ///
+    /// If not specified, the default is `onDemand`.
+    #[prost(oneof = "trigger::Mode", tags = "100, 101")]
+    pub mode: ::core::option::Option<trigger::Mode>,
+}
+/// Nested message and enum types in `Trigger`.
+pub mod trigger {
+    /// The scan runs once via `RunDataScan` API.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct OnDemand {}
+    /// The scan is scheduled to run periodically.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Schedule {
+        /// Required. [Cron](<https://en.wikipedia.org/wiki/Cron>) schedule for running
+        /// scans periodically.
+        ///
+        /// To explicitly set a timezone in the cron tab, apply a prefix in the
+        /// cron tab: **"CRON_TZ=${IANA_TIME_ZONE}"** or **"TZ=${IANA_TIME_ZONE}"**.
+        /// The **${IANA_TIME_ZONE}** may only be a valid string from IANA time zone
+        /// database
+        /// ([wikipedia](<https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List>)).
+        /// For example, `CRON_TZ=America/New_York 1 * * * *`, or
+        /// `TZ=America/New_York 1 * * * *`.
+        ///
+        /// This field is required for Schedule scans.
+        #[prost(string, tag = "1")]
+        pub cron: ::prost::alloc::string::String,
+    }
+    /// DataScan scheduling and trigger settings.
+    ///
+    /// If not specified, the default is `onDemand`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Mode {
+        /// The scan runs once via `RunDataScan` API.
+        #[prost(message, tag = "100")]
+        OnDemand(OnDemand),
+        /// The scan is scheduled to run periodically.
+        #[prost(message, tag = "101")]
+        Schedule(Schedule),
+    }
+}
+/// The data source for DataScan.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataSource {
+    /// The source is required and immutable. Once it is set, it cannot be change
+    /// to others.
+    #[prost(oneof = "data_source::Source", tags = "100, 101")]
+    pub source: ::core::option::Option<data_source::Source>,
+}
+/// Nested message and enum types in `DataSource`.
+pub mod data_source {
+    /// The source is required and immutable. Once it is set, it cannot be change
+    /// to others.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Immutable. The Dataplex entity that represents the data source (e.g.
+        /// BigQuery table) for DataScan, of the form:
+        /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.
+        #[prost(string, tag = "100")]
+        Entity(::prost::alloc::string::String),
+        /// Immutable. The service-qualified full resource name of the cloud resource
+        /// for a DataScan job to scan against. The field could be: BigQuery table of
+        /// type "TABLE" for DataProfileScan/DataQualityScan Format:
+        /// //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
+        #[prost(string, tag = "101")]
+        Resource(::prost::alloc::string::String),
+    }
+}
+/// The data scanned during processing (e.g. in incremental DataScan)
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ScannedData {
+    /// The range of scanned data
+    #[prost(oneof = "scanned_data::DataRange", tags = "1")]
+    pub data_range: ::core::option::Option<scanned_data::DataRange>,
+}
+/// Nested message and enum types in `ScannedData`.
+pub mod scanned_data {
+    /// A data range denoted by a pair of start/end values of a field.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct IncrementalField {
+        /// The field that contains values which monotonically increases over time
+        /// (e.g. a timestamp column).
+        #[prost(string, tag = "1")]
+        pub field: ::prost::alloc::string::String,
+        /// Value that marks the start of the range.
+        #[prost(string, tag = "2")]
+        pub start: ::prost::alloc::string::String,
+        /// Value that marks the end of the range.
+        #[prost(string, tag = "3")]
+        pub end: ::prost::alloc::string::String,
+    }
+    /// The range of scanned data
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum DataRange {
+        /// The range denoted by values of an incremental field
+        #[prost(message, tag = "1")]
+        IncrementalField(IncrementalField),
+    }
+}
+/// DataProfileScan related setting.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataProfileSpec {
+    /// Optional. The percentage of the records to be selected from the dataset for
+    /// DataScan.
+    ///
+    /// * Value can range between 0.0 and 100.0 with up to 3 significant decimal
+    /// digits.
+    /// * Sampling is not applied if `sampling_percent` is not specified, 0 or
+    /// 100.
+    #[prost(float, tag = "2")]
+    pub sampling_percent: f32,
+    /// Optional. A filter applied to all rows in a single DataScan job.
+    /// The filter needs to be a valid SQL expression for a WHERE clause in
+    /// BigQuery standard SQL syntax.
+    /// Example: col1 >= 0 AND col2 < 10
+    #[prost(string, tag = "3")]
+    pub row_filter: ::prost::alloc::string::String,
+    /// Optional. Actions to take upon job completion..
+    #[prost(message, optional, tag = "4")]
+    pub post_scan_actions: ::core::option::Option<data_profile_spec::PostScanActions>,
+    /// Optional. The fields to include in data profile.
+    ///
+    /// If not specified, all fields at the time of profile scan job execution are
+    /// included, except for ones listed in `exclude_fields`.
+    #[prost(message, optional, tag = "5")]
+    pub include_fields: ::core::option::Option<data_profile_spec::SelectedFields>,
+    /// Optional. The fields to exclude from data profile.
+    ///
+    /// If specified, the fields will be excluded from data profile, regardless of
+    /// `include_fields` value.
+    #[prost(message, optional, tag = "6")]
+    pub exclude_fields: ::core::option::Option<data_profile_spec::SelectedFields>,
+}
+/// Nested message and enum types in `DataProfileSpec`.
+pub mod data_profile_spec {
+    /// The configuration of post scan actions of DataProfileScan job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PostScanActions {
+        /// Optional. If set, results will be exported to the provided BigQuery
+        /// table.
+        #[prost(message, optional, tag = "1")]
+        pub bigquery_export: ::core::option::Option<post_scan_actions::BigQueryExport>,
+    }
+    /// Nested message and enum types in `PostScanActions`.
+    pub mod post_scan_actions {
+        /// The configuration of BigQuery export post scan action.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BigQueryExport {
+            /// Optional. The BigQuery table to export DataProfileScan results to.
+            /// Format:
+            /// //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
+            #[prost(string, tag = "1")]
+            pub results_table: ::prost::alloc::string::String,
+        }
+    }
+    /// The specification for fields to include or exclude in data profile scan.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SelectedFields {
+        /// Optional. Expected input is a list of fully qualified names of fields as
+        /// in the schema.
+        ///
+        /// Only top-level field names for nested fields are supported.
+        /// For instance, if 'x' is of nested field type, listing 'x' is supported
+        /// but 'x.y.z' is not supported. Here 'y' and 'y.z' are nested fields of
+        /// 'x'.
+        #[prost(string, repeated, tag = "1")]
+        pub field_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+}
+/// DataProfileResult defines the output of DataProfileScan. Each field of the
+/// table will have field type specific profile result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataProfileResult {
+    /// The count of rows scanned.
+    #[prost(int64, tag = "3")]
+    pub row_count: i64,
+    /// The profile information per field.
+    #[prost(message, optional, tag = "4")]
+    pub profile: ::core::option::Option<data_profile_result::Profile>,
+    /// The data scanned for this result.
+    #[prost(message, optional, tag = "5")]
+    pub scanned_data: ::core::option::Option<ScannedData>,
+    /// Output only. The result of post scan actions.
+    #[prost(message, optional, tag = "6")]
+    pub post_scan_actions_result: ::core::option::Option<
+        data_profile_result::PostScanActionsResult,
+    >,
+}
+/// Nested message and enum types in `DataProfileResult`.
+pub mod data_profile_result {
+    /// Contains name, type, mode and field type specific profile information.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Profile {
+        /// List of fields with structural and profile information for each field.
+        #[prost(message, repeated, tag = "2")]
+        pub fields: ::prost::alloc::vec::Vec<profile::Field>,
+    }
+    /// Nested message and enum types in `Profile`.
+    pub mod profile {
+        /// A field within a table.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Field {
+            /// The name of the field.
+            #[prost(string, tag = "1")]
+            pub name: ::prost::alloc::string::String,
+            /// The data type retrieved from the schema of the data source. For
+            /// instance, for a BigQuery native table, it is the [BigQuery Table
+            /// Schema](<https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablefieldschema>).
+            /// For a Dataplex Entity, it is the [Entity
+            /// Schema](<https://cloud.google.com/dataplex/docs/reference/rpc/google.cloud.dataplex.v1#type_3>).
+            #[prost(string, tag = "2")]
+            pub r#type: ::prost::alloc::string::String,
+            /// The mode of the field. Possible values include:
+            ///
+            /// * REQUIRED, if it is a required field.
+            /// * NULLABLE, if it is an optional field.
+            /// * REPEATED, if it is a repeated field.
+            #[prost(string, tag = "3")]
+            pub mode: ::prost::alloc::string::String,
+            /// Profile information for the corresponding field.
+            #[prost(message, optional, tag = "4")]
+            pub profile: ::core::option::Option<field::ProfileInfo>,
+        }
+        /// Nested message and enum types in `Field`.
+        pub mod field {
+            /// The profile information for each field type.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct ProfileInfo {
+                /// Ratio of rows with null value against total scanned rows.
+                #[prost(double, tag = "2")]
+                pub null_ratio: f64,
+                /// Ratio of rows with distinct values against total scanned rows.
+                /// Not available for complex non-groupable field type RECORD and fields
+                /// with REPEATABLE mode.
+                #[prost(double, tag = "3")]
+                pub distinct_ratio: f64,
+                /// The list of top N non-null values, frequency and ratio with which
+                /// they occur in the scanned data. N is 10 or equal to the number of
+                /// distinct values in the field, whichever is smaller. Not available for
+                /// complex non-groupable field type RECORD and fields with REPEATABLE
+                /// mode.
+                #[prost(message, repeated, tag = "4")]
+                pub top_n_values: ::prost::alloc::vec::Vec<profile_info::TopNValue>,
+                /// Structural and profile information for specific field type. Not
+                /// available, if mode is REPEATABLE.
+                #[prost(oneof = "profile_info::FieldInfo", tags = "101, 102, 103")]
+                pub field_info: ::core::option::Option<profile_info::FieldInfo>,
+            }
+            /// Nested message and enum types in `ProfileInfo`.
+            pub mod profile_info {
+                /// The profile information for a string type field.
+                #[allow(clippy::derive_partial_eq_without_eq)]
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct StringFieldInfo {
+                    /// Minimum length of non-null values in the scanned data.
+                    #[prost(int64, tag = "1")]
+                    pub min_length: i64,
+                    /// Maximum length of non-null values in the scanned data.
+                    #[prost(int64, tag = "2")]
+                    pub max_length: i64,
+                    /// Average length of non-null values in the scanned data.
+                    #[prost(double, tag = "3")]
+                    pub average_length: f64,
+                }
+                /// The profile information for an integer type field.
+                #[allow(clippy::derive_partial_eq_without_eq)]
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct IntegerFieldInfo {
+                    /// Average of non-null values in the scanned data. NaN, if the field
+                    /// has a NaN.
+                    #[prost(double, tag = "1")]
+                    pub average: f64,
+                    /// Standard deviation of non-null values in the scanned data. NaN, if
+                    /// the field has a NaN.
+                    #[prost(double, tag = "3")]
+                    pub standard_deviation: f64,
+                    /// Minimum of non-null values in the scanned data. NaN, if the field
+                    /// has a NaN.
+                    #[prost(int64, tag = "4")]
+                    pub min: i64,
+                    /// A quartile divides the number of data points into four parts, or
+                    /// quarters, of more-or-less equal size. Three main quartiles used
+                    /// are: The first quartile (Q1) splits off the lowest 25% of data from
+                    /// the highest 75%. It is also known as the lower or 25th empirical
+                    /// quartile, as 25% of the data is below this point. The second
+                    /// quartile (Q2) is the median of a data set. So, 50% of the data lies
+                    /// below this point. The third quartile (Q3) splits off the highest
+                    /// 25% of data from the lowest 75%. It is known as the upper or 75th
+                    /// empirical quartile, as 75% of the data lies below this point.
+                    /// Here, the quartiles is provided as an ordered list of approximate
+                    /// quartile values for the scanned data, occurring in order Q1,
+                    /// median, Q3.
+                    #[prost(int64, repeated, tag = "6")]
+                    pub quartiles: ::prost::alloc::vec::Vec<i64>,
+                    /// Maximum of non-null values in the scanned data. NaN, if the field
+                    /// has a NaN.
+                    #[prost(int64, tag = "5")]
+                    pub max: i64,
+                }
+                /// The profile information for a double type field.
+                #[allow(clippy::derive_partial_eq_without_eq)]
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct DoubleFieldInfo {
+                    /// Average of non-null values in the scanned data. NaN, if the field
+                    /// has a NaN.
+                    #[prost(double, tag = "1")]
+                    pub average: f64,
+                    /// Standard deviation of non-null values in the scanned data. NaN, if
+                    /// the field has a NaN.
+                    #[prost(double, tag = "3")]
+                    pub standard_deviation: f64,
+                    /// Minimum of non-null values in the scanned data. NaN, if the field
+                    /// has a NaN.
+                    #[prost(double, tag = "4")]
+                    pub min: f64,
+                    /// A quartile divides the number of data points into four parts, or
+                    /// quarters, of more-or-less equal size. Three main quartiles used
+                    /// are: The first quartile (Q1) splits off the lowest 25% of data from
+                    /// the highest 75%. It is also known as the lower or 25th empirical
+                    /// quartile, as 25% of the data is below this point. The second
+                    /// quartile (Q2) is the median of a data set. So, 50% of the data lies
+                    /// below this point. The third quartile (Q3) splits off the highest
+                    /// 25% of data from the lowest 75%. It is known as the upper or 75th
+                    /// empirical quartile, as 75% of the data lies below this point.
+                    /// Here, the quartiles is provided as an ordered list of quartile
+                    /// values for the scanned data, occurring in order Q1, median, Q3.
+                    #[prost(double, repeated, tag = "6")]
+                    pub quartiles: ::prost::alloc::vec::Vec<f64>,
+                    /// Maximum of non-null values in the scanned data. NaN, if the field
+                    /// has a NaN.
+                    #[prost(double, tag = "5")]
+                    pub max: f64,
+                }
+                /// Top N non-null values in the scanned data.
+                #[allow(clippy::derive_partial_eq_without_eq)]
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct TopNValue {
+                    /// String value of a top N non-null value.
+                    #[prost(string, tag = "1")]
+                    pub value: ::prost::alloc::string::String,
+                    /// Count of the corresponding value in the scanned data.
+                    #[prost(int64, tag = "2")]
+                    pub count: i64,
+                    /// Ratio of the corresponding value in the field against the total
+                    /// number of rows in the scanned data.
+                    #[prost(double, tag = "3")]
+                    pub ratio: f64,
+                }
+                /// Structural and profile information for specific field type. Not
+                /// available, if mode is REPEATABLE.
+                #[allow(clippy::derive_partial_eq_without_eq)]
+                #[derive(Clone, PartialEq, ::prost::Oneof)]
+                pub enum FieldInfo {
+                    /// String type field information.
+                    #[prost(message, tag = "101")]
+                    StringProfile(StringFieldInfo),
+                    /// Integer type field information.
+                    #[prost(message, tag = "102")]
+                    IntegerProfile(IntegerFieldInfo),
+                    /// Double type field information.
+                    #[prost(message, tag = "103")]
+                    DoubleProfile(DoubleFieldInfo),
+                }
+            }
+        }
+    }
+    /// The result of post scan actions of DataProfileScan job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PostScanActionsResult {
+        /// Output only. The result of BigQuery export post scan action.
+        #[prost(message, optional, tag = "1")]
+        pub bigquery_export_result: ::core::option::Option<
+            post_scan_actions_result::BigQueryExportResult,
+        >,
+    }
+    /// Nested message and enum types in `PostScanActionsResult`.
+    pub mod post_scan_actions_result {
+        /// The result of BigQuery export post scan action.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BigQueryExportResult {
+            /// Output only. Execution state for the BigQuery exporting.
+            #[prost(enumeration = "big_query_export_result::State", tag = "1")]
+            pub state: i32,
+            /// Output only. Additional information about the BigQuery exporting.
+            #[prost(string, tag = "2")]
+            pub message: ::prost::alloc::string::String,
+        }
+        /// Nested message and enum types in `BigQueryExportResult`.
+        pub mod big_query_export_result {
+            /// Execution state for the exporting.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum State {
+                /// The exporting state is unspecified.
+                Unspecified = 0,
+                /// The exporting completed successfully.
+                Succeeded = 1,
+                /// The exporting is no longer running due to an error.
+                Failed = 2,
+                /// The exporting is skipped due to no valid scan result to export
+                /// (usually caused by scan failed).
+                Skipped = 3,
+            }
+            impl State {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        State::Unspecified => "STATE_UNSPECIFIED",
+                        State::Succeeded => "SUCCEEDED",
+                        State::Failed => "FAILED",
+                        State::Skipped => "SKIPPED",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "SUCCEEDED" => Some(Self::Succeeded),
+                        "FAILED" => Some(Self::Failed),
+                        "SKIPPED" => Some(Self::Skipped),
+                        _ => None,
+                    }
+                }
+            }
+        }
+    }
+}
+/// DataQualityScan related setting.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataQualitySpec {
+    /// Required. The list of rules to evaluate against a data source. At least one
+    /// rule is required.
+    #[prost(message, repeated, tag = "1")]
+    pub rules: ::prost::alloc::vec::Vec<DataQualityRule>,
+    /// Optional. The percentage of the records to be selected from the dataset for
+    /// DataScan.
+    ///
+    /// * Value can range between 0.0 and 100.0 with up to 3 significant decimal
+    /// digits.
+    /// * Sampling is not applied if `sampling_percent` is not specified, 0 or
+    /// 100.
+    #[prost(float, tag = "4")]
+    pub sampling_percent: f32,
+    /// Optional. A filter applied to all rows in a single DataScan job.
+    /// The filter needs to be a valid SQL expression for a WHERE clause in
+    /// BigQuery standard SQL syntax.
+    /// Example: col1 >= 0 AND col2 < 10
+    #[prost(string, tag = "5")]
+    pub row_filter: ::prost::alloc::string::String,
+    /// Optional. Actions to take upon job completion.
+    #[prost(message, optional, tag = "6")]
+    pub post_scan_actions: ::core::option::Option<data_quality_spec::PostScanActions>,
+}
+/// Nested message and enum types in `DataQualitySpec`.
+pub mod data_quality_spec {
+    /// The configuration of post scan actions of DataQualityScan.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PostScanActions {
+        /// Optional. If set, results will be exported to the provided BigQuery
+        /// table.
+        #[prost(message, optional, tag = "1")]
+        pub bigquery_export: ::core::option::Option<post_scan_actions::BigQueryExport>,
+        /// Optional. If set, results will be sent to the provided notification
+        /// receipts upon triggers.
+        #[prost(message, optional, tag = "2")]
+        pub notification_report: ::core::option::Option<
+            post_scan_actions::NotificationReport,
+        >,
+    }
+    /// Nested message and enum types in `PostScanActions`.
+    pub mod post_scan_actions {
+        /// The configuration of BigQuery export post scan action.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BigQueryExport {
+            /// Optional. The BigQuery table to export DataQualityScan results to.
+            /// Format:
+            /// //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
+            #[prost(string, tag = "1")]
+            pub results_table: ::prost::alloc::string::String,
+        }
+        /// The individuals or groups who are designated to receive notifications
+        /// upon triggers.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Recipients {
+            /// Optional. The email recipients who will receive the DataQualityScan
+            /// results report.
+            #[prost(string, repeated, tag = "1")]
+            pub emails: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
+        /// This trigger is triggered when the DQ score in the job result is less
+        /// than a specified input score.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ScoreThresholdTrigger {
+            /// Optional. The score range is in \[0,100\].
+            #[prost(float, tag = "2")]
+            pub score_threshold: f32,
+        }
+        /// This trigger is triggered when the scan job itself fails, regardless of
+        /// the result.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct JobFailureTrigger {}
+        /// This trigger is triggered whenever a scan job run ends, regardless
+        /// of the result.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct JobEndTrigger {}
+        /// The configuration of notification report post scan action.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct NotificationReport {
+            /// Required. The recipients who will receive the notification report.
+            #[prost(message, optional, tag = "1")]
+            pub recipients: ::core::option::Option<Recipients>,
+            /// Optional. If set, report will be sent when score threshold is met.
+            #[prost(message, optional, tag = "2")]
+            pub score_threshold_trigger: ::core::option::Option<ScoreThresholdTrigger>,
+            /// Optional. If set, report will be sent when a scan job fails.
+            #[prost(message, optional, tag = "4")]
+            pub job_failure_trigger: ::core::option::Option<JobFailureTrigger>,
+            /// Optional. If set, report will be sent when a scan job ends.
+            #[prost(message, optional, tag = "5")]
+            pub job_end_trigger: ::core::option::Option<JobEndTrigger>,
+        }
+    }
+}
+/// The output of a DataQualityScan.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataQualityResult {
+    /// Overall data quality result -- `true` if all rules passed.
+    #[prost(bool, tag = "5")]
+    pub passed: bool,
+    /// Output only. The overall data quality score.
+    ///
+    /// The score ranges between \[0, 100\] (up to two decimal points).
+    #[prost(float, optional, tag = "9")]
+    pub score: ::core::option::Option<f32>,
+    /// A list of results at the dimension level.
+    ///
+    /// A dimension will have a corresponding `DataQualityDimensionResult` if and
+    /// only if there is at least one rule with the 'dimension' field set to it.
+    #[prost(message, repeated, tag = "2")]
+    pub dimensions: ::prost::alloc::vec::Vec<DataQualityDimensionResult>,
+    /// Output only. A list of results at the column level.
+    ///
+    /// A column will have a corresponding `DataQualityColumnResult` if and only if
+    /// there is at least one rule with the 'column' field set to it.
+    #[prost(message, repeated, tag = "10")]
+    pub columns: ::prost::alloc::vec::Vec<DataQualityColumnResult>,
+    /// A list of all the rules in a job, and their results.
+    #[prost(message, repeated, tag = "3")]
+    pub rules: ::prost::alloc::vec::Vec<DataQualityRuleResult>,
+    /// The count of rows processed.
+    #[prost(int64, tag = "4")]
+    pub row_count: i64,
+    /// The data scanned for this result.
+    #[prost(message, optional, tag = "7")]
+    pub scanned_data: ::core::option::Option<ScannedData>,
+    /// Output only. The result of post scan actions.
+    #[prost(message, optional, tag = "8")]
+    pub post_scan_actions_result: ::core::option::Option<
+        data_quality_result::PostScanActionsResult,
+    >,
+}
+/// Nested message and enum types in `DataQualityResult`.
+pub mod data_quality_result {
+    /// The result of post scan actions of DataQualityScan job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PostScanActionsResult {
+        /// Output only. The result of BigQuery export post scan action.
+        #[prost(message, optional, tag = "1")]
+        pub bigquery_export_result: ::core::option::Option<
+            post_scan_actions_result::BigQueryExportResult,
+        >,
+    }
+    /// Nested message and enum types in `PostScanActionsResult`.
+    pub mod post_scan_actions_result {
+        /// The result of BigQuery export post scan action.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BigQueryExportResult {
+            /// Output only. Execution state for the BigQuery exporting.
+            #[prost(enumeration = "big_query_export_result::State", tag = "1")]
+            pub state: i32,
+            /// Output only. Additional information about the BigQuery exporting.
+            #[prost(string, tag = "2")]
+            pub message: ::prost::alloc::string::String,
+        }
+        /// Nested message and enum types in `BigQueryExportResult`.
+        pub mod big_query_export_result {
+            /// Execution state for the exporting.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum State {
+                /// The exporting state is unspecified.
+                Unspecified = 0,
+                /// The exporting completed successfully.
+                Succeeded = 1,
+                /// The exporting is no longer running due to an error.
+                Failed = 2,
+                /// The exporting is skipped due to no valid scan result to export
+                /// (usually caused by scan failed).
+                Skipped = 3,
+            }
+            impl State {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        State::Unspecified => "STATE_UNSPECIFIED",
+                        State::Succeeded => "SUCCEEDED",
+                        State::Failed => "FAILED",
+                        State::Skipped => "SKIPPED",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "SUCCEEDED" => Some(Self::Succeeded),
+                        "FAILED" => Some(Self::Failed),
+                        "SKIPPED" => Some(Self::Skipped),
+                        _ => None,
+                    }
+                }
+            }
+        }
+    }
+}
+/// DataQualityRuleResult provides a more detailed, per-rule view of the results.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataQualityRuleResult {
+    /// The rule specified in the DataQualitySpec, as is.
+    #[prost(message, optional, tag = "1")]
+    pub rule: ::core::option::Option<DataQualityRule>,
+    /// Whether the rule passed or failed.
+    #[prost(bool, tag = "7")]
+    pub passed: bool,
+    /// The number of rows a rule was evaluated against.
+    ///
+    /// This field is only valid for row-level type rules.
+    ///
+    /// Evaluated count can be configured to either
+    ///
+    /// * include all rows (default) - with `null` rows automatically failing rule
+    /// evaluation, or
+    /// * exclude `null` rows from the `evaluated_count`, by setting
+    /// `ignore_nulls = true`.
+    #[prost(int64, tag = "9")]
+    pub evaluated_count: i64,
+    /// The number of rows which passed a rule evaluation.
+    ///
+    /// This field is only valid for row-level type rules.
+    #[prost(int64, tag = "8")]
+    pub passed_count: i64,
+    /// The number of rows with null values in the specified column.
+    #[prost(int64, tag = "5")]
+    pub null_count: i64,
+    /// The ratio of **passed_count / evaluated_count**.
+    ///
+    /// This field is only valid for row-level type rules.
+    #[prost(double, tag = "6")]
+    pub pass_ratio: f64,
+    /// The query to find rows that did not pass this rule.
+    ///
+    /// This field is only valid for row-level type rules.
+    #[prost(string, tag = "10")]
+    pub failing_rows_query: ::prost::alloc::string::String,
+}
+/// DataQualityDimensionResult provides a more detailed, per-dimension view of
+/// the results.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataQualityDimensionResult {
+    /// Output only. The dimension config specified in the DataQualitySpec, as is.
+    #[prost(message, optional, tag = "1")]
+    pub dimension: ::core::option::Option<DataQualityDimension>,
+    /// Whether the dimension passed or failed.
+    #[prost(bool, tag = "3")]
+    pub passed: bool,
+    /// Output only. The dimension-level data quality score for this data scan job
+    /// if and only if the 'dimension' field is set.
+    ///
+    /// The score ranges between \[0, 100\] (up to two decimal
+    /// points).
+    #[prost(float, optional, tag = "4")]
+    pub score: ::core::option::Option<f32>,
+}
+/// A dimension captures data quality intent about a defined subset of the rules
+/// specified.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataQualityDimension {
+    /// The dimension name a rule belongs to. Supported dimensions are
+    /// ["COMPLETENESS", "ACCURACY", "CONSISTENCY", "VALIDITY", "UNIQUENESS",
+    /// "INTEGRITY"]
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A rule captures data quality intent about a data source.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataQualityRule {
+    /// Optional. The unnested column which this rule is evaluated against.
+    #[prost(string, tag = "500")]
+    pub column: ::prost::alloc::string::String,
+    /// Optional. Rows with `null` values will automatically fail a rule, unless
+    /// `ignore_null` is `true`. In that case, such `null` rows are trivially
+    /// considered passing.
+    ///
+    /// This field is only valid for the following type of rules:
+    ///
+    /// * RangeExpectation
+    /// * RegexExpectation
+    /// * SetExpectation
+    /// * UniquenessExpectation
+    #[prost(bool, tag = "501")]
+    pub ignore_null: bool,
+    /// Required. The dimension a rule belongs to. Results are also aggregated at
+    /// the dimension level. Supported dimensions are **["COMPLETENESS",
+    /// "ACCURACY", "CONSISTENCY", "VALIDITY", "UNIQUENESS", "INTEGRITY"]**
+    #[prost(string, tag = "502")]
+    pub dimension: ::prost::alloc::string::String,
+    /// Optional. The minimum ratio of **passing_rows / total_rows** required to
+    /// pass this rule, with a range of \[0.0, 1.0\].
+    ///
+    /// 0 indicates default value (i.e. 1.0).
+    ///
+    /// This field is only valid for row-level type rules.
+    #[prost(double, tag = "503")]
+    pub threshold: f64,
+    /// Optional. A mutable name for the rule.
+    ///
+    /// * The name must contain only letters (a-z, A-Z), numbers (0-9), or
+    /// hyphens (-).
+    /// * The maximum length is 63 characters.
+    /// * Must start with a letter.
+    /// * Must end with a number or a letter.
+    #[prost(string, tag = "504")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Description of the rule.
+    ///
+    /// * The maximum length is 1,024 characters.
+    #[prost(string, tag = "505")]
+    pub description: ::prost::alloc::string::String,
+    /// The rule-specific configuration.
+    #[prost(
+        oneof = "data_quality_rule::RuleType",
+        tags = "1, 2, 3, 4, 100, 101, 200, 201"
+    )]
+    pub rule_type: ::core::option::Option<data_quality_rule::RuleType>,
+}
+/// Nested message and enum types in `DataQualityRule`.
+pub mod data_quality_rule {
+    /// Evaluates whether each column value lies between a specified range.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RangeExpectation {
+        /// Optional. The minimum column value allowed for a row to pass this
+        /// validation. At least one of `min_value` and `max_value` need to be
+        /// provided.
+        #[prost(string, tag = "1")]
+        pub min_value: ::prost::alloc::string::String,
+        /// Optional. The maximum column value allowed for a row to pass this
+        /// validation. At least one of `min_value` and `max_value` need to be
+        /// provided.
+        #[prost(string, tag = "2")]
+        pub max_value: ::prost::alloc::string::String,
+        /// Optional. Whether each value needs to be strictly greater than ('>') the
+        /// minimum, or if equality is allowed.
+        ///
+        /// Only relevant if a `min_value` has been defined. Default = false.
+        #[prost(bool, tag = "3")]
+        pub strict_min_enabled: bool,
+        /// Optional. Whether each value needs to be strictly lesser than ('<') the
+        /// maximum, or if equality is allowed.
+        ///
+        /// Only relevant if a `max_value` has been defined. Default = false.
+        #[prost(bool, tag = "4")]
+        pub strict_max_enabled: bool,
+    }
+    /// Evaluates whether each column value is null.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NonNullExpectation {}
+    /// Evaluates whether each column value is contained by a specified set.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SetExpectation {
+        /// Optional. Expected values for the column value.
+        #[prost(string, repeated, tag = "1")]
+        pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Evaluates whether each column value matches a specified regex.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RegexExpectation {
+        /// Optional. A regular expression the column value is expected to match.
+        #[prost(string, tag = "1")]
+        pub regex: ::prost::alloc::string::String,
+    }
+    /// Evaluates whether the column has duplicates.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UniquenessExpectation {}
+    /// Evaluates whether the column aggregate statistic lies between a specified
+    /// range.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct StatisticRangeExpectation {
+        /// Optional. The aggregate metric to evaluate.
+        #[prost(enumeration = "statistic_range_expectation::ColumnStatistic", tag = "1")]
+        pub statistic: i32,
+        /// Optional. The minimum column statistic value allowed for a row to pass
+        /// this validation.
+        ///
+        /// At least one of `min_value` and `max_value` need to be provided.
+        #[prost(string, tag = "2")]
+        pub min_value: ::prost::alloc::string::String,
+        /// Optional. The maximum column statistic value allowed for a row to pass
+        /// this validation.
+        ///
+        /// At least one of `min_value` and `max_value` need to be provided.
+        #[prost(string, tag = "3")]
+        pub max_value: ::prost::alloc::string::String,
+        /// Optional. Whether column statistic needs to be strictly greater than
+        /// ('>') the minimum, or if equality is allowed.
+        ///
+        /// Only relevant if a `min_value` has been defined. Default = false.
+        #[prost(bool, tag = "4")]
+        pub strict_min_enabled: bool,
+        /// Optional. Whether column statistic needs to be strictly lesser than ('<')
+        /// the maximum, or if equality is allowed.
+        ///
+        /// Only relevant if a `max_value` has been defined. Default = false.
+        #[prost(bool, tag = "5")]
+        pub strict_max_enabled: bool,
+    }
+    /// Nested message and enum types in `StatisticRangeExpectation`.
+    pub mod statistic_range_expectation {
+        /// The list of aggregate metrics a rule can be evaluated against.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ColumnStatistic {
+            /// Unspecified statistic type
+            StatisticUndefined = 0,
+            /// Evaluate the column mean
+            Mean = 1,
+            /// Evaluate the column min
+            Min = 2,
+            /// Evaluate the column max
+            Max = 3,
+        }
+        impl ColumnStatistic {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    ColumnStatistic::StatisticUndefined => "STATISTIC_UNDEFINED",
+                    ColumnStatistic::Mean => "MEAN",
+                    ColumnStatistic::Min => "MIN",
+                    ColumnStatistic::Max => "MAX",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATISTIC_UNDEFINED" => Some(Self::StatisticUndefined),
+                    "MEAN" => Some(Self::Mean),
+                    "MIN" => Some(Self::Min),
+                    "MAX" => Some(Self::Max),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Evaluates whether each row passes the specified condition.
+    ///
+    /// The SQL expression needs to use BigQuery standard SQL syntax and should
+    /// produce a boolean value per row as the result.
+    ///
+    /// Example: col1 >= 0 AND col2 < 10
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RowConditionExpectation {
+        /// Optional. The SQL expression.
+        #[prost(string, tag = "1")]
+        pub sql_expression: ::prost::alloc::string::String,
+    }
+    /// Evaluates whether the provided expression is true.
+    ///
+    /// The SQL expression needs to use BigQuery standard SQL syntax and should
+    /// produce a scalar boolean result.
+    ///
+    /// Example: MIN(col1) >= 0
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TableConditionExpectation {
+        /// Optional. The SQL expression.
+        #[prost(string, tag = "1")]
+        pub sql_expression: ::prost::alloc::string::String,
+    }
+    /// The rule-specific configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum RuleType {
+        /// Row-level rule which evaluates whether each column value lies between a
+        /// specified range.
+        #[prost(message, tag = "1")]
+        RangeExpectation(RangeExpectation),
+        /// Row-level rule which evaluates whether each column value is null.
+        #[prost(message, tag = "2")]
+        NonNullExpectation(NonNullExpectation),
+        /// Row-level rule which evaluates whether each column value is contained by
+        /// a specified set.
+        #[prost(message, tag = "3")]
+        SetExpectation(SetExpectation),
+        /// Row-level rule which evaluates whether each column value matches a
+        /// specified regex.
+        #[prost(message, tag = "4")]
+        RegexExpectation(RegexExpectation),
+        /// Row-level rule which evaluates whether each column value is unique.
+        #[prost(message, tag = "100")]
+        UniquenessExpectation(UniquenessExpectation),
+        /// Aggregate rule which evaluates whether the column aggregate
+        /// statistic lies between a specified range.
+        #[prost(message, tag = "101")]
+        StatisticRangeExpectation(StatisticRangeExpectation),
+        /// Row-level rule which evaluates whether each row in a table passes the
+        /// specified condition.
+        #[prost(message, tag = "200")]
+        RowConditionExpectation(RowConditionExpectation),
+        /// Aggregate rule which evaluates whether the provided expression is true
+        /// for a table.
+        #[prost(message, tag = "201")]
+        TableConditionExpectation(TableConditionExpectation),
+    }
+}
+/// DataQualityColumnResult provides a more detailed, per-column view of
+/// the results.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataQualityColumnResult {
+    /// Output only. The column specified in the DataQualityRule.
+    #[prost(string, tag = "1")]
+    pub column: ::prost::alloc::string::String,
+    /// Output only. The column-level data quality score for this data scan job if
+    /// and only if the 'column' field is set.
+    ///
+    /// The score ranges between between \[0, 100\] (up to two decimal
+    /// points).
+    #[prost(float, optional, tag = "2")]
+    pub score: ::core::option::Option<f32>,
+}
+/// ResourceAccessSpec holds the access control configuration to be enforced
+/// on the resources, for example, Cloud Storage bucket, BigQuery dataset,
+/// BigQuery table.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceAccessSpec {
+    /// Optional. The format of strings follows the pattern followed by IAM in the
+    /// bindings. user:{email}, serviceAccount:{email} group:{email}.
+    /// The set of principals to be granted reader role on the resource.
+    #[prost(string, repeated, tag = "1")]
+    pub readers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The set of principals to be granted writer role on the resource.
+    #[prost(string, repeated, tag = "2")]
+    pub writers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The set of principals to be granted owner role on the resource.
+    #[prost(string, repeated, tag = "3")]
+    pub owners: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// DataAccessSpec holds the access control configuration to be enforced on data
+/// stored within resources (eg: rows, columns in BigQuery Tables). When
+/// associated with data, the data is only accessible to
+/// principals explicitly granted access through the DataAccessSpec. Principals
+/// with access to the containing resource are not implicitly granted access.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataAccessSpec {
+    /// Optional. The format of strings follows the pattern followed by IAM in the
+    /// bindings. user:{email}, serviceAccount:{email} group:{email}.
+    /// The set of principals to be granted reader role on data
+    /// stored within resources.
+    #[prost(string, repeated, tag = "1")]
+    pub readers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// DataTaxonomy represents a set of hierarchical DataAttributes resources,
 /// grouped with a common theme Eg: 'SensitiveDataTaxonomy' can have attributes
 /// to manage PII data. It is defined at project level.
@@ -6799,6 +8676,25 @@ pub struct ListDataScanJobsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Generate recommended DataQualityRules request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateDataQualityRulesRequest {
+    /// Required. The name should be either
+    /// * the name of a datascan with at least one successful completed data
+    /// profiling job, or
+    /// * the name of a successful completed data profiling datascan job.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Generate recommended DataQualityRules response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateDataQualityRulesResponse {
+    /// Generated recommended {@link DataQualityRule}s.
+    #[prost(message, repeated, tag = "1")]
+    pub rule: ::prost::alloc::vec::Vec<DataQualityRule>,
+}
 /// Represents a user-visible job which provides the insights for the related
 /// data source.
 ///
@@ -7422,6 +9318,37 @@ pub mod data_scan_service_client {
                     GrpcMethod::new(
                         "google.cloud.dataplex.v1.DataScanService",
                         "ListDataScanJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Generates recommended DataQualityRule from a data profiling DataScan.
+        pub async fn generate_data_quality_rules(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GenerateDataQualityRulesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerateDataQualityRulesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataScanService/GenerateDataQualityRules",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.DataScanService",
+                        "GenerateDataQualityRules",
                     ),
                 );
             self.inner.unary(req, path, codec).await

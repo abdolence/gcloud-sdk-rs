@@ -66,7 +66,11 @@ pub struct CreateFolderRequest {
     /// error.
     #[prost(message, optional, tag = "2")]
     pub folder: ::core::option::Option<Folder>,
-    /// Required. The absolute path of the folder, using a single `/` as delimiter.
+    /// Required. The full name of a folder, including all its parent folders.
+    /// Folders use single '/' characters as a delimiter.
+    /// The folder_id must end with a slash.
+    /// For example, the folder_id of "books/biographies/" would create a new
+    /// "biographies/" folder under the "books/" folder.
     #[prost(string, tag = "3")]
     pub folder_id: ::prost::alloc::string::String,
     /// Optional. If true, parent folder doesn't have to be present and all missing
@@ -285,6 +289,135 @@ pub struct GetStorageLayoutRequest {
     /// format, but other formats are still accepted.
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
+}
+/// A managed folder.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ManagedFolder {
+    /// Identifier. The name of this managed folder.
+    /// Format:
+    /// `projects/{project}/buckets/{bucket}/managedFolders/{managedFolder}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The metadata version of this managed folder. It increases
+    /// whenever the metadata is updated. Used for preconditions and for detecting
+    /// changes in metadata. Managed folders don't have a generation number.
+    #[prost(int64, tag = "3")]
+    pub metageneration: i64,
+    /// Output only. The creation time of the managed folder.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The modification time of the managed folder.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for GetManagedFolder.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetManagedFolderRequest {
+    /// Required. Name of the managed folder.
+    /// Format:
+    /// `projects/{project}/buckets/{bucket}/managedFolders/{managedFolder}`
+    #[prost(string, tag = "6")]
+    pub name: ::prost::alloc::string::String,
+    /// The operation succeeds conditional on the managed folder's current
+    /// metageneration matching the value here specified.
+    #[prost(int64, optional, tag = "3")]
+    pub if_metageneration_match: ::core::option::Option<i64>,
+    /// The operation succeeds conditional on the managed folder's current
+    /// metageneration NOT matching the value here specified.
+    #[prost(int64, optional, tag = "4")]
+    pub if_metageneration_not_match: ::core::option::Option<i64>,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted.
+    #[prost(string, tag = "5")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for CreateManagedFolder.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateManagedFolderRequest {
+    /// Required. Name of the bucket this managed folder belongs to.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Properties of the managed folder being created.
+    /// The bucket and managed folder names are specified in the `parent` and
+    /// `managed_folder_id` fields. Populating these fields in `managed_folder`
+    /// will result in an error.
+    #[prost(message, optional, tag = "2")]
+    pub managed_folder: ::core::option::Option<ManagedFolder>,
+    /// Required. The name of the managed folder. It uses a single `/` as delimiter
+    /// and leading and trailing `/` are allowed.
+    #[prost(string, tag = "3")]
+    pub managed_folder_id: ::prost::alloc::string::String,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted.
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// DeleteManagedFolder RPC request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteManagedFolderRequest {
+    /// Required. Name of the managed folder.
+    /// Format:
+    /// `projects/{project}/buckets/{bucket}/managedFolders/{managedFolder}`
+    #[prost(string, tag = "7")]
+    pub name: ::prost::alloc::string::String,
+    /// The operation succeeds conditional on the managed folder's current
+    /// metageneration matching the value here specified.
+    #[prost(int64, optional, tag = "3")]
+    pub if_metageneration_match: ::core::option::Option<i64>,
+    /// The operation succeeds conditional on the managed folder's current
+    /// metageneration NOT matching the value here specified.
+    #[prost(int64, optional, tag = "4")]
+    pub if_metageneration_not_match: ::core::option::Option<i64>,
+    /// Allows deletion of a managed folder even if it is not empty.
+    /// A managed folder is empty if it manages no child managed folders or
+    /// objects. Caller must have permission for
+    /// storage.managedFolders.setIamPolicy.
+    #[prost(bool, tag = "5")]
+    pub allow_non_empty: bool,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted.
+    #[prost(string, tag = "6")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for ListManagedFolders.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListManagedFoldersRequest {
+    /// Required. Name of the bucket this managed folder belongs to.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of managed folders to return in a single response.
+    /// The service will use this parameter or 1,000 items, whichever is smaller.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A previously-returned page token representing part of the larger
+    /// set of results to view.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter results to match managed folders with name starting with
+    /// this prefix.
+    #[prost(string, tag = "4")]
+    pub prefix: ::prost::alloc::string::String,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted.
+    #[prost(string, tag = "5")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Response message for ListManagedFolders.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListManagedFoldersResponse {
+    /// The list of matching managed folders
+    #[prost(message, repeated, tag = "1")]
+    pub managed_folders: ::prost::alloc::vec::Vec<ManagedFolder>,
+    /// The continuation token, used to page through large result sets. Provide
+    /// this value in a subsequent request to return the next page of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod storage_control_client {
@@ -544,6 +677,121 @@ pub mod storage_control_client {
                     GrpcMethod::new(
                         "google.storage.control.v2.StorageControl",
                         "GetStorageLayout",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new managed folder.
+        pub async fn create_managed_folder(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateManagedFolderRequest>,
+        ) -> std::result::Result<tonic::Response<super::ManagedFolder>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/CreateManagedFolder",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "CreateManagedFolder",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Permanently deletes an empty managed folder.
+        pub async fn delete_managed_folder(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteManagedFolderRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/DeleteManagedFolder",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "DeleteManagedFolder",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns metadata for the specified managed folder.
+        pub async fn get_managed_folder(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetManagedFolderRequest>,
+        ) -> std::result::Result<tonic::Response<super::ManagedFolder>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/GetManagedFolder",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "GetManagedFolder",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves a list of managed folders for a given bucket.
+        pub async fn list_managed_folders(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListManagedFoldersRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListManagedFoldersResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/ListManagedFolders",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "ListManagedFolders",
                     ),
                 );
             self.inner.unary(req, path, codec).await

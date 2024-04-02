@@ -1016,6 +1016,74 @@ pub struct AggregationResultBatch {
     #[prost(message, optional, tag = "3")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Explain options for the query.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExplainOptions {
+    /// Optional. Whether to execute this query.
+    ///
+    /// When false (the default), the query will be planned, returning only
+    /// metrics from the planning stages.
+    ///
+    /// When true, the query will be planned and executed, returning the full
+    /// query results along with both planning and execution stage metrics.
+    #[prost(bool, tag = "1")]
+    pub analyze: bool,
+}
+/// Explain metrics for the query.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExplainMetrics {
+    /// Planning phase information for the query.
+    #[prost(message, optional, tag = "1")]
+    pub plan_summary: ::core::option::Option<PlanSummary>,
+    /// Aggregated stats from the execution of the query. Only present when
+    /// [ExplainOptions.analyze][google.datastore.v1.ExplainOptions.analyze] is set
+    /// to true.
+    #[prost(message, optional, tag = "2")]
+    pub execution_stats: ::core::option::Option<ExecutionStats>,
+}
+/// Planning phase information for the query.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PlanSummary {
+    /// The indexes selected for the query. For example:
+    ///   [
+    ///     {"query_scope": "Collection", "properties": "(foo ASC, __name__ ASC)"},
+    ///     {"query_scope": "Collection", "properties": "(bar ASC, __name__ ASC)"}
+    ///   ]
+    #[prost(message, repeated, tag = "1")]
+    pub indexes_used: ::prost::alloc::vec::Vec<::prost_types::Struct>,
+}
+/// Execution statistics for the query.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExecutionStats {
+    /// Total number of results returned, including documents, projections,
+    /// aggregation results, keys.
+    #[prost(int64, tag = "1")]
+    pub results_returned: i64,
+    /// Total time to execute the query in the backend.
+    #[prost(message, optional, tag = "3")]
+    pub execution_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Total billable read operations.
+    #[prost(int64, tag = "4")]
+    pub read_operations: i64,
+    /// Debugging statistics from the execution of the query. Note that the
+    /// debugging stats are subject to change as Firestore evolves. It could
+    /// include:
+    ///   {
+    ///     "indexes_entries_scanned": "1000",
+    ///     "documents_scanned": "20",
+    ///     "billing_details" : {
+    ///        "documents_billable": "20",
+    ///        "index_entries_billable": "1000",
+    ///        "min_query_cost": "0"
+    ///     }
+    ///   }
+    #[prost(message, optional, tag = "5")]
+    pub debug_stats: ::core::option::Option<::prost_types::Struct>,
+}
 /// The request for [Datastore.Lookup][google.datastore.v1.Datastore.Lookup].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1090,6 +1158,10 @@ pub struct RunQueryRequest {
     /// The options for this query.
     #[prost(message, optional, tag = "1")]
     pub read_options: ::core::option::Option<ReadOptions>,
+    /// Optional. Explain options for the query. If set, additional query
+    /// statistics will be returned. If not, only query results will be returned.
+    #[prost(message, optional, tag = "12")]
+    pub explain_options: ::core::option::Option<ExplainOptions>,
     /// The type of query.
     #[prost(oneof = "run_query_request::QueryType", tags = "3, 7")]
     pub query_type: ::core::option::Option<run_query_request::QueryType>,
@@ -1128,6 +1200,11 @@ pub struct RunQueryResponse {
     /// [RunQueryRequest.read_options][google.datastore.v1.RunQueryRequest.read_options].
     #[prost(bytes = "vec", tag = "5")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
+    /// Query explain metrics. This is only present when the
+    /// [RunQueryRequest.explain_options][google.datastore.v1.RunQueryRequest.explain_options]
+    /// is provided, and it is sent only once with the last response in the stream.
+    #[prost(message, optional, tag = "9")]
+    pub explain_metrics: ::core::option::Option<ExplainMetrics>,
 }
 /// The request for
 /// [Datastore.RunAggregationQuery][google.datastore.v1.Datastore.RunAggregationQuery].
@@ -1152,6 +1229,10 @@ pub struct RunAggregationQueryRequest {
     /// The options for this query.
     #[prost(message, optional, tag = "1")]
     pub read_options: ::core::option::Option<ReadOptions>,
+    /// Optional. Explain options for the query. If set, additional query
+    /// statistics will be returned. If not, only query results will be returned.
+    #[prost(message, optional, tag = "11")]
+    pub explain_options: ::core::option::Option<ExplainOptions>,
     /// The type of query.
     #[prost(oneof = "run_aggregation_query_request::QueryType", tags = "3, 7")]
     pub query_type: ::core::option::Option<run_aggregation_query_request::QueryType>,
@@ -1190,6 +1271,11 @@ pub struct RunAggregationQueryResponse {
     /// [RunAggregationQueryRequest.read_options][google.datastore.v1.RunAggregationQueryRequest.read_options].
     #[prost(bytes = "vec", tag = "5")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
+    /// Query explain metrics. This is only present when the
+    /// [RunAggregationQueryRequest.explain_options][google.datastore.v1.RunAggregationQueryRequest.explain_options]
+    /// is provided, and it is sent only once with the last response in the stream.
+    #[prost(message, optional, tag = "9")]
+    pub explain_metrics: ::core::option::Option<ExplainMetrics>,
 }
 /// The request for
 /// [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].

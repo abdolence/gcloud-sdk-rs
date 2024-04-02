@@ -920,17 +920,65 @@ pub struct ExternalSystem {
     /// References primary/secondary etc assignees in the external system.
     #[prost(string, repeated, tag = "2")]
     pub assignees: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Identifier that's used to track the given finding in the external system.
+    /// The identifier that's used to track the finding's corresponding case in the
+    /// external system.
     #[prost(string, tag = "3")]
     pub external_uid: ::prost::alloc::string::String,
-    /// Most recent status of the corresponding finding's ticket/tracker in the
-    /// external system.
+    /// The most recent status of the finding's corresponding case, as reported by
+    /// the external system.
     #[prost(string, tag = "4")]
     pub status: ::prost::alloc::string::String,
-    /// The most recent time when the corresponding finding's ticket/tracker was
-    /// updated in the external system.
+    /// The time when the case was last updated, as reported by the external
+    /// system.
     #[prost(message, optional, tag = "5")]
     pub external_system_update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The link to the finding's corresponding case in the external system.
+    #[prost(string, tag = "6")]
+    pub case_uri: ::prost::alloc::string::String,
+    /// The priority of the finding's corresponding case in the external system.
+    #[prost(string, tag = "7")]
+    pub case_priority: ::prost::alloc::string::String,
+    /// The SLA of the finding's corresponding case in the external system.
+    #[prost(message, optional, tag = "9")]
+    pub case_sla: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time when the case was created, as reported by the external system.
+    #[prost(message, optional, tag = "10")]
+    pub case_create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time when the case was closed, as reported by the external system.
+    #[prost(message, optional, tag = "11")]
+    pub case_close_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Information about the ticket, if any, that is being used to track the
+    /// resolution of the issue that is identified by this finding.
+    #[prost(message, optional, tag = "8")]
+    pub ticket_info: ::core::option::Option<external_system::TicketInfo>,
+}
+/// Nested message and enum types in `ExternalSystem`.
+pub mod external_system {
+    /// Information about the ticket, if any, that is being used to track the
+    /// resolution of the issue that is identified by this finding.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TicketInfo {
+        /// The identifier of the ticket in the ticket system.
+        #[prost(string, tag = "1")]
+        pub id: ::prost::alloc::string::String,
+        /// The assignee of the ticket in the ticket system.
+        #[prost(string, tag = "2")]
+        pub assignee: ::prost::alloc::string::String,
+        /// The description of the ticket in the ticket system.
+        #[prost(string, tag = "3")]
+        pub description: ::prost::alloc::string::String,
+        /// The link to the ticket in the ticket system.
+        #[prost(string, tag = "4")]
+        pub uri: ::prost::alloc::string::String,
+        /// The latest status of the ticket, as reported by the ticket system.
+        #[prost(string, tag = "5")]
+        pub status: ::prost::alloc::string::String,
+        /// The time when the ticket was last updated, as reported by the ticket
+        /// system.
+        #[prost(message, optional, tag = "6")]
+        pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
 }
 /// File information about the related binary/library used by an executable, or
 /// the script used by a script interpreter
@@ -1971,6 +2019,25 @@ pub mod mitre_attack {
         }
     }
 }
+/// Represents a Jupyter notebook IPYNB file, such as a [Colab Enterprise
+/// notebook](<https://cloud.google.com/colab/docs/introduction>) file, that is
+/// associated with a finding.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Notebook {
+    /// The name of the notebook.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The source notebook service, for example, "Colab Enterprise".
+    #[prost(string, tag = "2")]
+    pub service: ::prost::alloc::string::String,
+    /// The user ID of the latest author to modify the notebook.
+    #[prost(string, tag = "3")]
+    pub last_author: ::prost::alloc::string::String,
+    /// The most recent time the notebook was updated.
+    #[prost(message, optional, tag = "4")]
+    pub notebook_update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
 /// Contains information about the org policies associated with the finding.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2031,6 +2098,66 @@ pub struct EnvironmentVariable {
     /// Environment variable value as a JSON encoded string.
     #[prost(string, tag = "2")]
     pub val: ::prost::alloc::string::String,
+}
+/// Represents a posture that is deployed on Google Cloud by the
+/// Security Command Center Posture Management service.
+/// A posture contains one or more policy sets. A policy set is a
+/// group of policies that enforce a set of security rules on Google
+/// Cloud.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecurityPosture {
+    /// Name of the posture, for example, `CIS-Posture`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The version of the posture, for example, `c7cfa2a8`.
+    #[prost(string, tag = "2")]
+    pub revision_id: ::prost::alloc::string::String,
+    /// The project, folder, or organization on which the posture is deployed,
+    /// for example, `projects/{project_number}`.
+    #[prost(string, tag = "3")]
+    pub posture_deployment_resource: ::prost::alloc::string::String,
+    /// The name of the posture deployment, for example,
+    /// `organizations/{org_id}/posturedeployments/{posture_deployment_id}`.
+    #[prost(string, tag = "4")]
+    pub posture_deployment: ::prost::alloc::string::String,
+    /// The name of the updated policy, for example,
+    /// `projects/{project_id}/policies/{constraint_name}`.
+    #[prost(string, tag = "5")]
+    pub changed_policy: ::prost::alloc::string::String,
+    /// The name of the updated policyset, for example, `cis-policyset`.
+    #[prost(string, tag = "6")]
+    pub policy_set: ::prost::alloc::string::String,
+    /// The ID of the updated policy, for example, `compute-policy-1`.
+    #[prost(string, tag = "7")]
+    pub policy: ::prost::alloc::string::String,
+    /// The details about a change in an updated policy that violates the deployed
+    /// posture.
+    #[prost(message, repeated, tag = "8")]
+    pub policy_drift_details: ::prost::alloc::vec::Vec<
+        security_posture::PolicyDriftDetails,
+    >,
+}
+/// Nested message and enum types in `SecurityPosture`.
+pub mod security_posture {
+    /// The policy field that violates the deployed posture and its expected and
+    /// detected values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PolicyDriftDetails {
+        /// The name of the updated field, for example
+        /// constraint.implementation.policy_rules\[0\].enforce
+        #[prost(string, tag = "1")]
+        pub field: ::prost::alloc::string::String,
+        /// The value of this field that was configured in a posture, for example,
+        /// `true` or `allowed_values={"projects/29831892"}`.
+        #[prost(string, tag = "2")]
+        pub expected_value: ::prost::alloc::string::String,
+        /// The detected value that violates the deployed posture, for example,
+        /// `false` or `allowed_values={"projects/22831892"}`.
+        #[prost(string, tag = "3")]
+        pub detected_value: ::prost::alloc::string::String,
+    }
 }
 /// Refers to common vulnerability fields e.g. cve, cvss, cwe etc.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2808,12 +2935,18 @@ pub struct Finding {
     /// Fields related to Backup and DR findings.
     #[prost(message, optional, tag = "55")]
     pub backup_disaster_recovery: ::core::option::Option<BackupDisasterRecovery>,
+    /// The security posture associated with the finding.
+    #[prost(message, optional, tag = "56")]
+    pub security_posture: ::core::option::Option<SecurityPosture>,
     /// Log entries that are relevant to the finding.
     #[prost(message, repeated, tag = "57")]
     pub log_entries: ::prost::alloc::vec::Vec<LogEntry>,
     /// The load balancers associated with the finding.
     #[prost(message, repeated, tag = "58")]
     pub load_balancers: ::prost::alloc::vec::Vec<LoadBalancer>,
+    /// Notebook associated with the finding.
+    #[prost(message, optional, tag = "63")]
+    pub notebook: ::core::option::Option<Notebook>,
 }
 /// Nested message and enum types in `Finding`.
 pub mod finding {
@@ -3029,6 +3162,9 @@ pub mod finding {
         Observation = 4,
         /// Describes an error that prevents some SCC functionality.
         SccError = 5,
+        /// Describes a potential security risk due to a change in the security
+        /// posture.
+        PostureViolation = 6,
     }
     impl FindingClass {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3043,6 +3179,7 @@ pub mod finding {
                 FindingClass::Misconfiguration => "MISCONFIGURATION",
                 FindingClass::Observation => "OBSERVATION",
                 FindingClass::SccError => "SCC_ERROR",
+                FindingClass::PostureViolation => "POSTURE_VIOLATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3054,6 +3191,7 @@ pub mod finding {
                 "MISCONFIGURATION" => Some(Self::Misconfiguration),
                 "OBSERVATION" => Some(Self::Observation),
                 "SCC_ERROR" => Some(Self::SccError),
+                "POSTURE_VIOLATION" => Some(Self::PostureViolation),
                 _ => None,
             }
         }

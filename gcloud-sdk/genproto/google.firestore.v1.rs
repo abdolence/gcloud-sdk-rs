@@ -243,6 +243,13 @@ pub struct StructuredQuery {
     /// * The value must be greater than or equal to zero if specified.
     #[prost(message, optional, tag = "5")]
     pub limit: ::core::option::Option<i32>,
+    /// Optional. A potential Nearest Neighbors Search.
+    ///
+    /// Applies after all other filters and ordering.
+    ///
+    /// Finds the closest vector embeddings to the given query vector.
+    #[prost(message, optional, tag = "9")]
+    pub find_nearest: ::core::option::Option<structured_query::FindNearest>,
 }
 /// Nested message and enum types in `StructuredQuery`.
 pub mod structured_query {
@@ -598,6 +605,86 @@ pub mod structured_query {
         /// of the document, use `\['__name__'\]`.
         #[prost(message, repeated, tag = "2")]
         pub fields: ::prost::alloc::vec::Vec<FieldReference>,
+    }
+    /// Nearest Neighbors search config.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FindNearest {
+        /// Required. An indexed vector field to search upon. Only documents which
+        /// contain vectors whose dimensionality match the query_vector can be
+        /// returned.
+        #[prost(message, optional, tag = "1")]
+        pub vector_field: ::core::option::Option<FieldReference>,
+        /// Required. The query vector that we are searching on. Must be a vector of
+        /// no more than 2048 dimensions.
+        #[prost(message, optional, tag = "2")]
+        pub query_vector: ::core::option::Option<super::Value>,
+        /// Required. The Distance Measure to use, required.
+        #[prost(enumeration = "find_nearest::DistanceMeasure", tag = "3")]
+        pub distance_measure: i32,
+        /// Required. The number of nearest neighbors to return. Must be a positive
+        /// integer of no more than 1000.
+        #[prost(message, optional, tag = "4")]
+        pub limit: ::core::option::Option<i32>,
+    }
+    /// Nested message and enum types in `FindNearest`.
+    pub mod find_nearest {
+        /// The distance measure to use when comparing vectors.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum DistanceMeasure {
+            /// Should not be set.
+            Unspecified = 0,
+            /// Measures the EUCLIDEAN distance between the vectors. See
+            /// [Euclidean](<https://en.wikipedia.org/wiki/Euclidean_distance>) to learn
+            /// more
+            Euclidean = 1,
+            /// Compares vectors based on the angle between them, which allows you to
+            /// measure similarity that isn't based on the vectors magnitude.
+            /// We recommend using DOT_PRODUCT with unit normalized vectors instead of
+            /// COSINE distance, which is mathematically equivalent with better
+            /// performance. See [Cosine
+            /// Similarity](<https://en.wikipedia.org/wiki/Cosine_similarity>) to learn
+            /// more.
+            Cosine = 2,
+            /// Similar to cosine but is affected by the magnitude of the vectors. See
+            /// [Dot Product](<https://en.wikipedia.org/wiki/Dot_product>) to learn more.
+            DotProduct = 3,
+        }
+        impl DistanceMeasure {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    DistanceMeasure::Unspecified => "DISTANCE_MEASURE_UNSPECIFIED",
+                    DistanceMeasure::Euclidean => "EUCLIDEAN",
+                    DistanceMeasure::Cosine => "COSINE",
+                    DistanceMeasure::DotProduct => "DOT_PRODUCT",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "DISTANCE_MEASURE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "EUCLIDEAN" => Some(Self::Euclidean),
+                    "COSINE" => Some(Self::Cosine),
+                    "DOT_PRODUCT" => Some(Self::DotProduct),
+                    _ => None,
+                }
+            }
+        }
     }
     /// A sort direction.
     #[derive(
@@ -994,6 +1081,74 @@ pub mod transaction_options {
         #[prost(message, tag = "3")]
         ReadWrite(ReadWrite),
     }
+}
+/// Explain options for the query.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExplainOptions {
+    /// Optional. Whether to execute this query.
+    ///
+    /// When false (the default), the query will be planned, returning only
+    /// metrics from the planning stages.
+    ///
+    /// When true, the query will be planned and executed, returning the full
+    /// query results along with both planning and execution stage metrics.
+    #[prost(bool, tag = "1")]
+    pub analyze: bool,
+}
+/// Explain metrics for the query.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExplainMetrics {
+    /// Planning phase information for the query.
+    #[prost(message, optional, tag = "1")]
+    pub plan_summary: ::core::option::Option<PlanSummary>,
+    /// Aggregated stats from the execution of the query. Only present when
+    /// [ExplainOptions.analyze][google.firestore.v1.ExplainOptions.analyze] is set
+    /// to true.
+    #[prost(message, optional, tag = "2")]
+    pub execution_stats: ::core::option::Option<ExecutionStats>,
+}
+/// Planning phase information for the query.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PlanSummary {
+    /// The indexes selected for the query. For example:
+    ///   [
+    ///     {"query_scope": "Collection", "properties": "(foo ASC, __name__ ASC)"},
+    ///     {"query_scope": "Collection", "properties": "(bar ASC, __name__ ASC)"}
+    ///   ]
+    #[prost(message, repeated, tag = "1")]
+    pub indexes_used: ::prost::alloc::vec::Vec<::prost_types::Struct>,
+}
+/// Execution statistics for the query.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExecutionStats {
+    /// Total number of results returned, including documents, projections,
+    /// aggregation results, keys.
+    #[prost(int64, tag = "1")]
+    pub results_returned: i64,
+    /// Total time to execute the query in the backend.
+    #[prost(message, optional, tag = "3")]
+    pub execution_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Total billable read operations.
+    #[prost(int64, tag = "4")]
+    pub read_operations: i64,
+    /// Debugging statistics from the execution of the query. Note that the
+    /// debugging stats are subject to change as Firestore evolves. It could
+    /// include:
+    ///   {
+    ///     "indexes_entries_scanned": "1000",
+    ///     "documents_scanned": "20",
+    ///     "billing_details" : {
+    ///        "documents_billable": "20",
+    ///        "index_entries_billable": "1000",
+    ///        "min_query_cost": "0"
+    ///     }
+    ///   }
+    #[prost(message, optional, tag = "5")]
+    pub debug_stats: ::core::option::Option<::prost_types::Struct>,
 }
 /// A write on a document.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1701,6 +1856,10 @@ pub struct RunQueryRequest {
     /// `projects/my-project/databases/my-database/documents/chatrooms/my-chatroom`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
+    /// Optional. Explain options for the query. If set, additional query
+    /// statistics will be returned. If not, only query results will be returned.
+    #[prost(message, optional, tag = "10")]
+    pub explain_options: ::core::option::Option<ExplainOptions>,
     /// The query to run.
     #[prost(oneof = "run_query_request::QueryType", tags = "2")]
     pub query_type: ::core::option::Option<run_query_request::QueryType>,
@@ -1774,6 +1933,11 @@ pub struct RunQueryResponse {
     /// the last response and the current response.
     #[prost(int32, tag = "4")]
     pub skipped_results: i32,
+    /// Query explain metrics. This is only present when the
+    /// [RunQueryRequest.explain_options][google.firestore.v1.RunQueryRequest.explain_options]
+    /// is provided, and it is sent only once with the last response in the stream.
+    #[prost(message, optional, tag = "11")]
+    pub explain_metrics: ::core::option::Option<ExplainMetrics>,
     /// The continuation mode for the query. If present, it indicates the current
     /// query response stream has finished. This can be set with or without a
     /// `document` present, but when set, no more results are returned.
@@ -1809,6 +1973,10 @@ pub struct RunAggregationQueryRequest {
     /// `projects/my-project/databases/my-database/documents/chatrooms/my-chatroom`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
+    /// Optional. Explain options for the query. If set, additional query
+    /// statistics will be returned. If not, only query results will be returned.
+    #[prost(message, optional, tag = "8")]
+    pub explain_options: ::core::option::Option<ExplainOptions>,
     /// The query to run.
     #[prost(oneof = "run_aggregation_query_request::QueryType", tags = "2")]
     pub query_type: ::core::option::Option<run_aggregation_query_request::QueryType>,
@@ -1881,6 +2049,11 @@ pub struct RunAggregationQueryResponse {
     /// was run.
     #[prost(message, optional, tag = "3")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Query explain metrics. This is only present when the
+    /// [RunAggregationQueryRequest.explain_options][google.firestore.v1.RunAggregationQueryRequest.explain_options]
+    /// is provided, and it is sent only once with the last response in the stream.
+    #[prost(message, optional, tag = "10")]
+    pub explain_metrics: ::core::option::Option<ExplainMetrics>,
 }
 /// The request for
 /// [Firestore.PartitionQuery][google.firestore.v1.Firestore.PartitionQuery].

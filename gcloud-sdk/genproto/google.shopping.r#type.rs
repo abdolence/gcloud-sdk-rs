@@ -108,7 +108,7 @@ pub mod destination {
 /// Reporting contexts are groups of surfaces and formats for product results on
 /// Google. They can represent the entire destination (for example, [Shopping
 /// ads](<https://support.google.com/merchants/answer/6149970>)) or a subset of
-/// formats within a destination (for example, [Discovery
+/// formats within a destination (for example, [Demand Gen
 /// ads](<https://support.google.com/merchants/answer/13389785>)).
 ///
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -134,9 +134,15 @@ pub mod reporting_context {
         Unspecified = 0,
         /// [Shopping ads](<https://support.google.com/merchants/answer/6149970>).
         ShoppingAds = 1,
+        /// Deprecated:  Use `DEMAND_GEN_ADS` instead.
         /// [Discovery and Demand Gen
         /// ads](<https://support.google.com/merchants/answer/13389785>).
         DiscoveryAds = 2,
+        /// [Demand Gen ads](<https://support.google.com/merchants/answer/13389785>).
+        DemandGenAds = 13,
+        /// [Demand Gen ads on Discover
+        /// surface](<https://support.google.com/merchants/answer/13389785>).
+        DemandGenAdsDiscoverSurface = 14,
         /// [Video ads](<https://support.google.com/google-ads/answer/6340491>).
         VideoAds = 3,
         /// [Display ads](<https://support.google.com/merchants/answer/6069387>).
@@ -174,6 +180,10 @@ pub mod reporting_context {
                 ReportingContextEnum::Unspecified => "REPORTING_CONTEXT_ENUM_UNSPECIFIED",
                 ReportingContextEnum::ShoppingAds => "SHOPPING_ADS",
                 ReportingContextEnum::DiscoveryAds => "DISCOVERY_ADS",
+                ReportingContextEnum::DemandGenAds => "DEMAND_GEN_ADS",
+                ReportingContextEnum::DemandGenAdsDiscoverSurface => {
+                    "DEMAND_GEN_ADS_DISCOVER_SURFACE"
+                }
                 ReportingContextEnum::VideoAds => "VIDEO_ADS",
                 ReportingContextEnum::DisplayAds => "DISPLAY_ADS",
                 ReportingContextEnum::LocalInventoryAds => "LOCAL_INVENTORY_ADS",
@@ -194,6 +204,10 @@ pub mod reporting_context {
                 "REPORTING_CONTEXT_ENUM_UNSPECIFIED" => Some(Self::Unspecified),
                 "SHOPPING_ADS" => Some(Self::ShoppingAds),
                 "DISCOVERY_ADS" => Some(Self::DiscoveryAds),
+                "DEMAND_GEN_ADS" => Some(Self::DemandGenAds),
+                "DEMAND_GEN_ADS_DISCOVER_SURFACE" => {
+                    Some(Self::DemandGenAdsDiscoverSurface)
+                }
                 "VIDEO_ADS" => Some(Self::VideoAds),
                 "DISPLAY_ADS" => Some(Self::DisplayAds),
                 "LOCAL_INVENTORY_ADS" => Some(Self::LocalInventoryAds),

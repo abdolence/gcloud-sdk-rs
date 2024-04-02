@@ -10,7 +10,7 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EffectiveSecurityHealthAnalyticsCustomModule {
-    /// Output only. The resource name of the custom module.
+    /// Identifier. The resource name of the custom module.
     /// Its format is
     /// "organizations/{organization}/locations/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}",
     /// or
@@ -137,7 +137,7 @@ pub struct GetEffectiveSecurityHealthAnalyticsCustomModuleRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityHealthAnalyticsCustomModule {
-    /// Immutable. The resource name of the custom module.
+    /// Identifier. The resource name of the custom module.
     /// Its format is
     /// "organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}",
     /// or
@@ -863,7 +863,7 @@ pub mod simulate_security_health_analytics_custom_module_response {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EffectiveEventThreatDetectionCustomModule {
-    /// Immutable. The resource name of the ETD custom module.
+    /// Identifier. The resource name of the ETD custom module.
     ///
     /// Its format is:
     ///
@@ -992,7 +992,7 @@ pub struct GetEffectiveEventThreatDetectionCustomModuleRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventThreatDetectionCustomModule {
-    /// Immutable. The resource name of the ETD custom module.
+    /// Identifier. The resource name of the ETD custom module.
     ///
     /// Its format is:
     ///

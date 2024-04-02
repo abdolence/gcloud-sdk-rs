@@ -17,7 +17,7 @@ pub struct Cluster {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Optional. Fleet configuration.
+    /// Required. Fleet configuration.
     #[prost(message, optional, tag = "11")]
     pub fleet: ::core::option::Option<Fleet>,
     /// Required. Cluster-wide networking configuration.
@@ -26,35 +26,532 @@ pub struct Cluster {
     /// Required. Immutable. RBAC policy that will be applied and managed by GEC.
     #[prost(message, optional, tag = "9")]
     pub authorization: ::core::option::Option<Authorization>,
-    /// Optional. The default maximum number of pods per node used if a maximum value is not
-    /// specified explicitly for a node pool in this cluster. If unspecified, the
-    /// Kubernetes default value will be used.
+    /// Optional. The default maximum number of pods per node used if a maximum
+    /// value is not specified explicitly for a node pool in this cluster. If
+    /// unspecified, the Kubernetes default value will be used.
     #[prost(int32, tag = "8")]
     pub default_max_pods_per_node: i32,
     /// Output only. The IP address of the Kubernetes API server.
     #[prost(string, tag = "6")]
     pub endpoint: ::prost::alloc::string::String,
+    /// Output only. The port number of the Kubernetes API server.
+    #[prost(int32, tag = "19")]
+    pub port: i32,
     /// Output only. The PEM-encoded public certificate of the cluster's CA.
     #[prost(string, tag = "10")]
     pub cluster_ca_certificate: ::prost::alloc::string::String,
     /// Optional. Cluster-wide maintenance policy configuration.
     #[prost(message, optional, tag = "12")]
     pub maintenance_policy: ::core::option::Option<MaintenancePolicy>,
+    /// Output only. The control plane release version
+    #[prost(string, tag = "13")]
+    pub control_plane_version: ::prost::alloc::string::String,
+    /// Output only. The lowest release version among all worker nodes. This field
+    /// can be empty if the cluster does not have any worker nodes.
+    #[prost(string, tag = "14")]
+    pub node_version: ::prost::alloc::string::String,
+    /// Optional. The configuration of the cluster control plane.
+    #[prost(message, optional, tag = "15")]
+    pub control_plane: ::core::option::Option<cluster::ControlPlane>,
+    /// Optional. The configuration of the system add-ons.
+    #[prost(message, optional, tag = "16")]
+    pub system_addons_config: ::core::option::Option<cluster::SystemAddonsConfig>,
+    /// Optional. IPv4 address pools for cluster data plane external load
+    /// balancing.
+    #[prost(string, repeated, tag = "17")]
+    pub external_load_balancer_ipv4_address_pools: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Remote control plane disk encryption options. This field is only
+    /// used when enabling CMEK support.
+    #[prost(message, optional, tag = "18")]
+    pub control_plane_encryption: ::core::option::Option<
+        cluster::ControlPlaneEncryption,
+    >,
+    /// Output only. The current status of the cluster.
+    #[prost(enumeration = "cluster::Status", tag = "20")]
+    pub status: i32,
+    /// Output only. All the maintenance events scheduled for the cluster,
+    /// including the ones ongoing, planned for the future and done in the past (up
+    /// to 90 days).
+    #[prost(message, repeated, tag = "21")]
+    pub maintenance_events: ::prost::alloc::vec::Vec<cluster::MaintenanceEvent>,
+    /// Optional. The target cluster version. For example: "1.5.0".
+    #[prost(string, tag = "22")]
+    pub target_version: ::prost::alloc::string::String,
+    /// Optional. The release channel a cluster is subscribed to.
+    #[prost(enumeration = "cluster::ReleaseChannel", tag = "23")]
+    pub release_channel: i32,
+    /// Optional. Configuration of the cluster survivability, e.g., for the case
+    /// when network connectivity is lost. Note: This only applies to local control
+    /// plane clusters.
+    #[prost(message, optional, tag = "24")]
+    pub survivability_config: ::core::option::Option<cluster::SurvivabilityConfig>,
+    /// Optional. IPv6 address pools for cluster data plane external load
+    /// balancing.
+    #[prost(string, repeated, tag = "25")]
+    pub external_load_balancer_ipv6_address_pools: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+}
+/// Nested message and enum types in `Cluster`.
+pub mod cluster {
+    /// Configuration of the cluster control plane.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ControlPlane {
+        #[prost(oneof = "control_plane::Config", tags = "1, 2")]
+        pub config: ::core::option::Option<control_plane::Config>,
+    }
+    /// Nested message and enum types in `ControlPlane`.
+    pub mod control_plane {
+        /// Configuration specific to clusters with a control plane hosted remotely.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Remote {}
+        /// Configuration specific to clusters with a control plane hosted locally.
+        ///
+        /// Warning: Local control plane clusters must be created in their own
+        /// project. Local control plane clusters cannot coexist in the same
+        /// project with any other type of clusters, including non-GDCE clusters.
+        /// Mixing local control plane GDCE clusters with any other type of
+        /// clusters in the same project can result in data loss.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Local {
+            /// Name of the Google Distributed Cloud Edge zones where this node pool
+            /// will be created. For example: `us-central1-edge-customer-a`.
+            #[prost(string, tag = "1")]
+            pub node_location: ::prost::alloc::string::String,
+            /// The number of nodes to serve as replicas of the Control Plane.
+            #[prost(int32, tag = "2")]
+            pub node_count: i32,
+            /// Only machines matching this filter will be allowed to host control
+            /// plane nodes. The filtering language accepts strings like "name=<name>",
+            /// and is documented here: [AIP-160](<https://google.aip.dev/160>).
+            #[prost(string, tag = "3")]
+            pub machine_filter: ::prost::alloc::string::String,
+            /// Policy configuration about how user applications are deployed.
+            #[prost(enumeration = "SharedDeploymentPolicy", tag = "4")]
+            pub shared_deployment_policy: i32,
+        }
+        /// Represents the policy configuration about how user applications are
+        /// deployed.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum SharedDeploymentPolicy {
+            /// Unspecified.
+            Unspecified = 0,
+            /// User applications can be deployed both on control plane and worker
+            /// nodes.
+            Allowed = 1,
+            /// User applications can not be deployed on control plane nodes and can
+            /// only be deployed on worker nodes.
+            Disallowed = 2,
+        }
+        impl SharedDeploymentPolicy {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    SharedDeploymentPolicy::Unspecified => {
+                        "SHARED_DEPLOYMENT_POLICY_UNSPECIFIED"
+                    }
+                    SharedDeploymentPolicy::Allowed => "ALLOWED",
+                    SharedDeploymentPolicy::Disallowed => "DISALLOWED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SHARED_DEPLOYMENT_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ALLOWED" => Some(Self::Allowed),
+                    "DISALLOWED" => Some(Self::Disallowed),
+                    _ => None,
+                }
+            }
+        }
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Config {
+            /// Remote control plane configuration.
+            #[prost(message, tag = "1")]
+            Remote(Remote),
+            /// Local control plane configuration.
+            ///
+            /// Warning: Local control plane clusters must be created in their own
+            /// project. Local control plane clusters cannot coexist in the same
+            /// project with any other type of clusters, including non-GDCE clusters.
+            /// Mixing local control plane GDCE clusters with any other type of
+            /// clusters in the same project can result in data loss.
+            #[prost(message, tag = "2")]
+            Local(Local),
+        }
+    }
+    /// Config that customers are allowed to define for GDCE system add-ons.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SystemAddonsConfig {
+        /// Optional. Config for Ingress.
+        #[prost(message, optional, tag = "1")]
+        pub ingress: ::core::option::Option<system_addons_config::Ingress>,
+    }
+    /// Nested message and enum types in `SystemAddonsConfig`.
+    pub mod system_addons_config {
+        /// Config for the Ingress add-on which allows customers to create an Ingress
+        /// object to manage external access to the servers in a cluster. The add-on
+        /// consists of istiod and istio-ingress.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Ingress {
+            /// Optional. Whether Ingress is disabled.
+            #[prost(bool, tag = "1")]
+            pub disabled: bool,
+            /// Optional. Ingress VIP.
+            #[prost(string, tag = "2")]
+            pub ipv4_vip: ::prost::alloc::string::String,
+        }
+    }
+    /// Configuration for Customer-managed KMS key support for remote control plane
+    /// cluster disk encryption.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ControlPlaneEncryption {
+        /// Immutable. The Cloud KMS CryptoKey e.g.
+        /// projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}
+        /// to use for protecting control plane disks. If not specified, a
+        /// Google-managed key will be used instead.
+        #[prost(string, tag = "1")]
+        pub kms_key: ::prost::alloc::string::String,
+        /// Output only. The Cloud KMS CryptoKeyVersion currently in use for
+        /// protecting control plane disks. Only applicable if kms_key is set.
+        #[prost(string, tag = "2")]
+        pub kms_key_active_version: ::prost::alloc::string::String,
+        /// Output only. Availability of the Cloud KMS CryptoKey. If not
+        /// `KEY_AVAILABLE`, then nodes may go offline as they cannot access their
+        /// local data. This can be caused by a lack of permissions to use the key,
+        /// or if the key is disabled or deleted.
+        #[prost(enumeration = "super::KmsKeyState", tag = "3")]
+        pub kms_key_state: i32,
+        /// Output only. Error status returned by Cloud KMS when using this key. This
+        /// field may be populated only if `kms_key_state` is not
+        /// `KMS_KEY_STATE_KEY_AVAILABLE`. If populated, this field contains the
+        /// error status reported by Cloud KMS.
+        #[prost(message, optional, tag = "4")]
+        pub kms_status: ::core::option::Option<super::super::super::super::rpc::Status>,
+    }
+    /// A Maintenance Event is an operation that could cause temporary disruptions
+    /// to the cluster workloads, including Google-driven or user-initiated cluster
+    /// upgrades, user-initiated cluster configuration changes that require
+    /// restarting nodes, etc.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MaintenanceEvent {
+        /// Output only. UUID of the maintenance event.
+        #[prost(string, tag = "1")]
+        pub uuid: ::prost::alloc::string::String,
+        /// Output only. The target version of the cluster.
+        #[prost(string, tag = "2")]
+        pub target_version: ::prost::alloc::string::String,
+        /// Output only. The operation for running the maintenance event. Specified
+        /// in the format projects/*/locations/*/operations/*. If the maintenance
+        /// event is split into multiple operations (e.g. due to maintenance
+        /// windows), the latest one is recorded.
+        #[prost(string, tag = "3")]
+        pub operation: ::prost::alloc::string::String,
+        /// Output only. The type of the maintenance event.
+        #[prost(enumeration = "maintenance_event::Type", tag = "4")]
+        pub r#type: i32,
+        /// Output only. The schedule of the maintenance event.
+        #[prost(enumeration = "maintenance_event::Schedule", tag = "5")]
+        pub schedule: i32,
+        /// Output only. The state of the maintenance event.
+        #[prost(enumeration = "maintenance_event::State", tag = "6")]
+        pub state: i32,
+        /// Output only. The time when the maintenance event request was created.
+        #[prost(message, optional, tag = "7")]
+        pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. The time when the maintenance event started.
+        #[prost(message, optional, tag = "8")]
+        pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. The time when the maintenance event ended, either
+        /// successfully or not. If the maintenance event is split into multiple
+        /// maintenance windows, end_time is only updated when the whole flow ends.
+        #[prost(message, optional, tag = "9")]
+        pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. The time when the maintenance event message was updated.
+        #[prost(message, optional, tag = "10")]
+        pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// Nested message and enum types in `MaintenanceEvent`.
+    pub mod maintenance_event {
+        /// Indicates the maintenance event type.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Type {
+            /// Unspecified.
+            Unspecified = 0,
+            /// Upgrade initiated by users.
+            UserInitiatedUpgrade = 1,
+            /// Upgrade driven by Google.
+            GoogleDrivenUpgrade = 2,
+        }
+        impl Type {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Type::Unspecified => "TYPE_UNSPECIFIED",
+                    Type::UserInitiatedUpgrade => "USER_INITIATED_UPGRADE",
+                    Type::GoogleDrivenUpgrade => "GOOGLE_DRIVEN_UPGRADE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "USER_INITIATED_UPGRADE" => Some(Self::UserInitiatedUpgrade),
+                    "GOOGLE_DRIVEN_UPGRADE" => Some(Self::GoogleDrivenUpgrade),
+                    _ => None,
+                }
+            }
+        }
+        /// Indicates when the maintenance event should be performed.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Schedule {
+            /// Unspecified.
+            Unspecified = 0,
+            /// Immediately after receiving the request.
+            Immediately = 1,
+        }
+        impl Schedule {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Schedule::Unspecified => "SCHEDULE_UNSPECIFIED",
+                    Schedule::Immediately => "IMMEDIATELY",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SCHEDULE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "IMMEDIATELY" => Some(Self::Immediately),
+                    _ => None,
+                }
+            }
+        }
+        /// Indicates the maintenance event state.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum State {
+            /// Unspecified.
+            Unspecified = 0,
+            /// The maintenance event is ongoing. The cluster might be unusable.
+            Reconciling = 1,
+            /// The maintenance event succeeded.
+            Succeeded = 2,
+            /// The maintenance event failed.
+            Failed = 3,
+        }
+        impl State {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    State::Unspecified => "STATE_UNSPECIFIED",
+                    State::Reconciling => "RECONCILING",
+                    State::Succeeded => "SUCCEEDED",
+                    State::Failed => "FAILED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "RECONCILING" => Some(Self::Reconciling),
+                    "SUCCEEDED" => Some(Self::Succeeded),
+                    "FAILED" => Some(Self::Failed),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Configuration of the cluster survivability, e.g., for the case when network
+    /// connectivity is lost.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SurvivabilityConfig {
+        /// Optional. Time period that allows the cluster nodes to be rebooted and
+        /// become functional without network connectivity to Google. The default 0
+        /// means not allowed. The maximum is 7 days.
+        #[prost(message, optional, tag = "1")]
+        pub offline_reboot_ttl: ::core::option::Option<::prost_types::Duration>,
+    }
+    /// Indicates the status of the cluster.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Status {
+        /// Status unknown.
+        Unspecified = 0,
+        /// The cluster is being created.
+        Provisioning = 1,
+        /// The cluster is created and fully usable.
+        Running = 2,
+        /// The cluster is being deleted.
+        Deleting = 3,
+        /// The status indicates that some errors occurred while reconciling/deleting
+        /// the cluster.
+        Error = 4,
+        /// The cluster is undergoing some work such as version upgrades, etc.
+        Reconciling = 5,
+    }
+    impl Status {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Status::Unspecified => "STATUS_UNSPECIFIED",
+                Status::Provisioning => "PROVISIONING",
+                Status::Running => "RUNNING",
+                Status::Deleting => "DELETING",
+                Status::Error => "ERROR",
+                Status::Reconciling => "RECONCILING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "RUNNING" => Some(Self::Running),
+                "DELETING" => Some(Self::Deleting),
+                "ERROR" => Some(Self::Error),
+                "RECONCILING" => Some(Self::Reconciling),
+                _ => None,
+            }
+        }
+    }
+    /// The release channel a cluster is subscribed to.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ReleaseChannel {
+        /// Unspecified release channel. This will default to the REGULAR channel.
+        Unspecified = 0,
+        /// No release channel.
+        None = 1,
+        /// Regular release channel.
+        Regular = 2,
+    }
+    impl ReleaseChannel {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ReleaseChannel::Unspecified => "RELEASE_CHANNEL_UNSPECIFIED",
+                ReleaseChannel::None => "NONE",
+                ReleaseChannel::Regular => "REGULAR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RELEASE_CHANNEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "REGULAR" => Some(Self::Regular),
+                _ => None,
+            }
+        }
+    }
 }
 /// Cluster-wide networking configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClusterNetworking {
-    /// Required. All pods in the cluster are assigned an RFC1918 IPv4 address from these
-    /// blocks. Only a single block is supported. This field cannot be changed
-    /// after creation.
+    /// Required. All pods in the cluster are assigned an RFC1918 IPv4 address from
+    /// these blocks. Only a single block is supported. This field cannot be
+    /// changed after creation.
     #[prost(string, repeated, tag = "1")]
     pub cluster_ipv4_cidr_blocks: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
-    /// Required. All services in the cluster are assigned an RFC1918 IPv4 address from these
-    /// blocks. Only a single block is supported. This field cannot be changed
-    /// after creation.
+    /// Required. All services in the cluster are assigned an RFC1918 IPv4 address
+    /// from these blocks. Only a single block is supported. This field cannot be
+    /// changed after creation.
     #[prost(string, repeated, tag = "2")]
     pub services_ipv4_cidr_blocks: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -68,13 +565,15 @@ pub struct ClusterNetworking {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Fleet {
-    /// Required. The name of the Fleet host project where this cluster will be registered.
+    /// Required. The name of the Fleet host project where this cluster will be
+    /// registered.
     ///
     /// Project names are formatted as
     /// `projects/<project-number>`.
     #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
-    /// Output only. The name of the managed Hub Membership resource associated to this cluster.
+    /// Output only. The name of the managed Hub Membership resource associated to
+    /// this cluster.
     ///
     /// Membership names are formatted as
     /// `projects/<project-number>/locations/global/membership/<cluster-id>`.
@@ -93,9 +592,9 @@ pub struct ClusterUser {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Authorization {
-    /// Required. User that will be granted the cluster-admin role on the cluster, providing
-    /// full access to the cluster. Currently, this is a singular field, but will
-    /// be expanded to allow multiple admins in the future.
+    /// Required. User that will be granted the cluster-admin role on the cluster,
+    /// providing full access to the cluster. Currently, this is a singular field,
+    /// but will be expanded to allow multiple admins in the future.
     #[prost(message, optional, tag = "1")]
     pub admin_users: ::core::option::Option<ClusterUser>,
 }
@@ -131,10 +630,16 @@ pub struct NodePool {
     /// documented in more detail in [AIP-160](<https://google.aip.dev/160>).
     #[prost(string, tag = "7")]
     pub machine_filter: ::prost::alloc::string::String,
-    /// Optional. Local disk encryption options. This field is only used when enabling CMEK
-    /// support.
+    /// Optional. Local disk encryption options. This field is only used when
+    /// enabling CMEK support.
     #[prost(message, optional, tag = "9")]
     pub local_disk_encryption: ::core::option::Option<node_pool::LocalDiskEncryption>,
+    /// Output only. The lowest release version among all worker nodes.
+    #[prost(string, tag = "10")]
+    pub node_version: ::prost::alloc::string::String,
+    /// Optional. Configuration for each node in the NodePool
+    #[prost(message, optional, tag = "11")]
+    pub node_config: ::core::option::Option<node_pool::NodeConfig>,
 }
 /// Nested message and enum types in `NodePool`.
 pub mod node_pool {
@@ -148,21 +653,33 @@ pub mod node_pool {
         /// Google-managed key will be used instead.
         #[prost(string, tag = "1")]
         pub kms_key: ::prost::alloc::string::String,
-        /// Output only. The Cloud KMS CryptoKeyVersion currently in use for protecting node local
-        /// disks. Only applicable if kms_key is set.
+        /// Output only. The Cloud KMS CryptoKeyVersion currently in use for
+        /// protecting node local disks. Only applicable if kms_key is set.
         #[prost(string, tag = "2")]
         pub kms_key_active_version: ::prost::alloc::string::String,
-        /// Output only. Availability of the Cloud KMS CryptoKey. If not `KEY_AVAILABLE`, then
-        /// nodes may go offline as they cannot access their local data. This can be
-        /// caused by a lack of permissions to use the key, or if the key is disabled
-        /// or deleted.
+        /// Output only. Availability of the Cloud KMS CryptoKey. If not
+        /// `KEY_AVAILABLE`, then nodes may go offline as they cannot access their
+        /// local data. This can be caused by a lack of permissions to use the key,
+        /// or if the key is disabled or deleted.
         #[prost(enumeration = "super::KmsKeyState", tag = "3")]
         pub kms_key_state: i32,
-        /// Output only. Error status returned by Cloud KMS when using this key. This field may be
-        /// populated only if `kms_key_state` is not `KMS_KEY_STATE_KEY_AVAILABLE`.
-        /// If populated, this field contains the error status reported by Cloud KMS.
+        /// Output only. Error status returned by Cloud KMS when using this key. This
+        /// field may be populated only if `kms_key_state` is not
+        /// `KMS_KEY_STATE_KEY_AVAILABLE`. If populated, this field contains the
+        /// error status reported by Cloud KMS.
         #[prost(message, optional, tag = "4")]
         pub kms_status: ::core::option::Option<super::super::super::super::rpc::Status>,
+    }
+    /// Configuration for each node in the NodePool
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NodeConfig {
+        /// Optional. The Kubernetes node labels
+        #[prost(map = "string, string", tag = "1")]
+        pub labels: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
     }
 }
 /// A Google Distributed Cloud Edge machine capable of acting as a Kubernetes
@@ -189,13 +706,20 @@ pub struct Machine {
     /// hosting e.g.
     /// projects/{project}/locations/{location}/clusters/{cluster_id}/nodePools/{pool_id}/{node},
     /// Or empty if the machine is not assigned to assume the role of a node.
+    ///
+    /// For control plane nodes hosted on edge machines, this will return
+    /// the following format:
+    ///    "projects/{project}/locations/{location}/clusters/{cluster_id}/controlPlaneNodes/{node}".
     #[prost(string, tag = "5")]
     pub hosted_node: ::prost::alloc::string::String,
     /// The Google Distributed Cloud Edge zone of this machine.
     #[prost(string, tag = "6")]
     pub zone: ::prost::alloc::string::String,
-    /// Output only. Whether the machine is disabled. If disabled, the machine is unable to
-    /// enter service.
+    /// Output only. The software version of the machine.
+    #[prost(string, tag = "7")]
+    pub version: ::prost::alloc::string::String,
+    /// Output only. Whether the machine is disabled. If disabled, the machine is
+    /// unable to enter service.
     #[prost(bool, tag = "8")]
     pub disabled: bool,
 }
@@ -234,14 +758,17 @@ pub struct VpnConnection {
     /// The network ID of VPC to connect to.
     #[prost(string, tag = "8")]
     pub vpc: ::prost::alloc::string::String,
-    /// Optional. Project detail of the VPC network. Required if VPC is in a different
-    /// project than the cluster project.
+    /// Optional. Project detail of the VPC network. Required if VPC is in a
+    /// different project than the cluster project.
     #[prost(message, optional, tag = "11")]
     pub vpc_project: ::core::option::Option<vpn_connection::VpcProject>,
     /// Whether this VPN connection has HA enabled on cluster side. If enabled,
     /// when creating VPN connection we will attempt to use 2 ANG floating IPs.
     #[prost(bool, tag = "9")]
     pub enable_high_availability: bool,
+    /// Optional. The VPN connection Cloud Router name.
+    #[prost(string, tag = "12")]
+    pub router: ::prost::alloc::string::String,
     /// Output only. The created connection details.
     #[prost(message, optional, tag = "10")]
     pub details: ::core::option::Option<vpn_connection::Details>,
@@ -256,12 +783,13 @@ pub mod vpn_connection {
         /// the cluster project.
         #[prost(string, tag = "1")]
         pub project_id: ::prost::alloc::string::String,
-        /// Optional. The service account in the VPC project configured by user. It is used to
-        /// create/delete Cloud Router and Cloud HA VPNs for VPN connection. If this
-        /// SA is changed during/after a VPN connection is created, you need to
-        /// remove the Cloud Router and Cloud VPN resources in |project_id|.
-        /// It is in the form of
+        /// Optional. The service account in the VPC project configured by user. It
+        /// is used to create/delete Cloud Router and Cloud HA VPNs for VPN
+        /// connection. If this SA is changed during/after a VPN connection is
+        /// created, you need to remove the Cloud Router and Cloud VPN resources in
+        /// |project_id|. It is in the form of
         /// service-{project_number}@gcp-sa-edgecontainer.iam.gserviceaccount.com.
+        #[deprecated]
         #[prost(string, tag = "2")]
         pub service_account: ::prost::alloc::string::String,
     }
@@ -288,7 +816,7 @@ pub mod vpn_connection {
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CloudRouter {
-            /// The created Cloud Router name.
+            /// The associated Cloud Router name.
             #[prost(string, tag = "1")]
             pub name: ::prost::alloc::string::String,
         }
@@ -392,7 +920,8 @@ pub mod vpn_connection {
         }
     }
 }
-/// Metadata for a given [google.cloud.location.Location][google.cloud.location.Location].
+/// Metadata for a given
+/// [google.cloud.location.Location][google.cloud.location.Location].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {
@@ -411,6 +940,57 @@ pub struct ZoneMetadata {
     /// Quota for resources in this zone.
     #[prost(message, repeated, tag = "1")]
     pub quota: ::prost::alloc::vec::Vec<Quota>,
+    /// The map keyed by rack name and has value of RackType.
+    #[prost(map = "string, enumeration(zone_metadata::RackType)", tag = "2")]
+    pub rack_types: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
+}
+/// Nested message and enum types in `ZoneMetadata`.
+pub mod zone_metadata {
+    /// Type of the rack.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RackType {
+        /// Unspecified rack type, single rack also belongs to this type.
+        Unspecified = 0,
+        /// Base rack type, a pair of two modified Config-1 racks containing
+        /// Aggregation switches.
+        Base = 1,
+        /// Expansion rack type, also known as standalone racks,
+        /// added by customers on demand.
+        Expansion = 2,
+    }
+    impl RackType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RackType::Unspecified => "RACK_TYPE_UNSPECIFIED",
+                RackType::Base => "BASE",
+                RackType::Expansion => "EXPANSION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RACK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASE" => Some(Self::Base),
+                "EXPANSION" => Some(Self::Expansion),
+                _ => None,
+            }
+        }
+    }
 }
 /// Represents quota for Edge Container resources.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -466,6 +1046,39 @@ pub struct TimeWindow {
     /// start time.
     #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Server configuration for supported versions and release channels.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServerConfig {
+    /// Output only. Mapping from release channel to channel config.
+    #[prost(map = "string, message", tag = "1")]
+    pub channels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ChannelConfig,
+    >,
+    /// Output only. Supported versions, e.g.: \["1.4.0", "1.5.0"\].
+    #[prost(message, repeated, tag = "2")]
+    pub versions: ::prost::alloc::vec::Vec<Version>,
+    /// Output only. Default version, e.g.: "1.4.0".
+    #[prost(string, tag = "3")]
+    pub default_version: ::prost::alloc::string::String,
+}
+/// Configuration for a release channel.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ChannelConfig {
+    /// Output only. Default version for this release channel, e.g.: "1.4.0".
+    #[prost(string, tag = "1")]
+    pub default_version: ::prost::alloc::string::String,
+}
+/// Version of a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Version {
+    /// Output only. Name of the version, e.g.: "1.4.0".
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Represents the accessibility state of a customer-managed KMS key used for
 /// CMEK integration.
@@ -523,13 +1136,17 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Identifies whether the user has requested cancellation of the operation.
     /// Operations that have successfully been cancelled have [Operation.error][]
-    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
-    /// `Code.CANCELLED`.
+    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// API version used to start the operation.
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
+    /// Warnings that do not block the operation, but still hold relevant
+    /// information for the end user to receive.
+    #[prost(string, repeated, tag = "8")]
+    pub warnings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Lists clusters in a location.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -613,6 +1230,69 @@ pub struct UpdateClusterRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// Upgrades a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpgradeClusterRequest {
+    /// Required. The resource name of the cluster.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The version the cluster is going to be upgraded to.
+    #[prost(string, tag = "2")]
+    pub target_version: ::prost::alloc::string::String,
+    /// The schedule for the upgrade.
+    #[prost(enumeration = "upgrade_cluster_request::Schedule", tag = "3")]
+    pub schedule: i32,
+    /// A unique identifier for this request. Restricted to 36 ASCII characters. A
+    /// random UUID is recommended. This request is only idempotent if
+    /// `request_id` is provided.
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `UpgradeClusterRequest`.
+pub mod upgrade_cluster_request {
+    /// Represents the schedule about when the cluster is going to be upgraded.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Schedule {
+        /// Unspecified. The default is to upgrade the cluster immediately which is
+        /// the only option today.
+        Unspecified = 0,
+        /// The cluster is going to be upgraded immediately after receiving the
+        /// request.
+        Immediately = 1,
+    }
+    impl Schedule {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Schedule::Unspecified => "SCHEDULE_UNSPECIFIED",
+                Schedule::Immediately => "IMMEDIATELY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCHEDULE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMMEDIATELY" => Some(Self::Immediately),
+                _ => None,
+            }
+        }
+    }
+}
 /// Deletes a cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -643,6 +1323,31 @@ pub struct GenerateAccessTokenResponse {
     pub access_token: ::prost::alloc::string::String,
     /// Output only. Timestamp at which the token will expire.
     #[prost(message, optional, tag = "2")]
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Generates an offline credential(offline) for a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateOfflineCredentialRequest {
+    /// Required. The resource name of the cluster.
+    #[prost(string, tag = "1")]
+    pub cluster: ::prost::alloc::string::String,
+}
+/// An offline credential for a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateOfflineCredentialResponse {
+    /// Output only. Client certificate to authenticate to k8s api-server.
+    #[prost(string, tag = "1")]
+    pub client_certificate: ::prost::alloc::string::String,
+    /// Output only. Client private key to authenticate to k8s api-server.
+    #[prost(string, tag = "2")]
+    pub client_key: ::prost::alloc::string::String,
+    /// Output only. Client's identity.
+    #[prost(string, tag = "3")]
+    pub user_id: ::prost::alloc::string::String,
+    /// Output only. Timestamp at which this credential will expire.
+    #[prost(message, optional, tag = "4")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Lists node pools in a cluster.
@@ -785,7 +1490,8 @@ pub struct GetMachineRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVpnConnectionsRequest {
-    /// Required. The parent location, which owns this collection of VPN connections.
+    /// Required. The parent location, which owns this collection of VPN
+    /// connections.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of resources to list.
@@ -854,6 +1560,15 @@ pub struct DeleteVpnConnectionRequest {
     /// `request_id` is provided.
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
+}
+/// Gets the server config.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetServerConfigRequest {
+    /// Required. The name (project and location) of the server config to get,
+    /// specified in the format `projects/*/locations/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod edge_container_client {
@@ -1063,6 +1778,37 @@ pub mod edge_container_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Upgrades a single cluster.
+        pub async fn upgrade_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpgradeClusterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.edgecontainer.v1.EdgeContainer/UpgradeCluster",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "UpgradeCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Deletes a single Cluster.
         pub async fn delete_cluster(
             &mut self,
@@ -1121,6 +1867,37 @@ pub mod edge_container_client {
                     GrpcMethod::new(
                         "google.cloud.edgecontainer.v1.EdgeContainer",
                         "GenerateAccessToken",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Generates an offline credential for a Cluster.
+        pub async fn generate_offline_credential(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GenerateOfflineCredentialRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerateOfflineCredentialResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.edgecontainer.v1.EdgeContainer/GenerateOfflineCredential",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "GenerateOfflineCredential",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -1453,6 +2230,34 @@ pub mod edge_container_client {
                     GrpcMethod::new(
                         "google.cloud.edgecontainer.v1.EdgeContainer",
                         "DeleteVpnConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the server config.
+        pub async fn get_server_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetServerConfigRequest>,
+        ) -> std::result::Result<tonic::Response<super::ServerConfig>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.edgecontainer.v1.EdgeContainer/GetServerConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "GetServerConfig",
                     ),
                 );
             self.inner.unary(req, path, codec).await

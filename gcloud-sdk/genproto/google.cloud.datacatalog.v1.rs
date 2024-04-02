@@ -609,6 +609,14 @@ pub struct ColumnSchema {
     /// sub-columns.
     #[prost(message, repeated, tag = "7")]
     pub subcolumns: ::prost::alloc::vec::Vec<ColumnSchema>,
+    /// Optional. The subtype of the RANGE, if the type of this field is RANGE. If
+    /// the type is RANGE, this field is required. Possible values for the field
+    /// element type of a RANGE include:
+    /// * DATE
+    /// * DATETIME
+    /// * TIMESTAMP
+    #[prost(message, optional, tag = "19")]
+    pub range_element_type: ::core::option::Option<column_schema::FieldElementType>,
     /// Optional. Garbage collection policy for the column or column family.
     /// Applies to systems like Cloud Bigtable.
     #[prost(string, tag = "11")]
@@ -684,6 +692,15 @@ pub mod column_schema {
                 }
             }
         }
+    }
+    /// Represents the type of a field element.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FieldElementType {
+        /// Required. The type of a field element. See
+        /// [ColumnSchema.type][google.cloud.datacatalog.v1.ColumnSchema.type].
+        #[prost(string, tag = "1")]
+        pub r#type: ::prost::alloc::string::String,
     }
     /// Specifies inclusion of the column in an index
     #[derive(

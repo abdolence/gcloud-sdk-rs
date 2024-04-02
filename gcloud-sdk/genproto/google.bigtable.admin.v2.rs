@@ -386,7 +386,7 @@ pub struct AppProfile {
     #[prost(oneof = "app_profile::RoutingPolicy", tags = "5, 6")]
     pub routing_policy: ::core::option::Option<app_profile::RoutingPolicy>,
     /// Options for isolating this app profile's traffic from other use cases.
-    #[prost(oneof = "app_profile::Isolation", tags = "7, 11")]
+    #[prost(oneof = "app_profile::Isolation", tags = "7, 11, 10")]
     pub isolation: ::core::option::Option<app_profile::Isolation>,
 }
 /// Nested message and enum types in `AppProfile`.
@@ -427,6 +427,76 @@ pub mod app_profile {
         /// The priority of requests sent using this app profile.
         #[prost(enumeration = "Priority", tag = "1")]
         pub priority: i32,
+    }
+    /// Data Boost is a serverless compute capability that lets you run
+    /// high-throughput read jobs on your Bigtable data, without impacting the
+    /// performance of the clusters that handle your application traffic.
+    /// Currently, Data Boost exclusively supports read-only use-cases with
+    /// single-cluster routing.
+    ///
+    /// Data Boost reads are only guaranteed to see the results of writes that
+    /// were written at least 30 minutes ago. This means newly written values may
+    /// not become visible for up to 30m, and also means that old values may
+    /// remain visible for up to 30m after being deleted or overwritten. To
+    /// mitigate the staleness of the data, users may either wait 30m, or use
+    /// CheckConsistency.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataBoostIsolationReadOnly {
+        /// The Compute Billing Owner for this Data Boost App Profile.
+        #[prost(
+            enumeration = "data_boost_isolation_read_only::ComputeBillingOwner",
+            optional,
+            tag = "1"
+        )]
+        pub compute_billing_owner: ::core::option::Option<i32>,
+    }
+    /// Nested message and enum types in `DataBoostIsolationReadOnly`.
+    pub mod data_boost_isolation_read_only {
+        /// Compute Billing Owner specifies how usage should be accounted when using
+        /// Data Boost. Compute Billing Owner also configures which Cloud Project is
+        /// charged for relevant quota.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ComputeBillingOwner {
+            /// Unspecified value.
+            Unspecified = 0,
+            /// The host Cloud Project containing the targeted Bigtable Instance /
+            /// Table pays for compute.
+            HostPays = 1,
+        }
+        impl ComputeBillingOwner {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    ComputeBillingOwner::Unspecified => {
+                        "COMPUTE_BILLING_OWNER_UNSPECIFIED"
+                    }
+                    ComputeBillingOwner::HostPays => "HOST_PAYS",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "COMPUTE_BILLING_OWNER_UNSPECIFIED" => Some(Self::Unspecified),
+                    "HOST_PAYS" => Some(Self::HostPays),
+                    _ => None,
+                }
+            }
+        }
     }
     /// Possible priorities for an app profile. Note that higher priority writes
     /// can sometimes queue behind lower priority writes to the same tablet, as
@@ -500,6 +570,10 @@ pub mod app_profile {
         /// other use cases.
         #[prost(message, tag = "11")]
         StandardIsolation(StandardIsolation),
+        /// Specifies that this app profile is intended for read-only usage via the
+        /// Data Boost feature.
+        #[prost(message, tag = "10")]
+        DataBoostIsolationReadOnly(DataBoostIsolationReadOnly),
     }
 }
 /// A tablet is a defined by a start and end key and is explained in
@@ -1776,6 +1850,182 @@ pub mod bigtable_instance_admin_client {
         }
     }
 }
+/// `Type` represents the type of data that is written to, read from, or stored
+/// in Bigtable. It is heavily based on the GoogleSQL standard to help maintain
+/// familiarity and consistency across products and features.
+///
+/// For compatibility with Bigtable's existing untyped APIs, each `Type` includes
+/// an `Encoding` which describes how to convert to/from the underlying data.
+/// This might involve composing a series of steps into an "encoding chain," for
+/// example to convert from INT64 -> STRING -> raw bytes. In most cases, a "link"
+/// in the encoding chain will be based an on existing GoogleSQL conversion
+/// function like `CAST`.
+///
+/// Each link in the encoding chain also defines the following properties:
+///   * Natural sort: Does the encoded value sort consistently with the original
+///     typed value? Note that Bigtable will always sort data based on the raw
+///     encoded value, *not* the decoded type.
+///      - Example: STRING values sort in the same order as their UTF-8 encodings.
+///      - Counterexample: Encoding INT64 to a fixed-width STRING does *not*
+///        preserve sort order when dealing with negative numbers.
+///        INT64(1) > INT64(-1), but STRING("-00001") > STRING("00001).
+///      - The overall encoding chain sorts naturally if *every* link does.
+///   * Self-delimiting: If we concatenate two encoded values, can we always tell
+///     where the first one ends and the second one begins?
+///      - Example: If we encode INT64s to fixed-width STRINGs, the first value
+///        will always contain exactly N digits, possibly preceded by a sign.
+///      - Counterexample: If we concatenate two UTF-8 encoded STRINGs, we have
+///        no way to tell where the first one ends.
+///      - The overall encoding chain is self-delimiting if *any* link is.
+///   * Compatibility: Which other systems have matching encoding schemes? For
+///     example, does this encoding have a GoogleSQL equivalent? HBase? Java?
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Type {
+    /// The kind of type that this represents.
+    #[prost(oneof = "r#type::Kind", tags = "1, 5, 6")]
+    pub kind: ::core::option::Option<r#type::Kind>,
+}
+/// Nested message and enum types in `Type`.
+pub mod r#type {
+    /// Bytes
+    /// Values of type `Bytes` are stored in `Value.bytes_value`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Bytes {
+        /// The encoding to use when converting to/from lower level types.
+        #[prost(message, optional, tag = "1")]
+        pub encoding: ::core::option::Option<bytes::Encoding>,
+    }
+    /// Nested message and enum types in `Bytes`.
+    pub mod bytes {
+        /// Rules used to convert to/from lower level types.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Encoding {
+            /// Which encoding to use.
+            #[prost(oneof = "encoding::Encoding", tags = "1")]
+            pub encoding: ::core::option::Option<encoding::Encoding>,
+        }
+        /// Nested message and enum types in `Encoding`.
+        pub mod encoding {
+            /// Leaves the value "as-is"
+            /// * Natural sort? Yes
+            /// * Self-delimiting? No
+            /// * Compatibility? N/A
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct Raw {}
+            /// Which encoding to use.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum Encoding {
+                /// Use `Raw` encoding.
+                #[prost(message, tag = "1")]
+                Raw(Raw),
+            }
+        }
+    }
+    /// Int64
+    /// Values of type `Int64` are stored in `Value.int_value`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Int64 {
+        /// The encoding to use when converting to/from lower level types.
+        #[prost(message, optional, tag = "1")]
+        pub encoding: ::core::option::Option<int64::Encoding>,
+    }
+    /// Nested message and enum types in `Int64`.
+    pub mod int64 {
+        /// Rules used to convert to/from lower level types.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Encoding {
+            /// Which encoding to use.
+            #[prost(oneof = "encoding::Encoding", tags = "1")]
+            pub encoding: ::core::option::Option<encoding::Encoding>,
+        }
+        /// Nested message and enum types in `Encoding`.
+        pub mod encoding {
+            /// Encodes the value as an 8-byte big endian twos complement `Bytes`
+            /// value.
+            /// * Natural sort? No (positive values only)
+            /// * Self-delimiting? Yes
+            /// * Compatibility?
+            ///     - BigQuery Federation `BINARY` encoding
+            ///     - HBase `Bytes.toBytes`
+            ///     - Java `ByteBuffer.putLong()` with `ByteOrder.BIG_ENDIAN`
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct BigEndianBytes {
+                /// The underlying `Bytes` type, which may be able to encode further.
+                #[prost(message, optional, tag = "1")]
+                pub bytes_type: ::core::option::Option<super::super::Bytes>,
+            }
+            /// Which encoding to use.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum Encoding {
+                /// Use `BigEndianBytes` encoding.
+                #[prost(message, tag = "1")]
+                BigEndianBytes(BigEndianBytes),
+            }
+        }
+    }
+    /// A value that combines incremental updates into a summarized value.
+    ///
+    /// Data is never directly written or read using type `Aggregate`. Writes will
+    /// provide either the `input_type` or `state_type`, and reads will always
+    /// return the `state_type` .
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Aggregate {
+        /// Type of the inputs that are accumulated by this `Aggregate`, which must
+        /// specify a full encoding.
+        /// Use `AddInput` mutations to accumulate new inputs.
+        #[prost(message, optional, boxed, tag = "1")]
+        pub input_type: ::core::option::Option<::prost::alloc::boxed::Box<super::Type>>,
+        /// Output only. Type that holds the internal accumulator state for the
+        /// `Aggregate`. This is a function of the `input_type` and `aggregator`
+        /// chosen, and will always specify a full encoding.
+        #[prost(message, optional, boxed, tag = "2")]
+        pub state_type: ::core::option::Option<::prost::alloc::boxed::Box<super::Type>>,
+        /// Which aggregator function to use. The configured types must match.
+        #[prost(oneof = "aggregate::Aggregator", tags = "4")]
+        pub aggregator: ::core::option::Option<aggregate::Aggregator>,
+    }
+    /// Nested message and enum types in `Aggregate`.
+    pub mod aggregate {
+        /// Computes the sum of the input values.
+        /// Allowed input: `Int64`
+        /// State: same as input
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Sum {}
+        /// Which aggregator function to use. The configured types must match.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Aggregator {
+            /// Sum aggregator.
+            #[prost(message, tag = "4")]
+            Sum(Sum),
+        }
+    }
+    /// The kind of type that this represents.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Kind {
+        /// Bytes
+        #[prost(message, tag = "1")]
+        BytesType(Bytes),
+        /// Int64
+        #[prost(message, tag = "5")]
+        Int64Type(Int64),
+        /// Aggregate
+        #[prost(message, tag = "6")]
+        AggregateType(::prost::alloc::boxed::Box<Aggregate>),
+    }
+}
 /// Information about a table restore.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1863,6 +2113,8 @@ pub struct Table {
     /// Note one can still delete the data stored in the table through Data APIs.
     #[prost(bool, tag = "9")]
     pub deletion_protection: bool,
+    #[prost(oneof = "table::AutomatedBackupConfig", tags = "13")]
+    pub automated_backup_config: ::core::option::Option<table::AutomatedBackupConfig>,
 }
 /// Nested message and enum types in `Table`.
 pub mod table {
@@ -1946,6 +2198,19 @@ pub mod table {
                 }
             }
         }
+    }
+    /// Defines an automated backup policy for a table
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AutomatedBackupPolicy {
+        /// Required. How long the automated backups should be retained. The only
+        /// supported value at this time is 3 days.
+        #[prost(message, optional, tag = "1")]
+        pub retention_period: ::core::option::Option<::prost_types::Duration>,
+        /// Required. How frequently automated backups should occur. The only
+        /// supported value at this time is 24 hours.
+        #[prost(message, optional, tag = "2")]
+        pub frequency: ::core::option::Option<::prost_types::Duration>,
     }
     /// Possible timestamp granularities to use when keeping multiple versions
     /// of data in a table.
@@ -2044,6 +2309,129 @@ pub mod table {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AutomatedBackupConfig {
+        /// If specified, automated backups are enabled for this table.
+        /// Otherwise, automated backups are disabled.
+        #[prost(message, tag = "13")]
+        AutomatedBackupPolicy(AutomatedBackupPolicy),
+    }
+}
+/// AuthorizedViews represent subsets of a particular Cloud Bigtable table. Users
+/// can configure access to each Authorized View independently from the table and
+/// use the existing Data APIs to access the subset of data.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AuthorizedView {
+    /// Identifier. The name of this AuthorizedView.
+    /// Values are of the form
+    /// `projects/{project}/instances/{instance}/tables/{table}/authorizedViews/{authorized_view}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The etag for this AuthorizedView.
+    /// If this is provided on update, it must match the server's etag. The server
+    /// returns ABORTED error on a mismatched etag.
+    #[prost(string, tag = "3")]
+    pub etag: ::prost::alloc::string::String,
+    /// Set to true to make the AuthorizedView protected against deletion.
+    /// The parent Table and containing Instance cannot be deleted if an
+    /// AuthorizedView has this bit set.
+    #[prost(bool, tag = "4")]
+    pub deletion_protection: bool,
+    /// The type of this AuthorizedView.
+    #[prost(oneof = "authorized_view::AuthorizedView", tags = "2")]
+    pub authorized_view: ::core::option::Option<authorized_view::AuthorizedView>,
+}
+/// Nested message and enum types in `AuthorizedView`.
+pub mod authorized_view {
+    /// Subsets of a column family that are included in this AuthorizedView.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FamilySubsets {
+        /// Individual exact column qualifiers to be included in the AuthorizedView.
+        #[prost(bytes = "vec", repeated, tag = "1")]
+        pub qualifiers: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
+        /// Prefixes for qualifiers to be included in the AuthorizedView. Every
+        /// qualifier starting with one of these prefixes is included in the
+        /// AuthorizedView. To provide access to all qualifiers, include the empty
+        /// string as a prefix
+        /// ("").
+        #[prost(bytes = "vec", repeated, tag = "2")]
+        pub qualifier_prefixes: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
+    }
+    /// Defines a simple AuthorizedView that is a subset of the underlying Table.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SubsetView {
+        /// Row prefixes to be included in the AuthorizedView.
+        /// To provide access to all rows, include the empty string as a prefix ("").
+        #[prost(bytes = "vec", repeated, tag = "1")]
+        pub row_prefixes: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
+        /// Map from column family name to the columns in this family to be included
+        /// in the AuthorizedView.
+        #[prost(map = "string, message", tag = "2")]
+        pub family_subsets: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            FamilySubsets,
+        >,
+    }
+    /// Defines a subset of an AuthorizedView's fields.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ResponseView {
+        /// Uses the default view for each method as documented in the request.
+        Unspecified = 0,
+        /// Only populates `name`.
+        NameOnly = 1,
+        /// Only populates the AuthorizedView's basic metadata. This includes:
+        /// name, deletion_protection, etag.
+        Basic = 2,
+        /// Populates every fields.
+        Full = 3,
+    }
+    impl ResponseView {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ResponseView::Unspecified => "RESPONSE_VIEW_UNSPECIFIED",
+                ResponseView::NameOnly => "NAME_ONLY",
+                ResponseView::Basic => "BASIC",
+                ResponseView::Full => "FULL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESPONSE_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+                "NAME_ONLY" => Some(Self::NameOnly),
+                "BASIC" => Some(Self::Basic),
+                "FULL" => Some(Self::Full),
+                _ => None,
+            }
+        }
+    }
+    /// The type of this AuthorizedView.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AuthorizedView {
+        /// An AuthorizedView permitting access to an explicit subset of a Table.
+        #[prost(message, tag = "2")]
+        SubsetView(SubsetView),
+    }
 }
 /// A set of columns within a table which share a common configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2057,6 +2445,18 @@ pub struct ColumnFamily {
     /// GC expression for its family.
     #[prost(message, optional, tag = "1")]
     pub gc_rule: ::core::option::Option<GcRule>,
+    /// The type of data stored in each of this family's cell values, including its
+    /// full encoding. If omitted, the family only serves raw untyped bytes.
+    ///
+    /// For now, only the `Aggregate` type is supported.
+    ///
+    /// `Aggregate` can only be set at family creation and is immutable afterwards.
+    ///
+    ///
+    /// If `value_type` is `Aggregate`, written data must be compatible with:
+    ///   * `value_type.input_type` for `AddInput` mutations
+    #[prost(message, optional, tag = "3")]
+    pub value_type: ::core::option::Option<Type>,
 }
 /// Rule for determining which cells to delete during garbage collection.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2776,6 +3176,11 @@ pub mod modify_column_families_request {
         /// The ID of the column family to be modified.
         #[prost(string, tag = "1")]
         pub id: ::prost::alloc::string::String,
+        /// Optional. A mask specifying which fields (e.g. `gc_rule`) in the `update`
+        /// mod should be updated, ignored for other modification types. If unset or
+        /// empty, we treat it as updating `gc_rule` to be backward compatible.
+        #[prost(message, optional, tag = "6")]
+        pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
         /// Column family modifications.
         #[prost(oneof = "modification::Mod", tags = "2, 3, 4")]
         pub r#mod: ::core::option::Option<modification::Mod>,
@@ -2834,7 +3239,40 @@ pub struct CheckConsistencyRequest {
     /// Required. The token created using GenerateConsistencyToken for the Table.
     #[prost(string, tag = "2")]
     pub consistency_token: ::prost::alloc::string::String,
+    /// Which type of read needs to consistently observe which type of write?
+    /// Default: `standard_read_remote_writes`
+    #[prost(oneof = "check_consistency_request::Mode", tags = "3, 4")]
+    pub mode: ::core::option::Option<check_consistency_request::Mode>,
 }
+/// Nested message and enum types in `CheckConsistencyRequest`.
+pub mod check_consistency_request {
+    /// Which type of read needs to consistently observe which type of write?
+    /// Default: `standard_read_remote_writes`
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Mode {
+        /// Checks that reads using an app profile with `StandardIsolation` can
+        /// see all writes committed before the token was created, even if the
+        /// read and write target different clusters.
+        #[prost(message, tag = "3")]
+        StandardReadRemoteWrites(super::StandardReadRemoteWrites),
+        /// Checks that reads using an app profile with `DataBoostIsolationReadOnly`
+        /// can see all writes committed before the token was created, but only if
+        /// the read and write target the same cluster.
+        #[prost(message, tag = "4")]
+        DataBoostReadLocalWrites(super::DataBoostReadLocalWrites),
+    }
+}
+/// Checks that all writes before the consistency token was generated are
+/// replicated in every cluster and readable.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StandardReadRemoteWrites {}
+/// Checks that all writes before the consistency token was generated in the same
+/// cluster are readable by Databoost.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataBoostReadLocalWrites {}
 /// Response message for
 /// [google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency][google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency]
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3228,6 +3666,156 @@ pub struct CopyBackupMetadata {
     #[prost(message, optional, tag = "3")]
     pub progress: ::core::option::Option<OperationProgress>,
 }
+/// The request for
+/// [CreateAuthorizedView][google.bigtable.admin.v2.BigtableTableAdmin.CreateAuthorizedView]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateAuthorizedViewRequest {
+    /// Required. This is the name of the table the AuthorizedView belongs to.
+    /// Values are of the form
+    /// `projects/{project}/instances/{instance}/tables/{table}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The id of the AuthorizedView to create. This AuthorizedView must
+    /// not already exist. The `authorized_view_id` appended to `parent` forms the
+    /// full AuthorizedView name of the form
+    /// `projects/{project}/instances/{instance}/tables/{table}/authorizedView/{authorized_view}`.
+    #[prost(string, tag = "2")]
+    pub authorized_view_id: ::prost::alloc::string::String,
+    /// Required. The AuthorizedView to create.
+    #[prost(message, optional, tag = "3")]
+    pub authorized_view: ::core::option::Option<AuthorizedView>,
+}
+/// The metadata for the Operation returned by CreateAuthorizedView.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateAuthorizedViewMetadata {
+    /// The request that prompted the initiation of this CreateInstance operation.
+    #[prost(message, optional, tag = "1")]
+    pub original_request: ::core::option::Option<CreateAuthorizedViewRequest>,
+    /// The time at which the original request was received.
+    #[prost(message, optional, tag = "2")]
+    pub request_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time at which the operation failed or was completed successfully.
+    #[prost(message, optional, tag = "3")]
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for
+/// [google.bigtable.admin.v2.BigtableTableAdmin.ListAuthorizedViews][google.bigtable.admin.v2.BigtableTableAdmin.ListAuthorizedViews]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAuthorizedViewsRequest {
+    /// Required. The unique name of the table for which AuthorizedViews should be
+    /// listed. Values are of the form
+    /// `projects/{project}/instances/{instance}/tables/{table}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of results per page.
+    ///
+    /// A page_size of zero lets the server choose the number of items to return.
+    /// A page_size which is strictly positive will return at most that many items.
+    /// A negative page_size will cause an error.
+    ///
+    /// Following the first request, subsequent paginated calls are not required
+    /// to pass a page_size. If a page_size is set in subsequent calls, it must
+    /// match the page_size given in the first request.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The value of `next_page_token` returned by a previous call.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. The resource_view to be applied to the returned views' fields.
+    /// Default to NAME_ONLY.
+    #[prost(enumeration = "authorized_view::ResponseView", tag = "4")]
+    pub view: i32,
+}
+/// Response message for
+/// [google.bigtable.admin.v2.BigtableTableAdmin.ListAuthorizedViews][google.bigtable.admin.v2.BigtableTableAdmin.ListAuthorizedViews]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAuthorizedViewsResponse {
+    /// The AuthorizedViews present in the requested table.
+    #[prost(message, repeated, tag = "1")]
+    pub authorized_views: ::prost::alloc::vec::Vec<AuthorizedView>,
+    /// Set if not all tables could be returned in a single response.
+    /// Pass this value to `page_token` in another request to get the next
+    /// page of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [google.bigtable.admin.v2.BigtableTableAdmin.GetAuthorizedView][google.bigtable.admin.v2.BigtableTableAdmin.GetAuthorizedView]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAuthorizedViewRequest {
+    /// Required. The unique name of the requested AuthorizedView.
+    /// Values are of the form
+    /// `projects/{project}/instances/{instance}/tables/{table}/authorizedViews/{authorized_view}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The resource_view to be applied to the returned AuthorizedView's
+    /// fields. Default to BASIC.
+    #[prost(enumeration = "authorized_view::ResponseView", tag = "2")]
+    pub view: i32,
+}
+/// The request for
+/// [UpdateAuthorizedView][google.bigtable.admin.v2.BigtableTableAdmin.UpdateAuthorizedView].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAuthorizedViewRequest {
+    /// Required. The AuthorizedView to update. The `name` in `authorized_view` is
+    /// used to identify the AuthorizedView. AuthorizedView name must in this
+    /// format
+    /// projects/<project>/instances/<instance>/tables/<table>/authorizedViews/<authorized_view>
+    #[prost(message, optional, tag = "1")]
+    pub authorized_view: ::core::option::Option<AuthorizedView>,
+    /// Optional. The list of fields to update.
+    /// A mask specifying which fields in the AuthorizedView resource should be
+    /// updated. This mask is relative to the AuthorizedView resource, not to the
+    /// request message. A field will be overwritten if it is in the mask. If
+    /// empty, all fields set in the request will be overwritten. A special value
+    /// `*` means to overwrite all fields (including fields not set in the
+    /// request).
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. If true, ignore the safety checks when updating the
+    /// AuthorizedView.
+    #[prost(bool, tag = "3")]
+    pub ignore_warnings: bool,
+}
+/// Metadata for the google.longrunning.Operation returned by
+/// [UpdateAuthorizedView][google.bigtable.admin.v2.BigtableTableAdmin.UpdateAuthorizedView].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAuthorizedViewMetadata {
+    /// The request that prompted the initiation of this UpdateAuthorizedView
+    /// operation.
+    #[prost(message, optional, tag = "1")]
+    pub original_request: ::core::option::Option<UpdateAuthorizedViewRequest>,
+    /// The time at which the original request was received.
+    #[prost(message, optional, tag = "2")]
+    pub request_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time at which the operation failed or was completed successfully.
+    #[prost(message, optional, tag = "3")]
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for
+/// [google.bigtable.admin.v2.BigtableTableAdmin.DeleteAuthorizedView][google.bigtable.admin.v2.BigtableTableAdmin.DeleteAuthorizedView]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteAuthorizedViewRequest {
+    /// Required. The unique name of the AuthorizedView to be deleted.
+    /// Values are of the form
+    /// `projects/{project}/instances/{instance}/tables/{table}/authorizedViews/{authorized_view}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The current etag of the AuthorizedView.
+    /// If an etag is provided and does not match the current etag of the
+    /// AuthorizedView, deletion will be blocked and an ABORTED error will be
+    /// returned.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod bigtable_table_admin_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -3531,6 +4119,155 @@ pub mod bigtable_table_admin_client {
                     GrpcMethod::new(
                         "google.bigtable.admin.v2.BigtableTableAdmin",
                         "UndeleteTable",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new AuthorizedView in a table.
+        pub async fn create_authorized_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateAuthorizedViewRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/CreateAuthorizedView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableTableAdmin",
+                        "CreateAuthorizedView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all AuthorizedViews from a specific table.
+        pub async fn list_authorized_views(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAuthorizedViewsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAuthorizedViewsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/ListAuthorizedViews",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableTableAdmin",
+                        "ListAuthorizedViews",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets information from a specified AuthorizedView.
+        pub async fn get_authorized_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAuthorizedViewRequest>,
+        ) -> std::result::Result<tonic::Response<super::AuthorizedView>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/GetAuthorizedView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableTableAdmin",
+                        "GetAuthorizedView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an AuthorizedView in a table.
+        pub async fn update_authorized_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAuthorizedViewRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/UpdateAuthorizedView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableTableAdmin",
+                        "UpdateAuthorizedView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Permanently deletes a specified AuthorizedView.
+        pub async fn delete_authorized_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteAuthorizedViewRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/DeleteAuthorizedView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableTableAdmin",
+                        "DeleteAuthorizedView",
                     ),
                 );
             self.inner.unary(req, path, codec).await

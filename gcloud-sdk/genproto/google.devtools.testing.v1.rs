@@ -2632,7 +2632,7 @@ pub mod device_session {
     pub enum Expiration {
         /// Optional. The amount of time that a device will be initially allocated
         /// for. This can eventually be extended with the UpdateDeviceSession RPC.
-        /// Default: 30 minutes.
+        /// Default: 15 minutes.
         #[prost(message, tag = "13")]
         Ttl(::prost_types::Duration),
         /// Optional. If the device is still in use at this time, any connections

@@ -822,6 +822,10 @@ pub struct ListObjectsRequest {
     /// Soft delete policy is required to set this option.
     #[prost(bool, tag = "12")]
     pub soft_deleted: bool,
+    /// Optional. If true, will also include folders and managed folders (besides
+    /// objects) in the returned `prefixes`. Requires `delimiter` to be set to '/'.
+    #[prost(bool, tag = "13")]
+    pub include_folders_as_prefixes: bool,
     /// Optional. Filter results to objects and prefixes that match this glob
     /// pattern. See [List Objects Using
     /// Glob](<https://cloud.google.com/storage/docs/json_api/v1/objects/list#list-objects-and-prefixes-using-glob>)
@@ -1523,6 +1527,11 @@ pub struct Bucket {
     /// Autoclass feature will be disabled and have no effect on the bucket.
     #[prost(message, optional, tag = "28")]
     pub autoclass: ::core::option::Option<bucket::Autoclass>,
+    /// Optional. The bucket's hierarchical namespace configuration. If there is no
+    /// configuration, the hierarchical namespace feature will be disabled and have
+    /// no effect on the bucket.
+    #[prost(message, optional, tag = "32")]
+    pub hierarchical_namespace: ::core::option::Option<bucket::HierarchicalNamespace>,
     /// Optional. The bucket's soft delete policy. The soft delete policy prevents
     /// soft-deleted objects from being permanently deleted.
     #[prost(message, optional, tag = "31")]
@@ -1830,6 +1839,14 @@ pub mod bucket {
         pub terminal_storage_class_update_time: ::core::option::Option<
             ::prost_types::Timestamp,
         >,
+    }
+    /// Configuration for a bucket's hierarchical namespace feature.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct HierarchicalNamespace {
+        /// Optional. Enables the hierarchical namespace feature.
+        #[prost(bool, tag = "1")]
+        pub enabled: bool,
     }
 }
 /// An access-control entry.

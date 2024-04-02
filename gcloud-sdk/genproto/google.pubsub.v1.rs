@@ -811,7 +811,7 @@ pub mod ingestion_data_source_settings {
             ///      `gcp_service_account`.
             KinesisPermissionDenied = 2,
             /// Permission denied encountered while publishing to the topic. This can
-            /// happen due to Pub/Sub SA has not been granted the [appropriate publish
+            /// happen if the Pub/Sub SA has not been granted the [appropriate publish
             /// permissions](<https://cloud.google.com/pubsub/docs/access-control#pubsub.publisher>)
             PublishPermissionDenied = 3,
             /// The Kinesis stream does not exist.
@@ -1677,6 +1677,11 @@ pub struct CloudStorageConfig {
     /// Must not end in "/".
     #[prost(string, tag = "3")]
     pub filename_suffix: ::prost::alloc::string::String,
+    /// Optional. User-provided format string specifying how to represent datetimes
+    /// in Cloud Storage filenames. See the [datetime format
+    /// guidance](<https://cloud.google.com/pubsub/docs/create-cloudstorage-subscription#file_names>).
+    #[prost(string, tag = "10")]
+    pub filename_datetime_format: ::prost::alloc::string::String,
     /// Optional. The maximum duration that can elapse before a new Cloud Storage
     /// file is created. Min 1 minute, max 10 minutes, default 5 minutes. May not
     /// exceed the subscription's acknowledgement deadline.

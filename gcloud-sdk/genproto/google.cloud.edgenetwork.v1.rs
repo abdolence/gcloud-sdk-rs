@@ -11,13 +11,16 @@ pub struct Zone {
     /// Output only. The time when the zone was last updated.
     #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Labels as key value pairs
+    /// Deprecated: not implemented.
+    /// Labels as key value pairs.
     #[prost(map = "string, string", tag = "4")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Deprecated: not implemented.
     /// The deployment layout type.
+    #[deprecated]
     #[prost(string, tag = "5")]
     pub layout_name: ::prost::alloc::string::String,
 }
@@ -690,6 +693,7 @@ impl ResourceState {
         }
     }
 }
+/// Deprecated: not implemented.
 /// Message for requesting list of Zones
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -711,6 +715,7 @@ pub struct ListZonesRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
+/// Deprecated: not implemented.
 /// Message for response to listing Zones
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -725,6 +730,7 @@ pub struct ListZonesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Deprecated: not implemented.
 /// Message for getting a Zone
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1506,6 +1512,7 @@ pub mod edge_network_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Deprecated: not implemented.
         /// Lists Zones in a given project and location.
         pub async fn list_zones(
             &mut self,
@@ -1537,6 +1544,7 @@ pub mod edge_network_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Deprecated: not implemented.
         /// Gets details of a single Zone.
         pub async fn get_zone(
             &mut self,

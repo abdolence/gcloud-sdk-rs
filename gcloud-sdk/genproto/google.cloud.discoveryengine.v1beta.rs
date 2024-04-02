@@ -359,6 +359,13 @@ pub struct Document {
     /// It contains derived data that are not in the original input document.
     #[prost(message, optional, tag = "6")]
     pub derived_struct_data: ::core::option::Option<::prost_types::Struct>,
+    /// Output only. The last time the document was indexed. If this field is set,
+    /// the document could be returned in search results.
+    ///
+    /// This field is OUTPUT_ONLY. If this field is not populated, it means the
+    /// document has never been indexed.
+    #[prost(message, optional, tag = "13")]
+    pub index_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Data representation. One of
     /// [struct_data][google.cloud.discoveryengine.v1beta.Document.struct_data] or
     /// [json_data][google.cloud.discoveryengine.v1beta.Document.json_data] should
@@ -1422,6 +1429,9 @@ pub struct PurgeDocumentsMetadata {
     /// Count of entries that encountered errors while processing.
     #[prost(int64, tag = "4")]
     pub failure_count: i64,
+    /// Count of entries that were ignored as entries were not found.
+    #[prost(int64, tag = "5")]
+    pub ignored_count: i64,
 }
 /// Request message for
 /// [CompletionService.PurgeSuggestionDenyListEntries][google.cloud.discoveryengine.v1beta.CompletionService.PurgeSuggestionDenyListEntries]
@@ -1799,6 +1809,9 @@ pub struct SearchRequest {
     /// If this field is negative, an  `INVALID_ARGUMENT`  is returned.
     #[prost(int32, tag = "6")]
     pub offset: i32,
+    /// A list of data store specs to apply on a search call.
+    #[prost(message, repeated, tag = "32")]
+    pub data_store_specs: ::prost::alloc::vec::Vec<search_request::DataStoreSpec>,
     /// The filter syntax consists of an expression language for constructing a
     /// predicate from one or more fields of the documents being filtered. Filter
     /// expression is case-sensitive.
@@ -1987,6 +2000,16 @@ pub mod search_request {
             ImageBytes(::prost::alloc::string::String),
         }
     }
+    /// A struct to define data stores to filter on in a search call.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataStoreSpec {
+        /// Required. Full resource name of
+        /// [DataStore][google.cloud.discoveryengine.v1beta.DataStore], such as
+        /// `projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}`.
+        #[prost(string, tag = "1")]
+        pub data_store: ::prost::alloc::string::String,
+    }
     /// A facet specification to perform faceted search.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2156,9 +2179,8 @@ pub mod search_request {
             /// Examples:
             ///
             /// * To boost documents with document ID "doc_1" or "doc_2", and
-            /// color
-            ///    "Red" or "Blue":
-            ///      * (id: ANY("doc_1", "doc_2")) AND (color: ANY("Red","Blue"))
+            /// color "Red" or "Blue":
+            /// `(document_id: ANY("doc_1", "doc_2")) AND (color: ANY("Red", "Blue"))`
             #[prost(string, tag = "1")]
             pub condition: ::prost::alloc::string::String,
             /// Strength of the condition boost, which should be in \[-1, 1\]. Negative
@@ -2360,7 +2382,7 @@ pub mod search_request {
             /// of results returned is less than `summaryResultCount`, the summary is
             /// generated from all of the results.
             ///
-            /// At most five results can be used to generate a summary.
+            /// At most 10 results can be used to generate a summary.
             #[prost(int32, tag = "1")]
             pub summary_result_count: i32,
             /// Specifies whether to include citations in the summary. The default
@@ -3239,6 +3261,11 @@ pub struct ConverseConversationRequest {
     /// [Filter](<https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>)
     #[prost(string, tag = "9")]
     pub filter: ::prost::alloc::string::String,
+    /// Boost specification to boost certain documents in search results which may
+    /// affect the converse response. For more information on boosting, see
+    /// [Boosting](<https://cloud.google.com/retail/docs/boosting#boost>)
+    #[prost(message, optional, tag = "10")]
+    pub boost_spec: ::core::option::Option<search_request::BoostSpec>,
 }
 /// Response message for
 /// [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1beta.ConversationalSearchService.ConverseConversation]
@@ -3629,6 +3656,127 @@ pub mod conversational_search_service_client {
         }
     }
 }
+/// A singleton resource of
+/// [DataStore][google.cloud.discoveryengine.v1beta.DataStore]. It's empty when
+/// [DataStore][google.cloud.discoveryengine.v1beta.DataStore] is created, which
+/// defaults to digital parser. The first call to
+/// [DataStoreService.UpdateDocumentProcessingConfig][] method will initialize
+/// the config.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DocumentProcessingConfig {
+    /// The full resource name of the Document Processing Config.
+    /// Format:
+    /// `projects/*/locations/*/collections/*/dataStores/*/documentProcessingConfig`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Configurations for default Document parser.
+    /// If not specified, we will configure it as default DigitalParsingConfig, and
+    /// the default parsing config will be applied to all file types for Document
+    /// parsing.
+    #[prost(message, optional, tag = "4")]
+    pub default_parsing_config: ::core::option::Option<
+        document_processing_config::ParsingConfig,
+    >,
+    /// Map from file type to override the default parsing configuration based on
+    /// the file type. Supported keys:
+    /// * `pdf`: Override parsing config for PDF files, either digital parsing, ocr
+    /// parsing or layout parsing is supported.
+    /// * `html`: Override parsing config for HTML files, only digital parsing and
+    /// or layout parsing are supported.
+    /// * `docx`: Override parsing config for DOCX files, only digital parsing and
+    /// or layout parsing are supported.
+    #[prost(map = "string, message", tag = "5")]
+    pub parsing_config_overrides: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        document_processing_config::ParsingConfig,
+    >,
+}
+/// Nested message and enum types in `DocumentProcessingConfig`.
+pub mod document_processing_config {
+    /// Related configurations applied to a specific type of document parser.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ParsingConfig {
+        /// Configs for document processing types.
+        #[prost(oneof = "parsing_config::TypeDedicatedConfig", tags = "1, 2")]
+        pub type_dedicated_config: ::core::option::Option<
+            parsing_config::TypeDedicatedConfig,
+        >,
+    }
+    /// Nested message and enum types in `ParsingConfig`.
+    pub mod parsing_config {
+        /// The digital parsing configurations for documents.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct DigitalParsingConfig {}
+        /// The OCR parsing configurations for documents.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct OcrParsingConfig {
+            /// Apply additional enhanced OCR processing to a list of document
+            /// elements.
+            ///
+            /// Supported values:
+            /// * `table`: advanced table parsing model.
+            #[prost(string, repeated, tag = "1")]
+            pub enhanced_document_elements: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
+            /// If true, will use native text instead of OCR text on pages containing
+            /// native text.
+            #[prost(bool, tag = "2")]
+            pub use_native_text: bool,
+        }
+        /// Configs for document processing types.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum TypeDedicatedConfig {
+            /// Configurations applied to digital parser.
+            #[prost(message, tag = "1")]
+            DigitalParsingConfig(DigitalParsingConfig),
+            /// Configurations applied to OCR parser. Currently it only applies to
+            /// PDFs.
+            #[prost(message, tag = "2")]
+            OcrParsingConfig(OcrParsingConfig),
+        }
+    }
+}
+/// Defines the structure and layout of a type of document data.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Schema {
+    /// Immutable. The full resource name of the schema, in the format of
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/schemas/{schema}`.
+    ///
+    /// This field must be a UTF-8 encoded string with a length limit of 1024
+    /// characters.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Schema representation. One of
+    /// [struct_schema][google.cloud.discoveryengine.v1beta.Schema.struct_schema]
+    /// or [json_schema][google.cloud.discoveryengine.v1beta.Schema.json_schema]
+    /// should be provided otherwise an `INVALID_ARGUMENT` error is thrown.
+    #[prost(oneof = "schema::Schema", tags = "2, 3")]
+    pub schema: ::core::option::Option<schema::Schema>,
+}
+/// Nested message and enum types in `Schema`.
+pub mod schema {
+    /// Schema representation. One of
+    /// [struct_schema][google.cloud.discoveryengine.v1beta.Schema.struct_schema]
+    /// or [json_schema][google.cloud.discoveryengine.v1beta.Schema.json_schema]
+    /// should be provided otherwise an `INVALID_ARGUMENT` error is thrown.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Schema {
+        /// The structured representation of the schema.
+        #[prost(message, tag = "2")]
+        StructSchema(::prost_types::Struct),
+        /// The JSON representation of the schema.
+        #[prost(string, tag = "3")]
+        JsonSchema(::prost::alloc::string::String),
+    }
+}
 /// DataStore captures global settings and configs at the DataStore level.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3672,6 +3820,26 @@ pub struct DataStore {
     /// [DataStore][google.cloud.discoveryengine.v1beta.DataStore] was created at.
     #[prost(message, optional, tag = "4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Configuration for Document understanding and enrichment.
+    #[prost(message, optional, tag = "27")]
+    pub document_processing_config: ::core::option::Option<DocumentProcessingConfig>,
+    /// The start schema to use for this
+    /// [DataStore][google.cloud.discoveryengine.v1beta.DataStore] when
+    /// provisioning it. If unset, a default vertical specialized schema will be
+    /// used.
+    ///
+    /// This field is only used by [CreateDataStore][] API, and will be ignored if
+    /// used in other APIs. This field will be omitted from all API responses
+    /// including [CreateDataStore][] API. To retrieve a schema of a
+    /// [DataStore][google.cloud.discoveryengine.v1beta.DataStore], use
+    /// [SchemaService.GetSchema][google.cloud.discoveryengine.v1beta.SchemaService.GetSchema]
+    /// API instead.
+    ///
+    /// The provided schema will be validated against certain rules on schema.
+    /// Learn more from [this
+    /// doc](<https://cloud.google.com/generative-ai-app-builder/docs/provide-schema>).
+    #[prost(message, optional, tag = "28")]
+    pub starting_schema: ::core::option::Option<Schema>,
 }
 /// Nested message and enum types in `DataStore`.
 pub mod data_store {
@@ -5518,41 +5686,6 @@ pub mod recommendation_service_client {
         }
     }
 }
-/// Defines the structure and layout of a type of document data.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Schema {
-    /// Immutable. The full resource name of the schema, in the format of
-    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/schemas/{schema}`.
-    ///
-    /// This field must be a UTF-8 encoded string with a length limit of 1024
-    /// characters.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Schema representation. One of
-    /// [struct_schema][google.cloud.discoveryengine.v1beta.Schema.struct_schema]
-    /// or [json_schema][google.cloud.discoveryengine.v1beta.Schema.json_schema]
-    /// should be provided otherwise an `INVALID_ARGUMENT` error is thrown.
-    #[prost(oneof = "schema::Schema", tags = "2, 3")]
-    pub schema: ::core::option::Option<schema::Schema>,
-}
-/// Nested message and enum types in `Schema`.
-pub mod schema {
-    /// Schema representation. One of
-    /// [struct_schema][google.cloud.discoveryengine.v1beta.Schema.struct_schema]
-    /// or [json_schema][google.cloud.discoveryengine.v1beta.Schema.json_schema]
-    /// should be provided otherwise an `INVALID_ARGUMENT` error is thrown.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Schema {
-        /// The structured representation of the schema.
-        #[prost(message, tag = "2")]
-        StructSchema(::prost_types::Struct),
-        /// The JSON representation of the schema.
-        #[prost(string, tag = "3")]
-        JsonSchema(::prost::alloc::string::String),
-    }
-}
 /// Request message for
 /// [SchemaService.GetSchema][google.cloud.discoveryengine.v1beta.SchemaService.GetSchema]
 /// method.
@@ -5938,6 +6071,234 @@ pub mod schema_service_client {
         }
     }
 }
+/// Request message for
+/// [SearchTuningService.TrainCustomModel][google.cloud.discoveryengine.v1beta.SearchTuningService.TrainCustomModel]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrainCustomModelRequest {
+    /// Required. The resource name of the Data Store, such as
+    /// `projects/*/locations/global/collections/default_collection/dataStores/default_data_store`.
+    /// This field is used to identify the data store where to train the models.
+    #[prost(string, tag = "1")]
+    pub data_store: ::prost::alloc::string::String,
+    /// Model to be trained. Supported values are:
+    ///
+    ///   * **search-tuning**: Fine tuning the search system based on data provided.
+    #[prost(string, tag = "3")]
+    pub model_type: ::prost::alloc::string::String,
+    /// The desired location of errors incurred during the data ingestion and
+    /// training.
+    #[prost(message, optional, tag = "4")]
+    pub error_config: ::core::option::Option<ImportErrorConfig>,
+    /// Model training input.
+    #[prost(oneof = "train_custom_model_request::TrainingInput", tags = "2")]
+    pub training_input: ::core::option::Option<
+        train_custom_model_request::TrainingInput,
+    >,
+}
+/// Nested message and enum types in `TrainCustomModelRequest`.
+pub mod train_custom_model_request {
+    /// Cloud Storage training data input.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GcsTrainingInput {
+        /// The Cloud Storage corpus data which could be associated in train data.
+        /// The data path format is `gs://<bucket_to_data>/<jsonl_file_name>`.
+        /// A newline delimited jsonl/ndjson file.
+        ///
+        /// For search-tuning model, each line should have the _id, title
+        /// and text. Example:
+        /// `{"_id": "doc1", title: "relevant doc", "text": "relevant text"}`
+        #[prost(string, tag = "1")]
+        pub corpus_data_path: ::prost::alloc::string::String,
+        /// The gcs query data which could be associated in train data.
+        /// The data path format is `gs://<bucket_to_data>/<jsonl_file_name>`.
+        /// A newline delimited jsonl/ndjson file.
+        ///
+        /// For search-tuning model, each line should have the _id
+        /// and text. Example: {"_id": "query1",  "text": "example query"}
+        #[prost(string, tag = "2")]
+        pub query_data_path: ::prost::alloc::string::String,
+        /// Cloud Storage training data path whose format should be
+        /// `gs://<bucket_to_data>/<tsv_file_name>`. The file should be in tsv
+        /// format. Each line should have the doc_id and query_id and score (number).
+        ///
+        /// For search-tuning model, it should have the query-id corpus-id
+        /// score as tsv file header. The score should be a number in `[0, inf+)`.
+        /// The larger the number is, the more relevant the pair is. Example:
+        ///
+        /// * `query-id\tcorpus-id\tscore`
+        /// * `query1\tdoc1\t1`
+        #[prost(string, tag = "3")]
+        pub train_data_path: ::prost::alloc::string::String,
+        /// Cloud Storage test data. Same format as train_data_path. If not provided,
+        /// a random 80/20 train/test split will be performed on train_data_path.
+        #[prost(string, tag = "4")]
+        pub test_data_path: ::prost::alloc::string::String,
+    }
+    /// Model training input.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TrainingInput {
+        /// Cloud Storage training input.
+        #[prost(message, tag = "2")]
+        GcsTrainingInput(GcsTrainingInput),
+    }
+}
+/// Response of the
+/// [TrainCustomModelRequest][google.cloud.discoveryengine.v1beta.TrainCustomModelRequest].
+/// This message is returned by the google.longrunning.Operations.response field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrainCustomModelResponse {
+    /// A sample of errors encountered while processing the data.
+    #[prost(message, repeated, tag = "1")]
+    pub error_samples: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+    /// Echoes the destination for the complete errors in the request if set.
+    #[prost(message, optional, tag = "2")]
+    pub error_config: ::core::option::Option<ImportErrorConfig>,
+    /// The trained model status. Possible values are:
+    ///
+    ///   * **bad-data**: The training data quality is bad.
+    ///   * **no-improvement**: Tuning didn't improve performance. Won't deploy.
+    ///   * **in-progress**: Model training is in progress.
+    ///   * **ready**: The model is ready for serving.
+    #[prost(string, tag = "3")]
+    pub model_status: ::prost::alloc::string::String,
+}
+/// Metadata related to the progress of the TrainCustomModel operation. This is
+/// returned by the google.longrunning.Operation.metadata field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrainCustomModelMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Generated client implementations.
+pub mod search_tuning_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for search tuning.
+    #[derive(Debug, Clone)]
+    pub struct SearchTuningServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl SearchTuningServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> SearchTuningServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SearchTuningServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            SearchTuningServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Trains a custom model.
+        pub async fn train_custom_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::TrainCustomModelRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1beta.SearchTuningService/TrainCustomModel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1beta.SearchTuningService",
+                        "TrainCustomModel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// Configures metadata that is used to generate serving time results (e.g.
 /// search results or recommendation predictions).
 /// The ServingConfig is passed in the search and predict request and generates
@@ -5946,7 +6307,7 @@ pub mod schema_service_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServingConfig {
     /// Immutable. Fully qualified name
-    /// `projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/servingConfigs/{serving_config_id}`
+    /// `projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}/servingConfigs/{serving_config_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The human readable serving config display name. Used in Discovery
@@ -5999,8 +6360,9 @@ pub struct ServingConfig {
     /// The ranking expression controls the customized ranking on retrieval
     /// documents. To leverage this, document embedding is required. The ranking
     /// expression setting in ServingConfig applies to all search requests served
-    /// by the serving config. However, if [SearchRequest.ranking_expression][] is
-    /// specified, it overrides the ServingConfig ranking expression.
+    /// by the serving config. However, if
+    /// [SearchRequest.ranking_expression][google.cloud.discoveryengine.v1beta.SearchRequest.ranking_expression]
+    /// is specified, it overrides the ServingConfig ranking expression.
     ///
     /// The ranking expression is a single function or multiple functions that are
     /// joined by "+".
@@ -6212,7 +6574,7 @@ pub struct UpdateServingConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServingConfigRequest {
     /// Required. The resource name of the ServingConfig to get. Format:
-    /// `projects/{project_number}/locations/{location}/collections/{collection}/dataStores/{data_store}/servingConfigs/{serving_config_id}`
+    /// `projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -6220,8 +6582,8 @@ pub struct GetServingConfigRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServingConfigsRequest {
-    /// Required. The dataStore resource name. Format:
-    /// `projects/{project_number}/locations/{location}/collections/{collection}/dataStores/{data_store}`
+    /// Required. Full resource name of the parent resource. Format:
+    /// `projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Maximum number of results to return. If unspecified, defaults
@@ -6250,7 +6612,8 @@ pub mod serving_config_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Service for modifying ServingConfig.
+    /// Service for operations related to
+    /// [ServingConfig][google.cloud.discoveryengine.v1beta.ServingConfig].
     #[derive(Debug, Clone)]
     pub struct ServingConfigServiceClient<T> {
         inner: tonic::client::Grpc<T>,

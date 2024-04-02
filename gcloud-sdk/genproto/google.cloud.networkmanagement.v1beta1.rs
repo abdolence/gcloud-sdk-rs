@@ -26,6 +26,11 @@ pub struct Trace {
     /// and avoid reordering or sorting them.
     #[prost(message, repeated, tag = "2")]
     pub steps: ::prost::alloc::vec::Vec<Step>,
+    /// ID of trace. For forward traces, this ID is unique for each trace. For
+    /// return traces, it matches ID of associated forward trace. A single forward
+    /// trace can be associated with none, one or more than one return trace.
+    #[prost(int32, tag = "4")]
+    pub forward_trace_id: i32,
 }
 /// A simulated forwarding path is composed of multiple steps.
 /// Each step has a well-defined state and an associated configuration.
@@ -51,7 +56,7 @@ pub struct Step {
     /// final state the configuration is cleared.
     #[prost(
         oneof = "step::StepInfo",
-        tags = "5, 6, 7, 8, 24, 9, 10, 11, 21, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23"
+        tags = "5, 6, 7, 8, 24, 9, 10, 11, 21, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 25, 26, 27, 28"
     )]
     pub step_info: ::core::option::Option<step::StepInfo>,
 }
@@ -80,10 +85,8 @@ pub mod step {
         /// Initial state: packet originating from the internet.
         /// The endpoint information is populated.
         StartFromInternet = 2,
-        /// Initial state: packet originating from a Google service. Some Google
-        /// services, such as health check probers or Identity Aware Proxy use
-        /// special routes, outside VPC routing configuration to reach Compute Engine
-        /// Instances.
+        /// Initial state: packet originating from a Google service.
+        /// The google_service information is populated.
         StartFromGoogleService = 27,
         /// Initial state: packet originating from a VPC or on-premises network
         /// with internal source IP.
@@ -105,6 +108,13 @@ pub mod step {
         /// Initial state: packet originating from a Cloud Run revision.
         /// A CloudRunRevisionInfo is populated with starting revision information.
         StartFromCloudRunRevision = 26,
+        /// Initial state: packet originating from a Storage Bucket. Used only for
+        /// return traces.
+        /// The storage_bucket information is populated.
+        StartFromStorageBucket = 29,
+        /// Initial state: packet originating from a published service that uses
+        /// Private Service Connect. Used only for return traces.
+        StartFromPscPublishedService = 30,
         /// Config checking state: verify ingress firewall rule.
         ApplyIngressFirewallRule = 4,
         /// Config checking state: verify egress firewall rule.
@@ -113,14 +123,20 @@ pub mod step {
         ApplyRoute = 6,
         /// Config checking state: match forwarding rule.
         ApplyForwardingRule = 7,
+        /// Config checking state: verify load balancer backend configuration.
+        AnalyzeLoadBalancerBackend = 28,
         /// Config checking state: packet sent or received under foreign IP
         /// address and allowed.
         SpoofingApproved = 8,
         /// Forwarding state: arriving at a Compute Engine instance.
         ArriveAtInstance = 9,
         /// Forwarding state: arriving at a Compute Engine internal load balancer.
+        /// Deprecated in favor of the `ANALYZE_LOAD_BALANCER_BACKEND` state, not
+        /// used in new tests.
         ArriveAtInternalLoadBalancer = 10,
         /// Forwarding state: arriving at a Compute Engine external load balancer.
+        /// Deprecated in favor of the `ANALYZE_LOAD_BALANCER_BACKEND` state, not
+        /// used in new tests.
         ArriveAtExternalLoadBalancer = 11,
         /// Forwarding state: arriving at a Cloud VPN gateway.
         ArriveAtVpnGateway = 12,
@@ -163,10 +179,13 @@ pub mod step {
                 State::StartFromCloudFunction => "START_FROM_CLOUD_FUNCTION",
                 State::StartFromAppEngineVersion => "START_FROM_APP_ENGINE_VERSION",
                 State::StartFromCloudRunRevision => "START_FROM_CLOUD_RUN_REVISION",
+                State::StartFromStorageBucket => "START_FROM_STORAGE_BUCKET",
+                State::StartFromPscPublishedService => "START_FROM_PSC_PUBLISHED_SERVICE",
                 State::ApplyIngressFirewallRule => "APPLY_INGRESS_FIREWALL_RULE",
                 State::ApplyEgressFirewallRule => "APPLY_EGRESS_FIREWALL_RULE",
                 State::ApplyRoute => "APPLY_ROUTE",
                 State::ApplyForwardingRule => "APPLY_FORWARDING_RULE",
+                State::AnalyzeLoadBalancerBackend => "ANALYZE_LOAD_BALANCER_BACKEND",
                 State::SpoofingApproved => "SPOOFING_APPROVED",
                 State::ArriveAtInstance => "ARRIVE_AT_INSTANCE",
                 State::ArriveAtInternalLoadBalancer => "ARRIVE_AT_INTERNAL_LOAD_BALANCER",
@@ -196,10 +215,15 @@ pub mod step {
                 "START_FROM_CLOUD_FUNCTION" => Some(Self::StartFromCloudFunction),
                 "START_FROM_APP_ENGINE_VERSION" => Some(Self::StartFromAppEngineVersion),
                 "START_FROM_CLOUD_RUN_REVISION" => Some(Self::StartFromCloudRunRevision),
+                "START_FROM_STORAGE_BUCKET" => Some(Self::StartFromStorageBucket),
+                "START_FROM_PSC_PUBLISHED_SERVICE" => {
+                    Some(Self::StartFromPscPublishedService)
+                }
                 "APPLY_INGRESS_FIREWALL_RULE" => Some(Self::ApplyIngressFirewallRule),
                 "APPLY_EGRESS_FIREWALL_RULE" => Some(Self::ApplyEgressFirewallRule),
                 "APPLY_ROUTE" => Some(Self::ApplyRoute),
                 "APPLY_FORWARDING_RULE" => Some(Self::ApplyForwardingRule),
+                "ANALYZE_LOAD_BALANCER_BACKEND" => Some(Self::AnalyzeLoadBalancerBackend),
                 "SPOOFING_APPROVED" => Some(Self::SpoofingApproved),
                 "ARRIVE_AT_INSTANCE" => Some(Self::ArriveAtInstance),
                 "ARRIVE_AT_INTERNAL_LOAD_BALANCER" => {
@@ -272,7 +296,8 @@ pub mod step {
         /// Display information of the final state "drop" and reason.
         #[prost(message, tag = "15")]
         Drop(super::DropInfo),
-        /// Display information of the load balancers.
+        /// Display information of the load balancers. Deprecated in favor of the
+        /// `load_balancer_backend_info` field, not used in new tests.
         #[prost(message, tag = "16")]
         LoadBalancer(super::LoadBalancerInfo),
         /// Display information of a Google Cloud network.
@@ -293,6 +318,18 @@ pub mod step {
         /// Display information of a Cloud Run revision.
         #[prost(message, tag = "23")]
         CloudRunRevision(super::CloudRunRevisionInfo),
+        /// Display information of a NAT.
+        #[prost(message, tag = "25")]
+        Nat(super::NatInfo),
+        /// Display information of a ProxyConnection.
+        #[prost(message, tag = "26")]
+        ProxyConnection(super::ProxyConnectionInfo),
+        /// Display information of a specific load balancer backend.
+        #[prost(message, tag = "27")]
+        LoadBalancerBackendInfo(super::LoadBalancerBackendInfo),
+        /// Display information of a Storage Bucket. Used only for return traces.
+        #[prost(message, tag = "28")]
+        StorageBucket(super::StorageBucketInfo),
     }
 }
 /// For display only. Metadata associated with a Compute Engine instance.
@@ -355,7 +392,7 @@ pub struct FirewallInfo {
     /// Possible values: INGRESS, EGRESS
     #[prost(string, tag = "3")]
     pub direction: ::prost::alloc::string::String,
-    /// Possible values: ALLOW, DENY
+    /// Possible values: ALLOW, DENY, APPLY_SECURITY_PROFILE_GROUP
     #[prost(string, tag = "4")]
     pub action: ::prost::alloc::string::String,
     /// The priority of the firewall rule.
@@ -425,6 +462,16 @@ pub mod firewall_info {
         /// For details, see [Regional network firewall
         /// policies](<https://cloud.google.com/firewall/docs/regional-firewall-policies>).
         NetworkRegionalFirewallPolicyRule = 6,
+        /// Firewall policy rule containing attributes not yet supported in
+        /// Connectivity tests. Firewall analysis is skipped if such a rule can
+        /// potentially be matched. Please see the [list of unsupported
+        /// configurations](<https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/overview#unsupported-configs>).
+        UnsupportedFirewallPolicyRule = 100,
+        /// Tracking state for response traffic created when request traffic goes
+        /// through allow firewall rule.
+        /// For details, see [firewall rules
+        /// specifications](<https://cloud.google.com/firewall/docs/firewalls#specifications>)
+        TrackingState = 101,
     }
     impl FirewallRuleType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -448,6 +495,10 @@ pub mod firewall_info {
                 FirewallRuleType::NetworkRegionalFirewallPolicyRule => {
                     "NETWORK_REGIONAL_FIREWALL_POLICY_RULE"
                 }
+                FirewallRuleType::UnsupportedFirewallPolicyRule => {
+                    "UNSUPPORTED_FIREWALL_POLICY_RULE"
+                }
+                FirewallRuleType::TrackingState => "TRACKING_STATE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -466,6 +517,10 @@ pub mod firewall_info {
                 "NETWORK_REGIONAL_FIREWALL_POLICY_RULE" => {
                     Some(Self::NetworkRegionalFirewallPolicyRule)
                 }
+                "UNSUPPORTED_FIREWALL_POLICY_RULE" => {
+                    Some(Self::UnsupportedFirewallPolicyRule)
+                }
+                "TRACKING_STATE" => Some(Self::TrackingState),
                 _ => None,
             }
         }
@@ -757,7 +812,7 @@ pub mod google_service_info {
     )]
     #[repr(i32)]
     pub enum GoogleServiceType {
-        /// Unspecified Google Service. Includes most of Google APIs and services.
+        /// Unspecified Google Service.
         Unspecified = 0,
         /// Identity aware proxy.
         /// <https://cloud.google.com/iap/docs/using-tcp-forwarding>
@@ -772,6 +827,14 @@ pub mod google_service_info {
         /// <https://cloud.google.com/dns/docs/zones/forwarding-zones#firewall-rules>
         /// <https://cloud.google.com/dns/docs/policies#firewall-rules>
         CloudDns = 3,
+        /// private.googleapis.com and restricted.googleapis.com
+        GoogleApi = 4,
+        /// Google API via Private Service Connect.
+        /// <https://cloud.google.com/vpc/docs/configure-private-service-connect-apis>
+        GoogleApiPsc = 5,
+        /// Google API via VPC Service Controls.
+        /// <https://cloud.google.com/vpc/docs/configure-private-service-connect-apis>
+        GoogleApiVpcSc = 6,
     }
     impl GoogleServiceType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -786,6 +849,9 @@ pub mod google_service_info {
                     "GFE_PROXY_OR_HEALTH_CHECK_PROBER"
                 }
                 GoogleServiceType::CloudDns => "CLOUD_DNS",
+                GoogleServiceType::GoogleApi => "GOOGLE_API",
+                GoogleServiceType::GoogleApiPsc => "GOOGLE_API_PSC",
+                GoogleServiceType::GoogleApiVpcSc => "GOOGLE_API_VPC_SC",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -797,6 +863,9 @@ pub mod google_service_info {
                     Some(Self::GfeProxyOrHealthCheckProber)
                 }
                 "CLOUD_DNS" => Some(Self::CloudDns),
+                "GOOGLE_API" => Some(Self::GoogleApi),
+                "GOOGLE_API_PSC" => Some(Self::GoogleApiPsc),
+                "GOOGLE_API_VPC_SC" => Some(Self::GoogleApiVpcSc),
                 _ => None,
             }
         }
@@ -835,7 +904,10 @@ pub struct LoadBalancerInfo {
     /// Type of the load balancer.
     #[prost(enumeration = "load_balancer_info::LoadBalancerType", tag = "1")]
     pub load_balancer_type: i32,
-    /// URI of the health check for the load balancer.
+    /// URI of the health check for the load balancer. Deprecated and no longer
+    /// populated as different load balancer backends might have different health
+    /// checks.
+    #[deprecated]
     #[prost(string, tag = "2")]
     pub health_check_uri: ::prost::alloc::string::String,
     /// Information for the loadbalancer backends.
@@ -1179,6 +1251,9 @@ pub struct DeliverInfo {
     /// URI of the resource that the packet is delivered to.
     #[prost(string, tag = "2")]
     pub resource_uri: ::prost::alloc::string::String,
+    /// IP address of the target (if applicable).
+    #[prost(string, tag = "3")]
+    pub ip_address: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `DeliverInfo`.
 pub mod deliver_info {
@@ -1219,6 +1294,16 @@ pub mod deliver_info {
         PscVpcSc = 8,
         /// Target is a serverless network endpoint group.
         ServerlessNeg = 9,
+        /// Target is a Cloud Storage bucket.
+        StorageBucket = 10,
+        /// Target is a private network. Used only for return traces.
+        PrivateNetwork = 11,
+        /// Target is a Cloud Function. Used only for return traces.
+        CloudFunction = 12,
+        /// Target is a App Engine service version. Used only for return traces.
+        AppEngineVersion = 13,
+        /// Target is a Cloud Run revision. Used only for return traces.
+        CloudRunRevision = 14,
     }
     impl Target {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1237,6 +1322,11 @@ pub mod deliver_info {
                 Target::PscGoogleApi => "PSC_GOOGLE_API",
                 Target::PscVpcSc => "PSC_VPC_SC",
                 Target::ServerlessNeg => "SERVERLESS_NEG",
+                Target::StorageBucket => "STORAGE_BUCKET",
+                Target::PrivateNetwork => "PRIVATE_NETWORK",
+                Target::CloudFunction => "CLOUD_FUNCTION",
+                Target::AppEngineVersion => "APP_ENGINE_VERSION",
+                Target::CloudRunRevision => "CLOUD_RUN_REVISION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1252,6 +1342,11 @@ pub mod deliver_info {
                 "PSC_GOOGLE_API" => Some(Self::PscGoogleApi),
                 "PSC_VPC_SC" => Some(Self::PscVpcSc),
                 "SERVERLESS_NEG" => Some(Self::ServerlessNeg),
+                "STORAGE_BUCKET" => Some(Self::StorageBucket),
+                "PRIVATE_NETWORK" => Some(Self::PrivateNetwork),
+                "CLOUD_FUNCTION" => Some(Self::CloudFunction),
+                "APP_ENGINE_VERSION" => Some(Self::AppEngineVersion),
+                "CLOUD_RUN_REVISION" => Some(Self::CloudRunRevision),
                 _ => None,
             }
         }
@@ -1267,6 +1362,9 @@ pub struct ForwardInfo {
     /// URI of the resource that the packet is forwarded to.
     #[prost(string, tag = "2")]
     pub resource_uri: ::prost::alloc::string::String,
+    /// IP address of the target (if applicable).
+    #[prost(string, tag = "3")]
+    pub ip_address: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `ForwardInfo`.
 pub mod forward_info {
@@ -1302,6 +1400,8 @@ pub mod forward_info {
         AnotherProject = 7,
         /// Forwarded to an NCC Hub.
         NccHub = 8,
+        /// Forwarded to a router appliance.
+        RouterAppliance = 9,
     }
     impl Target {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1319,6 +1419,7 @@ pub mod forward_info {
                 Target::CloudSqlInstance => "CLOUD_SQL_INSTANCE",
                 Target::AnotherProject => "ANOTHER_PROJECT",
                 Target::NccHub => "NCC_HUB",
+                Target::RouterAppliance => "ROUTER_APPLIANCE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1335,6 +1436,7 @@ pub mod forward_info {
                 "CLOUD_SQL_INSTANCE" => Some(Self::CloudSqlInstance),
                 "ANOTHER_PROJECT" => Some(Self::AnotherProject),
                 "NCC_HUB" => Some(Self::NccHub),
+                "ROUTER_APPLIANCE" => Some(Self::RouterAppliance),
                 _ => None,
             }
         }
@@ -1350,9 +1452,11 @@ pub struct AbortInfo {
     /// URI of the resource that caused the abort.
     #[prost(string, tag = "2")]
     pub resource_uri: ::prost::alloc::string::String,
-    /// List of project IDs that the user has specified in the request but does
-    /// not have permission to access network configs. Analysis is aborted in this
-    /// case with the PERMISSION_DENIED cause.
+    /// IP address that caused the abort.
+    #[prost(string, tag = "4")]
+    pub ip_address: ::prost::alloc::string::String,
+    /// List of project IDs the user specified in the request but lacks access to.
+    /// In this case, analysis is aborted with the PERMISSION_DENIED cause.
     #[prost(string, repeated, tag = "3")]
     pub projects_missing_permission: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -1376,49 +1480,61 @@ pub mod abort_info {
     pub enum Cause {
         /// Cause is unspecified.
         Unspecified = 0,
-        /// Aborted due to unknown network.
-        /// The reachability analysis cannot proceed because the user does not have
-        /// access to the host project's network configurations, including firewall
-        /// rules and routes. This happens when the project is a service project and
-        /// the endpoints being traced are in the host project's network.
+        /// Aborted due to unknown network. Deprecated, not used in the new tests.
         UnknownNetwork = 1,
-        /// Aborted because the IP address(es) are unknown.
-        UnknownIp = 2,
         /// Aborted because no project information can be derived from the test
-        /// input.
+        /// input. Deprecated, not used in the new tests.
         UnknownProject = 3,
-        /// Aborted because the user lacks the permission to access all or part of
-        /// the network configurations required to run the test.
-        PermissionDenied = 4,
-        /// Aborted because no valid source endpoint is derived from the input test
-        /// request.
-        NoSourceLocation = 5,
-        /// Aborted because the source and/or destination endpoint specified in
-        /// the test are invalid. The possible reasons that an endpoint is
-        /// invalid include: malformed IP address; nonexistent instance or
-        /// network URI; IP address not in the range of specified network URI; and
-        /// instance not owning the network interface in the specified network.
-        InvalidArgument = 6,
         /// Aborted because traffic is sent from a public IP to an instance without
-        /// an external IP.
+        /// an external IP. Deprecated, not used in the new tests.
         NoExternalIp = 7,
         /// Aborted because none of the traces matches destination information
-        /// specified in the input test request.
+        /// specified in the input test request. Deprecated, not used in the new
+        /// tests.
         UnintendedDestination = 8,
-        /// Aborted because the number of steps in the trace exceeding a certain
-        /// limit which may be caused by routing loop.
+        /// Aborted because the source endpoint could not be found. Deprecated, not
+        /// used in the new tests.
+        SourceEndpointNotFound = 11,
+        /// Aborted because the source network does not match the source endpoint.
+        /// Deprecated, not used in the new tests.
+        MismatchedSourceNetwork = 12,
+        /// Aborted because the destination endpoint could not be found. Deprecated,
+        /// not used in the new tests.
+        DestinationEndpointNotFound = 13,
+        /// Aborted because the destination network does not match the destination
+        /// endpoint. Deprecated, not used in the new tests.
+        MismatchedDestinationNetwork = 14,
+        /// Aborted because no endpoint with the packet's destination IP address is
+        /// found.
+        UnknownIp = 2,
+        /// Aborted because the source IP address doesn't belong to any of the
+        /// subnets of the source VPC network.
+        SourceIpAddressNotInSourceNetwork = 23,
+        /// Aborted because user lacks permission to access all or part of the
+        /// network configurations required to run the test.
+        PermissionDenied = 4,
+        /// Aborted because user lacks permission to access Cloud NAT configs
+        /// required to run the test.
+        PermissionDeniedNoCloudNatConfigs = 28,
+        /// Aborted because user lacks permission to access Network endpoint group
+        /// endpoint configs required to run the test.
+        PermissionDeniedNoNegEndpointConfigs = 29,
+        /// Aborted because no valid source or destination endpoint is derived from
+        /// the input test request.
+        NoSourceLocation = 5,
+        /// Aborted because the source or destination endpoint specified in
+        /// the request is invalid. Some examples:
+        /// - The request might contain malformed resource URI, project ID, or IP
+        /// address.
+        /// - The request might contain inconsistent information (for example, the
+        /// request might include both the instance and the network, but the instance
+        /// might not have a NIC in that network).
+        InvalidArgument = 6,
+        /// Aborted because the number of steps in the trace exceeds a certain
+        /// limit. It might be caused by a routing loop.
         TraceTooLong = 9,
         /// Aborted due to internal server error.
         InternalError = 10,
-        /// Aborted because the source endpoint could not be found.
-        SourceEndpointNotFound = 11,
-        /// Aborted because the source network does not match the source endpoint.
-        MismatchedSourceNetwork = 12,
-        /// Aborted because the destination endpoint could not be found.
-        DestinationEndpointNotFound = 13,
-        /// Aborted because the destination network does not match the destination
-        /// endpoint.
-        MismatchedDestinationNetwork = 14,
         /// Aborted because the test scenario is not supported.
         Unsupported = 15,
         /// Aborted because the source and destination resources have no common IP
@@ -1430,6 +1546,14 @@ pub mod abort_info {
         GkeKonnectivityProxyUnsupported = 17,
         /// Aborted because expected resource configuration was missing.
         ResourceConfigNotFound = 18,
+        /// Aborted because expected VM instance configuration was missing.
+        VmInstanceConfigNotFound = 24,
+        /// Aborted because expected network configuration was missing.
+        NetworkConfigNotFound = 25,
+        /// Aborted because expected firewall configuration was missing.
+        FirewallConfigNotFound = 26,
+        /// Aborted because expected route configuration was missing.
+        RouteConfigNotFound = 27,
         /// Aborted because a PSC endpoint selection for the Google-managed service
         /// is ambiguous (several PSC endpoints satisfy test input).
         GoogleManagedServiceAmbiguousPscEndpoint = 19,
@@ -1439,6 +1563,14 @@ pub mod abort_info {
         /// Aborted because tests with a forwarding rule as a source are not
         /// supported.
         SourceForwardingRuleUnsupported = 21,
+        /// Aborted because one of the endpoints is a non-routable IP address
+        /// (loopback, link-local, etc).
+        NonRoutableIpAddress = 22,
+        /// Aborted due to an unknown issue in the Google-managed project.
+        UnknownIssueInGoogleManagedProject = 30,
+        /// Aborted due to an unsupported configuration of the Google-managed
+        /// project.
+        UnsupportedGoogleManagedProjectConfig = 31,
     }
     impl Cause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1449,31 +1581,51 @@ pub mod abort_info {
             match self {
                 Cause::Unspecified => "CAUSE_UNSPECIFIED",
                 Cause::UnknownNetwork => "UNKNOWN_NETWORK",
-                Cause::UnknownIp => "UNKNOWN_IP",
                 Cause::UnknownProject => "UNKNOWN_PROJECT",
-                Cause::PermissionDenied => "PERMISSION_DENIED",
-                Cause::NoSourceLocation => "NO_SOURCE_LOCATION",
-                Cause::InvalidArgument => "INVALID_ARGUMENT",
                 Cause::NoExternalIp => "NO_EXTERNAL_IP",
                 Cause::UnintendedDestination => "UNINTENDED_DESTINATION",
-                Cause::TraceTooLong => "TRACE_TOO_LONG",
-                Cause::InternalError => "INTERNAL_ERROR",
                 Cause::SourceEndpointNotFound => "SOURCE_ENDPOINT_NOT_FOUND",
                 Cause::MismatchedSourceNetwork => "MISMATCHED_SOURCE_NETWORK",
                 Cause::DestinationEndpointNotFound => "DESTINATION_ENDPOINT_NOT_FOUND",
                 Cause::MismatchedDestinationNetwork => "MISMATCHED_DESTINATION_NETWORK",
+                Cause::UnknownIp => "UNKNOWN_IP",
+                Cause::SourceIpAddressNotInSourceNetwork => {
+                    "SOURCE_IP_ADDRESS_NOT_IN_SOURCE_NETWORK"
+                }
+                Cause::PermissionDenied => "PERMISSION_DENIED",
+                Cause::PermissionDeniedNoCloudNatConfigs => {
+                    "PERMISSION_DENIED_NO_CLOUD_NAT_CONFIGS"
+                }
+                Cause::PermissionDeniedNoNegEndpointConfigs => {
+                    "PERMISSION_DENIED_NO_NEG_ENDPOINT_CONFIGS"
+                }
+                Cause::NoSourceLocation => "NO_SOURCE_LOCATION",
+                Cause::InvalidArgument => "INVALID_ARGUMENT",
+                Cause::TraceTooLong => "TRACE_TOO_LONG",
+                Cause::InternalError => "INTERNAL_ERROR",
                 Cause::Unsupported => "UNSUPPORTED",
                 Cause::MismatchedIpVersion => "MISMATCHED_IP_VERSION",
                 Cause::GkeKonnectivityProxyUnsupported => {
                     "GKE_KONNECTIVITY_PROXY_UNSUPPORTED"
                 }
                 Cause::ResourceConfigNotFound => "RESOURCE_CONFIG_NOT_FOUND",
+                Cause::VmInstanceConfigNotFound => "VM_INSTANCE_CONFIG_NOT_FOUND",
+                Cause::NetworkConfigNotFound => "NETWORK_CONFIG_NOT_FOUND",
+                Cause::FirewallConfigNotFound => "FIREWALL_CONFIG_NOT_FOUND",
+                Cause::RouteConfigNotFound => "ROUTE_CONFIG_NOT_FOUND",
                 Cause::GoogleManagedServiceAmbiguousPscEndpoint => {
                     "GOOGLE_MANAGED_SERVICE_AMBIGUOUS_PSC_ENDPOINT"
                 }
                 Cause::SourcePscCloudSqlUnsupported => "SOURCE_PSC_CLOUD_SQL_UNSUPPORTED",
                 Cause::SourceForwardingRuleUnsupported => {
                     "SOURCE_FORWARDING_RULE_UNSUPPORTED"
+                }
+                Cause::NonRoutableIpAddress => "NON_ROUTABLE_IP_ADDRESS",
+                Cause::UnknownIssueInGoogleManagedProject => {
+                    "UNKNOWN_ISSUE_IN_GOOGLE_MANAGED_PROJECT"
+                }
+                Cause::UnsupportedGoogleManagedProjectConfig => {
+                    "UNSUPPORTED_GOOGLE_MANAGED_PROJECT_CONFIG"
                 }
             }
         }
@@ -1482,15 +1634,9 @@ pub mod abort_info {
             match value {
                 "CAUSE_UNSPECIFIED" => Some(Self::Unspecified),
                 "UNKNOWN_NETWORK" => Some(Self::UnknownNetwork),
-                "UNKNOWN_IP" => Some(Self::UnknownIp),
                 "UNKNOWN_PROJECT" => Some(Self::UnknownProject),
-                "PERMISSION_DENIED" => Some(Self::PermissionDenied),
-                "NO_SOURCE_LOCATION" => Some(Self::NoSourceLocation),
-                "INVALID_ARGUMENT" => Some(Self::InvalidArgument),
                 "NO_EXTERNAL_IP" => Some(Self::NoExternalIp),
                 "UNINTENDED_DESTINATION" => Some(Self::UnintendedDestination),
-                "TRACE_TOO_LONG" => Some(Self::TraceTooLong),
-                "INTERNAL_ERROR" => Some(Self::InternalError),
                 "SOURCE_ENDPOINT_NOT_FOUND" => Some(Self::SourceEndpointNotFound),
                 "MISMATCHED_SOURCE_NETWORK" => Some(Self::MismatchedSourceNetwork),
                 "DESTINATION_ENDPOINT_NOT_FOUND" => {
@@ -1499,12 +1645,31 @@ pub mod abort_info {
                 "MISMATCHED_DESTINATION_NETWORK" => {
                     Some(Self::MismatchedDestinationNetwork)
                 }
+                "UNKNOWN_IP" => Some(Self::UnknownIp),
+                "SOURCE_IP_ADDRESS_NOT_IN_SOURCE_NETWORK" => {
+                    Some(Self::SourceIpAddressNotInSourceNetwork)
+                }
+                "PERMISSION_DENIED" => Some(Self::PermissionDenied),
+                "PERMISSION_DENIED_NO_CLOUD_NAT_CONFIGS" => {
+                    Some(Self::PermissionDeniedNoCloudNatConfigs)
+                }
+                "PERMISSION_DENIED_NO_NEG_ENDPOINT_CONFIGS" => {
+                    Some(Self::PermissionDeniedNoNegEndpointConfigs)
+                }
+                "NO_SOURCE_LOCATION" => Some(Self::NoSourceLocation),
+                "INVALID_ARGUMENT" => Some(Self::InvalidArgument),
+                "TRACE_TOO_LONG" => Some(Self::TraceTooLong),
+                "INTERNAL_ERROR" => Some(Self::InternalError),
                 "UNSUPPORTED" => Some(Self::Unsupported),
                 "MISMATCHED_IP_VERSION" => Some(Self::MismatchedIpVersion),
                 "GKE_KONNECTIVITY_PROXY_UNSUPPORTED" => {
                     Some(Self::GkeKonnectivityProxyUnsupported)
                 }
                 "RESOURCE_CONFIG_NOT_FOUND" => Some(Self::ResourceConfigNotFound),
+                "VM_INSTANCE_CONFIG_NOT_FOUND" => Some(Self::VmInstanceConfigNotFound),
+                "NETWORK_CONFIG_NOT_FOUND" => Some(Self::NetworkConfigNotFound),
+                "FIREWALL_CONFIG_NOT_FOUND" => Some(Self::FirewallConfigNotFound),
+                "ROUTE_CONFIG_NOT_FOUND" => Some(Self::RouteConfigNotFound),
                 "GOOGLE_MANAGED_SERVICE_AMBIGUOUS_PSC_ENDPOINT" => {
                     Some(Self::GoogleManagedServiceAmbiguousPscEndpoint)
                 }
@@ -1513,6 +1678,13 @@ pub mod abort_info {
                 }
                 "SOURCE_FORWARDING_RULE_UNSUPPORTED" => {
                     Some(Self::SourceForwardingRuleUnsupported)
+                }
+                "NON_ROUTABLE_IP_ADDRESS" => Some(Self::NonRoutableIpAddress),
+                "UNKNOWN_ISSUE_IN_GOOGLE_MANAGED_PROJECT" => {
+                    Some(Self::UnknownIssueInGoogleManagedProject)
+                }
+                "UNSUPPORTED_GOOGLE_MANAGED_PROJECT_CONFIG" => {
+                    Some(Self::UnsupportedGoogleManagedProjectConfig)
                 }
                 _ => None,
             }
@@ -1529,6 +1701,15 @@ pub struct DropInfo {
     /// URI of the resource that caused the drop.
     #[prost(string, tag = "2")]
     pub resource_uri: ::prost::alloc::string::String,
+    /// Source IP address of the dropped packet (if relevant).
+    #[prost(string, tag = "3")]
+    pub source_ip: ::prost::alloc::string::String,
+    /// Destination IP address of the dropped packet (if relevant).
+    #[prost(string, tag = "4")]
+    pub destination_ip: ::prost::alloc::string::String,
+    /// Region of the dropped packet (if relevant).
+    #[prost(string, tag = "5")]
+    pub region: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `DropInfo`.
 pub mod drop_info {
@@ -1558,19 +1739,45 @@ pub mod drop_info {
         /// Dropped due to a firewall rule, unless allowed due to connection
         /// tracking.
         FirewallRule = 3,
-        /// Dropped due to no routes.
+        /// Dropped due to no matching routes.
         NoRoute = 4,
         /// Dropped due to invalid route. Route's next hop is a blackhole.
         RouteBlackhole = 5,
         /// Packet is sent to a wrong (unintended) network. Example: you trace a
         /// packet from VM1:Network1 to VM2:Network2, however, the route configured
-        /// in Network1 sends the packet destined for VM2's IP addresss to Network3.
+        /// in Network1 sends the packet destined for VM2's IP address to Network3.
         RouteWrongNetwork = 6,
+        /// Route's next hop IP address cannot be resolved to a GCP resource.
+        RouteNextHopIpAddressNotResolved = 42,
+        /// Route's next hop resource is not found.
+        RouteNextHopResourceNotFound = 43,
+        /// Route's next hop instance doesn't have a NIC in the route's network.
+        RouteNextHopInstanceWrongNetwork = 49,
+        /// Route's next hop IP address is not a primary IP address of the next hop
+        /// instance.
+        RouteNextHopInstanceNonPrimaryIp = 50,
+        /// Route's next hop forwarding rule doesn't match next hop IP address.
+        RouteNextHopForwardingRuleIpMismatch = 51,
+        /// Route's next hop VPN tunnel is down (does not have valid IKE SAs).
+        RouteNextHopVpnTunnelNotEstablished = 52,
+        /// Route's next hop forwarding rule type is invalid (it's not a forwarding
+        /// rule of the internal passthrough load balancer).
+        RouteNextHopForwardingRuleTypeInvalid = 53,
+        /// Packet is sent from the Internet to the private IPv6 address.
+        NoRouteFromInternetToPrivateIpv6Address = 44,
+        /// The packet does not match a policy-based VPN tunnel local selector.
+        VpnTunnelLocalSelectorMismatch = 45,
+        /// The packet does not match a policy-based VPN tunnel remote selector.
+        VpnTunnelRemoteSelectorMismatch = 46,
         /// Packet with internal destination address sent to the internet gateway.
         PrivateTrafficToInternet = 7,
         /// Instance with only an internal IP address tries to access Google API and
-        /// services, but private Google access is not enabled.
+        /// services, but private Google access is not enabled in the subnet.
         PrivateGoogleAccessDisallowed = 8,
+        /// Source endpoint tries to access Google API and services through the VPN
+        /// tunnel to another network, but Private Google Access needs to be enabled
+        /// in the source endpoint network.
+        PrivateGoogleAccessViaVpnTunnelUnsupported = 47,
         /// Instance with only an internal IP address tries to access external hosts,
         /// but Cloud NAT is not enabled in the subnet, unless special configurations
         /// on a VM allow this connection.
@@ -1582,9 +1789,6 @@ pub mod drop_info {
         UnknownInternalAddress = 10,
         /// Forwarding rule's protocol and ports do not match the packet header.
         ForwardingRuleMismatch = 11,
-        /// Packet could be dropped because it was sent from a different region
-        /// to a regional forwarding without global access.
-        ForwardingRuleRegionMismatch = 25,
         /// Forwarding rule does not have backends configured.
         ForwardingRuleNoInstances = 12,
         /// Firewalls block the health check probes to the backends and cause
@@ -1657,9 +1861,37 @@ pub mod drop_info {
         /// Packet could be dropped because the VPC connector is not in a running
         /// state.
         VpcConnectorNotRunning = 24,
+        /// Packet could be dropped because it was sent from a different region
+        /// to a regional forwarding without global access.
+        ForwardingRuleRegionMismatch = 25,
         /// The Private Service Connect endpoint is in a project that is not approved
         /// to connect to the service.
         PscConnectionNotAccepted = 26,
+        /// The packet is sent to the Private Service Connect endpoint over the
+        /// peering, but [it's not
+        /// supported](<https://cloud.google.com/vpc/docs/configure-private-service-connect-services#on-premises>).
+        PscEndpointAccessedFromPeeredNetwork = 41,
+        /// The packet is sent to the Private Service Connect backend (network
+        /// endpoint group), but the producer PSC forwarding rule does not have
+        /// global access enabled.
+        PscNegProducerEndpointNoGlobalAccess = 48,
+        /// The packet is sent to the Private Service Connect backend (network
+        /// endpoint group), but the producer PSC forwarding rule has multiple ports
+        /// specified.
+        PscNegProducerForwardingRuleMultiplePorts = 54,
+        /// The packet is sent to the Private Service Connect backend (network
+        /// endpoint group) targeting a Cloud SQL service attachment, but this
+        /// configuration is not supported.
+        CloudSqlPscNegUnsupported = 58,
+        /// No NAT subnets are defined for the PSC service attachment.
+        NoNatSubnetsForPscServiceAttachment = 57,
+        /// The packet sent from the hybrid NEG proxy matches a non-dynamic route,
+        /// but such a configuration is not supported.
+        HybridNegNonDynamicRouteMatched = 55,
+        /// The packet sent from the hybrid NEG proxy matches a dynamic route with a
+        /// next hop in a different region, but such a configuration is not
+        /// supported.
+        HybridNegNonLocalDynamicRouteMatched = 56,
         /// Packet sent from a Cloud Run revision that is not ready.
         CloudRunRevisionNotReady = 29,
         /// Packet was dropped inside Private Service Connect service producer.
@@ -1667,6 +1899,10 @@ pub mod drop_info {
         /// Packet sent to a load balancer, which requires a proxy-only subnet and
         /// the subnet is not found.
         LoadBalancerHasNoProxySubnet = 39,
+        /// Packet sent to Cloud Nat without active NAT IPs.
+        CloudNatNoAddresses = 40,
+        /// Packet is stuck in a routing loop.
+        RoutingLoop = 59,
     }
     impl Cause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1682,14 +1918,46 @@ pub mod drop_info {
                 Cause::NoRoute => "NO_ROUTE",
                 Cause::RouteBlackhole => "ROUTE_BLACKHOLE",
                 Cause::RouteWrongNetwork => "ROUTE_WRONG_NETWORK",
+                Cause::RouteNextHopIpAddressNotResolved => {
+                    "ROUTE_NEXT_HOP_IP_ADDRESS_NOT_RESOLVED"
+                }
+                Cause::RouteNextHopResourceNotFound => {
+                    "ROUTE_NEXT_HOP_RESOURCE_NOT_FOUND"
+                }
+                Cause::RouteNextHopInstanceWrongNetwork => {
+                    "ROUTE_NEXT_HOP_INSTANCE_WRONG_NETWORK"
+                }
+                Cause::RouteNextHopInstanceNonPrimaryIp => {
+                    "ROUTE_NEXT_HOP_INSTANCE_NON_PRIMARY_IP"
+                }
+                Cause::RouteNextHopForwardingRuleIpMismatch => {
+                    "ROUTE_NEXT_HOP_FORWARDING_RULE_IP_MISMATCH"
+                }
+                Cause::RouteNextHopVpnTunnelNotEstablished => {
+                    "ROUTE_NEXT_HOP_VPN_TUNNEL_NOT_ESTABLISHED"
+                }
+                Cause::RouteNextHopForwardingRuleTypeInvalid => {
+                    "ROUTE_NEXT_HOP_FORWARDING_RULE_TYPE_INVALID"
+                }
+                Cause::NoRouteFromInternetToPrivateIpv6Address => {
+                    "NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV6_ADDRESS"
+                }
+                Cause::VpnTunnelLocalSelectorMismatch => {
+                    "VPN_TUNNEL_LOCAL_SELECTOR_MISMATCH"
+                }
+                Cause::VpnTunnelRemoteSelectorMismatch => {
+                    "VPN_TUNNEL_REMOTE_SELECTOR_MISMATCH"
+                }
                 Cause::PrivateTrafficToInternet => "PRIVATE_TRAFFIC_TO_INTERNET",
                 Cause::PrivateGoogleAccessDisallowed => {
                     "PRIVATE_GOOGLE_ACCESS_DISALLOWED"
                 }
+                Cause::PrivateGoogleAccessViaVpnTunnelUnsupported => {
+                    "PRIVATE_GOOGLE_ACCESS_VIA_VPN_TUNNEL_UNSUPPORTED"
+                }
                 Cause::NoExternalAddress => "NO_EXTERNAL_ADDRESS",
                 Cause::UnknownInternalAddress => "UNKNOWN_INTERNAL_ADDRESS",
                 Cause::ForwardingRuleMismatch => "FORWARDING_RULE_MISMATCH",
-                Cause::ForwardingRuleRegionMismatch => "FORWARDING_RULE_REGION_MISMATCH",
                 Cause::ForwardingRuleNoInstances => "FORWARDING_RULE_NO_INSTANCES",
                 Cause::FirewallBlockingLoadBalancerBackendHealthCheck => {
                     "FIREWALL_BLOCKING_LOAD_BALANCER_BACKEND_HEALTH_CHECK"
@@ -1729,7 +1997,27 @@ pub mod drop_info {
                 Cause::CloudFunctionNotActive => "CLOUD_FUNCTION_NOT_ACTIVE",
                 Cause::VpcConnectorNotSet => "VPC_CONNECTOR_NOT_SET",
                 Cause::VpcConnectorNotRunning => "VPC_CONNECTOR_NOT_RUNNING",
+                Cause::ForwardingRuleRegionMismatch => "FORWARDING_RULE_REGION_MISMATCH",
                 Cause::PscConnectionNotAccepted => "PSC_CONNECTION_NOT_ACCEPTED",
+                Cause::PscEndpointAccessedFromPeeredNetwork => {
+                    "PSC_ENDPOINT_ACCESSED_FROM_PEERED_NETWORK"
+                }
+                Cause::PscNegProducerEndpointNoGlobalAccess => {
+                    "PSC_NEG_PRODUCER_ENDPOINT_NO_GLOBAL_ACCESS"
+                }
+                Cause::PscNegProducerForwardingRuleMultiplePorts => {
+                    "PSC_NEG_PRODUCER_FORWARDING_RULE_MULTIPLE_PORTS"
+                }
+                Cause::CloudSqlPscNegUnsupported => "CLOUD_SQL_PSC_NEG_UNSUPPORTED",
+                Cause::NoNatSubnetsForPscServiceAttachment => {
+                    "NO_NAT_SUBNETS_FOR_PSC_SERVICE_ATTACHMENT"
+                }
+                Cause::HybridNegNonDynamicRouteMatched => {
+                    "HYBRID_NEG_NON_DYNAMIC_ROUTE_MATCHED"
+                }
+                Cause::HybridNegNonLocalDynamicRouteMatched => {
+                    "HYBRID_NEG_NON_LOCAL_DYNAMIC_ROUTE_MATCHED"
+                }
                 Cause::CloudRunRevisionNotReady => "CLOUD_RUN_REVISION_NOT_READY",
                 Cause::DroppedInsidePscServiceProducer => {
                     "DROPPED_INSIDE_PSC_SERVICE_PRODUCER"
@@ -1737,6 +2025,8 @@ pub mod drop_info {
                 Cause::LoadBalancerHasNoProxySubnet => {
                     "LOAD_BALANCER_HAS_NO_PROXY_SUBNET"
                 }
+                Cause::CloudNatNoAddresses => "CLOUD_NAT_NO_ADDRESSES",
+                Cause::RoutingLoop => "ROUTING_LOOP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1749,16 +2039,46 @@ pub mod drop_info {
                 "NO_ROUTE" => Some(Self::NoRoute),
                 "ROUTE_BLACKHOLE" => Some(Self::RouteBlackhole),
                 "ROUTE_WRONG_NETWORK" => Some(Self::RouteWrongNetwork),
+                "ROUTE_NEXT_HOP_IP_ADDRESS_NOT_RESOLVED" => {
+                    Some(Self::RouteNextHopIpAddressNotResolved)
+                }
+                "ROUTE_NEXT_HOP_RESOURCE_NOT_FOUND" => {
+                    Some(Self::RouteNextHopResourceNotFound)
+                }
+                "ROUTE_NEXT_HOP_INSTANCE_WRONG_NETWORK" => {
+                    Some(Self::RouteNextHopInstanceWrongNetwork)
+                }
+                "ROUTE_NEXT_HOP_INSTANCE_NON_PRIMARY_IP" => {
+                    Some(Self::RouteNextHopInstanceNonPrimaryIp)
+                }
+                "ROUTE_NEXT_HOP_FORWARDING_RULE_IP_MISMATCH" => {
+                    Some(Self::RouteNextHopForwardingRuleIpMismatch)
+                }
+                "ROUTE_NEXT_HOP_VPN_TUNNEL_NOT_ESTABLISHED" => {
+                    Some(Self::RouteNextHopVpnTunnelNotEstablished)
+                }
+                "ROUTE_NEXT_HOP_FORWARDING_RULE_TYPE_INVALID" => {
+                    Some(Self::RouteNextHopForwardingRuleTypeInvalid)
+                }
+                "NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV6_ADDRESS" => {
+                    Some(Self::NoRouteFromInternetToPrivateIpv6Address)
+                }
+                "VPN_TUNNEL_LOCAL_SELECTOR_MISMATCH" => {
+                    Some(Self::VpnTunnelLocalSelectorMismatch)
+                }
+                "VPN_TUNNEL_REMOTE_SELECTOR_MISMATCH" => {
+                    Some(Self::VpnTunnelRemoteSelectorMismatch)
+                }
                 "PRIVATE_TRAFFIC_TO_INTERNET" => Some(Self::PrivateTrafficToInternet),
                 "PRIVATE_GOOGLE_ACCESS_DISALLOWED" => {
                     Some(Self::PrivateGoogleAccessDisallowed)
                 }
+                "PRIVATE_GOOGLE_ACCESS_VIA_VPN_TUNNEL_UNSUPPORTED" => {
+                    Some(Self::PrivateGoogleAccessViaVpnTunnelUnsupported)
+                }
                 "NO_EXTERNAL_ADDRESS" => Some(Self::NoExternalAddress),
                 "UNKNOWN_INTERNAL_ADDRESS" => Some(Self::UnknownInternalAddress),
                 "FORWARDING_RULE_MISMATCH" => Some(Self::ForwardingRuleMismatch),
-                "FORWARDING_RULE_REGION_MISMATCH" => {
-                    Some(Self::ForwardingRuleRegionMismatch)
-                }
                 "FORWARDING_RULE_NO_INSTANCES" => Some(Self::ForwardingRuleNoInstances),
                 "FIREWALL_BLOCKING_LOAD_BALANCER_BACKEND_HEALTH_CHECK" => {
                     Some(Self::FirewallBlockingLoadBalancerBackendHealthCheck)
@@ -1806,7 +2126,29 @@ pub mod drop_info {
                 "CLOUD_FUNCTION_NOT_ACTIVE" => Some(Self::CloudFunctionNotActive),
                 "VPC_CONNECTOR_NOT_SET" => Some(Self::VpcConnectorNotSet),
                 "VPC_CONNECTOR_NOT_RUNNING" => Some(Self::VpcConnectorNotRunning),
+                "FORWARDING_RULE_REGION_MISMATCH" => {
+                    Some(Self::ForwardingRuleRegionMismatch)
+                }
                 "PSC_CONNECTION_NOT_ACCEPTED" => Some(Self::PscConnectionNotAccepted),
+                "PSC_ENDPOINT_ACCESSED_FROM_PEERED_NETWORK" => {
+                    Some(Self::PscEndpointAccessedFromPeeredNetwork)
+                }
+                "PSC_NEG_PRODUCER_ENDPOINT_NO_GLOBAL_ACCESS" => {
+                    Some(Self::PscNegProducerEndpointNoGlobalAccess)
+                }
+                "PSC_NEG_PRODUCER_FORWARDING_RULE_MULTIPLE_PORTS" => {
+                    Some(Self::PscNegProducerForwardingRuleMultiplePorts)
+                }
+                "CLOUD_SQL_PSC_NEG_UNSUPPORTED" => Some(Self::CloudSqlPscNegUnsupported),
+                "NO_NAT_SUBNETS_FOR_PSC_SERVICE_ATTACHMENT" => {
+                    Some(Self::NoNatSubnetsForPscServiceAttachment)
+                }
+                "HYBRID_NEG_NON_DYNAMIC_ROUTE_MATCHED" => {
+                    Some(Self::HybridNegNonDynamicRouteMatched)
+                }
+                "HYBRID_NEG_NON_LOCAL_DYNAMIC_ROUTE_MATCHED" => {
+                    Some(Self::HybridNegNonLocalDynamicRouteMatched)
+                }
                 "CLOUD_RUN_REVISION_NOT_READY" => Some(Self::CloudRunRevisionNotReady),
                 "DROPPED_INSIDE_PSC_SERVICE_PRODUCER" => {
                     Some(Self::DroppedInsidePscServiceProducer)
@@ -1814,6 +2156,8 @@ pub mod drop_info {
                 "LOAD_BALANCER_HAS_NO_PROXY_SUBNET" => {
                     Some(Self::LoadBalancerHasNoProxySubnet)
                 }
+                "CLOUD_NAT_NO_ADDRESSES" => Some(Self::CloudNatNoAddresses),
+                "ROUTING_LOOP" => Some(Self::RoutingLoop),
                 _ => None,
             }
         }
@@ -1925,6 +2269,278 @@ pub struct VpcConnectorInfo {
     /// Location in which the VPC connector is deployed.
     #[prost(string, tag = "3")]
     pub location: ::prost::alloc::string::String,
+}
+/// For display only. Metadata associated with NAT.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NatInfo {
+    /// Type of NAT.
+    #[prost(enumeration = "nat_info::Type", tag = "1")]
+    pub r#type: i32,
+    /// IP protocol in string format, for example: "TCP", "UDP", "ICMP".
+    #[prost(string, tag = "2")]
+    pub protocol: ::prost::alloc::string::String,
+    /// URI of the network where NAT translation takes place.
+    #[prost(string, tag = "3")]
+    pub network_uri: ::prost::alloc::string::String,
+    /// Source IP address before NAT translation.
+    #[prost(string, tag = "4")]
+    pub old_source_ip: ::prost::alloc::string::String,
+    /// Source IP address after NAT translation.
+    #[prost(string, tag = "5")]
+    pub new_source_ip: ::prost::alloc::string::String,
+    /// Destination IP address before NAT translation.
+    #[prost(string, tag = "6")]
+    pub old_destination_ip: ::prost::alloc::string::String,
+    /// Destination IP address after NAT translation.
+    #[prost(string, tag = "7")]
+    pub new_destination_ip: ::prost::alloc::string::String,
+    /// Source port before NAT translation. Only valid when protocol is TCP or UDP.
+    #[prost(int32, tag = "8")]
+    pub old_source_port: i32,
+    /// Source port after NAT translation. Only valid when protocol is TCP or UDP.
+    #[prost(int32, tag = "9")]
+    pub new_source_port: i32,
+    /// Destination port before NAT translation. Only valid when protocol is TCP or
+    /// UDP.
+    #[prost(int32, tag = "10")]
+    pub old_destination_port: i32,
+    /// Destination port after NAT translation. Only valid when protocol is TCP or
+    /// UDP.
+    #[prost(int32, tag = "11")]
+    pub new_destination_port: i32,
+    /// Uri of the Cloud Router. Only valid when type is CLOUD_NAT.
+    #[prost(string, tag = "12")]
+    pub router_uri: ::prost::alloc::string::String,
+    /// The name of Cloud NAT Gateway. Only valid when type is CLOUD_NAT.
+    #[prost(string, tag = "13")]
+    pub nat_gateway_name: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `NatInfo`.
+pub mod nat_info {
+    /// Types of NAT.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Type is unspecified.
+        Unspecified = 0,
+        /// From Compute Engine instance's internal address to external address.
+        InternalToExternal = 1,
+        /// From Compute Engine instance's external address to internal address.
+        ExternalToInternal = 2,
+        /// Cloud NAT Gateway.
+        CloudNat = 3,
+        /// Private service connect NAT.
+        PrivateServiceConnect = 4,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Type::Unspecified => "TYPE_UNSPECIFIED",
+                Type::InternalToExternal => "INTERNAL_TO_EXTERNAL",
+                Type::ExternalToInternal => "EXTERNAL_TO_INTERNAL",
+                Type::CloudNat => "CLOUD_NAT",
+                Type::PrivateServiceConnect => "PRIVATE_SERVICE_CONNECT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INTERNAL_TO_EXTERNAL" => Some(Self::InternalToExternal),
+                "EXTERNAL_TO_INTERNAL" => Some(Self::ExternalToInternal),
+                "CLOUD_NAT" => Some(Self::CloudNat),
+                "PRIVATE_SERVICE_CONNECT" => Some(Self::PrivateServiceConnect),
+                _ => None,
+            }
+        }
+    }
+}
+/// For display only. Metadata associated with ProxyConnection.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProxyConnectionInfo {
+    /// IP protocol in string format, for example: "TCP", "UDP", "ICMP".
+    #[prost(string, tag = "1")]
+    pub protocol: ::prost::alloc::string::String,
+    /// Source IP address of an original connection.
+    #[prost(string, tag = "2")]
+    pub old_source_ip: ::prost::alloc::string::String,
+    /// Source IP address of a new connection.
+    #[prost(string, tag = "3")]
+    pub new_source_ip: ::prost::alloc::string::String,
+    /// Destination IP address of an original connection
+    #[prost(string, tag = "4")]
+    pub old_destination_ip: ::prost::alloc::string::String,
+    /// Destination IP address of a new connection.
+    #[prost(string, tag = "5")]
+    pub new_destination_ip: ::prost::alloc::string::String,
+    /// Source port of an original connection. Only valid when protocol is TCP or
+    /// UDP.
+    #[prost(int32, tag = "6")]
+    pub old_source_port: i32,
+    /// Source port of a new connection. Only valid when protocol is TCP or UDP.
+    #[prost(int32, tag = "7")]
+    pub new_source_port: i32,
+    /// Destination port of an original connection. Only valid when protocol is TCP
+    /// or UDP.
+    #[prost(int32, tag = "8")]
+    pub old_destination_port: i32,
+    /// Destination port of a new connection. Only valid when protocol is TCP or
+    /// UDP.
+    #[prost(int32, tag = "9")]
+    pub new_destination_port: i32,
+    /// Uri of proxy subnet.
+    #[prost(string, tag = "10")]
+    pub subnet_uri: ::prost::alloc::string::String,
+    /// URI of the network where connection is proxied.
+    #[prost(string, tag = "11")]
+    pub network_uri: ::prost::alloc::string::String,
+}
+/// For display only. Metadata associated with the load balancer backend.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LoadBalancerBackendInfo {
+    /// Display name of the backend. For example, it might be an instance name for
+    /// the instance group backends, or an IP address and port for zonal network
+    /// endpoint group backends.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// URI of the backend instance (if applicable). Populated for instance group
+    /// backends, and zonal NEG backends.
+    #[prost(string, tag = "2")]
+    pub instance_uri: ::prost::alloc::string::String,
+    /// URI of the backend service this backend belongs to (if applicable).
+    #[prost(string, tag = "3")]
+    pub backend_service_uri: ::prost::alloc::string::String,
+    /// URI of the instance group this backend belongs to (if applicable).
+    #[prost(string, tag = "4")]
+    pub instance_group_uri: ::prost::alloc::string::String,
+    /// URI of the network endpoint group this backend belongs to (if applicable).
+    #[prost(string, tag = "5")]
+    pub network_endpoint_group_uri: ::prost::alloc::string::String,
+    /// URI of the backend bucket this backend targets (if applicable).
+    #[prost(string, tag = "8")]
+    pub backend_bucket_uri: ::prost::alloc::string::String,
+    /// URI of the PSC service attachment this PSC NEG backend targets (if
+    /// applicable).
+    #[prost(string, tag = "9")]
+    pub psc_service_attachment_uri: ::prost::alloc::string::String,
+    /// PSC Google API target this PSC NEG backend targets (if applicable).
+    #[prost(string, tag = "10")]
+    pub psc_google_api_target: ::prost::alloc::string::String,
+    /// URI of the health check attached to this backend (if applicable).
+    #[prost(string, tag = "6")]
+    pub health_check_uri: ::prost::alloc::string::String,
+    /// Output only. Health check firewalls configuration state for the backend.
+    /// This is a result of the static firewall analysis (verifying that health
+    /// check traffic from required IP ranges to the backend is allowed or not).
+    /// The backend might still be unhealthy even if these firewalls are
+    /// configured. Please refer to the documentation for more information:
+    /// <https://cloud.google.com/load-balancing/docs/firewall-rules>
+    #[prost(
+        enumeration = "load_balancer_backend_info::HealthCheckFirewallsConfigState",
+        tag = "7"
+    )]
+    pub health_check_firewalls_config_state: i32,
+}
+/// Nested message and enum types in `LoadBalancerBackendInfo`.
+pub mod load_balancer_backend_info {
+    /// Health check firewalls configuration state enum.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HealthCheckFirewallsConfigState {
+        /// Configuration state unspecified. It usually means that the backend has
+        /// no health check attached, or there was an unexpected configuration error
+        /// preventing Connectivity tests from verifying health check configuration.
+        Unspecified = 0,
+        /// Firewall rules (policies) allowing health check traffic from all required
+        /// IP ranges to the backend are configured.
+        FirewallsConfigured = 1,
+        /// Firewall rules (policies) allow health check traffic only from a part of
+        /// required IP ranges.
+        FirewallsPartiallyConfigured = 2,
+        /// Firewall rules (policies) deny health check traffic from all required
+        /// IP ranges to the backend.
+        FirewallsNotConfigured = 3,
+        /// The network contains firewall rules of unsupported types, so Connectivity
+        /// tests were not able to verify health check configuration status. Please
+        /// refer to the documentation for the list of unsupported configurations:
+        /// <https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/overview#unsupported-configs>
+        FirewallsUnsupported = 4,
+    }
+    impl HealthCheckFirewallsConfigState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                HealthCheckFirewallsConfigState::Unspecified => {
+                    "HEALTH_CHECK_FIREWALLS_CONFIG_STATE_UNSPECIFIED"
+                }
+                HealthCheckFirewallsConfigState::FirewallsConfigured => {
+                    "FIREWALLS_CONFIGURED"
+                }
+                HealthCheckFirewallsConfigState::FirewallsPartiallyConfigured => {
+                    "FIREWALLS_PARTIALLY_CONFIGURED"
+                }
+                HealthCheckFirewallsConfigState::FirewallsNotConfigured => {
+                    "FIREWALLS_NOT_CONFIGURED"
+                }
+                HealthCheckFirewallsConfigState::FirewallsUnsupported => {
+                    "FIREWALLS_UNSUPPORTED"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HEALTH_CHECK_FIREWALLS_CONFIG_STATE_UNSPECIFIED" => {
+                    Some(Self::Unspecified)
+                }
+                "FIREWALLS_CONFIGURED" => Some(Self::FirewallsConfigured),
+                "FIREWALLS_PARTIALLY_CONFIGURED" => {
+                    Some(Self::FirewallsPartiallyConfigured)
+                }
+                "FIREWALLS_NOT_CONFIGURED" => Some(Self::FirewallsNotConfigured),
+                "FIREWALLS_UNSUPPORTED" => Some(Self::FirewallsUnsupported),
+                _ => None,
+            }
+        }
+    }
+}
+/// For display only. Metadata associated with Storage Bucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StorageBucketInfo {
+    /// Cloud Storage Bucket name.
+    #[prost(string, tag = "1")]
+    pub bucket: ::prost::alloc::string::String,
 }
 /// Type of a load balancer. For more information, see [Summary of Google Cloud
 /// load
@@ -2089,15 +2705,16 @@ pub struct ConnectivityTest {
     /// existing test.
     #[prost(message, optional, tag = "14")]
     pub probing_details: ::core::option::Option<ProbingDetails>,
+    /// Whether the test should skip firewall checking.
+    /// If not provided, we assume false.
+    #[prost(bool, tag = "17")]
+    pub bypass_firewall_checks: bool,
 }
 /// Source or destination of the Connectivity Test.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Endpoint {
     /// The IP address of the endpoint, which can be an external or internal IP.
-    /// An IPv6 address is only allowed when the test's destination is a
-    /// [global load balancer
-    /// VIP](<https://cloud.google.com/load-balancing/docs/load-balancing-overview>).
     #[prost(string, tag = "1")]
     pub ip_address: ::prost::alloc::string::String,
     /// The IP protocol port of the endpoint.
@@ -2346,7 +2963,9 @@ pub mod reachability_details {
         /// The source and destination endpoints do not uniquely identify
         /// the test location in the network, and the reachability result contains
         /// multiple traces. For some traces, a packet could be delivered, and for
-        /// others, it would not be.
+        /// others, it would not be. This result is also assigned to
+        /// configuration analysis of return path if on its own it should be
+        /// REACHABLE, but configuration analysis of forward path is AMBIGUOUS.
         Ambiguous = 4,
         /// The configuration analysis did not complete. Possible reasons are:
         ///
