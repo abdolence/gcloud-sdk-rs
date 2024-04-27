@@ -49,6 +49,12 @@ pub enum Type {
     VirtioScsiMultiqueue,
     #[serde(rename = "WINDOWS")]
     Windows,
+    #[serde(rename = "SUSPEND_RESUME_COMPATIBLE")]
+    SuspendResumeCompatible,
+    #[serde(rename = "TDX_CAPABLE")]
+    TdxCapable,
+    #[serde(rename = "IDPF")]
+    Idpf,
 }
 
 impl Default for Type {
