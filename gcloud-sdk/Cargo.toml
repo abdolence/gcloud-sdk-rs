@@ -433,7 +433,7 @@ tonic = { version = "0.11", features = ["tls"] }
 tower = "0.4"
 tower-layer = "0.3"
 tower-util = "0.3"
-futures = "0.3"
+futures = "0.3.30"
 prost = "0.12"
 prost-types = "0.12"
 gcemeta = { version = "0.2" }
