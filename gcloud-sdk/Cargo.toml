@@ -442,7 +442,7 @@ serde_json = { version = "1" }
 url = { version = "2.5" }
 jsonwebtoken = { version = "9" }
 hyper = { version ="0.14", features = ["client", "http2", "h2"] }
-async-trait = "0.1"
+async-trait = "0.1.80"
 chrono = { version = "0.4", features = ["serde", "clock"], default-features = false }
 tokio= { version =  "1" }
 tracing = "0.1"
