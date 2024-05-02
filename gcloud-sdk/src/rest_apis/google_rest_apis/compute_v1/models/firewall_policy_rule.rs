@@ -42,6 +42,12 @@ pub struct FirewallPolicyRule {
     /// [Output Only] Calculation of the complexity of a single firewall policy rule.
     #[serde(rename = "ruleTupleCount", skip_serializing_if = "Option::is_none")]
     pub rule_tuple_count: Option<i32>,
+    /// A fully-qualified URL of a SecurityProfile resource instance. Example: https://networksecurity.googleapis.com/v1/projects/{project}/locations/{location}/securityProfileGroups/my-security-profile-group Must be specified if action = 'apply_security_profile_group' and cannot be specified for other actions.
+    #[serde(
+        rename = "securityProfileGroup",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub security_profile_group: Option<String>,
     /// A list of network resource URLs to which this rule applies. This field allows you to control which network's VMs get this rule. If this field is left blank, all VMs within the organization will receive the rule.
     #[serde(rename = "targetResources", skip_serializing_if = "Option::is_none")]
     pub target_resources: Option<Vec<String>>,
@@ -55,6 +61,9 @@ pub struct FirewallPolicyRule {
         skip_serializing_if = "Option::is_none"
     )]
     pub target_service_accounts: Option<Vec<String>>,
+    /// Boolean flag indicating if the traffic should be TLS decrypted. Can be set only if action = 'apply_security_profile_group' and cannot be set for other actions.
+    #[serde(rename = "tlsInspect", skip_serializing_if = "Option::is_none")]
+    pub tls_inspect: Option<bool>,
 }
 
 impl FirewallPolicyRule {
@@ -71,9 +80,11 @@ impl FirewallPolicyRule {
             priority: None,
             rule_name: None,
             rule_tuple_count: None,
+            security_profile_group: None,
             target_resources: None,
             target_secure_tags: None,
             target_service_accounts: None,
+            tls_inspect: None,
         }
     }
 }

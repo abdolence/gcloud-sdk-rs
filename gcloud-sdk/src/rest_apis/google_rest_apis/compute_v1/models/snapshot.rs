@@ -36,6 +36,12 @@ pub struct Snapshot {
     /// [Output Only] Number of bytes downloaded to restore a snapshot to a disk.
     #[serde(rename = "downloadBytes", skip_serializing_if = "Option::is_none")]
     pub download_bytes: Option<String>,
+    /// Whether this snapshot is created from a confidential compute mode disk. [Output Only]: This field is not set by user, but from source disk.
+    #[serde(
+        rename = "enableConfidentialCompute",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub enable_confidential_compute: Option<bool>,
     /// [Output Only] A list of features to enable on the guest operating system. Applicable only for bootable images. Read Enabling guest operating system features to see a list of available options.
     #[serde(rename = "guestOsFeatures", skip_serializing_if = "Option::is_none")]
     pub guest_os_features: Option<Vec<crate::google_rest_apis::compute_v1::models::GuestOsFeature>>,
@@ -63,6 +69,9 @@ pub struct Snapshot {
     /// Name of the resource; provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    /// Output only. Reserved for future use.
+    #[serde(rename = "satisfiesPzi", skip_serializing_if = "Option::is_none")]
+    pub satisfies_pzi: Option<bool>,
     /// [Output Only] Reserved for future use.
     #[serde(rename = "satisfiesPzs", skip_serializing_if = "Option::is_none")]
     pub satisfies_pzs: Option<bool>,
@@ -96,6 +105,24 @@ pub struct Snapshot {
     /// [Output Only] The ID value of the disk used to create this snapshot. This value may be used to determine whether the snapshot was taken from the current or a previous instance of a given disk name.
     #[serde(rename = "sourceDiskId", skip_serializing_if = "Option::is_none")]
     pub source_disk_id: Option<String>,
+    /// The source instant snapshot used to create this snapshot. You can provide this as a partial or full URL to the resource. For example, the following are valid values: - https://www.googleapis.com/compute/v1/projects/project/zones/zone /instantSnapshots/instantSnapshot - projects/project/zones/zone/instantSnapshots/instantSnapshot - zones/zone/instantSnapshots/instantSnapshot
+    #[serde(
+        rename = "sourceInstantSnapshot",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub source_instant_snapshot: Option<String>,
+    #[serde(
+        rename = "sourceInstantSnapshotEncryptionKey",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub source_instant_snapshot_encryption_key:
+        Option<Box<crate::google_rest_apis::compute_v1::models::CustomerEncryptionKey>>,
+    /// [Output Only] The unique ID of the instant snapshot used to create this snapshot. This value identifies the exact instant snapshot that was used to create this persistent disk. For example, if you created the persistent disk from an instant snapshot that was later deleted and recreated under the same name, the source instant snapshot ID would identify the exact instant snapshot that was used.
+    #[serde(
+        rename = "sourceInstantSnapshotId",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub source_instant_snapshot_id: Option<String>,
     /// [Output Only] URL of the resource policy which created this scheduled snapshot.
     #[serde(
         rename = "sourceSnapshotSchedulePolicy",
@@ -134,6 +161,7 @@ impl Snapshot {
             description: None,
             disk_size_gb: None,
             download_bytes: None,
+            enable_confidential_compute: None,
             guest_os_features: None,
             id: None,
             kind: None,
@@ -143,6 +171,7 @@ impl Snapshot {
             licenses: None,
             location_hint: None,
             name: None,
+            satisfies_pzi: None,
             satisfies_pzs: None,
             self_link: None,
             snapshot_encryption_key: None,
@@ -151,6 +180,9 @@ impl Snapshot {
             source_disk_encryption_key: None,
             source_disk_for_recovery_checkpoint: None,
             source_disk_id: None,
+            source_instant_snapshot: None,
+            source_instant_snapshot_encryption_key: None,
+            source_instant_snapshot_id: None,
             source_snapshot_schedule_policy: None,
             source_snapshot_schedule_policy_id: None,
             status: None,

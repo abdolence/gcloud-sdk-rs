@@ -38,6 +38,12 @@ pub struct Disk {
     #[serde(rename = "diskEncryptionKey", skip_serializing_if = "Option::is_none")]
     pub disk_encryption_key:
         Option<Box<crate::google_rest_apis::compute_v1::models::CustomerEncryptionKey>>,
+    /// Whether this disk is using confidential compute mode.
+    #[serde(
+        rename = "enableConfidentialCompute",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub enable_confidential_compute: Option<bool>,
     /// A list of features to enable on the guest operating system. Applicable only for bootable images. Read Enabling guest operating system features to see a list of available options.
     #[serde(rename = "guestOsFeatures", skip_serializing_if = "Option::is_none")]
     pub guest_os_features: Option<Vec<crate::google_rest_apis::compute_v1::models::GuestOsFeature>>,
@@ -91,7 +97,7 @@ pub struct Disk {
     /// Indicates how many IOPS to provision for the disk. This sets the number of I/O operations per second that the disk can handle. Values must be between 10,000 and 120,000. For more details, see the Extreme persistent disk documentation.
     #[serde(rename = "provisionedIops", skip_serializing_if = "Option::is_none")]
     pub provisioned_iops: Option<String>,
-    /// Indicates how much throughput to provision for the disk. This sets the number of throughput mb per second that the disk can handle. Values must be between 1 and 7,124.
+    /// Indicates how much throughput to provision for the disk. This sets the number of throughput mb per second that the disk can handle. Values must be greater than or equal to 1.
     #[serde(
         rename = "provisionedThroughput",
         skip_serializing_if = "Option::is_none"
@@ -109,6 +115,9 @@ pub struct Disk {
     #[serde(rename = "resourceStatus", skip_serializing_if = "Option::is_none")]
     pub resource_status:
         Option<Box<crate::google_rest_apis::compute_v1::models::DiskResourceStatus>>,
+    /// Output only. Reserved for future use.
+    #[serde(rename = "satisfiesPzi", skip_serializing_if = "Option::is_none")]
+    pub satisfies_pzi: Option<bool>,
     /// [Output Only] Reserved for future use.
     #[serde(rename = "satisfiesPzs", skip_serializing_if = "Option::is_none")]
     pub satisfies_pzs: Option<bool>,
@@ -148,6 +157,18 @@ pub struct Disk {
     /// [Output Only] The ID value of the image used to create this disk. This value identifies the exact image that was used to create this persistent disk. For example, if you created the persistent disk from an image that was later deleted and recreated under the same name, the source image ID would identify the exact version of the image that was used.
     #[serde(rename = "sourceImageId", skip_serializing_if = "Option::is_none")]
     pub source_image_id: Option<String>,
+    /// The source instant snapshot used to create this disk. You can provide this as a partial or full URL to the resource. For example, the following are valid values: - https://www.googleapis.com/compute/v1/projects/project/zones/zone /instantSnapshots/instantSnapshot - projects/project/zones/zone/instantSnapshots/instantSnapshot - zones/zone/instantSnapshots/instantSnapshot
+    #[serde(
+        rename = "sourceInstantSnapshot",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub source_instant_snapshot: Option<String>,
+    /// [Output Only] The unique ID of the instant snapshot used to create this disk. This value identifies the exact instant snapshot that was used to create this persistent disk. For example, if you created the persistent disk from an instant snapshot that was later deleted and recreated under the same name, the source instant snapshot ID would identify the exact version of the instant snapshot that was used.
+    #[serde(
+        rename = "sourceInstantSnapshotId",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub source_instant_snapshot_id: Option<String>,
     /// The source snapshot used to create this disk. You can provide this as a partial or full URL to the resource. For example, the following are valid values: - https://www.googleapis.com/compute/v1/projects/project /global/snapshots/snapshot - projects/project/global/snapshots/snapshot - global/snapshots/snapshot
     #[serde(rename = "sourceSnapshot", skip_serializing_if = "Option::is_none")]
     pub source_snapshot: Option<String>,
@@ -190,6 +211,7 @@ impl Disk {
             creation_timestamp: None,
             description: None,
             disk_encryption_key: None,
+            enable_confidential_compute: None,
             guest_os_features: None,
             id: None,
             kind: None,
@@ -210,6 +232,7 @@ impl Disk {
             replica_zones: None,
             resource_policies: None,
             resource_status: None,
+            satisfies_pzi: None,
             satisfies_pzs: None,
             self_link: None,
             size_gb: None,
@@ -220,6 +243,8 @@ impl Disk {
             source_image: None,
             source_image_encryption_key: None,
             source_image_id: None,
+            source_instant_snapshot: None,
+            source_instant_snapshot_id: None,
             source_snapshot: None,
             source_snapshot_encryption_key: None,
             source_snapshot_id: None,

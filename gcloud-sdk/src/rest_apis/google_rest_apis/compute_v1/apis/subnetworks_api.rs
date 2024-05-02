@@ -52,8 +52,9 @@ pub struct ComputePeriodSubnetworksPeriodAggregatedListParams {
     pub order_by: Option<String>,
     /// Specifies a page token to use. Set `pageToken` to the `nextPageToken` returned by a previous list request to get the next page of results.
     pub page_token: Option<String>,
-    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
+    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false. For example, when partial success behavior is enabled, aggregatedList for a single zone scope either returns all resources in the zone or no resources, with an error code.
     pub return_partial_success: Option<bool>,
+    /// The Shared VPC service project id or service project number for which aggregated list request is invoked for subnetworks list-usable api.
     pub service_project_number: Option<String>,
 }
 
@@ -280,7 +281,7 @@ pub struct ComputePeriodSubnetworksPeriodListParams {
     pub order_by: Option<String>,
     /// Specifies a page token to use. Set `pageToken` to the `nextPageToken` returned by a previous list request to get the next page of results.
     pub page_token: Option<String>,
-    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
+    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false. For example, when partial success behavior is enabled, aggregatedList for a single zone scope either returns all resources in the zone or no resources, with an error code.
     pub return_partial_success: Option<bool>,
 }
 
@@ -321,7 +322,7 @@ pub struct ComputePeriodSubnetworksPeriodListUsableParams {
     pub order_by: Option<String>,
     /// Specifies a page token to use. Set `pageToken` to the `nextPageToken` returned by a previous list request to get the next page of results.
     pub page_token: Option<String>,
-    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
+    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false. For example, when partial success behavior is enabled, aggregatedList for a single zone scope either returns all resources in the zone or no resources, with an error code.
     pub return_partial_success: Option<bool>,
 }
 
@@ -563,7 +564,7 @@ pub enum ComputePeriodSubnetworksPeriodTestIamPermissionsError {
     UnknownValue(serde_json::Value),
 }
 
-/// Retrieves an aggregated list of subnetworks.
+/// Retrieves an aggregated list of subnetworks. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 pub async fn compute_subnetworks_aggregated_list(
     configuration: &configuration::Configuration,
     params: ComputePeriodSubnetworksPeriodAggregatedListParams,

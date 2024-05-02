@@ -152,7 +152,7 @@ pub struct ComputePeriodTargetSslProxiesPeriodListParams {
     pub order_by: Option<String>,
     /// Specifies a page token to use. Set `pageToken` to the `nextPageToken` returned by a previous list request to get the next page of results.
     pub page_token: Option<String>,
-    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
+    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false. For example, when partial success behavior is enabled, aggregatedList for a single zone scope either returns all resources in the zone or no resources, with an error code.
     pub return_partial_success: Option<bool>,
 }
 
@@ -1388,7 +1388,7 @@ pub async fn compute_target_ssl_proxies_set_ssl_certificates(
     }
 }
 
-/// Sets the SSL policy for TargetSslProxy. The SSL policy specifies the server-side support for SSL features. This affects connections between clients and the SSL proxy load balancer. They do not affect the connection between the load balancer and the backends.
+/// Sets the SSL policy for TargetSslProxy. The SSL policy specifies the server-side support for SSL features. This affects connections between clients and the load balancer. They do not affect the connection between the load balancer and the backends.
 pub async fn compute_target_ssl_proxies_set_ssl_policy(
     configuration: &configuration::Configuration,
     params: ComputePeriodTargetSslProxiesPeriodSetSslPolicyParams,

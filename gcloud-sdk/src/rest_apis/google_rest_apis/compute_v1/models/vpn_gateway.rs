@@ -18,6 +18,9 @@ pub struct VpnGateway {
     /// An optional description of this resource. Provide this property when you create the resource.
     #[serde(rename = "description", skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+    /// The IP family of the gateway IPs for the HA-VPN gateway interfaces. If not specified, IPV4 will be used.
+    #[serde(rename = "gatewayIpVersion", skip_serializing_if = "Option::is_none")]
+    pub gateway_ip_version: Option<GatewayIpVersion>,
     /// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
     #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
@@ -57,6 +60,7 @@ impl VpnGateway {
         VpnGateway {
             creation_timestamp: None,
             description: None,
+            gateway_ip_version: None,
             id: None,
             kind: None,
             label_fingerprint: None,
@@ -71,6 +75,20 @@ impl VpnGateway {
     }
 }
 
+/// The IP family of the gateway IPs for the HA-VPN gateway interfaces. If not specified, IPV4 will be used.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum GatewayIpVersion {
+    #[serde(rename = "IPV4")]
+    Ipv4,
+    #[serde(rename = "IPV6")]
+    Ipv6,
+}
+
+impl Default for GatewayIpVersion {
+    fn default() -> GatewayIpVersion {
+        Self::Ipv4
+    }
+}
 /// The stack type for this VPN gateway to identify the IP protocols that are enabled. Possible values are: IPV4_ONLY, IPV4_IPV6. If not specified, IPV4_ONLY will be used.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum StackType {

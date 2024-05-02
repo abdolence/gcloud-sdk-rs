@@ -10,6 +10,12 @@ use serde::{Deserialize, Serialize}; /*
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InstanceGroupManagerInstanceLifecyclePolicy {
+    /// The action that a MIG performs on a failed or an unhealthy VM. A VM is marked as unhealthy when the application running on that VM fails a health check. Valid values are - REPAIR (default): MIG automatically repairs a failed or an unhealthy VM by recreating it. For more information, see About repairing VMs in a MIG. - DO_NOTHING: MIG does not repair a failed or an unhealthy VM.
+    #[serde(
+        rename = "defaultActionOnFailure",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub default_action_on_failure: Option<DefaultActionOnFailure>,
     /// A bit indicating whether to forcefully apply the group's latest configuration when repairing a VM. Valid options are: - NO (default): If configuration updates are available, they are not forcefully applied during repair. Instead, configuration updates are applied according to the group's update policy. - YES: If configuration updates are available, they are applied during repair.
     #[serde(
         rename = "forceUpdateOnRepair",
@@ -21,11 +27,26 @@ pub struct InstanceGroupManagerInstanceLifecyclePolicy {
 impl InstanceGroupManagerInstanceLifecyclePolicy {
     pub fn new() -> InstanceGroupManagerInstanceLifecyclePolicy {
         InstanceGroupManagerInstanceLifecyclePolicy {
+            default_action_on_failure: None,
             force_update_on_repair: None,
         }
     }
 }
 
+/// The action that a MIG performs on a failed or an unhealthy VM. A VM is marked as unhealthy when the application running on that VM fails a health check. Valid values are - REPAIR (default): MIG automatically repairs a failed or an unhealthy VM by recreating it. For more information, see About repairing VMs in a MIG. - DO_NOTHING: MIG does not repair a failed or an unhealthy VM.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum DefaultActionOnFailure {
+    #[serde(rename = "DO_NOTHING")]
+    DoNothing,
+    #[serde(rename = "REPAIR")]
+    Repair,
+}
+
+impl Default for DefaultActionOnFailure {
+    fn default() -> DefaultActionOnFailure {
+        Self::DoNothing
+    }
+}
 /// A bit indicating whether to forcefully apply the group's latest configuration when repairing a VM. Valid options are: - NO (default): If configuration updates are available, they are not forcefully applied during repair. Instead, configuration updates are applied according to the group's update policy. - YES: If configuration updates are available, they are applied during repair.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum ForceUpdateOnRepair {

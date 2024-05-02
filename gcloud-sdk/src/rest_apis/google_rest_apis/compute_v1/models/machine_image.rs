@@ -39,6 +39,9 @@ pub struct MachineImage {
     /// Name of the resource; provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    /// Output only. Reserved for future use.
+    #[serde(rename = "satisfiesPzi", skip_serializing_if = "Option::is_none")]
+    pub satisfies_pzi: Option<bool>,
     /// [Output Only] Reserved for future use.
     #[serde(rename = "satisfiesPzs", skip_serializing_if = "Option::is_none")]
     pub satisfies_pzs: Option<bool>,
@@ -87,6 +90,7 @@ impl MachineImage {
             kind: None,
             machine_image_encryption_key: None,
             name: None,
+            satisfies_pzi: None,
             satisfies_pzs: None,
             saved_disks: None,
             self_link: None,

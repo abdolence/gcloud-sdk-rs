@@ -29,6 +29,12 @@ pub struct Image {
     /// Size of the image when restored onto a persistent disk (in GB).
     #[serde(rename = "diskSizeGb", skip_serializing_if = "Option::is_none")]
     pub disk_size_gb: Option<String>,
+    /// Whether this image is created from a confidential compute mode disk. [Output Only]: This field is not set by user, but from source disk.
+    #[serde(
+        rename = "enableConfidentialCompute",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub enable_confidential_compute: Option<bool>,
     /// The name of the image family to which this image belongs. The image family name can be from a publicly managed image family provided by Compute Engine, or from a custom image family you create. For example, centos-stream-9 is a publicly available image family. For more information, see Image family best practices. When creating disks, you can specify an image family instead of a specific image name. The image family always returns its latest image that is not deprecated. The name of the image family must comply with RFC1035.
     #[serde(rename = "family", skip_serializing_if = "Option::is_none")]
     pub family: Option<String>,
@@ -61,6 +67,9 @@ pub struct Image {
     pub name: Option<String>,
     #[serde(rename = "rawDisk", skip_serializing_if = "Option::is_none")]
     pub raw_disk: Option<Box<crate::google_rest_apis::compute_v1::models::ImageRawDisk>>,
+    /// Output only. Reserved for future use.
+    #[serde(rename = "satisfiesPzi", skip_serializing_if = "Option::is_none")]
+    pub satisfies_pzi: Option<bool>,
     /// [Output Only] Reserved for future use.
     #[serde(rename = "satisfiesPzs", skip_serializing_if = "Option::is_none")]
     pub satisfies_pzs: Option<bool>,
@@ -130,6 +139,7 @@ impl Image {
             deprecated: None,
             description: None,
             disk_size_gb: None,
+            enable_confidential_compute: None,
             family: None,
             guest_os_features: None,
             id: None,
@@ -141,6 +151,7 @@ impl Image {
             licenses: None,
             name: None,
             raw_disk: None,
+            satisfies_pzi: None,
             satisfies_pzs: None,
             self_link: None,
             shielded_instance_initial_state: None,

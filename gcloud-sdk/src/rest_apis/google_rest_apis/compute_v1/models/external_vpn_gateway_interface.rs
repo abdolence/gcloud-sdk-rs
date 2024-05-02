@@ -18,6 +18,9 @@ pub struct ExternalVpnGatewayInterface {
     /// IP address of the interface in the external VPN gateway. Only IPv4 is supported. This IP address can be either from your on-premise gateway or another Cloud provider's VPN gateway, it cannot be an IP address from Google Compute Engine.
     #[serde(rename = "ipAddress", skip_serializing_if = "Option::is_none")]
     pub ip_address: Option<String>,
+    /// IPv6 address of the interface in the external VPN gateway. This IPv6 address can be either from your on-premise gateway or another Cloud provider's VPN gateway, it cannot be an IP address from Google Compute Engine. Must specify an IPv6 address (not IPV4-mapped) using any format described in RFC 4291 (e.g. 2001:db8:0:0:2d9:51:0:0). The output format is RFC 5952 format (e.g. 2001:db8::2d9:51:0:0).
+    #[serde(rename = "ipv6Address", skip_serializing_if = "Option::is_none")]
+    pub ipv6_address: Option<String>,
 }
 
 impl ExternalVpnGatewayInterface {
@@ -26,6 +29,7 @@ impl ExternalVpnGatewayInterface {
         ExternalVpnGatewayInterface {
             id: None,
             ip_address: None,
+            ipv6_address: None,
         }
     }
 }

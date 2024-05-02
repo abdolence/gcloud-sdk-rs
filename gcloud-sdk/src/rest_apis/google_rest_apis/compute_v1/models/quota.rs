@@ -89,6 +89,8 @@ pub enum Metric {
     CommittedNvidiaA10080GbGpus,
     #[serde(rename = "COMMITTED_NVIDIA_A100_GPUS")]
     CommittedNvidiaA100Gpus,
+    #[serde(rename = "COMMITTED_NVIDIA_H100_GPUS")]
+    CommittedNvidiaH100Gpus,
     #[serde(rename = "COMMITTED_NVIDIA_K80_GPUS")]
     CommittedNvidiaK80Gpus,
     #[serde(rename = "COMMITTED_NVIDIA_L4_GPUS")]
@@ -105,6 +107,8 @@ pub enum Metric {
     CommittedT2ACpus,
     #[serde(rename = "COMMITTED_T2D_CPUS")]
     CommittedT2DCpus,
+    #[serde(rename = "COMMITTED_Z3_CPUS")]
+    CommittedZ3Cpus,
     #[serde(rename = "CPUS")]
     Cpus,
     #[serde(rename = "CPUS_ALL_REGIONS")]
@@ -239,6 +243,8 @@ pub enum Metric {
     PreemptibleNvidiaA10080GbGpus,
     #[serde(rename = "PREEMPTIBLE_NVIDIA_A100_GPUS")]
     PreemptibleNvidiaA100Gpus,
+    #[serde(rename = "PREEMPTIBLE_NVIDIA_H100_GPUS")]
+    PreemptibleNvidiaH100Gpus,
     #[serde(rename = "PREEMPTIBLE_NVIDIA_K80_GPUS")]
     PreemptibleNvidiaK80Gpus,
     #[serde(rename = "PREEMPTIBLE_NVIDIA_L4_GPUS")]
@@ -257,6 +263,12 @@ pub enum Metric {
     PreemptibleNvidiaT4VwsGpus,
     #[serde(rename = "PREEMPTIBLE_NVIDIA_V100_GPUS")]
     PreemptibleNvidiaV100Gpus,
+    #[serde(rename = "PREEMPTIBLE_TPU_LITE_DEVICE_V5")]
+    PreemptibleTpuLiteDeviceV5,
+    #[serde(rename = "PREEMPTIBLE_TPU_LITE_PODSLICE_V5")]
+    PreemptibleTpuLitePodsliceV5,
+    #[serde(rename = "PREEMPTIBLE_TPU_PODSLICE_V4")]
+    PreemptibleTpuPodsliceV4,
     #[serde(rename = "PSC_ILB_CONSUMER_FORWARDING_RULES_PER_PRODUCER_NETWORK")]
     PscIlbConsumerForwardingRulesPerProducerNetwork,
     #[serde(rename = "PSC_INTERNAL_LB_FORWARDING_RULES")]
@@ -331,6 +343,12 @@ pub enum Metric {
     TargetTcpProxies,
     #[serde(rename = "TARGET_VPN_GATEWAYS")]
     TargetVpnGateways,
+    #[serde(rename = "TPU_LITE_DEVICE_V5")]
+    TpuLiteDeviceV5,
+    #[serde(rename = "TPU_LITE_PODSLICE_V5")]
+    TpuLitePodsliceV5,
+    #[serde(rename = "TPU_PODSLICE_V4")]
+    TpuPodsliceV4,
     #[serde(rename = "URL_MAPS")]
     UrlMaps,
     #[serde(rename = "VPN_GATEWAYS")]

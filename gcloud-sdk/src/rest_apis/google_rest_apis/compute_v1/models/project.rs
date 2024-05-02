@@ -12,6 +12,9 @@ use serde::{Deserialize, Serialize}; /*
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Project {
+    /// [Output Only] The Cloud Armor tier for this project. It can be one of the following values: CA_STANDARD, CA_ENTERPRISE_PAYGO. If this field is not specified, it is assumed to be CA_STANDARD.
+    #[serde(rename = "cloudArmorTier", skip_serializing_if = "Option::is_none")]
+    pub cloud_armor_tier: Option<CloudArmorTier>,
     #[serde(
         rename = "commonInstanceMetadata",
         skip_serializing_if = "Option::is_none"
@@ -69,6 +72,7 @@ impl Project {
     /// Represents a Project resource. A project is used to organize resources in a Google Cloud Platform environment. For more information, read about the Resource Hierarchy.
     pub fn new() -> Project {
         Project {
+            cloud_armor_tier: None,
             common_instance_metadata: None,
             creation_timestamp: None,
             default_network_tier: None,
@@ -87,6 +91,22 @@ impl Project {
     }
 }
 
+/// [Output Only] The Cloud Armor tier for this project. It can be one of the following values: CA_STANDARD, CA_ENTERPRISE_PAYGO. If this field is not specified, it is assumed to be CA_STANDARD.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum CloudArmorTier {
+    #[serde(rename = "CA_ENTERPRISE_ANNUAL")]
+    EnterpriseAnnual,
+    #[serde(rename = "CA_ENTERPRISE_PAYGO")]
+    EnterprisePaygo,
+    #[serde(rename = "CA_STANDARD")]
+    Standard,
+}
+
+impl Default for CloudArmorTier {
+    fn default() -> CloudArmorTier {
+        Self::EnterpriseAnnual
+    }
+}
 /// This signifies the default network tier used for configuring resources of the project and can only take the following values: PREMIUM, STANDARD. Initially the default network tier is PREMIUM.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum DefaultNetworkTier {

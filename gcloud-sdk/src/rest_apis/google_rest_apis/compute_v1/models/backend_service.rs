@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize}; /*
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct BackendService {
-    /// Lifetime of cookies in seconds. This setting is applicable to external and internal HTTP(S) load balancers and Traffic Director and requires GENERATED_COOKIE or HTTP_COOKIE session affinity. If set to 0, the cookie is non-persistent and lasts only until the end of the browser session (or equivalent). The maximum allowed value is two weeks (1,209,600). Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.
+    /// Lifetime of cookies in seconds. This setting is applicable to Application Load Balancers and Traffic Director and requires GENERATED_COOKIE or HTTP_COOKIE session affinity. If set to 0, the cookie is non-persistent and lasts only until the end of the browser session (or equivalent). The maximum allowed value is two weeks (1,209,600). Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.
     #[serde(rename = "affinityCookieTtlSec", skip_serializing_if = "Option::is_none")]
     pub affinity_cookie_ttl_sec: Option<i32>,
     /// The list of backends that serve this BackendService.
@@ -46,7 +46,7 @@ pub struct BackendService {
     /// [Output Only] The resource URL for the edge security policy associated with this backend service.
     #[serde(rename = "edgeSecurityPolicy", skip_serializing_if = "Option::is_none")]
     pub edge_security_policy: Option<String>,
-    /// If true, enables Cloud CDN for the backend service of an external HTTP(S) load balancer.
+    /// If true, enables Cloud CDN for the backend service of a global external Application Load Balancer.
     #[serde(rename = "enableCDN", skip_serializing_if = "Option::is_none")]
     pub enable_cdn: Option<bool>,
     #[serde(rename = "failoverPolicy", skip_serializing_if = "Option::is_none")]
@@ -89,10 +89,10 @@ pub struct BackendService {
     pub network: Option<String>,
     #[serde(rename = "outlierDetection", skip_serializing_if = "Option::is_none")]
     pub outlier_detection: Option<Box<crate::google_rest_apis::compute_v1::models::OutlierDetection>>,
-    /// Deprecated in favor of portName. The TCP port to connect on the backend. The default value is 80. For Internal TCP/UDP Load Balancing and Network Load Balancing, omit port.
+    /// Deprecated in favor of portName. The TCP port to connect on the backend. The default value is 80. For internal passthrough Network Load Balancers and external passthrough Network Load Balancers, omit port.
     #[serde(rename = "port", skip_serializing_if = "Option::is_none")]
     pub port: Option<i32>,
-    /// A named port on a backend instance group representing the port for communication to the backend VMs in that group. The named port must be [defined on each backend instance group](https://cloud.google.com/load-balancing/docs/backend-service#named_ports). This parameter has no meaning if the backends are NEGs. For Internal TCP/UDP Load Balancing and Network Load Balancing, omit port_name.
+    /// A named port on a backend instance group representing the port for communication to the backend VMs in that group. The named port must be [defined on each backend instance group](https://cloud.google.com/load-balancing/docs/backend-service#named_ports). This parameter has no meaning if the backends are NEGs. For internal passthrough Network Load Balancers and external passthrough Network Load Balancers, omit port_name.
     #[serde(rename = "portName", skip_serializing_if = "Option::is_none")]
     pub port_name: Option<String>,
     /// The protocol this BackendService uses to communicate with backends. Possible values are HTTP, HTTPS, HTTP2, TCP, SSL, UDP or GRPC. depending on the chosen load balancer or Traffic Director configuration. Refer to the documentation for the load balancers or for Traffic Director for more information. Must be set to GRPC when the backend service is referenced by a URL map that is bound to target gRPC proxy.
@@ -112,6 +112,9 @@ pub struct BackendService {
     /// URLs of networkservices.ServiceBinding resources. Can only be set if load balancing scheme is INTERNAL_SELF_MANAGED. If set, lists of backends and health checks must be both empty.
     #[serde(rename = "serviceBindings", skip_serializing_if = "Option::is_none")]
     pub service_bindings: Option<Vec<String>>,
+    /// URL to networkservices.ServiceLbPolicy resource. Can only be set if load balancing scheme is EXTERNAL, EXTERNAL_MANAGED, INTERNAL_MANAGED or INTERNAL_SELF_MANAGED and the scope is global.
+    #[serde(rename = "serviceLbPolicy", skip_serializing_if = "Option::is_none")]
+    pub service_lb_policy: Option<String>,
     /// Type of session affinity to use. The default is NONE. Only NONE and HEADER_FIELD are supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true. For more details, see: [Session Affinity](https://cloud.google.com/load-balancing/docs/backend-service#session_affinity).
     #[serde(rename = "sessionAffinity", skip_serializing_if = "Option::is_none")]
     pub session_affinity: Option<SessionAffinity>,
@@ -165,6 +168,7 @@ impl BackendService {
             security_settings: None,
             self_link: None,
             service_bindings: None,
+            service_lb_policy: None,
             session_affinity: None,
             subsetting: None,
             timeout_sec: None,

@@ -12,6 +12,8 @@ use serde::{Deserialize, Serialize}; /*
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InstanceGroupManager {
+    #[serde(rename = "allInstancesConfig", skip_serializing_if = "Option::is_none")]
+    pub all_instances_config: Option<Box<crate::google_rest_apis::compute_v1::models::InstanceGroupManagerAllInstancesConfig>>,
     /// The autohealing policy for this managed instance group. You can specify only one value.
     #[serde(rename = "autoHealingPolicies", skip_serializing_if = "Option::is_none")]
     pub auto_healing_policies: Option<Vec<crate::google_rest_apis::compute_v1::models::InstanceGroupManagerAutoHealingPolicy>>,
@@ -84,6 +86,7 @@ impl InstanceGroupManager {
     /// Represents a Managed Instance Group resource. An instance group is a collection of VM instances that you can manage as a single entity. For more information, read Instance groups. For zonal Managed Instance Group, use the instanceGroupManagers resource. For regional Managed Instance Group, use the regionInstanceGroupManagers resource.
     pub fn new() -> InstanceGroupManager {
         InstanceGroupManager {
+            all_instances_config: None,
             auto_healing_policies: None,
             base_instance_name: None,
             creation_timestamp: None,
