@@ -437,7 +437,7 @@ futures = "0.3"
 prost = "0.12"
 prost-types = "0.12"
 gcemeta = { version = "0.2" }
-serde = { version = "1", features = ["derive"] }
+serde = { version = "1.0.200", features = ["derive"] }
 serde_json = { version = "1" }
 url = { version = "2.5" }
 jsonwebtoken = { version = "9" }
