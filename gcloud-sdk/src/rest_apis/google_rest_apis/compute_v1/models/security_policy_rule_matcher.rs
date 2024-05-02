@@ -17,6 +17,10 @@ pub struct SecurityPolicyRuleMatcher {
         Option<Box<crate::google_rest_apis::compute_v1::models::SecurityPolicyRuleMatcherConfig>>,
     #[serde(rename = "expr", skip_serializing_if = "Option::is_none")]
     pub expr: Option<Box<crate::google_rest_apis::compute_v1::models::Expr>>,
+    #[serde(rename = "exprOptions", skip_serializing_if = "Option::is_none")]
+    pub expr_options: Option<
+        Box<crate::google_rest_apis::compute_v1::models::SecurityPolicyRuleMatcherExprOptions>,
+    >,
     /// Preconfigured versioned expression. If this field is specified, config must also be specified. Available preconfigured expressions along with their requirements are: SRC_IPS_V1 - must specify the corresponding src_ip_range field in config.
     #[serde(rename = "versionedExpr", skip_serializing_if = "Option::is_none")]
     pub versioned_expr: Option<VersionedExpr>,
@@ -28,6 +32,7 @@ impl SecurityPolicyRuleMatcher {
         SecurityPolicyRuleMatcher {
             config: None,
             expr: None,
+            expr_options: None,
             versioned_expr: None,
         }
     }

@@ -18,6 +18,12 @@ pub struct SubnetworkSecondaryRange {
     /// The name associated with this subnetwork secondary range, used when adding an alias IP range to a VM instance. The name must be 1-63 characters long, and comply with RFC1035. The name must be unique within the subnetwork.
     #[serde(rename = "rangeName", skip_serializing_if = "Option::is_none")]
     pub range_name: Option<String>,
+    /// The URL of the reserved internal range.
+    #[serde(
+        rename = "reservedInternalRange",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reserved_internal_range: Option<String>,
 }
 
 impl SubnetworkSecondaryRange {
@@ -26,6 +32,7 @@ impl SubnetworkSecondaryRange {
         SubnetworkSecondaryRange {
             ip_cidr_range: None,
             range_name: None,
+            reserved_internal_range: None,
         }
     }
 }

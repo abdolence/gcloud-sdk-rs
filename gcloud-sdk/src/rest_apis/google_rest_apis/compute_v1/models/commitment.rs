@@ -27,6 +27,12 @@ pub struct Commitment {
     /// [Output Only] Commitment end time in RFC3339 text format.
     #[serde(rename = "endTimestamp", skip_serializing_if = "Option::is_none")]
     pub end_timestamp: Option<String>,
+    /// Specifies the already existing reservations to attach to the Commitment. This field is optional, and it can be a full or partial URL. For example, the following are valid URLs to an reservation: - https://www.googleapis.com/compute/v1/projects/project/zones/zone /reservations/reservation - projects/project/zones/zone/reservations/reservation
+    #[serde(
+        rename = "existingReservations",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub existing_reservations: Option<Vec<String>>,
     /// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
     #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
@@ -51,7 +57,7 @@ pub struct Commitment {
     /// [Output Only] URL of the region where this commitment may be used.
     #[serde(rename = "region", skip_serializing_if = "Option::is_none")]
     pub region: Option<String>,
-    /// List of create-on-create reseravtions for this commitment.
+    /// List of create-on-create reservations for this commitment.
     #[serde(rename = "reservations", skip_serializing_if = "Option::is_none")]
     pub reservations: Option<Vec<crate::google_rest_apis::compute_v1::models::Reservation>>,
     /// A list of commitment amounts for particular resources. Note that VCPU and MEMORY resource commitments must occur together.
@@ -89,6 +95,7 @@ impl Commitment {
             creation_timestamp: None,
             description: None,
             end_timestamp: None,
+            existing_reservations: None,
             id: None,
             kind: None,
             license_resource: None,
@@ -193,6 +200,8 @@ pub enum Type {
     MemoryOptimized,
     #[serde(rename = "MEMORY_OPTIMIZED_M3")]
     MemoryOptimizedM3,
+    #[serde(rename = "STORAGE_OPTIMIZED_Z3")]
+    StorageOptimizedZ3,
     #[serde(rename = "TYPE_UNSPECIFIED")]
     TypeUnspecified,
 }

@@ -54,6 +54,9 @@ pub struct Backend {
     /// Optional parameter to define a target capacity for the UTILIZATION balancing mode. The valid range is [0.0, 1.0]. For usage guidelines, see Utilization balancing mode.
     #[serde(rename = "maxUtilization", skip_serializing_if = "Option::is_none")]
     pub max_utilization: Option<f32>,
+    /// This field indicates whether this backend should be fully utilized before sending traffic to backends with default preference. The possible values are: - PREFERRED: Backends with this preference level will be filled up to their capacity limits first, based on RTT. - DEFAULT: If preferred backends don't have enough capacity, backends in this layer would be used and traffic would be assigned based on the load balancing algorithm you use. This is the default
+    #[serde(rename = "preference", skip_serializing_if = "Option::is_none")]
+    pub preference: Option<Preference>,
 }
 
 impl Backend {
@@ -72,6 +75,7 @@ impl Backend {
             max_rate_per_endpoint: None,
             max_rate_per_instance: None,
             max_utilization: None,
+            preference: None,
         }
     }
 }
@@ -90,5 +94,21 @@ pub enum BalancingMode {
 impl Default for BalancingMode {
     fn default() -> BalancingMode {
         Self::Connection
+    }
+}
+/// This field indicates whether this backend should be fully utilized before sending traffic to backends with default preference. The possible values are: - PREFERRED: Backends with this preference level will be filled up to their capacity limits first, based on RTT. - DEFAULT: If preferred backends don't have enough capacity, backends in this layer would be used and traffic would be assigned based on the load balancing algorithm you use. This is the default
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum Preference {
+    #[serde(rename = "DEFAULT")]
+    Default,
+    #[serde(rename = "PREFERENCE_UNSPECIFIED")]
+    PreferenceUnspecified,
+    #[serde(rename = "PREFERRED")]
+    Preferred,
+}
+
+impl Default for Preference {
+    fn default() -> Preference {
+        Self::Default
     }
 }

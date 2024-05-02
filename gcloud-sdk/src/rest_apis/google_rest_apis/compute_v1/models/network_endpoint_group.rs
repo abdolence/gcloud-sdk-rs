@@ -27,7 +27,7 @@ pub struct NetworkEndpointGroup {
     /// [Output Only] Creation timestamp in RFC3339 text format.
     #[serde(rename = "creationTimestamp", skip_serializing_if = "Option::is_none")]
     pub creation_timestamp: Option<String>,
-    /// The default port used if the port number is not specified in the network endpoint.
+    /// The default port used if the port number is not specified in the network endpoint. If the network endpoint type is either GCE_VM_IP, SERVERLESS or PRIVATE_SERVICE_CONNECT, this field must not be specified.
     #[serde(rename = "defaultPort", skip_serializing_if = "Option::is_none")]
     pub default_port: Option<i32>,
     /// An optional description of this resource. Provide this property when you create the resource.
@@ -42,7 +42,7 @@ pub struct NetworkEndpointGroup {
     /// Name of the resource; provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `[a-z]([-a-z0-9]*[a-z0-9])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
-    /// The URL of the network to which all network endpoints in the NEG belong. Uses \"default\" project network if unspecified.
+    /// The URL of the network to which all network endpoints in the NEG belong. Uses default project network if unspecified.
     #[serde(rename = "network", skip_serializing_if = "Option::is_none")]
     pub network: Option<String>,
     /// Type of network endpoints in this network endpoint group. Can be one of GCE_VM_IP, GCE_VM_IP_PORT, NON_GCP_PRIVATE_IP_PORT, INTERNET_FQDN_PORT, INTERNET_IP_PORT, SERVERLESS, PRIVATE_SERVICE_CONNECT.
@@ -54,7 +54,7 @@ pub struct NetworkEndpointGroup {
     #[serde(rename = "pscData", skip_serializing_if = "Option::is_none")]
     pub psc_data:
         Option<Box<crate::google_rest_apis::compute_v1::models::NetworkEndpointGroupPscData>>,
-    /// The target service url used to set up private service connection to a Google API or a PSC Producer Service Attachment. An example value is: \"asia-northeast3-cloudkms.googleapis.com\"
+    /// The target service url used to set up private service connection to a Google API or a PSC Producer Service Attachment. An example value is: asia-northeast3-cloudkms.googleapis.com
     #[serde(rename = "pscTargetService", skip_serializing_if = "Option::is_none")]
     pub psc_target_service: Option<String>,
     /// [Output Only] The URL of the region where the network endpoint group is located.

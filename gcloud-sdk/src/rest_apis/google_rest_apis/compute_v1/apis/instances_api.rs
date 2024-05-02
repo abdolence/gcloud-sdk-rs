@@ -131,8 +131,9 @@ pub struct ComputePeriodInstancesPeriodAggregatedListParams {
     pub order_by: Option<String>,
     /// Specifies a page token to use. Set `pageToken` to the `nextPageToken` returned by a previous list request to get the next page of results.
     pub page_token: Option<String>,
-    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
+    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false. For example, when partial success behavior is enabled, aggregatedList for a single zone scope either returns all resources in the zone or no resources, with an error code.
     pub return_partial_success: Option<bool>,
+    /// The Shared VPC service project id or service project number for which aggregated list request is invoked for subnetworks list-usable api.
     pub service_project_number: Option<String>,
 }
 
@@ -666,7 +667,7 @@ pub struct ComputePeriodInstancesPeriodListParams {
     pub order_by: Option<String>,
     /// Specifies a page token to use. Set `pageToken` to the `nextPageToken` returned by a previous list request to get the next page of results.
     pub page_token: Option<String>,
-    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
+    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false. For example, when partial success behavior is enabled, aggregatedList for a single zone scope either returns all resources in the zone or no resources, with an error code.
     pub return_partial_success: Option<bool>,
 }
 
@@ -711,8 +712,45 @@ pub struct ComputePeriodInstancesPeriodListReferrersParams {
     pub order_by: Option<String>,
     /// Specifies a page token to use. Set `pageToken` to the `nextPageToken` returned by a previous list request to get the next page of results.
     pub page_token: Option<String>,
-    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
+    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false. For example, when partial success behavior is enabled, aggregatedList for a single zone scope either returns all resources in the zone or no resources, with an error code.
     pub return_partial_success: Option<bool>,
+}
+
+/// struct for passing parameters to the method [`compute_instances_perform_maintenance`]
+#[derive(Clone, Debug, Default)]
+pub struct ComputePeriodInstancesPeriodPerformMaintenanceParams {
+    /// Project ID for this request.
+    pub project: String,
+    /// The name of the zone for this request.
+    pub zone: String,
+    /// Name of the instance scoping this request.
+    pub instance: String,
+    /// V1 error format.
+    pub dollar_xgafv: Option<String>,
+    /// OAuth access token.
+    pub access_token: Option<String>,
+    /// Data format for response.
+    pub alt: Option<String>,
+    /// JSONP
+    pub callback: Option<String>,
+    /// Selector specifying which fields to include in a partial response.
+    pub fields: Option<String>,
+    /// API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    pub key: Option<String>,
+    /// OAuth 2.0 token for the current user.
+    pub oauth_token: Option<String>,
+    /// Returns response with indentations and line breaks.
+    pub pretty_print: Option<bool>,
+    /// Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters.
+    pub quota_user: Option<String>,
+    /// Upload protocol for media (e.g. \"raw\", \"multipart\").
+    pub upload_protocol: Option<String>,
+    /// Legacy upload protocol for media (e.g. \"media\", \"multipart\").
+    pub upload_type: Option<String>,
+    /// Legacy name for parameter that has been superseded by `quotaUser`.
+    pub user_ip: Option<String>,
+    /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000).
+    pub request_id: Option<String>,
 }
 
 /// struct for passing parameters to the method [`compute_instances_remove_resource_policies`]
@@ -1441,6 +1479,8 @@ pub struct ComputePeriodInstancesPeriodSimulateMaintenanceEventParams {
     pub user_ip: Option<String>,
     /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000).
     pub request_id: Option<String>,
+    /// Determines whether the customers receive notifications before migration. Only applicable to SF vms.
+    pub with_extended_notifications: Option<bool>,
 }
 
 /// struct for passing parameters to the method [`compute_instances_start`]
@@ -1552,7 +1592,7 @@ pub struct ComputePeriodInstancesPeriodStopParams {
     pub upload_type: Option<String>,
     /// Legacy name for parameter that has been superseded by `quotaUser`.
     pub user_ip: Option<String>,
-    /// If true, discard the contents of any attached localSSD partitions. Default value is false.
+    /// This property is required if the instance has any attached Local SSD disks. If false, Local SSD data will be preserved when the instance is suspended. If true, the contents of any attached Local SSD disks will be discarded.
     pub discard_local_ssd: Option<bool>,
     /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000).
     pub request_id: Option<String>,
@@ -1591,7 +1631,7 @@ pub struct ComputePeriodInstancesPeriodSuspendParams {
     pub upload_type: Option<String>,
     /// Legacy name for parameter that has been superseded by `quotaUser`.
     pub user_ip: Option<String>,
-    /// If true, discard the contents of any attached localSSD partitions. Default value is false.
+    /// This property is required if the instance has any attached Local SSD disks. If false, Local SSD data will be preserved when the instance is suspended. If true, the contents of any attached Local SSD disks will be discarded.
     pub discard_local_ssd: Option<bool>,
     /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000).
     pub request_id: Option<String>,
@@ -1956,6 +1996,13 @@ pub enum ComputePeriodInstancesPeriodListError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ComputePeriodInstancesPeriodListReferrersError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`compute_instances_perform_maintenance`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ComputePeriodInstancesPeriodPerformMaintenanceError {
     UnknownValue(serde_json::Value),
 }
 
@@ -2411,7 +2458,7 @@ pub async fn compute_instances_add_resource_policies(
     }
 }
 
-/// Retrieves an aggregated list of all of the instances in your project across all regions and zones. The performance of this method degrades when a filter is specified on a project that has a very large number of instances.
+/// Retrieves an aggregated list of all of the instances in your project across all regions and zones. The performance of this method degrades when a filter is specified on a project that has a very large number of instances. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 pub async fn compute_instances_aggregated_list(
     configuration: &configuration::Configuration,
     params: ComputePeriodInstancesPeriodAggregatedListParams,
@@ -4420,6 +4467,127 @@ pub async fn compute_instances_list_referrers(
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
         let local_var_entity: Option<ComputePeriodInstancesPeriodListReferrersError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Perform a manual maintenance on the instance.
+pub async fn compute_instances_perform_maintenance(
+    configuration: &configuration::Configuration,
+    params: ComputePeriodInstancesPeriodPerformMaintenanceParams,
+) -> Result<
+    crate::google_rest_apis::compute_v1::models::Operation,
+    Error<ComputePeriodInstancesPeriodPerformMaintenanceError>,
+> {
+    let local_var_configuration = configuration;
+
+    // unbox the parameters
+    let project = params.project;
+    let zone = params.zone;
+    let instance = params.instance;
+    let dollar_xgafv = params.dollar_xgafv;
+    let access_token = params.access_token;
+    let alt = params.alt;
+    let callback = params.callback;
+    let fields = params.fields;
+    let key = params.key;
+    let oauth_token = params.oauth_token;
+    let pretty_print = params.pretty_print;
+    let quota_user = params.quota_user;
+    let upload_protocol = params.upload_protocol;
+    let upload_type = params.upload_type;
+    let user_ip = params.user_ip;
+    let request_id = params.request_id;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!(
+        "{}/projects/{project}/zones/{zone}/instances/{instance}/performMaintenance",
+        local_var_configuration.base_path,
+        project = crate::google_rest_apis::compute_v1::apis::urlencode(project),
+        zone = crate::google_rest_apis::compute_v1::apis::urlencode(zone),
+        instance = crate::google_rest_apis::compute_v1::apis::urlencode(instance)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_str) = dollar_xgafv {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("$.xgafv", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = access_token {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("access_token", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = alt {
+        local_var_req_builder = local_var_req_builder.query(&[("alt", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = callback {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("callback", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = fields {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("fields", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = key {
+        local_var_req_builder = local_var_req_builder.query(&[("key", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = oauth_token {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("oauth_token", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = pretty_print {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("prettyPrint", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = quota_user {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("quotaUser", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = upload_protocol {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("upload_protocol", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = upload_type {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("uploadType", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = user_ip {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = request_id {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("requestId", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder =
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<ComputePeriodInstancesPeriodPerformMaintenanceError> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,
@@ -6655,6 +6823,7 @@ pub async fn compute_instances_simulate_maintenance_event(
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
     let request_id = params.request_id;
+    let with_extended_notifications = params.with_extended_notifications;
 
     let local_var_client = &local_var_configuration.client;
 
@@ -6717,6 +6886,10 @@ pub async fn compute_instances_simulate_maintenance_event(
     if let Some(ref local_var_str) = request_id {
         local_var_req_builder =
             local_var_req_builder.query(&[("requestId", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = with_extended_notifications {
+        local_var_req_builder = local_var_req_builder
+            .query(&[("withExtendedNotifications", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =

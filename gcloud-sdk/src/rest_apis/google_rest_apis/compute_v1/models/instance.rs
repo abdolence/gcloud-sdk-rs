@@ -131,6 +131,9 @@ pub struct Instance {
     #[serde(rename = "resourceStatus", skip_serializing_if = "Option::is_none")]
     pub resource_status: Option<Box<crate::google_rest_apis::compute_v1::models::ResourceStatus>>,
     /// [Output Only] Reserved for future use.
+    #[serde(rename = "satisfiesPzi", skip_serializing_if = "Option::is_none")]
+    pub satisfies_pzi: Option<bool>,
+    /// [Output Only] Reserved for future use.
     #[serde(rename = "satisfiesPzs", skip_serializing_if = "Option::is_none")]
     pub satisfies_pzs: Option<bool>,
     #[serde(rename = "scheduling", skip_serializing_if = "Option::is_none")]
@@ -214,6 +217,7 @@ impl Instance {
             reservation_affinity: None,
             resource_policies: None,
             resource_status: None,
+            satisfies_pzi: None,
             satisfies_pzs: None,
             scheduling: None,
             self_link: None,

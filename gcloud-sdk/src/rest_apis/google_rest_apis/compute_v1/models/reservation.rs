@@ -12,6 +12,12 @@ use serde::{Deserialize, Serialize}; /*
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Reservation {
+    #[serde(
+        rename = "aggregateReservation",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub aggregate_reservation:
+        Option<Box<crate::google_rest_apis::compute_v1::models::AllocationAggregateReservation>>,
     /// [Output Only] Full or partial URL to a parent commitment. This field displays for reservations that are tied to a commitment.
     #[serde(rename = "commitment", skip_serializing_if = "Option::is_none")]
     pub commitment: Option<String>,
@@ -68,6 +74,7 @@ impl Reservation {
     /// Represents a reservation resource. A reservation ensures that capacity is held in a specific zone even if the reserved VMs are not running. For more information, read Reserving zonal resources.
     pub fn new() -> Reservation {
         Reservation {
+            aggregate_reservation: None,
             commitment: None,
             creation_timestamp: None,
             description: None,

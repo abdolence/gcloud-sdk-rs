@@ -27,6 +27,12 @@ pub struct AttachedDiskInitializeParams {
     /// Specifies the disk type to use to create the instance. If not specified, the default is pd-standard, specified using the full URL. For example: https://www.googleapis.com/compute/v1/projects/project/zones/zone /diskTypes/pd-standard For a full list of acceptable values, see Persistent disk types. If you specify this field when creating a VM, you can provide either the full or partial URL. For example, the following values are valid: - https://www.googleapis.com/compute/v1/projects/project/zones/zone /diskTypes/diskType - projects/project/zones/zone/diskTypes/diskType - zones/zone/diskTypes/diskType If you specify this field when creating or updating an instance template or all-instances configuration, specify the type of the disk, not the URL. For example: pd-standard.
     #[serde(rename = "diskType", skip_serializing_if = "Option::is_none")]
     pub disk_type: Option<String>,
+    /// Whether this disk is using confidential compute mode.
+    #[serde(
+        rename = "enableConfidentialCompute",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub enable_confidential_compute: Option<bool>,
     /// Labels to apply to this disk. These can be later modified by the disks.setLabels method. This field is only applicable for persistent disks.
     #[serde(rename = "labels", skip_serializing_if = "Option::is_none")]
     pub labels: Option<::std::collections::HashMap<String, String>>,
@@ -39,7 +45,7 @@ pub struct AttachedDiskInitializeParams {
     /// Indicates how many IOPS to provision for the disk. This sets the number of I/O operations per second that the disk can handle. Values must be between 10,000 and 120,000. For more details, see the Extreme persistent disk documentation.
     #[serde(rename = "provisionedIops", skip_serializing_if = "Option::is_none")]
     pub provisioned_iops: Option<String>,
-    /// Indicates how much throughput to provision for the disk. This sets the number of throughput mb per second that the disk can handle. Values must be between 1 and 7,124.
+    /// Indicates how much throughput to provision for the disk. This sets the number of throughput mb per second that the disk can handle. Values must greater than or equal to 1.
     #[serde(
         rename = "provisionedThroughput",
         skip_serializing_if = "Option::is_none"
@@ -86,6 +92,7 @@ impl AttachedDiskInitializeParams {
             disk_name: None,
             disk_size_gb: None,
             disk_type: None,
+            enable_confidential_compute: None,
             labels: None,
             licenses: None,
             on_update_action: None,

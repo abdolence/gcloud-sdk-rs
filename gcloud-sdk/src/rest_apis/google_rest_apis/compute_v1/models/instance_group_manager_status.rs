@@ -10,6 +10,8 @@ use serde::{Deserialize, Serialize}; /*
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct InstanceGroupManagerStatus {
+    #[serde(rename = "allInstancesConfig", skip_serializing_if = "Option::is_none")]
+    pub all_instances_config: Option<Box<crate::google_rest_apis::compute_v1::models::InstanceGroupManagerStatusAllInstancesConfig>>,
     /// [Output Only] The URL of the Autoscaler that targets this instance group manager.
     #[serde(rename = "autoscaler", skip_serializing_if = "Option::is_none")]
     pub autoscaler: Option<String>,
@@ -17,18 +19,15 @@ pub struct InstanceGroupManagerStatus {
     #[serde(rename = "isStable", skip_serializing_if = "Option::is_none")]
     pub is_stable: Option<bool>,
     #[serde(rename = "stateful", skip_serializing_if = "Option::is_none")]
-    pub stateful: Option<
-        Box<crate::google_rest_apis::compute_v1::models::InstanceGroupManagerStatusStateful>,
-    >,
+    pub stateful: Option<Box<crate::google_rest_apis::compute_v1::models::InstanceGroupManagerStatusStateful>>,
     #[serde(rename = "versionTarget", skip_serializing_if = "Option::is_none")]
-    pub version_target: Option<
-        Box<crate::google_rest_apis::compute_v1::models::InstanceGroupManagerStatusVersionTarget>,
-    >,
+    pub version_target: Option<Box<crate::google_rest_apis::compute_v1::models::InstanceGroupManagerStatusVersionTarget>>,
 }
 
 impl InstanceGroupManagerStatus {
     pub fn new() -> InstanceGroupManagerStatus {
         InstanceGroupManagerStatus {
+            all_instances_config: None,
             autoscaler: None,
             is_stable: None,
             stateful: None,

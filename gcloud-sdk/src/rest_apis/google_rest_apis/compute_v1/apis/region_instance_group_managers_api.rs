@@ -349,7 +349,7 @@ pub struct ComputePeriodRegionInstanceGroupManagersPeriodListParams {
     pub order_by: Option<String>,
     /// Specifies a page token to use. Set `pageToken` to the `nextPageToken` returned by a previous list request to get the next page of results.
     pub page_token: Option<String>,
-    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
+    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false. For example, when partial success behavior is enabled, aggregatedList for a single zone scope either returns all resources in the zone or no resources, with an error code.
     pub return_partial_success: Option<bool>,
 }
 
@@ -394,7 +394,7 @@ pub struct ComputePeriodRegionInstanceGroupManagersPeriodListErrorsParams {
     pub order_by: Option<String>,
     /// Specifies a page token to use. Set `pageToken` to the `nextPageToken` returned by a previous list request to get the next page of results.
     pub page_token: Option<String>,
-    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
+    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false. For example, when partial success behavior is enabled, aggregatedList for a single zone scope either returns all resources in the zone or no resources, with an error code.
     pub return_partial_success: Option<bool>,
 }
 
@@ -439,7 +439,7 @@ pub struct ComputePeriodRegionInstanceGroupManagersPeriodListManagedInstancesPar
     pub order_by: Option<String>,
     /// Specifies a page token to use. Set `pageToken` to the `nextPageToken` returned by a previous list request to get the next page of results.
     pub page_token: Option<String>,
-    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
+    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false. For example, when partial success behavior is enabled, aggregatedList for a single zone scope either returns all resources in the zone or no resources, with an error code.
     pub return_partial_success: Option<bool>,
 }
 
@@ -484,7 +484,7 @@ pub struct ComputePeriodRegionInstanceGroupManagersPeriodListPerInstanceConfigsP
     pub order_by: Option<String>,
     /// Specifies a page token to use. Set `pageToken` to the `nextPageToken` returned by a previous list request to get the next page of results.
     pub page_token: Option<String>,
-    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
+    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false. For example, when partial success behavior is enabled, aggregatedList for a single zone scope either returns all resources in the zone or no resources, with an error code.
     pub return_partial_success: Option<bool>,
 }
 
@@ -2118,7 +2118,7 @@ pub async fn compute_region_instance_group_managers_list_errors(
     }
 }
 
-/// Lists the instances in the managed instance group and instances that are scheduled to be created. The list includes any current actions that the group has scheduled for its instances. The orderBy query parameter is not supported. The `pageToken` query parameter is supported only in the alpha and beta API and only if the group's `listManagedInstancesResults` field is set to `PAGINATED`.
+/// Lists the instances in the managed instance group and instances that are scheduled to be created. The list includes any current actions that the group has scheduled for its instances. The orderBy query parameter is not supported. The `pageToken` query parameter is supported only if the group's `listManagedInstancesResults` field is set to `PAGINATED`.
 pub async fn compute_region_instance_group_managers_list_managed_instances(
     configuration: &configuration::Configuration,
     params: ComputePeriodRegionInstanceGroupManagersPeriodListManagedInstancesParams,
