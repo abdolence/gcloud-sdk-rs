@@ -3121,7 +3121,7 @@ pub mod probe {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ProbeType {
-        /// Exec specifies the action to take.
+        /// ExecAction probes the health of a container by executing a command.
         #[prost(message, tag = "1")]
         Exec(ExecAction),
     }
@@ -3852,12 +3852,82 @@ pub struct VertexAiSearch {
 /// Tool to retrieve public web data for grounding, powered by Google.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GoogleSearchRetrieval {
-    /// Optional. Disable using the result from this tool in detecting grounding
-    /// attribution. This does not affect how the result is given to the model for
-    /// generation.
-    #[prost(bool, tag = "1")]
-    pub disable_attribution: bool,
+pub struct GoogleSearchRetrieval {}
+/// Tool config. This config is shared for all tools provided in the request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolConfig {
+    /// Optional. Function calling config.
+    #[prost(message, optional, tag = "1")]
+    pub function_calling_config: ::core::option::Option<FunctionCallingConfig>,
+}
+/// Function calling config.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FunctionCallingConfig {
+    /// Optional. Function calling mode.
+    #[prost(enumeration = "function_calling_config::Mode", tag = "1")]
+    pub mode: i32,
+    /// Optional. Function names to call. Only set when the Mode is ANY. Function
+    /// names should match \[FunctionDeclaration.name\]. With mode set to ANY, model
+    /// will predict a function call from the set of function names provided.
+    #[prost(string, repeated, tag = "2")]
+    pub allowed_function_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `FunctionCallingConfig`.
+pub mod function_calling_config {
+    /// Function calling mode.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Mode {
+        /// Unspecified function calling mode. This value should not be used.
+        Unspecified = 0,
+        /// Default model behavior, model decides to predict either a function call
+        /// or a natural language repspose.
+        Auto = 1,
+        /// Model is constrained to always predicting a function call only.
+        /// If "allowed_function_names" are set, the predicted function call will be
+        /// limited to any one of "allowed_function_names", else the predicted
+        /// function call will be any one of the provided "function_declarations".
+        Any = 2,
+        /// Model will not predict any function call. Model behavior is same as when
+        /// not passing any function declarations.
+        None = 3,
+    }
+    impl Mode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Mode::Unspecified => "MODE_UNSPECIFIED",
+                Mode::Auto => "AUTO",
+                Mode::Any => "ANY",
+                Mode::None => "NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTO" => Some(Self::Auto),
+                "ANY" => Some(Self::Any),
+                "NONE" => Some(Self::None),
+                _ => None,
+            }
+        }
+    }
 }
 /// The base structured datatype containing multi-part content of a message.
 ///
@@ -4001,6 +4071,15 @@ pub struct GenerationConfig {
     /// This is a preview feature.
     #[prost(string, tag = "13")]
     pub response_mime_type: ::prost::alloc::string::String,
+    /// Optional. The `Schema` object allows the definition of input and output
+    /// data types. These types can be objects, but also primitives and arrays.
+    /// Represents a select subset of an [OpenAPI 3.0 schema
+    /// object](<https://spec.openapis.org/oas/v3.0.3#schema>).
+    /// If set, a compatible response_mime_type must also be set.
+    /// Compatible mimetypes:
+    /// `application/json`: Schema for JSON response.
+    #[prost(message, optional, tag = "16")]
+    pub response_schema: ::core::option::Option<Schema>,
 }
 /// Safety settings.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -4381,57 +4460,6 @@ pub mod candidate {
         }
     }
 }
-/// Segment of the content.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Segment {
-    /// Output only. The index of a Part object within its parent Content object.
-    #[prost(int32, tag = "1")]
-    pub part_index: i32,
-    /// Output only. Start index in the given Part, measured in bytes. Offset from
-    /// the start of the Part, inclusive, starting at zero.
-    #[prost(int32, tag = "2")]
-    pub start_index: i32,
-    /// Output only. End index in the given Part, measured in bytes. Offset from
-    /// the start of the Part, exclusive, starting at zero.
-    #[prost(int32, tag = "3")]
-    pub end_index: i32,
-}
-/// Grounding attribution.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GroundingAttribution {
-    /// Output only. Segment of the content this attribution belongs to.
-    #[prost(message, optional, tag = "1")]
-    pub segment: ::core::option::Option<Segment>,
-    /// Optional. Output only. Confidence score of the attribution. Ranges from 0
-    /// to 1. 1 is the most confident.
-    #[prost(float, optional, tag = "2")]
-    pub confidence_score: ::core::option::Option<f32>,
-    #[prost(oneof = "grounding_attribution::Reference", tags = "3")]
-    pub reference: ::core::option::Option<grounding_attribution::Reference>,
-}
-/// Nested message and enum types in `GroundingAttribution`.
-pub mod grounding_attribution {
-    /// Attribution from the web.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Web {
-        /// Output only. URI reference of the attribution.
-        #[prost(string, tag = "1")]
-        pub uri: ::prost::alloc::string::String,
-        /// Output only. Title of the attribution.
-        #[prost(string, tag = "2")]
-        pub title: ::prost::alloc::string::String,
-    }
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Reference {
-        /// Optional. Attribution from the web.
-        #[prost(message, tag = "3")]
-        Web(Web),
-    }
-}
 /// Metadata returned to client when grounding is enabled.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4439,9 +4467,6 @@ pub struct GroundingMetadata {
     /// Optional. Web search queries for the following-up web search.
     #[prost(string, repeated, tag = "1")]
     pub web_search_queries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. List of grounding attributions.
-    #[prost(message, repeated, tag = "2")]
-    pub grounding_attributions: ::prost::alloc::vec::Vec<GroundingAttribution>,
     /// Optional. Google search entry for the following-up web searches.
     #[prost(message, optional, tag = "4")]
     pub search_entry_point: ::core::option::Option<SearchEntryPoint>,
@@ -5281,6 +5306,10 @@ pub struct Dataset {
     /// `projects/{project}/locations/{location}/metadataStores/{metadata_store}/artifacts/{artifact}`.
     #[prost(string, tag = "17")]
     pub metadata_artifact: ::prost::alloc::string::String,
+    /// Optional. Reference to the public base model last used by the dataset. Only
+    /// set for prompt datasets.
+    #[prost(string, tag = "18")]
+    pub model_reference: ::prost::alloc::string::String,
 }
 /// Describes the location from where we import data into a Dataset, together
 /// with the labels that will be applied to the DataItems and the Annotations.
@@ -5566,6 +5595,10 @@ pub struct DatasetVersion {
     /// Required. Output only. Additional information about the DatasetVersion.
     #[prost(message, optional, tag = "8")]
     pub metadata: ::core::option::Option<::prost_types::Value>,
+    /// Output only. Reference to the public base model last used by the dataset
+    /// version. Only set for prompt dataset versions.
+    #[prost(string, tag = "9")]
+    pub model_reference: ::prost::alloc::string::String,
 }
 /// Generic Metadata shared by all operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5643,6 +5676,22 @@ pub struct UpdateDatasetRequest {
     ///    * `display_name`
     ///    * `description`
     ///    * `labels`
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for
+/// [DatasetService.UpdateDatasetVersion][google.cloud.aiplatform.v1.DatasetService.UpdateDatasetVersion].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDatasetVersionRequest {
+    /// Required. The DatasetVersion which replaces the resource on the server.
+    #[prost(message, optional, tag = "1")]
+    pub dataset_version: ::core::option::Option<DatasetVersion>,
+    /// Required. The update mask applies to the resource.
+    /// For the `FieldMask` definition, see
+    /// [google.protobuf.FieldMask][google.protobuf.FieldMask]. Updatable fields:
+    ///
+    ///    * `display_name`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -6509,6 +6558,34 @@ pub mod dataset_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Updates a DatasetVersion.
+        pub async fn update_dataset_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDatasetVersionRequest>,
+        ) -> std::result::Result<tonic::Response<super::DatasetVersion>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.DatasetService/UpdateDatasetVersion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.DatasetService",
+                        "UpdateDatasetVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Deletes a Dataset version.
         pub async fn delete_dataset_version(
             &mut self,
@@ -6843,6 +6920,29 @@ pub struct DeploymentResourcePool {
     /// uses.
     #[prost(message, optional, tag = "2")]
     pub dedicated_resources: ::core::option::Option<DedicatedResources>,
+    /// Customer-managed encryption key spec for a DeploymentResourcePool. If set,
+    /// this DeploymentResourcePool will be secured by this key. Endpoints and the
+    /// DeploymentResourcePool they deploy in need to have the same EncryptionSpec.
+    #[prost(message, optional, tag = "5")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+    /// The service account that the DeploymentResourcePool's container(s) run as.
+    /// Specify the email address of the service account. If this service account
+    /// is not specified, the container(s) run as a service account that doesn't
+    /// have access to the resource project.
+    ///
+    /// Users deploying the Models to this DeploymentResourcePool must have the
+    /// `iam.serviceAccounts.actAs` permission on this service account.
+    #[prost(string, tag = "6")]
+    pub service_account: ::prost::alloc::string::String,
+    /// If the DeploymentResourcePool is deployed with custom-trained Models or
+    /// AutoML Tabular Models, the container(s) of the DeploymentResourcePool will
+    /// send `stderr` and `stdout` streams to Cloud Logging by default.
+    /// Please note that the logs incur cost, which are subject to [Cloud Logging
+    /// pricing](<https://cloud.google.com/logging/pricing>).
+    ///
+    /// User can disable container logging by setting this flag to true.
+    #[prost(bool, tag = "7")]
+    pub disable_container_logging: bool,
     /// Output only. Timestamp when this DeploymentResourcePool was created.
     #[prost(message, optional, tag = "4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -9113,6 +9213,8 @@ pub mod feature {
         StringArray = 12,
         /// Used for Feature that is bytes.
         Bytes = 13,
+        /// Used for Feature that is struct.
+        Struct = 14,
     }
     impl ValueType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -9131,6 +9233,7 @@ pub mod feature {
                 ValueType::String => "STRING",
                 ValueType::StringArray => "STRING_ARRAY",
                 ValueType::Bytes => "BYTES",
+                ValueType::Struct => "STRUCT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9146,6 +9249,7 @@ pub mod feature {
                 "STRING" => Some(Self::String),
                 "STRING_ARRAY" => Some(Self::StringArray),
                 "BYTES" => Some(Self::Bytes),
+                "STRUCT" => Some(Self::Struct),
                 _ => None,
             }
         }
@@ -9210,9 +9314,9 @@ pub mod feature_group {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Indicates that features for this group come from BigQuery Table/View.
-        /// By default treats the source as a sparse time series source, which is
-        /// required to have an entity_id and a feature_timestamp column in the
-        /// source.
+        /// By default treats the source as a sparse time series source. The BigQuery
+        /// source table or view must have at least one entity ID column and a column
+        /// named `feature_timestamp`.
         #[prost(message, tag = "7")]
         BigQuery(BigQuery),
     }
@@ -9262,6 +9366,10 @@ pub struct FeatureOnlineStore {
     pub dedicated_serving_endpoint: ::core::option::Option<
         feature_online_store::DedicatedServingEndpoint,
     >,
+    /// Optional. Customer-managed encryption key spec for data storage. If set,
+    /// online store will be secured by this key.
+    #[prost(message, optional, tag = "13")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
     #[prost(oneof = "feature_online_store::StorageType", tags = "8, 12")]
     pub storage_type: ::core::option::Option<feature_online_store::StorageType>,
 }
@@ -10925,7 +11033,7 @@ pub struct FeatureValue {
     #[prost(message, optional, tag = "14")]
     pub metadata: ::core::option::Option<feature_value::Metadata>,
     /// Value for the feature.
-    #[prost(oneof = "feature_value::Value", tags = "1, 2, 5, 6, 7, 8, 11, 12, 13")]
+    #[prost(oneof = "feature_value::Value", tags = "1, 2, 5, 6, 7, 8, 11, 12, 13, 15")]
     pub value: ::core::option::Option<feature_value::Value>,
 }
 /// Nested message and enum types in `FeatureValue`.
@@ -10974,7 +11082,29 @@ pub mod feature_value {
         /// Bytes feature value.
         #[prost(bytes, tag = "13")]
         BytesValue(::prost::alloc::vec::Vec<u8>),
+        /// A struct type feature value.
+        #[prost(message, tag = "15")]
+        StructValue(super::StructValue),
     }
+}
+/// Struct (or object) type feature value.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StructValue {
+    /// A list of field values.
+    #[prost(message, repeated, tag = "1")]
+    pub values: ::prost::alloc::vec::Vec<StructFieldValue>,
+}
+/// One field of a Struct (or object) type feature value.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StructFieldValue {
+    /// Name of the field in the struct feature.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The value for this field.
+    #[prost(message, optional, tag = "2")]
+    pub value: ::core::option::Option<FeatureValue>,
 }
 /// Container for list of values.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -16073,10 +16203,13 @@ pub struct IndexDatapoint {
     /// Required. Unique identifier of the datapoint.
     #[prost(string, tag = "1")]
     pub datapoint_id: ::prost::alloc::string::String,
-    /// Required. Feature embedding vector. An array of numbers with the length of
-    /// \[NearestNeighborSearchConfig.dimensions\].
+    /// Required. Feature embedding vector for dense index. An array of numbers
+    /// with the length of \[NearestNeighborSearchConfig.dimensions\].
     #[prost(float, repeated, packed = "false", tag = "2")]
     pub feature_vector: ::prost::alloc::vec::Vec<f32>,
+    /// Optional. Feature embedding vector for sparse index.
+    #[prost(message, optional, tag = "7")]
+    pub sparse_embedding: ::core::option::Option<index_datapoint::SparseEmbedding>,
     /// Optional. List of Restrict of the datapoint, used to perform "restricted
     /// searches" where boolean rule are used to filter the subset of the database
     /// eligible for matching. This uses categorical tokens. See:
@@ -16095,6 +16228,19 @@ pub struct IndexDatapoint {
 }
 /// Nested message and enum types in `IndexDatapoint`.
 pub mod index_datapoint {
+    /// Feature embedding vector for sparse index. An array of numbers whose values
+    /// are located in the specified dimensions.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SparseEmbedding {
+        /// Required. The list of embedding values of the sparse vector.
+        #[prost(float, repeated, packed = "false", tag = "1")]
+        pub values: ::prost::alloc::vec::Vec<f32>,
+        /// Required. The list of indexes for the embedding values of the sparse
+        /// vector.
+        #[prost(int64, repeated, packed = "false", tag = "2")]
+        pub dimensions: ::prost::alloc::vec::Vec<i64>,
+    }
     /// Restriction of a datapoint which describe its attributes(tokens) from each
     /// of several attribute categories(namespaces).
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -16227,9 +16373,12 @@ pub mod index_datapoint {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IndexStats {
-    /// Output only. The number of vectors in the Index.
+    /// Output only. The number of dense vectors in the Index.
     #[prost(int64, tag = "1")]
     pub vectors_count: i64,
+    /// Output only. The number of sparse vectors in the Index.
+    #[prost(int64, tag = "3")]
+    pub sparse_vectors_count: i64,
     /// Output only. The number of shards in the Index.
     #[prost(int32, tag = "2")]
     pub shards_count: i32,
@@ -17280,8 +17429,8 @@ pub mod nearest_neighbor_search_operation_metadata {
             InvalidAvroSyntax = 4,
             /// The embedding id is not valid.
             InvalidEmbeddingId = 5,
-            /// The size of the embedding vectors does not match with the specified
-            /// dimension.
+            /// The size of the dense embedding vectors does not match with the
+            /// specified dimension.
             EmbeddingSizeMismatch = 6,
             /// The `namespace` field is missing.
             NamespaceMissing = 7,
@@ -17298,8 +17447,14 @@ pub mod nearest_neighbor_search_operation_metadata {
             InvalidNumericValue = 12,
             /// File is not in UTF_8 format.
             InvalidEncoding = 13,
+            /// Error parsing sparse dimensions field.
+            InvalidSparseDimensions = 14,
             /// Token restrict value is invalid.
             InvalidTokenValue = 15,
+            /// Invalid sparse embedding.
+            InvalidSparseEmbedding = 16,
+            /// Invalid dense embedding.
+            InvalidEmbedding = 17,
         }
         impl RecordErrorType {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -17322,7 +17477,12 @@ pub mod nearest_neighbor_search_operation_metadata {
                     RecordErrorType::MultipleValues => "MULTIPLE_VALUES",
                     RecordErrorType::InvalidNumericValue => "INVALID_NUMERIC_VALUE",
                     RecordErrorType::InvalidEncoding => "INVALID_ENCODING",
+                    RecordErrorType::InvalidSparseDimensions => {
+                        "INVALID_SPARSE_DIMENSIONS"
+                    }
                     RecordErrorType::InvalidTokenValue => "INVALID_TOKEN_VALUE",
+                    RecordErrorType::InvalidSparseEmbedding => "INVALID_SPARSE_EMBEDDING",
+                    RecordErrorType::InvalidEmbedding => "INVALID_EMBEDDING",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -17342,7 +17502,10 @@ pub mod nearest_neighbor_search_operation_metadata {
                     "MULTIPLE_VALUES" => Some(Self::MultipleValues),
                     "INVALID_NUMERIC_VALUE" => Some(Self::InvalidNumericValue),
                     "INVALID_ENCODING" => Some(Self::InvalidEncoding),
+                    "INVALID_SPARSE_DIMENSIONS" => Some(Self::InvalidSparseDimensions),
                     "INVALID_TOKEN_VALUE" => Some(Self::InvalidTokenValue),
+                    "INVALID_SPARSE_EMBEDDING" => Some(Self::InvalidSparseEmbedding),
+                    "INVALID_EMBEDDING" => Some(Self::InvalidEmbedding),
                     _ => None,
                 }
             }
@@ -17365,6 +17528,12 @@ pub mod nearest_neighbor_search_operation_metadata {
         /// Up to 50 partial errors will be reported.
         #[prost(message, repeated, tag = "4")]
         pub partial_errors: ::prost::alloc::vec::Vec<RecordError>,
+        /// Number of sparse records in this file that were successfully processed.
+        #[prost(int64, tag = "5")]
+        pub valid_sparse_record_count: i64,
+        /// Number of sparse records in this file we skipped due to validate errors.
+        #[prost(int64, tag = "6")]
+        pub invalid_sparse_record_count: i64,
     }
 }
 /// Generated client implementations.
@@ -21339,6 +21508,10 @@ pub struct GenerateContentRequest {
     /// knowledge and scope of the model.
     #[prost(message, repeated, tag = "6")]
     pub tools: ::prost::alloc::vec::Vec<Tool>,
+    /// Optional. Tool config. This config is shared for all tools provided in the
+    /// request.
+    #[prost(message, optional, tag = "7")]
+    pub tool_config: ::core::option::Option<ToolConfig>,
     /// Optional. Per request settings for blocking unsafe content.
     /// Enforced on GenerateContentResponse.candidates.
     #[prost(message, repeated, tag = "3")]
@@ -22228,6 +22401,28 @@ pub mod find_neighbors_request {
         /// NearestNeighborSearchConfig.TreeAHConfig.fraction_leaf_nodes_to_search.
         #[prost(double, tag = "5")]
         pub fraction_leaf_nodes_to_search_override: f64,
+        #[prost(oneof = "query::Ranking", tags = "6")]
+        pub ranking: ::core::option::Option<query::Ranking>,
+    }
+    /// Nested message and enum types in `Query`.
+    pub mod query {
+        /// Parameters for RRF algorithm that combines search results.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Rrf {
+            /// Required. Users can provide an alpha value to give more weight to dense
+            /// vs sparse results. For example, if the alpha is 0, we only return
+            /// sparse and if the alpha is 1, we only return dense.
+            #[prost(float, tag = "1")]
+            pub alpha: f32,
+        }
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Ranking {
+            /// Optional. Represents RRF algorithm that combines search results.
+            #[prost(message, tag = "6")]
+            Rrf(Rrf),
+        }
     }
 }
 /// The response message for
@@ -22253,9 +22448,12 @@ pub mod find_neighbors_response {
         /// fields are populated.
         #[prost(message, optional, tag = "1")]
         pub datapoint: ::core::option::Option<super::IndexDatapoint>,
-        /// The distance between the neighbor and the query vector.
+        /// The distance between the neighbor and the dense embedding query.
         #[prost(double, tag = "2")]
         pub distance: f64,
+        /// The distance between the neighbor and the query sparse_embedding.
+        #[prost(double, tag = "3")]
+        pub sparse_distance: f64,
     }
     /// Nearest neighbors for one query.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -22554,6 +22752,9 @@ pub struct MetadataStore {
     /// Output only. State information of the MetadataStore.
     #[prost(message, optional, tag = "7")]
     pub state: ::core::option::Option<metadata_store::MetadataStoreState>,
+    /// Optional. Dataplex integration settings.
+    #[prost(message, optional, tag = "8")]
+    pub dataplex_config: ::core::option::Option<metadata_store::DataplexConfig>,
 }
 /// Nested message and enum types in `MetadataStore`.
 pub mod metadata_store {
@@ -22564,6 +22765,15 @@ pub mod metadata_store {
         /// The disk utilization of the MetadataStore in bytes.
         #[prost(int64, tag = "1")]
         pub disk_utilization_bytes: i64,
+    }
+    /// Represents Dataplex integration settings.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataplexConfig {
+        /// Optional. Whether or not Data Lineage synchronization is enabled for
+        /// Vertex Pipelines.
+        #[prost(bool, tag = "1")]
+        pub enabled_pipelines_lineage: bool,
     }
 }
 /// Request message for
@@ -27457,6 +27667,9 @@ pub struct NotebookRuntimeTemplate {
     /// instances](<https://cloud.google.com/vpc/docs/add-remove-network-tags>)).
     #[prost(string, repeated, tag = "21")]
     pub network_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Customer-managed encryption key spec for the notebook runtime.
+    #[prost(message, optional, tag = "23")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
 }
 /// A runtime is a virtual machine allocated to a particular user for a
 /// particular Notebook file on temporary basis with lifetime limited to 24
@@ -27541,10 +27754,22 @@ pub struct NotebookRuntime {
     /// Output only. The type of the notebook runtime.
     #[prost(enumeration = "NotebookRuntimeType", tag = "19")]
     pub notebook_runtime_type: i32,
+    /// Output only. The idle shutdown configuration of the notebook runtime.
+    #[prost(message, optional, tag = "23")]
+    pub idle_shutdown_config: ::core::option::Option<NotebookIdleShutdownConfig>,
     /// Optional. The Compute Engine tags to add to runtime (see [Tagging
     /// instances](<https://cloud.google.com/vpc/docs/add-remove-network-tags>)).
     #[prost(string, repeated, tag = "25")]
     pub network_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Customer-managed encryption key spec for the notebook runtime.
+    #[prost(message, optional, tag = "28")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "29")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "30")]
+    pub satisfies_pzi: bool,
 }
 /// Nested message and enum types in `NotebookRuntime`.
 pub mod notebook_runtime {
@@ -27810,6 +28035,23 @@ pub struct DeleteNotebookRuntimeTemplateRequest {
     /// `projects/{project}/locations/{location}/notebookRuntimeTemplates/{notebook_runtime_template}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [NotebookService.UpdateNotebookRuntimeTemplate][google.cloud.aiplatform.v1.NotebookService.UpdateNotebookRuntimeTemplate].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateNotebookRuntimeTemplateRequest {
+    /// Required. The NotebookRuntimeTemplate to update.
+    #[prost(message, optional, tag = "1")]
+    pub notebook_runtime_template: ::core::option::Option<NotebookRuntimeTemplate>,
+    /// Required. The update mask applies to the resource.
+    /// For the `FieldMask` definition, see
+    /// [google.protobuf.FieldMask][google.protobuf.FieldMask]. Input format:
+    /// `{paths: "${updated_filed}"}` Updatable fields:
+    ///
+    ///    * `encryption_spec.kms_key_name`
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
 /// [NotebookService.AssignNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.AssignNotebookRuntime].
@@ -28226,6 +28468,37 @@ pub mod notebook_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Updates a NotebookRuntimeTemplate.
+        pub async fn update_notebook_runtime_template(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateNotebookRuntimeTemplateRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::NotebookRuntimeTemplate>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.NotebookService/UpdateNotebookRuntimeTemplate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.NotebookService",
+                        "UpdateNotebookRuntimeTemplate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Assigns a NotebookRuntime to a user for a particular Notebook file. This
         /// method will either returns an existing assignment or generates a new one.
         pub async fn assign_notebook_runtime(
@@ -28634,11 +28907,55 @@ pub struct ResourceRuntimeSpec {
 /// Persistent cluster as Ray nodes.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RaySpec {}
+pub struct RaySpec {
+    /// Optional. Default image for user to choose a preferred ML framework
+    /// (for example, TensorFlow or Pytorch) by choosing from [Vertex prebuilt
+    /// images](<https://cloud.google.com/vertex-ai/docs/training/pre-built-containers>).
+    /// Either this or the resource_pool_images is required. Use this field if
+    /// you need all the resource pools to have the same Ray image. Otherwise, use
+    /// the {@code resource_pool_images} field.
+    #[prost(string, tag = "1")]
+    pub image_uri: ::prost::alloc::string::String,
+    /// Optional. Required if image_uri isn't set. A map of resource_pool_id to
+    /// prebuild Ray image if user need to use different images for different
+    /// head/worker pools. This map needs to cover all the resource pool ids.
+    /// Example:
+    /// {
+    ///    "ray_head_node_pool": "head image"
+    ///    "ray_worker_node_pool1": "worker image"
+    ///    "ray_worker_node_pool2": "another worker image"
+    /// }
+    #[prost(map = "string, string", tag = "6")]
+    pub resource_pool_images: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. This will be used to indicate which resource pool will serve as
+    /// the Ray head node(the first node within that pool). Will use the machine
+    /// from the first workerpool as the head node by default if this field isn't
+    /// set.
+    #[prost(string, tag = "7")]
+    pub head_node_resource_pool_id: ::prost::alloc::string::String,
+    /// Optional. Ray metrics configurations.
+    #[prost(message, optional, tag = "8")]
+    pub ray_metric_spec: ::core::option::Option<RayMetricSpec>,
+}
 /// Persistent Cluster runtime information as output
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResourceRuntime {}
+pub struct ResourceRuntime {
+    /// Output only. URIs for user to connect to the Cluster.
+    /// Example:
+    /// {
+    ///    "RAY_HEAD_NODE_INTERNAL_IP": "head-node-IP:10001"
+    ///    "RAY_DASHBOARD_URI": "ray-dashboard-address:8888"
+    /// }
+    #[prost(map = "string, string", tag = "1")]
+    pub access_uris: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
 /// Configuration for the use of custom service account to run the workloads.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -28662,6 +28979,14 @@ pub struct ServiceAccountSpec {
     /// `service_account` inside the job.
     #[prost(string, tag = "2")]
     pub service_account: ::prost::alloc::string::String,
+}
+/// Configuration for the Ray metrics.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RayMetricSpec {
+    /// Optional. Flag to disable the Ray metrics collection.
+    #[prost(bool, tag = "1")]
+    pub disabled: bool,
 }
 /// Request message for
 /// [PersistentResourceService.CreatePersistentResource][google.cloud.aiplatform.v1.PersistentResourceService.CreatePersistentResource].

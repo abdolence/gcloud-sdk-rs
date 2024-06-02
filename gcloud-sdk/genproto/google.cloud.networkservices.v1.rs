@@ -202,8 +202,7 @@ pub mod extension_chain {
         /// Required. A Common Expression Language (CEL) expression that is used to
         /// match requests for which the extension chain is executed.
         ///
-        /// For more information, see
-        /// [CEL matcher language
+        /// For more information, see [CEL matcher language
         /// reference](<https://cloud.google.com/service-extensions/docs/cel-matcher-language-reference>).
         #[prost(string, tag = "1")]
         pub cel_expression: ::prost::alloc::string::String,
@@ -241,7 +240,7 @@ pub mod extension_chain {
         pub service: ::prost::alloc::string::String,
         /// Optional. A set of events during request or response processing for which
         /// this extension is called. This field is required for the
-        /// `LbTrafficExtension` resource. It's not relevant for the
+        /// `LbTrafficExtension` resource. It must not be set for the
         /// `LbRouteExtension` resource.
         #[prost(enumeration = "super::EventType", repeated, packed = "false", tag = "4")]
         pub supported_events: ::prost::alloc::vec::Vec<i32>,
@@ -257,6 +256,7 @@ pub mod extension_chain {
         /// error. Any subsequent extensions in the extension chain are also
         /// executed. When set to `FALSE` or the default setting of `FALSE` is used,
         /// one of the following happens:
+        ///
         /// * If response headers have not been delivered to the downstream client,
         /// a generic 500 error is returned to the client. The error response can be
         /// tailored by configuring a custom error response in the load balancer.
@@ -296,8 +296,8 @@ pub struct LbTrafficExtension {
     /// Optional. Set of labels associated with the `LbTrafficExtension` resource.
     ///
     /// The format must comply with [the requirements for
-    /// labels](<https://cloud.google.com/compute/docs/labeling-resources#requirements>) for Google Cloud
-    /// resources.
+    /// labels](<https://cloud.google.com/compute/docs/labeling-resources#requirements>)
+    /// for Google Cloud resources.
     #[prost(map = "string, string", tag = "4")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -323,6 +323,16 @@ pub struct LbTrafficExtension {
     /// balancer](<https://cloud.google.com/load-balancing/docs/backend-service>).
     #[prost(enumeration = "LoadBalancingScheme", tag = "8")]
     pub load_balancing_scheme: i32,
+    /// Optional. The metadata provided here is included in the
+    /// `ProcessingRequest.metadata_context.filter_metadata` map field. The
+    /// metadata is available under the key
+    /// `com.google.lb_traffic_extension.<resource_name>`.
+    /// The following variables are supported in the metadata:
+    ///
+    /// `{forwarding_rule_id}` - substituted with the forwarding rule's fully
+    ///    qualified resource name.
+    #[prost(message, optional, tag = "10")]
+    pub metadata: ::core::option::Option<::prost_types::Struct>,
 }
 /// Message for requesting list of `LbTrafficExtension` resources.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -406,7 +416,7 @@ pub struct CreateLbTrafficExtensionRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateLbTrafficExtensionRequest {
-    /// Required. Used to specify the fields to be overwritten in the
+    /// Optional. Used to specify the fields to be overwritten in the
     /// `LbTrafficExtension` resource by the update.
     /// The fields specified in the update_mask are relative to the resource, not
     /// the full request. A field is overwritten if it is in the mask. If the
@@ -479,8 +489,8 @@ pub struct LbRouteExtension {
     /// Optional. Set of labels associated with the `LbRouteExtension` resource.
     ///
     /// The format must comply with [the requirements for
-    /// labels](<https://cloud.google.com/compute/docs/labeling-resources#requirements>) for Google Cloud
-    /// resources.
+    /// labels](<https://cloud.google.com/compute/docs/labeling-resources#requirements>)
+    /// for Google Cloud resources.
     #[prost(map = "string, string", tag = "4")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -506,6 +516,17 @@ pub struct LbRouteExtension {
     /// balancer](<https://cloud.google.com/load-balancing/docs/backend-service>).
     #[prost(enumeration = "LoadBalancingScheme", tag = "8")]
     pub load_balancing_scheme: i32,
+    /// Optional. The metadata provided here is included as part of the
+    /// `metadata_context` (of type `google.protobuf.Struct`) in the
+    /// `ProcessingRequest` message sent to the extension
+    /// server. The metadata is available under the namespace
+    /// `com.google.lb_route_extension.<resource_name>`.
+    /// The following variables are supported in the metadata Struct:
+    ///
+    /// `{forwarding_rule_id}` - substituted with the forwarding rule's fully
+    ///    qualified resource name.
+    #[prost(message, optional, tag = "10")]
+    pub metadata: ::core::option::Option<::prost_types::Struct>,
 }
 /// Message for requesting list of `LbRouteExtension` resources.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -589,7 +610,7 @@ pub struct CreateLbRouteExtensionRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateLbRouteExtensionRequest {
-    /// Required. Used to specify the fields to be overwritten in the
+    /// Optional. Used to specify the fields to be overwritten in the
     /// `LbRouteExtension` resource by the update.
     /// The fields specified in the update_mask are relative to the resource, not
     /// the full request. A field is overwritten if it is in the mask. If the

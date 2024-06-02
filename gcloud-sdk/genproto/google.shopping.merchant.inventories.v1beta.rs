@@ -3,7 +3,7 @@
 /// for a specific product at the store specified by
 /// [`storeCode`][google.shopping.merchant.inventories.v1beta.LocalInventory.store_code].
 /// For a list of all accepted attribute values, see the [local product inventory
-/// feed specification](<https://support.google.com/merchants/answer/3061342>).
+/// data specification](<https://support.google.com/merchants/answer/3061342>).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalInventory {
@@ -18,7 +18,7 @@ pub struct LocalInventory {
     pub account: i64,
     /// Required. Immutable. Store code (the store ID from your Business Profile)
     /// of the physical store the product is sold in. See the [Local product
-    /// inventory feed
+    /// inventory data
     /// specification](<https://support.google.com/merchants/answer/3061342>) for
     /// more information.
     #[prost(string, tag = "3")]
@@ -38,7 +38,7 @@ pub struct LocalInventory {
         super::super::super::super::r#type::Interval,
     >,
     /// Availability of the product at this store.
-    /// For accepted attribute values, see the [local product inventory feed
+    /// For accepted attribute values, see the [local product inventory data
     /// specification](<https://support.google.com/merchants/answer/3061342>)
     #[prost(string, optional, tag = "7")]
     pub availability: ::core::option::Option<::prost::alloc::string::String>,
@@ -49,14 +49,14 @@ pub struct LocalInventory {
     /// Supported pickup method for this product. Unless the value is `"not
     /// supported"`, this field must be submitted together with
     /// `pickupSla`.
-    /// For accepted attribute values, see the [local product inventory feed
+    /// For accepted attribute values, see the [local product inventory data
     /// specification](<https://support.google.com/merchants/answer/3061342>)
     #[prost(string, optional, tag = "9")]
     pub pickup_method: ::core::option::Option<::prost::alloc::string::String>,
     /// Relative time period from the order date for an order for this product,
     /// from this store, to be ready for pickup. Must be submitted with
     /// `pickupMethod`.
-    /// For accepted attribute values, see the [local product inventory feed
+    /// For accepted attribute values, see the [local product inventory data
     /// specification](<https://support.google.com/merchants/answer/3061342>)
     #[prost(string, optional, tag = "10")]
     pub pickup_sla: ::core::option::Option<::prost::alloc::string::String>,
@@ -64,7 +64,7 @@ pub struct LocalInventory {
     #[prost(string, optional, tag = "11")]
     pub instore_product_location: ::core::option::Option<::prost::alloc::string::String>,
     /// A list of custom (merchant-provided) attributes. You can also use
-    /// `CustomAttribute` to submit any attribute of the feed specification in its
+    /// `CustomAttribute` to submit any attribute of the data specification in its
     /// generic form.
     #[prost(message, repeated, tag = "12")]
     pub custom_attributes: ::prost::alloc::vec::Vec<
@@ -330,7 +330,7 @@ pub mod local_inventory_service_client {
 /// information like price and availability for a given product in a specific
 /// [`region`][google.shopping.merchant.inventories.v1beta.RegionalInventory.region].
 /// For a list of all accepted attribute values, see the [regional product
-/// inventory feed
+/// inventory data
 /// specification](<https://support.google.com/merchants/answer/9698880>).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -365,12 +365,12 @@ pub struct RegionalInventory {
         super::super::super::super::r#type::Interval,
     >,
     /// Availability of the product in this region.
-    /// For accepted attribute values, see the [regional product inventory feed
+    /// For accepted attribute values, see the [regional product inventory data
     /// specification](<https://support.google.com/merchants/answer/3061342>)
     #[prost(string, optional, tag = "7")]
     pub availability: ::core::option::Option<::prost::alloc::string::String>,
     /// A list of custom (merchant-provided) attributes. You can also use
-    /// `CustomAttribute` to submit any attribute of the feed specification in its
+    /// `CustomAttribute` to submit any attribute of the data specification in its
     /// generic form.
     #[prost(message, repeated, tag = "8")]
     pub custom_attributes: ::prost::alloc::vec::Vec<

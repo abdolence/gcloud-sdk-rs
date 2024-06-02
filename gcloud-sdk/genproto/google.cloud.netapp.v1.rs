@@ -1701,6 +1701,15 @@ pub mod snapshot {
         }
     }
 }
+/// Metadata for a given
+/// [google.cloud.location.Location][google.cloud.location.Location].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LocationMetadata {
+    /// Output only. Supported service levels in a location.
+    #[prost(enumeration = "ServiceLevel", repeated, packed = "false", tag = "1")]
+    pub supported_service_levels: ::prost::alloc::vec::Vec<i32>,
+}
 /// The service level of a storage pool and its volumes.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -1713,6 +1722,8 @@ pub enum ServiceLevel {
     Extreme = 2,
     /// Standard service level.
     Standard = 3,
+    /// Flex service level.
+    Flex = 4,
 }
 impl ServiceLevel {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1725,6 +1736,7 @@ impl ServiceLevel {
             ServiceLevel::Premium => "PREMIUM",
             ServiceLevel::Extreme => "EXTREME",
             ServiceLevel::Standard => "STANDARD",
+            ServiceLevel::Flex => "FLEX",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1734,6 +1746,7 @@ impl ServiceLevel {
             "PREMIUM" => Some(Self::Premium),
             "EXTREME" => Some(Self::Extreme),
             "STANDARD" => Some(Self::Standard),
+            "FLEX" => Some(Self::Flex),
             _ => None,
         }
     }
@@ -2196,6 +2209,9 @@ pub struct Volume {
     /// Optional. List of actions that are restricted on this volume.
     #[prost(enumeration = "RestrictedAction", repeated, packed = "false", tag = "31")]
     pub restricted_actions: ::prost::alloc::vec::Vec<i32>,
+    /// Tiering policy for the volume.
+    #[prost(message, optional, tag = "34")]
+    pub tiering_policy: ::core::option::Option<TieringPolicy>,
 }
 /// Nested message and enum types in `Volume`.
 pub mod volume {
@@ -2471,6 +2487,70 @@ pub struct BackupConfig {
     /// This field should be nil when there's no backup policy attached.
     #[prost(bool, optional, tag = "3")]
     pub scheduled_backup_enabled: ::core::option::Option<bool>,
+    /// Output only. Total size of all backups in a chain in bytes = baseline
+    /// backup size + sum(incremental backup size).
+    #[prost(int64, optional, tag = "4")]
+    pub backup_chain_bytes: ::core::option::Option<i64>,
+}
+/// Defines tiering policy for the volume.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TieringPolicy {
+    /// Optional. Flag indicating if the volume has tiering policy enable/pause.
+    /// Default is PAUSED.
+    #[prost(enumeration = "tiering_policy::TierAction", optional, tag = "1")]
+    pub tier_action: ::core::option::Option<i32>,
+    /// Optional. Time in days to mark the volume's data block as cold and make it
+    /// eligible for tiering, can be range from 7-183. Default is 31.
+    #[prost(int32, optional, tag = "2")]
+    pub cooling_threshold_days: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `TieringPolicy`.
+pub mod tiering_policy {
+    /// Tier action for the volume.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TierAction {
+        /// Unspecified.
+        Unspecified = 0,
+        /// When tiering is enabled, new cold data will be tiered.
+        Enabled = 1,
+        /// When paused, tiering won't be performed on new data. Existing data stays
+        /// tiered until accessed.
+        Paused = 2,
+    }
+    impl TierAction {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                TierAction::Unspecified => "TIER_ACTION_UNSPECIFIED",
+                TierAction::Enabled => "ENABLED",
+                TierAction::Paused => "PAUSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TIER_ACTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                _ => None,
+            }
+        }
+    }
 }
 /// Protocols is an enum of all the supported network protocols for a volume.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

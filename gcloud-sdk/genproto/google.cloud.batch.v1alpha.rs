@@ -166,8 +166,18 @@ pub struct StatusEvent {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TaskExecution {
-    /// When task is completed as the status of FAILED or SUCCEEDED,
-    /// exit code is for one task execution result, default is 0 as success.
+    /// The exit code of a finished task.
+    ///
+    /// If the task succeeded, the exit code will be 0. If the task failed but not
+    /// due to the following reasons, the exit code will be 50000.
+    ///
+    /// Otherwise, it can be from different sources:
+    /// - Batch known failures as
+    /// <https://cloud.google.com/batch/docs/troubleshooting#reserved-exit-codes.>
+    /// - Batch runnable execution failures: You can rely on Batch logs for further
+    /// diagnose: <https://cloud.google.com/batch/docs/analyze-job-using-logs.>
+    /// If there are multiple runnables failures, Batch only exposes the first
+    /// error caught for now.
     #[prost(int32, tag = "1")]
     pub exit_code: i32,
     /// Optional. The tail end of any content written to standard error by the task
@@ -1192,11 +1202,11 @@ pub mod allocation_policy {
         /// \["zones/us-central1-a", "zones/us-central1-c"\] only allow VMs
         /// in zones us-central1-a and us-central1-c.
         ///
-        /// All locations end up in different regions would cause errors.
+        /// Mixing locations from different regions would cause errors.
         /// For example,
         /// ["regions/us-central1", "zones/us-central1-a", "zones/us-central1-b",
-        /// "zones/us-west1-a"] contains 2 regions "us-central1" and
-        /// "us-west1". An error is expected in this case.
+        /// "zones/us-west1-a"] contains locations from two distinct regions:
+        /// us-central1 and us-west1. This combination will trigger an error.
         #[prost(string, repeated, tag = "1")]
         pub allowed_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// A list of denied location names.
@@ -2015,6 +2025,36 @@ pub struct DeleteJobRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// UpdateJob Request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateJobRequest {
+    /// Required. The Job to update.
+    /// Only fields specified in `update_mask` are updated.
+    #[prost(message, optional, tag = "1")]
+    pub job: ::core::option::Option<Job>,
+    /// Required. Mask of fields to update.
+    ///
+    /// UpdateJob request now only supports update on `task_count` field in a job's
+    /// first task group. Other fields will be ignored.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
 /// ListJob Request.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2431,6 +2471,34 @@ pub mod batch_service_client {
                     GrpcMethod::new(
                         "google.cloud.batch.v1alpha.BatchService",
                         "DeleteJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update a Job.
+        pub async fn update_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateJobRequest>,
+        ) -> std::result::Result<tonic::Response<super::Job>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.batch.v1alpha.BatchService/UpdateJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.batch.v1alpha.BatchService",
+                        "UpdateJob",
                     ),
                 );
             self.inner.unary(req, path, codec).await

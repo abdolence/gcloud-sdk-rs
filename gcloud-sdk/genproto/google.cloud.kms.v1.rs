@@ -553,6 +553,8 @@ pub mod crypto_key_version {
         /// Other hash functions can also be used:
         /// <https://cloud.google.com/kms/docs/create-validate-signatures#ecdsa_support_for_other_hash_algorithms>
         EcSignSecp256k1Sha256 = 31,
+        /// EdDSA on the Curve25519 in pure mode (taking data as input).
+        EcSignEd25519 = 40,
         /// HMAC-SHA256 signing with a 256 bit key.
         HmacSha256 = 32,
         /// HMAC-SHA1 signing with a 160 bit key.
@@ -644,6 +646,7 @@ pub mod crypto_key_version {
                 CryptoKeyVersionAlgorithm::EcSignSecp256k1Sha256 => {
                     "EC_SIGN_SECP256K1_SHA256"
                 }
+                CryptoKeyVersionAlgorithm::EcSignEd25519 => "EC_SIGN_ED25519",
                 CryptoKeyVersionAlgorithm::HmacSha256 => "HMAC_SHA256",
                 CryptoKeyVersionAlgorithm::HmacSha1 => "HMAC_SHA1",
                 CryptoKeyVersionAlgorithm::HmacSha384 => "HMAC_SHA384",
@@ -686,6 +689,7 @@ pub mod crypto_key_version {
                 "EC_SIGN_P256_SHA256" => Some(Self::EcSignP256Sha256),
                 "EC_SIGN_P384_SHA384" => Some(Self::EcSignP384Sha384),
                 "EC_SIGN_SECP256K1_SHA256" => Some(Self::EcSignSecp256k1Sha256),
+                "EC_SIGN_ED25519" => Some(Self::EcSignEd25519),
                 "HMAC_SHA256" => Some(Self::HmacSha256),
                 "HMAC_SHA1" => Some(Self::HmacSha1),
                 "HMAC_SHA384" => Some(Self::HmacSha384),
@@ -1219,6 +1223,541 @@ impl ProtectionLevel {
             "EXTERNAL" => Some(Self::External),
             "EXTERNAL_VPC" => Some(Self::ExternalVpc),
             _ => None,
+        }
+    }
+}
+/// Request message for
+/// [Autokey.CreateKeyHandle][google.cloud.kms.v1.Autokey.CreateKeyHandle].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateKeyHandleRequest {
+    /// Required. Name of the resource project and location to create the
+    /// [KeyHandle][google.cloud.kms.v1.KeyHandle] in, e.g.
+    /// `projects/{PROJECT_ID}/locations/{LOCATION}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Id of the [KeyHandle][google.cloud.kms.v1.KeyHandle]. Must be
+    /// unique to the resource project and location. If not provided by the caller,
+    /// a new UUID is used.
+    #[prost(string, tag = "2")]
+    pub key_handle_id: ::prost::alloc::string::String,
+    /// Required. [KeyHandle][google.cloud.kms.v1.KeyHandle] to create.
+    #[prost(message, optional, tag = "3")]
+    pub key_handle: ::core::option::Option<KeyHandle>,
+}
+/// Request message for [GetKeyHandle][google.cloud.kms.v1.Autokey.GetKeyHandle].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetKeyHandleRequest {
+    /// Required. Name of the [KeyHandle][google.cloud.kms.v1.KeyHandle] resource,
+    /// e.g.
+    /// `projects/{PROJECT_ID}/locations/{LOCATION}/keyHandles/{KEY_HANDLE_ID}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Resource-oriented representation of a request to Cloud KMS Autokey and the
+/// resulting provisioning of a [CryptoKey][google.cloud.kms.v1.CryptoKey].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct KeyHandle {
+    /// Identifier. Name of the [KeyHandle][google.cloud.kms.v1.KeyHandle]
+    /// resource, e.g.
+    /// `projects/{PROJECT_ID}/locations/{LOCATION}/keyHandles/{KEY_HANDLE_ID}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Name of a [CryptoKey][google.cloud.kms.v1.CryptoKey] that has
+    /// been provisioned for Customer Managed Encryption Key (CMEK) use in the
+    /// [KeyHandle][google.cloud.kms.v1.KeyHandle] project and location for the
+    /// requested resource type. The [CryptoKey][google.cloud.kms.v1.CryptoKey]
+    /// project will reflect the value configured in the
+    /// [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig] on the resource
+    /// project's ancestor folder at the time of the
+    /// [KeyHandle][google.cloud.kms.v1.KeyHandle] creation. If more than one
+    /// ancestor folder has a configured
+    /// [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig], the nearest of these
+    /// configurations is used.
+    #[prost(string, tag = "3")]
+    pub kms_key: ::prost::alloc::string::String,
+    /// Required. Indicates the resource type that the resulting
+    /// [CryptoKey][google.cloud.kms.v1.CryptoKey] is meant to protect, e.g.
+    /// `{SERVICE}.googleapis.com/{TYPE}`. See documentation for supported resource
+    /// types.
+    #[prost(string, tag = "4")]
+    pub resource_type_selector: ::prost::alloc::string::String,
+}
+/// Metadata message for
+/// [CreateKeyHandle][google.cloud.kms.v1.Autokey.CreateKeyHandle] long-running
+/// operation response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateKeyHandleMetadata {}
+/// Request message for
+/// [Autokey.ListKeyHandles][google.cloud.kms.v1.Autokey.ListKeyHandles].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListKeyHandlesRequest {
+    /// Required. Name of the resource project and location from which to list
+    /// [KeyHandles][google.cloud.kms.v1.KeyHandle], e.g.
+    /// `projects/{PROJECT_ID}/locations/{LOCATION}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Filter to apply when listing
+    /// [KeyHandles][google.cloud.kms.v1.KeyHandle], e.g.
+    /// `resource_type_selector="{SERVICE}.googleapis.com/{TYPE}"`.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [Autokey.ListKeyHandles][google.cloud.kms.v1.Autokey.ListKeyHandles].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListKeyHandlesResponse {
+    /// Resulting [KeyHandles][google.cloud.kms.v1.KeyHandle].
+    #[prost(message, repeated, tag = "1")]
+    pub key_handles: ::prost::alloc::vec::Vec<KeyHandle>,
+}
+/// Generated client implementations.
+pub mod autokey_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Provides interfaces for using Cloud KMS Autokey to provision new
+    /// [CryptoKeys][google.cloud.kms.v1.CryptoKey], ready for Customer Managed
+    /// Encryption Key (CMEK) use, on-demand. To support certain client tooling, this
+    /// feature is modeled around a [KeyHandle][google.cloud.kms.v1.KeyHandle]
+    /// resource: creating a [KeyHandle][google.cloud.kms.v1.KeyHandle] in a resource
+    /// project and given location triggers Cloud KMS Autokey to provision a
+    /// [CryptoKey][google.cloud.kms.v1.CryptoKey] in the configured key project and
+    /// the same location.
+    ///
+    /// Prior to use in a given resource project,
+    /// [UpdateAutokeyConfig][google.cloud.kms.v1.AutokeyAdmin.UpdateAutokeyConfig]
+    /// should have been called on an ancestor folder, setting the key project where
+    /// Cloud KMS Autokey should create new
+    /// [CryptoKeys][google.cloud.kms.v1.CryptoKey]. See documentation for additional
+    /// prerequisites. To check what key project, if any, is currently configured on
+    /// a resource project's ancestor folder, see
+    /// [ShowEffectiveAutokeyConfig][google.cloud.kms.v1.AutokeyAdmin.ShowEffectiveAutokeyConfig].
+    #[derive(Debug, Clone)]
+    pub struct AutokeyClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl AutokeyClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> AutokeyClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> AutokeyClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            AutokeyClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a new [KeyHandle][google.cloud.kms.v1.KeyHandle], triggering the
+        /// provisioning of a new [CryptoKey][google.cloud.kms.v1.CryptoKey] for CMEK
+        /// use with the given resource type in the configured key project and the same
+        /// location. [GetOperation][Operations.GetOperation] should be used to resolve
+        /// the resulting long-running operation and get the resulting
+        /// [KeyHandle][google.cloud.kms.v1.KeyHandle] and
+        /// [CryptoKey][google.cloud.kms.v1.CryptoKey].
+        pub async fn create_key_handle(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateKeyHandleRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.Autokey/CreateKeyHandle",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.kms.v1.Autokey", "CreateKeyHandle"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the [KeyHandle][google.cloud.kms.v1.KeyHandle].
+        pub async fn get_key_handle(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetKeyHandleRequest>,
+        ) -> std::result::Result<tonic::Response<super::KeyHandle>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.Autokey/GetKeyHandle",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.kms.v1.Autokey", "GetKeyHandle"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists [KeyHandles][google.cloud.kms.v1.KeyHandle].
+        pub async fn list_key_handles(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListKeyHandlesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListKeyHandlesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.Autokey/ListKeyHandles",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.kms.v1.Autokey", "ListKeyHandles"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Request message for
+/// [UpdateAutokeyConfig][google.cloud.kms.v1.AutokeyAdmin.UpdateAutokeyConfig].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAutokeyConfigRequest {
+    /// Required. [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig] with values to
+    /// update.
+    #[prost(message, optional, tag = "1")]
+    pub autokey_config: ::core::option::Option<AutokeyConfig>,
+    /// Required. Masks which fields of the
+    /// [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig] to update, e.g.
+    /// `keyProject`.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for
+/// [GetAutokeyConfig][google.cloud.kms.v1.AutokeyAdmin.GetAutokeyConfig].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAutokeyConfigRequest {
+    /// Required. Name of the [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig]
+    /// resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Cloud KMS Autokey configuration for a folder.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutokeyConfig {
+    /// Identifier. Name of the [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig]
+    /// resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Name of the key project, e.g. `projects/{PROJECT_ID}` or
+    /// `projects/{PROJECT_NUMBER}`, where Cloud KMS Autokey will provision a new
+    /// [CryptoKey][google.cloud.kms.v1.CryptoKey] when a
+    /// [KeyHandle][google.cloud.kms.v1.KeyHandle] is created. On
+    /// [UpdateAutokeyConfig][google.cloud.kms.v1.AutokeyAdmin.UpdateAutokeyConfig],
+    /// the caller will require `cloudkms.cryptoKeys.setIamPolicy` permission on
+    /// this key project. Once configured, for Cloud KMS Autokey to function
+    /// properly, this key project must have the Cloud KMS API activated and the
+    /// Cloud KMS Service Agent for this key project must be granted the
+    /// `cloudkms.admin` role (or pertinent permissions). A request with an empty
+    /// key project field will clear the configuration.
+    #[prost(string, tag = "2")]
+    pub key_project: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [ShowEffectiveAutokeyConfig][google.cloud.kms.v1.AutokeyAdmin.ShowEffectiveAutokeyConfig].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ShowEffectiveAutokeyConfigRequest {
+    /// Required. Name of the resource project to the show effective Cloud KMS
+    /// Autokey configuration for. This may be helpful for interrogating the effect
+    /// of nested folder configurations on a given resource project.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [ShowEffectiveAutokeyConfig][google.cloud.kms.v1.AutokeyAdmin.ShowEffectiveAutokeyConfig].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ShowEffectiveAutokeyConfigResponse {
+    /// Name of the key project configured in the resource project's folder
+    /// ancestry.
+    #[prost(string, tag = "1")]
+    pub key_project: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod autokey_admin_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Provides interfaces for managing Cloud KMS Autokey folder-level
+    /// configurations. A configuration is inherited by all descendent projects. A
+    /// configuration at one folder overrides any other configurations in its
+    /// ancestry. Setting a configuration on a folder is a prerequisite for Cloud KMS
+    /// Autokey, so that users working in a descendant project can request
+    /// provisioned [CryptoKeys][google.cloud.kms.v1.CryptoKey], ready for Customer
+    /// Managed Encryption Key (CMEK) use, on-demand.
+    #[derive(Debug, Clone)]
+    pub struct AutokeyAdminClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl AutokeyAdminClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> AutokeyAdminClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> AutokeyAdminClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            AutokeyAdminClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Updates the [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig] for a
+        /// folder. The caller must have both `cloudkms.autokeyConfigs.update`
+        /// permission on the parent folder and `cloudkms.cryptoKeys.setIamPolicy`
+        /// permission on the provided key project. A
+        /// [KeyHandle][google.cloud.kms.v1.KeyHandle] creation in the folder's
+        /// descendant projects will use this configuration to determine where to
+        /// create the resulting [CryptoKey][google.cloud.kms.v1.CryptoKey].
+        pub async fn update_autokey_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAutokeyConfigRequest>,
+        ) -> std::result::Result<tonic::Response<super::AutokeyConfig>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.AutokeyAdmin/UpdateAutokeyConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.kms.v1.AutokeyAdmin",
+                        "UpdateAutokeyConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig] for a
+        /// folder.
+        pub async fn get_autokey_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAutokeyConfigRequest>,
+        ) -> std::result::Result<tonic::Response<super::AutokeyConfig>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.AutokeyAdmin/GetAutokeyConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.kms.v1.AutokeyAdmin",
+                        "GetAutokeyConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the effective Cloud KMS Autokey configuration for a given project.
+        pub async fn show_effective_autokey_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ShowEffectiveAutokeyConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ShowEffectiveAutokeyConfigResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.kms.v1.AutokeyAdmin/ShowEffectiveAutokeyConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.kms.v1.AutokeyAdmin",
+                        "ShowEffectiveAutokeyConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

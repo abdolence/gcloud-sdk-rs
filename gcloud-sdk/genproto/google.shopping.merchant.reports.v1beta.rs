@@ -48,6 +48,9 @@ pub struct ReportRow {
     /// Fields available for query in `product_performance_view` table.
     #[prost(message, optional, tag = "1")]
     pub product_performance_view: ::core::option::Option<ProductPerformanceView>,
+    /// Fields available for query in `non_product_performance_view` table.
+    #[prost(message, optional, tag = "7")]
+    pub non_product_performance_view: ::core::option::Option<NonProductPerformanceView>,
     /// Fields available for query in `product_view` table.
     #[prost(message, optional, tag = "2")]
     pub product_view: ::core::option::Option<ProductView>,
@@ -324,7 +327,7 @@ pub struct ProductView {
     pub availability: ::core::option::Option<::prost::alloc::string::String>,
     /// Normalized [shipping
     /// label](<https://support.google.com/merchants/answer/6324504>) specified in
-    /// the feed.
+    /// the data source.
     #[prost(string, optional, tag = "20")]
     pub shipping_label: ::core::option::Option<::prost::alloc::string::String>,
     /// List of Global Trade Item Numbers (GTINs) of the product.
@@ -552,7 +555,7 @@ pub mod product_view {
     ///
     /// Here's an example of how the aggregated status is computed:
     ///
-    /// Free listings | Shopping Ads | Status
+    /// Free listings | Shopping ads | Status
     /// --------------|--------------|------------------------------
     /// Approved      | Approved     | ELIGIBLE
     /// Approved      | Pending      | ELIGIBLE
@@ -839,6 +842,65 @@ pub struct PriceInsightsProductView {
     /// predicted increase in conversions).
     #[prost(double, optional, tag = "19")]
     pub predicted_conversions_change_fraction: ::core::option::Option<f64>,
+    /// The predicted effectiveness of applying the price suggestion, bucketed.
+    #[prost(enumeration = "price_insights_product_view::Effectiveness", tag = "22")]
+    pub effectiveness: i32,
+}
+/// Nested message and enum types in `PriceInsightsProductView`.
+pub mod price_insights_product_view {
+    /// Predicted effectiveness bucket.
+    ///
+    /// Effectiveness indicates which products would benefit most from price
+    /// changes. This rating takes into consideration the performance boost
+    /// predicted by adjusting the sale price and the difference between your
+    /// current price and the suggested price. Price suggestions with `HIGH`
+    /// effectiveness are predicted to drive the largest increase in performance.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Effectiveness {
+        /// Effectiveness is unknown.
+        Unspecified = 0,
+        /// Effectiveness is low.
+        Low = 1,
+        /// Effectiveness is medium.
+        Medium = 2,
+        /// Effectiveness is high.
+        High = 3,
+    }
+    impl Effectiveness {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Effectiveness::Unspecified => "EFFECTIVENESS_UNSPECIFIED",
+                Effectiveness::Low => "LOW",
+                Effectiveness::Medium => "MEDIUM",
+                Effectiveness::High => "HIGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EFFECTIVENESS_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOW" => Some(Self::Low),
+                "MEDIUM" => Some(Self::Medium),
+                "HIGH" => Some(Self::High),
+                _ => None,
+            }
+        }
+    }
 }
 /// Fields available for query in `best_sellers_product_cluster_view` table.
 ///
@@ -923,9 +985,9 @@ pub struct BestSellersProductClusterView {
     /// GTINs of example variants of the product cluster.
     #[prost(string, repeated, tag = "13")]
     pub variant_gtins: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Whether the product cluster is `IN_STOCK` in your product feed in at least
-    /// one of the countries, `OUT_OF_STOCK` in your product feed in all countries,
-    /// or `NOT_IN_INVENTORY` at all.
+    /// Whether the product cluster is `IN_STOCK` in your product data source in at
+    /// least one of the countries, `OUT_OF_STOCK` in your product data source in
+    /// all countries, or `NOT_IN_INVENTORY` at all.
     ///
     /// The field doesn't take the Best sellers report country filter into account.
     #[prost(
@@ -935,8 +997,8 @@ pub struct BestSellersProductClusterView {
     )]
     pub inventory_status: ::core::option::Option<i32>,
     /// Whether there is at least one product of the brand currently `IN_STOCK` in
-    /// your product feed in at least one of the countries, all products are
-    /// `OUT_OF_STOCK` in your product feed in all countries, or
+    /// your product data source in at least one of the countries, all products are
+    /// `OUT_OF_STOCK` in your product data source in all countries, or
     /// `NOT_IN_INVENTORY`.
     ///
     /// The field doesn't take the Best sellers report country filter into account.
@@ -1093,6 +1155,44 @@ pub struct BestSellersBrandView {
         tag = "11"
     )]
     pub relative_demand_change: ::core::option::Option<i32>,
+}
+/// Fields available for query in `non_product_performance_view` table.
+///
+/// Performance data on images and online store links leading to your non-product
+/// pages. This includes performance metrics (for example, `clicks`)
+/// and dimensions according to which performance metrics are segmented (for
+/// example, `date`).
+///
+/// Segment fields cannot be selected in queries without also selecting at least
+/// one metric field.
+///
+/// Values are only set for fields requested explicitly in the request's search
+/// query.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NonProductPerformanceView {
+    /// Date in the merchant timezone to which metrics apply. Segment.
+    ///
+    /// Condition on `date` is required in the `WHERE` clause.
+    #[prost(message, optional, tag = "1")]
+    pub date: ::core::option::Option<super::super::super::super::r#type::Date>,
+    /// First day of the week (Monday) of the metrics date in the merchant
+    /// timezone. Segment.
+    #[prost(message, optional, tag = "2")]
+    pub week: ::core::option::Option<super::super::super::super::r#type::Date>,
+    /// Number of clicks on images and online store links leading to your
+    /// non-product pages. Metric.
+    #[prost(int64, optional, tag = "3")]
+    pub clicks: ::core::option::Option<i64>,
+    /// Number of times images and online store links leading to your non-product
+    /// pages were shown. Metric.
+    #[prost(int64, optional, tag = "4")]
+    pub impressions: ::core::option::Option<i64>,
+    /// Click-through rate - the number of clicks (`clicks`) divided by the number
+    /// of impressions (`impressions`) of images and online store links leading to
+    /// your non-product pages. Metric.
+    #[prost(double, optional, tag = "5")]
+    pub click_through_rate: ::core::option::Option<f64>,
 }
 /// Fields available for query in `competitive_visibility_competitor_view` table.
 ///

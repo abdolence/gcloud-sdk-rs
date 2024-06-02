@@ -909,6 +909,10 @@ pub struct ExecutionConfig {
     /// 1h is used.
     #[prost(message, optional, tag = "7")]
     pub execution_timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. If true, additional logging will be enabled when running builds
+    /// in this execution environment.
+    #[prost(bool, tag = "8")]
+    pub verbose: bool,
     /// Details of the environment.
     #[prost(oneof = "execution_config::ExecutionEnvironment", tags = "2, 3")]
     pub execution_environment: ::core::option::Option<

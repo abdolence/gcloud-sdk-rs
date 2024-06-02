@@ -782,6 +782,17 @@ pub mod storage_config {
         /// since the last time the JobTrigger executed. This will be based on the
         /// time of the execution of the last run of the JobTrigger or the timespan
         /// end_time used in the last run of the JobTrigger.
+        ///
+        /// **For BigQuery**
+        ///
+        /// Inspect jobs triggered by automatic population will scan data that is at
+        /// least three hours old when the job starts. This is because streaming
+        /// buffer rows are not read during inspection and reading up to the current
+        /// timestamp will result in skipped rows.
+        ///
+        /// See the [known
+        /// issue](<https://cloud.google.com/sensitive-data-protection/docs/known-issues#recently-streamed-data>)
+        /// related to this operation.
         #[prost(bool, tag = "4")]
         pub enable_auto_population_of_timespan_config: bool,
     }
@@ -976,6 +987,18 @@ pub struct BigQueryTable {
     pub dataset_id: ::prost::alloc::string::String,
     /// Name of the table.
     #[prost(string, tag = "3")]
+    pub table_id: ::prost::alloc::string::String,
+}
+/// Message defining the location of a BigQuery table with the projectId inferred
+/// from the parent project.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TableReference {
+    /// Dataset ID of the table.
+    #[prost(string, tag = "1")]
+    pub dataset_id: ::prost::alloc::string::String,
+    /// Name of the table.
+    #[prost(string, tag = "2")]
     pub table_id: ::prost::alloc::string::String,
 }
 /// Message defining a field of a BigQuery table.
@@ -2339,6 +2362,10 @@ pub mod inspect_data_source_details {
         /// inspect job.
         #[prost(message, repeated, tag = "3")]
         pub info_type_stats: ::prost::alloc::vec::Vec<super::InfoTypeStats>,
+        /// Number of rows scanned after sampling and time filtering (applicable for
+        /// row based stores such as BigQuery).
+        #[prost(int64, tag = "5")]
+        pub num_rows_processed: i64,
         /// Statistics related to the processing of hybrid inspect.
         #[prost(message, optional, tag = "7")]
         pub hybrid_stats: ::core::option::Option<super::HybridInspectStatistics>,
@@ -2524,6 +2551,8 @@ pub mod info_type_category {
         Argentina = 2,
         /// The infoType is typically used in Australia.
         Australia = 3,
+        /// The infoType is typically used in Azerbaijan.
+        Azerbaijan = 48,
         /// The infoType is typically used in Belgium.
         Belgium = 4,
         /// The infoType is typically used in Brazil.
@@ -2560,6 +2589,8 @@ pub mod info_type_category {
         Italy = 19,
         /// The infoType is typically used in Japan.
         Japan = 20,
+        /// The infoType is typically used in Kazakhstan.
+        Kazakhstan = 47,
         /// The infoType is typically used in Korea.
         Korea = 21,
         /// The infoType is typically used in Mexico.
@@ -2578,6 +2609,8 @@ pub mod info_type_category {
         Poland = 27,
         /// The infoType is typically used in Portugal.
         Portugal = 28,
+        /// The infoType is typically used in Russia.
+        Russia = 44,
         /// The infoType is typically used in Singapore.
         Singapore = 29,
         /// The infoType is typically used in South Africa.
@@ -2594,12 +2627,16 @@ pub mod info_type_category {
         Thailand = 34,
         /// The infoType is typically used in Turkey.
         Turkey = 35,
+        /// The infoType is typically used in Ukraine.
+        Ukraine = 45,
         /// The infoType is typically used in the United Kingdom.
         UnitedKingdom = 36,
         /// The infoType is typically used in the United States.
         UnitedStates = 37,
         /// The infoType is typically used in Uruguay.
         Uruguay = 38,
+        /// The infoType is typically used in Uzbekistan.
+        Uzbekistan = 46,
         /// The infoType is typically used in Venezuela.
         Venezuela = 39,
         /// The infoType is typically used in Google internally.
@@ -2616,6 +2653,7 @@ pub mod info_type_category {
                 LocationCategory::Global => "GLOBAL",
                 LocationCategory::Argentina => "ARGENTINA",
                 LocationCategory::Australia => "AUSTRALIA",
+                LocationCategory::Azerbaijan => "AZERBAIJAN",
                 LocationCategory::Belgium => "BELGIUM",
                 LocationCategory::Brazil => "BRAZIL",
                 LocationCategory::Canada => "CANADA",
@@ -2634,6 +2672,7 @@ pub mod info_type_category {
                 LocationCategory::Israel => "ISRAEL",
                 LocationCategory::Italy => "ITALY",
                 LocationCategory::Japan => "JAPAN",
+                LocationCategory::Kazakhstan => "KAZAKHSTAN",
                 LocationCategory::Korea => "KOREA",
                 LocationCategory::Mexico => "MEXICO",
                 LocationCategory::TheNetherlands => "THE_NETHERLANDS",
@@ -2643,6 +2682,7 @@ pub mod info_type_category {
                 LocationCategory::Peru => "PERU",
                 LocationCategory::Poland => "POLAND",
                 LocationCategory::Portugal => "PORTUGAL",
+                LocationCategory::Russia => "RUSSIA",
                 LocationCategory::Singapore => "SINGAPORE",
                 LocationCategory::SouthAfrica => "SOUTH_AFRICA",
                 LocationCategory::Spain => "SPAIN",
@@ -2651,9 +2691,11 @@ pub mod info_type_category {
                 LocationCategory::Taiwan => "TAIWAN",
                 LocationCategory::Thailand => "THAILAND",
                 LocationCategory::Turkey => "TURKEY",
+                LocationCategory::Ukraine => "UKRAINE",
                 LocationCategory::UnitedKingdom => "UNITED_KINGDOM",
                 LocationCategory::UnitedStates => "UNITED_STATES",
                 LocationCategory::Uruguay => "URUGUAY",
+                LocationCategory::Uzbekistan => "UZBEKISTAN",
                 LocationCategory::Venezuela => "VENEZUELA",
                 LocationCategory::Internal => "INTERNAL",
             }
@@ -2665,6 +2707,7 @@ pub mod info_type_category {
                 "GLOBAL" => Some(Self::Global),
                 "ARGENTINA" => Some(Self::Argentina),
                 "AUSTRALIA" => Some(Self::Australia),
+                "AZERBAIJAN" => Some(Self::Azerbaijan),
                 "BELGIUM" => Some(Self::Belgium),
                 "BRAZIL" => Some(Self::Brazil),
                 "CANADA" => Some(Self::Canada),
@@ -2683,6 +2726,7 @@ pub mod info_type_category {
                 "ISRAEL" => Some(Self::Israel),
                 "ITALY" => Some(Self::Italy),
                 "JAPAN" => Some(Self::Japan),
+                "KAZAKHSTAN" => Some(Self::Kazakhstan),
                 "KOREA" => Some(Self::Korea),
                 "MEXICO" => Some(Self::Mexico),
                 "THE_NETHERLANDS" => Some(Self::TheNetherlands),
@@ -2692,6 +2736,7 @@ pub mod info_type_category {
                 "PERU" => Some(Self::Peru),
                 "POLAND" => Some(Self::Poland),
                 "PORTUGAL" => Some(Self::Portugal),
+                "RUSSIA" => Some(Self::Russia),
                 "SINGAPORE" => Some(Self::Singapore),
                 "SOUTH_AFRICA" => Some(Self::SouthAfrica),
                 "SPAIN" => Some(Self::Spain),
@@ -2700,9 +2745,11 @@ pub mod info_type_category {
                 "TAIWAN" => Some(Self::Taiwan),
                 "THAILAND" => Some(Self::Thailand),
                 "TURKEY" => Some(Self::Turkey),
+                "UKRAINE" => Some(Self::Ukraine),
                 "UNITED_KINGDOM" => Some(Self::UnitedKingdom),
                 "UNITED_STATES" => Some(Self::UnitedStates),
                 "URUGUAY" => Some(Self::Uruguay),
+                "UZBEKISTAN" => Some(Self::Uzbekistan),
                 "VENEZUELA" => Some(Self::Venezuela),
                 "INTERNAL" => Some(Self::Internal),
                 _ => None,
@@ -5063,7 +5110,7 @@ pub struct Error {
     #[prost(message, repeated, tag = "2")]
     pub timestamps: ::prost::alloc::vec::Vec<::prost_types::Timestamp>,
 }
-/// Contains a configuration to make dlp api calls on a repeating basis.
+/// Contains a configuration to make API calls on a repeating basis.
 /// See
 /// <https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers>
 /// to learn more.
@@ -5901,8 +5948,14 @@ pub mod data_profile_action {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Export {
         /// Store all table and column profiles in an existing table or a new table
-        /// in an existing dataset. Each re-generation will result in a new row in
-        /// BigQuery.
+        /// in an existing dataset. Each re-generation will result in new rows in
+        /// BigQuery. Data is inserted using [streaming
+        /// insert](<https://cloud.google.com/blog/products/bigquery/life-of-a-bigquery-streaming-insert>)
+        /// and so data may be in the buffer for a period of time after the profile
+        /// has finished. The Pub/Sub notification is sent before the streaming
+        /// buffer is guaranteed to be written, so data may not be instantly
+        /// visible to queries by the time your topic receives the Pub/Sub
+        /// notification.
         #[prost(message, optional, tag = "1")]
         pub profile_table: ::core::option::Option<super::BigQueryTable>,
     }
@@ -5950,7 +6003,7 @@ pub mod data_profile_action {
             Unspecified = 0,
             /// The full table data profile.
             TableProfile = 1,
-            /// The resource name of the table.
+            /// The name of the profiled resource.
             ResourceName = 2,
         }
         impl DetailLevel {
@@ -5994,13 +6047,9 @@ pub mod data_profile_action {
         Unspecified = 0,
         /// New profile (not a re-profile).
         NewProfile = 1,
-        /// Changed one of the following profile metrics:
-        /// * Table data risk score
-        /// * Table sensitivity score
-        /// * Table resource visibility
-        /// * Table encryption type
-        /// * Table predicted infoTypes
-        /// * Table other infoTypes
+        /// One of the following profile metrics changed: Data risk score,
+        /// Sensitivity score, Resource visibility, Encryption type, Predicted
+        /// infoTypes, Other infoTypes
         ChangedProfile = 2,
         /// Table data risk score or sensitivity score increased.
         ScoreIncreased = 3,
@@ -6277,7 +6326,7 @@ pub mod discovery_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoveryTarget {
     /// A target to match against for Discovery.
-    #[prost(oneof = "discovery_target::Target", tags = "1")]
+    #[prost(oneof = "discovery_target::Target", tags = "1, 2, 3")]
     pub target: ::core::option::Option<discovery_target::Target>,
 }
 /// Nested message and enum types in `DiscoveryTarget`.
@@ -6290,6 +6339,15 @@ pub mod discovery_target {
         /// the one applied.
         #[prost(message, tag = "1")]
         BigQueryTarget(super::BigQueryDiscoveryTarget),
+        /// Cloud SQL target for Discovery. The first target to match a table will be
+        /// the one applied.
+        #[prost(message, tag = "2")]
+        CloudSqlTarget(super::CloudSqlDiscoveryTarget),
+        /// Discovery target that looks for credentials and secrets stored in cloud
+        /// resource metadata and reports them as vulnerabilities to Security Command
+        /// Center. Only one target of this type is allowed.
+        #[prost(message, tag = "3")]
+        SecretsTarget(super::SecretsDiscoveryTarget),
     }
 }
 /// Target used to match against for discovery with BigQuery tables
@@ -6338,7 +6396,7 @@ pub struct DiscoveryBigQueryFilter {
     /// within the location being profiled. The first filter to match will be
     /// applied, regardless of the condition. If none is set, will default to
     /// `other_tables`.
-    #[prost(oneof = "discovery_big_query_filter::Filter", tags = "1, 2")]
+    #[prost(oneof = "discovery_big_query_filter::Filter", tags = "1, 2, 3")]
     pub filter: ::core::option::Option<discovery_big_query_filter::Filter>,
 }
 /// Nested message and enum types in `DiscoveryBigQueryFilter`.
@@ -6368,6 +6426,11 @@ pub mod discovery_big_query_filter {
         /// automatically.
         #[prost(message, tag = "2")]
         OtherTables(AllOtherBigQueryTables),
+        /// The table to scan. Discovery configurations including this can only
+        /// include one DiscoveryTarget (the DiscoveryTarget with this
+        /// TableReference).
+        #[prost(message, tag = "3")]
+        TableReference(super::TableReference),
     }
 }
 /// Specifies a collection of BigQuery tables. Used for Discovery.
@@ -6488,6 +6551,385 @@ pub struct DiscoverySchemaModifiedCadence {
     #[prost(enumeration = "DataProfileUpdateFrequency", tag = "2")]
     pub frequency: i32,
 }
+/// Target used to match against for discovery with Cloud SQL tables.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudSqlDiscoveryTarget {
+    /// Required. The tables the discovery cadence applies to. The first target
+    /// with a matching filter will be the one to apply to a table.
+    #[prost(message, optional, tag = "1")]
+    pub filter: ::core::option::Option<DiscoveryCloudSqlFilter>,
+    /// In addition to matching the filter, these conditions must be true
+    /// before a profile is generated.
+    #[prost(message, optional, tag = "2")]
+    pub conditions: ::core::option::Option<DiscoveryCloudSqlConditions>,
+    /// Type of schedule.
+    #[prost(oneof = "cloud_sql_discovery_target::Cadence", tags = "3, 4")]
+    pub cadence: ::core::option::Option<cloud_sql_discovery_target::Cadence>,
+}
+/// Nested message and enum types in `CloudSqlDiscoveryTarget`.
+pub mod cloud_sql_discovery_target {
+    /// Type of schedule.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Cadence {
+        /// How often and when to update profiles. New tables that match both the
+        /// filter and conditions are scanned as quickly as possible depending on
+        /// system capacity.
+        #[prost(message, tag = "3")]
+        GenerationCadence(super::DiscoveryCloudSqlGenerationCadence),
+        /// Disable profiling for database resources that match this filter.
+        #[prost(message, tag = "4")]
+        Disabled(super::Disabled),
+    }
+}
+/// Determines what tables will have profiles generated within an organization
+/// or project. Includes the ability to filter by regular expression patterns
+/// on project ID, location, instance, database, and database resource name.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiscoveryCloudSqlFilter {
+    /// Whether the filter applies to a specific set of database resources or all
+    /// other database resources within the location being profiled. The first
+    /// filter to match will be applied, regardless of the condition. If none is
+    /// set, will default to `others`.
+    #[prost(oneof = "discovery_cloud_sql_filter::Filter", tags = "1, 2, 3")]
+    pub filter: ::core::option::Option<discovery_cloud_sql_filter::Filter>,
+}
+/// Nested message and enum types in `DiscoveryCloudSqlFilter`.
+pub mod discovery_cloud_sql_filter {
+    /// Whether the filter applies to a specific set of database resources or all
+    /// other database resources within the location being profiled. The first
+    /// filter to match will be applied, regardless of the condition. If none is
+    /// set, will default to `others`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Filter {
+        /// A specific set of database resources for this filter to apply to.
+        #[prost(message, tag = "1")]
+        Collection(super::DatabaseResourceCollection),
+        /// Catch-all. This should always be the last target in the list because
+        /// anything above it will apply first. Should only appear once in a
+        /// configuration. If none is specified, a default one will be added
+        /// automatically.
+        #[prost(message, tag = "2")]
+        Others(super::AllOtherDatabaseResources),
+        /// The database resource to scan. Targets including this can only include
+        /// one target (the target with this database resource reference).
+        #[prost(message, tag = "3")]
+        DatabaseResourceReference(super::DatabaseResourceReference),
+    }
+}
+/// Match database resources using regex filters. Examples of database
+/// resources are tables, views, and stored procedures.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DatabaseResourceCollection {
+    /// The first filter containing a pattern that matches a database resource will
+    /// be used.
+    #[prost(oneof = "database_resource_collection::Pattern", tags = "1")]
+    pub pattern: ::core::option::Option<database_resource_collection::Pattern>,
+}
+/// Nested message and enum types in `DatabaseResourceCollection`.
+pub mod database_resource_collection {
+    /// The first filter containing a pattern that matches a database resource will
+    /// be used.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Pattern {
+        /// A collection of regular expressions to match a database resource against.
+        #[prost(message, tag = "1")]
+        IncludeRegexes(super::DatabaseResourceRegexes),
+    }
+}
+/// A collection of regular expressions to determine what database resources to
+/// match against.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DatabaseResourceRegexes {
+    /// A group of regular expression patterns to match against one or more
+    /// database resources.
+    /// Maximum of 100 entries. The sum of all regular expression's length can't
+    /// exceed 10 KiB.
+    #[prost(message, repeated, tag = "1")]
+    pub patterns: ::prost::alloc::vec::Vec<DatabaseResourceRegex>,
+}
+/// A pattern to match against one or more database resources. At least one
+/// pattern must be specified. Regular expressions use RE2
+/// [syntax](<https://github.com/google/re2/wiki/Syntax>); a guide can be found
+/// under the google/re2 repository on GitHub.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DatabaseResourceRegex {
+    /// For organizations, if unset, will match all projects. Has no effect
+    /// for configurations created within a project.
+    #[prost(string, tag = "1")]
+    pub project_id_regex: ::prost::alloc::string::String,
+    /// Regex to test the instance name against. If empty, all instances match.
+    #[prost(string, tag = "2")]
+    pub instance_regex: ::prost::alloc::string::String,
+    /// Regex to test the database name against. If empty, all databases match.
+    #[prost(string, tag = "3")]
+    pub database_regex: ::prost::alloc::string::String,
+    /// Regex to test the database resource's name against. An example of a
+    /// database resource name is a table's name. Other database resource names
+    /// like view names could be included in the future. If empty, all database
+    /// resources match.
+    #[prost(string, tag = "4")]
+    pub database_resource_name_regex: ::prost::alloc::string::String,
+}
+/// Match database resources not covered by any other filter.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AllOtherDatabaseResources {}
+/// Identifies a single database resource, like a table within a database.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DatabaseResourceReference {
+    /// Required. If within a project-level config, then this must match the
+    /// config's project ID.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. The instance where this resource is located. For example: Cloud
+    /// SQL instance ID.
+    #[prost(string, tag = "2")]
+    pub instance: ::prost::alloc::string::String,
+    /// Required. Name of a database within the instance.
+    #[prost(string, tag = "3")]
+    pub database: ::prost::alloc::string::String,
+    /// Required. Name of a database resource, for example, a table within the
+    /// database.
+    #[prost(string, tag = "4")]
+    pub database_resource: ::prost::alloc::string::String,
+}
+/// Requirements that must be true before a table is profiled for the
+/// first time.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiscoveryCloudSqlConditions {
+    /// Optional. Database engines that should be profiled.
+    /// Optional. Defaults to ALL_SUPPORTED_DATABASE_ENGINES if unspecified.
+    #[prost(
+        enumeration = "discovery_cloud_sql_conditions::DatabaseEngine",
+        repeated,
+        packed = "false",
+        tag = "1"
+    )]
+    pub database_engines: ::prost::alloc::vec::Vec<i32>,
+    /// Data profiles will only be generated for the database resource types
+    /// specified in this field.
+    /// If not specified, defaults to \[DATABASE_RESOURCE_TYPE_ALL_SUPPORTED_TYPES\].
+    #[prost(
+        enumeration = "discovery_cloud_sql_conditions::DatabaseResourceType",
+        repeated,
+        tag = "3"
+    )]
+    pub types: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `DiscoveryCloudSqlConditions`.
+pub mod discovery_cloud_sql_conditions {
+    /// The database engines that should be profiled.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DatabaseEngine {
+        /// Unused.
+        Unspecified = 0,
+        /// Include all supported database engines.
+        AllSupportedDatabaseEngines = 1,
+        /// MySQL database.
+        Mysql = 2,
+        /// PostgreSQL database.
+        Postgres = 3,
+    }
+    impl DatabaseEngine {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DatabaseEngine::Unspecified => "DATABASE_ENGINE_UNSPECIFIED",
+                DatabaseEngine::AllSupportedDatabaseEngines => {
+                    "ALL_SUPPORTED_DATABASE_ENGINES"
+                }
+                DatabaseEngine::Mysql => "MYSQL",
+                DatabaseEngine::Postgres => "POSTGRES",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATABASE_ENGINE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALL_SUPPORTED_DATABASE_ENGINES" => {
+                    Some(Self::AllSupportedDatabaseEngines)
+                }
+                "MYSQL" => Some(Self::Mysql),
+                "POSTGRES" => Some(Self::Postgres),
+                _ => None,
+            }
+        }
+    }
+    /// Cloud SQL database resource types. New values can be added at a later time.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DatabaseResourceType {
+        /// Unused.
+        Unspecified = 0,
+        /// Includes database resource types that become supported at a later time.
+        AllSupportedTypes = 1,
+        /// Tables.
+        Table = 2,
+    }
+    impl DatabaseResourceType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DatabaseResourceType::Unspecified => "DATABASE_RESOURCE_TYPE_UNSPECIFIED",
+                DatabaseResourceType::AllSupportedTypes => {
+                    "DATABASE_RESOURCE_TYPE_ALL_SUPPORTED_TYPES"
+                }
+                DatabaseResourceType::Table => "DATABASE_RESOURCE_TYPE_TABLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATABASE_RESOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATABASE_RESOURCE_TYPE_ALL_SUPPORTED_TYPES" => {
+                    Some(Self::AllSupportedTypes)
+                }
+                "DATABASE_RESOURCE_TYPE_TABLE" => Some(Self::Table),
+                _ => None,
+            }
+        }
+    }
+}
+/// How often existing tables should have their profiles refreshed.
+/// New tables are scanned as quickly as possible depending on system
+/// capacity.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiscoveryCloudSqlGenerationCadence {
+    /// When to reprofile if the schema has changed.
+    #[prost(message, optional, tag = "1")]
+    pub schema_modified_cadence: ::core::option::Option<
+        discovery_cloud_sql_generation_cadence::SchemaModifiedCadence,
+    >,
+    /// Data changes (non-schema changes) in Cloud SQL tables can't trigger
+    /// reprofiling. If you set this field, profiles are refreshed at this
+    /// frequency regardless of whether the underlying tables have changed.
+    /// Defaults to never.
+    #[prost(enumeration = "DataProfileUpdateFrequency", tag = "2")]
+    pub refresh_frequency: i32,
+}
+/// Nested message and enum types in `DiscoveryCloudSqlGenerationCadence`.
+pub mod discovery_cloud_sql_generation_cadence {
+    /// How frequently to modify the profile when the table's schema is modified.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SchemaModifiedCadence {
+        /// The types of schema modifications to consider.
+        /// Defaults to NEW_COLUMNS.
+        #[prost(
+            enumeration = "schema_modified_cadence::CloudSqlSchemaModification",
+            repeated,
+            tag = "1"
+        )]
+        pub types: ::prost::alloc::vec::Vec<i32>,
+        /// Frequency to regenerate data profiles when the schema is modified.
+        /// Defaults to monthly.
+        #[prost(enumeration = "super::DataProfileUpdateFrequency", tag = "2")]
+        pub frequency: i32,
+    }
+    /// Nested message and enum types in `SchemaModifiedCadence`.
+    pub mod schema_modified_cadence {
+        /// The type of modification that causes a profile update.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum CloudSqlSchemaModification {
+            /// Unused.
+            SqlSchemaModificationUnspecified = 0,
+            /// New columns have appeared.
+            NewColumns = 1,
+            /// Columns have been removed from the table.
+            RemovedColumns = 2,
+        }
+        impl CloudSqlSchemaModification {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    CloudSqlSchemaModification::SqlSchemaModificationUnspecified => {
+                        "SQL_SCHEMA_MODIFICATION_UNSPECIFIED"
+                    }
+                    CloudSqlSchemaModification::NewColumns => "NEW_COLUMNS",
+                    CloudSqlSchemaModification::RemovedColumns => "REMOVED_COLUMNS",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SQL_SCHEMA_MODIFICATION_UNSPECIFIED" => {
+                        Some(Self::SqlSchemaModificationUnspecified)
+                    }
+                    "NEW_COLUMNS" => Some(Self::NewColumns),
+                    "REMOVED_COLUMNS" => Some(Self::RemovedColumns),
+                    _ => None,
+                }
+            }
+        }
+    }
+}
+/// Discovery target for credentials and secrets in cloud resource metadata.
+///
+/// This target does not include any filtering or frequency controls. Cloud
+/// DLP will scan cloud resource metadata for secrets daily.
+///
+/// No inspect template should be included in the discovery config for a
+/// security benchmarks scan. Instead, the built-in list of secrets and
+/// credentials infoTypes will be used (see
+/// <https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference#credentials_and_secrets>).
+///
+/// Credentials and secrets discovered will be reported as vulnerabilities to
+/// Security Command Center.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecretsDiscoveryTarget {}
 /// The location to begin a discovery scan. Denotes an organization ID or folder
 /// ID within an organization.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -7288,7 +7730,7 @@ pub struct ListProjectDataProfilesRequest {
     ///
     /// Supported fields are:
     ///
-    /// - `project_id`: GCP project ID
+    /// - `project_id`: Google Cloud project ID
     /// - `sensitivity_level`: How sensitive the data in a project is, at most.
     /// - `data_risk_level`: How much risk is associated with this data.
     /// - `profile_last_generated`: When the profile was last updated in epoch
@@ -7358,7 +7800,7 @@ pub struct ListTableDataProfilesRequest {
     ///
     /// Supported fields are:
     ///
-    /// - `project_id`: The GCP project ID.
+    /// - `project_id`: The Google Cloud project ID.
     /// - `dataset_id`: The ID of a BigQuery dataset.
     /// - `table_id`: The ID of a BigQuery table.
     /// - `sensitivity_level`: How sensitive the data in a table is, at most.
@@ -7379,7 +7821,7 @@ pub struct ListTableDataProfilesRequest {
     /// sequence of restrictions implicitly uses `AND`.
     /// * A restriction has the form of `{field} {operator} {value}`.
     /// * Supported fields/values:
-    ///      - `project_id` - The GCP project ID.
+    ///      - `project_id` - The Google Cloud project ID.
     ///      - `dataset_id` - The BigQuery dataset ID.
     ///      - `table_id` - The ID of the BigQuery table.
     ///      - `sensitivity_level` - HIGH|MODERATE|LOW
@@ -7952,6 +8394,14 @@ pub mod column_data_profile {
         TypeBignumeric = 13,
         /// Json type.
         TypeJson = 14,
+        /// Interval type.
+        TypeInterval = 15,
+        /// `Range<Date>` type.
+        TypeRangeDate = 16,
+        /// `Range<Datetime>` type.
+        TypeRangeDatetime = 17,
+        /// `Range<Timestamp>` type.
+        TypeRangeTimestamp = 18,
     }
     impl ColumnDataType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -7975,6 +8425,10 @@ pub mod column_data_profile {
                 ColumnDataType::TypeRecord => "TYPE_RECORD",
                 ColumnDataType::TypeBignumeric => "TYPE_BIGNUMERIC",
                 ColumnDataType::TypeJson => "TYPE_JSON",
+                ColumnDataType::TypeInterval => "TYPE_INTERVAL",
+                ColumnDataType::TypeRangeDate => "TYPE_RANGE_DATE",
+                ColumnDataType::TypeRangeDatetime => "TYPE_RANGE_DATETIME",
+                ColumnDataType::TypeRangeTimestamp => "TYPE_RANGE_TIMESTAMP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7995,6 +8449,10 @@ pub mod column_data_profile {
                 "TYPE_RECORD" => Some(Self::TypeRecord),
                 "TYPE_BIGNUMERIC" => Some(Self::TypeBignumeric),
                 "TYPE_JSON" => Some(Self::TypeJson),
+                "TYPE_INTERVAL" => Some(Self::TypeInterval),
+                "TYPE_RANGE_DATE" => Some(Self::TypeRangeDate),
+                "TYPE_RANGE_DATETIME" => Some(Self::TypeRangeDatetime),
+                "TYPE_RANGE_TIMESTAMP" => Some(Self::TypeRangeTimestamp),
                 _ => None,
             }
         }
@@ -8219,6 +8677,262 @@ pub struct DataProfilePubSubMessage {
     /// The event that caused the Pub/Sub message to be sent.
     #[prost(enumeration = "data_profile_action::EventType", tag = "2")]
     pub event: i32,
+}
+/// Request message for CreateConnection.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateConnectionRequest {
+    /// Required. Parent resource name in the format:
+    /// `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The connection resource.
+    #[prost(message, optional, tag = "2")]
+    pub connection: ::core::option::Option<Connection>,
+}
+/// Request message for GetConnection.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetConnectionRequest {
+    /// Required. Resource name in the format:
+    /// `projects/{project}/locations/{location}/connections/{connection}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListConnections.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListConnectionsRequest {
+    /// Required. Parent name, for example:
+    /// `projects/project-id/locations/global`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Number of results per page, max 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token from a previous page to return the next set of
+    /// results. If set, all other request fields must match the original request.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Supported field/value: `state` - MISSING|AVAILABLE|ERROR
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Request message for SearchConnections.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchConnectionsRequest {
+    /// Required. Parent name, typically an organization, without location.
+    /// For example: `organizations/12345678`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Number of results per page, max 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token from a previous page to return the next set of
+    /// results. If set, all other request fields must match the original request.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Supported field/value: - `state` - MISSING|AVAILABLE|ERROR
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response message for ListConnections.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListConnectionsResponse {
+    /// List of connections.
+    #[prost(message, repeated, tag = "1")]
+    pub connections: ::prost::alloc::vec::Vec<Connection>,
+    /// Token to retrieve the next page of results. An empty value means there are
+    /// no more results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Response message for SearchConnections.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchConnectionsResponse {
+    /// List of connections that match the search query. Note that only a subset
+    /// of the fields will be populated, and only "name" is guaranteed to be set.
+    /// For full details of a Connection, call GetConnection with the name.
+    #[prost(message, repeated, tag = "1")]
+    pub connections: ::prost::alloc::vec::Vec<Connection>,
+    /// Token to retrieve the next page of results. An empty value means there are
+    /// no more results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for UpdateConnection.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateConnectionRequest {
+    /// Required. Resource name in the format:
+    /// `projects/{project}/locations/{location}/connections/{connection}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The connection with new values for the relevant fields.
+    #[prost(message, optional, tag = "2")]
+    pub connection: ::core::option::Option<Connection>,
+    /// Optional. Mask to control which fields get updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for DeleteConnection.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteConnectionRequest {
+    /// Required. Resource name of the Connection to be deleted, in the format:
+    /// `projects/{project}/locations/{location}/connections/{connection}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A data connection to allow DLP to profile data in locations that require
+/// additional configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Connection {
+    /// Output only. Name of the connection:
+    /// `projects/{project}/locations/{location}/connections/{name}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The connection's state in its lifecycle.
+    #[prost(enumeration = "ConnectionState", tag = "2")]
+    pub state: i32,
+    /// Output only. Set if status == ERROR, to provide additional details. Will
+    /// store the last 10 errors sorted with the most recent first.
+    #[prost(message, repeated, tag = "3")]
+    pub errors: ::prost::alloc::vec::Vec<Error>,
+    /// Type of connection.
+    #[prost(oneof = "connection::Properties", tags = "4")]
+    pub properties: ::core::option::Option<connection::Properties>,
+}
+/// Nested message and enum types in `Connection`.
+pub mod connection {
+    /// Type of connection.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Properties {
+        /// Connect to a Cloud SQL instance.
+        #[prost(message, tag = "4")]
+        CloudSql(super::CloudSqlProperties),
+    }
+}
+/// A credential consisting of a username and password, where the password is
+/// stored in a Secret Manager resource.
+/// Note: Secret Manager [charges
+/// apply](<https://cloud.google.com/secret-manager/pricing>).
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecretManagerCredential {
+    /// Required. The username.
+    #[prost(string, tag = "1")]
+    pub username: ::prost::alloc::string::String,
+    /// Required. The name of the Secret Manager resource that stores the password,
+    /// in the form `projects/project-id/secrets/secret-name/versions/version`.
+    #[prost(string, tag = "2")]
+    pub password_secret_version_name: ::prost::alloc::string::String,
+}
+/// Use IAM authentication to connect. This requires the Cloud SQL IAM feature
+/// to be enabled on the instance, which is not the default for Cloud SQL.
+/// See <https://cloud.google.com/sql/docs/postgres/authentication> and
+/// <https://cloud.google.com/sql/docs/mysql/authentication.>
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudSqlIamCredential {}
+/// Cloud SQL connection properties.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudSqlProperties {
+    /// Optional. Immutable. The Cloud SQL instance for which the connection is
+    /// defined. Only one connection per instance is allowed. This can only be set
+    /// at creation time, and cannot be updated.
+    ///
+    /// It is an error to use a connection_name from different project or region
+    /// than the one that holds the connection.
+    /// For example, a Connection resource for Cloud SQL connection_name
+    /// `project-id:us-central1:sql-instance`
+    /// must be created under the parent
+    /// `projects/project-id/locations/us-central1`
+    #[prost(string, tag = "1")]
+    pub connection_name: ::prost::alloc::string::String,
+    /// Required. DLP will limit its connections to max_connections.
+    /// Must be 2 or greater.
+    #[prost(int32, tag = "4")]
+    pub max_connections: i32,
+    /// Required. The database engine used by the Cloud SQL instance that this
+    /// connection configures.
+    #[prost(enumeration = "cloud_sql_properties::DatabaseEngine", tag = "7")]
+    pub database_engine: i32,
+    /// How to authenticate to the instance.
+    #[prost(oneof = "cloud_sql_properties::Credential", tags = "2, 3")]
+    pub credential: ::core::option::Option<cloud_sql_properties::Credential>,
+}
+/// Nested message and enum types in `CloudSqlProperties`.
+pub mod cloud_sql_properties {
+    /// Database engine of a Cloud SQL instance.
+    /// New values may be added over time.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DatabaseEngine {
+        /// An engine that is not currently supported by Sensitive Data Protection.
+        Unknown = 0,
+        /// Cloud SQL for MySQL instance.
+        Mysql = 1,
+        /// Cloud SQL for PostgreSQL instance.
+        Postgres = 2,
+    }
+    impl DatabaseEngine {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DatabaseEngine::Unknown => "DATABASE_ENGINE_UNKNOWN",
+                DatabaseEngine::Mysql => "DATABASE_ENGINE_MYSQL",
+                DatabaseEngine::Postgres => "DATABASE_ENGINE_POSTGRES",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATABASE_ENGINE_UNKNOWN" => Some(Self::Unknown),
+                "DATABASE_ENGINE_MYSQL" => Some(Self::Mysql),
+                "DATABASE_ENGINE_POSTGRES" => Some(Self::Postgres),
+                _ => None,
+            }
+        }
+    }
+    /// How to authenticate to the instance.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Credential {
+        /// A username and password stored in Secret Manager.
+        #[prost(message, tag = "2")]
+        UsernamePassword(super::SecretManagerCredential),
+        /// Built-in IAM authentication (must be configured in Cloud SQL).
+        #[prost(message, tag = "3")]
+        CloudSqlIam(super::CloudSqlIamCredential),
+    }
+}
+/// Request message for DeleteTableProfile.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteTableDataProfileRequest {
+    /// Required. Resource name of the table data profile.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Message used to identify the type of resource being profiled.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8894,6 +9608,10 @@ pub enum ResourceVisibility {
     Unspecified = 0,
     /// Visible to any user.
     Public = 10,
+    /// May contain public items.
+    /// For example, if a Cloud Storage bucket has uniform bucket level access
+    /// disabled, some objects inside it may be public.
+    Inconclusive = 15,
     /// Visible only to specific users.
     Restricted = 20,
 }
@@ -8906,6 +9624,7 @@ impl ResourceVisibility {
         match self {
             ResourceVisibility::Unspecified => "RESOURCE_VISIBILITY_UNSPECIFIED",
             ResourceVisibility::Public => "RESOURCE_VISIBILITY_PUBLIC",
+            ResourceVisibility::Inconclusive => "RESOURCE_VISIBILITY_INCONCLUSIVE",
             ResourceVisibility::Restricted => "RESOURCE_VISIBILITY_RESTRICTED",
         }
     }
@@ -8914,6 +9633,7 @@ impl ResourceVisibility {
         match value {
             "RESOURCE_VISIBILITY_UNSPECIFIED" => Some(Self::Unspecified),
             "RESOURCE_VISIBILITY_PUBLIC" => Some(Self::Public),
+            "RESOURCE_VISIBILITY_INCONCLUSIVE" => Some(Self::Inconclusive),
             "RESOURCE_VISIBILITY_RESTRICTED" => Some(Self::Restricted),
             _ => None,
         }
@@ -9031,6 +9751,51 @@ impl UniquenessScoreLevel {
             "UNIQUENESS_SCORE_LOW" => Some(Self::UniquenessScoreLow),
             "UNIQUENESS_SCORE_MEDIUM" => Some(Self::UniquenessScoreMedium),
             "UNIQUENESS_SCORE_HIGH" => Some(Self::UniquenessScoreHigh),
+            _ => None,
+        }
+    }
+}
+/// State of the connection.
+/// New values may be added over time.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ConnectionState {
+    /// Unused
+    Unspecified = 0,
+    /// DLP automatically created this connection during an initial scan, and it is
+    /// awaiting full configuration by a user.
+    MissingCredentials = 1,
+    /// A configured connection that has not encountered any errors.
+    Available = 2,
+    /// A configured connection that encountered errors during its last use. It
+    /// will not be used again until it is set to AVAILABLE.
+    ///
+    /// If the resolution requires external action, then the client must send a
+    /// request to set the status to AVAILABLE when the connection is ready for
+    /// use. If the resolution doesn't require external action, then any changes to
+    /// the connection properties will automatically mark it as AVAILABLE.
+    Error = 3,
+}
+impl ConnectionState {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ConnectionState::Unspecified => "CONNECTION_STATE_UNSPECIFIED",
+            ConnectionState::MissingCredentials => "MISSING_CREDENTIALS",
+            ConnectionState::Available => "AVAILABLE",
+            ConnectionState::Error => "ERROR",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CONNECTION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "MISSING_CREDENTIALS" => Some(Self::MissingCredentials),
+            "AVAILABLE" => Some(Self::Available),
+            "ERROR" => Some(Self::Error),
             _ => None,
         }
     }
@@ -10333,7 +11098,7 @@ pub mod dlp_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists data profiles for an organization.
+        /// Lists project data profiles for an organization.
         pub async fn list_project_data_profiles(
             &mut self,
             request: impl tonic::IntoRequest<super::ListProjectDataProfilesRequest>,
@@ -10364,7 +11129,7 @@ pub mod dlp_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists data profiles for an organization.
+        /// Lists table data profiles for an organization.
         pub async fn list_table_data_profiles(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTableDataProfilesRequest>,
@@ -10395,7 +11160,7 @@ pub mod dlp_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists data profiles for an organization.
+        /// Lists column data profiles for an organization.
         pub async fn list_column_data_profiles(
             &mut self,
             request: impl tonic::IntoRequest<super::ListColumnDataProfilesRequest>,
@@ -10519,6 +11284,35 @@ pub mod dlp_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Delete a TableDataProfile. Will not prevent the profile from being
+        /// regenerated if the table is still included in a discovery configuration.
+        pub async fn delete_table_data_profile(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteTableDataProfileRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/DeleteTableDataProfile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "DeleteTableDataProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Inspect hybrid content and store findings to a job.
         /// To review the findings, inspect the job. Inspection will occur
         /// asynchronously.
@@ -10575,6 +11369,177 @@ pub mod dlp_service_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.privacy.dlp.v2.DlpService", "FinishDlpJob"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Create a Connection to an external data source.
+        pub async fn create_connection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateConnectionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Connection>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/CreateConnection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "CreateConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get a Connection by name.
+        pub async fn get_connection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetConnectionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Connection>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/GetConnection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.privacy.dlp.v2.DlpService", "GetConnection"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists Connections in a parent.
+        pub async fn list_connections(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListConnectionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListConnectionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/ListConnections",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "ListConnections",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Searches for Connections in a parent.
+        pub async fn search_connections(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SearchConnectionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SearchConnectionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/SearchConnections",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "SearchConnections",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Delete a Connection.
+        pub async fn delete_connection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteConnectionRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/DeleteConnection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "DeleteConnection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update a Connection.
+        pub async fn update_connection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateConnectionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Connection>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/UpdateConnection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "UpdateConnection",
+                    ),
                 );
             self.inner.unary(req, path, codec).await
         }

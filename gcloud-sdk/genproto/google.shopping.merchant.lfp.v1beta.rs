@@ -40,7 +40,7 @@ pub struct LfpInventory {
     #[prost(message, optional, tag = "8")]
     pub price: ::core::option::Option<super::super::super::r#type::Price>,
     /// Required. Availability of the product at this store.
-    /// For accepted attribute values, see the [local product inventory feed
+    /// For accepted attribute values, see the [local product inventory data
     /// specification](<https://support.google.com/merchants/answer/3061342>)
     #[prost(string, tag = "9")]
     pub availability: ::prost::alloc::string::String,
@@ -54,13 +54,13 @@ pub struct LfpInventory {
     pub collection_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Supported pickup method for this offer. Unless the value is "not
     /// supported", this field must be submitted together with `pickupSla`. For
-    /// accepted attribute values, see the [local product inventory feed
+    /// accepted attribute values, see the [local product inventory data
     /// specification](<https://support.google.com/merchants/answer/3061342>).
     #[prost(string, optional, tag = "12")]
     pub pickup_method: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. Expected date that an order will be ready for pickup relative to
     /// the order date. Must be submitted together with `pickupMethod`. For
-    /// accepted attribute values, see the [local product inventory feed
+    /// accepted attribute values, see the [local product inventory data
     /// specification](<https://support.google.com/merchants/answer/3061342>).
     #[prost(string, optional, tag = "13")]
     pub pickup_sla: ::core::option::Option<::prost::alloc::string::String>,
@@ -386,8 +386,8 @@ pub mod lfp_sale_service_client {
         }
     }
 }
-/// A store for the merchant. This will be used to match to a Google Business
-/// Profile listing for the target merchant. If a matching listing can't be
+/// A store for the merchant. This will be used to match to a store under the
+/// Google Business Profile of the target merchant. If a matching store can't be
 /// found, the inventories or sales submitted with the store code will not be
 /// used.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -428,8 +428,8 @@ pub struct LfpStore {
     /// of the store location.
     #[prost(string, optional, tag = "9")]
     pub place_id: ::core::option::Option<::prost::alloc::string::String>,
-    /// Optional. Output only. The state of matching to a Google Business Profile
-    /// listing. See
+    /// Optional. Output only. The state of matching to a Google Business Profile.
+    /// See
     /// [matchingStateHint][google.shopping.merchant.lfp.v1beta.LfpStore.matching_state_hint]
     /// for further details if no match is found.
     #[prost(enumeration = "lfp_store::StoreMatchingState", tag = "10")]
@@ -457,7 +457,7 @@ pub struct LfpStore {
 }
 /// Nested message and enum types in `LfpStore`.
 pub mod lfp_store {
-    /// The state of matching `LfpStore` to a Google Business Profile listing.
+    /// The state of matching `LfpStore` to a Google Business Profile.
     #[derive(
         Clone,
         Copy,

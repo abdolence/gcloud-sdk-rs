@@ -19,6 +19,214 @@ pub struct AuthorAttribution {
     #[prost(string, tag = "3")]
     pub photo_uri: ::prost::alloc::string::String,
 }
+/// Information about a review of a place.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Review {
+    /// A reference representing this place review which may be used to look up
+    /// this place review again (also called the API "resource" name:
+    /// `places/{place_id}/reviews/{review}`).
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// A string of formatted recent time, expressing the review time relative
+    /// to the current time in a form appropriate for the language and country.
+    #[prost(string, tag = "2")]
+    pub relative_publish_time_description: ::prost::alloc::string::String,
+    /// The localized text of the review.
+    #[prost(message, optional, tag = "9")]
+    pub text: ::core::option::Option<super::super::super::r#type::LocalizedText>,
+    /// The review text in its original language.
+    #[prost(message, optional, tag = "12")]
+    pub original_text: ::core::option::Option<
+        super::super::super::r#type::LocalizedText,
+    >,
+    /// A number between 1.0 and 5.0, also called the number of stars.
+    #[prost(double, tag = "7")]
+    pub rating: f64,
+    /// This review's author.
+    #[prost(message, optional, tag = "13")]
+    pub author_attribution: ::core::option::Option<AuthorAttribution>,
+    /// Timestamp for the review.
+    #[prost(message, optional, tag = "14")]
+    pub publish_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Experimental: See
+/// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
+/// for more details.
+///
+/// Reference that the generative content is related to.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct References {
+    /// Reviews that serve as references.
+    #[prost(message, repeated, tag = "1")]
+    pub reviews: ::prost::alloc::vec::Vec<Review>,
+    /// The list of resource names of the referenced places. This name can be used
+    /// in other APIs that accept Place resource names.
+    #[prost(string, repeated, tag = "2")]
+    pub places: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A block of content that can be served individually.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ContentBlock {
+    /// The topic of the content, for example "overview" or "restaurant".
+    #[prost(string, tag = "1")]
+    pub topic: ::prost::alloc::string::String,
+    /// Content related to the topic.
+    #[prost(message, optional, tag = "2")]
+    pub content: ::core::option::Option<super::super::super::r#type::LocalizedText>,
+    /// Experimental: See
+    /// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
+    /// for more details.
+    ///
+    /// References that are related to this block of content.
+    #[prost(message, optional, tag = "3")]
+    pub references: ::core::option::Option<References>,
+}
+/// Information about a photo of a place.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Photo {
+    /// Identifier. A reference representing this place photo which may be used to
+    /// look up this place photo again (also called the API "resource" name:
+    /// `places/{place_id}/photos/{photo}`).
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The maximum available width, in pixels.
+    #[prost(int32, tag = "2")]
+    pub width_px: i32,
+    /// The maximum available height, in pixels.
+    #[prost(int32, tag = "3")]
+    pub height_px: i32,
+    /// This photo's authors.
+    #[prost(message, repeated, tag = "4")]
+    pub author_attributions: ::prost::alloc::vec::Vec<AuthorAttribution>,
+}
+/// Experimental: See
+/// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
+/// for more details.
+///
+/// Content that is contextual to the place query.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ContextualContent {
+    /// List of reviews about this place, contexual to the place query.
+    #[prost(message, repeated, tag = "1")]
+    pub reviews: ::prost::alloc::vec::Vec<Review>,
+    /// Information (including references) about photos of this place, contexual to
+    /// the place query.
+    #[prost(message, repeated, tag = "2")]
+    pub photos: ::prost::alloc::vec::Vec<Photo>,
+    /// Experimental: See
+    /// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
+    /// for more details.
+    ///
+    /// Justifications for the place.
+    #[prost(message, repeated, tag = "3")]
+    pub justifications: ::prost::alloc::vec::Vec<contextual_content::Justification>,
+}
+/// Nested message and enum types in `ContextualContent`.
+pub mod contextual_content {
+    /// Experimental: See
+    /// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
+    /// for more details.
+    ///
+    /// Justifications for the place. Justifications answers the question of why a
+    /// place could interest an end user.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Justification {
+        #[prost(oneof = "justification::Justification", tags = "1, 2")]
+        pub justification: ::core::option::Option<justification::Justification>,
+    }
+    /// Nested message and enum types in `Justification`.
+    pub mod justification {
+        /// Experimental: See
+        /// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
+        /// for more details.
+        ///
+        /// User review justifications. This highlights a section of the user review
+        /// that would interest an end user. For instance, if the search query is
+        /// "firewood pizza", the review justification highlights the text relevant
+        /// to the search query.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ReviewJustification {
+            #[prost(message, optional, tag = "1")]
+            pub highlighted_text: ::core::option::Option<
+                review_justification::HighlightedText,
+            >,
+            /// The review that the highlighted text is generated from.
+            #[prost(message, optional, tag = "2")]
+            pub review: ::core::option::Option<super::super::Review>,
+        }
+        /// Nested message and enum types in `ReviewJustification`.
+        pub mod review_justification {
+            /// The text highlighted by the justification. This is a subset of the
+            /// review itself. The exact word to highlight is marked by the
+            /// HighlightedTextRange. There could be several words in the text being
+            /// highlighted.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct HighlightedText {
+                #[prost(string, tag = "1")]
+                pub text: ::prost::alloc::string::String,
+                /// The list of the ranges of the highlighted text.
+                #[prost(message, repeated, tag = "2")]
+                pub highlighted_text_ranges: ::prost::alloc::vec::Vec<
+                    highlighted_text::HighlightedTextRange,
+                >,
+            }
+            /// Nested message and enum types in `HighlightedText`.
+            pub mod highlighted_text {
+                /// The range of highlighted text.
+                #[allow(clippy::derive_partial_eq_without_eq)]
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct HighlightedTextRange {
+                    #[prost(int32, tag = "1")]
+                    pub start_index: i32,
+                    #[prost(int32, tag = "2")]
+                    pub end_index: i32,
+                }
+            }
+        }
+        /// Experimental: See
+        /// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
+        /// for more details.
+        /// BusinessAvailabilityAttributes justifications. This shows some attributes
+        /// a business has that could interest an end user.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BusinessAvailabilityAttributesJustification {
+            /// If a place provides takeout.
+            #[prost(bool, tag = "1")]
+            pub takeout: bool,
+            /// If a place provides delivery.
+            #[prost(bool, tag = "2")]
+            pub delivery: bool,
+            /// If a place provides dine-in.
+            #[prost(bool, tag = "3")]
+            pub dine_in: bool,
+        }
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Justification {
+            /// Experimental: See
+            /// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
+            /// for more details.
+            #[prost(message, tag = "1")]
+            ReviewJustification(ReviewJustification),
+            /// Experimental: See
+            /// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
+            /// for more details.
+            #[prost(message, tag = "2")]
+            BusinessAvailabilityAttributesJustification(
+                BusinessAvailabilityAttributesJustification,
+            ),
+        }
+    }
+}
 /// Information about the EV Charge Station hosted in Place.
 /// Terminology follows
 /// <https://afdc.energy.gov/fuels/electricity_infrastructure.html> One port
@@ -297,56 +505,6 @@ pub struct Circle {
     #[prost(double, tag = "2")]
     pub radius: f64,
 }
-/// Information about a photo of a place.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Photo {
-    /// Identifier. A reference representing this place photo which may be used to
-    /// look up this place photo again (also called the API "resource" name:
-    /// `places/{place_id}/photos/{photo}`).
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// The maximum available width, in pixels.
-    #[prost(int32, tag = "2")]
-    pub width_px: i32,
-    /// The maximum available height, in pixels.
-    #[prost(int32, tag = "3")]
-    pub height_px: i32,
-    /// This photo's authors.
-    #[prost(message, repeated, tag = "4")]
-    pub author_attributions: ::prost::alloc::vec::Vec<AuthorAttribution>,
-}
-/// Information about a review of a place.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Review {
-    /// A reference representing this place review which may be used to look up
-    /// this place review again (also called the API "resource" name:
-    /// `places/{place_id}/reviews/{review}`).
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// A string of formatted recent time, expressing the review time relative
-    /// to the current time in a form appropriate for the language and country.
-    #[prost(string, tag = "2")]
-    pub relative_publish_time_description: ::prost::alloc::string::String,
-    /// The localized text of the review.
-    #[prost(message, optional, tag = "9")]
-    pub text: ::core::option::Option<super::super::super::r#type::LocalizedText>,
-    /// The review text in its original language.
-    #[prost(message, optional, tag = "12")]
-    pub original_text: ::core::option::Option<
-        super::super::super::r#type::LocalizedText,
-    >,
-    /// A number between 1.0 and 5.0, also called the number of stars.
-    #[prost(double, tag = "7")]
-    pub rating: f64,
-    /// This review's author.
-    #[prost(message, optional, tag = "13")]
-    pub author_attribution: ::core::option::Option<AuthorAttribution>,
-    /// Timestamp for the review.
-    #[prost(message, optional, tag = "14")]
-    pub publish_time: ::core::option::Option<::prost_types::Timestamp>,
-}
 /// All the information representing a Place.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -590,6 +748,20 @@ pub struct Place {
     /// Information of ev charging options.
     #[prost(message, optional, tag = "79")]
     pub ev_charge_options: ::core::option::Option<EvChargeOptions>,
+    /// Experimental: See
+    /// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
+    /// for more details.
+    ///
+    /// AI-generated summary of the place.
+    #[prost(message, optional, tag = "80")]
+    pub generative_summary: ::core::option::Option<place::GenerativeSummary>,
+    /// Experimental: See
+    /// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
+    /// for more details.
+    ///
+    /// AI-generated summary of the area that the place is in.
+    #[prost(message, optional, tag = "81")]
+    pub area_summary: ::core::option::Option<place::AreaSummary>,
 }
 /// Nested message and enum types in `Place`.
 pub mod place {
@@ -890,6 +1062,41 @@ pub mod place {
         /// Place has wheelchair accessible seating.
         #[prost(bool, optional, tag = "4")]
         pub wheelchair_accessible_seating: ::core::option::Option<bool>,
+    }
+    /// Experimental: See
+    /// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
+    /// for more details.
+    ///
+    /// AI-generated summary of the place.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GenerativeSummary {
+        /// The overview of the place.
+        #[prost(message, optional, tag = "1")]
+        pub overview: ::core::option::Option<
+            super::super::super::super::r#type::LocalizedText,
+        >,
+        /// The detailed description of the place.
+        #[prost(message, optional, tag = "2")]
+        pub description: ::core::option::Option<
+            super::super::super::super::r#type::LocalizedText,
+        >,
+        /// References that are used to generate the summary description.
+        #[prost(message, optional, tag = "3")]
+        pub references: ::core::option::Option<super::References>,
+    }
+    /// Experimental: See
+    /// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
+    /// for more details.
+    ///
+    /// AI-generated summary of the area that the place is in.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AreaSummary {
+        /// Content blocks that compose the area summary. Each block has a separate
+        /// topic about the area.
+        #[prost(message, repeated, tag = "4")]
+        pub content_blocks: ::prost::alloc::vec::Vec<super::ContentBlock>,
     }
     /// Business status for the place.
     #[derive(
@@ -1381,6 +1588,19 @@ pub struct SearchTextResponse {
     /// A list of places that meet the user's text search criteria.
     #[prost(message, repeated, tag = "1")]
     pub places: ::prost::alloc::vec::Vec<Place>,
+    /// Experimental: See
+    /// <https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative>
+    /// for more details.
+    ///
+    /// A list of contextual contents where each entry associates to the
+    /// corresponding place in the same index in the places field. The contents
+    /// that are relevant to the `text_query` in the request are preferred. If the
+    /// contextual content is not available for one of the places, it will return
+    /// non-contextual content. It will be empty only when the content is
+    /// unavailable for this place. This list should have as many entries as the
+    /// list of places if requested.
+    #[prost(message, repeated, tag = "3")]
+    pub contextual_contents: ::prost::alloc::vec::Vec<ContextualContent>,
 }
 /// Request for fetching a photo of a place using a photo resource name.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1521,11 +1741,11 @@ pub struct AutocompletePlacesRequest {
         autocomplete_places_request::LocationRestriction,
     >,
     /// Optional. Included primary Place type (for example, "restaurant" or
-    /// "gas_station") from
-    /// <https://developers.google.com/maps/documentation/places/web-service/place-types.>
-    /// A Place is only returned if its primary type is included in this list. Up
-    /// to 5 values can be specified. If no types are specified, all Place types
-    /// are returned.
+    /// "gas_station") in Place Types
+    /// (<https://developers.google.com/maps/documentation/places/web-service/place-types>),
+    /// or only `(regions)`, or only `(cities)`. A Place is only returned if its
+    /// primary type is included in this list. Up to 5 values can be specified. If
+    /// no types are specified, all Place types are returned.
     #[prost(string, repeated, tag = "4")]
     pub included_primary_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. Only include results in the specified regions, specified as up to

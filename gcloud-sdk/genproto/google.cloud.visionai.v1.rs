@@ -10005,8 +10005,8 @@ pub struct DataSchema {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataSchemaDetails {
     /// Type of the annotation.
-    #[prost(enumeration = "data_schema_details::DataType", tag = "1")]
-    pub r#type: i32,
+    #[prost(enumeration = "data_schema_details::DataType", optional, tag = "1")]
+    pub r#type: ::core::option::Option<i32>,
     /// Config for protobuf any type.
     #[prost(message, optional, tag = "6")]
     pub proto_any_config: ::core::option::Option<data_schema_details::ProtoAnyConfig>,
@@ -10021,8 +10021,8 @@ pub struct DataSchemaDetails {
         data_schema_details::CustomizedStructConfig,
     >,
     /// The granularity associated with this DataSchema.
-    #[prost(enumeration = "data_schema_details::Granularity", tag = "5")]
-    pub granularity: i32,
+    #[prost(enumeration = "data_schema_details::Granularity", optional, tag = "5")]
+    pub granularity: ::core::option::Option<i32>,
     /// The search strategy to be applied on the `key` above.
     #[prost(message, optional, tag = "7")]
     pub search_strategy: ::core::option::Option<data_schema_details::SearchStrategy>,
@@ -10067,11 +10067,92 @@ pub mod data_schema_details {
         /// which is documented in the DataSchemaDetails.DataType. Specifying
         /// unsupported `search_strategy_type` for data types will result in
         /// INVALID_ARGUMENT error.
-        #[prost(enumeration = "search_strategy::SearchStrategyType", tag = "1")]
-        pub search_strategy_type: i32,
+        #[prost(
+            enumeration = "search_strategy::SearchStrategyType",
+            optional,
+            tag = "1"
+        )]
+        pub search_strategy_type: ::core::option::Option<i32>,
+        /// Optional. Configs the path to the confidence score, and the threshold.
+        /// Only if the score is greater than the threshold, current field will be
+        /// built into the index. Only applies to leaf nodes using EXACT_SEARCH or
+        /// SMART_SEARCH.
+        #[prost(message, optional, tag = "2")]
+        pub confidence_score_index_config: ::core::option::Option<
+            search_strategy::ConfidenceScoreIndexConfig,
+        >,
     }
     /// Nested message and enum types in `SearchStrategy`.
     pub mod search_strategy {
+        /// Filter on the confidence score. Only adds to index if the confidence
+        /// score is higher than the threshold.
+        /// Example data schema:
+        /// key: "name-confidence-pair"
+        /// type: CUSTOMIZED_STRUCT
+        /// granularity: GRANULARITY_PARTITION_LEVEL
+        /// customized_struct_config {
+        ///    field_schemas {
+        ///      key: "name"
+        ///      type: STRING
+        ///      granularity: GRANULARITY_PARTITION_LEVEL
+        ///      search_strategy {
+        ///        search_strategy_type: SMART_SEARCH
+        ///        confidence_score_index_config {
+        ///          field_path: "name-confidence-pair.score"
+        ///          threshold: 0.6
+        ///        }
+        ///      }
+        ///    }
+        ///    field_schemas {
+        ///      key: "score"
+        ///      type: FLOAT
+        ///      granularity: GRANULARITY_PARTITION_LEVEL
+        ///    }
+        /// }
+        /// This means only "name" with score > 0.6 will be indexed.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ConfidenceScoreIndexConfig {
+            /// Required. The path to the confidence score field. It is a string that
+            /// concatenates all the data schema keys along the path. See the example
+            /// above. If the data schema contains LIST, use '_ENTRIES' to concatenate.
+            /// Example data schema contains a list:
+            /// "key": "list-name-score",
+            /// "schemaDetails": {
+            ///    "type": "LIST",
+            ///    "granularity": "GRANULARITY_PARTITION_LEVEL",
+            ///    "listConfig": {
+            ///      "valueSchema": {
+            ///        "type": "CUSTOMIZED_STRUCT",
+            ///        "granularity": "GRANULARITY_PARTITION_LEVEL",
+            ///        "customizedStructConfig": {
+            ///          "fieldSchemas": {
+            ///            "name": {
+            ///              "type": "STRING",
+            ///              "granularity": "GRANULARITY_PARTITION_LEVEL",
+            ///              "searchStrategy": {
+            ///                "searchStrategyType": "SMART_SEARCH"
+            ///                "confidence_score_index_config": {
+            ///                  "field_path": "list-name-score._ENTRIES.score",
+            ///                  "threshold": "0.9",
+            ///                }
+            ///              }
+            ///            },
+            ///            "score": {
+            ///              "type": "FLOAT",
+            ///              "granularity": "GRANULARITY_PARTITION_LEVEL",
+            ///            }
+            ///          }
+            ///        }
+            ///      }
+            ///    }
+            /// }
+            #[prost(string, tag = "1")]
+            pub field_path: ::prost::alloc::string::String,
+            /// Required. The threshold.
+            #[prost(float, tag = "2")]
+            pub threshold: f32,
+        }
         /// The types of search strategies to be applied on the annotation key.
         #[derive(
             Clone,
@@ -10512,8 +10593,12 @@ pub struct ListAnnotationsRequest {
     pub page_token: ::prost::alloc::string::String,
     /// The filter applied to the returned list.
     /// We only support filtering for the following fields:
+    /// For corpus of STREAM_VIDEO type:
     /// `partition.temporal_partition.start_time`,
     /// `partition.temporal_partition.end_time`, and `key`.
+    /// For corpus of VIDEO_ON_DEMAND type,
+    /// `partition.relative_temporal_partition.start_offset`,
+    /// `partition.relative_temporal_partition.end_offset`, and `key`.
     /// For corpus of IMAGE type, only `key` is supported.
     /// Timestamps are specified in the RFC-3339 format, and only one restriction
     /// may be applied per field, joined by conjunctions.
@@ -11166,10 +11251,10 @@ pub struct SearchHypernym {
     /// `projects/{project_number}/locations/{location}/corpora/{corpus}/searchHypernyms/{search_hypernym}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The hypernym.
+    /// Optional. The hypernym.
     #[prost(string, tag = "2")]
     pub hypernym: ::prost::alloc::string::String,
-    /// Hyponyms that the hypernym is mapped to.
+    /// Optional. Hyponyms that the hypernym is mapped to.
     #[prost(string, repeated, tag = "3")]
     pub hyponyms: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }

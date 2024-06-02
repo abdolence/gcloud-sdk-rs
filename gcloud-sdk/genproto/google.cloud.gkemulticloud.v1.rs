@@ -1968,8 +1968,8 @@ pub struct AwsNodeConfig {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Required. The name or ARN of the AWS IAM role assigned to nodes in the
-    /// pool.
+    /// Required. The name or ARN of the AWS IAM instance profile to assign to
+    /// nodes in the pool.
     #[prost(string, tag = "6")]
     pub iam_instance_profile: ::prost::alloc::string::String,
     /// Optional. The OS image type to use on node pool instances.
@@ -4387,6 +4387,12 @@ pub struct DeleteAzureClusterRequest {
     /// the request will fail and an ABORTED error will be returned.
     #[prost(string, tag = "4")]
     pub etag: ::prost::alloc::string::String,
+    /// Optional. If set to true, the deletion of
+    /// [AzureCluster][google.cloud.gkemulticloud.v1.AzureCluster] resource will
+    /// succeed even if errors occur during deleting in cluster resources. Using
+    /// this parameter may result in orphaned resources in the cluster.
+    #[prost(bool, tag = "5")]
+    pub ignore_errors: bool,
 }
 /// Response message for `AzureClusters.CreateAzureNodePool` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -4541,6 +4547,12 @@ pub struct DeleteAzureNodePoolRequest {
     /// the request will fail and an ABORTED error will be returned.
     #[prost(string, tag = "4")]
     pub etag: ::prost::alloc::string::String,
+    /// Optional. If set to true, the deletion of
+    /// [AzureNodePool][google.cloud.gkemulticloud.v1.AzureNodePool] resource will
+    /// succeed even if errors occur during deleting in node pool resources. Using
+    /// this parameter may result in orphaned resources in the node pool.
+    #[prost(bool, tag = "5")]
+    pub ignore_errors: bool,
 }
 /// GetAzureOpenIdConfigRequest gets the OIDC discovery document for the
 /// cluster. See the OpenID Connect Discovery 1.0 specification for details.
@@ -4562,7 +4574,7 @@ pub struct GetAzureOpenIdConfigRequest {
 pub struct GetAzureJsonWebKeysRequest {
     /// Required. The AzureCluster, which owns the JsonWebKeys.
     /// Format:
-    /// projects/<project-id>/locations/<region>/azureClusters/<cluster-id>
+    /// `projects/<project-id>/locations/<region>/azureClusters/<cluster-id>`
     #[prost(string, tag = "1")]
     pub azure_cluster: ::prost::alloc::string::String,
 }

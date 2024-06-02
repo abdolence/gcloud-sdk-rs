@@ -1104,6 +1104,14 @@ pub struct LookupRequest {
     /// Required. Keys of entities to look up.
     #[prost(message, repeated, tag = "3")]
     pub keys: ::prost::alloc::vec::Vec<Key>,
+    /// The properties to return. Defaults to returning all properties.
+    ///
+    /// If this field is set and an entity has a property not referenced in the
+    /// mask, it will be absent from [LookupResponse.found.entity.properties][].
+    ///
+    /// The entity's key is always returned.
+    #[prost(message, optional, tag = "5")]
+    pub property_mask: ::core::option::Option<PropertyMask>,
 }
 /// The response for [Datastore.Lookup][google.datastore.v1.Datastore.Lookup].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1159,6 +1167,13 @@ pub struct RunQueryRequest {
     /// The options for this query.
     #[prost(message, optional, tag = "1")]
     pub read_options: ::core::option::Option<ReadOptions>,
+    /// The properties to return.
+    /// This field must not be set for a projection query.
+    ///
+    /// See
+    /// [LookupRequest.property_mask][google.datastore.v1.LookupRequest.property_mask].
+    #[prost(message, optional, tag = "10")]
+    pub property_mask: ::core::option::Option<PropertyMask>,
     /// Optional. Explain options for the query. If set, additional query
     /// statistics will be returned. If not, only query results will be returned.
     #[prost(message, optional, tag = "12")]
@@ -1503,6 +1518,16 @@ pub struct ReserveIdsResponse {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Mutation {
+    /// The properties to write in this mutation.
+    /// None of the properties in the mask may have a reserved name, except for
+    /// `__key__`.
+    /// This field is ignored for `delete`.
+    ///
+    /// If the entity already exists, only properties referenced in the mask are
+    /// updated, others are left untouched.
+    /// Properties referenced in the mask but not in the entity are deleted.
+    #[prost(message, optional, tag = "9")]
+    pub property_mask: ::core::option::Option<PropertyMask>,
     /// The mutation operation.
     ///
     /// For `insert`, `update`, and `upsert`:
@@ -1597,6 +1622,25 @@ pub struct MutationResult {
     /// conflict detection strategy field is not set in the mutation.
     #[prost(bool, tag = "5")]
     pub conflict_detected: bool,
+}
+/// The set of arbitrarily nested property paths used to restrict an operation to
+/// only a subset of properties in an entity.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PropertyMask {
+    /// The paths to the properties covered by this mask.
+    ///
+    /// A path is a list of property names separated by dots (`.`), for example
+    /// `foo.bar` means the property `bar` inside the entity property `foo` inside
+    /// the entity associated with this path.
+    ///
+    /// If a property name contains a dot `.` or a backslash `\`, then that
+    /// name must be escaped.
+    ///
+    /// A path must not be empty, and may not reference a value inside an
+    /// [array value][google.datastore.v1.Value.array_value].
+    #[prost(string, repeated, tag = "1")]
+    pub paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The options shared by read requests.
 #[allow(clippy::derive_partial_eq_without_eq)]

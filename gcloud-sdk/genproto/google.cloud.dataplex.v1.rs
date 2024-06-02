@@ -4297,9 +4297,12 @@ pub struct Entry {
     /// Output only. The time when the Entry was last updated.
     #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. The Aspects attached to the Entry. The key is either the resource
-    /// name of the aspect type (if the aspect is attached directly to the entry)
-    /// or "aspectType@path" if the aspect is attached to an entry's path.
+    /// Optional. The Aspects attached to the Entry.
+    /// The format for the key can be one of the following:
+    /// 1. {projectId}.{locationId}.{aspectTypeId} (if the aspect is attached
+    /// directly to the entry)
+    /// 2. {projectId}.{locationId}.{aspectTypeId}@{path} (if the aspect is
+    /// attached to an entry's path)
     #[prost(map = "string, message", tag = "9")]
     pub aspects: ::std::collections::HashMap<::prost::alloc::string::String, Aspect>,
     /// Optional. Immutable. The resource name of the parent entry.
@@ -4776,15 +4779,17 @@ pub struct ListEntriesRequest {
     /// Optional. A filter on the entries to return.
     /// Filters are case-sensitive.
     /// The request can be filtered by the following fields:
-    /// entry_type, display_name.
+    /// entry_type, entry_source.display_name.
     /// The comparison operators are =, !=, <, >, <=, >= (strings are compared
     /// according to lexical order)
     /// The logical operators AND, OR, NOT can be used
-    /// in the filter. Example filter expressions:
-    /// "display_name=AnExampleDisplayName"
+    /// in the filter. Wildcard "*" can be used, but for entry_type the full
+    /// project id or number needs to be provided. Example filter expressions:
+    /// "entry_source.display_name=AnExampleDisplayName"
     /// "entry_type=projects/example-project/locations/global/entryTypes/example-entry_type"
-    /// "entry_type=projects/a* OR "entry_type=projects/k*"
-    /// "NOT display_name=AnotherExampleDisplayName"
+    /// "entry_type=projects/example-project/locations/us/entryTypes/a* OR
+    ///   entry_type=projects/another-project/locations/*"
+    /// "NOT entry_source.display_name=AnotherExampleDisplayName"
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
@@ -4869,34 +4874,6 @@ pub struct SearchEntriesRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchEntriesResult {
-    /// Resource name of the entry.
-    #[deprecated]
-    #[prost(string, tag = "1")]
-    pub entry: ::prost::alloc::string::String,
-    /// Display name.
-    #[deprecated]
-    #[prost(string, tag = "2")]
-    pub display_name: ::prost::alloc::string::String,
-    /// The entry type.
-    #[deprecated]
-    #[prost(string, tag = "3")]
-    pub entry_type: ::prost::alloc::string::String,
-    /// The last modification timestamp.
-    #[deprecated]
-    #[prost(message, optional, tag = "4")]
-    pub modify_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Fully qualified name.
-    #[deprecated]
-    #[prost(string, tag = "5")]
-    pub fully_qualified_name: ::prost::alloc::string::String,
-    /// Entry description.
-    #[deprecated]
-    #[prost(string, tag = "6")]
-    pub description: ::prost::alloc::string::String,
-    /// Relative resource name.
-    #[deprecated]
-    #[prost(string, tag = "7")]
-    pub relative_resource: ::prost::alloc::string::String,
     /// Linked resource name.
     #[prost(string, tag = "8")]
     pub linked_resource: ::prost::alloc::string::String,
@@ -6987,6 +6964,12 @@ pub struct DataQualityRuleResult {
     /// This field is only valid for row-level type rules.
     #[prost(string, tag = "10")]
     pub failing_rows_query: ::prost::alloc::string::String,
+    /// Output only. The number of rows returned by the sql statement in the
+    /// SqlAssertion rule.
+    ///
+    /// This field is only valid for SqlAssertion rules.
+    #[prost(int64, tag = "11")]
+    pub assertion_row_count: i64,
 }
 /// DataQualityDimensionResult provides a more detailed, per-dimension view of
 /// the results.
@@ -7067,7 +7050,7 @@ pub struct DataQualityRule {
     /// The rule-specific configuration.
     #[prost(
         oneof = "data_quality_rule::RuleType",
-        tags = "1, 2, 3, 4, 100, 101, 200, 201"
+        tags = "1, 2, 3, 4, 100, 101, 200, 201, 202"
     )]
     pub rule_type: ::core::option::Option<data_quality_rule::RuleType>,
 }
@@ -7233,6 +7216,24 @@ pub mod data_quality_rule {
         #[prost(string, tag = "1")]
         pub sql_expression: ::prost::alloc::string::String,
     }
+    /// Queries for rows returned by the provided SQL statement. If any rows are
+    /// are returned, this rule fails.
+    ///
+    /// The SQL statement needs to use BigQuery standard SQL syntax, and must not
+    /// contain any semicolons.
+    ///
+    /// ${data()} can be used to reference the rows being evaluated, i.e. the table
+    /// after all additional filters (row filters, incremental data filters,
+    /// sampling) are applied.
+    ///
+    /// Example: SELECT * FROM ${data()} WHERE price < 0
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SqlAssertion {
+        /// Optional. The SQL statement.
+        #[prost(string, tag = "1")]
+        pub sql_statement: ::prost::alloc::string::String,
+    }
     /// The rule-specific configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -7267,6 +7268,10 @@ pub mod data_quality_rule {
         /// for a table.
         #[prost(message, tag = "201")]
         TableConditionExpectation(TableConditionExpectation),
+        /// Aggregate rule which evaluates the number of rows returned for the
+        /// provided statement.
+        #[prost(message, tag = "202")]
+        SqlAssertion(SqlAssertion),
     }
 }
 /// DataQualityColumnResult provides a more detailed, per-column view of
@@ -10599,6 +10604,10 @@ pub struct DataQualityScanRuleResult {
     /// The number of rows with null values in the specified column.
     #[prost(int64, tag = "12")]
     pub null_row_count: i64,
+    /// The number of rows returned by the sql statement in the SqlAssertion rule.
+    /// This field is only valid for SqlAssertion rules.
+    #[prost(int64, tag = "13")]
+    pub assertion_row_count: i64,
 }
 /// Nested message and enum types in `DataQualityScanRuleResult`.
 pub mod data_quality_scan_rule_result {
@@ -10642,6 +10651,9 @@ pub mod data_quality_scan_rule_result {
         /// Please see
         /// <https://cloud.google.com/dataplex/docs/reference/rest/v1/DataQualityRule#uniquenessexpectation.>
         UniquenessExpectation = 8,
+        /// Please see
+        /// <https://cloud.google.com/dataplex/docs/reference/rest/v1/DataQualityRule#sqlAssertion.>
+        SqlAssertion = 9,
     }
     impl RuleType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -10659,6 +10671,7 @@ pub mod data_quality_scan_rule_result {
                 RuleType::StatisticRangeExpectation => "STATISTIC_RANGE_EXPECTATION",
                 RuleType::TableConditionExpectation => "TABLE_CONDITION_EXPECTATION",
                 RuleType::UniquenessExpectation => "UNIQUENESS_EXPECTATION",
+                RuleType::SqlAssertion => "SQL_ASSERTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10673,6 +10686,7 @@ pub mod data_quality_scan_rule_result {
                 "STATISTIC_RANGE_EXPECTATION" => Some(Self::StatisticRangeExpectation),
                 "TABLE_CONDITION_EXPECTATION" => Some(Self::TableConditionExpectation),
                 "UNIQUENESS_EXPECTATION" => Some(Self::UniquenessExpectation),
+                "SQL_ASSERTION" => Some(Self::SqlAssertion),
                 _ => None,
             }
         }

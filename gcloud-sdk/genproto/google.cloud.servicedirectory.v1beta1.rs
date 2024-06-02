@@ -366,7 +366,7 @@ pub struct ListNamespacesRequest {
     /// you'd like to list.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of items to return.
+    /// Optional. The maximum number of items to return. The default value is 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous List request,
@@ -491,7 +491,7 @@ pub struct ListServicesRequest {
     /// like to list.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of items to return.
+    /// Optional. The maximum number of items to return. The default value is 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous List request,
@@ -621,7 +621,7 @@ pub struct ListEndpointsRequest {
     /// list.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of items to return.
+    /// Optional. The maximum number of items to return. The default value is 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous List request,

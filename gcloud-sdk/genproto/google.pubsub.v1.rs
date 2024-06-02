@@ -1592,6 +1592,14 @@ pub struct BigQueryConfig {
     /// enabled at the same time.
     #[prost(bool, tag = "6")]
     pub use_table_schema: bool,
+    /// Optional. The service account to use to write to BigQuery. The subscription
+    /// creator or updater that specifies this field must have
+    /// `iam.serviceAccounts.actAs` permission on the service account. If not
+    /// specified, the Pub/Sub [service
+    /// agent](<https://cloud.google.com/iam/docs/service-agents>),
+    /// service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com, is used.
+    #[prost(string, tag = "7")]
+    pub service_account_email: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `BigQueryConfig`.
 pub mod big_query_config {
@@ -1697,6 +1705,14 @@ pub struct CloudStorageConfig {
     /// subscription can receive messages.
     #[prost(enumeration = "cloud_storage_config::State", tag = "9")]
     pub state: i32,
+    /// Optional. The service account to use to write to Cloud Storage. The
+    /// subscription creator or updater that specifies this field must have
+    /// `iam.serviceAccounts.actAs` permission on the service account. If not
+    /// specified, the Pub/Sub
+    /// [service agent](<https://cloud.google.com/iam/docs/service-agents>),
+    /// service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com, is used.
+    #[prost(string, tag = "11")]
+    pub service_account_email: ::prost::alloc::string::String,
     /// Defaults to text format.
     #[prost(oneof = "cloud_storage_config::OutputFormat", tags = "4, 5")]
     pub output_format: ::core::option::Option<cloud_storage_config::OutputFormat>,

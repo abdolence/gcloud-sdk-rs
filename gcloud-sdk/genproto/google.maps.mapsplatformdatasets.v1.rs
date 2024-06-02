@@ -59,18 +59,20 @@ impl FileFormat {
         }
     }
 }
-/// A representation of a Maps Dataset resource.
+/// A representation of a dataset resource.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dataset {
-    /// Resource name,
-    /// projects/{project}/datasets/{dataset_id}
+    /// Resource name.
+    /// Format: projects/{project}/datasets/{dataset_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Human readable name, shown in the console UI .
+    /// Human readable name, shown in the console UI.
+    ///
+    /// Must be unique within a project.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// A description of this dataset .
+    /// A description of this dataset.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// The version ID of the dataset.
@@ -88,7 +90,7 @@ pub struct Dataset {
     /// Output only. Time when the dataset metadata was last updated.
     #[prost(message, optional, tag = "9")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Time when the data was uploaded.
+    /// Output only. Time when this version was created.
     #[prost(message, optional, tag = "10")]
     pub version_create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The description for this version of dataset. It is provided
@@ -164,11 +166,11 @@ pub mod status {
         /// The publishing state. This state represents the publishing is in
         /// progress.
         Publishing = 9,
-        /// The publishing failed states. This state represents that the
-        /// publishing failed. Publishing may be retried.
+        /// The publishing failed states. This state represents that the publishing
+        /// failed. Publishing may be retried.
         PublishingFailed = 10,
-        /// The completed state. This state represents the dataset being
-        /// available for its specific usage.
+        /// The completed state. This state represents the dataset being available
+        /// for its specific usage.
         Completed = 11,
     }
     impl State {
@@ -247,7 +249,7 @@ impl Usage {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatasetRequest {
     /// Required. Parent project that will own the dataset.
-    /// Format: projects/{$project}
+    /// Format: projects/{project}
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The dataset version to create.
@@ -258,13 +260,13 @@ pub struct CreateDatasetRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatasetMetadataRequest {
-    /// Required. The dataset to update. The dataset's name is used to identify the
-    /// dataset to be updated. The name has the format:
-    /// projects/{project}/datasets/{dataset_id}
+    /// Required. Resource name of the dataset to update.
+    /// Format: projects/{project}/datasets/{dataset_id}
     #[prost(message, optional, tag = "1")]
     pub dataset: ::core::option::Option<Dataset>,
-    /// The list of fields to be updated. Support the value "*" for full
-    /// replacement.
+    /// The list of fields to be updated.
+    ///
+    /// The value "*" is used for full replacement (default).
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -272,7 +274,15 @@ pub struct UpdateDatasetMetadataRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatasetRequest {
-    /// Required. Resource name. projects/{project}/datasets/{dataset_id}
+    /// Required. Resource name.
+    /// Format: projects/{project}/datasets/{dataset_id}
+    ///
+    ///
+    /// Can also fetch some special versions by appending "@" and a tag.
+    /// Format: projects/{project}/datasets/{dataset_id}@{tag}
+    ///
+    /// Tag "active": The info of the latest completed version will be included,
+    /// and NOT_FOUND if the dataset does not have one.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -281,9 +291,11 @@ pub struct GetDatasetRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsRequest {
     /// Required. The name of the project to list all the datasets for.
+    /// Format: projects/{project}
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of versions to return per page.
+    /// The maximum number of datasets to return per page.
+    ///
     /// If unspecified (or zero), all datasets will be returned.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -291,8 +303,19 @@ pub struct ListDatasetsRequest {
     /// Provide this to retrieve the subsequent page.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// The tag that specifies the desired version for each dataset.
+    ///
+    /// Note that when pagination is also specified, some filtering can happen
+    /// after pagination, which may cause the response to contain fewer datasets
+    /// than the page size, even if it's not the last page.
+    ///
+    /// Tag "active": Each dataset in the response will include the info of its
+    /// latest completed version, and the dataset will be skipped if it does not
+    /// have one.
+    #[prost(string, tag = "4")]
+    pub tag: ::prost::alloc::string::String,
 }
-/// Response to list datasets for the project.
+/// Response object of ListDatasets.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsResponse {
@@ -300,17 +323,17 @@ pub struct ListDatasetsResponse {
     #[prost(message, repeated, tag = "1")]
     pub datasets: ::prost::alloc::vec::Vec<Dataset>,
     /// A token that can be sent as `page_token` to retrieve the next page.
+    ///
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to delete a dataset.
-///
-/// The dataset to be deleted.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDatasetRequest {
-    /// Required. Format: projects/${project}/datasets/{dataset_id}
+    /// Required. The name of the dataset to delete.
+    /// Format: projects/{project}/datasets/{dataset_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -400,7 +423,7 @@ pub mod maps_platform_datasets_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Create a new dataset for the specified project.
+        /// Creates a new dataset for the specified project.
         pub async fn create_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDatasetRequest>,
@@ -428,7 +451,7 @@ pub mod maps_platform_datasets_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Update the metadata for the dataset.
+        /// Updates the metadata for the dataset.
         pub async fn update_dataset_metadata(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDatasetMetadataRequest>,
@@ -456,7 +479,7 @@ pub mod maps_platform_datasets_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Get the dataset.
+        /// Gets the dataset.
         pub async fn get_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDatasetRequest>,
@@ -484,7 +507,7 @@ pub mod maps_platform_datasets_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// List all the datasets for the specified project.
+        /// Lists all the datasets for the specified project.
         pub async fn list_datasets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDatasetsRequest>,
@@ -515,7 +538,7 @@ pub mod maps_platform_datasets_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Delete the specified dataset .
+        /// Deletes the specified dataset.
         pub async fn delete_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDatasetRequest>,
