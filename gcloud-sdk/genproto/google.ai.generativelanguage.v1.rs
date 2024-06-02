@@ -82,8 +82,12 @@ pub mod part {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Blob {
     /// The IANA standard MIME type of the source data.
-    /// Accepted types include: "image/png", "image/jpeg", "image/heic",
-    /// "image/heif", "image/webp".
+    /// Examples:
+    ///    - image/png
+    ///    - image/jpeg
+    /// If an unsupported MIME type is provided, an error will be returned. For a
+    /// complete list of supported types, see [Supported file
+    /// formats](<https://ai.google.dev/gemini-api/docs/prompting_with_media#supported_file_formats>).
     #[prost(string, tag = "1")]
     pub mime_type: ::prost::alloc::string::String,
     /// Raw bytes for media formats.
@@ -169,7 +173,7 @@ pub mod safety_rating {
 }
 /// Safety setting, affecting the safety-blocking behavior.
 ///
-/// Passing a safety setting for a category changes the allowed proability that
+/// Passing a safety setting for a category changes the allowed probability that
 /// content is blocked.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -418,6 +422,9 @@ pub struct GenerateContentResponse {
     pub prompt_feedback: ::core::option::Option<
         generate_content_response::PromptFeedback,
     >,
+    /// Output only. Metadata on the generation requests' token usage.
+    #[prost(message, optional, tag = "3")]
+    pub usage_metadata: ::core::option::Option<generate_content_response::UsageMetadata>,
 }
 /// Nested message and enum types in `GenerateContentResponse`.
 pub mod generate_content_response {
@@ -481,6 +488,20 @@ pub mod generate_content_response {
                 }
             }
         }
+    }
+    /// Metadata on the generation request's token usage.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UsageMetadata {
+        /// Number of tokens in the prompt.
+        #[prost(int32, tag = "1")]
+        pub prompt_token_count: i32,
+        /// Total number of tokens across the generated candidates.
+        #[prost(int32, tag = "2")]
+        pub candidates_token_count: i32,
+        /// Total token count for the generation request (prompt + candidates).
+        #[prost(int32, tag = "3")]
+        pub total_token_count: i32,
     }
 }
 /// A response candidate generated from the model.
@@ -601,7 +622,8 @@ pub struct EmbedContentRequest {
     pub title: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. Optional reduced dimension for the output embedding. If set,
     /// excessive values in the output embedding are truncated from the end.
-    /// Supported by `models/text-embedding-latest`.
+    /// Supported by newer models since 2024, and the earlier model
+    /// (`models/embedding-001`) cannot specify this value.
     #[prost(int32, optional, tag = "5")]
     pub output_dimensionality: ::core::option::Option<i32>,
 }
@@ -662,9 +684,14 @@ pub struct CountTokensRequest {
     /// Format: `models/{model}`
     #[prost(string, tag = "1")]
     pub model: ::prost::alloc::string::String,
-    /// Required. The input given to the model as a prompt.
+    /// Optional. The input given to the model as a prompt. This field is ignored
+    /// when `generate_content_request` is set.
     #[prost(message, repeated, tag = "2")]
     pub contents: ::prost::alloc::vec::Vec<Content>,
+    /// Optional. The overall input given to the model. CountTokens will count
+    /// prompt, function calling, etc.
+    #[prost(message, optional, tag = "3")]
+    pub generate_content_request: ::core::option::Option<GenerateContentRequest>,
 }
 /// A response from `CountTokens`.
 ///
@@ -820,6 +847,11 @@ pub mod generative_service_client {
         }
         /// Generates a response from the model given an input
         /// `GenerateContentRequest`.
+        ///
+        /// Input capabilities differ between models, including tuned models. See the
+        /// [model guide](https://ai.google.dev/models/gemini) and
+        /// [tuning guide](https://ai.google.dev/docs/model_tuning_guidance) for
+        /// details.
         pub async fn generate_content(
             &mut self,
             request: impl tonic::IntoRequest<super::GenerateContentRequest>,

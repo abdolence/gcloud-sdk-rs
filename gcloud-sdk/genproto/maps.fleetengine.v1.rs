@@ -82,11 +82,13 @@ pub struct ConsumableTrafficPolyline {
     #[prost(string, tag = "2")]
     pub encoded_path_to_waypoint: ::prost::alloc::string::String,
 }
-/// Identifies a terminal point.
+/// Deprecated: TerminalPoints are no longer supported in Fleet Engine. Use
+/// `TerminalLocation.point` instead.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TerminalPointId {
-    /// Unique ID of the terminal point.
+    /// Deprecated.
+    #[deprecated]
     #[prost(string, tag = "4")]
     pub value: ::prost::alloc::string::String,
     /// Deprecated.
@@ -114,10 +116,11 @@ pub struct TerminalLocation {
     /// Required. Denotes the location of a trip waypoint.
     #[prost(message, optional, tag = "1")]
     pub point: ::core::option::Option<super::super::super::google::r#type::LatLng>,
-    /// ID of the terminal point.
+    /// Deprecated: Specify the `point` field instead.
+    #[deprecated]
     #[prost(message, optional, tag = "2")]
     pub terminal_point_id: ::core::option::Option<TerminalPointId>,
-    /// Deprecated.
+    /// Deprecated: Specify the `point` field instead.
     #[deprecated]
     #[prost(string, tag = "3")]
     pub access_point_id: ::prost::alloc::string::String,
@@ -2196,29 +2199,6 @@ pub struct UpdateVehicleRequest {
     #[prost(message, optional, tag = "5")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// `UpdateVehicleLocation` request message.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateVehicleLocationRequest {
-    /// The standard Fleet Engine request header.
-    #[prost(message, optional, tag = "1")]
-    pub header: ::core::option::Option<RequestHeader>,
-    /// Required. Must be in the format
-    /// `providers/{provider}/vehicles/{vehicle}`.
-    /// The {provider} must be the Project ID (for example, `sample-cloud-project`)
-    /// of the Google Cloud Project of which the service account making
-    /// this call is a member.
-    #[prost(string, tag = "3")]
-    pub name: ::prost::alloc::string::String,
-    /// Required. The vehicle's most recent location.  The `location` and
-    /// `update_time` subfields are required.
-    #[prost(message, optional, tag = "4")]
-    pub current_location: ::core::option::Option<VehicleLocation>,
-    /// Set the vehicle's state to either `ONLINE` or `OFFLINE`.
-    /// If set to `UNKNOWN_VEHICLE_STATE`, the vehicle's state will not be altered.
-    #[prost(enumeration = "VehicleState", tag = "5")]
-    pub current_state: i32,
-}
 /// `UpdateVehicleAttributes` request message.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3053,38 +3033,6 @@ pub mod vehicle_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deprecated: Use the `UpdateVehicle` method instead.
-        /// UpdateVehicleLocation updates the location of the vehicle.
-        pub async fn update_vehicle_location(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateVehicleLocationRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::VehicleLocation>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/maps.fleetengine.v1.VehicleService/UpdateVehicleLocation",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "maps.fleetengine.v1.VehicleService",
-                        "UpdateVehicleLocation",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
         /// Partially updates a vehicle's attributes.
         /// Only the attributes mentioned in the request will be updated, other
         /// attributes will NOT be altered. Note: this is different in `UpdateVehicle`,
@@ -3176,37 +3124,6 @@ pub mod vehicle_service_client {
                     GrpcMethod::new(
                         "maps.fleetengine.v1.VehicleService",
                         "SearchVehicles",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Deprecated: Use `SearchVehicles` instead.
-        pub async fn search_fuzzed_vehicles(
-            &mut self,
-            request: impl tonic::IntoRequest<super::SearchVehiclesRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::SearchVehiclesResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/maps.fleetengine.v1.VehicleService/SearchFuzzedVehicles",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "maps.fleetengine.v1.VehicleService",
-                        "SearchFuzzedVehicles",
                     ),
                 );
             self.inner.unary(req, path, codec).await

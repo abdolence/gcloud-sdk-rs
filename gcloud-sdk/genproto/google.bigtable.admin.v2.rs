@@ -1866,25 +1866,25 @@ pub mod bigtable_instance_admin_client {
 ///   * Natural sort: Does the encoded value sort consistently with the original
 ///     typed value? Note that Bigtable will always sort data based on the raw
 ///     encoded value, *not* the decoded type.
-///      - Example: STRING values sort in the same order as their UTF-8 encodings.
+///      - Example: BYTES values sort in the same order as their raw encodings.
 ///      - Counterexample: Encoding INT64 to a fixed-width STRING does *not*
 ///        preserve sort order when dealing with negative numbers.
 ///        INT64(1) > INT64(-1), but STRING("-00001") > STRING("00001).
-///      - The overall encoding chain sorts naturally if *every* link does.
+///      - The overall encoding chain has this property if *every* link does.
 ///   * Self-delimiting: If we concatenate two encoded values, can we always tell
 ///     where the first one ends and the second one begins?
 ///      - Example: If we encode INT64s to fixed-width STRINGs, the first value
 ///        will always contain exactly N digits, possibly preceded by a sign.
 ///      - Counterexample: If we concatenate two UTF-8 encoded STRINGs, we have
 ///        no way to tell where the first one ends.
-///      - The overall encoding chain is self-delimiting if *any* link is.
+///      - The overall encoding chain has this property if *any* link does.
 ///   * Compatibility: Which other systems have matching encoding schemes? For
 ///     example, does this encoding have a GoogleSQL equivalent? HBase? Java?
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Type {
     /// The kind of type that this represents.
-    #[prost(oneof = "r#type::Kind", tags = "1, 5, 6")]
+    #[prost(oneof = "r#type::Kind", tags = "1, 2, 5, 6")]
     pub kind: ::core::option::Option<r#type::Kind>,
 }
 /// Nested message and enum types in `Type`.
@@ -1924,6 +1924,47 @@ pub mod r#type {
                 /// Use `Raw` encoding.
                 #[prost(message, tag = "1")]
                 Raw(Raw),
+            }
+        }
+    }
+    /// String
+    /// Values of type `String` are stored in `Value.string_value`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct String {
+        /// The encoding to use when converting to/from lower level types.
+        #[prost(message, optional, tag = "1")]
+        pub encoding: ::core::option::Option<string::Encoding>,
+    }
+    /// Nested message and enum types in `String`.
+    pub mod string {
+        /// Rules used to convert to/from lower level types.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Encoding {
+            /// Which encoding to use.
+            #[prost(oneof = "encoding::Encoding", tags = "1")]
+            pub encoding: ::core::option::Option<encoding::Encoding>,
+        }
+        /// Nested message and enum types in `Encoding`.
+        pub mod encoding {
+            /// UTF-8 encoding
+            /// * Natural sort? No (ASCII characters only)
+            /// * Self-delimiting? No
+            /// * Compatibility?
+            ///     - BigQuery Federation `TEXT` encoding
+            ///     - HBase `Bytes.toBytes`
+            ///     - Java `String#getBytes(StandardCharsets.UTF_8)`
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct Utf8Raw {}
+            /// Which encoding to use.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum Encoding {
+                /// Use `Utf8Raw` encoding.
+                #[prost(message, tag = "1")]
+                Utf8Raw(Utf8Raw),
             }
         }
     }
@@ -2019,6 +2060,9 @@ pub mod r#type {
         /// Bytes
         #[prost(message, tag = "1")]
         BytesType(Bytes),
+        /// String
+        #[prost(message, tag = "2")]
+        StringType(String),
         /// Int64
         #[prost(message, tag = "5")]
         Int64Type(Int64),

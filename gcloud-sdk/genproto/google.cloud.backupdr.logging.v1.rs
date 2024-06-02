@@ -359,3 +359,80 @@ pub struct ProtectedResource {
     #[prost(string, tag = "21")]
     pub recovery_point: ::prost::alloc::string::String,
 }
+/// Holds information for the Mounted Images log
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MountedImage {
+    /// Required. Source Resource name.
+    #[prost(string, tag = "1")]
+    pub source_resource_name: ::prost::alloc::string::String,
+    /// Required. Source Resource id.
+    #[prost(string, tag = "2")]
+    pub source_resource_id: ::prost::alloc::string::String,
+    /// Required. Cluster Name.
+    #[prost(string, tag = "3")]
+    pub appliance_name: ::prost::alloc::string::String,
+    /// Required. Cluster Id.
+    #[prost(string, tag = "4")]
+    pub appliance_id: ::prost::alloc::string::String,
+    /// Required. Mounted Image Name.
+    #[prost(string, tag = "5")]
+    pub mounted_image_name: ::prost::alloc::string::String,
+    /// Required. Source Image Name.
+    #[prost(string, tag = "6")]
+    pub source_image_name: ::prost::alloc::string::String,
+    /// Required.Job Type.
+    #[prost(string, tag = "7")]
+    pub job_type: ::prost::alloc::string::String,
+    /// Required. Recovery point Date.
+    #[prost(string, tag = "8")]
+    pub recovery_point_date: ::prost::alloc::string::String,
+    /// Required. Last Mount Date
+    #[prost(string, tag = "9")]
+    pub last_mount_date: ::prost::alloc::string::String,
+    /// Required. Resource type.
+    #[prost(string, tag = "10")]
+    pub resource_type: ::prost::alloc::string::String,
+    /// Required. Source Host Name.
+    #[prost(string, tag = "11")]
+    pub source_host_name: ::prost::alloc::string::String,
+    /// Required. Source Host Id.
+    #[prost(string, tag = "12")]
+    pub source_host_id: ::prost::alloc::string::String,
+    /// Required. Mounted Host Name.
+    #[prost(string, tag = "13")]
+    pub mounted_host_name: ::prost::alloc::string::String,
+    /// Required. Mounted Host Id.
+    #[prost(string, tag = "14")]
+    pub mounted_host_id: ::prost::alloc::string::String,
+    /// Required. Mounted Resource Name.
+    #[prost(string, tag = "15")]
+    pub mounted_resource_name: ::prost::alloc::string::String,
+    /// Required. Resource Virtual size(in GB)
+    #[prost(string, tag = "16")]
+    pub resource_virtual_size: ::prost::alloc::string::String,
+    /// Required. Storage Consumed.
+    #[prost(string, tag = "17")]
+    pub storage_consumed: ::prost::alloc::string::String,
+    /// Optional. label.
+    #[prost(string, tag = "18")]
+    pub mounted_resource_label: ::prost::alloc::string::String,
+    /// Optional. Restorable Objects.
+    #[prost(string, tag = "19")]
+    pub restorable_object: ::prost::alloc::string::String,
+    /// Required. Mount Duration.
+    #[prost(string, tag = "20")]
+    pub mount_duration: ::prost::alloc::string::String,
+    /// Required. User Name.
+    #[prost(string, tag = "21")]
+    pub user_name: ::prost::alloc::string::String,
+    /// Optional. Read Mode.
+    #[prost(string, tag = "22")]
+    pub read_mode: ::prost::alloc::string::String,
+    /// Required. Resource size(in GB)
+    #[prost(string, tag = "23")]
+    pub resource_size: ::prost::alloc::string::String,
+    /// Optional. Image Expiration Date
+    #[prost(string, tag = "24")]
+    pub image_expiration_date: ::prost::alloc::string::String,
+}

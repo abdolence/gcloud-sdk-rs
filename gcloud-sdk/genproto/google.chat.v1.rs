@@ -706,8 +706,8 @@ pub mod membership {
         #[prost(message, tag = "3")]
         Member(super::User),
         /// The Google Group the membership corresponds to.
-        /// Only supports read operations. Other operations, like creating or
-        /// updating a membership, aren't currently supported.
+        /// Only supports read operations. Other operations, like
+        /// creating or updating a membership, aren't currently supported.
         #[prost(message, tag = "5")]
         GroupMember(super::Group),
     }
@@ -858,8 +858,9 @@ pub struct ListMembershipsResponse {
 pub struct GetMembershipRequest {
     /// Required. Resource name of the membership to retrieve.
     ///
-    /// To get the app's own membership, you can optionally use
-    /// `spaces/{space}/members/app`.
+    /// To get the app's own membership [by using user
+    /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>),
+    /// you can optionally use `spaces/{space}/members/app`.
     ///
     /// Format: `spaces/{space}/members/{member}` or `spaces/{space}/members/app`
     ///
@@ -1524,7 +1525,7 @@ pub mod emoji {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomEmoji {
-    /// Unique key for the custom emoji resource.
+    /// Output only. Unique key for the custom emoji resource.
     #[prost(string, tag = "1")]
     pub uid: ::prost::alloc::string::String,
 }
@@ -1775,13 +1776,12 @@ pub struct Space {
     /// Only populated in the output when `spaceType` is `GROUP_CHAT` or `SPACE`.
     #[prost(message, optional, tag = "17")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Whether the Chat app was installed by a Google Workspace
-    /// administrator. Administrators can install a Chat app for their domain,
-    /// organizational unit, or a group of users.
+    /// Output only. For direct message (DM) spaces with a Chat app, whether the
+    /// space was created by a Google Workspace administrator. Administrators can
+    /// install and set up a direct message with a Chat app on behalf of users in
+    /// their organization.
     ///
-    /// Administrators can only install Chat apps for direct messaging between
-    /// users and the app. To support admin install, your app must feature direct
-    /// messaging.
+    /// To support admin install, your Chat app must feature direct messaging.
     #[prost(bool, tag = "19")]
     pub admin_installed: bool,
 }
@@ -2976,14 +2976,14 @@ pub struct SetUpSpaceRequest {
     ///
     /// The set currently allows up to 20 memberships (in addition to the caller).
     ///
-    /// The `Membership.member` field must contain a `user` with `name` populated
-    /// (format: `users/{user}`) and `type` set to `User.Type.HUMAN`. You can only
-    /// add human users when setting up a space (adding Chat apps is only supported
-    /// for direct message setup with the calling app). You can also add members
-    /// using the user's email as an alias for {user}. For example, the `user.name`
-    /// can be `users/example@gmail.com`." To invite Gmail users or users from
-    /// external Google Workspace domains, user's email must be used for
-    /// `{user}`.
+    /// For human membership, the `Membership.member` field must contain a `user`
+    /// with `name` populated (format: `users/{user}`) and `type` set to
+    /// `User.Type.HUMAN`. You can only add human users when setting up a space
+    /// (adding Chat apps is only supported for direct message setup with the
+    /// calling app). You can also add members using the user's email as an alias
+    /// for {user}. For example, the `user.name` can be `users/example@gmail.com`.
+    /// To invite Gmail users or users from external Google Workspace domains,
+    /// user's email must be used for `{user}`.
     ///
     /// Optional when setting `Space.spaceType` to `SPACE`.
     ///
@@ -3124,7 +3124,8 @@ pub mod chat_service_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Creates a message in a Google Chat space. For an example, see [Send a
+        /// Creates a message in a Google Chat space. The maximum message size,
+        /// including text and cards, is 32,000 bytes. For an example, see [Send a
         /// message](https://developers.google.com/workspace/chat/create-messages).
         ///
         /// Calling this method requires
@@ -3455,6 +3456,7 @@ pub mod chat_service_client {
         ///
         /// Lists spaces visible to the caller or authenticated user. Group chats
         /// and DMs aren't listed until the first message is sent.
+        ///
         pub async fn list_spaces(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSpacesRequest>,
@@ -3552,17 +3554,17 @@ pub mod chat_service_client {
         /// members](https://developers.google.com/workspace/chat/set-up-spaces).
         ///
         /// To specify the human members to add, add memberships with the appropriate
-        /// `member.name` in the `SetUpSpaceRequest`. To add a human user, use
-        /// `users/{user}`, where `{user}` can be the email address for the user. For
-        /// users in the same Workspace organization `{user}` can also be the `id` for
-        /// the person from the People API, or the `id` for the user in the Directory
-        /// API. For example, if the People API Person profile ID for
-        /// `user@example.com` is `123456789`, you can add the user to the space by
-        /// setting the `membership.member.name` to `users/user@example.com` or
-        /// `users/123456789`.
+        /// `membership.member.name`. To add a human user, use `users/{user}`, where
+        /// `{user}` can be the email address for the user. For users in the same
+        /// Workspace organization `{user}` can also be the `id` for the person from
+        /// the People API, or the `id` for the user in the Directory API. For example,
+        /// if the People API Person profile ID for `user@example.com` is `123456789`,
+        /// you can add the user to the space by setting the `membership.member.name`
+        /// to `users/user@example.com` or `users/123456789`.
         ///
-        /// For a space or group chat, if the caller blocks or is blocked by some
-        /// members, then those members aren't added to the created space.
+        /// For a named space or group chat, if the caller blocks, or is blocked
+        /// by some members, or doesn't have permission to add some members, then
+        /// those members aren't added to the created space.
         ///
         /// To create a direct message (DM) between the calling user and another human
         /// user, specify exactly one membership to represent the human user. If
@@ -3756,8 +3758,8 @@ pub mod chat_service_client {
         /// directly to the specified space. Requires [user
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
         ///
-        /// To specify the member to add, set the `membership.member.name` in the
-        /// `CreateMembershipRequest`:
+        /// To specify the member to add, set the `membership.member.name` for the
+        /// human or app member.
         ///
         /// - To add the calling app to a space or a direct message between two human
         ///   users, use `users/app`. Unable to add other
@@ -3794,8 +3796,11 @@ pub mod chat_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Updates a membership. Requires [user
-        /// authentication](https://developers.google.com/chat/api/guides/auth/users).
+        /// Updates a membership. For an example, see [Update a user's membership in
+        /// a space](https://developers.google.com/workspace/chat/update-members).
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
         pub async fn update_membership(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateMembershipRequest>,
@@ -3937,7 +3942,9 @@ pub mod chat_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Returns details about a user's read state within a space, used to identify
-        /// read and unread messages.
+        /// read and unread messages. For an example, see [Get details about a user's
+        /// space read
+        /// state](https://developers.google.com/workspace/chat/get-space-read-state).
         ///
         /// Requires [user
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
@@ -3966,7 +3973,8 @@ pub mod chat_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Updates a user's read state within a space, used to identify read and
-        /// unread messages.
+        /// unread messages. For an example, see [Update a user's space read
+        /// state](https://developers.google.com/workspace/chat/update-space-read-state).
         ///
         /// Requires [user
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
@@ -3995,7 +4003,9 @@ pub mod chat_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Returns details about a user's read state within a thread, used to identify
-        /// read and unread messages.
+        /// read and unread messages. For an example, see [Get details about a user's
+        /// thread read
+        /// state](https://developers.google.com/workspace/chat/get-thread-read-state).
         ///
         /// Requires [user
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).

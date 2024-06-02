@@ -299,6 +299,42 @@ pub struct OperationMetadata {
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
 }
+/// Google Cloud Storage as a source.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SourceGcsBucket {
+    /// Required. URI to a Cloud Storage object in format:
+    /// 'gs://<bucket_name>/<path_inside_bucket>'.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+}
+/// Google Cloud Storage as a destination.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DestinationGcsBucket {
+    /// Required. URI to a Cloud Storage object in format:
+    /// 'gs://<bucket_name>/<path_inside_bucket>'.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+}
+/// Pa as a source.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SourceParallelstore {
+    /// Optional. Root directory path to the Paralellstore filesystem, starting
+    /// with '/'. Defaults to '/' if unset.
+    #[prost(string, tag = "1")]
+    pub path: ::prost::alloc::string::String,
+}
+/// Parallelstore as a destination.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DestinationParallelstore {
+    /// Optional. Root directory path to the Paralellstore filesystem, starting
+    /// with '/'. Defaults to '/' if unset.
+    #[prost(string, tag = "1")]
+    pub path: ::prost::alloc::string::String,
+}
 /// Message representing the request importing data from parallelstore to Cloud
 /// Storage.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -335,19 +371,17 @@ pub mod import_data_request {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// URI to a Cloud Storage object in format:
-        /// 'gs://<bucket_name>/<path_inside_bucket>'.
-        #[prost(string, tag = "2")]
-        SourceGcsUri(::prost::alloc::string::String),
+        /// Cloud Storage source.
+        #[prost(message, tag = "2")]
+        SourceGcsBucket(super::SourceGcsBucket),
     }
     /// The destination of the data being imported into the parallelstore instance.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
-        /// Optional. Root directory path to the Paralellstore filesystem, starting
-        /// with '/'. Sets to '/' if no value is set.
-        #[prost(string, tag = "3")]
-        DestinationPath(::prost::alloc::string::String),
+        /// Parallelstore destination.
+        #[prost(message, tag = "3")]
+        DestinationParallelstore(super::DestinationParallelstore),
     }
 }
 /// Message representing the request exporting data from Cloud Storage to
@@ -386,19 +420,17 @@ pub mod export_data_request {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// Optional. Root directory path to the Paralellstore filesystem, starting
-        /// with '/'. Sets to '/' if no value is set.
-        #[prost(string, tag = "2")]
-        SourcePath(::prost::alloc::string::String),
+        /// Parallelstore source.
+        #[prost(message, tag = "2")]
+        SourceParallelstore(super::SourceParallelstore),
     }
     /// The destination of the data exported from the parallelstore instance.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
-        /// URI to a Cloud Storage object in format:
-        /// 'gs://<bucket_name>/<path_inside_bucket>'.
-        #[prost(string, tag = "3")]
-        DestinationGcsUri(::prost::alloc::string::String),
+        /// Cloud Storage destination.
+        #[prost(message, tag = "3")]
+        DestinationGcsBucket(super::DestinationGcsBucket),
     }
 }
 /// ImportDataResponse is the response returned from ImportData rpc.
@@ -412,6 +444,31 @@ pub struct ImportDataMetadata {
     /// Contains the data transfer operation metadata.
     #[prost(message, optional, tag = "1")]
     pub operation_metadata: ::core::option::Option<TransferOperationMetadata>,
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "3")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Server-defined resource path for the target of the operation.
+    #[prost(string, tag = "4")]
+    pub target: ::prost::alloc::string::String,
+    /// Output only. Name of the verb executed by the operation.
+    #[prost(string, tag = "5")]
+    pub verb: ::prost::alloc::string::String,
+    /// Output only. Human-readable status of the operation, if any.
+    #[prost(string, tag = "6")]
+    pub status_message: ::prost::alloc::string::String,
+    /// Output only. Identifies whether the user has requested cancellation
+    /// of the operation. Operations that have successfully been cancelled
+    /// have [Operation.error][] value with a
+    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// `Code.CANCELLED`.
+    #[prost(bool, tag = "7")]
+    pub requested_cancellation: bool,
+    /// Output only. API version used to start the operation.
+    #[prost(string, tag = "8")]
+    pub api_version: ::prost::alloc::string::String,
 }
 /// ExportDataResponse is the response returned from ExportData rpc
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -424,30 +481,73 @@ pub struct ExportDataMetadata {
     /// Contains the data transfer operation metadata.
     #[prost(message, optional, tag = "1")]
     pub operation_metadata: ::core::option::Option<TransferOperationMetadata>,
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "3")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Server-defined resource path for the target of the operation.
+    #[prost(string, tag = "4")]
+    pub target: ::prost::alloc::string::String,
+    /// Output only. Name of the verb executed by the operation.
+    #[prost(string, tag = "5")]
+    pub verb: ::prost::alloc::string::String,
+    /// Output only. Human-readable status of the operation, if any.
+    #[prost(string, tag = "6")]
+    pub status_message: ::prost::alloc::string::String,
+    /// Output only. Identifies whether the user has requested cancellation
+    /// of the operation. Operations that have successfully been cancelled
+    /// have [Operation.error][] value with a
+    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// `Code.CANCELLED`.
+    #[prost(bool, tag = "7")]
+    pub requested_cancellation: bool,
+    /// Output only. API version used to start the operation.
+    #[prost(string, tag = "8")]
+    pub api_version: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferOperationMetadata {
-    /// Output only. CCFE supplied fields BEGIN
-    /// The time the operation was created.
-    #[prost(message, optional, tag = "1")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time the operation finished running.
-    #[prost(message, optional, tag = "2")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Information about the progress of the transfer operation.
+    /// Output only. Information about the progress of the transfer operation.
     #[prost(message, optional, tag = "3")]
     pub counters: ::core::option::Option<TransferCounters>,
-    /// Required. The origin of the data transfer.
-    #[prost(string, tag = "4")]
-    pub source: ::prost::alloc::string::String,
-    /// Required. The destination of the data transfer.
-    #[prost(string, tag = "5")]
-    pub destination: ::prost::alloc::string::String,
-    /// The type of transfer occurring.
+    /// Output only. The type of transfer occurring.
     #[prost(enumeration = "TransferType", tag = "6")]
     pub transfer_type: i32,
+    /// The source of transfer operation.
+    #[prost(oneof = "transfer_operation_metadata::Source", tags = "7, 8")]
+    pub source: ::core::option::Option<transfer_operation_metadata::Source>,
+    /// The destination of transfer operation.
+    #[prost(oneof = "transfer_operation_metadata::Destination", tags = "9, 10")]
+    pub destination: ::core::option::Option<transfer_operation_metadata::Destination>,
+}
+/// Nested message and enum types in `TransferOperationMetadata`.
+pub mod transfer_operation_metadata {
+    /// The source of transfer operation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Output only. Parallelstore source.
+        #[prost(message, tag = "7")]
+        SourceParallelstore(super::SourceParallelstore),
+        /// Output only. Cloud Storage source.
+        #[prost(message, tag = "8")]
+        SourceGcsBucket(super::SourceGcsBucket),
+    }
+    /// The destination of transfer operation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Destination {
+        /// Output only. Cloud Storage destination.
+        #[prost(message, tag = "9")]
+        DestinationGcsBucket(super::DestinationGcsBucket),
+        /// Output only. Parallelstore destination.
+        #[prost(message, tag = "10")]
+        DestinationParallelstore(super::DestinationParallelstore),
+    }
 }
 /// A collection of counters that report the progress of a transfer operation.
 #[allow(clippy::derive_partial_eq_without_eq)]

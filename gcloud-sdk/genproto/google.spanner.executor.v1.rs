@@ -40,7 +40,7 @@ pub struct SpannerAction {
     /// per SpannerAction.
     #[prost(
         oneof = "spanner_action::Action",
-        tags = "10, 11, 20, 21, 22, 23, 24, 25, 27, 30, 40, 41, 42, 43, 44, 50"
+        tags = "10, 11, 20, 21, 22, 23, 24, 25, 27, 30, 40, 41, 42, 43, 44, 50, 51"
     )]
     pub action: ::core::option::Option<spanner_action::Action>,
 }
@@ -100,6 +100,9 @@ pub mod spanner_action {
         /// Action to execute change stream query.
         #[prost(message, tag = "50")]
         ExecuteChangeStreamQuery(super::ExecuteChangeStreamQuery),
+        /// Query cancellation action for testing the cancellation of a query.
+        #[prost(message, tag = "51")]
+        QueryCancellation(super::QueryCancellationAction),
     }
 }
 /// A single read request.
@@ -1243,6 +1246,18 @@ pub struct GetOperationAction {
     /// The name of the operation resource.
     #[prost(string, tag = "1")]
     pub operation: ::prost::alloc::string::String,
+}
+/// Query cancellation action defines the long running query and the cancel query
+/// format depening on the Cloud database dialect.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryCancellationAction {
+    /// Long running query.
+    #[prost(string, tag = "1")]
+    pub long_running_sql: ::prost::alloc::string::String,
+    /// Format of the cancel query for the cloud database dialect.
+    #[prost(string, tag = "2")]
+    pub cancel_query: ::prost::alloc::string::String,
 }
 /// Action that cancels an operation.
 #[allow(clippy::derive_partial_eq_without_eq)]

@@ -2353,6 +2353,149 @@ pub struct ReadRequest {
     /// `partition_token`, the API returns an `INVALID_ARGUMENT` error.
     #[prost(bool, tag = "15")]
     pub data_boost_enabled: bool,
+    /// Optional. Order for the returned rows.
+    ///
+    /// By default, Spanner will return result rows in primary key order except for
+    /// PartitionRead requests. For applications that do not require rows to be
+    /// returned in primary key (`ORDER_BY_PRIMARY_KEY`) order, setting
+    /// `ORDER_BY_NO_ORDER` option allows Spanner to optimize row retrieval,
+    /// resulting in lower latencies in certain cases (e.g. bulk point lookups).
+    #[prost(enumeration = "read_request::OrderBy", tag = "16")]
+    pub order_by: i32,
+    /// Optional. Lock Hint for the request, it can only be used with read-write
+    /// transactions.
+    #[prost(enumeration = "read_request::LockHint", tag = "17")]
+    pub lock_hint: i32,
+}
+/// Nested message and enum types in `ReadRequest`.
+pub mod read_request {
+    /// An option to control the order in which rows are returned from a read.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum OrderBy {
+        /// Default value.
+        ///
+        /// ORDER_BY_UNSPECIFIED is equivalent to ORDER_BY_PRIMARY_KEY.
+        Unspecified = 0,
+        /// Read rows are returned in primary key order.
+        ///
+        /// In the event that this option is used in conjunction with the
+        /// `partition_token` field, the API will return an `INVALID_ARGUMENT` error.
+        PrimaryKey = 1,
+        /// Read rows are returned in any order.
+        NoOrder = 2,
+    }
+    impl OrderBy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                OrderBy::Unspecified => "ORDER_BY_UNSPECIFIED",
+                OrderBy::PrimaryKey => "ORDER_BY_PRIMARY_KEY",
+                OrderBy::NoOrder => "ORDER_BY_NO_ORDER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ORDER_BY_UNSPECIFIED" => Some(Self::Unspecified),
+                "ORDER_BY_PRIMARY_KEY" => Some(Self::PrimaryKey),
+                "ORDER_BY_NO_ORDER" => Some(Self::NoOrder),
+                _ => None,
+            }
+        }
+    }
+    /// A lock hint mechanism for reads done within a transaction.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum LockHint {
+        /// Default value.
+        ///
+        /// LOCK_HINT_UNSPECIFIED is equivalent to LOCK_HINT_SHARED.
+        Unspecified = 0,
+        /// Acquire shared locks.
+        ///
+        /// By default when you perform a read as part of a read-write transaction,
+        /// Spanner acquires shared read locks, which allows other reads to still
+        /// access the data until your transaction is ready to commit. When your
+        /// transaction is committing and writes are being applied, the transaction
+        /// attempts to upgrade to an exclusive lock for any data you are writing.
+        /// For more information about locks, see [Lock
+        /// modes](<https://cloud.google.com/spanner/docs/introspection/lock-statistics#explain-lock-modes>).
+        Shared = 1,
+        /// Acquire exclusive locks.
+        ///
+        /// Requesting exclusive locks is beneficial if you observe high write
+        /// contention, which means you notice that multiple transactions are
+        /// concurrently trying to read and write to the same data, resulting in a
+        /// large number of aborts. This problem occurs when two transactions
+        /// initially acquire shared locks and then both try to upgrade to exclusive
+        /// locks at the same time. In this situation both transactions are waiting
+        /// for the other to give up their lock, resulting in a deadlocked situation.
+        /// Spanner is able to detect this occurring and force one of the
+        /// transactions to abort. However, this is a slow and expensive operation
+        /// and results in lower performance. In this case it makes sense to acquire
+        /// exclusive locks at the start of the transaction because then when
+        /// multiple transactions try to act on the same data, they automatically get
+        /// serialized. Each transaction waits its turn to acquire the lock and
+        /// avoids getting into deadlock situations.
+        ///
+        /// Because the exclusive lock hint is just a hint, it should not be
+        /// considered equivalent to a mutex. In other words, you should not use
+        /// Spanner exclusive locks as a mutual exclusion mechanism for the execution
+        /// of code outside of Spanner.
+        ///
+        /// **Note:** Request exclusive locks judiciously because they block others
+        /// from reading that data for the entire transaction, rather than just when
+        /// the writes are being performed. Unless you observe high write contention,
+        /// you should use the default of shared read locks so you don't prematurely
+        /// block other clients from reading the data that you're writing to.
+        Exclusive = 2,
+    }
+    impl LockHint {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                LockHint::Unspecified => "LOCK_HINT_UNSPECIFIED",
+                LockHint::Shared => "LOCK_HINT_SHARED",
+                LockHint::Exclusive => "LOCK_HINT_EXCLUSIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOCK_HINT_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOCK_HINT_SHARED" => Some(Self::Shared),
+                "LOCK_HINT_EXCLUSIVE" => Some(Self::Exclusive),
+                _ => None,
+            }
+        }
+    }
 }
 /// The request for
 /// [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction].

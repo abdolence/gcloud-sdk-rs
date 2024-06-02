@@ -254,7 +254,7 @@ pub struct GoogleAnalyticsLink {
     pub property: ::prost::alloc::string::String,
 }
 /// "Merchant Center Destination" sources can be used to send conversion events
-/// from a website using a Google tag directly to a Merchant Center account
+/// from an online store using a Google tag directly to a Merchant Center account
 /// where the source is created.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

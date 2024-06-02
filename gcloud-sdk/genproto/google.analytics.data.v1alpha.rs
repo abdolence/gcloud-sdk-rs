@@ -113,6 +113,45 @@ pub mod dimension_expression {
         Concatenate(ConcatenateExpression),
     }
 }
+/// The quantitative measurements of a report. For example, the metric
+/// `eventCount` is the total number of events. Requests are allowed up to 10
+/// metrics.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Metric {
+    /// The name of the metric. See the [API
+    /// Metrics](<https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#metrics>)
+    /// for the list of metric names supported by core reporting methods such
+    /// as `runReport` and `batchRunReports`. See
+    /// [Realtime
+    /// Metrics](<https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-api-schema#metrics>)
+    /// for the list of metric names supported by the `runRealtimeReport`
+    /// method. See
+    /// [Funnel
+    /// Metrics](<https://developers.google.com/analytics/devguides/reporting/data/v1/exploration-api-schema#metrics>)
+    /// for the list of metric names supported by the `runFunnelReport`
+    /// method.
+    ///
+    /// If `expression` is specified, `name` can be any string that you would like
+    /// within the allowed character set. For example if `expression` is
+    /// `screenPageViews/sessions`, you could call that metric's name =
+    /// `viewsPerSession`. Metric names that you choose must match the regular
+    /// expression `^\[a-zA-Z0-9_\]$`.
+    ///
+    /// Metrics are referenced by `name` in `metricFilter`, `orderBys`, and metric
+    /// `expression`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// A mathematical expression for derived metrics. For example, the metric
+    /// Event count per user is `eventCount/totalUsers`.
+    #[prost(string, tag = "2")]
+    pub expression: ::prost::alloc::string::String,
+    /// Indicates if a metric is invisible in the report response. If a metric is
+    /// invisible, the metric will not produce a column in the response, but can be
+    /// used in `metricFilter`, `orderBys`, or a metric `expression`.
+    #[prost(bool, tag = "3")]
+    pub invisible: bool,
+}
 /// To express dimension or metric filters. The fields in the same
 /// FilterExpression need to be either all dimensions or all metrics.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -340,6 +379,111 @@ pub mod numeric_filter {
         }
     }
 }
+/// Order bys define how rows will be sorted in the response. For example,
+/// ordering rows by descending event count is one ordering, and ordering rows by
+/// the event name string is a different ordering.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OrderBy {
+    /// If true, sorts by descending order.
+    #[prost(bool, tag = "4")]
+    pub desc: bool,
+    /// Specify one type of order by for `OrderBy`.
+    #[prost(oneof = "order_by::OneOrderBy", tags = "1, 2")]
+    pub one_order_by: ::core::option::Option<order_by::OneOrderBy>,
+}
+/// Nested message and enum types in `OrderBy`.
+pub mod order_by {
+    /// Sorts by metric values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MetricOrderBy {
+        /// A metric name in the request to order by.
+        #[prost(string, tag = "1")]
+        pub metric_name: ::prost::alloc::string::String,
+    }
+    /// Sorts by dimension values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DimensionOrderBy {
+        /// A dimension name in the request to order by.
+        #[prost(string, tag = "1")]
+        pub dimension_name: ::prost::alloc::string::String,
+        /// Controls the rule for dimension value ordering.
+        #[prost(enumeration = "dimension_order_by::OrderType", tag = "2")]
+        pub order_type: i32,
+    }
+    /// Nested message and enum types in `DimensionOrderBy`.
+    pub mod dimension_order_by {
+        /// Rule to order the string dimension values by.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum OrderType {
+            /// Unspecified.
+            Unspecified = 0,
+            /// Alphanumeric sort by Unicode code point. For example, "2" < "A" < "X" <
+            /// "b" < "z".
+            Alphanumeric = 1,
+            /// Case insensitive alphanumeric sort by lower case Unicode code point.
+            /// For example, "2" < "A" < "b" < "X" < "z".
+            CaseInsensitiveAlphanumeric = 2,
+            /// Dimension values are converted to numbers before sorting. For example
+            /// in NUMERIC sort, "25" < "100", and in `ALPHANUMERIC` sort, "100" <
+            /// "25". Non-numeric dimension values all have equal ordering value below
+            /// all numeric values.
+            Numeric = 3,
+        }
+        impl OrderType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    OrderType::Unspecified => "ORDER_TYPE_UNSPECIFIED",
+                    OrderType::Alphanumeric => "ALPHANUMERIC",
+                    OrderType::CaseInsensitiveAlphanumeric => {
+                        "CASE_INSENSITIVE_ALPHANUMERIC"
+                    }
+                    OrderType::Numeric => "NUMERIC",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ORDER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ALPHANUMERIC" => Some(Self::Alphanumeric),
+                    "CASE_INSENSITIVE_ALPHANUMERIC" => {
+                        Some(Self::CaseInsensitiveAlphanumeric)
+                    }
+                    "NUMERIC" => Some(Self::Numeric),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Specify one type of order by for `OrderBy`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum OneOrderBy {
+        /// Sorts results by a metric's values.
+        #[prost(message, tag = "1")]
+        Metric(MetricOrderBy),
+        /// Sorts results by a dimension's values.
+        #[prost(message, tag = "2")]
+        Dimension(DimensionOrderBy),
+    }
+}
 /// To express that the result needs to be between two numbers (inclusive).
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -371,6 +515,272 @@ pub mod numeric_value {
         /// Double value
         #[prost(double, tag = "2")]
         DoubleValue(f64),
+    }
+}
+/// The specification of cohorts for a cohort report.
+///
+/// Cohort reports create a time series of user retention for the cohort. For
+/// example, you could select the cohort of users that were acquired in the first
+/// week of September and follow that cohort for the next six weeks. Selecting
+/// the users acquired in the first week of September cohort is specified in the
+/// `cohort` object. Following that cohort for the next six weeks is specified in
+/// the `cohortsRange` object.
+///
+/// For examples, see [Cohort Report
+/// Examples](<https://developers.google.com/analytics/devguides/reporting/data/v1/advanced#cohort_report_examples>).
+///
+/// The report response could show a weekly time series where say your app has
+/// retained 60% of this cohort after three weeks and 25% of this cohort after
+/// six weeks. These two percentages can be calculated by the metric
+/// `cohortActiveUsers/cohortTotalUsers` and will be separate rows in the report.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CohortSpec {
+    /// Defines the selection criteria to group users into cohorts.
+    ///
+    /// Most cohort reports define only a single cohort. If multiple cohorts are
+    /// specified, each cohort can be recognized in the report by their name.
+    #[prost(message, repeated, tag = "1")]
+    pub cohorts: ::prost::alloc::vec::Vec<Cohort>,
+    /// Cohort reports follow cohorts over an extended reporting date range. This
+    /// range specifies an offset duration to follow the cohorts over.
+    #[prost(message, optional, tag = "2")]
+    pub cohorts_range: ::core::option::Option<CohortsRange>,
+    /// Optional settings for a cohort report.
+    #[prost(message, optional, tag = "3")]
+    pub cohort_report_settings: ::core::option::Option<CohortReportSettings>,
+}
+/// Defines a cohort selection criteria. A cohort is a group of users who share
+/// a common characteristic. For example, users with the same `firstSessionDate`
+/// belong to the same cohort.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Cohort {
+    /// Assigns a name to this cohort. The dimension `cohort` is valued to this
+    /// name in a report response. If set, cannot begin with `cohort_` or
+    /// `RESERVED_`. If not set, cohorts are named by their zero based index
+    /// `cohort_0`, `cohort_1`, etc.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Dimension used by the cohort. Required and only supports
+    /// `firstSessionDate`.
+    #[prost(string, tag = "2")]
+    pub dimension: ::prost::alloc::string::String,
+    /// The cohort selects users whose first touch date is between start date and
+    /// end date defined in the `dateRange`. This `dateRange` does not specify the
+    /// full date range of event data that is present in a cohort report. In a
+    /// cohort report, this `dateRange` is extended by the granularity and offset
+    /// present in the `cohortsRange`; event data for the extended reporting date
+    /// range is present in a cohort report.
+    ///
+    /// In a cohort request, this `dateRange` is required and the `dateRanges` in
+    /// the `RunReportRequest` or `RunPivotReportRequest` must be unspecified.
+    ///
+    /// This `dateRange` should generally be aligned with the cohort's granularity.
+    /// If `CohortsRange` uses daily granularity, this `dateRange` can be a single
+    /// day. If `CohortsRange` uses weekly granularity, this `dateRange` can be
+    /// aligned to a week boundary, starting at Sunday and ending Saturday. If
+    /// `CohortsRange` uses monthly granularity, this `dateRange` can be aligned to
+    /// a month, starting at the first and ending on the last day of the month.
+    #[prost(message, optional, tag = "3")]
+    pub date_range: ::core::option::Option<DateRange>,
+}
+/// Configures the extended reporting date range for a cohort report. Specifies
+/// an offset duration to follow the cohorts over.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CohortsRange {
+    /// Required. The granularity used to interpret the `startOffset` and
+    /// `endOffset` for the extended reporting date range for a cohort report.
+    #[prost(enumeration = "cohorts_range::Granularity", tag = "1")]
+    pub granularity: i32,
+    /// `startOffset` specifies the start date of the extended reporting date range
+    /// for a cohort report. `startOffset` is commonly set to 0 so that reports
+    /// contain data from the acquisition of the cohort forward.
+    ///
+    /// If `granularity` is `DAILY`, the `startDate` of the extended reporting date
+    /// range is `startDate` of the cohort plus `startOffset` days.
+    ///
+    /// If `granularity` is `WEEKLY`, the `startDate` of the extended reporting
+    /// date range is `startDate` of the cohort plus `startOffset * 7` days.
+    ///
+    /// If `granularity` is `MONTHLY`, the `startDate` of the extended reporting
+    /// date range is `startDate` of the cohort plus `startOffset * 30` days.
+    #[prost(int32, tag = "2")]
+    pub start_offset: i32,
+    /// Required. `endOffset` specifies the end date of the extended reporting date
+    /// range for a cohort report. `endOffset` can be any positive integer but is
+    /// commonly set to 5 to 10 so that reports contain data on the cohort for the
+    /// next several granularity time periods.
+    ///
+    /// If `granularity` is `DAILY`, the `endDate` of the extended reporting date
+    /// range is `endDate` of the cohort plus `endOffset` days.
+    ///
+    /// If `granularity` is `WEEKLY`, the `endDate` of the extended reporting date
+    /// range is `endDate` of the cohort plus `endOffset * 7` days.
+    ///
+    /// If `granularity` is `MONTHLY`, the `endDate` of the extended reporting date
+    /// range is `endDate` of the cohort plus `endOffset * 30` days.
+    #[prost(int32, tag = "3")]
+    pub end_offset: i32,
+}
+/// Nested message and enum types in `CohortsRange`.
+pub mod cohorts_range {
+    /// The granularity used to interpret the `startOffset` and `endOffset` for the
+    /// extended reporting date range for a cohort report.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Granularity {
+        /// Should never be specified.
+        Unspecified = 0,
+        /// Daily granularity. Commonly used if the cohort's `dateRange` is a single
+        /// day and the request contains `cohortNthDay`.
+        Daily = 1,
+        /// Weekly granularity. Commonly used if the cohort's `dateRange` is a week
+        /// in duration (starting on Sunday and ending on Saturday) and the request
+        /// contains `cohortNthWeek`.
+        Weekly = 2,
+        /// Monthly granularity. Commonly used if the cohort's `dateRange` is a month
+        /// in duration and the request contains `cohortNthMonth`.
+        Monthly = 3,
+    }
+    impl Granularity {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Granularity::Unspecified => "GRANULARITY_UNSPECIFIED",
+                Granularity::Daily => "DAILY",
+                Granularity::Weekly => "WEEKLY",
+                Granularity::Monthly => "MONTHLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GRANULARITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "DAILY" => Some(Self::Daily),
+                "WEEKLY" => Some(Self::Weekly),
+                "MONTHLY" => Some(Self::Monthly),
+                _ => None,
+            }
+        }
+    }
+}
+/// Optional settings of a cohort report.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CohortReportSettings {
+    /// If true, accumulates the result from first touch day to the end day. Not
+    /// supported in `RunReportRequest`.
+    #[prost(bool, tag = "1")]
+    pub accumulate: bool,
+}
+/// Response's metadata carrying additional information about the report content.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResponseMetaData {
+    /// If true, indicates some buckets of dimension combinations are rolled into
+    /// "(other)" row. This can happen for high cardinality reports.
+    ///
+    /// The metadata parameter dataLossFromOtherRow is populated based on the
+    /// aggregated data table used in the report. The parameter will be accurately
+    /// populated regardless of the filters and limits in the report.
+    ///
+    /// For example, the (other) row could be dropped from the report because the
+    /// request contains a filter on sessionSource = google. This parameter will
+    /// still be populated if data loss from other row was present in the input
+    /// aggregate data used to generate this report.
+    ///
+    /// To learn more, see [About the (other) row and data
+    /// sampling](<https://support.google.com/analytics/answer/13208658#reports>).
+    #[prost(bool, tag = "3")]
+    pub data_loss_from_other_row: bool,
+    /// Describes the schema restrictions actively enforced in creating this
+    /// report. To learn more, see [Access and data-restriction
+    /// management](<https://support.google.com/analytics/answer/10851388>).
+    #[prost(message, optional, tag = "4")]
+    pub schema_restriction_response: ::core::option::Option<
+        response_meta_data::SchemaRestrictionResponse,
+    >,
+    /// The currency code used in this report. Intended to be used in formatting
+    /// currency metrics like `purchaseRevenue` for visualization. If currency_code
+    /// was specified in the request, this response parameter will echo the request
+    /// parameter; otherwise, this response parameter is the property's current
+    /// currency_code.
+    ///
+    /// Currency codes are string encodings of currency types from the ISO 4217
+    /// standard (<https://en.wikipedia.org/wiki/ISO_4217>); for example "USD",
+    /// "EUR", "JPY". To learn more, see
+    /// <https://support.google.com/analytics/answer/9796179.>
+    #[prost(string, optional, tag = "5")]
+    pub currency_code: ::core::option::Option<::prost::alloc::string::String>,
+    /// The property's current timezone. Intended to be used to interpret
+    /// time-based dimensions like `hour` and `minute`. Formatted as strings from
+    /// the IANA Time Zone database (<https://www.iana.org/time-zones>); for example
+    /// "America/New_York" or "Asia/Tokyo".
+    #[prost(string, optional, tag = "6")]
+    pub time_zone: ::core::option::Option<::prost::alloc::string::String>,
+    /// If empty reason is specified, the report is empty for this reason.
+    #[prost(string, optional, tag = "7")]
+    pub empty_reason: ::core::option::Option<::prost::alloc::string::String>,
+    /// If `subjectToThresholding` is true, this report is subject to thresholding
+    /// and only returns data that meets the minimum aggregation thresholds. It is
+    /// possible for a request to be subject to thresholding thresholding and no
+    /// data is absent from the report, and this happens when all data is above the
+    /// thresholds. To learn more, see [Data
+    /// thresholds](<https://support.google.com/analytics/answer/9383630>) and [About
+    /// Demographics and
+    /// Interests](<https://support.google.com/analytics/answer/2799357>).
+    #[prost(bool, optional, tag = "8")]
+    pub subject_to_thresholding: ::core::option::Option<bool>,
+}
+/// Nested message and enum types in `ResponseMetaData`.
+pub mod response_meta_data {
+    /// The schema restrictions actively enforced in creating this report. To learn
+    /// more, see [Access and data-restriction
+    /// management](<https://support.google.com/analytics/answer/10851388>).
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SchemaRestrictionResponse {
+        /// All restrictions actively enforced in creating the report. For example,
+        /// `purchaseRevenue` always has the restriction type `REVENUE_DATA`.
+        /// However, this active response restriction is only populated if the user's
+        /// custom role disallows access to `REVENUE_DATA`.
+        #[prost(message, repeated, tag = "1")]
+        pub active_metric_restrictions: ::prost::alloc::vec::Vec<
+            schema_restriction_response::ActiveMetricRestriction,
+        >,
+    }
+    /// Nested message and enum types in `SchemaRestrictionResponse`.
+    pub mod schema_restriction_response {
+        /// A metric actively restricted in creating the report.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ActiveMetricRestriction {
+            /// The name of the restricted metric.
+            #[prost(string, optional, tag = "1")]
+            pub metric_name: ::core::option::Option<::prost::alloc::string::String>,
+            /// The reason for this metric's restriction.
+            #[prost(
+                enumeration = "super::super::RestrictedMetricType",
+                repeated,
+                tag = "2"
+            )]
+            pub restricted_metric_types: ::prost::alloc::vec::Vec<i32>,
+        }
     }
 }
 /// Describes a dimension column in the report. Dimensions requested in a report
@@ -1667,6 +2077,47 @@ impl EventExclusionDuration {
         }
     }
 }
+/// Represents aggregation of metrics.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum MetricAggregation {
+    /// Unspecified operator.
+    Unspecified = 0,
+    /// SUM operator.
+    Total = 1,
+    /// Minimum operator.
+    Minimum = 5,
+    /// Maximum operator.
+    Maximum = 6,
+    /// Count operator.
+    Count = 4,
+}
+impl MetricAggregation {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            MetricAggregation::Unspecified => "METRIC_AGGREGATION_UNSPECIFIED",
+            MetricAggregation::Total => "TOTAL",
+            MetricAggregation::Minimum => "MINIMUM",
+            MetricAggregation::Maximum => "MAXIMUM",
+            MetricAggregation::Count => "COUNT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "METRIC_AGGREGATION_UNSPECIFIED" => Some(Self::Unspecified),
+            "TOTAL" => Some(Self::Total),
+            "MINIMUM" => Some(Self::Minimum),
+            "MAXIMUM" => Some(Self::Maximum),
+            "COUNT" => Some(Self::Count),
+            _ => None,
+        }
+    }
+}
 /// A metric's value type.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -1736,6 +2187,40 @@ impl MetricType {
             "TYPE_MILES" => Some(Self::TypeMiles),
             "TYPE_METERS" => Some(Self::TypeMeters),
             "TYPE_KILOMETERS" => Some(Self::TypeKilometers),
+            _ => None,
+        }
+    }
+}
+/// Categories of data that you may be restricted from viewing on certain GA4
+/// properties.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum RestrictedMetricType {
+    /// Unspecified type.
+    Unspecified = 0,
+    /// Cost metrics such as `adCost`.
+    CostData = 1,
+    /// Revenue metrics such as `purchaseRevenue`.
+    RevenueData = 2,
+}
+impl RestrictedMetricType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            RestrictedMetricType::Unspecified => "RESTRICTED_METRIC_TYPE_UNSPECIFIED",
+            RestrictedMetricType::CostData => "COST_DATA",
+            RestrictedMetricType::RevenueData => "REVENUE_DATA",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "RESTRICTED_METRIC_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "COST_DATA" => Some(Self::CostData),
+            "REVENUE_DATA" => Some(Self::RevenueData),
             _ => None,
         }
     }
@@ -2426,6 +2911,334 @@ pub struct RunFunnelReportResponse {
     #[prost(string, tag = "4")]
     pub kind: ::prost::alloc::string::String,
 }
+/// A specific report task configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReportTask {
+    /// Output only. Identifier. The report task resource name assigned during
+    /// creation. Format: `properties/{property}/reportTasks/{report_task}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A report definition to fetch report data, which describes the
+    /// structure of a report. It typically includes the fields that will be
+    /// included in the report and the criteria that will be used to filter the
+    /// data.
+    #[prost(message, optional, tag = "2")]
+    pub report_definition: ::core::option::Option<report_task::ReportDefinition>,
+    /// Output only. The report metadata for a specific report task, which provides
+    /// information about a report.  It typically includes the following
+    /// information: the resource name of the report, the state of the report, the
+    /// timestamp the report was created, etc,
+    #[prost(message, optional, tag = "3")]
+    pub report_metadata: ::core::option::Option<report_task::ReportMetadata>,
+}
+/// Nested message and enum types in `ReportTask`.
+pub mod report_task {
+    /// The definition of how a report should be run.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ReportDefinition {
+        /// Optional. The dimensions requested and displayed.
+        #[prost(message, repeated, tag = "2")]
+        pub dimensions: ::prost::alloc::vec::Vec<super::Dimension>,
+        /// Optional. The metrics requested and displayed.
+        #[prost(message, repeated, tag = "3")]
+        pub metrics: ::prost::alloc::vec::Vec<super::Metric>,
+        /// Optional. Date ranges of data to read. If multiple date ranges are
+        /// requested, each response row will contain a zero based date range index.
+        /// If two date ranges overlap, the event data for the overlapping days is
+        /// included in the response rows for both date ranges. In a cohort request,
+        /// this `dateRanges` must be unspecified.
+        #[prost(message, repeated, tag = "4")]
+        pub date_ranges: ::prost::alloc::vec::Vec<super::DateRange>,
+        /// Optional. Dimension filters let you ask for only specific dimension
+        /// values in the report. To learn more, see [Fundamentals of Dimension
+        /// Filters](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>)
+        /// for examples. Metrics cannot be used in this filter.
+        #[prost(message, optional, tag = "5")]
+        pub dimension_filter: ::core::option::Option<super::FilterExpression>,
+        /// Optional. The filter clause of metrics. Applied after aggregating the
+        /// report's rows, similar to SQL having-clause. Dimensions cannot be used in
+        /// this filter.
+        #[prost(message, optional, tag = "6")]
+        pub metric_filter: ::core::option::Option<super::FilterExpression>,
+        /// Optional. The row count of the start row from Google Analytics Storage.
+        /// The first row is counted as row 0.
+        ///
+        /// When creating a report task, the `offset` and `limit` parameters define
+        /// the subset of data rows from Google Analytics storage to be included in
+        /// the generated report. For example, if there are a total of 300,000 rows
+        /// in Google Analytics storage, the initial report task may have the
+        /// first 10,000 rows with a limit of 10,000 and an offset of 0.
+        /// Subsequently, another report task could cover the next 10,000 rows with a
+        /// limit of 10,000 and an offset of 10,000.
+        #[prost(int64, tag = "7")]
+        pub offset: i64,
+        /// Optional. The number of rows to return in the Report. If unspecified,
+        /// 10,000 rows are returned. The API returns a maximum of 250,000 rows per
+        /// request, no matter how many you ask for. `limit` must be positive.
+        ///
+        /// The API can also return fewer rows than the requested `limit`, if there
+        /// aren't as many dimension values as the `limit`. For instance, there are
+        /// fewer than 300 possible values for the dimension `country`, so when
+        /// reporting on only `country`, you can't get more than 300 rows, even if
+        /// you set `limit` to a higher value.
+        #[prost(int64, tag = "8")]
+        pub limit: i64,
+        /// Optional. Aggregation of metrics. Aggregated metric values will be shown
+        /// in rows where the dimension_values are set to
+        /// "RESERVED_(MetricAggregation)".
+        #[prost(
+            enumeration = "super::MetricAggregation",
+            repeated,
+            packed = "false",
+            tag = "9"
+        )]
+        pub metric_aggregations: ::prost::alloc::vec::Vec<i32>,
+        /// Optional. Specifies how rows are ordered in the response.
+        #[prost(message, repeated, tag = "10")]
+        pub order_bys: ::prost::alloc::vec::Vec<super::OrderBy>,
+        /// Optional. A currency code in ISO4217 format, such as "AED", "USD", "JPY".
+        /// If the field is empty, the report uses the property's default currency.
+        #[prost(string, tag = "11")]
+        pub currency_code: ::prost::alloc::string::String,
+        /// Optional. Cohort group associated with this request. If there is a cohort
+        /// group in the request the 'cohort' dimension must be present.
+        #[prost(message, optional, tag = "12")]
+        pub cohort_spec: ::core::option::Option<super::CohortSpec>,
+        /// Optional. If false or unspecified, each row with all metrics equal to 0
+        /// will not be returned. If true, these rows will be returned if they are
+        /// not separately removed by a filter.
+        ///
+        /// Regardless of this `keep_empty_rows` setting, only data recorded by the
+        /// Google Analytics (GA4) property can be displayed in a report.
+        ///
+        /// For example if a property never logs a `purchase` event, then a query for
+        /// the `eventName` dimension and  `eventCount` metric will not have a row
+        /// containing eventName: "purchase" and eventCount: 0.
+        #[prost(bool, tag = "13")]
+        pub keep_empty_rows: bool,
+    }
+    /// The report metadata for a specific report task.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ReportMetadata {
+        /// Output only. The current state for this report task.
+        #[prost(enumeration = "report_metadata::State", optional, tag = "1")]
+        pub state: ::core::option::Option<i32>,
+        /// Output only. The time when `CreateReportTask` was called and the report
+        /// began the `CREATING` state.
+        #[prost(message, optional, tag = "2")]
+        pub begin_creating_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. The total quota tokens charged during creation of the
+        /// report. Because this token count is based on activity from the `CREATING`
+        /// state, this tokens charge will be fixed once a report task enters the
+        /// `ACTIVE` or `FAILED` state.
+        #[prost(int32, tag = "3")]
+        pub creation_quota_tokens_charged: i32,
+        /// Output only. The total number of rows in the report result. This field
+        /// will be populated when the state is active. You can utilize
+        /// `task_row_count` for pagination within the confines of their existing
+        /// report.
+        #[prost(int32, optional, tag = "4")]
+        pub task_row_count: ::core::option::Option<i32>,
+        /// Output only. Error message is populated if a report task fails during
+        /// creation.
+        #[prost(string, optional, tag = "5")]
+        pub error_message: ::core::option::Option<::prost::alloc::string::String>,
+        /// Output only. The total number of rows in Google Analytics storage. If you
+        /// want to query additional data rows beyond the current report, they can
+        /// initiate a new report task based on the `total_row_count`.
+        ///
+        /// The `task_row_count` represents the number of rows specifically
+        /// pertaining to the current report, whereas `total_row_count` encompasses
+        /// the total count of rows across all data retrieved from Google
+        /// Analytics storage.
+        ///
+        /// For example, suppose the current report's `task_row_count` is 20,
+        /// displaying the data from the first 20 rows. Simultaneously, the
+        /// `total_row_count` is 30, indicating the presence of data for all 30 rows.
+        /// The `task_row_count` can be utilizated to paginate through the initial 20
+        /// rows. To expand the report and include data from all 30 rows, a new
+        /// report task can be created using the total_row_count to access the full
+        /// set of 30 rows' worth of data.
+        #[prost(int32, optional, tag = "6")]
+        pub total_row_count: ::core::option::Option<i32>,
+    }
+    /// Nested message and enum types in `ReportMetadata`.
+    pub mod report_metadata {
+        /// The processing state.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum State {
+            /// Unspecified state will never be used.
+            Unspecified = 0,
+            /// The report is currently creating and will be available in the
+            /// future. Creating occurs immediately after the CreateReport call.
+            Creating = 1,
+            /// The report is fully created and ready for querying.
+            Active = 2,
+            /// The report failed to be created.
+            Failed = 3,
+        }
+        impl State {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    State::Unspecified => "STATE_UNSPECIFIED",
+                    State::Creating => "CREATING",
+                    State::Active => "ACTIVE",
+                    State::Failed => "FAILED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CREATING" => Some(Self::Creating),
+                    "ACTIVE" => Some(Self::Active),
+                    "FAILED" => Some(Self::Failed),
+                    _ => None,
+                }
+            }
+        }
+    }
+}
+/// A request to create a report task.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateReportTaskRequest {
+    /// Required. The parent resource where this report task will be created.
+    /// Format: `properties/{propertyId}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The report task configuration to create.
+    #[prost(message, optional, tag = "2")]
+    pub report_task: ::core::option::Option<ReportTask>,
+}
+/// Represents the metadata of a long-running operation. Currently, this metadata
+/// is blank.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReportTaskMetadata {}
+/// A request to fetch the report content for a report task.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryReportTaskRequest {
+    /// Required. The report source name.
+    /// Format: `properties/{property}/reportTasks/{report}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The row count of the start row in the report. The first row is
+    /// counted as row 0.
+    ///
+    /// When paging, the first request does not specify offset; or equivalently,
+    /// sets offset to 0; the first request returns the first `limit` of rows. The
+    /// second request sets offset to the `limit` of the first request; the second
+    /// request returns the second `limit` of rows.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int64, tag = "2")]
+    pub offset: i64,
+    /// Optional. The number of rows to return from the report. If unspecified,
+    /// 10,000 rows are returned. The API returns a maximum of 250,000 rows per
+    /// request, no matter how many you ask for. `limit` must be positive.
+    ///
+    /// The API can also return fewer rows than the requested `limit`, if there
+    /// aren't as many dimension values as the `limit`. The number of rows
+    /// available to a QueryReportTaskRequest is further limited by the limit of
+    /// the associated ReportTask. A query can retrieve at most ReportTask.limit
+    /// rows. For example, if the ReportTask has a limit of 1,000, then a
+    /// QueryReportTask request with offset=900 and limit=500 will return at most
+    /// 100 rows.
+    ///
+    /// To learn more about this pagination parameter, see
+    /// [Pagination](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int64, tag = "3")]
+    pub limit: i64,
+}
+/// The report content corresponding to a report task.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryReportTaskResponse {
+    /// Describes dimension columns. The number of DimensionHeaders and ordering of
+    /// DimensionHeaders matches the dimensions present in rows.
+    #[prost(message, repeated, tag = "1")]
+    pub dimension_headers: ::prost::alloc::vec::Vec<DimensionHeader>,
+    /// Describes metric columns. The number of MetricHeaders and ordering of
+    /// MetricHeaders matches the metrics present in rows.
+    #[prost(message, repeated, tag = "2")]
+    pub metric_headers: ::prost::alloc::vec::Vec<MetricHeader>,
+    /// Rows of dimension value combinations and metric values in the report.
+    #[prost(message, repeated, tag = "3")]
+    pub rows: ::prost::alloc::vec::Vec<Row>,
+    /// If requested, the totaled values of metrics.
+    #[prost(message, repeated, tag = "4")]
+    pub totals: ::prost::alloc::vec::Vec<Row>,
+    /// If requested, the maximum values of metrics.
+    #[prost(message, repeated, tag = "5")]
+    pub maximums: ::prost::alloc::vec::Vec<Row>,
+    /// If requested, the minimum values of metrics.
+    #[prost(message, repeated, tag = "6")]
+    pub minimums: ::prost::alloc::vec::Vec<Row>,
+    /// The total number of rows in the query result.
+    #[prost(int32, tag = "7")]
+    pub row_count: i32,
+    /// Metadata for the report.
+    #[prost(message, optional, tag = "8")]
+    pub metadata: ::core::option::Option<ResponseMetaData>,
+}
+/// A request to retrieve configuration metadata about a specific report task.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetReportTaskRequest {
+    /// Required. The report task resource name.
+    /// Format: `properties/{property}/reportTasks/{report_task}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A request to list all report tasks for a property.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListReportTasksRequest {
+    /// Required. All report tasks for this property will be listed in the
+    /// response. Format: `properties/{property}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of report tasks to return.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListReportTasks` call.
+    /// Provide this to retrieve the subsequent page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// A list of all report tasks for a property.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListReportTasksResponse {
+    /// Each report task for a property.
+    #[prost(message, repeated, tag = "1")]
+    pub report_tasks: ::prost::alloc::vec::Vec<ReportTask>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, optional, tag = "2")]
+    pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
+}
 /// Generated client implementations.
 pub mod alpha_analytics_data_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -2919,6 +3732,136 @@ pub mod alpha_analytics_data_client {
                     GrpcMethod::new(
                         "google.analytics.data.v1alpha.AlphaAnalyticsData",
                         "ListRecurringAudienceLists",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Initiates the creation of a report task. This method quickly
+        /// returns a report task and initiates a long running
+        /// asynchronous request to form a customized report of your Google Analytics
+        /// event data.
+        pub async fn create_report_task(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateReportTaskRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/CreateReportTask",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1alpha.AlphaAnalyticsData",
+                        "CreateReportTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves a report task's content. After requesting the `CreateReportTask`,
+        /// you are able to retrieve the report content once the report is
+        /// ACTIVE. This method will return an error if the report task's state is not
+        /// `ACTIVE`. A query response will return the tabular row & column values of
+        /// the report.
+        pub async fn query_report_task(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryReportTaskRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryReportTaskResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/QueryReportTask",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1alpha.AlphaAnalyticsData",
+                        "QueryReportTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets report metadata about a specific report task. After creating a report
+        /// task, use this method to check its processing state or inspect its
+        /// report definition.
+        pub async fn get_report_task(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetReportTaskRequest>,
+        ) -> std::result::Result<tonic::Response<super::ReportTask>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetReportTask",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1alpha.AlphaAnalyticsData",
+                        "GetReportTask",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all report tasks for a property.
+        pub async fn list_report_tasks(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListReportTasksRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListReportTasksResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/ListReportTasks",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1alpha.AlphaAnalyticsData",
+                        "ListReportTasks",
                     ),
                 );
             self.inner.unary(req, path, codec).await
