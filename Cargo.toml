@@ -9,5 +9,6 @@ members = [
     "examples/simple-api-client",
     "examples/bigquery-storage-write-client",
     "examples/text-to-speech-client",
+    "examples/kms-client",
     "examples/id-token",
 ]

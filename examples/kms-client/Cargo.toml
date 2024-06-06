@@ -1,0 +1,11 @@
+[package]
+name = "kms-client-example"
+version = "0.1.0"
+authors = ["me@abdolence.dev"]
+edition = "2021"
+
+[dependencies]
+gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false, features = ["google-cloud-kms-v1", "google-longrunning"] }
+tokio = { version = "1.20", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = { version ="0.3", features = ["env-filter"] }
