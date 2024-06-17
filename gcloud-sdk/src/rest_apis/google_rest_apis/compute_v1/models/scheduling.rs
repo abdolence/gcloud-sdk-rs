@@ -18,9 +18,11 @@ pub struct Scheduling {
     /// Specifies the termination action for the instance.
     #[serde(
         rename = "instanceTerminationAction",
+        default,
+        with = "::serde_with::rust::double_option",
         skip_serializing_if = "Option::is_none"
     )]
-    pub instance_termination_action: Option<InstanceTerminationAction>,
+    pub instance_termination_action: Option<Option<InstanceTerminationAction>>,
     #[serde(
         rename = "localSsdRecoveryTimeout",
         skip_serializing_if = "Option::is_none"
