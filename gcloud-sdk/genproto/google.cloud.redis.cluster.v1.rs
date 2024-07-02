@@ -116,6 +116,17 @@ pub struct DeleteClusterRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// Request for
+/// [GetClusterCertificateAuthorityRequest][CloudRedis.GetClusterCertificateAuthorityRequest].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetClusterCertificateAuthorityRequest {
+    /// Required. Redis cluster certificate authority resource name using the form:
+    ///      `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}/certificateAuthority`
+    /// where `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// A cluster instance.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -146,7 +157,8 @@ pub struct Cluster {
     /// If not provided, encryption  is disabled for the cluster.
     #[prost(enumeration = "TransitEncryptionMode", tag = "12")]
     pub transit_encryption_mode: i32,
-    /// Output only. Redis memory size in GB for the entire cluster.
+    /// Output only. Redis memory size in GB for the entire cluster rounded up to
+    /// the next integer.
     #[prost(int32, optional, tag = "13")]
     pub size_gb: ::core::option::Option<i32>,
     /// Required. Number of shards for the Redis cluster.
@@ -168,6 +180,30 @@ pub struct Cluster {
     /// Output only. Additional information about the current state of the cluster.
     #[prost(message, optional, tag = "18")]
     pub state_info: ::core::option::Option<cluster::StateInfo>,
+    /// Optional. The type of a redis node in the cluster. NodeType determines the
+    /// underlying machine-type of a redis node.
+    #[prost(enumeration = "NodeType", tag = "19")]
+    pub node_type: i32,
+    /// Optional. Persistence config (RDB, AOF) for the cluster.
+    #[prost(message, optional, tag = "20")]
+    pub persistence_config: ::core::option::Option<ClusterPersistenceConfig>,
+    /// Optional. Key/Value pairs of customer overrides for mutable Redis Configs
+    #[prost(map = "string, string", tag = "21")]
+    pub redis_configs: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. Precise value of redis memory size in GB for the entire
+    /// cluster.
+    #[prost(double, optional, tag = "22")]
+    pub precise_size_gb: ::core::option::Option<f64>,
+    /// Optional. This config will be used to determine how the customer wants us
+    /// to distribute cluster resources within the region.
+    #[prost(message, optional, tag = "23")]
+    pub zone_distribution_config: ::core::option::Option<ZoneDistributionConfig>,
+    /// Optional. The delete operation will fail when the value is set to true.
+    #[prost(bool, optional, tag = "25")]
+    pub deletion_protection_enabled: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
@@ -332,6 +368,304 @@ pub struct OperationMetadata {
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
 }
+/// Redis cluster certificate authority
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CertificateAuthority {
+    /// Identifier. Unique name of the resource in this scope including project,
+    /// location and cluster using the form:
+    ///      `projects/{project}/locations/{location}/clusters/{cluster}/certificateAuthority`
+    #[prost(string, tag = "2")]
+    pub name: ::prost::alloc::string::String,
+    /// server ca information
+    #[prost(oneof = "certificate_authority::ServerCa", tags = "1")]
+    pub server_ca: ::core::option::Option<certificate_authority::ServerCa>,
+}
+/// Nested message and enum types in `CertificateAuthority`.
+pub mod certificate_authority {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ManagedCertificateAuthority {
+        /// The PEM encoded CA certificate chains for redis managed
+        /// server authentication
+        #[prost(message, repeated, tag = "1")]
+        pub ca_certs: ::prost::alloc::vec::Vec<managed_certificate_authority::CertChain>,
+    }
+    /// Nested message and enum types in `ManagedCertificateAuthority`.
+    pub mod managed_certificate_authority {
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct CertChain {
+            /// The certificates that form the CA chain, from leaf to root order.
+            #[prost(string, repeated, tag = "1")]
+            pub certificates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
+    }
+    /// server ca information
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ServerCa {
+        #[prost(message, tag = "1")]
+        ManagedServerCa(ManagedCertificateAuthority),
+    }
+}
+/// Configuration of the persistence functionality.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClusterPersistenceConfig {
+    /// Optional. The mode of persistence.
+    #[prost(enumeration = "cluster_persistence_config::PersistenceMode", tag = "1")]
+    pub mode: i32,
+    /// Optional. RDB configuration. This field will be ignored if mode is not RDB.
+    #[prost(message, optional, tag = "2")]
+    pub rdb_config: ::core::option::Option<cluster_persistence_config::RdbConfig>,
+    /// Optional. AOF configuration. This field will be ignored if mode is not AOF.
+    #[prost(message, optional, tag = "3")]
+    pub aof_config: ::core::option::Option<cluster_persistence_config::AofConfig>,
+}
+/// Nested message and enum types in `ClusterPersistenceConfig`.
+pub mod cluster_persistence_config {
+    /// Configuration of the RDB based persistence.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RdbConfig {
+        /// Optional. Period between RDB snapshots.
+        #[prost(enumeration = "rdb_config::SnapshotPeriod", tag = "1")]
+        pub rdb_snapshot_period: i32,
+        /// Optional. The time that the first snapshot was/will be attempted, and to
+        /// which future snapshots will be aligned. If not provided, the current time
+        /// will be used.
+        #[prost(message, optional, tag = "2")]
+        pub rdb_snapshot_start_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// Nested message and enum types in `RDBConfig`.
+    pub mod rdb_config {
+        /// Available snapshot periods.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum SnapshotPeriod {
+            /// Not set.
+            Unspecified = 0,
+            /// One hour.
+            OneHour = 1,
+            /// Six hours.
+            SixHours = 2,
+            /// Twelve hours.
+            TwelveHours = 3,
+            /// Twenty four hours.
+            TwentyFourHours = 4,
+        }
+        impl SnapshotPeriod {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    SnapshotPeriod::Unspecified => "SNAPSHOT_PERIOD_UNSPECIFIED",
+                    SnapshotPeriod::OneHour => "ONE_HOUR",
+                    SnapshotPeriod::SixHours => "SIX_HOURS",
+                    SnapshotPeriod::TwelveHours => "TWELVE_HOURS",
+                    SnapshotPeriod::TwentyFourHours => "TWENTY_FOUR_HOURS",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SNAPSHOT_PERIOD_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ONE_HOUR" => Some(Self::OneHour),
+                    "SIX_HOURS" => Some(Self::SixHours),
+                    "TWELVE_HOURS" => Some(Self::TwelveHours),
+                    "TWENTY_FOUR_HOURS" => Some(Self::TwentyFourHours),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Configuration of the AOF based persistence.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AofConfig {
+        /// Optional. fsync configuration.
+        #[prost(enumeration = "aof_config::AppendFsync", tag = "1")]
+        pub append_fsync: i32,
+    }
+    /// Nested message and enum types in `AOFConfig`.
+    pub mod aof_config {
+        /// Available fsync modes.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum AppendFsync {
+            /// Not set. Default: EVERYSEC
+            Unspecified = 0,
+            /// Never fsync. Normally Linux will flush data every 30 seconds with this
+            /// configuration, but it's up to the kernel's exact tuning.
+            No = 1,
+            /// fsync every second. Fast enough, and you may lose 1 second of data if
+            /// there is a disaster
+            Everysec = 2,
+            /// fsync every time new commands are appended to the AOF. It has the best
+            /// data loss protection at the cost of performance
+            Always = 3,
+        }
+        impl AppendFsync {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    AppendFsync::Unspecified => "APPEND_FSYNC_UNSPECIFIED",
+                    AppendFsync::No => "NO",
+                    AppendFsync::Everysec => "EVERYSEC",
+                    AppendFsync::Always => "ALWAYS",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "APPEND_FSYNC_UNSPECIFIED" => Some(Self::Unspecified),
+                    "NO" => Some(Self::No),
+                    "EVERYSEC" => Some(Self::Everysec),
+                    "ALWAYS" => Some(Self::Always),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Available persistence modes.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PersistenceMode {
+        /// Not set.
+        Unspecified = 0,
+        /// Persistence is disabled, and any snapshot data is deleted.
+        Disabled = 1,
+        /// RDB based persistence is enabled.
+        Rdb = 2,
+        /// AOF based persistence is enabled.
+        Aof = 3,
+    }
+    impl PersistenceMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                PersistenceMode::Unspecified => "PERSISTENCE_MODE_UNSPECIFIED",
+                PersistenceMode::Disabled => "DISABLED",
+                PersistenceMode::Rdb => "RDB",
+                PersistenceMode::Aof => "AOF",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PERSISTENCE_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "RDB" => Some(Self::Rdb),
+                "AOF" => Some(Self::Aof),
+                _ => None,
+            }
+        }
+    }
+}
+/// Zone distribution config for allocation of cluster resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ZoneDistributionConfig {
+    /// Optional. The mode of zone distribution. Defaults to MULTI_ZONE, when not
+    /// specified.
+    #[prost(enumeration = "zone_distribution_config::ZoneDistributionMode", tag = "1")]
+    pub mode: i32,
+    /// Optional. When SINGLE ZONE distribution is selected, zone field would be
+    /// used to allocate all resources in that zone. This is not applicable to
+    /// MULTI_ZONE, and would be ignored for MULTI_ZONE clusters.
+    #[prost(string, tag = "2")]
+    pub zone: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `ZoneDistributionConfig`.
+pub mod zone_distribution_config {
+    /// Defines various modes of zone distribution.
+    /// Currently supports two modes, can be expanded in future to support more
+    /// types of distribution modes.
+    /// design doc: go/same-zone-cluster
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ZoneDistributionMode {
+        /// Not Set. Default: MULTI_ZONE
+        Unspecified = 0,
+        /// Distribute all resources across 3 zones picked at random, within the
+        /// region.
+        MultiZone = 1,
+        /// Distribute all resources in a single zone. The zone field must be
+        /// specified, when this mode is selected.
+        SingleZone = 2,
+    }
+    impl ZoneDistributionMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ZoneDistributionMode::Unspecified => "ZONE_DISTRIBUTION_MODE_UNSPECIFIED",
+                ZoneDistributionMode::MultiZone => "MULTI_ZONE",
+                ZoneDistributionMode::SingleZone => "SINGLE_ZONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ZONE_DISTRIBUTION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MULTI_ZONE" => Some(Self::MultiZone),
+                "SINGLE_ZONE" => Some(Self::SingleZone),
+                _ => None,
+            }
+        }
+    }
+}
 /// Available authorization mode of a Redis cluster.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -361,6 +695,46 @@ impl AuthorizationMode {
             "AUTH_MODE_UNSPECIFIED" => Some(Self::AuthModeUnspecified),
             "AUTH_MODE_IAM_AUTH" => Some(Self::AuthModeIamAuth),
             "AUTH_MODE_DISABLED" => Some(Self::AuthModeDisabled),
+            _ => None,
+        }
+    }
+}
+/// NodeType of a redis cluster node,
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum NodeType {
+    Unspecified = 0,
+    /// Redis shared core nano node_type.
+    RedisSharedCoreNano = 1,
+    /// Redis highmem medium node_type.
+    RedisHighmemMedium = 2,
+    /// Redis highmem xlarge node_type.
+    RedisHighmemXlarge = 3,
+    /// Redis standard small node_type.
+    RedisStandardSmall = 4,
+}
+impl NodeType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            NodeType::Unspecified => "NODE_TYPE_UNSPECIFIED",
+            NodeType::RedisSharedCoreNano => "REDIS_SHARED_CORE_NANO",
+            NodeType::RedisHighmemMedium => "REDIS_HIGHMEM_MEDIUM",
+            NodeType::RedisHighmemXlarge => "REDIS_HIGHMEM_XLARGE",
+            NodeType::RedisStandardSmall => "REDIS_STANDARD_SMALL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "NODE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "REDIS_SHARED_CORE_NANO" => Some(Self::RedisSharedCoreNano),
+            "REDIS_HIGHMEM_MEDIUM" => Some(Self::RedisHighmemMedium),
+            "REDIS_HIGHMEM_XLARGE" => Some(Self::RedisHighmemXlarge),
+            "REDIS_STANDARD_SMALL" => Some(Self::RedisStandardSmall),
             _ => None,
         }
     }
@@ -676,6 +1050,39 @@ pub mod cloud_redis_cluster_client {
                     GrpcMethod::new(
                         "google.cloud.redis.cluster.v1.CloudRedisCluster",
                         "CreateCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the details of certificate authority information for Redis cluster.
+        pub async fn get_cluster_certificate_authority(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::GetClusterCertificateAuthorityRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::CertificateAuthority>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.redis.cluster.v1.CloudRedisCluster/GetClusterCertificateAuthority",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.redis.cluster.v1.CloudRedisCluster",
+                        "GetClusterCertificateAuthority",
                     ),
                 );
             self.inner.unary(req, path, codec).await

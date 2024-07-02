@@ -3,11 +3,8 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MembershipState {
-    /// The user-defined name for the cluster used by ClusterSelectors to group
-    /// clusters together. This should match Membership's membership_name,
-    /// unless the user installed ACM on the cluster manually prior to enabling
-    /// the ACM hub feature.
-    /// Unique within a Anthos Config Management installation.
+    /// This field is set to the `cluster_name` field of the Membership Spec if it
+    /// is not empty. Otherwise, it is set to the cluster's fleet membership name.
     #[prost(string, tag = "1")]
     pub cluster_name: ::prost::alloc::string::String,
     /// Membership configuration in the cluster. This represents the actual state
@@ -45,6 +42,64 @@ pub struct MembershipSpec {
     /// Version of ACM installed.
     #[prost(string, tag = "10")]
     pub version: ::prost::alloc::string::String,
+    /// The user-specified cluster name used by Config Sync cluster-name-selector
+    /// annotation or ClusterSelector, for applying configs to only a subset
+    /// of clusters.
+    /// Omit this field if the cluster's fleet membership name is used by Config
+    /// Sync cluster-name-selector annotation or ClusterSelector.
+    /// Set this field if a name different from the cluster's fleet membership name
+    /// is used by Config Sync cluster-name-selector annotation or ClusterSelector.
+    #[prost(string, tag = "11")]
+    pub cluster: ::prost::alloc::string::String,
+    /// Enables automatic Feature management.
+    #[prost(enumeration = "membership_spec::Management", tag = "12")]
+    pub management: i32,
+}
+/// Nested message and enum types in `MembershipSpec`.
+pub mod membership_spec {
+    /// Whether to automatically manage the Feature.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Management {
+        /// Unspecified
+        Unspecified = 0,
+        /// Google will manage the Feature for the cluster.
+        Automatic = 1,
+        /// User will manually manage the Feature for the cluster.
+        Manual = 2,
+    }
+    impl Management {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Management::Unspecified => "MANAGEMENT_UNSPECIFIED",
+                Management::Automatic => "MANAGEMENT_AUTOMATIC",
+                Management::Manual => "MANAGEMENT_MANUAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MANAGEMENT_UNSPECIFIED" => Some(Self::Unspecified),
+                "MANAGEMENT_AUTOMATIC" => Some(Self::Automatic),
+                "MANAGEMENT_MANUAL" => Some(Self::Manual),
+                _ => None,
+            }
+        }
+    }
 }
 /// Configuration for Config Sync
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -54,9 +109,34 @@ pub struct ConfigSync {
     #[prost(message, optional, tag = "7")]
     pub git: ::core::option::Option<GitConfig>,
     /// Specifies whether the Config Sync Repo is
-    /// in “hierarchical” or “unstructured” mode.
+    /// in "hierarchical" or "unstructured" mode.
     #[prost(string, tag = "8")]
     pub source_format: ::prost::alloc::string::String,
+    /// Enables the installation of ConfigSync.
+    /// If set to true, ConfigSync resources will be created and the other
+    /// ConfigSync fields will be applied if exist.
+    /// If set to false, all other ConfigSync fields will be ignored, ConfigSync
+    /// resources will be deleted.
+    /// If omitted, ConfigSync resources will be managed depends on the presence
+    /// of the git or oci field.
+    #[prost(bool, optional, tag = "10")]
+    pub enabled: ::core::option::Option<bool>,
+    /// Set to true to enable the Config Sync admission webhook to prevent drifts.
+    /// If set to `false`, disables the Config Sync admission webhook and does not
+    /// prevent drifts.
+    #[prost(bool, tag = "11")]
+    pub prevent_drift: bool,
+    /// OCI repo configuration for the cluster
+    #[prost(message, optional, tag = "12")]
+    pub oci: ::core::option::Option<OciConfig>,
+    /// The Email of the Google Cloud Service Account (GSA) used for exporting
+    /// Config Sync metrics to Cloud Monitoring when Workload Identity is enabled.
+    /// The GSA should have the Monitoring Metric Writer
+    /// (roles/monitoring.metricWriter) IAM role.
+    /// The Kubernetes ServiceAccount `default` in the namespace
+    /// `config-management-monitoring` should be bound to the GSA.
+    #[prost(string, tag = "15")]
+    pub metrics_gcp_service_account_email: ::prost::alloc::string::String,
 }
 /// Git repo configuration for a single cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -78,15 +158,40 @@ pub struct GitConfig {
     /// Git revision (tag or hash) to check out. Default HEAD.
     #[prost(string, tag = "5")]
     pub sync_rev: ::prost::alloc::string::String,
-    /// Type of secret configured for access to the Git repo.
+    /// Type of secret configured for access to the Git repo. Must be one of ssh,
+    /// cookiefile, gcenode, token, gcpserviceaccount or none. The
+    /// validation of this is case-sensitive. Required.
     #[prost(string, tag = "6")]
     pub secret_type: ::prost::alloc::string::String,
     /// URL for the HTTPS proxy to be used when communicating with the Git repo.
     #[prost(string, tag = "7")]
     pub https_proxy: ::prost::alloc::string::String,
-    /// The GCP Service Account Email used for auth when secret_type is
+    /// The Google Cloud Service Account Email used for auth when secret_type is
     /// gcpServiceAccount.
     #[prost(string, tag = "8")]
+    pub gcp_service_account_email: ::prost::alloc::string::String,
+}
+/// OCI repo configuration for a single cluster
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OciConfig {
+    /// The OCI image repository URL for the package to sync from.
+    /// e.g. `LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY_NAME/PACKAGE_NAME`.
+    #[prost(string, tag = "1")]
+    pub sync_repo: ::prost::alloc::string::String,
+    /// The absolute path of the directory that contains
+    /// the local resources.  Default: the root directory of the image.
+    #[prost(string, tag = "2")]
+    pub policy_dir: ::prost::alloc::string::String,
+    /// Period in seconds between consecutive syncs. Default: 15.
+    #[prost(int64, tag = "3")]
+    pub sync_wait_secs: i64,
+    /// Type of secret configured for access to the Git repo.
+    #[prost(string, tag = "4")]
+    pub secret_type: ::prost::alloc::string::String,
+    /// The Google Cloud Service Account Email used for auth when secret_type is
+    /// gcpServiceAccount.
+    #[prost(string, tag = "5")]
     pub gcp_service_account_email: ::prost::alloc::string::String,
 }
 /// Configuration for Policy Controller
@@ -200,6 +305,131 @@ pub struct ConfigSyncState {
     /// The state of ConfigSync's process to sync configs to a cluster
     #[prost(message, optional, tag = "3")]
     pub sync_state: ::core::option::Option<SyncState>,
+    /// Errors pertaining to the installation of Config Sync.
+    #[prost(message, repeated, tag = "4")]
+    pub errors: ::prost::alloc::vec::Vec<ConfigSyncError>,
+    /// The state of the RootSync CRD
+    #[prost(enumeration = "config_sync_state::CrdState", tag = "5")]
+    pub rootsync_crd: i32,
+    /// The state of the Reposync CRD
+    #[prost(enumeration = "config_sync_state::CrdState", tag = "6")]
+    pub reposync_crd: i32,
+    /// The state of CS
+    /// This field summarizes the other fields in this message.
+    #[prost(enumeration = "config_sync_state::State", tag = "7")]
+    pub state: i32,
+}
+/// Nested message and enum types in `ConfigSyncState`.
+pub mod config_sync_state {
+    /// CRDState representing the state of a CRD
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CrdState {
+        /// CRD's state cannot be determined
+        Unspecified = 0,
+        /// CRD is not installed
+        NotInstalled = 1,
+        /// CRD is installed
+        Installed = 2,
+        /// CRD is terminating (i.e., it has been deleted and is cleaning up)
+        Terminating = 3,
+        /// CRD is installing
+        Installing = 4,
+    }
+    impl CrdState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                CrdState::Unspecified => "CRD_STATE_UNSPECIFIED",
+                CrdState::NotInstalled => "NOT_INSTALLED",
+                CrdState::Installed => "INSTALLED",
+                CrdState::Terminating => "TERMINATING",
+                CrdState::Installing => "INSTALLING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CRD_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NOT_INSTALLED" => Some(Self::NotInstalled),
+                "INSTALLED" => Some(Self::Installed),
+                "TERMINATING" => Some(Self::Terminating),
+                "INSTALLING" => Some(Self::Installing),
+                _ => None,
+            }
+        }
+    }
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// CS's state cannot be determined.
+        Unspecified = 0,
+        /// CS is not installed.
+        ConfigSyncNotInstalled = 1,
+        /// The expected CS version is installed successfully.
+        ConfigSyncInstalled = 2,
+        /// CS encounters errors.
+        ConfigSyncError = 3,
+        /// CS is installing or terminating.
+        ConfigSyncPending = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::ConfigSyncNotInstalled => "CONFIG_SYNC_NOT_INSTALLED",
+                State::ConfigSyncInstalled => "CONFIG_SYNC_INSTALLED",
+                State::ConfigSyncError => "CONFIG_SYNC_ERROR",
+                State::ConfigSyncPending => "CONFIG_SYNC_PENDING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONFIG_SYNC_NOT_INSTALLED" => Some(Self::ConfigSyncNotInstalled),
+                "CONFIG_SYNC_INSTALLED" => Some(Self::ConfigSyncInstalled),
+                "CONFIG_SYNC_ERROR" => Some(Self::ConfigSyncError),
+                "CONFIG_SYNC_PENDING" => Some(Self::ConfigSyncPending),
+                _ => None,
+            }
+        }
+    }
+}
+/// Errors pertaining to the installation of Config Sync
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConfigSyncError {
+    /// A string representing the user facing error message
+    #[prost(string, tag = "1")]
+    pub error_message: ::prost::alloc::string::String,
 }
 /// Specific versioning information pertaining to ConfigSync's Pods
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -223,6 +453,9 @@ pub struct ConfigSyncVersion {
     /// Version of the deployed reconciler container in root-reconciler pod
     #[prost(string, tag = "6")]
     pub root_reconciler: ::prost::alloc::string::String,
+    /// Version of the deployed admission_webhook pod
+    #[prost(string, tag = "7")]
+    pub admission_webhook: ::prost::alloc::string::String,
 }
 /// The state of ConfigSync's deployment on a cluster
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -246,6 +479,9 @@ pub struct ConfigSyncDeploymentState {
     /// Deployment state of root-reconciler
     #[prost(enumeration = "DeploymentState", tag = "6")]
     pub root_reconciler: i32,
+    /// Deployment state of admission-webhook
+    #[prost(enumeration = "DeploymentState", tag = "7")]
+    pub admission_webhook: i32,
 }
 /// State indicating an ACM's progress syncing configurations to a cluster
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -280,7 +516,7 @@ pub struct SyncState {
 }
 /// Nested message and enum types in `SyncState`.
 pub mod sync_state {
-    /// An enum representing an ACM's status syncing configs to a cluster
+    /// An enum representing Config Sync's status of syncing configs to a cluster.
     #[derive(
         Clone,
         Copy,
@@ -294,18 +530,17 @@ pub mod sync_state {
     )]
     #[repr(i32)]
     pub enum SyncCode {
-        /// ACM cannot determine a sync code
+        /// Config Sync cannot determine a sync code
         Unspecified = 0,
-        /// ACM successfully synced the git Repo with the cluster
+        /// Config Sync successfully synced the git Repo with the cluster
         Synced = 1,
-        /// ACM is in the progress of syncing a new change
+        /// Config Sync is in the progress of syncing a new change
         Pending = 2,
-        /// Indicates an error configuring ACM, and user action is required
+        /// Indicates an error configuring Config Sync, and user action is required
         Error = 3,
-        /// ACM has been installed (operator manifest deployed),
-        /// but not configured.
+        /// Config Sync has been installed but not configured
         NotConfigured = 4,
-        /// ACM has not been installed (no operator pod found)
+        /// Config Sync has not been installed
         NotInstalled = 5,
         /// Error authorizing with the cluster
         Unauthorized = 6,
@@ -433,6 +668,8 @@ pub enum DeploymentState {
     Installed = 2,
     /// Deployment was attempted to be installed, but has errors
     Error = 3,
+    /// Deployment is installing or terminating
+    Pending = 4,
 }
 impl DeploymentState {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -445,6 +682,7 @@ impl DeploymentState {
             DeploymentState::NotInstalled => "NOT_INSTALLED",
             DeploymentState::Installed => "INSTALLED",
             DeploymentState::Error => "ERROR",
+            DeploymentState::Pending => "PENDING",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -454,6 +692,7 @@ impl DeploymentState {
             "NOT_INSTALLED" => Some(Self::NotInstalled),
             "INSTALLED" => Some(Self::Installed),
             "ERROR" => Some(Self::Error),
+            "PENDING" => Some(Self::Pending),
             _ => None,
         }
     }

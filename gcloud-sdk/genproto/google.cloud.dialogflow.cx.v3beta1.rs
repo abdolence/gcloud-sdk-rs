@@ -101,6 +101,14 @@ pub mod advanced_settings {
         /// The digit that terminates a DTMF digit sequence.
         #[prost(string, tag = "3")]
         pub finish_digit: ::prost::alloc::string::String,
+        /// Interdigit timeout setting for matching dtmf input to regex.
+        #[prost(message, optional, tag = "6")]
+        pub interdigit_timeout_duration: ::core::option::Option<::prost_types::Duration>,
+        /// Endpoint timeout setting for matching dtmf input to regex.
+        #[prost(message, optional, tag = "7")]
+        pub endpointing_timeout_duration: ::core::option::Option<
+            ::prost_types::Duration,
+        >,
     }
     /// Define behaviors on logging.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -999,6 +1007,60 @@ impl DataStoreType {
         }
     }
 }
+/// Represents a call of a specific tool's action with the specified inputs.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolCall {
+    /// The [tool][Tool] associated with this call.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/tools/<Tool ID>`.
+    #[prost(string, tag = "1")]
+    pub tool: ::prost::alloc::string::String,
+    /// The name of the tool's action associated with this call.
+    #[prost(string, tag = "2")]
+    pub action: ::prost::alloc::string::String,
+    /// The action's input parameters.
+    #[prost(message, optional, tag = "3")]
+    pub input_parameters: ::core::option::Option<::prost_types::Struct>,
+}
+/// The result of calling a tool's action that has been executed by the client.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolCallResult {
+    /// The [tool][Tool] associated with this call.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/tools/<Tool ID>`.
+    #[prost(string, tag = "1")]
+    pub tool: ::prost::alloc::string::String,
+    /// The name of the tool's action associated with this call.
+    #[prost(string, tag = "2")]
+    pub action: ::prost::alloc::string::String,
+    /// The tool call's result.
+    #[prost(oneof = "tool_call_result::Result", tags = "3, 4")]
+    pub result: ::core::option::Option<tool_call_result::Result>,
+}
+/// Nested message and enum types in `ToolCallResult`.
+pub mod tool_call_result {
+    /// An error produced by the tool call.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Error {
+        /// The error message of the function.
+        #[prost(string, tag = "1")]
+        pub message: ::prost::alloc::string::String,
+    }
+    /// The tool call's result.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Result {
+        /// The tool call's error.
+        #[prost(message, tag = "3")]
+        Error(Error),
+        /// The tool call's output parameters.
+        #[prost(message, tag = "4")]
+        OutputParameters(::prost_types::Struct),
+    }
+}
 /// Represents a response message that can be returned by a conversational agent.
 ///
 /// Response messages are also used for output audio synthesis. The approach is
@@ -1028,7 +1090,7 @@ pub struct ResponseMessage {
     /// Required. The rich response message.
     #[prost(
         oneof = "response_message::Message",
-        tags = "1, 2, 9, 8, 10, 11, 12, 13, 18, 20"
+        tags = "1, 2, 9, 8, 10, 11, 12, 13, 18, 20, 22"
     )]
     pub message: ::core::option::Option<response_message::Message>,
 }
@@ -1266,6 +1328,10 @@ pub mod response_message {
         /// Dialogflow Messenger.
         #[prost(message, tag = "20")]
         KnowledgeInfoCard(KnowledgeInfoCard),
+        /// Returns the definition of a tool call that should be executed by the
+        /// client.
+        #[prost(message, tag = "22")]
+        ToolCall(super::ToolCall),
     }
 }
 /// A fulfillment can do one or more of the following actions at the same time:
@@ -3623,23 +3689,6 @@ pub struct Agent {
     /// Speech recognition related settings.
     #[prost(message, optional, tag = "13")]
     pub speech_to_text_settings: ::core::option::Option<SpeechToTextSettings>,
-    /// Immutable. Name of the start flow in this agent. A start flow will be
-    /// automatically created when the agent is created, and can only be deleted by
-    /// deleting the agent. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/flows/<Flow ID>`.
-    #[prost(string, tag = "16")]
-    pub start_flow: ::prost::alloc::string::String,
-    /// Optional. Name of the start playbook in this agent. A start playbook will
-    /// be automatically created when the agent is created, and can only be deleted
-    /// by deleting the agent.
-    /// Format: `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/playbooks/<Playbook ID>`. Currently only the
-    /// default playbook with id
-    /// "00000000-0000-0000-0000-000000000000" is allowed.
-    ///
-    /// Only one of `start_flow` or `start_playbook` should be set, but not both.
-    #[prost(string, tag = "39")]
-    pub start_playbook: ::prost::alloc::string::String,
     /// Name of the
     /// [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings]
     /// reference for the agent. Format: `projects/<Project ID>/locations/<Location
@@ -3685,6 +3734,9 @@ pub struct Agent {
     /// Optional. Settings for end user personalization.
     #[prost(message, optional, tag = "42")]
     pub personalization_settings: ::core::option::Option<agent::PersonalizationSettings>,
+    /// The resource to start the conversations with for the agent.
+    #[prost(oneof = "agent::SessionEntryResource", tags = "16, 39")]
+    pub session_entry_resource: ::core::option::Option<agent::SessionEntryResource>,
 }
 /// Nested message and enum types in `Agent`.
 pub mod agent {
@@ -3763,6 +3815,28 @@ pub mod agent {
         /// during query processing.
         #[prost(message, optional, tag = "1")]
         pub default_end_user_metadata: ::core::option::Option<::prost_types::Struct>,
+    }
+    /// The resource to start the conversations with for the agent.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SessionEntryResource {
+        /// Name of the start flow in this agent. A start flow will be automatically
+        /// created when the agent is created, and can only be deleted by deleting
+        /// the agent.
+        /// Format: `projects/<Project ID>/locations/<Location
+        /// ID>/agents/<Agent ID>/flows/<Flow ID>`. Currently only the default start
+        /// flow with id "00000000-0000-0000-0000-000000000000" is allowed.
+        #[prost(string, tag = "16")]
+        StartFlow(::prost::alloc::string::String),
+        /// Name of the start playbook in this agent. A start playbook will be
+        /// automatically created when the agent is created, and can only be deleted
+        /// by deleting the agent.
+        /// Format: `projects/<Project ID>/locations/<Location
+        /// ID>/agents/<Agent ID>/playbooks/<Playbook ID>`. Currently only the
+        /// default playbook with id
+        /// "00000000-0000-0000-0000-000000000000" is allowed.
+        #[prost(string, tag = "39")]
+        StartPlaybook(::prost::alloc::string::String),
     }
 }
 /// The request message for
@@ -5907,9 +5981,9 @@ pub struct PlaybookInput {
     /// playbook invocation.
     #[prost(string, tag = "1")]
     pub preceding_conversation_summary: ::prost::alloc::string::String,
-    /// Optional. A list of input parameters for the invocation.
-    #[prost(message, repeated, tag = "2")]
-    pub parameters: ::prost::alloc::vec::Vec<ActionParameter>,
+    /// Optional. A list of input parameters for the action.
+    #[prost(message, optional, tag = "3")]
+    pub action_parameters: ::core::option::Option<::prost_types::Struct>,
 }
 /// Output of the playbook.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5918,9 +5992,9 @@ pub struct PlaybookOutput {
     /// Optional. Summary string of the execution result of the child playbook.
     #[prost(string, tag = "1")]
     pub execution_summary: ::prost::alloc::string::String,
-    /// Optional. A list of output parameters for the invocation.
-    #[prost(message, repeated, tag = "3")]
-    pub parameters: ::prost::alloc::vec::Vec<ActionParameter>,
+    /// Optional. A Struct object of output parameters for the action.
+    #[prost(message, optional, tag = "4")]
+    pub action_parameters: ::core::option::Option<::prost_types::Struct>,
 }
 /// Action performed by end user or Dialogflow agent in the conversation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5983,23 +6057,12 @@ pub struct ToolUse {
     /// Optional. Name of the action to be called during the tool use.
     #[prost(string, tag = "2")]
     pub action: ::prost::alloc::string::String,
-    /// A list of input parameters for the action.
-    #[prost(message, repeated, tag = "3")]
-    pub input_parameters: ::prost::alloc::vec::Vec<ActionParameter>,
-    /// A list of output parameters generated by the action.
-    #[prost(message, repeated, tag = "4")]
-    pub output_parameters: ::prost::alloc::vec::Vec<ActionParameter>,
-}
-/// Parameter associated with action.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ActionParameter {
-    /// Required. Name of the parameter.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Required. Value of the parameter.
-    #[prost(message, optional, tag = "2")]
-    pub value: ::core::option::Option<::prost_types::Value>,
+    /// Optional. A list of input parameters for the action.
+    #[prost(message, optional, tag = "5")]
+    pub input_action_parameters: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. A list of output parameters generated by the action.
+    #[prost(message, optional, tag = "6")]
+    pub output_action_parameters: ::core::option::Option<::prost_types::Struct>,
 }
 /// Stores metadata of the invocation of a child playbook.
 /// Next Id: 5
@@ -6031,12 +6094,12 @@ pub struct FlowInvocation {
     /// flows/<Flow ID>`.
     #[prost(string, tag = "1")]
     pub flow: ::prost::alloc::string::String,
-    /// A list of input parameters for the flow invocation.
-    #[prost(message, repeated, tag = "2")]
-    pub input_parameters: ::prost::alloc::vec::Vec<ActionParameter>,
-    /// A list of output parameters generated by the flow invocation.
-    #[prost(message, repeated, tag = "3")]
-    pub output_parameters: ::prost::alloc::vec::Vec<ActionParameter>,
+    /// Optional. A list of input parameters for the flow.
+    #[prost(message, optional, tag = "5")]
+    pub input_action_parameters: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. A list of output parameters generated by the flow invocation.
+    #[prost(message, optional, tag = "6")]
+    pub output_action_parameters: ::core::option::Option<::prost_types::Struct>,
     /// Required. Flow invocation's output state.
     #[prost(enumeration = "OutputState", tag = "4")]
     pub flow_state: i32,
@@ -7686,44 +7749,6 @@ pub mod session_entity_types_client {
         }
     }
 }
-/// The result of calling a tool's action that has been executed by the client.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ToolCallResult {
-    /// The [tool][Tool] associated with this call.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/tools/<Tool ID>`.
-    #[prost(string, tag = "1")]
-    pub tool: ::prost::alloc::string::String,
-    /// The name of the tool's action associated with this call.
-    #[prost(string, tag = "2")]
-    pub action: ::prost::alloc::string::String,
-    /// The tool call's result.
-    #[prost(oneof = "tool_call_result::Result", tags = "3, 4")]
-    pub result: ::core::option::Option<tool_call_result::Result>,
-}
-/// Nested message and enum types in `ToolCallResult`.
-pub mod tool_call_result {
-    /// An error produced by the tool call.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Error {
-        /// The error message of the function.
-        #[prost(string, tag = "1")]
-        pub message: ::prost::alloc::string::String,
-    }
-    /// The tool call's result.
-    #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Result {
-        /// The tool call's error.
-        #[prost(message, tag = "3")]
-        Error(Error),
-        /// The tool call's output parameters.
-        #[prost(message, tag = "4")]
-        OutputParameters(::prost_types::Struct),
-    }
-}
 /// Stores information about feedback provided by users about a response.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -8913,6 +8938,9 @@ pub mod r#match {
         NoInput = 5,
         /// The query directly triggered an event.
         Event = 6,
+        /// The query was handled by a
+        /// [`Playbook`][google.cloud.dialogflow.cx.v3beta1.Playbook].
+        Playbook = 9,
     }
     impl MatchType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -8928,6 +8956,7 @@ pub mod r#match {
                 MatchType::NoMatch => "NO_MATCH",
                 MatchType::NoInput => "NO_INPUT",
                 MatchType::Event => "EVENT",
+                MatchType::Playbook => "PLAYBOOK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8940,6 +8969,7 @@ pub mod r#match {
                 "NO_MATCH" => Some(Self::NoMatch),
                 "NO_INPUT" => Some(Self::NoInput),
                 "EVENT" => Some(Self::Event),
+                "PLAYBOOK" => Some(Self::Playbook),
                 _ => None,
             }
         }
@@ -15399,10 +15429,9 @@ pub struct Playbook {
     /// Optional. Defined structured output parameters for this playbook.
     #[prost(message, repeated, tag = "6")]
     pub output_parameter_definitions: ::prost::alloc::vec::Vec<ParameterDefinition>,
-    /// Ordered list of step by step execution instructions to accomplish
-    /// target goal.
-    #[prost(message, repeated, tag = "4")]
-    pub steps: ::prost::alloc::vec::Vec<playbook::Step>,
+    /// Instruction to accomplish target goal.
+    #[prost(message, optional, tag = "17")]
+    pub instruction: ::core::option::Option<playbook::Instruction>,
     /// Output only. Estimated number of tokes current playbook takes when sent to
     /// the LLM.
     #[prost(int64, tag = "8")]
@@ -15453,6 +15482,15 @@ pub mod playbook {
             #[prost(string, tag = "1")]
             Text(::prost::alloc::string::String),
         }
+    }
+    /// Message of the Instruction of the playbook.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Instruction {
+        /// Ordered list of step by step execution instructions to accomplish
+        /// target goal.
+        #[prost(message, repeated, tag = "2")]
+        pub steps: ::prost::alloc::vec::Vec<Step>,
     }
 }
 /// The request message for
@@ -16107,6 +16145,10 @@ pub mod security_settings {
         /// recordings.
         #[prost(enumeration = "audio_export_settings::AudioFormat", tag = "4")]
         pub audio_format: i32,
+        /// Whether to store TTS audio. By default, TTS audio from the virtual agent
+        /// is not exported.
+        #[prost(bool, tag = "6")]
+        pub store_tts_audio: bool,
     }
     /// Nested message and enum types in `AudioExportSettings`.
     pub mod audio_export_settings {
@@ -16822,14 +16864,6 @@ pub struct Tool {
     /// Required. High level description of the Tool and its usage.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// The list of derived action names for the tool.
-    #[deprecated]
-    #[prost(string, repeated, tag = "6")]
-    pub actions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The list of derived type schemas for the tool.
-    #[deprecated]
-    #[prost(string, repeated, tag = "7")]
-    pub schemas: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The tool type.
     #[prost(enumeration = "tool::ToolType", tag = "12")]
     pub tool_type: i32,

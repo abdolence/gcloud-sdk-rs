@@ -27,9 +27,23 @@ pub struct LinuxNodeConfig {
     /// cgroup_mode specifies the cgroup mode to be used on the node.
     #[prost(enumeration = "linux_node_config::CgroupMode", tag = "2")]
     pub cgroup_mode: i32,
+    /// Optional. Amounts for 2M and 1G hugepages
+    #[prost(message, optional, tag = "3")]
+    pub hugepages: ::core::option::Option<linux_node_config::HugepagesConfig>,
 }
 /// Nested message and enum types in `LinuxNodeConfig`.
 pub mod linux_node_config {
+    /// Hugepages amount in both 2m and 1g size
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct HugepagesConfig {
+        /// Optional. Amount of 2M hugepages
+        #[prost(int32, optional, tag = "1")]
+        pub hugepage_size2m: ::core::option::Option<i32>,
+        /// Optional. Amount of 1G hugepages
+        #[prost(int32, optional, tag = "2")]
+        pub hugepage_size1g: ::core::option::Option<i32>,
+    }
     /// Possible cgroup modes that can be used.
     #[derive(
         Clone,
@@ -405,6 +419,9 @@ pub struct NodeConfig {
     /// Parameters for node pools to be backed by shared sole tenant node groups.
     #[prost(message, optional, tag = "42")]
     pub sole_tenant_config: ::core::option::Option<SoleTenantConfig>,
+    /// Parameters for containerd customization.
+    #[prost(message, optional, tag = "43")]
+    pub containerd_config: ::core::option::Option<ContainerdConfig>,
     /// A map of resource manager tag keys and values to be attached to the nodes.
     #[prost(message, optional, tag = "45")]
     pub resource_manager_tags: ::core::option::Option<ResourceManagerTags>,
@@ -429,6 +446,9 @@ pub struct AdvancedMachineFeatures {
     /// supported per core by the underlying processor is assumed.
     #[prost(int64, optional, tag = "1")]
     pub threads_per_core: ::core::option::Option<i64>,
+    /// Whether or not to enable nested virtualization (defaults to false).
+    #[prost(bool, optional, tag = "2")]
+    pub enable_nested_virtualization: ::core::option::Option<bool>,
 }
 /// Parameters for node pool-level network config.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -820,6 +840,83 @@ pub mod sole_tenant_config {
                     "NOT_IN" => Some(Self::NotIn),
                     _ => None,
                 }
+            }
+        }
+    }
+}
+/// ContainerdConfig contains configuration to customize containerd.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ContainerdConfig {
+    /// PrivateRegistryAccessConfig is used to configure access configuration
+    /// for private container registries.
+    #[prost(message, optional, tag = "1")]
+    pub private_registry_access_config: ::core::option::Option<
+        containerd_config::PrivateRegistryAccessConfig,
+    >,
+}
+/// Nested message and enum types in `ContainerdConfig`.
+pub mod containerd_config {
+    /// PrivateRegistryAccessConfig contains access configuration for
+    /// private container registries.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PrivateRegistryAccessConfig {
+        /// Private registry access is enabled.
+        #[prost(bool, tag = "1")]
+        pub enabled: bool,
+        /// Private registry access configuration.
+        #[prost(message, repeated, tag = "2")]
+        pub certificate_authority_domain_config: ::prost::alloc::vec::Vec<
+            private_registry_access_config::CertificateAuthorityDomainConfig,
+        >,
+    }
+    /// Nested message and enum types in `PrivateRegistryAccessConfig`.
+    pub mod private_registry_access_config {
+        /// CertificateAuthorityDomainConfig configures one or more fully qualified
+        /// domain names (FQDN) to a specific certificate.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct CertificateAuthorityDomainConfig {
+            /// List of fully qualified domain names (FQDN).
+            /// Specifying port is supported.
+            /// Wilcards are NOT supported.
+            /// Examples:
+            /// - my.customdomain.com
+            /// - 10.0.1.2:5000
+            #[prost(string, repeated, tag = "1")]
+            pub fqdns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// Certificate access config. The following are supported:
+            /// - GCPSecretManagerCertificateConfig
+            #[prost(
+                oneof = "certificate_authority_domain_config::CertificateConfig",
+                tags = "2"
+            )]
+            pub certificate_config: ::core::option::Option<
+                certificate_authority_domain_config::CertificateConfig,
+            >,
+        }
+        /// Nested message and enum types in `CertificateAuthorityDomainConfig`.
+        pub mod certificate_authority_domain_config {
+            /// GCPSecretManagerCertificateConfig configures a secret from
+            /// [Google Secret Manager](<https://cloud.google.com/secret-manager>).
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct GcpSecretManagerCertificateConfig {
+                /// Secret URI, in the form
+                /// "projects/$PROJECT_ID/secrets/$SECRET_NAME/versions/$VERSION".
+                /// Version can be fixed (e.g. "2") or "latest"
+                #[prost(string, tag = "1")]
+                pub secret_uri: ::prost::alloc::string::String,
+            }
+            /// Certificate access config. The following are supported:
+            /// - GCPSecretManagerCertificateConfig
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum CertificateConfig {
+                /// Google Secret Manager (GCP) certificate configuration.
+                #[prost(message, tag = "2")]
+                GcpSecretManagerCertificateConfig(GcpSecretManagerCertificateConfig),
             }
         }
     }
@@ -1949,6 +2046,12 @@ pub struct Cluster {
     /// GKE Enterprise Configuration.
     #[prost(message, optional, tag = "149")]
     pub enterprise_config: ::core::option::Option<EnterpriseConfig>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, optional, tag = "152")]
+    pub satisfies_pzs: ::core::option::Option<bool>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, optional, tag = "153")]
+    pub satisfies_pzi: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
@@ -2063,6 +2166,8 @@ pub mod security_posture_config {
         Disabled = 1,
         /// Applies Security Posture features on the cluster.
         Basic = 2,
+        /// Applies the Security Posture off cluster Enterprise level features.
+        Enterprise = 3,
     }
     impl Mode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2074,6 +2179,7 @@ pub mod security_posture_config {
                 Mode::Unspecified => "MODE_UNSPECIFIED",
                 Mode::Disabled => "DISABLED",
                 Mode::Basic => "BASIC",
+                Mode::Enterprise => "ENTERPRISE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2082,6 +2188,7 @@ pub mod security_posture_config {
                 "MODE_UNSPECIFIED" => Some(Self::Unspecified),
                 "DISABLED" => Some(Self::Disabled),
                 "BASIC" => Some(Self::Basic),
+                "ENTERPRISE" => Some(Self::Enterprise),
                 _ => None,
             }
         }
@@ -2150,6 +2257,11 @@ pub struct NodePoolAutoConfig {
     /// for managing Compute Engine firewalls using Network Firewall Policies.
     #[prost(message, optional, tag = "2")]
     pub resource_manager_tags: ::core::option::Option<ResourceManagerTags>,
+    /// NodeKubeletConfig controls the defaults for autoprovisioned node-pools.
+    ///
+    /// Currently only `insecure_kubelet_readonly_port_enabled` can be set here.
+    #[prost(message, optional, tag = "3")]
+    pub node_kubelet_config: ::core::option::Option<NodeKubeletConfig>,
 }
 /// Subset of Nodepool message that has defaults.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2169,6 +2281,14 @@ pub struct NodeConfigDefaults {
     /// Logging configuration for node pools.
     #[prost(message, optional, tag = "3")]
     pub logging_config: ::core::option::Option<NodePoolLoggingConfig>,
+    /// Parameters for containerd customization.
+    #[prost(message, optional, tag = "4")]
+    pub containerd_config: ::core::option::Option<ContainerdConfig>,
+    /// NodeKubeletConfig controls the defaults for new node-pools.
+    ///
+    /// Currently only `insecure_kubelet_readonly_port_enabled` can be set here.
+    #[prost(message, optional, tag = "6")]
+    pub node_kubelet_config: ::core::option::Option<NodeKubeletConfig>,
 }
 /// ClusterUpdate describes an update to the cluster. Exactly one update can
 /// be applied to a cluster with each request, so at most one field can be
@@ -2282,7 +2402,12 @@ pub struct ClusterUpdate {
     /// Cluster-level Vertical Pod Autoscaling configuration.
     #[prost(message, optional, tag = "22")]
     pub desired_vertical_pod_autoscaling: ::core::option::Option<VerticalPodAutoscaling>,
-    /// The desired private cluster configuration.
+    /// The desired private cluster configuration. master_global_access_config is
+    /// the only field that can be changed via this field.
+    /// See also
+    /// [ClusterUpdate.desired_enable_private_endpoint][google.container.v1.ClusterUpdate.desired_enable_private_endpoint]
+    /// for modifying other fields within
+    /// [PrivateClusterConfig][google.container.v1.PrivateClusterConfig].
     #[prost(message, optional, tag = "25")]
     pub desired_private_cluster_config: ::core::option::Option<PrivateClusterConfig>,
     /// The desired config of Intra-node visibility.
@@ -2402,6 +2527,9 @@ pub struct ClusterUpdate {
     /// Desired Beta APIs to be enabled for cluster.
     #[prost(message, optional, tag = "131")]
     pub desired_k8s_beta_apis: ::core::option::Option<K8sBetaApiConfig>,
+    /// The desired containerd config for the cluster.
+    #[prost(message, optional, tag = "134")]
+    pub desired_containerd_config: ::core::option::Option<ContainerdConfig>,
     /// Enable/Disable Multi-Networking for the cluster
     #[prost(bool, optional, tag = "135")]
     pub desired_enable_multi_networking: ::core::option::Option<bool>,
@@ -2417,6 +2545,15 @@ pub struct ClusterUpdate {
     /// Enable/Disable Cilium Clusterwide Network Policy for the cluster.
     #[prost(bool, optional, tag = "138")]
     pub desired_enable_cilium_clusterwide_network_policy: ::core::option::Option<bool>,
+    /// The desired node kubelet config for the cluster.
+    #[prost(message, optional, tag = "141")]
+    pub desired_node_kubelet_config: ::core::option::Option<NodeKubeletConfig>,
+    /// The desired node kubelet config for all auto-provisioned node pools
+    /// in autopilot clusters and node auto-provisioning enabled clusters.
+    #[prost(message, optional, tag = "142")]
+    pub desired_node_pool_auto_config_kubelet_config: ::core::option::Option<
+        NodeKubeletConfig,
+    >,
 }
 /// AdditionalPodRangesConfig is the configuration for additional pod secondary
 /// ranges supporting the ClusterUpdate message.
@@ -3001,6 +3138,11 @@ pub struct UpdateNodePoolRequest {
     /// Parameters that can be configured on Windows nodes.
     #[prost(message, optional, tag = "34")]
     pub windows_node_config: ::core::option::Option<WindowsNodeConfig>,
+    /// A list of hardware accelerators to be attached to each node.
+    /// See <https://cloud.google.com/compute/docs/gpus> for more information about
+    /// support for GPUs.
+    #[prost(message, repeated, tag = "35")]
+    pub accelerators: ::prost::alloc::vec::Vec<AcceleratorConfig>,
     /// Optional. The desired [Google Compute Engine machine
     /// type](<https://cloud.google.com/compute/docs/machine-types>) for nodes in the
     /// node pool. Initiates an upgrade operation that migrates the nodes in the
@@ -3024,6 +3166,11 @@ pub struct UpdateNodePoolRequest {
     /// Existing tags will be replaced with new values.
     #[prost(message, optional, tag = "39")]
     pub resource_manager_tags: ::core::option::Option<ResourceManagerTags>,
+    /// The desired containerd config for nodes in the node pool.
+    /// Initiates an upgrade operation that recreates the nodes with the new
+    /// config.
+    #[prost(message, optional, tag = "40")]
+    pub containerd_config: ::core::option::Option<ContainerdConfig>,
     /// Specifies the configuration of queued provisioning.
     #[prost(message, optional, tag = "42")]
     pub queued_provisioning: ::core::option::Option<node_pool::QueuedProvisioning>,
@@ -4932,6 +5079,8 @@ pub mod gpu_sharing_config {
         Unspecified = 0,
         /// GPUs are time-shared between containers.
         TimeSharing = 1,
+        /// GPUs are shared between containers with NVIDIA MPS.
+        Mps = 2,
     }
     impl GpuSharingStrategy {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -4942,6 +5091,7 @@ pub mod gpu_sharing_config {
             match self {
                 GpuSharingStrategy::Unspecified => "GPU_SHARING_STRATEGY_UNSPECIFIED",
                 GpuSharingStrategy::TimeSharing => "TIME_SHARING",
+                GpuSharingStrategy::Mps => "MPS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4949,6 +5099,7 @@ pub mod gpu_sharing_config {
             match value {
                 "GPU_SHARING_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
                 "TIME_SHARING" => Some(Self::TimeSharing),
+                "MPS" => Some(Self::Mps),
                 _ => None,
             }
         }
@@ -5277,6 +5428,7 @@ pub struct NetworkConfig {
     #[prost(bool, optional, tag = "19")]
     pub enable_fqdn_network_policy: ::core::option::Option<bool>,
     /// Specify the details of in-transit encryption.
+    /// Now named inter-node transparent encryption.
     #[prost(enumeration = "InTransitEncryptionConfig", optional, tag = "20")]
     pub in_transit_encryption_config: ::core::option::Option<i32>,
     /// Whether CiliumClusterwideNetworkPolicy is enabled on this cluster.
@@ -5712,6 +5864,9 @@ pub struct DnsConfig {
     /// cluster_dns_domain is the suffix used for all cluster service records.
     #[prost(string, tag = "3")]
     pub cluster_dns_domain: ::prost::alloc::string::String,
+    /// Optional. The domain used in Additive VPC scope.
+    #[prost(string, tag = "5")]
+    pub additive_vpc_scope_dns_domain: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `DNSConfig`.
 pub mod dns_config {
@@ -6698,6 +6853,10 @@ pub mod monitoring_component_config {
         Deployment = 11,
         /// Statefulset
         Statefulset = 12,
+        /// CADVISOR
+        Cadvisor = 13,
+        /// KUBELET
+        Kubelet = 14,
     }
     impl Component {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -6717,6 +6876,8 @@ pub mod monitoring_component_config {
                 Component::Daemonset => "DAEMONSET",
                 Component::Deployment => "DEPLOYMENT",
                 Component::Statefulset => "STATEFULSET",
+                Component::Cadvisor => "CADVISOR",
+                Component::Kubelet => "KUBELET",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6733,6 +6894,8 @@ pub mod monitoring_component_config {
                 "DAEMONSET" => Some(Self::Daemonset),
                 "DEPLOYMENT" => Some(Self::Deployment),
                 "STATEFULSET" => Some(Self::Statefulset),
+                "CADVISOR" => Some(Self::Cadvisor),
+                "KUBELET" => Some(Self::Kubelet),
                 _ => None,
             }
         }

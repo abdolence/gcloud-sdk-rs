@@ -1125,6 +1125,60 @@ pub mod file {
         pub relative_path: ::prost::alloc::string::String,
     }
 }
+/// Contains details about groups of which this finding is a member. A group is a
+/// collection of findings that are related in some way.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GroupMembership {
+    /// Type of group.
+    #[prost(enumeration = "group_membership::GroupType", tag = "1")]
+    pub group_type: i32,
+    /// ID of the group.
+    #[prost(string, tag = "2")]
+    pub group_id: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `GroupMembership`.
+pub mod group_membership {
+    /// Possible types of groups.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum GroupType {
+        /// Default value.
+        Unspecified = 0,
+        /// Group represents a toxic combination.
+        ToxicCombination = 1,
+    }
+    impl GroupType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                GroupType::Unspecified => "GROUP_TYPE_UNSPECIFIED",
+                GroupType::ToxicCombination => "GROUP_TYPE_TOXIC_COMBINATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GROUP_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GROUP_TYPE_TOXIC_COMBINATION" => Some(Self::ToxicCombination),
+                _ => None,
+            }
+        }
+    }
+}
 /// Represents a particular IAM binding, which captures a member's role addition,
 /// removal, or state.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2257,6 +2311,24 @@ pub mod security_posture {
         pub detected_value: ::prost::alloc::string::String,
     }
 }
+/// Contains details about a group of security issues that, when the issues
+/// occur together, represent a greater risk than when the issues occur
+/// independently. A group of such issues is referred to as a toxic combination.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToxicCombination {
+    /// The
+    /// [Attack exposure
+    /// score](<https://cloud.google.com/security-command-center/docs/attack-exposure-learn#attack_exposure_scores>)
+    /// of this toxic combination. The score is a measure of how much this toxic
+    /// combination exposes one or more high-value resources to potential attack.
+    #[prost(double, tag = "1")]
+    pub attack_exposure_score: f64,
+    /// List of resource names of findings associated with this toxic combination.
+    /// For example, `organizations/123/sources/456/findings/789`.
+    #[prost(string, repeated, tag = "2")]
+    pub related_findings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// Refers to common vulnerability fields e.g. cve, cvss, cwe etc.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3048,6 +3120,18 @@ pub struct Finding {
     /// Notebook associated with the finding.
     #[prost(message, optional, tag = "63")]
     pub notebook: ::core::option::Option<Notebook>,
+    /// Contains details about a group of security issues that, when the issues
+    /// occur together, represent a greater risk than when the issues occur
+    /// independently. A group of such issues is referred to as a toxic
+    /// combination.
+    /// This field cannot be updated. Its value is ignored in all update requests.
+    #[prost(message, optional, tag = "64")]
+    pub toxic_combination: ::core::option::Option<ToxicCombination>,
+    /// Contains details about groups of which this finding is a member. A group is
+    /// a collection of findings that are related in some way.
+    /// This field cannot be updated. Its value is ignored in all update requests.
+    #[prost(message, repeated, tag = "65")]
+    pub group_memberships: ::prost::alloc::vec::Vec<GroupMembership>,
 }
 /// Nested message and enum types in `Finding`.
 pub mod finding {
@@ -3266,6 +3350,11 @@ pub mod finding {
         /// Describes a potential security risk due to a change in the security
         /// posture.
         PostureViolation = 6,
+        /// Describes a group of security issues that, when the issues
+        /// occur together, represent a greater risk than when the issues occur
+        /// independently. A group of such issues is referred to as a toxic
+        /// combination.
+        ToxicCombination = 7,
     }
     impl FindingClass {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3281,6 +3370,7 @@ pub mod finding {
                 FindingClass::Observation => "OBSERVATION",
                 FindingClass::SccError => "SCC_ERROR",
                 FindingClass::PostureViolation => "POSTURE_VIOLATION",
+                FindingClass::ToxicCombination => "TOXIC_COMBINATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3293,6 +3383,7 @@ pub mod finding {
                 "OBSERVATION" => Some(Self::Observation),
                 "SCC_ERROR" => Some(Self::SccError),
                 "POSTURE_VIOLATION" => Some(Self::PostureViolation),
+                "TOXIC_COMBINATION" => Some(Self::ToxicCombination),
                 _ => None,
             }
         }

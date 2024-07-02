@@ -6,15 +6,19 @@ pub struct Volume {
     /// The mount path for the volume, e.g. /mnt/disks/share.
     #[prost(string, tag = "4")]
     pub mount_path: ::prost::alloc::string::String,
-    /// For Google Cloud Storage (GCS), mount options are the options supported by
-    /// the gcsfuse tool (<https://github.com/GoogleCloudPlatform/gcsfuse>).
-    /// For existing persistent disks, mount options provided by the
-    /// mount command (<https://man7.org/linux/man-pages/man8/mount.8.html>) except
-    /// writing are supported. This is due to restrictions of multi-writer mode
-    /// (<https://cloud.google.com/compute/docs/disks/sharing-disks-between-vms>).
-    /// For other attached disks and Network File System (NFS), mount options are
-    /// these supported by the mount command
-    /// (<https://man7.org/linux/man-pages/man8/mount.8.html>).
+    /// Mount options vary based on the type of storage volume:
+    ///
+    /// * For a Cloud Storage bucket, all the mount options provided
+    /// by
+    ///    the [`gcsfuse` tool](<https://cloud.google.com/storage/docs/gcsfuse-cli>)
+    ///    are supported.
+    /// * For an existing persistent disk, all mount options provided by the
+    ///    [`mount` command](<https://man7.org/linux/man-pages/man8/mount.8.html>)
+    ///    except writing are supported. This is due to restrictions of
+    ///    [multi-writer
+    ///    mode](<https://cloud.google.com/compute/docs/disks/sharing-disks-between-vms>).
+    /// * For any other disk or a Network File System (NFS), all the
+    ///    mount options provided by the `mount` command are supported.
     #[prost(string, repeated, tag = "5")]
     pub mount_options: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The source for the volume.
@@ -172,12 +176,11 @@ pub struct TaskExecution {
     /// due to the following reasons, the exit code will be 50000.
     ///
     /// Otherwise, it can be from different sources:
-    /// - Batch known failures as
+    /// * Batch known failures:
     /// <https://cloud.google.com/batch/docs/troubleshooting#reserved-exit-codes.>
-    /// - Batch runnable execution failures: You can rely on Batch logs for further
-    /// diagnose: <https://cloud.google.com/batch/docs/analyze-job-using-logs.>
-    /// If there are multiple runnables failures, Batch only exposes the first
-    /// error caught for now.
+    /// * Batch runnable execution failures; you can rely on Batch logs to further
+    /// diagnose: <https://cloud.google.com/batch/docs/analyze-job-using-logs.> If
+    /// there are multiple runnables failures, Batch only exposes the first error.
     #[prost(int32, tag = "1")]
     pub exit_code: i32,
     /// Optional. The tail end of any content written to standard error by the task
@@ -489,10 +492,15 @@ pub struct TaskSpec {
     /// ComputeResource requirements.
     #[prost(message, optional, tag = "3")]
     pub compute_resource: ::core::option::Option<ComputeResource>,
-    /// Maximum duration the task should run.
-    /// The task will be killed and marked as FAILED if over this limit.
-    /// The valid value range for max_run_duration in seconds is [0,
-    /// 315576000000.999999999],
+    /// Maximum duration the task should run before being automatically retried
+    /// (if enabled) or automatically failed. Format the value of this field
+    /// as a time limit in seconds followed by `s`&mdash;for example, `3600s`
+    /// for 1 hour. The field accepts any value between 0 and the maximum listed
+    /// for the `Duration` field type at
+    /// <https://protobuf.dev/reference/protobuf/google.protobuf/#duration;> however,
+    /// the actual maximum run time for a job will be limited to the maximum run
+    /// time for a job listed at
+    /// <https://cloud.google.com/batch/quotas#max-job-duration.>
     #[prost(message, optional, tag = "4")]
     pub max_run_duration: ::core::option::Option<::prost_types::Duration>,
     /// Maximum number of retries on failures.
@@ -1034,11 +1042,19 @@ pub struct ResourceUsage {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobNotification {
-    /// The Pub/Sub topic where notifications like the job state changes
-    /// will be published. The topic must exist in the same project as
-    /// the job and billings will be charged to this project.
-    /// If not specified, no Pub/Sub messages will be sent.
-    /// Topic format: `projects/{project}/topics/{topic}`.
+    /// The Pub/Sub topic where notifications for the job, like state
+    /// changes, will be published. If undefined, no Pub/Sub notifications
+    /// are sent for this job.
+    ///
+    /// Specify the topic using the following format:
+    /// `projects/{project}/topics/{topic}`.
+    /// Notably, if you want to specify a Pub/Sub topic that is in a
+    /// different project than the job, your administrator must grant your
+    /// project's Batch service agent permission to publish to that topic.
+    ///
+    /// For more information about configuring Pub/Sub notifications for
+    /// a job, see
+    /// <https://cloud.google.com/batch/docs/enable-notifications.>
     #[prost(string, tag = "1")]
     pub pubsub_topic: ::prost::alloc::string::String,
     /// The attribute requirements of messages to be sent to this Pub/Sub topic.
@@ -1225,7 +1241,9 @@ pub mod allocation_policy {
         /// Disk type as shown in `gcloud compute disk-types list`.
         /// For example, local SSD uses type "local-ssd".
         /// Persistent disks and boot disks use "pd-balanced", "pd-extreme", "pd-ssd"
-        /// or "pd-standard".
+        /// or "pd-standard". If not specified, "pd-standard" will be used as the
+        /// default type for non-boot disks, "pd-balanced" will be used as the
+        /// default type for boot disks.
         #[prost(string, tag = "1")]
         pub r#type: ::prost::alloc::string::String,
         /// Disk size in GB.
@@ -1390,9 +1408,9 @@ pub mod allocation_policy {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InstancePolicyOrTemplate {
-        /// Set this field true if users want Batch to help fetch drivers from a
-        /// third party location and install them for GPUs specified in
-        /// policy.accelerators or instance_template on their behalf. Default is
+        /// Set this field true if you want Batch to help fetch drivers from a third
+        /// party location and install them for GPUs specified in
+        /// `policy.accelerators` or `instance_template` on your behalf. Default is
         /// false.
         ///
         /// For Container-Optimized Image cases, Batch will install the
@@ -1402,6 +1420,10 @@ pub mod allocation_policy {
         /// <https://github.com/GoogleCloudPlatform/compute-gpu-installation/blob/main/linux/install_gpu_driver.py.>
         #[prost(bool, tag = "3")]
         pub install_gpu_drivers: bool,
+        /// Optional. Set this field true if you want Batch to install Ops Agent on
+        /// your behalf. Default is false.
+        #[prost(bool, tag = "4")]
+        pub install_ops_agent: bool,
         #[prost(oneof = "instance_policy_or_template::PolicyTemplate", tags = "1, 2")]
         pub policy_template: ::core::option::Option<
             instance_policy_or_template::PolicyTemplate,
@@ -2030,13 +2052,26 @@ pub struct DeleteJobRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateJobRequest {
     /// Required. The Job to update.
-    /// Only fields specified in `update_mask` are updated.
+    /// Only fields specified in `updateMask` are updated.
     #[prost(message, optional, tag = "1")]
     pub job: ::core::option::Option<Job>,
     /// Required. Mask of fields to update.
     ///
-    /// UpdateJob request now only supports update on `task_count` field in a job's
-    /// first task group. Other fields will be ignored.
+    /// The `jobs.patch` method can only be used while a job is in the `QUEUED`,
+    /// `SCHEDULED`, or `RUNNING` state and currently only supports increasing the
+    /// value of the first `taskCount` field in the job's `taskGroups` field.
+    /// Therefore, you must set the value of `updateMask` to `taskGroups`. Any
+    /// other job fields in the update request will be ignored.
+    ///
+    /// For example, to update a job's `taskCount` to `2`, set `updateMask` to
+    /// `taskGroups` and use the following request body:
+    /// ```
+    /// {
+    ///    "taskGroups":[{
+    ///      "taskCount": 2
+    ///    }]
+    /// }
+    /// ```
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. An optional request ID to identify requests. Specify a unique

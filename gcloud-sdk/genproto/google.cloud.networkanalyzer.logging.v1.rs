@@ -269,6 +269,7 @@ pub enum ReportCauseCode {
     RouteInvalidNextHopIlbMisconfigured = 4,
     RouteInvalidNextHopVpnTunnelDeleted = 5,
     RouteInvalidNextHopIlbBackendIpForwardingDisabled = 6,
+    RouteInvalidNextHopIlbVipNotAssigned = 7,
     IpUtilizationIpAllocationRatioHigh = 20,
     /// Summary of ip utilization of all subnet ranges in the project.
     IpUtilizationIpAllocationSummary = 21,
@@ -329,6 +330,9 @@ impl ReportCauseCode {
             }
             ReportCauseCode::RouteInvalidNextHopIlbBackendIpForwardingDisabled => {
                 "ROUTE_INVALID_NEXT_HOP_ILB_BACKEND_IP_FORWARDING_DISABLED"
+            }
+            ReportCauseCode::RouteInvalidNextHopIlbVipNotAssigned => {
+                "ROUTE_INVALID_NEXT_HOP_ILB_VIP_NOT_ASSIGNED"
             }
             ReportCauseCode::IpUtilizationIpAllocationRatioHigh => {
                 "IP_UTILIZATION_IP_ALLOCATION_RATIO_HIGH"
@@ -440,6 +444,9 @@ impl ReportCauseCode {
             }
             "ROUTE_INVALID_NEXT_HOP_ILB_BACKEND_IP_FORWARDING_DISABLED" => {
                 Some(Self::RouteInvalidNextHopIlbBackendIpForwardingDisabled)
+            }
+            "ROUTE_INVALID_NEXT_HOP_ILB_VIP_NOT_ASSIGNED" => {
+                Some(Self::RouteInvalidNextHopIlbVipNotAssigned)
             }
             "IP_UTILIZATION_IP_ALLOCATION_RATIO_HIGH" => {
                 Some(Self::IpUtilizationIpAllocationRatioHigh)

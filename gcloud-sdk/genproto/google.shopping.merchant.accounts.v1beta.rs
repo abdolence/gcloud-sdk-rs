@@ -766,7 +766,7 @@ pub struct UpdateUserRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUsersRequest {
     /// Required. The parent, which owns this collection of users.
-    /// Format: `accounts/{account}
+    /// Format: `accounts/{account}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of users to return. The service may return
@@ -1889,7 +1889,7 @@ pub struct BusinessInfo {
     pub address: ::core::option::Option<
         super::super::super::super::r#type::PostalAddress,
     >,
-    /// Optional. The phone number of the business.
+    /// Output only. The phone number of the business.
     #[prost(message, optional, tag = "3")]
     pub phone: ::core::option::Option<super::super::super::super::r#type::PhoneNumber>,
     /// Output only. The phone verification state of the business.

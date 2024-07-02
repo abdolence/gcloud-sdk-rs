@@ -4,7 +4,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessApprovalRequest {
     /// Identifier. Format:
-    /// organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/accessApprovalRequests/{access_approval_request}.
+    /// `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/accessApprovalRequests/{access_approval_request}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The time at which approval was requested.
@@ -24,7 +24,7 @@ pub struct AccessApprovalRequest {
 pub struct ListAccessApprovalRequestsRequest {
     /// Required. Parent resource
     /// Format:
-    /// organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}
+    /// `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of access requests to return. The service may
@@ -202,7 +202,7 @@ impl CompletionState {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Workload {
     /// Identifier. Format:
-    /// organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}
+    /// `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Folder id this workload is associated with
@@ -315,7 +315,7 @@ pub mod workload {
 pub struct ListWorkloadsRequest {
     /// Required. Parent resource
     /// Format:
-    /// organizations/{organization}/locations/{location}/customers/{customer}
+    /// `organizations/{organization}/locations/{location}/customers/{customer}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of workloads to return. The service may return fewer
@@ -353,7 +353,7 @@ pub struct ListWorkloadsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkloadRequest {
     /// Required. Format:
-    /// organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}
+    /// `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -437,7 +437,7 @@ pub mod workload_onboarding_step {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Customer {
     /// Identifier. Format:
-    /// organizations/{organization}/locations/{location}/customers/{customer}
+    /// `organizations/{organization}/locations/{location}/customers/{customer}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The customer organization's display name. E.g. "google.com".
@@ -455,7 +455,7 @@ pub struct Customer {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomersRequest {
     /// Required. Parent resource
-    /// Format: organizations/{organization}/locations/{location}
+    /// Format: `organizations/{organization}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of Customers to return. The service may return fewer
@@ -493,7 +493,7 @@ pub struct ListCustomersResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomerRequest {
     /// Required. Format:
-    /// organizations/{organization}/locations/{location}/customers/{customer}
+    /// `organizations/{organization}/locations/{location}/customers/{customer}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -573,7 +573,7 @@ pub mod customer_onboarding_step {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EkmConnections {
     /// Identifier. Format:
-    /// organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/ekmConnections
+    /// `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/ekmConnections`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The EKM connections associated with the workload
@@ -585,7 +585,7 @@ pub struct EkmConnections {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEkmConnectionsRequest {
     /// Required. Format:
-    /// organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/ekmConnections
+    /// `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/ekmConnections`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -675,7 +675,7 @@ pub mod ekm_connection {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartnerPermissions {
     /// Identifier. Format:
-    /// organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/partnerPermissions
+    /// `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/partnerPermissions`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The partner permissions granted for the workload
@@ -748,7 +748,7 @@ pub mod partner_permissions {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPartnerPermissionsRequest {
     /// Required. Name of the resource to get in the format:
-    /// organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/partnerPermissions
+    /// `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/partnerPermissions`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -757,7 +757,7 @@ pub struct GetPartnerPermissionsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Partner {
     /// Identifier. The resource name of the partner.
-    /// Format: organizations/{organization}/locations/{location}/partner
+    /// Format: `organizations/{organization}/locations/{location}/partner`
     /// Example: "organizations/123456/locations/us-central1/partner"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -787,7 +787,8 @@ pub struct Partner {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPartnerRequest {
-    /// Required. Format: organizations/{organization}/locations/{location}/partner
+    /// Required. Format:
+    /// `organizations/{organization}/locations/{location}/partner`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1169,7 +1170,8 @@ pub mod cloud_controls_partner_core_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists access requests associated with a workload
+        /// Deprecated: Only returns access approval requests directly associated with
+        /// an assured workload folder.
         pub async fn list_access_approval_requests(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAccessApprovalRequestsRequest>,
@@ -1235,7 +1237,7 @@ pub mod cloud_controls_partner_core_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Violation {
     /// Identifier. Format:
-    /// organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/violations/{violation}
+    /// `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/violations/{violation}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Description for the Violation.
@@ -1261,9 +1263,9 @@ pub struct Violation {
     pub state: i32,
     /// Output only. Immutable. Name of the OrgPolicy which was modified with
     /// non-compliant change and resulted this violation. Format:
-    ///   projects/{project_number}/policies/{constraint_name}
-    ///   folders/{folder_id}/policies/{constraint_name}
-    ///   organizations/{organization_id}/policies/{constraint_name}
+    ///   `projects/{project_number}/policies/{constraint_name}`
+    ///   `folders/{folder_id}/policies/{constraint_name}`
+    ///   `organizations/{organization_id}/policies/{constraint_name}`
     #[prost(string, tag = "8")]
     pub non_compliant_org_policy: ::prost::alloc::string::String,
     /// The folder_id of the violation
@@ -1482,7 +1484,7 @@ pub mod violation {
 pub struct ListViolationsRequest {
     /// Required. Parent resource
     /// Format
-    /// organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}
+    /// `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of customers row to return. The service may
@@ -1526,7 +1528,7 @@ pub struct ListViolationsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetViolationRequest {
     /// Required. Format:
-    /// organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/violations/{violation}
+    /// `organizations/{organization}/locations/{location}/customers/{customer}/workloads/{workload}/violations/{violation}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }

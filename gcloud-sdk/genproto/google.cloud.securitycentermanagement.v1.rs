@@ -97,6 +97,10 @@ pub mod security_center_service {
         Enabled = 2,
         /// State is disabled.
         Disabled = 3,
+        /// SCC is configured to ingest findings from this service but not enable
+        /// this service. Not a valid intended_enablement_state (that is, this is a
+        /// readonly state).
+        IngestOnly = 4,
     }
     impl EnablementState {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -109,6 +113,7 @@ pub mod security_center_service {
                 EnablementState::Inherited => "INHERITED",
                 EnablementState::Enabled => "ENABLED",
                 EnablementState::Disabled => "DISABLED",
+                EnablementState::IngestOnly => "INGEST_ONLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -118,6 +123,7 @@ pub mod security_center_service {
                 "INHERITED" => Some(Self::Inherited),
                 "ENABLED" => Some(Self::Enabled),
                 "DISABLED" => Some(Self::Disabled),
+                "INGEST_ONLY" => Some(Self::IngestOnly),
                 _ => None,
             }
         }
@@ -905,6 +911,9 @@ pub mod simulated_finding {
         /// Describes a potential security risk due to a change in the security
         /// posture.
         PostureViolation = 6,
+        /// Describes a combination of security issues that represent a more severe
+        /// security problem when taken together.
+        ToxicCombination = 7,
     }
     impl FindingClass {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -920,6 +929,7 @@ pub mod simulated_finding {
                 FindingClass::Observation => "OBSERVATION",
                 FindingClass::SccError => "SCC_ERROR",
                 FindingClass::PostureViolation => "POSTURE_VIOLATION",
+                FindingClass::ToxicCombination => "TOXIC_COMBINATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -932,6 +942,7 @@ pub mod simulated_finding {
                 "OBSERVATION" => Some(Self::Observation),
                 "SCC_ERROR" => Some(Self::SccError),
                 "POSTURE_VIOLATION" => Some(Self::PostureViolation),
+                "TOXIC_COMBINATION" => Some(Self::ToxicCombination),
                 _ => None,
             }
         }
@@ -1464,6 +1475,10 @@ pub struct GetSecurityCenterServiceRequest {
     ///    * web-security-scanner
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Flag that, when set, will be used to filter the ModuleSettings that are
+    /// in scope. The default setting is that all modules will be shown.
+    #[prost(bool, tag = "2")]
+    pub show_eligible_modules_only: bool,
 }
 /// Request message for listing Security Command Center services.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1485,6 +1500,10 @@ pub struct ListSecurityCenterServicesRequest {
     /// Optional. The value returned by the last call indicating a continuation.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// Flag that, when set, will be used to filter the ModuleSettings that are
+    /// in scope. The default setting is that all modules will be shown.
+    #[prost(bool, tag = "4")]
+    pub show_eligible_modules_only: bool,
 }
 /// Response message for listing Security Command Center services.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1510,13 +1529,13 @@ pub struct UpdateSecurityCenterServiceRequest {
     ///    * "modules"
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Optional. When set to true, only validations (including IAM checks) will
+    /// Optional. When set to true, only validations (including IAM checks) will be
     /// done for the request (service will not be updated). An OK response
-    /// indicates the request is valid while an error response indicates the
-    /// request is invalid. Note that a subsequent request to actually update the
-    /// service could still fail because 1. the state could have changed (e.g. IAM
-    /// permission lost) or
-    /// 2. A failure occurred while trying to delete the module.
+    /// indicates that the request is valid, while an error response indicates that
+    /// the request is invalid. Note that a subsequent request to actually update
+    /// the service could still fail for one of the following reasons:
+    /// - The state could have changed (e.g. IAM permission lost).
+    /// - A failure occurred while trying to delete the module.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }

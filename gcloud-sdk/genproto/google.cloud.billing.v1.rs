@@ -727,11 +727,11 @@ pub mod cloud_billing_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Service {
     /// The resource name for the service.
-    /// Example: "services/DA34-426B-A397"
+    /// Example: "services/6F81-5844-456A"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The identifier for the service.
-    /// Example: "DA34-426B-A397"
+    /// Example: "6F81-5844-456A"
     #[prost(string, tag = "2")]
     pub service_id: ::prost::alloc::string::String,
     /// A human readable display name for this service.
@@ -742,16 +742,16 @@ pub struct Service {
     #[prost(string, tag = "4")]
     pub business_entity_name: ::prost::alloc::string::String,
 }
-/// Encapsulates a single SKU in Google Cloud Platform
+/// Encapsulates a single SKU in Google Cloud
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Sku {
     /// The resource name for the SKU.
-    /// Example: "services/DA34-426B-A397/skus/AA95-CD31-42FE"
+    /// Example: "services/6F81-5844-456A/skus/D041-B8A1-6E0B"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The identifier for the SKU.
-    /// Example: "AA95-CD31-42FE"
+    /// Example: "D041-B8A1-6E0B"
     #[prost(string, tag = "2")]
     pub sku_id: ::prost::alloc::string::String,
     /// A human readable description of the SKU, has a maximum length of 256
@@ -1095,7 +1095,7 @@ pub struct ListServicesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSkusRequest {
     /// Required. The name of the service.
-    /// Example: "services/DA34-426B-A397"
+    /// Example: "services/6F81-5844-456A"
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional inclusive start time of the time range for which the pricing

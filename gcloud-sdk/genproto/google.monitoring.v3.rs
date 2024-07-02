@@ -778,6 +778,29 @@ pub mod alert_policy {
         /// generated.
         #[prost(string, tag = "3")]
         pub subject: ::prost::alloc::string::String,
+        /// Optional. Links to content such as playbooks, repositories, and other
+        /// resources. This field can contain up to 3 entries.
+        #[prost(message, repeated, tag = "4")]
+        pub links: ::prost::alloc::vec::Vec<documentation::Link>,
+    }
+    /// Nested message and enum types in `Documentation`.
+    pub mod documentation {
+        /// Links to content such as playbooks, repositories, and other resources.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Link {
+            /// A short display name for the link. The display name must not be empty
+            /// or exceed 63 characters. Example: "playbook".
+            #[prost(string, tag = "1")]
+            pub display_name: ::prost::alloc::string::String,
+            /// The url of a webpage.
+            /// A url can be templatized by using variables
+            /// in the path or the query parameters. The total length of a URL should
+            /// not exceed 2083 characters before and after variable expansion.
+            /// Example: "<https://my_domain.com/playbook?name=${resource.name}">
+            #[prost(string, tag = "2")]
+            pub url: ::prost::alloc::string::String,
+        }
     }
     /// A condition is a true/false test that determines when an alerting policy
     /// should open an incident. If a condition evaluates to true, it signifies

@@ -271,7 +271,7 @@ pub struct BackupConfiguration {
     #[prost(message, optional, tag = "9")]
     pub transaction_log_retention_days: ::core::option::Option<i32>,
     /// Output only. This value contains the storage location of transactional logs
-    /// for the database for point-in-time recovery.
+    /// used to perform point-in-time recovery (PITR) for the database.
     #[prost(
         enumeration = "backup_configuration::TransactionalLogStorageState",
         optional,
@@ -281,8 +281,8 @@ pub struct BackupConfiguration {
 }
 /// Nested message and enum types in `BackupConfiguration`.
 pub mod backup_configuration {
-    /// This value contains the storage location of transactional logs for the
-    /// database for point-in-time recovery.
+    /// This value contains the storage location of the transactional logs
+    /// used to perform point-in-time recovery (PITR) for the database.
     #[derive(
         Clone,
         Copy,
@@ -298,15 +298,19 @@ pub mod backup_configuration {
     pub enum TransactionalLogStorageState {
         /// Unspecified.
         Unspecified = 0,
-        /// The transaction logs for the instance are stored on a data disk.
+        /// The transaction logs used for PITR for the instance are stored
+        /// on a data disk.
         Disk = 1,
-        /// The transaction logs for the instance are switching from being stored on
-        /// a data disk to being stored in Cloud Storage.
+        /// The transaction logs used for PITR for the instance are switching from
+        /// being stored on a data disk to being stored in Cloud Storage.
+        /// Only applicable to MySQL.
         SwitchingToCloudStorage = 2,
-        /// The transaction logs for the instance are now stored in Cloud Storage.
-        /// Previously, they were stored on a data disk.
+        /// The transaction logs used for PITR for the instance are now stored
+        /// in Cloud Storage. Previously, they were stored on a data disk.
+        /// Only applicable to MySQL.
         SwitchedToCloudStorage = 3,
-        /// The transaction logs for the instance are stored in Cloud Storage.
+        /// The transaction logs used for PITR for the instance are stored in
+        /// Cloud Storage. Only applicable to MySQL and PostgreSQL.
         CloudStorage = 4,
     }
     impl TransactionalLogStorageState {
@@ -823,20 +827,23 @@ pub struct IpConfiguration {
     /// value pairs are valid:
     ///
     /// For PostgreSQL and MySQL:
+    ///
     /// * `ssl_mode=ALLOW_UNENCRYPTED_AND_ENCRYPTED` and `require_ssl=false`
     /// * `ssl_mode=ENCRYPTED_ONLY` and `require_ssl=false`
     /// * `ssl_mode=TRUSTED_CLIENT_CERTIFICATE_REQUIRED` and `require_ssl=true`
     ///
     /// For SQL Server:
+    ///
     /// * `ssl_mode=ALLOW_UNENCRYPTED_AND_ENCRYPTED` and `require_ssl=false`
     /// * `ssl_mode=ENCRYPTED_ONLY` and `require_ssl=true`
     ///
-    /// The value of `ssl_mode` gets priority over the value of `require_ssl`. For
-    /// example, for the pair `ssl_mode=ENCRYPTED_ONLY` and `require_ssl=false`,
-    /// the `ssl_mode=ENCRYPTED_ONLY` means only accept SSL connections, while the
-    /// `require_ssl=false` means accept both non-SSL and SSL connections. MySQL
-    /// and PostgreSQL databases respect `ssl_mode` in this case and accept only
-    /// SSL connections.
+    /// The value of `ssl_mode` has priority over the value of `require_ssl`.
+    ///
+    /// For example, for the pair `ssl_mode=ENCRYPTED_ONLY` and
+    /// `require_ssl=false`, `ssl_mode=ENCRYPTED_ONLY` means accept only SSL
+    /// connections, while `require_ssl=false` means accept both non-SSL
+    /// and SSL connections. In this case, MySQL and PostgreSQL databases respect
+    /// `ssl_mode` and accepts only SSL connections.
     #[prost(enumeration = "ip_configuration::SslMode", tag = "8")]
     pub ssl_mode: i32,
     /// PSC settings for this instance.
@@ -861,17 +868,23 @@ pub mod ip_configuration {
     pub enum SslMode {
         /// The SSL mode is unknown.
         Unspecified = 0,
-        /// Allow non-SSL/non-TLS and SSL/TLS connections. For SSL/TLS connections,
-        /// the client certificate won't be verified.
+        /// Allow non-SSL/non-TLS and SSL/TLS connections.
+        /// For SSL connections to MySQL and PostgreSQL, the client certificate
+        /// isn't verified.
+        ///
         /// When this value is used, the legacy `require_ssl` flag must be false or
-        /// cleared to avoid the conflict between values of two flags.
+        /// cleared to avoid a conflict between the values of the two flags.
         AllowUnencryptedAndEncrypted = 1,
         /// Only allow connections encrypted with SSL/TLS.
+        /// For SSL connections to MySQL and PostgreSQL, the client certificate
+        /// isn't verified.
+        ///
         /// When this value is used, the legacy `require_ssl` flag must be false or
-        /// cleared to avoid the conflict between values of two flags.
+        /// cleared to avoid a conflict between the values of the two flags.
         EncryptedOnly = 2,
         /// Only allow connections encrypted with SSL/TLS and with valid
         /// client certificates.
+        ///
         /// When this value is used, the legacy `require_ssl` flag must be true or
         /// cleared to avoid the conflict between values of two flags.
         /// PostgreSQL clients or users that connect using IAM database
@@ -881,6 +894,8 @@ pub mod ip_configuration {
         /// [Cloud SQL
         /// Connectors](<https://cloud.google.com/sql/docs/postgres/connect-connectors>)
         /// to enforce client identity verification.
+        ///
+        /// Only applicable to MySQL and PostgreSQL. Not applicable to SQL Server.
         TrustedClientCertificateRequired = 3,
     }
     impl SslMode {
@@ -1289,7 +1304,8 @@ pub mod operation {
         AutoRestart = 37,
         /// Re-encrypts CMEK instances with latest key version.
         Reencrypt = 38,
-        /// Switches over to replica instance from primary.
+        /// Switches the roles of the primary and replica pair. The target instance
+        /// should be the replica.
         Switchover = 39,
         /// Acquire a lease for the setup of SQL Server Reporting Services (SSRS).
         AcquireSsrsLease = 42,
@@ -1300,6 +1316,20 @@ pub mod operation {
         /// asynchronously from the promote replica operation executed to the
         /// replica.
         ReconfigureOldPrimary = 44,
+        /// Indicates that the instance, its read replicas, and its cascading
+        /// replicas are in maintenance. Maintenance typically gets initiated on
+        /// groups of replicas first, followed by the primary instance. For each
+        /// instance, maintenance typically causes the instance to be unavailable for
+        /// 1-3 minutes.
+        ClusterMaintenance = 45,
+        /// Indicates that the instance (and any of its replicas) are currently in
+        /// maintenance. This is initiated as a self-service request by using SSM.
+        /// Maintenance typically causes the instance to be unavailable for 1-3
+        /// minutes.
+        SelfServiceMaintenance = 46,
+        /// Switches a primary instance to a replica. This operation runs as part of
+        /// a switchover operation to the original primary instance.
+        SwitchoverToReplica = 47,
     }
     impl SqlOperationType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1350,6 +1380,9 @@ pub mod operation {
                 SqlOperationType::AcquireSsrsLease => "ACQUIRE_SSRS_LEASE",
                 SqlOperationType::ReleaseSsrsLease => "RELEASE_SSRS_LEASE",
                 SqlOperationType::ReconfigureOldPrimary => "RECONFIGURE_OLD_PRIMARY",
+                SqlOperationType::ClusterMaintenance => "CLUSTER_MAINTENANCE",
+                SqlOperationType::SelfServiceMaintenance => "SELF_SERVICE_MAINTENANCE",
+                SqlOperationType::SwitchoverToReplica => "SWITCHOVER_TO_REPLICA",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1397,6 +1430,9 @@ pub mod operation {
                 "ACQUIRE_SSRS_LEASE" => Some(Self::AcquireSsrsLease),
                 "RELEASE_SSRS_LEASE" => Some(Self::ReleaseSsrsLease),
                 "RECONFIGURE_OLD_PRIMARY" => Some(Self::ReconfigureOldPrimary),
+                "CLUSTER_MAINTENANCE" => Some(Self::ClusterMaintenance),
+                "SELF_SERVICE_MAINTENANCE" => Some(Self::SelfServiceMaintenance),
+                "SWITCHOVER_TO_REPLICA" => Some(Self::SwitchoverToReplica),
                 _ => None,
             }
         }
@@ -1699,8 +1735,8 @@ pub struct Settings {
     /// Server timezone, relevant only for Cloud SQL for SQL Server.
     #[prost(string, tag = "34")]
     pub time_zone: ::prost::alloc::string::String,
-    /// Specifies advance machine configuration for the instance
-    /// relevant only for SQL Server.
+    /// Specifies advanced machine configuration for the instances relevant only
+    /// for SQL Server.
     #[prost(message, optional, tag = "35")]
     pub advanced_machine_features: ::core::option::Option<AdvancedMachineFeatures>,
     /// Configuration for data cache.
@@ -2143,6 +2179,8 @@ pub enum SqlDatabaseVersion {
     Postgres14 = 110,
     /// The database version is PostgreSQL 15.
     Postgres15 = 172,
+    /// The database version is PostgreSQL 16.
+    Postgres16 = 272,
     /// The database version is MySQL 8.
     Mysql80 = 20,
     /// The database major version is MySQL 8.0 and the minor version is 18.
@@ -2177,6 +2215,10 @@ pub enum SqlDatabaseVersion {
     Mysql8039 = 357,
     /// The database major version is MySQL 8.0 and the minor version is 40.
     Mysql8040 = 358,
+    /// The database version is MySQL 8.4.
+    Mysql84 = 398,
+    /// The database version is MySQL 8.4 and the patch version is 0.
+    Mysql840 = 399,
     /// The database version is SQL Server 2019 Standard.
     Sqlserver2019Standard = 26,
     /// The database version is SQL Server 2019 Enterprise.
@@ -2217,6 +2259,7 @@ impl SqlDatabaseVersion {
             SqlDatabaseVersion::Postgres13 => "POSTGRES_13",
             SqlDatabaseVersion::Postgres14 => "POSTGRES_14",
             SqlDatabaseVersion::Postgres15 => "POSTGRES_15",
+            SqlDatabaseVersion::Postgres16 => "POSTGRES_16",
             SqlDatabaseVersion::Mysql80 => "MYSQL_8_0",
             SqlDatabaseVersion::Mysql8018 => "MYSQL_8_0_18",
             SqlDatabaseVersion::Mysql8026 => "MYSQL_8_0_26",
@@ -2234,6 +2277,8 @@ impl SqlDatabaseVersion {
             SqlDatabaseVersion::Mysql8038 => "MYSQL_8_0_38",
             SqlDatabaseVersion::Mysql8039 => "MYSQL_8_0_39",
             SqlDatabaseVersion::Mysql8040 => "MYSQL_8_0_40",
+            SqlDatabaseVersion::Mysql84 => "MYSQL_8_4",
+            SqlDatabaseVersion::Mysql840 => "MYSQL_8_4_0",
             SqlDatabaseVersion::Sqlserver2019Standard => "SQLSERVER_2019_STANDARD",
             SqlDatabaseVersion::Sqlserver2019Enterprise => "SQLSERVER_2019_ENTERPRISE",
             SqlDatabaseVersion::Sqlserver2019Express => "SQLSERVER_2019_EXPRESS",
@@ -2263,6 +2308,7 @@ impl SqlDatabaseVersion {
             "POSTGRES_13" => Some(Self::Postgres13),
             "POSTGRES_14" => Some(Self::Postgres14),
             "POSTGRES_15" => Some(Self::Postgres15),
+            "POSTGRES_16" => Some(Self::Postgres16),
             "MYSQL_8_0" => Some(Self::Mysql80),
             "MYSQL_8_0_18" => Some(Self::Mysql8018),
             "MYSQL_8_0_26" => Some(Self::Mysql8026),
@@ -2280,6 +2326,8 @@ impl SqlDatabaseVersion {
             "MYSQL_8_0_38" => Some(Self::Mysql8038),
             "MYSQL_8_0_39" => Some(Self::Mysql8039),
             "MYSQL_8_0_40" => Some(Self::Mysql8040),
+            "MYSQL_8_4" => Some(Self::Mysql84),
+            "MYSQL_8_4_0" => Some(Self::Mysql840),
             "SQLSERVER_2019_STANDARD" => Some(Self::Sqlserver2019Standard),
             "SQLSERVER_2019_ENTERPRISE" => Some(Self::Sqlserver2019Enterprise),
             "SQLSERVER_2019_EXPRESS" => Some(Self::Sqlserver2019Express),
@@ -4205,9 +4253,13 @@ pub struct SqlInstancesPromoteReplicaRequest {
     /// ID of the project that contains the read replica.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
-    /// Set to true if the promote operation should attempt to re-add the original
-    /// primary as a replica when it comes back online. Otherwise, if this value is
-    /// false or not set, the original primary will be a standalone instance.
+    /// Set to true to invoke a replica failover to the designated DR
+    /// replica. As part of replica failover, the promote operation attempts
+    /// to add the original primary instance as a replica of the promoted
+    /// DR replica when the original primary instance comes back online.
+    /// If set to false or not specified, then the original primary
+    /// instance becomes an independent Cloud SQL primary instance.
+    /// Only applicable to MySQL.
     #[prost(bool, tag = "3")]
     pub failover: bool,
 }
@@ -4462,15 +4514,16 @@ pub struct SqlInstancesVerifyExternalSyncSettingsRequest {
     /// Optional. Flag to verify settings required by replication setup only
     #[prost(bool, tag = "5")]
     pub verify_replication_only: bool,
-    /// Optional. MigrationType decides if the migration is a physical file based
-    /// migration or logical migration
+    /// Optional. MigrationType configures the migration to use physical files or
+    /// logical dump files. If not set, then the logical dump file configuration is
+    /// used. Valid values are `LOGICAL` or `PHYSICAL`. Only applicable to MySQL.
     #[prost(
         enumeration = "sql_instances_verify_external_sync_settings_request::MigrationType",
         tag = "7"
     )]
     pub migration_type: i32,
-    /// Optional. Parallel level for initial data sync. Currently only applicable
-    /// for PostgreSQL.
+    /// Optional. Parallel level for initial data sync. Only applicable for
+    /// PostgreSQL.
     #[prost(enumeration = "ExternalSyncParallelLevel", tag = "8")]
     pub sync_parallel_level: i32,
     #[prost(
@@ -4527,8 +4580,8 @@ pub mod sql_instances_verify_external_sync_settings_request {
             }
         }
     }
-    /// MigrationType decides if the migration is a physical file based migration
-    /// or logical migration
+    /// MigrationType determines whether the migration is a physical file-based
+    /// migration or a logical dump file-based migration.
     #[derive(
         Clone,
         Copy,
@@ -4542,11 +4595,11 @@ pub mod sql_instances_verify_external_sync_settings_request {
     )]
     #[repr(i32)]
     pub enum MigrationType {
-        /// Default value is logical migration
+        /// Default value is a logical dump file-based migration
         Unspecified = 0,
-        /// Logical Migrations
+        /// Logical dump file-based migration
         Logical = 1,
-        /// Physical file based Migrations
+        /// Physical file-based migration
         Physical = 2,
     }
     impl MigrationType {
@@ -4602,8 +4655,9 @@ pub struct SqlInstancesStartExternalSyncRequest {
     /// for MySQL.
     #[prost(enumeration = "ExternalSyncParallelLevel", tag = "7")]
     pub sync_parallel_level: i32,
-    /// Optional. MigrationType decides if the migration is a physical file based
-    /// migration or logical migration.
+    /// Optional. MigrationType configures the migration to use physical files or
+    /// logical dump files. If not set, then the logical dump file configuration is
+    /// used. Valid values are `LOGICAL` or `PHYSICAL`. Only applicable to MySQL.
     #[prost(
         enumeration = "sql_instances_verify_external_sync_settings_request::MigrationType",
         tag = "8"
@@ -4856,9 +4910,9 @@ pub struct CloneContext {
     /// instance. Clone all databases if empty.
     #[prost(string, repeated, tag = "9")]
     pub database_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. (Point-in-time recovery for PostgreSQL only) Clone to an instance
-    /// in the specified zone. If no zone is specified, clone to the same zone as
-    /// the source instance.
+    /// Optional. Copy clone and point-in-time recovery clone of an instance to the
+    /// specified zone. If no zone is specified, clone to the same primary zone as
+    /// the source instance. This field applies to all DB types.
     #[prost(string, optional, tag = "10")]
     pub preferred_zone: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -5008,8 +5062,9 @@ pub struct DatabaseInstance {
     pub scheduled_maintenance: ::core::option::Option<
         database_instance::SqlScheduledMaintenance,
     >,
-    /// The status indicating if instance satisfiesPzs.
-    /// Reserved for future use.
+    /// This status indicates whether the instance satisfies PZS.
+    ///
+    /// The status is reserved for future use.
     #[prost(message, optional, tag = "35")]
     pub satisfies_pzs: ::core::option::Option<bool>,
     /// Output only. Stores the current database version running on the instance
@@ -5039,6 +5094,9 @@ pub struct DatabaseInstance {
     /// The current software version on the instance.
     #[prost(string, tag = "42")]
     pub maintenance_version: ::prost::alloc::string::String,
+    /// Output only. All database versions that are available for upgrade.
+    #[prost(message, repeated, tag = "45")]
+    pub upgradable_database_versions: ::prost::alloc::vec::Vec<AvailableDatabaseVersion>,
     #[prost(
         enumeration = "database_instance::SqlNetworkArchitecture",
         optional,
@@ -5060,12 +5118,13 @@ pub struct DatabaseInstance {
     /// Output only. The dns name of the primary instance in a replication group.
     #[prost(string, optional, tag = "52")]
     pub write_endpoint: ::core::option::Option<::prost::alloc::string::String>,
-    /// Optional. The pair of a primary instance and disaster recovery (DR)
-    /// replica. A DR replica is a cross-region replica that you designate for
-    /// failover in the event that the primary instance has regional failure.
+    /// Optional. A primary instance and disaster recovery (DR) replica pair.
+    /// A DR replica is a cross-region replica that you designate
+    /// for failover in the event that the primary instance
+    /// experiences regional failure. Only applicable to MySQL.
     #[prost(message, optional, tag = "54")]
     pub replication_cluster: ::core::option::Option<ReplicationCluster>,
-    /// Gemini configuration.
+    /// Gemini instance configuration.
     #[prost(message, optional, tag = "55")]
     pub gemini_config: ::core::option::Option<GeminiInstanceConfig>,
 }
@@ -5286,45 +5345,72 @@ pub mod database_instance {
         }
     }
 }
-/// Gemini configuration.
+/// Gemini instance configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GeminiInstanceConfig {
-    /// Output only. Whether gemini is enabled.
+    /// Output only. Whether Gemini is enabled.
     #[prost(bool, optional, tag = "1")]
     pub entitled: ::core::option::Option<bool>,
-    /// Output only. Whether vacuum management is enabled.
+    /// Output only. Whether the vacuum management is enabled.
     #[prost(bool, optional, tag = "2")]
     pub google_vacuum_mgmt_enabled: ::core::option::Option<bool>,
-    /// Output only. Whether oom session cancel is enabled.
+    /// Output only. Whether canceling the out-of-memory (OOM) session is enabled.
     #[prost(bool, optional, tag = "3")]
     pub oom_session_cancel_enabled: ::core::option::Option<bool>,
-    /// Output only. Whether active query is enabled.
+    /// Output only. Whether the active query is enabled.
     #[prost(bool, optional, tag = "4")]
     pub active_query_enabled: ::core::option::Option<bool>,
-    /// Output only. Whether index advisor is enabled.
+    /// Output only. Whether the index advisor is enabled.
     #[prost(bool, optional, tag = "5")]
     pub index_advisor_enabled: ::core::option::Option<bool>,
-    /// Output only. Whether flag recommender is enabled.
+    /// Output only. Whether the flag recommender is enabled.
     #[prost(bool, optional, tag = "6")]
     pub flag_recommender_enabled: ::core::option::Option<bool>,
 }
-/// Primary-DR replica pair
+/// A primary instance and disaster recovery (DR) replica pair.
+/// A DR replica is a cross-region replica that you designate for failover in
+/// the event that the primary instance experiences regional failure.
+/// Only applicable to MySQL.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplicationCluster {
+    /// Output only. If set, it indicates this instance has a private service
+    /// access (PSA) dns endpoint that is pointing to the primary instance of the
+    /// cluster. If this instance is the primary, the dns should be pointing to
+    /// this instance. After Switchover or Replica failover, this DNS endpoint
+    /// points to the promoted instance. This is a read-only field, returned to the
+    /// user as information. This field can exist even if a standalone instance
+    /// does not yet have a replica, or had a DR replica that was deleted.
+    #[prost(string, tag = "1")]
+    pub psa_write_endpoint: ::prost::alloc::string::String,
     /// Optional. If the instance is a primary instance, then this field identifies
     /// the disaster recovery (DR) replica. A DR replica is an optional
     /// configuration for Enterprise Plus edition instances. If the instance is a
-    /// read replica, then the field is not set. Users can set this field to set a
-    /// designated DR replica for a primary. Removing this field removes the DR
-    /// replica.
+    /// read replica, then the field is not set. Set this field to a replica name
+    /// to designate a DR replica for a primary instance. Remove the replica name
+    /// to remove the DR replica designation.
     #[prost(string, tag = "2")]
     pub failover_dr_replica_name: ::prost::alloc::string::String,
-    /// Output only. read-only field that indicates if the replica is a dr_replica;
-    /// not set for a primary.
+    /// Output only. Read-only field that indicates whether the replica is a DR
+    /// replica. This field is not set if the instance is a primary instance.
     #[prost(bool, tag = "4")]
     pub dr_replica: bool,
+}
+/// An available database version. It can be a major or a minor version.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AvailableDatabaseVersion {
+    /// The version's major version name.
+    #[prost(string, optional, tag = "3")]
+    pub major_version: ::core::option::Option<::prost::alloc::string::String>,
+    /// The database version name. For MySQL 8.0, this string provides the database
+    /// major and minor version.
+    #[prost(string, optional, tag = "8")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// The database version's display name.
+    #[prost(string, optional, tag = "9")]
+    pub display_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Reschedule options for maintenance windows.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5625,6 +5711,15 @@ pub mod sql_external_sync_setting_error {
         /// cores of the replica instance is less than 8, and the memory of the
         /// replica is less than 32 GB.
         InsufficientMachineTier = 44,
+        /// The warning message indicates the unsupported extensions will not be
+        /// migrated to the destination.
+        UnsupportedExtensionsNotMigrated = 45,
+        /// The warning message indicates the pg_cron extension and settings will not
+        /// be migrated to the destination.
+        ExtensionsNotMigrated = 46,
+        /// The error message indicates that pg_cron flags are enabled on the
+        /// destination which is not supported during the migration.
+        PgCronFlagEnabledInReplica = 47,
     }
     impl SqlExternalSyncSettingErrorType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -5758,6 +5853,15 @@ pub mod sql_external_sync_setting_error {
                 SqlExternalSyncSettingErrorType::InsufficientMachineTier => {
                     "INSUFFICIENT_MACHINE_TIER"
                 }
+                SqlExternalSyncSettingErrorType::UnsupportedExtensionsNotMigrated => {
+                    "UNSUPPORTED_EXTENSIONS_NOT_MIGRATED"
+                }
+                SqlExternalSyncSettingErrorType::ExtensionsNotMigrated => {
+                    "EXTENSIONS_NOT_MIGRATED"
+                }
+                SqlExternalSyncSettingErrorType::PgCronFlagEnabledInReplica => {
+                    "PG_CRON_FLAG_ENABLED_IN_REPLICA"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5830,6 +5934,13 @@ pub mod sql_external_sync_setting_error {
                 "PG_SYNC_PARALLEL_LEVEL" => Some(Self::PgSyncParallelLevel),
                 "INSUFFICIENT_DISK_SIZE" => Some(Self::InsufficientDiskSize),
                 "INSUFFICIENT_MACHINE_TIER" => Some(Self::InsufficientMachineTier),
+                "UNSUPPORTED_EXTENSIONS_NOT_MIGRATED" => {
+                    Some(Self::UnsupportedExtensionsNotMigrated)
+                }
+                "EXTENSIONS_NOT_MIGRATED" => Some(Self::ExtensionsNotMigrated),
+                "PG_CRON_FLAG_ENABLED_IN_REPLICA" => {
+                    Some(Self::PgCronFlagEnabledInReplica)
+                }
                 _ => None,
             }
         }
@@ -6546,7 +6657,8 @@ pub mod sql_instances_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Promotes the read replica instance to be a stand-alone Cloud SQL instance.
+        /// Promotes the read replica instance to be an independent Cloud SQL
+        /// primary instance.
         /// Using this operation might cause your instance to restart.
         pub async fn promote_replica(
             &mut self,
@@ -6575,7 +6687,8 @@ pub mod sql_instances_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Switches over from the primary instance to the replica instance.
+        /// Switches over from the primary instance to the designated DR replica
+        /// instance.
         pub async fn switchover(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesSwitchoverRequest>,
