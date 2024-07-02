@@ -155,6 +155,12 @@ pub struct ManagementServer {
     /// by BAs to connect to BA proxy.
     #[prost(string, repeated, tag = "18")]
     pub ba_proxy_uri: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Reserved for future use.
+    #[prost(message, optional, tag = "19")]
+    pub satisfies_pzs: ::core::option::Option<bool>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "20")]
+    pub satisfies_pzi: bool,
 }
 /// Nested message and enum types in `ManagementServer`.
 pub mod management_server {

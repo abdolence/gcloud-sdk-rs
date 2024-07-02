@@ -634,7 +634,7 @@ pub mod index {
             /// Indicates that this field supports operations on `array_value`s.
             #[prost(enumeration = "ArrayConfig", tag = "3")]
             ArrayConfig(i32),
-            /// Indicates that this field supports nearest neighbors and distance
+            /// Indicates that this field supports nearest neighbor and distance
             /// operations on vector.
             #[prost(message, tag = "4")]
             VectorConfig(VectorConfig),
@@ -804,26 +804,24 @@ pub mod index {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Field {
-    /// Required. A field name of the form
+    /// Required. A field name of the form:
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/fields/{field_path}`
     ///
-    /// A field path may be a simple field name, e.g. `address` or a path to fields
-    /// within map_value , e.g. `address.city`,
+    /// A field path can be a simple field name, e.g. `address` or a path to fields
+    /// within `map_value` , e.g. `address.city`,
     /// or a special field path. The only valid special field is `*`, which
     /// represents any field.
     ///
-    /// Field paths may be quoted using ` (backtick). The only character that needs
-    /// to be escaped within a quoted field path is the backtick character itself,
-    /// escaped using a backslash. Special characters in field paths that
+    /// Field paths can be quoted using `` ` `` (backtick). The only character that
+    /// must be escaped within a quoted field path is the backtick character
+    /// itself, escaped using a backslash. Special characters in field paths that
     /// must be quoted include: `*`, `.`,
-    /// ``` (backtick), `\[`, `\]`, as well as any ascii symbolic characters.
+    /// `` ` `` (backtick), `\[`, `\]`, as well as any ascii symbolic characters.
     ///
     /// Examples:
-    /// (Note: Comments here are written in markdown syntax, so there is an
-    ///   additional layer of backticks to represent a code block)
-    /// `\`address.city\`` represents a field named `address.city`, not the map key
-    /// `city` in the field `address`.
-    /// `\`*\`` represents a field named `*`, not any field.
+    /// `` `address.city` `` represents a field named `address.city`, not the map
+    /// key `city` in the field `address`. `` `*` `` represents a field named `*`,
+    /// not any field.
     ///
     /// A special `Field` contains the default indexing settings for all fields.
     /// This field's resource name is:
@@ -858,8 +856,8 @@ pub mod field {
         /// When false, the `Field`'s index configuration is defined explicitly.
         #[prost(bool, tag = "2")]
         pub uses_ancestor_config: bool,
-        /// Output only. Specifies the resource name of the `Field` from which this field's
-        /// index configuration is set (when `uses_ancestor_config` is true),
+        /// Output only. Specifies the resource name of the `Field` from which this
+        /// field's index configuration is set (when `uses_ancestor_config` is true),
         /// or from which it *would* be set if this field had no index configuration
         /// (when `uses_ancestor_config` is false).
         #[prost(string, tag = "3")]
@@ -874,9 +872,12 @@ pub mod field {
     }
     /// The TTL (time-to-live) configuration for documents that have this `Field`
     /// set.
+    ///
     /// Storing a timestamp value into a TTL-enabled field will be treated as
-    /// the document's absolute expiration time. Using any other data type or
-    /// leaving the field absent will disable the TTL for the individual document.
+    /// the document's absolute expiration time. Timestamp values in the past
+    /// indicate that the document is eligible for immediate expiration. Using any
+    /// other data type or leaving the field absent will disable expiration for the
+    /// individual document.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TtlConfig {
@@ -1191,6 +1192,41 @@ pub struct ImportDocumentsMetadata {
     #[prost(string, repeated, tag = "8")]
     pub namespace_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Metadata for [google.longrunning.Operation][google.longrunning.Operation]
+/// results from
+/// [FirestoreAdmin.BulkDeleteDocuments][google.firestore.admin.v1.FirestoreAdmin.BulkDeleteDocuments].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BulkDeleteDocumentsMetadata {
+    /// The time this operation started.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time this operation completed. Will be unset if operation still in
+    /// progress.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The state of the operation.
+    #[prost(enumeration = "OperationState", tag = "3")]
+    pub operation_state: i32,
+    /// The progress, in documents, of this operation.
+    #[prost(message, optional, tag = "4")]
+    pub progress_documents: ::core::option::Option<Progress>,
+    /// The progress, in bytes, of this operation.
+    #[prost(message, optional, tag = "5")]
+    pub progress_bytes: ::core::option::Option<Progress>,
+    /// The ids of the collection groups that are being deleted.
+    #[prost(string, repeated, tag = "6")]
+    pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Which namespace ids are being deleted.
+    #[prost(string, repeated, tag = "7")]
+    pub namespace_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The timestamp that corresponds to the version of the database that is being
+    /// read to get the list of documents to delete. This time can also be used as
+    /// the timestamp of PITR in case of disaster recovery (subject to PITR window
+    /// limit).
+    #[prost(message, optional, tag = "8")]
+    pub snapshot_time: ::core::option::Option<::prost_types::Timestamp>,
+}
 /// Returned in the [google.longrunning.Operation][google.longrunning.Operation]
 /// response field.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1369,6 +1405,9 @@ pub struct ListDatabasesRequest {
     /// `projects/{project_id}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
+    /// If true, also returns deleted resources.
+    #[prost(bool, tag = "4")]
+    pub show_deleted: bool,
 }
 /// The request for
 /// [FirestoreAdmin.CreateDatabase][google.firestore.admin.v1.FirestoreAdmin.CreateDatabase].
@@ -1634,7 +1673,8 @@ pub struct ListFieldsRequest {
     /// only supports listing fields that have been explicitly overridden. To issue
     /// this query, call
     /// [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields]
-    /// with a filter that includes `indexConfig.usesAncestorConfig:false` .
+    /// with a filter that includes `indexConfig.usesAncestorConfig:false` or
+    /// `ttlConfig:*`.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// The number of results to return.
@@ -1668,7 +1708,8 @@ pub struct ExportDocumentsRequest {
     /// `projects/{project_id}/databases/{database_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Which collection ids to export. Unspecified means all collections.
+    /// Which collection ids to export. Unspecified means all collections. Each
+    /// collection id in this list must be unique.
     #[prost(string, repeated, tag = "2")]
     pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The output URI. Currently only supports Google Cloud Storage URIs of the
@@ -1709,7 +1750,7 @@ pub struct ImportDocumentsRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Which collection ids to import. Unspecified means all collections included
-    /// in the import.
+    /// in the import. Each collection id in this list must be unique.
     #[prost(string, repeated, tag = "2")]
     pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Location of the exported files.
@@ -1728,6 +1769,47 @@ pub struct ImportDocumentsRequest {
     #[prost(string, repeated, tag = "4")]
     pub namespace_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// The request for
+/// [FirestoreAdmin.BulkDeleteDocuments][google.firestore.admin.v1.FirestoreAdmin.BulkDeleteDocuments].
+///
+/// When both collection_ids and namespace_ids are set, only documents satisfying
+/// both conditions will be deleted.
+///
+/// Requests with namespace_ids and collection_ids both empty will be rejected.
+/// Please use
+/// [FirestoreAdmin.DeleteDatabase][google.firestore.admin.v1.FirestoreAdmin.DeleteDatabase]
+/// instead.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BulkDeleteDocumentsRequest {
+    /// Required. Database to operate. Should be of the form:
+    /// `projects/{project_id}/databases/{database_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. IDs of the collection groups to delete. Unspecified means all
+    /// collection groups.
+    ///
+    /// Each collection group in this list must be unique.
+    #[prost(string, repeated, tag = "2")]
+    pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Namespaces to delete.
+    ///
+    /// An empty list means all namespaces. This is the recommended
+    /// usage for databases that don't use namespaces.
+    ///
+    /// An empty string element represents the default namespace. This should be
+    /// used if the database has data in non-default namespaces, but doesn't want
+    /// to delete from them.
+    ///
+    /// Each namespace in this list must be unique.
+    #[prost(string, repeated, tag = "3")]
+    pub namespace_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The response for
+/// [FirestoreAdmin.BulkDeleteDocuments][google.firestore.admin.v1.FirestoreAdmin.BulkDeleteDocuments].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BulkDeleteDocumentsResponse {}
 /// The request for
 /// [FirestoreAdmin.GetBackup][google.firestore.admin.v1.FirestoreAdmin.GetBackup].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2232,6 +2314,44 @@ pub mod firestore_admin_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Bulk deletes a subset of documents from Google Cloud Firestore.
+        /// Documents created or updated after the underlying system starts to process
+        /// the request will not be deleted. The bulk delete occurs in the background
+        /// and its progress can be monitored and managed via the Operation resource
+        /// that is created.
+        ///
+        /// For more details on bulk delete behavior, refer to:
+        /// https://cloud.google.com/firestore/docs/manage-data/bulk-delete
+        pub async fn bulk_delete_documents(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BulkDeleteDocumentsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/BulkDeleteDocuments",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "BulkDeleteDocuments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Create a database.
         pub async fn create_database(
             &mut self,
@@ -2475,7 +2595,7 @@ pub mod firestore_admin_client {
         ///
         /// The new database must be in the same cloud region or multi-region location
         /// as the existing backup. This behaves similar to
-        /// [FirestoreAdmin.CreateDatabase][google.firestore.admin.v1.CreateDatabase]
+        /// [FirestoreAdmin.CreateDatabase][google.firestore.admin.v1.FirestoreAdmin.CreateDatabase]
         /// except instead of creating a new empty database, a new database is created
         /// with the database type, index configuration, and documents from an existing
         /// backup.

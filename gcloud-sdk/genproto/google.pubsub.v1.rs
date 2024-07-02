@@ -1738,6 +1738,10 @@ pub mod cloud_storage_config {
         /// the attributes map.
         #[prost(bool, tag = "1")]
         pub write_metadata: bool,
+        /// Optional. When true, the output Cloud Storage file will be serialized
+        /// using the topic schema, if it exists.
+        #[prost(bool, tag = "2")]
+        pub use_topic_schema: bool,
     }
     /// Possible states for a Cloud Storage subscription.
     #[derive(
@@ -1765,6 +1769,9 @@ pub mod cloud_storage_config {
         /// Cannot write to the destination because enforce_in_transit is set to true
         /// and the destination locations are not in the allowed regions.
         InTransitLocationRestriction = 4,
+        /// Cannot write to the Cloud Storage bucket due to an incompatibility
+        /// between the topic schema and subscription settings.
+        SchemaMismatch = 5,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1778,6 +1785,7 @@ pub mod cloud_storage_config {
                 State::PermissionDenied => "PERMISSION_DENIED",
                 State::NotFound => "NOT_FOUND",
                 State::InTransitLocationRestriction => "IN_TRANSIT_LOCATION_RESTRICTION",
+                State::SchemaMismatch => "SCHEMA_MISMATCH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1790,6 +1798,7 @@ pub mod cloud_storage_config {
                 "IN_TRANSIT_LOCATION_RESTRICTION" => {
                     Some(Self::InTransitLocationRestriction)
                 }
+                "SCHEMA_MISMATCH" => Some(Self::SchemaMismatch),
                 _ => None,
             }
         }

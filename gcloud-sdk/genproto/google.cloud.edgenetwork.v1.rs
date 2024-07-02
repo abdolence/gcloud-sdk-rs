@@ -90,9 +90,66 @@ pub struct Subnet {
     /// automatically.
     #[prost(int32, tag = "9")]
     pub vlan_id: i32,
+    /// Optional. A bonding type in the subnet creation specifies whether a VLAN
+    /// being created will be present on Bonded or Non-Bonded or Both port types.
+    /// In addition, this flag is to be used to set the specific network
+    /// configuration which clusters can then use for their workloads based on the
+    /// bonding choice.
+    #[prost(enumeration = "subnet::BondingType", tag = "11")]
+    pub bonding_type: i32,
     /// Output only. Current stage of the resource to the device by config push.
     #[prost(enumeration = "ResourceState", tag = "10")]
     pub state: i32,
+}
+/// Nested message and enum types in `Subnet`.
+pub mod subnet {
+    /// Bonding type in the subnet.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BondingType {
+        /// Unspecified
+        /// Bonding type will be unspecified by default and if the user chooses to
+        /// not specify a bonding type at time of creating the VLAN. This will be
+        /// treated as mixed bonding where the VLAN will have both bonded and
+        /// non-bonded connectivity to machines.
+        Unspecified = 0,
+        /// Single homed.
+        Bonded = 1,
+        /// Multi homed.
+        NonBonded = 2,
+    }
+    impl BondingType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                BondingType::Unspecified => "BONDING_TYPE_UNSPECIFIED",
+                BondingType::Bonded => "BONDED",
+                BondingType::NonBonded => "NON_BONDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BONDING_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BONDED" => Some(Self::Bonded),
+                "NON_BONDED" => Some(Self::NonBonded),
+                _ => None,
+            }
+        }
+    }
 }
 /// Message describing Interconnect object
 #[allow(clippy::derive_partial_eq_without_eq)]

@@ -1170,7 +1170,8 @@ pub mod cloud_controls_partner_core_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists access requests associated with a workload
+        /// Deprecated: Only returns access approval requests directly associated with
+        /// an assured workload folder.
         pub async fn list_access_approval_requests(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAccessApprovalRequestsRequest>,

@@ -544,6 +544,13 @@ pub struct RuntimeConfig {
     /// Optional. Dependency repository configuration.
     #[prost(message, optional, tag = "5")]
     pub repository_config: ::core::option::Option<RepositoryConfig>,
+    /// Optional. Autotuning configuration of the workload.
+    #[prost(message, optional, tag = "6")]
+    pub autotuning_config: ::core::option::Option<AutotuningConfig>,
+    /// Optional. Cohort identifier. Identifies families of the workloads having
+    /// the same shape, e.g. daily ETL jobs.
+    #[prost(string, tag = "7")]
+    pub cohort: ::prost::alloc::string::String,
 }
 /// Environment configuration for a workload.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1034,6 +1041,70 @@ pub mod gke_node_pool_config {
         /// **Note:** Quota must be sufficient to scale up the cluster.
         #[prost(int32, tag = "3")]
         pub max_node_count: i32,
+    }
+}
+/// Autotuning configuration of the workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutotuningConfig {
+    /// Optional. Scenarios for which tunings are applied.
+    #[prost(
+        enumeration = "autotuning_config::Scenario",
+        repeated,
+        packed = "false",
+        tag = "2"
+    )]
+    pub scenarios: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `AutotuningConfig`.
+pub mod autotuning_config {
+    /// Scenario represents a specific goal that autotuning will attempt to achieve
+    /// by modifying workloads.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Scenario {
+        /// Default value.
+        Unspecified = 0,
+        /// Scaling recommendations such as initialExecutors.
+        Scaling = 2,
+        /// Adding hints for potential relation broadcasts.
+        BroadcastHashJoin = 3,
+        /// Memory management for workloads.
+        Memory = 4,
+    }
+    impl Scenario {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Scenario::Unspecified => "SCENARIO_UNSPECIFIED",
+                Scenario::Scaling => "SCALING",
+                Scenario::BroadcastHashJoin => "BROADCAST_HASH_JOIN",
+                Scenario::Memory => "MEMORY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCENARIO_UNSPECIFIED" => Some(Self::Unspecified),
+                "SCALING" => Some(Self::Scaling),
+                "BROADCAST_HASH_JOIN" => Some(Self::BroadcastHashJoin),
+                "MEMORY" => Some(Self::Memory),
+                _ => None,
+            }
+        }
     }
 }
 /// Configuration for dependency repositories

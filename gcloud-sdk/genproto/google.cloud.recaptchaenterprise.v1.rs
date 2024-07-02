@@ -604,6 +604,11 @@ pub struct Assessment {
     /// transaction.
     #[prost(message, optional, tag = "13")]
     pub fraud_signals: ::core::option::Option<FraudSignals>,
+    /// Output only. Assessment returned when a site key, a token, and a phone
+    /// number as `user_id` are provided. Account defender and SMS toll fraud
+    /// protection need to be enabled.
+    #[prost(message, optional, tag = "12")]
+    pub phone_fraud_assessment: ::core::option::Option<PhoneFraudAssessment>,
 }
 /// The event being assessed.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1271,6 +1276,73 @@ pub mod fraud_signals {
             }
         }
     }
+}
+/// Information about SMS toll fraud.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SmsTollFraudVerdict {
+    /// Output only. Probability of an SMS event being fraudulent.
+    /// Values are from 0.0 (lowest) to 1.0 (highest).
+    #[prost(float, tag = "1")]
+    pub risk: f32,
+    /// Output only. Reasons contributing to the SMS toll fraud verdict.
+    #[prost(
+        enumeration = "sms_toll_fraud_verdict::SmsTollFraudReason",
+        repeated,
+        packed = "false",
+        tag = "2"
+    )]
+    pub reasons: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `SmsTollFraudVerdict`.
+pub mod sms_toll_fraud_verdict {
+    /// Reasons contributing to the SMS toll fraud verdict.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SmsTollFraudReason {
+        /// Default unspecified reason
+        Unspecified = 0,
+        /// The provided phone number was invalid
+        InvalidPhoneNumber = 1,
+    }
+    impl SmsTollFraudReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                SmsTollFraudReason::Unspecified => "SMS_TOLL_FRAUD_REASON_UNSPECIFIED",
+                SmsTollFraudReason::InvalidPhoneNumber => "INVALID_PHONE_NUMBER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SMS_TOLL_FRAUD_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "INVALID_PHONE_NUMBER" => Some(Self::InvalidPhoneNumber),
+                _ => None,
+            }
+        }
+    }
+}
+/// Assessment for Phone Fraud
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PhoneFraudAssessment {
+    /// Output only. Assessment of this phone event for risk of SMS toll fraud.
+    #[prost(message, optional, tag = "1")]
+    pub sms_toll_fraud_verdict: ::core::option::Option<SmsTollFraudVerdict>,
 }
 /// Account defender risk assessment.
 #[allow(clippy::derive_partial_eq_without_eq)]
