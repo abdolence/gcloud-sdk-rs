@@ -358,6 +358,13 @@ pub struct ImportDataRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
+    /// Optional. User-specified Service Account (SA) credentials to be used when
+    /// performing the transfer.
+    /// Format: `projects/{project_id}/serviceAccounts/{service_account}`
+    /// If unspecified, the Parallelstore service agent is used:
+    /// service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com)
+    #[prost(string, tag = "5")]
+    pub service_account: ::prost::alloc::string::String,
     /// The source of the data being imported into the parallelstore instance.
     #[prost(oneof = "import_data_request::Source", tags = "2")]
     pub source: ::core::option::Option<import_data_request::Source>,
@@ -407,6 +414,13 @@ pub struct ExportDataRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
+    /// Optional. User-specified Service Account (SA) credentials to be used when
+    /// performing the transfer.
+    /// Format: `projects/{project_id}/serviceAccounts/{service_account}`
+    /// If unspecified, the Parallelstore service agent is used:
+    /// service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com)
+    #[prost(string, tag = "5")]
+    pub service_account: ::prost::alloc::string::String,
     /// The source of the data exported from the parallelstore instance.
     #[prost(oneof = "export_data_request::Source", tags = "2")]
     pub source: ::core::option::Option<export_data_request::Source>,
