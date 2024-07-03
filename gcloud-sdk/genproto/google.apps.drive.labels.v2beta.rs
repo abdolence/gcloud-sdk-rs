@@ -335,8 +335,10 @@ pub mod precondition_failure {
             CannotCreateMoreLabels = 8,
             /// The Field type cannot be changed because the Field has been published.
             CannotChangePublishedFieldType = 9,
-            /// The Label component is locked and cannot be modified
+            /// The Label component is locked and cannot be deleted
             CannotModifyLockedComponent = 10,
+            /// The Label cannot be enabled in the target application or applications.
+            UnsupportEnabledAppSettings = 11,
         }
         impl Reason {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -360,6 +362,9 @@ pub mod precondition_failure {
                     Reason::CannotModifyLockedComponent => {
                         "CANNOT_MODIFY_LOCKED_COMPONENT"
                     }
+                    Reason::UnsupportEnabledAppSettings => {
+                        "UNSUPPORT_ENABLED_APP_SETTINGS"
+                    }
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -381,6 +386,9 @@ pub mod precondition_failure {
                     }
                     "CANNOT_MODIFY_LOCKED_COMPONENT" => {
                         Some(Self::CannotModifyLockedComponent)
+                    }
+                    "UNSUPPORT_ENABLED_APP_SETTINGS" => {
+                        Some(Self::UnsupportEnabledAppSettings)
                     }
                     _ => None,
                 }

@@ -6533,6 +6533,7 @@ pub mod gateway_api_config {
         Unspecified = 0,
         /// Gateway API support is disabled
         Disabled = 1,
+        /// Deprecated: use CHANNEL_STANDARD instead.
         /// Gateway API support is enabled, experimental CRDs are installed
         Experimental = 3,
         /// Gateway API support is enabled, standard CRDs are installed

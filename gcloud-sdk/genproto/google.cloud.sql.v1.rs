@@ -1748,6 +1748,11 @@ pub struct Settings {
     /// SQL for PostgreSQL instances.
     #[prost(message, optional, tag = "40")]
     pub enable_google_ml_integration: ::core::option::Option<bool>,
+    /// Optional. By default, Cloud SQL instances have schema extraction disabled
+    /// for Dataplex. When this parameter is set to true, schema extraction for
+    /// Dataplex on Cloud SQL instances is activated.
+    #[prost(message, optional, tag = "41")]
+    pub enable_dataplex_integration: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `Settings`.
 pub mod settings {

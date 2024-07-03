@@ -42,6 +42,11 @@ pub struct DataExchange {
     /// Optional. Configurable data sharing environment option for a data exchange.
     #[prost(message, optional, tag = "8")]
     pub sharing_environment_config: ::core::option::Option<SharingEnvironmentConfig>,
+    /// Optional. Type of discovery on the discovery page for all the listings
+    /// under this exchange. Updating this field also updates (overwrites) the
+    /// discovery_type field for all the listings under this exchange.
+    #[prost(enumeration = "DiscoveryType", optional, tag = "9")]
+    pub discovery_type: ::core::option::Option<i32>,
 }
 /// Sharing environment is a behavior model for sharing data within a
 /// data exchange. This option is configurable for a data exchange.
@@ -215,6 +220,9 @@ pub struct Listing {
     pub restricted_export_config: ::core::option::Option<
         listing::RestrictedExportConfig,
     >,
+    /// Optional. Type of discovery of the listing on the discovery page.
+    #[prost(enumeration = "DiscoveryType", optional, tag = "14")]
+    pub discovery_type: ::core::option::Option<i32>,
     /// Listing source.
     #[prost(oneof = "listing::Source", tags = "6")]
     pub source: ::core::option::Option<listing::Source>,
@@ -242,6 +250,12 @@ pub mod listing {
         pub selected_resources: ::prost::alloc::vec::Vec<
             big_query_dataset_source::SelectedResource,
         >,
+        /// Optional. If set, restricted export policy will be propagated and
+        /// enforced on the linked dataset.
+        #[prost(message, optional, tag = "3")]
+        pub restricted_export_policy: ::core::option::Option<
+            big_query_dataset_source::RestrictedExportPolicy,
+        >,
     }
     /// Nested message and enum types in `BigQueryDatasetSource`.
     pub mod big_query_dataset_source {
@@ -264,6 +278,23 @@ pub mod listing {
                 #[prost(string, tag = "1")]
                 Table(::prost::alloc::string::String),
             }
+        }
+        /// Restricted export policy used to configure restricted export on linked
+        /// dataset.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct RestrictedExportPolicy {
+            /// Optional. If true, enable restricted export.
+            #[prost(message, optional, tag = "1")]
+            pub enabled: ::core::option::Option<bool>,
+            /// Optional. If true, restrict direct table access (read
+            /// api/tabledata.list) on linked table.
+            #[prost(message, optional, tag = "2")]
+            pub restrict_direct_table_access: ::core::option::Option<bool>,
+            /// Optional. If true, restrict export of query result derived from
+            /// restricted linked dataset table.
+            #[prost(message, optional, tag = "3")]
+            pub restrict_query_result: ::core::option::Option<bool>,
         }
     }
     /// Restricted export config, used to configure restricted export on linked
@@ -762,7 +793,7 @@ pub mod subscribe_listing_request {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
-        /// BigQuery destination dataset to create for the subscriber.
+        /// Input only. BigQuery destination dataset to create for the subscriber.
         #[prost(message, tag = "3")]
         DestinationDataset(super::DestinationDataset),
     }
@@ -837,7 +868,21 @@ pub struct ListSubscriptionsRequest {
     /// e.g. projects/myproject/locations/US
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The filter expression may be used to filter by Data Exchange or Listing.
+    /// An expression for filtering the results of the request. Eligible
+    /// fields for filtering are:
+    ///
+    ///   * `listing`
+    ///   * `data_exchange`
+    ///
+    /// Alternatively, a literal wrapped in double quotes may be provided.
+    /// This will be checked for an exact match against both fields above.
+    ///
+    /// In all cases, the full Data Exchange or Listing resource name must
+    /// be provided. Some example of using filters:
+    ///
+    ///   * data_exchange="projects/myproject/locations/us/dataExchanges/123"
+    ///   * listing="projects/123/locations/us/dataExchanges/456/listings/789"
+    ///   * "projects/myproject/locations/us/dataExchanges/123"
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response page.
@@ -941,6 +986,43 @@ pub struct OperationMetadata {
     /// Output only. API version used to start the operation.
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
+}
+/// Specifies the type of discovery on the discovery page. Note that
+/// this does not control the visibility of the exchange/listing which is
+/// defined by IAM permission.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DiscoveryType {
+    /// Unspecified. Defaults to DISCOVERY_TYPE_PRIVATE.
+    Unspecified = 0,
+    /// The Data exchange/listing can be discovered in the 'Private' results
+    /// list.
+    Private = 1,
+    /// The Data exchange/listing can be discovered in the 'Public' results
+    /// list.
+    Public = 2,
+}
+impl DiscoveryType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            DiscoveryType::Unspecified => "DISCOVERY_TYPE_UNSPECIFIED",
+            DiscoveryType::Private => "DISCOVERY_TYPE_PRIVATE",
+            DiscoveryType::Public => "DISCOVERY_TYPE_PUBLIC",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DISCOVERY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "DISCOVERY_TYPE_PRIVATE" => Some(Self::Private),
+            "DISCOVERY_TYPE_PUBLIC" => Some(Self::Public),
+            _ => None,
+        }
+    }
 }
 /// Generated client implementations.
 pub mod analytics_hub_service_client {
