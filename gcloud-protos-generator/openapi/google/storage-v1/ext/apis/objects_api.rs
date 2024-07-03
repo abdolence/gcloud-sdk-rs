@@ -1,4 +1,5 @@
 pub type BoxStreamWithSync<'a, T> = std::pin::Pin<Box<dyn futures::Stream<Item = T> + Send + 'a + Sync>>;
+pub type BoxStreamWithSend<'a, T> = std::pin::Pin<Box<dyn futures::Stream<Item = T> + Send + 'a>>;
 
 /// Stores a new object and metadata.
 /// Open API doesn't support binary streams and this particular endpoint uses another base URL.
@@ -7,7 +8,7 @@ pub async fn storage_objects_insert_ext_stream(
     configuration: &configuration::Configuration,
     params: StoragePeriodObjectsPeriodInsertParams,
     content_type: Option<String>,
-    bytes_stream: BoxStreamWithSync<
+    bytes_stream: BoxStreamWithSend<
         'static,
         std::result::Result<bytes::Bytes, Box<(dyn std::error::Error + Send + Sync + 'static)>>,
     >
@@ -166,7 +167,7 @@ pub async fn storage_objects_insert_ext_bytes(
 > {
     use futures::StreamExt;
 
-    let bytes_stream: BoxStreamWithSync<
+    let bytes_stream: BoxStreamWithSend<
         'static,
         std::result::Result<bytes::Bytes, Box<(dyn std::error::Error + Send + Sync + 'static)>>,
     > = Box::pin(
