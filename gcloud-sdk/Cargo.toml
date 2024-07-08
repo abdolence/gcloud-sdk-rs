@@ -433,7 +433,7 @@ google-rest-dns-v1 = ["rest"]
 google-rest-compute-v1 = ["rest"]
 
 [dependencies]
-tonic = { version = "0.11", features = ["tls"] }
+tonic = { version = "0.12", features = ["tls"] }
 tower = "0.4"
 tower-layer = "0.3"
 tower-util = "0.3"
