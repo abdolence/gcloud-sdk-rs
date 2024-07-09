@@ -41,8 +41,8 @@ where
     T: GrpcService<RequestBody> + Send + Clone + 'static,
     T::Future: 'static + Send,
     RequestBody: 'static + Send,
-    T::ResponseBody: 'static + Send + Sync,
-    T::Error: 'static + Send + Sync,
+    T::ResponseBody: 'static + Send,
+    T::Error: 'static + Send,
 {
     type Response = hyper::Response<T::ResponseBody>;
     type Error = Box<dyn std::error::Error + Send + Sync + 'static>;

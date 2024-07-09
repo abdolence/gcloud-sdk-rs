@@ -1,3 +1,4 @@
+use bytes::{Buf, BufMut};
 use crate::google::cloud::kms::v1::ProtectionLevel;
 use secret_vault_value::SecretValue;
 
@@ -82,10 +83,7 @@ pub struct EncryptRequest {
 
 impl prost::Message for EncryptRequest {
     #[allow(unused_variables)]
-    fn encode_raw<B>(&self, buf: &mut B)
-    where
-        B: ::prost::bytes::BufMut,
-    {
+    fn encode_raw(&self, buf: &mut impl BufMut) {
         if self.name != "" {
             ::prost::encoding::string::encode(1u32, &self.name, buf);
         }
@@ -103,16 +101,13 @@ impl prost::Message for EncryptRequest {
         }
     }
     #[allow(unused_variables)]
-    fn merge_field<B>(
+    fn merge_field(
         &mut self,
         tag: u32,
         wire_type: ::prost::encoding::WireType,
-        buf: &mut B,
+        buf: &mut impl Buf,
         ctx: ::prost::encoding::DecodeContext,
-    ) -> ::core::result::Result<(), ::prost::DecodeError>
-    where
-        B: ::prost::bytes::Buf,
-    {
+    ) -> ::core::result::Result<(), ::prost::DecodeError> {
         const STRUCT_NAME: &str = "EncryptRequest";
         match tag {
             1u32 => {
@@ -239,10 +234,7 @@ pub struct DecryptResponse {
 
 impl prost::Message for DecryptResponse {
     #[allow(unused_variables)]
-    fn encode_raw<B>(&self, buf: &mut B)
-    where
-        B: ::prost::bytes::BufMut,
-    {
+    fn encode_raw(&self, buf: &mut impl BufMut) {
         if !self.plaintext.ref_sensitive_value().is_empty() {
             ::prost::encoding::bytes::encode(1u32, self.plaintext.ref_sensitive_value(), buf);
         }
@@ -257,16 +249,13 @@ impl prost::Message for DecryptResponse {
         }
     }
     #[allow(unused_variables)]
-    fn merge_field<B>(
+    fn merge_field(
         &mut self,
         tag: u32,
         wire_type: ::prost::encoding::WireType,
-        buf: &mut B,
+        buf: &mut impl Buf,
         ctx: ::prost::encoding::DecodeContext,
-    ) -> ::core::result::Result<(), ::prost::DecodeError>
-    where
-        B: ::prost::bytes::Buf,
-    {
+    ) -> ::core::result::Result<(), ::prost::DecodeError> {
         const STRUCT_NAME: &str = "DecryptResponse";
         match tag {
             1u32 => ::prost::encoding::bytes::merge(
