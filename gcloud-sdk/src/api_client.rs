@@ -212,7 +212,6 @@ impl GoogleEnvironment {
     }
 
     #[cfg(feature = "tls-roots")]
-    #[cfg(not(feature = "tls-webpki-roots"))]
     pub fn init_google_services_channel_tls_config(
         domain_name: String,
     ) -> tonic::transport::ClientTlsConfig {
@@ -222,7 +221,6 @@ impl GoogleEnvironment {
     }
 
     #[cfg(feature = "tls-webpki-roots")]
-    #[cfg(not(feature = "tls-roots"))]
     pub fn init_google_services_channel_tls_config(
         domain_name: String,
     ) -> tonic::transport::ClientTlsConfig {
