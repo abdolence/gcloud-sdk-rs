@@ -187,7 +187,8 @@ impl GoogleEnvironment {
     ) -> Result<Channel, crate::error::Error> {
         let api_url_string = api_url.as_ref().to_string();
         let domain_name = api_url_string.replace("https://", "");
-        let tls_config = Self::init_google_services_channel_tls_config(domain_name);
+
+        let tls_config = Self::init_tls_config(domain_name);
 
         Ok(Channel::from_shared(api_url_string)?
             .tls_config(tls_config)?
@@ -201,9 +202,7 @@ impl GoogleEnvironment {
     }
 
     #[cfg(not(any(feature = "tls-roots", feature = "tls-webpki-roots")))]
-    pub fn init_google_services_channel_tls_config(
-        domain_name: String,
-    ) -> tonic::transport::ClientTlsConfig {
+    fn init_tls_config(domain_name: String) -> tonic::transport::ClientTlsConfig {
         tonic::transport::ClientTlsConfig::new()
             .ca_certificate(tonic::transport::Certificate::from_pem(
                 crate::apis::CERTIFICATES,
@@ -212,18 +211,14 @@ impl GoogleEnvironment {
     }
 
     #[cfg(feature = "tls-roots")]
-    pub fn init_google_services_channel_tls_config(
-        domain_name: String,
-    ) -> tonic::transport::ClientTlsConfig {
+    fn init_tls_config(domain_name: String) -> tonic::transport::ClientTlsConfig {
         tonic::transport::ClientTlsConfig::new()
             .with_native_roots()
             .domain_name(domain_name)
     }
 
     #[cfg(feature = "tls-webpki-roots")]
-    pub fn init_google_services_channel_tls_config(
-        domain_name: String,
-    ) -> tonic::transport::ClientTlsConfig {
+    fn init_tls_config(domain_name: String) -> tonic::transport::ClientTlsConfig {
         tonic::transport::ClientTlsConfig::new()
             .with_webpki_roots()
             .domain_name(domain_name)

@@ -16,10 +16,12 @@ exclude = ["*.sh"]
 doctest = false
 
 [features]
-default = ["tls-roots"]
+default = ["tonic/tls-roots"]
 tls-roots = ["tonic/tls-roots", "reqwest/rustls-tls-native-roots"]
-tls-webpki-roots = ["tonic/tls-webpki-roots", "reqwest/rustls-tls"]
+tls-webpki-roots = ["tonic/tls-webpki-roots", "reqwest/rustls-tls-webpki-roots"]
 rest = ["serde_with"]
+
+# Google API features
 ccc-hosted-marketplace-v2 = []
 google-actions-sdk-v2 = []
 google-actions-sdk-v2-conversation = []
@@ -424,7 +426,7 @@ google-rest-dns-v1 = ["rest"]
 google-rest-compute-v1 = ["rest"]
 
 [dependencies]
-tonic = { version = "0.12", features = ["tls", "channel", "prost"] }
+tonic = { version = "0.12", features = ["tls"] }
 tower = "0.4"
 tower-layer = "0.3"
 tower-util = "0.3"
