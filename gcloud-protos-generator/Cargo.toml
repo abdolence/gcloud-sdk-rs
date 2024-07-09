@@ -6,6 +6,6 @@ edition = "2021"
 
 [dependencies]
 tonic-build = { version = "0.12", features = ["prost-build"] }
-prost-build = "0.12"
+prost-build = "0.13"
 prettyplease = "0.2"
 syn = { version = "2", default-features = false, features = ["full", "parsing"] }
