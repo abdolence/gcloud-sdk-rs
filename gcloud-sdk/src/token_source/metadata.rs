@@ -42,7 +42,7 @@ impl Metadata {
     }
 
     pub async fn detect_google_project_id(&self) -> Option<String> {
-        match PathAndQuery::from_str("project/project-id") {
+        match PathAndQuery::from_str("/computeMetadata/v1/project/project-id") {
             Ok(url) if self.client.is_available() => {
                 trace!("Receiving Project ID token from Metadata Server");
                 self.client

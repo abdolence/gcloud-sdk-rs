@@ -48,12 +48,6 @@ where
             token_scopes
         );
 
-        #[cfg(any(feature = "tls-roots", feature = "tls-webpki-roots"))]
-        let channel =
-            GoogleEnvironment::init_google_services_channel_with_native_roots(google_api_url)
-                .await?;
-
-        #[cfg(not(any(feature = "tls-roots", feature = "tls-webpki-roots")))]
         let channel = GoogleEnvironment::init_google_services_channel(google_api_url).await?;
 
         let token_generator =
@@ -206,6 +200,7 @@ impl GoogleEnvironment {
             .await?)
     }
 
+    #[cfg(not(any(feature = "tls-roots", feature = "tls-webpki-roots")))]
     pub fn init_google_services_channel_tls_config(
         domain_name: String,
     ) -> tonic::transport::ClientTlsConfig {
@@ -216,18 +211,24 @@ impl GoogleEnvironment {
             .domain_name(domain_name)
     }
 
-    #[cfg(any(feature = "tls-roots", feature = "tls-webpki-roots"))]
-    pub async fn init_google_services_channel_with_native_roots<S: AsRef<str>>(
-        api_url: S,
-    ) -> Result<Channel, crate::error::Error> {
-        Ok(Channel::from_shared(api_url.as_ref().to_string())?
-            .connect_timeout(Duration::from_secs(30))
-            .tcp_keepalive(Some(Duration::from_secs(60)))
-            .keep_alive_timeout(Duration::from_secs(60))
-            .http2_keep_alive_interval(Duration::from_secs(60))
-            .keep_alive_while_idle(true)
-            .connect()
-            .await?)
+    #[cfg(feature = "tls-roots")]
+    #[cfg(not(feature = "tls-webpki-roots"))]
+    pub fn init_google_services_channel_tls_config(
+        domain_name: String,
+    ) -> tonic::transport::ClientTlsConfig {
+        tonic::transport::ClientTlsConfig::new()
+            .with_native_roots()
+            .domain_name(domain_name)
+    }
+
+    #[cfg(feature = "tls-webpki-roots")]
+    #[cfg(not(feature = "tls-roots"))]
+    pub fn init_google_services_channel_tls_config(
+        domain_name: String,
+    ) -> tonic::transport::ClientTlsConfig {
+        tonic::transport::ClientTlsConfig::new()
+            .with_webpki_roots()
+            .domain_name(domain_name)
     }
 }
 

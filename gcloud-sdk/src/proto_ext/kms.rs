@@ -1,5 +1,5 @@
-use bytes::{Buf, BufMut};
 use crate::google::cloud::kms::v1::ProtectionLevel;
+use bytes::{Buf, BufMut};
 use secret_vault_value::SecretValue;
 
 #[derive(Clone, PartialEq, Debug, Default)]
