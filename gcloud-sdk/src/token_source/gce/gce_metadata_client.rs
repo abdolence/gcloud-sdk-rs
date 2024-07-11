@@ -1,6 +1,7 @@
 use crate::error::ErrorKind;
 use hyper::http::uri::PathAndQuery;
 use std::env;
+use tracing::debug;
 
 #[derive(Debug)]
 pub struct GceMetadataClient {
@@ -14,6 +15,7 @@ impl GceMetadataClient {
     pub fn new() -> Self {
         match env::var(GCE_METADATA_HOST_ENV).ok() {
             Some(metadata_server_host) => {
+                debug!("Detected metadata server host: {}", metadata_server_host);
                 let mut default_headers = reqwest::header::HeaderMap::new();
                 default_headers.append(
                     "Metadata-Flavor",
@@ -38,9 +40,12 @@ impl GceMetadataClient {
                     metadata_server_host,
                 }
             }
-            None => Self {
-                metadata_client: None,
-                metadata_server_host: "metadata_server_host".into(),
+            None => {
+                debug!("No metadata server detected");
+                Self {
+                    metadata_client: None,
+                    metadata_server_host: "metadata_server_host".into(),
+                }
             },
         }
     }
