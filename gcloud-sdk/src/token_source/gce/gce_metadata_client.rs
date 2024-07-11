@@ -46,7 +46,7 @@ impl GceMetadataClient {
                     metadata_client: None,
                     metadata_server_host: "metadata_server_host".into(),
                 }
-            },
+            }
         }
     }
 
