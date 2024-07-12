@@ -53,7 +53,7 @@ More complete examples are located [here](examples).
 Cargo.toml:
 ```toml
 [dependencies]
-gcloud-sdk = { version = "0.21", features = ["google-firestore-v1"] }
+gcloud-sdk = { version = "0.25", features = ["google-firestore-v1"] }
 ```
 
 ## Example for REST API
