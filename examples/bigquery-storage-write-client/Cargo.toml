@@ -6,8 +6,8 @@ edition = "2021"
 
 [dependencies]
 gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false, features = ["google-cloud-bigquery-storage-v1", "tls-webpki-roots"] }
-prost = "0.12"
-prost-types = "0.12"
+prost = "0.13"
+prost-types = "0.13"
 tokio = { version = "1.20", features = ["full"] }
 tracing = "0.1"
 tracing-subscriber = { version ="0.3", features = ["env-filter"] }

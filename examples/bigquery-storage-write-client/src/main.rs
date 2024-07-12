@@ -4,9 +4,11 @@ use gcloud_sdk::google::cloud::bigquery::storage::v1::big_query_write_client::Bi
 use gcloud_sdk::google::cloud::bigquery::storage::v1::{
     append_rows_request, AppendRowsRequest, AppendRowsResponse, ProtoRows, ProtoSchema,
 };
+
+use gcloud_sdk::google::cloud::bigquery::v2::dataset_service_client::DatasetServiceClient;
 use gcloud_sdk::*;
-use prost::Message;
-use prost_types::{field_descriptor_proto, DescriptorProto, FieldDescriptorProto};
+use crate::prost::*;
+use crate::prost_types::*;
 
 #[derive(Clone, PartialEq, ::prost::Message)]
 struct MySchemaRow {
@@ -32,7 +34,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let dataset = std::env::var("BQ_DATASET").expect("No BigQuery dataset is specified");
     let table = std::env::var("BQ_TABLE").expect("No BigQuery table is specified");
 
-    let client: GoogleApi<BigQueryWriteClient<GoogleAuthMiddleware>> = GoogleApi::from_function(
+    let write_client: GoogleApi<BigQueryWriteClient<GoogleAuthMiddleware>> = GoogleApi::from_function(
         BigQueryWriteClient::new,
         "https://bigquerystorage.googleapis.com",
         None,
@@ -86,7 +88,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         ..Default::default()
     }]);
 
-    let response = client.get().append_rows(rows_stream).await?;
+    let response = write_client.get().append_rows(rows_stream).await?;
 
     let response_stream = response.into_inner();
 
