@@ -5,15 +5,16 @@ use hyper::http::uri::PathAndQuery;
 use secret_vault_value::SecretValue;
 use std::convert::TryFrom;
 use std::str::FromStr;
-use tracing::trace;
+use tracing::*;
 
+use crate::token_source::gce::gce_metadata_client::GceMetadataClient;
 use crate::token_source::{BoxSource, Source, Token, TokenResponse};
 
 #[derive(Debug)]
 pub struct Metadata {
     account: String,
     scopes: Vec<String>,
-    gcemeta_client: gcemeta::Client<hyper::client::connect::HttpConnector, hyper::Body>,
+    client: GceMetadataClient,
 }
 
 impl Metadata {
@@ -25,8 +26,12 @@ impl Metadata {
         Self {
             account,
             scopes: scopes.into(),
-            gcemeta_client: gcemeta::Client::new(),
+            client: GceMetadataClient::new(),
         }
+    }
+
+    pub async fn init(&mut self) -> bool {
+        self.client.init().await
     }
 
     fn uri_suffix(&self) -> String {
@@ -41,7 +46,21 @@ impl Metadata {
     }
 
     pub async fn detect_google_project_id(&self) -> Option<String> {
-        self.gcemeta_client.project_id().await.ok()
+        match PathAndQuery::from_str("/computeMetadata/v1/project/project-id") {
+            Ok(url) if self.client.is_available() => {
+                trace!("Receiving Project ID token from Metadata Server");
+                self.client
+                    .get(url)
+                    .await
+                    .ok()
+                    .map(|project_id| project_id.trim().to_string())
+            }
+            Ok(_) => None,
+            Err(e) => {
+                error!("Internal URL format error: '{}'", e);
+                None
+            }
+        }
     }
 
     pub async fn id_token(&self, audience: &str) -> crate::error::Result<SecretValue> {
@@ -56,7 +75,7 @@ impl Metadata {
             "Receiving a new ID token from Metadata Server using '{}'",
             url
         );
-        let resp = self.gcemeta_client.get(url, false).await?;
+        let resp = self.client.get(url).await?;
         Ok(SecretValue::from(resp))
     }
 }
@@ -74,7 +93,7 @@ impl Source for Metadata {
             PathAndQuery::from_str(format!("/computeMetadata/v1/{}", self.uri_suffix()).as_str())?;
         trace!("Receiving a new token from Metadata Server using '{}'", url);
 
-        let resp_str = self.gcemeta_client.get(url, false).await?;
+        let resp_str = self.client.get(url).await?;
         let resp = TokenResponse::try_from(resp_str.as_str())?;
         Token::try_from(resp)
     }
@@ -82,12 +101,12 @@ impl Source for Metadata {
 
 pub async fn from_metadata(
     scopes: &[String],
-    account: &str,
+    account: String,
 ) -> crate::error::Result<Option<Metadata>> {
-    let gcemeta_client = gcemeta::Client::new();
+    let mut metadata = Metadata::with_account(scopes, account);
 
-    if gcemeta_client.on_gce().await? {
-        Ok(Some(Metadata::with_account(scopes, account.to_string())))
+    if metadata.init().await {
+        Ok(Some(metadata))
     } else {
         Ok(None)
     }

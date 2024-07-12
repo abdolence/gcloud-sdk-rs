@@ -1,2 +1,0 @@
-[alias]
-protosgen = "run --release --package protosgen --bin protosgen --"

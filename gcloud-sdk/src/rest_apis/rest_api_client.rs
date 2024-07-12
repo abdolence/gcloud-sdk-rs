@@ -19,8 +19,8 @@ impl GoogleRestApi {
         token_source_type: TokenSourceType,
         token_scopes: Vec<String>,
     ) -> crate::error::Result<Self> {
-        Self::with_client_token_source(reqwest::Client::new(), token_source_type, token_scopes)
-            .await
+        let client = reqwest::Client::new();
+        Self::with_client_token_source(client, token_source_type, token_scopes).await
     }
 
     pub async fn with_client_token_source(

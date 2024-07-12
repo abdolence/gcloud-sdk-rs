@@ -5,7 +5,7 @@ authors = ["me@abdolence.dev"]
 edition = "2021"
 
 [dependencies]
-gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false, features = ["google-logging-v2", "tls-webpki-roots"] }
-tokio = { version = "1.20", features = ["full"] }
+gcloud-sdk = { version = "0.25.0", git = "https://github.com/abdolence/gcloud-sdk-rs.git", branch = "hyper-1", default-features = false, features = ["tls-webpki-roots","google-logging-v2"] }
+tokio = { version = "1", features = ["full"] }
 tracing = "0.1"
 tracing-subscriber = { version ="0.3", features = ["env-filter"] }

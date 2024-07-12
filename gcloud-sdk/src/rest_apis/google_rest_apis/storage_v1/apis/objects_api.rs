@@ -2390,7 +2390,7 @@ pub async fn storage_objects_insert_ext_stream(
     configuration: &configuration::Configuration,
     params: StoragePeriodObjectsPeriodInsertParams,
     content_type: Option<String>,
-    bytes_stream: BoxStreamWithSend<
+    bytes_stream: BoxStreamWithSync<
         'static,
         std::result::Result<bytes::Bytes, Box<(dyn std::error::Error + Send + Sync + 'static)>>,
     >,
@@ -2547,7 +2547,7 @@ pub async fn storage_objects_insert_ext_bytes(
 > {
     use futures::StreamExt;
 
-    let bytes_stream: BoxStreamWithSend<
+    let bytes_stream: BoxStreamWithSync<
         'static,
         std::result::Result<bytes::Bytes, Box<(dyn std::error::Error + Send + Sync + 'static)>>,
     > = Box::pin(

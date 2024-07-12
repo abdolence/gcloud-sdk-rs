@@ -11,4 +11,4 @@ jobs:
           profile: minimal
           toolchain: stable
           components: rustfmt, clippy
-      - run: cargo fmt -- --check && cargo test --features rest #&& cargo clippy -- -Dwarnings && cargo test --all-features
+      - run: cargo fmt -- --check && cargo test -p gcloud-sdk --features rest #&& cargo clippy -- -Dwarnings && cargo test --all-features

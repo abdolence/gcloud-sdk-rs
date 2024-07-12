@@ -14,7 +14,7 @@ use crate::token_source::*;
 #[async_trait]
 pub trait GoogleApiClientBuilder<C>
 where
-    C: Clone + Send + Sync,
+    C: Clone + Send,
 {
     fn create_client(&self, channel: GoogleAuthMiddlewareService<Channel>) -> C;
 }
@@ -23,7 +23,7 @@ where
 pub struct GoogleApiClient<B, C>
 where
     B: GoogleApiClientBuilder<C>,
-    C: Clone + Send + Sync,
+    C: Clone + Send,
 {
     builder: B,
     service: GoogleAuthMiddlewareService<Channel>,
@@ -33,7 +33,7 @@ where
 impl<B, C> GoogleApiClient<B, C>
 where
     B: GoogleApiClientBuilder<C>,
-    C: Clone + Send + Sync,
+    C: Clone + Send,
 {
     pub async fn with_token_source<S: AsRef<str>>(
         builder: B,
@@ -48,12 +48,6 @@ where
             token_scopes
         );
 
-        #[cfg(any(feature = "tls-roots", feature = "tls-webpki-roots"))]
-        let channel =
-            GoogleEnvironment::init_google_services_channel_with_native_roots(google_api_url)
-                .await?;
-
-        #[cfg(not(any(feature = "tls-roots", feature = "tls-webpki-roots")))]
         let channel = GoogleEnvironment::init_google_services_channel(google_api_url).await?;
 
         let token_generator =
@@ -79,14 +73,14 @@ where
 #[derive(Clone)]
 pub struct GoogleApiClientBuilderFunction<C>
 where
-    C: Clone + Send + Sync,
+    C: Clone + Send,
 {
     f: fn(GoogleAuthMiddlewareService<Channel>) -> C,
 }
 
 impl<C> GoogleApiClientBuilder<C> for GoogleApiClientBuilderFunction<C>
 where
-    C: Clone + Send + Sync,
+    C: Clone + Send,
 {
     fn create_client(&self, channel: GoogleAuthMiddlewareService<Channel>) -> C {
         (self.f)(channel)
@@ -95,7 +89,7 @@ where
 
 impl<C> GoogleApiClient<GoogleApiClientBuilderFunction<C>, C>
 where
-    C: Clone + Send + Sync,
+    C: Clone + Send,
 {
     pub async fn from_function<S: AsRef<str>>(
         builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
@@ -163,27 +157,33 @@ impl GoogleEnvironment {
             debug!("Detected GCP Project ID using environment variables");
             for_env
         } else {
-            let metadata_server =
-                crate::token_source::metadata::Metadata::new(GCP_DEFAULT_SCOPES.clone());
-            let metadata_result = metadata_server.detect_google_project_id().await;
-            if metadata_result.is_some() {
-                debug!("Detected GCP Project ID using GKE metadata server");
-                metadata_result
+            let local_creds = crate::token_source::from_env_var(&GCP_DEFAULT_SCOPES)
+                .or_else(|_| crate::token_source::from_well_known_file(&GCP_DEFAULT_SCOPES))
+                .ok()
+                .flatten();
+
+            let local_quota_project_id =
+                local_creds.and_then(|creds| creds.quota_project_id().map(ToString::to_string));
+
+            if local_quota_project_id.is_some() {
+                debug!("Detected default project id from local defined in quota_project_id for the service account file.");
+                local_quota_project_id
             } else {
-                let local_creds = crate::token_source::from_env_var(&GCP_DEFAULT_SCOPES)
-                    .or_else(|_| crate::token_source::from_well_known_file(&GCP_DEFAULT_SCOPES))
-                    .ok()
-                    .flatten();
-
-                let local_quota_project_id =
-                    local_creds.and_then(|creds| creds.quota_project_id().map(ToString::to_string));
-
-                if local_quota_project_id.is_some() {
-                    debug!("Detected default project id from local defined quota_project_id");
+                let mut metadata_server =
+                    crate::token_source::metadata::Metadata::new(GCP_DEFAULT_SCOPES.clone());
+                if metadata_server.init().await {
+                    let metadata_result = metadata_server.detect_google_project_id().await;
+                    if metadata_result.is_some() {
+                        debug!("Detected GCP Project ID using GKE metadata server");
+                        metadata_result
+                    } else {
+                        debug!("No GCP Project ID detected in this environment. Please specify it explicitly using environment variables: `PROJECT_ID`,`GCP_PROJECT_ID`, or `GCP_PROJECT`");
+                        metadata_result
+                    }
                 } else {
                     debug!("No GCP Project ID detected in this environment. Please specify it explicitly using environment variables: `PROJECT_ID`,`GCP_PROJECT_ID`, or `GCP_PROJECT`");
+                    None
                 }
-                local_quota_project_id
             }
         }
     }
@@ -193,7 +193,8 @@ impl GoogleEnvironment {
     ) -> Result<Channel, crate::error::Error> {
         let api_url_string = api_url.as_ref().to_string();
         let domain_name = api_url_string.replace("https://", "");
-        let tls_config = Self::init_google_services_channel_tls_config(domain_name);
+
+        let tls_config = Self::init_tls_config(domain_name);
 
         Ok(Channel::from_shared(api_url_string)?
             .tls_config(tls_config)?
@@ -206,9 +207,8 @@ impl GoogleEnvironment {
             .await?)
     }
 
-    pub fn init_google_services_channel_tls_config(
-        domain_name: String,
-    ) -> tonic::transport::ClientTlsConfig {
+    #[cfg(not(any(feature = "tls-roots", feature = "tls-webpki-roots")))]
+    fn init_tls_config(domain_name: String) -> tonic::transport::ClientTlsConfig {
         tonic::transport::ClientTlsConfig::new()
             .ca_certificate(tonic::transport::Certificate::from_pem(
                 crate::apis::CERTIFICATES,
@@ -216,18 +216,18 @@ impl GoogleEnvironment {
             .domain_name(domain_name)
     }
 
-    #[cfg(any(feature = "tls-roots", feature = "tls-webpki-roots"))]
-    pub async fn init_google_services_channel_with_native_roots<S: AsRef<str>>(
-        api_url: S,
-    ) -> Result<Channel, crate::error::Error> {
-        Ok(Channel::from_shared(api_url.as_ref().to_string())?
-            .connect_timeout(Duration::from_secs(30))
-            .tcp_keepalive(Some(Duration::from_secs(60)))
-            .keep_alive_timeout(Duration::from_secs(60))
-            .http2_keep_alive_interval(Duration::from_secs(60))
-            .keep_alive_while_idle(true)
-            .connect()
-            .await?)
+    #[cfg(feature = "tls-roots")]
+    fn init_tls_config(domain_name: String) -> tonic::transport::ClientTlsConfig {
+        tonic::transport::ClientTlsConfig::new()
+            .with_native_roots()
+            .domain_name(domain_name)
+    }
+
+    #[cfg(feature = "tls-webpki-roots")]
+    fn init_tls_config(domain_name: String) -> tonic::transport::ClientTlsConfig {
+        tonic::transport::ClientTlsConfig::new()
+            .with_webpki_roots()
+            .domain_name(domain_name)
     }
 }
 

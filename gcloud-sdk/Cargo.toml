@@ -1,6 +1,6 @@
 [package]
 name = "gcloud-sdk"
-version = "0.24.8"
+version = "0.25.0"
 authors = ["Abdulla Abdurakhmanov <me@abdolence.dev>","mechiru <u9053u6d41@gmail.com>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -16,10 +16,12 @@ exclude = ["*.sh"]
 doctest = false
 
 [features]
-default = ["tls-roots"]
+default = ["tonic/tls-roots"]
 tls-roots = ["tonic/tls-roots", "reqwest/rustls-tls-native-roots"]
-tls-webpki-roots = ["tonic/tls-webpki-roots", "reqwest/rustls-tls"]
-rest = ["bytes", "serde_with"]
+tls-webpki-roots = ["tonic/tls-webpki-roots", "reqwest/rustls-tls-webpki-roots"]
+rest = ["serde_with"]
+
+# Google API features
 ccc-hosted-marketplace-v2 = []
 google-actions-sdk-v2 = []
 google-actions-sdk-v2-conversation = []
@@ -90,10 +92,6 @@ google-cloud-apigateway-v1 = []
 google-cloud-apigeeconnect-v1 = []
 google-cloud-apigeeregistry-v1 = []
 google-cloud-asset-v1 = []
-# google-cloud-asset-v1p1beta1 = []
-# google-cloud-asset-v1p2beta1 = []
-# google-cloud-asset-v1p4beta1 = []
-# google-cloud-asset-v1p5beta1 = []
 google-cloud-asset-v1p7beta1 = []
 google-cloud-assuredworkloads-v1 = []
 google-cloud-assuredworkloads-v1beta1 = []
@@ -358,11 +356,9 @@ google-example-showcase-v1 = []
 google-example-showcase-v1beta1 = []
 google-example-showcase-v1beta2 = []
 google-example-showcase-v1beta3 = []
-#google-firebase-fcm-connection-v1alpha1 = []
 google-firestore-admin-v1 = []
 google-firestore-admin-v1beta1 = []
 google-firestore-admin-v1beta2 = []
-# google-firestore-bundle = []
 google-firestore-v1 = []
 google-firestore-v1beta1 = []
 google-gapic-metadata = []
@@ -414,15 +410,12 @@ google-watcher-v1 = []
 grafeas-v1 = []
 grafeas-v1beta1 = []
 maps-fleetengine-delivery-v1 = []
-# grafeas-v1beta1-attestation = []
 grafeas-v1beta1-build = []
 grafeas-v1beta1-deployment = []
-# grafeas-v1beta1-discovery = []
 grafeas-v1beta1-image = []
 grafeas-v1beta1-package = []
 grafeas-v1beta1-provenance = []
 grafeas-v1beta1-source = []
-# grafeas-v1beta1-vulnerability = []
 maps-fleetengine-v1 = []
 
 # REST features
@@ -433,27 +426,26 @@ google-rest-dns-v1 = ["rest"]
 google-rest-compute-v1 = ["rest"]
 
 [dependencies]
-tonic = { version = "0.11", features = ["tls"] }
+tonic = { version = "0.12", features = ["tls"] }
 tower = "0.4"
 tower-layer = "0.3"
 tower-util = "0.3"
 futures = "0.3"
-prost = "0.12"
-prost-types = "0.12"
-gcemeta = { version = "0.2" }
+prost = "0.13"
+prost-types = "0.13"
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1" }
 url = { version = "2.5" }
 jsonwebtoken = { version = "9" }
-hyper = { version ="0.14", features = ["client", "http2", "h2"] }
+hyper = { version ="1", features = ["client", "http2"] }
 async-trait = "0.1"
 chrono = { version = "0.4", features = ["serde", "clock"], default-features = false }
 tokio= { version =  "1" }
 tracing = "0.1"
 secret-vault-value = { version="0.3", features=["proto", "serde"] }
 once_cell = "1.19"
-reqwest = { version="0.11", features=["multipart", "json", "gzip", "stream"], default-features = false  }
-bytes = { version = "1", optional = true }
+reqwest = { version="0.12", features=["multipart", "json", "gzip", "stream"], default-features = false  }
+bytes = { version = "1"}
 serde_with = { version = "3", optional = true }
 
 [dev-dependencies]
@@ -464,4 +456,4 @@ tag-prefix=""
 
 [package.metadata.docs.rs]
 all-features = false
-features = ["rest", "tls-roots", "tls-webpki-roots"]
+features = ["rest", "tls-roots"]

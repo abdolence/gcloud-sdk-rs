@@ -8,7 +8,7 @@ pub enum ErrorKind {
     /// Http status code that is not 2xx when getting token.
     HttpStatus(reqwest::StatusCode),
     /// GCE metadata service error.
-    Metadata(gcemeta::Error),
+    Metadata(String),
     TonicMetadata(tonic::metadata::errors::InvalidMetadataValue),
     /// JWT encode/decode error.
     Jwt(jsonwebtoken::errors::Error),
@@ -72,12 +72,6 @@ impl std::error::Error for Error {}
 impl From<reqwest::Error> for Error {
     fn from(e: reqwest::Error) -> Self {
         ErrorKind::Http(e).into()
-    }
-}
-
-impl From<gcemeta::Error> for Error {
-    fn from(e: gcemeta::Error) -> Self {
-        ErrorKind::Metadata(e).into()
     }
 }
 
