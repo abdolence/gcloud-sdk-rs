@@ -34,10 +34,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Response: {:?}", resp);
 
     // Option 2: using Metadata server (will work only on GCP)
-    let resp2 = GceMetadataClient::new(GCP_DEFAULT_SCOPES.clone())
-        .id_token("test-aud")
-        .await?;
-    println!("Response: {:?}", resp2.as_sensitive_str());
+    let mut metadata_client = GceMetadataClient::new(GCP_DEFAULT_SCOPES.clone());
+    if metadata_client.init().await {
+        let resp2 = metadata_client.id_token("test-aud").await?;
+        println!("Response: {:?}", resp2.as_sensitive_str());
+    }
 
     Ok(())
 }

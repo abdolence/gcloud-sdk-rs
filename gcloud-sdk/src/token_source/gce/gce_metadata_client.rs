@@ -1,65 +1,141 @@
 use crate::error::ErrorKind;
 use hyper::http::uri::PathAndQuery;
 use std::env;
-use tracing::debug;
+use tracing::*;
 
 #[derive(Debug)]
 pub struct GceMetadataClient {
-    metadata_client: Option<reqwest::Client>,
-    metadata_server_host: String,
+    availability: GceMetadataClientAvailability,
+}
+
+#[derive(Debug)]
+enum GceMetadataClientAvailability {
+    Available(reqwest::Client, String),
+    Unavailable,
+    NotVerified,
 }
 
 const GCE_METADATA_HOST_ENV: &str = "GCE_METADATA_HOST";
+const GCE_METADATA_IP: &str = "169.254.169.254";
 
 impl GceMetadataClient {
     pub fn new() -> Self {
-        match env::var(GCE_METADATA_HOST_ENV).ok() {
-            Some(metadata_server_host) => {
-                debug!("Detected metadata server host: {}", metadata_server_host);
-                let mut default_headers = reqwest::header::HeaderMap::new();
-                default_headers.append(
-                    "Metadata-Flavor",
-                    "Google".parse().expect("Metadata-Flavor header is valid"),
-                );
-                default_headers.append(
-                    reqwest::header::USER_AGENT,
-                    crate::GCLOUD_SDK_USER_AGENT
-                        .parse()
-                        .expect("User agent header is valid"),
-                );
+        Self {
+            availability: GceMetadataClientAvailability::NotVerified,
+        }
+    }
 
-                let metadata_client = reqwest::Client::builder()
-                    .default_headers(default_headers)
-                    .timeout(std::time::Duration::from_secs(5))
-                    .tcp_keepalive(std::time::Duration::from_secs(60))
-                    .build()
-                    .ok();
+    pub async fn init(&mut self) -> bool {
+        match self.availability {
+            GceMetadataClientAvailability::Available(_, _) => return true,
+            GceMetadataClientAvailability::Unavailable => return false,
+            GceMetadataClientAvailability::NotVerified => {}
+        }
+        debug!("GCE metadata server client init");
+        let mut default_headers = reqwest::header::HeaderMap::new();
+        default_headers.append(
+            "Metadata-Flavor",
+            "Google".parse().expect("Metadata-Flavor header is valid"),
+        );
+        default_headers.append(
+            reqwest::header::USER_AGENT,
+            crate::GCLOUD_SDK_USER_AGENT
+                .parse()
+                .expect("User agent header is valid"),
+        );
+        let http_client = reqwest::Client::builder()
+            .default_headers(default_headers)
+            .timeout(std::time::Duration::from_secs(5))
+            .tcp_keepalive(std::time::Duration::from_secs(60))
+            .build();
 
-                Self {
-                    metadata_client,
-                    metadata_server_host,
+        match http_client {
+            Ok(client) => {
+                let metadata_host_name = env::var(GCE_METADATA_HOST_ENV)
+                    .ok()
+                    .unwrap_or("metadata.google.internal".to_string());
+                debug!("Metadata server host: {}", &metadata_host_name);
+                let resolved = match tokio::net::lookup_host((metadata_host_name.clone(), 80)).await
+                {
+                    Ok(mut addrs) => {
+                        if addrs.next().is_none() {
+                            debug!("Metadata server address is not available through DNS");
+                            self.availability = GceMetadataClientAvailability::Unavailable;
+                            false
+                        } else {
+                            self.availability = GceMetadataClientAvailability::Available(
+                                client.clone(),
+                                metadata_host_name,
+                            );
+                            true
+                        }
+                    }
+                    Err(err) => {
+                        debug!("Resolving metadata server address failed with: {}", err);
+                        self.availability = GceMetadataClientAvailability::Unavailable;
+                        false
+                    }
+                };
+
+                if !resolved {
+                    // Last resort, try to use IP address with HTTP call
+                    match client
+                        .get(&format!("http://{}/", GCE_METADATA_IP))
+                        .send()
+                        .await
+                    {
+                        Ok(response) => {
+                            if response.status().is_success() {
+                                debug!(
+                                    "Metadata server is available through direct IP: {}",
+                                    response.status()
+                                );
+                                self.availability = GceMetadataClientAvailability::Available(
+                                    client,
+                                    GCE_METADATA_IP.to_string(),
+                                );
+                                true
+                            } else {
+                                debug!("Metadata server address HTTP verification through direct IP failed with: {}", response.status());
+                                self.availability = GceMetadataClientAvailability::Unavailable;
+                                false
+                            }
+                        }
+                        Err(err) => {
+                            debug!(
+                                "Metadata server address is not available through direct IP: {}",
+                                err
+                            );
+                            self.availability = GceMetadataClientAvailability::Unavailable;
+                            false
+                        }
+                    }
+                } else {
+                    resolved
                 }
             }
-            None => {
-                debug!("No metadata server detected");
-                Self {
-                    metadata_client: None,
-                    metadata_server_host: "metadata_server_host".into(),
-                }
+            Err(e) => {
+                error!("Error creating HTTP client: {}", e);
+                self.availability = GceMetadataClientAvailability::Unavailable;
+                false
             }
         }
     }
 
     pub fn is_available(&self) -> bool {
-        self.metadata_client.is_some()
+        match self.availability {
+            GceMetadataClientAvailability::Available(_, _) => true,
+            GceMetadataClientAvailability::Unavailable
+            | GceMetadataClientAvailability::NotVerified => false,
+        }
     }
 
     pub async fn get(&self, path_and_query: PathAndQuery) -> crate::error::Result<String> {
-        match self.metadata_client {
-            Some(ref client) => {
+        match self.availability {
+            GceMetadataClientAvailability::Available(ref client, ref metadata_server_host) => {
                 let url = format!(
                     "http://{}/{}",
-                    self.metadata_server_host,
+                    metadata_server_host,
                     path_and_query.as_str()
                 );
 
@@ -78,9 +154,14 @@ impl GceMetadataClient {
                     .into())
                 }
             }
-            None => Err(ErrorKind::Metadata(format!(
+            GceMetadataClientAvailability::Unavailable => Err(ErrorKind::Metadata(format!(
                 "Error retrieving data from metadata server: {}",
                 "Metadata server not available"
+            ))
+            .into()),
+            GceMetadataClientAvailability::NotVerified => Err(ErrorKind::Metadata(format!(
+                "Error retrieving data from metadata server: {}",
+                "Metadata server client requires initialization"
             ))
             .into()),
         }

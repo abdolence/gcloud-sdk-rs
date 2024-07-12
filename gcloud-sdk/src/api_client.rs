@@ -157,27 +157,33 @@ impl GoogleEnvironment {
             debug!("Detected GCP Project ID using environment variables");
             for_env
         } else {
-            let metadata_server =
-                crate::token_source::metadata::Metadata::new(GCP_DEFAULT_SCOPES.clone());
-            let metadata_result = metadata_server.detect_google_project_id().await;
-            if metadata_result.is_some() {
-                debug!("Detected GCP Project ID using GKE metadata server");
-                metadata_result
+            let local_creds = crate::token_source::from_env_var(&GCP_DEFAULT_SCOPES)
+                .or_else(|_| crate::token_source::from_well_known_file(&GCP_DEFAULT_SCOPES))
+                .ok()
+                .flatten();
+
+            let local_quota_project_id =
+                local_creds.and_then(|creds| creds.quota_project_id().map(ToString::to_string));
+
+            if local_quota_project_id.is_some() {
+                debug!("Detected default project id from local defined in quota_project_id for the service account file.");
+                local_quota_project_id
             } else {
-                let local_creds = crate::token_source::from_env_var(&GCP_DEFAULT_SCOPES)
-                    .or_else(|_| crate::token_source::from_well_known_file(&GCP_DEFAULT_SCOPES))
-                    .ok()
-                    .flatten();
-
-                let local_quota_project_id =
-                    local_creds.and_then(|creds| creds.quota_project_id().map(ToString::to_string));
-
-                if local_quota_project_id.is_some() {
-                    debug!("Detected default project id from local defined quota_project_id");
+                let mut metadata_server =
+                    crate::token_source::metadata::Metadata::new(GCP_DEFAULT_SCOPES.clone());
+                if metadata_server.init().await {
+                    let metadata_result = metadata_server.detect_google_project_id().await;
+                    if metadata_result.is_some() {
+                        debug!("Detected GCP Project ID using GKE metadata server");
+                        metadata_result
+                    } else {
+                        debug!("No GCP Project ID detected in this environment. Please specify it explicitly using environment variables: `PROJECT_ID`,`GCP_PROJECT_ID`, or `GCP_PROJECT`");
+                        metadata_result
+                    }
                 } else {
                     debug!("No GCP Project ID detected in this environment. Please specify it explicitly using environment variables: `PROJECT_ID`,`GCP_PROJECT_ID`, or `GCP_PROJECT`");
+                    None
                 }
-                local_quota_project_id
             }
         }
     }

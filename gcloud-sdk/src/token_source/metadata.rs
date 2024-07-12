@@ -30,6 +30,10 @@ impl Metadata {
         }
     }
 
+    pub async fn init(&mut self) -> bool {
+        self.client.init().await
+    }
+
     fn uri_suffix(&self) -> String {
         let query = if self.scopes.is_empty() {
             String::new()
@@ -99,10 +103,10 @@ pub async fn from_metadata(
     scopes: &[String],
     account: String,
 ) -> crate::error::Result<Option<Metadata>> {
-    let client = GceMetadataClient::new();
+    let mut metadata = Metadata::with_account(scopes, account);
 
-    if client.is_available() {
-        Ok(Some(Metadata::with_account(scopes, account)))
+    if metadata.init().await {
+        Ok(Some(metadata))
     } else {
         Ok(None)
     }
