@@ -16,7 +16,7 @@ exclude = ["*.sh"]
 doctest = false
 
 [features]
-default = ["tonic/tls-roots"]
+default = ["tls-roots"]
 tls-roots = ["tonic/tls-roots", "reqwest/rustls-tls-native-roots"]
 tls-webpki-roots = ["tonic/tls-webpki-roots", "reqwest/rustls-tls-webpki-roots"]
 rest = ["serde_with"]
