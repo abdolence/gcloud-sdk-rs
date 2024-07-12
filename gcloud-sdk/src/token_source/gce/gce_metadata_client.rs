@@ -63,6 +63,7 @@ impl GceMetadataClient {
                             self.availability = GceMetadataClientAvailability::Unavailable;
                             false
                         } else {
+                            debug!("Metadata server address is detected through DNS");
                             self.availability = GceMetadataClientAvailability::Available(
                                 client.clone(),
                                 metadata_host_name,
