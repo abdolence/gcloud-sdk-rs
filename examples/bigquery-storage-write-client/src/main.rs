@@ -7,7 +7,6 @@ use gcloud_sdk::google::cloud::bigquery::storage::v1::{
 
 use crate::prost::*;
 use crate::prost_types::*;
-use gcloud_sdk::google::cloud::bigquery::v2::dataset_service_client::DatasetServiceClient;
 use gcloud_sdk::*;
 
 #[derive(Clone, PartialEq, ::prost::Message)]
