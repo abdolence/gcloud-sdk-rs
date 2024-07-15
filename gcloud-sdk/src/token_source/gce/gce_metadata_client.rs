@@ -135,7 +135,7 @@ impl GceMetadataClient {
         match self.availability {
             GceMetadataClientAvailability::Available(ref client, ref metadata_server_host) => {
                 let url = format!(
-                    "http://{}/{}",
+                    "http://{}{}",
                     metadata_server_host,
                     path_and_query.as_str()
                 );
