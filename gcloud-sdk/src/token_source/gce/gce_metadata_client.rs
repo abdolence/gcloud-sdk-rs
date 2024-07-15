@@ -134,11 +134,7 @@ impl GceMetadataClient {
     pub async fn get(&self, path_and_query: PathAndQuery) -> crate::error::Result<String> {
         match self.availability {
             GceMetadataClientAvailability::Available(ref client, ref metadata_server_host) => {
-                let url = format!(
-                    "http://{}{}",
-                    metadata_server_host,
-                    path_and_query.as_str()
-                );
+                let url = format!("http://{}{}", metadata_server_host, path_and_query.as_str());
 
                 let response = client.get(&url).send().await?;
 
