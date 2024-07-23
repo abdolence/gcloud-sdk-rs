@@ -192,19 +192,25 @@ impl GoogleEnvironment {
         api_url: S,
     ) -> Result<Channel, crate::error::Error> {
         let api_url_string = api_url.as_ref().to_string();
-        let domain_name = api_url_string.replace("https://", "");
-
-        let tls_config = Self::init_tls_config(domain_name);
-
-        Ok(Channel::from_shared(api_url_string)?
-            .tls_config(tls_config)?
+        let base_config = Channel::from_shared(api_url_string.clone())?
             .connect_timeout(Duration::from_secs(30))
             .tcp_keepalive(Some(Duration::from_secs(60)))
             .keep_alive_timeout(Duration::from_secs(60))
             .http2_keep_alive_interval(Duration::from_secs(60))
-            .keep_alive_while_idle(true)
-            .connect()
-            .await?)
+            .keep_alive_while_idle(true);
+
+        let config = if !&api_url_string.contains("http://") {
+            let domain_name = api_url_string
+                .replace("https://", "")
+                .replace("http://", "");
+
+            let tls_config = Self::init_tls_config(domain_name);
+            base_config.tls_config(tls_config)?
+        } else {
+            base_config
+        };
+
+        Ok(config.connect().await?)
     }
 
     #[cfg(not(any(feature = "tls-roots", feature = "tls-webpki-roots")))]
