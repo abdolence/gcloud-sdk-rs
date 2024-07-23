@@ -201,8 +201,7 @@ impl GoogleEnvironment {
 
         let config = if !&api_url_string.contains("http://") {
             let domain_name = api_url_string
-                .replace("https://", "")
-                .replace("http://", "");
+                .replace("https://", "");
 
             let tls_config = Self::init_tls_config(domain_name);
             base_config.tls_config(tls_config)?
