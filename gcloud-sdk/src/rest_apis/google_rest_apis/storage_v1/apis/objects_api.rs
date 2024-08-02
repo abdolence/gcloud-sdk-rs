@@ -1,3 +1,4 @@
+use bytes::Bytes;
 use serde::{Deserialize, Serialize}; /*
                                       * Cloud Storage JSON API
                                       *
@@ -2386,18 +2387,17 @@ pub type BoxStreamWithSend<'a, T> = std::pin::Pin<Box<dyn futures::Stream<Item =
 /// Stores a new object and metadata.
 /// Open API doesn't support binary streams and this particular endpoint uses another base URL.
 /// Tha means generated `storage_objects_insert` can't be used.
-pub async fn storage_objects_insert_ext_stream(
+pub async fn storage_objects_insert_ext_stream<S>(
     configuration: &configuration::Configuration,
     params: StoragePeriodObjectsPeriodInsertParams,
     content_type: Option<String>,
-    bytes_stream: BoxStreamWithSync<
-        'static,
-        std::result::Result<bytes::Bytes, Box<(dyn std::error::Error + Send + Sync + 'static)>>,
-    >,
+    bytes_stream: S,
 ) -> Result<
     crate::google_rest_apis::storage_v1::models::Object,
     Error<StoragePeriodObjectsPeriodInsertError>,
-> {
+> where S: futures::stream::TryStream + Send + Sync + 'static,
+        S::Error: Into<Box<dyn std::error::Error + Send + Sync>>,
+        Bytes: From<S::Ok> {
     let local_var_configuration = configuration;
 
     // unbox the parameters
