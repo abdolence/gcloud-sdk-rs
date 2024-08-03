@@ -9,7 +9,7 @@ use tracing::*;
 pub enum ExternalCredentialSource {
     UrlBased(ExternalCredentialUrl),
     FileBased(ExternalCredentialFile),
-    // AWS external source implementation example https://github.com/googleapis/google-auth-library-nodejs/blob/4bbd13fbf9081e004209d0ffc336648cff0c529e/src/auth/awsclient.ts
+    Aws(Aws),
 }
 
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
@@ -23,6 +23,25 @@ pub struct ExternalCredentialUrl {
 pub struct ExternalCredentialFile {
     file: String,
     format: Option<ExternalCredentialUrlFormat>,
+}
+/// https://google.aip.dev/auth/4117#determining-the-subject-token-in-aws
+#[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+pub struct Aws {
+    /// This defines the regional AWS GetCallerIdentity action URL. This URL should be used
+    ///  to determine the AWS account ID and its roles.
+    regional_cred_verification_url: String,
+    /// This is the environment identifier, of format `aws{version}`.
+    environment_id: String,
+    /// This URL should be used to determine the current AWS region needed for the signed
+    /// request construction when the region environment variables are not present.
+    region_url: Option<String>,
+    /// This AWS metadata server URL should be used to retrieve the access key, secret key
+    /// and security token needed to sign the GetCallerIdentity request.
+    url: Option<String>,
+    /// Presence of this URL enforces the auth libraries to fetch a Session Token from AWS.
+    /// This field is required for EC2 instances using IMDSv2. This Session Token would
+    /// later be used while making calls to the metadata endpoint.
+    imdsv2_session_token_url: Option<String>,
 }
 
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
@@ -47,6 +66,7 @@ pub async fn subject_token(
             subject_token_url(client, url_creds).await
         }
         ExternalCredentialSource::FileBased(ref url_creds) => subject_token_file(url_creds).await,
+        ExternalCredentialSource::Aws(..) => todo!("Aws credentials not implemented yet"),
     }
 }
 
