@@ -3,7 +3,7 @@
 /// with points P_0, P_1, ... , P_N (zero-based index), the SpeedReadingInterval
 /// defines an interval and describes its traffic using the following categories.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SpeedReadingInterval {
     /// The starting index of this interval in the path.
     /// In JSON, when the index is 0, the field will appear to be unpopulated.
@@ -219,7 +219,7 @@ pub mod vehicle_attribute {
 }
 /// The location, speed, and heading of a vehicle at a point in time.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VehicleLocation {
     /// The location of the vehicle.
     /// When it is sent to Fleet Engine, the vehicle's location is a GPS location.
@@ -877,7 +877,7 @@ pub struct Trip {
 }
 /// The actual location where a stop (pickup/dropoff) happened.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StopLocation {
     /// Required. Denotes the actual location.
     #[prost(message, optional, tag = "1")]
@@ -1681,7 +1681,7 @@ pub struct Vehicle {
 pub mod vehicle {
     /// The type of vehicle.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct VehicleType {
         /// Vehicle type category
         #[prost(enumeration = "vehicle_type::Category", tag = "1")]
@@ -1753,7 +1753,7 @@ pub mod vehicle {
 }
 /// Information about the device's battery.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BatteryInfo {
     /// Status of the battery, whether full or charging etc.
     #[prost(enumeration = "BatteryStatus", tag = "1")]
@@ -1767,7 +1767,7 @@ pub struct BatteryInfo {
 }
 /// Information about various settings on the mobile device.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeviceSettings {
     /// How location features are set to behave on the device when battery saver is
     /// on.
@@ -1822,7 +1822,7 @@ pub struct VisualTrafficReportPolylineRendering {
 pub mod visual_traffic_report_polyline_rendering {
     /// One road stretch that should be rendered.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RoadStretch {
         /// Required. The style to apply.
         #[prost(enumeration = "road_stretch::Style", tag = "1")]
@@ -2678,7 +2678,7 @@ pub struct ListVehiclesResponse {
 /// `SearchVehiclesResponse`. This concept is represented as a `TripWaypoint` in
 /// all other endpoints.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Waypoint {
     /// The location of this waypoint.
     #[prost(message, optional, tag = "1")]

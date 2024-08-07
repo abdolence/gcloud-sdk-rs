@@ -201,7 +201,7 @@ pub struct AccessInListFilter {
 }
 /// Filters for numeric or date values.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AccessNumericFilter {
     /// The operation type for this filter.
     #[prost(enumeration = "access_numeric_filter::Operation", tag = "1")]
@@ -270,7 +270,7 @@ pub mod access_numeric_filter {
 }
 /// To express that the result needs to be between two numbers (inclusive).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AccessBetweenFilter {
     /// Begins with this number.
     #[prost(message, optional, tag = "1")]
@@ -281,7 +281,7 @@ pub struct AccessBetweenFilter {
 }
 /// To represent a number.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NumericValue {
     /// One of a numeric value
     #[prost(oneof = "numeric_value::OneValue", tags = "1, 2")]
@@ -291,7 +291,7 @@ pub struct NumericValue {
 pub mod numeric_value {
     /// One of a numeric value
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum OneValue {
         /// Integer value
         #[prost(int64, tag = "1")]
@@ -463,7 +463,7 @@ pub struct AccessMetricValue {
 /// property is exhausted, all requests to that property will return Resource
 /// Exhausted errors.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AccessQuota {
     /// Properties can use 250,000 tokens per day. Most requests consume fewer than
     /// 10 tokens.
@@ -490,7 +490,7 @@ pub struct AccessQuota {
 }
 /// Current state for a particular quota group.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AccessQuotaStatus {
     /// Quota consumed by this request.
     #[prost(int32, tag = "1")]
@@ -631,7 +631,7 @@ pub mod audience_dimension_or_metric_filter {
     }
     /// To represent a number.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct NumericValue {
         /// One of a numeric value.
         #[prost(oneof = "numeric_value::OneValue", tags = "1, 2")]
@@ -641,7 +641,7 @@ pub mod audience_dimension_or_metric_filter {
     pub mod numeric_value {
         /// One of a numeric value.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum OneValue {
             /// Integer value.
             #[prost(int64, tag = "1")]
@@ -653,7 +653,7 @@ pub mod audience_dimension_or_metric_filter {
     }
     /// A filter for numeric or date values on a dimension or metric.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct NumericFilter {
         /// Required. The operation applied to a numeric filter.
         #[prost(enumeration = "numeric_filter::Operation", tag = "1")]
@@ -715,7 +715,7 @@ pub mod audience_dimension_or_metric_filter {
     /// A filter for numeric or date values between certain values on a dimension
     /// or metric.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BetweenFilter {
         /// Required. Begins with this number, inclusive.
         #[prost(message, optional, tag = "1")]
@@ -1034,6 +1034,9 @@ pub struct Audience {
     /// Audience. All clauses will be AND’ed together.
     #[prost(message, repeated, tag = "8")]
     pub filter_clauses: ::prost::alloc::vec::Vec<AudienceFilterClause>,
+    /// Output only. Time when the Audience was created.
+    #[prost(message, optional, tag = "9")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `Audience`.
 pub mod audience {
@@ -1320,6 +1323,14 @@ pub struct ChannelGroup {
     /// updated for this channel group.
     #[prost(bool, tag = "5")]
     pub system_defined: bool,
+    /// Optional. If true, this channel group will be used as the default channel
+    /// group for reports. Only one channel group can be set as `primary` at any
+    /// time. If the `primary` field gets set on a channel group, it will get unset
+    /// on the previous primary channel group.
+    ///
+    /// The Google Analytics predefined channel group is the primary by default.
+    #[prost(bool, tag = "6")]
+    pub primary: bool,
 }
 /// Defines an event parameter to mutate.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1383,6 +1394,44 @@ pub struct EventCreateRule {
     /// A maximum of 20 mutations can be applied.
     #[prost(message, repeated, tag = "5")]
     pub parameter_mutations: ::prost::alloc::vec::Vec<ParameterMutation>,
+}
+/// An Event Edit Rule defines conditions that will trigger the creation of an
+/// entirely new event based upon matched criteria of a source event. Additional
+/// mutations of the parameters from the source event can be defined.
+///
+/// Unlike Event Create rules, Event Edit Rules are applied in their defined
+/// order.
+///
+/// Event Edit rules can't be used to modify an event created from an Event
+/// Create rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EventEditRule {
+    /// Identifier. Resource name for this EventEditRule resource.
+    /// Format:
+    /// properties/{property}/dataStreams/{data_stream}/eventEditRules/{event_edit_rule}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The display name of this event edit rule. Maximum of 255
+    /// characters.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Required. Conditions on the source event must match for this rule to be
+    /// applied. Must have at least one condition, and can have up to 10 max.
+    #[prost(message, repeated, tag = "3")]
+    pub event_conditions: ::prost::alloc::vec::Vec<MatchingCondition>,
+    /// Required. Parameter mutations define parameter behavior on the new event,
+    /// and are applied in order. A maximum of 20 mutations can be applied.
+    #[prost(message, repeated, tag = "4")]
+    pub parameter_mutations: ::prost::alloc::vec::Vec<ParameterMutation>,
+    /// Output only. The order for which this rule will be processed. Rules with an
+    /// order value lower than this will be processed before this rule, rules with
+    /// an order value higher than this will be processed after this rule. New
+    /// event edit rules will be assigned an order value at the end of the order.
+    ///
+    /// This value does not apply to event create rules.
+    #[prost(int64, tag = "5")]
+    pub processing_order: i64,
 }
 /// Defines a condition for when an Event Edit or Event Creation rule applies to
 /// an event.
@@ -1720,6 +1769,11 @@ pub struct Account {
     /// accounts are excluded from List results unless specifically requested.
     #[prost(bool, tag = "6")]
     pub deleted: bool,
+    /// Output only. The URI for a Google Marketing Platform organization resource.
+    /// Only set when this account is connected to a GMP organization.
+    /// Format: marketingplatformadmin.googleapis.com/organizations/{org_id}
+    #[prost(string, tag = "7")]
+    pub gmp_organization: ::prost::alloc::string::String,
 }
 /// A resource message representing a Google Analytics GA4 property.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2612,6 +2666,105 @@ pub mod conversion_event {
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "CONVERSION_COUNTING_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "ONCE_PER_EVENT" => Some(Self::OncePerEvent),
+                "ONCE_PER_SESSION" => Some(Self::OncePerSession),
+                _ => None,
+            }
+        }
+    }
+}
+/// A key event in a Google Analytics property.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct KeyEvent {
+    /// Output only. Resource name of this key event.
+    /// Format: properties/{property}/keyEvents/{key_event}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Immutable. The event name for this key event.
+    /// Examples: 'click', 'purchase'
+    #[prost(string, tag = "2")]
+    pub event_name: ::prost::alloc::string::String,
+    /// Output only. Time when this key event was created in the property.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. If set to true, this event can be deleted.
+    #[prost(bool, tag = "4")]
+    pub deletable: bool,
+    /// Output only. If set to true, this key event refers to a custom event.  If
+    /// set to false, this key event refers to a default event in GA. Default
+    /// events typically have special meaning in GA. Default events are usually
+    /// created for you by the GA system, but in some cases can be created by
+    /// property admins. Custom events count towards the maximum number of
+    /// custom key events that may be created per property.
+    #[prost(bool, tag = "5")]
+    pub custom: bool,
+    /// Required. The method by which Key Events will be counted across multiple
+    /// events within a session.
+    #[prost(enumeration = "key_event::CountingMethod", tag = "6")]
+    pub counting_method: i32,
+    /// Optional. Defines a default value/currency for a key event.
+    #[prost(message, optional, tag = "7")]
+    pub default_value: ::core::option::Option<key_event::DefaultValue>,
+}
+/// Nested message and enum types in `KeyEvent`.
+pub mod key_event {
+    /// Defines a default value/currency for a key event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DefaultValue {
+        /// Required. This will be used to populate the "value" parameter for all
+        /// occurrences of this Key Event (specified by event_name) where that
+        /// parameter is unset.
+        #[prost(double, tag = "1")]
+        pub numeric_value: f64,
+        /// Required. When an occurrence of this Key Event (specified by event_name)
+        /// has no set currency this currency will be applied as the default. Must be
+        /// in ISO 4217 currency code format.
+        ///
+        /// See <https://en.wikipedia.org/wiki/ISO_4217> for more information.
+        #[prost(string, tag = "2")]
+        pub currency_code: ::prost::alloc::string::String,
+    }
+    /// The method by which Key Events will be counted across multiple events
+    /// within a session.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CountingMethod {
+        /// Counting method not specified.
+        Unspecified = 0,
+        /// Each Event instance is considered a Key Event.
+        OncePerEvent = 1,
+        /// An Event instance is considered a Key Event at most once per session per
+        /// user.
+        OncePerSession = 2,
+    }
+    impl CountingMethod {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                CountingMethod::Unspecified => "COUNTING_METHOD_UNSPECIFIED",
+                CountingMethod::OncePerEvent => "ONCE_PER_EVENT",
+                CountingMethod::OncePerSession => "ONCE_PER_SESSION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COUNTING_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
                 "ONCE_PER_EVENT" => Some(Self::OncePerEvent),
                 "ONCE_PER_SESSION" => Some(Self::OncePerSession),
                 _ => None,
@@ -3566,6 +3719,11 @@ pub struct BigQueryLink {
     /// The list of event names that will be excluded from exports.
     #[prost(string, repeated, tag = "8")]
     pub excluded_events: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Required. Immutable. The geographic location where the created BigQuery
+    /// dataset should reside. See <https://cloud.google.com/bigquery/docs/locations>
+    /// for supported locations.
+    #[prost(string, tag = "10")]
+    pub dataset_location: ::prost::alloc::string::String,
 }
 /// Singleton resource under a web DataStream, configuring measurement of
 /// additional site interactions and content.
@@ -3975,6 +4133,8 @@ pub enum ChangeHistoryResourceType {
     ExpandedDataSet = 21,
     /// ChannelGroup resource
     ChannelGroup = 22,
+    /// BigQuery link resource
+    BigqueryLink = 23,
     /// EnhancedMeasurementSettings resource
     EnhancedMeasurementSettings = 24,
     /// DataRedactionSettings resource
@@ -4023,6 +4183,7 @@ impl ChangeHistoryResourceType {
             ChangeHistoryResourceType::AttributionSettings => "ATTRIBUTION_SETTINGS",
             ChangeHistoryResourceType::ExpandedDataSet => "EXPANDED_DATA_SET",
             ChangeHistoryResourceType::ChannelGroup => "CHANNEL_GROUP",
+            ChangeHistoryResourceType::BigqueryLink => "BIGQUERY_LINK",
             ChangeHistoryResourceType::EnhancedMeasurementSettings => {
                 "ENHANCED_MEASUREMENT_SETTINGS"
             }
@@ -4061,6 +4222,7 @@ impl ChangeHistoryResourceType {
             "ATTRIBUTION_SETTINGS" => Some(Self::AttributionSettings),
             "EXPANDED_DATA_SET" => Some(Self::ExpandedDataSet),
             "CHANNEL_GROUP" => Some(Self::ChannelGroup),
+            "BIGQUERY_LINK" => Some(Self::BigqueryLink),
             "ENHANCED_MEASUREMENT_SETTINGS" => Some(Self::EnhancedMeasurementSettings),
             "DATA_REDACTION_SETTINGS" => Some(Self::DataRedactionSettings),
             "SKADNETWORK_CONVERSION_VALUE_SCHEMA" => {
@@ -4863,7 +5025,8 @@ pub struct DeletePropertyRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFirebaseLinkRequest {
     /// Required. Format: properties/{property_id}
-    /// Example: properties/1234
+    ///
+    /// Example: `properties/1234`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Firebase link to create.
@@ -4875,7 +5038,8 @@ pub struct CreateFirebaseLinkRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFirebaseLinkRequest {
     /// Required. Format: properties/{property_id}/firebaseLinks/{firebase_link_id}
-    /// Example: properties/1234/firebaseLinks/5678
+    ///
+    /// Example: `properties/1234/firebaseLinks/5678`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -4884,7 +5048,8 @@ pub struct DeleteFirebaseLinkRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFirebaseLinksRequest {
     /// Required. Format: properties/{property_id}
-    /// Example: properties/1234
+    ///
+    /// Example: `properties/1234`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of resources to return. The service may return
@@ -4921,7 +5086,8 @@ pub struct GetGlobalSiteTagRequest {
     /// Required. The name of the site tag to lookup.
     /// Note that site tags are singletons and do not have unique IDs.
     /// Format: properties/{property_id}/dataStreams/{stream_id}/globalSiteTag
-    /// Example: "properties/123/dataStreams/456/globalSiteTag"
+    ///
+    /// Example: `properties/123/dataStreams/456/globalSiteTag`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -4996,7 +5162,8 @@ pub struct ListGoogleAdsLinksResponse {
 pub struct GetDataSharingSettingsRequest {
     /// Required. The name of the settings to lookup.
     /// Format: accounts/{account}/dataSharingSettings
-    /// Example: "accounts/1000/dataSharingSettings"
+    ///
+    /// Example: `accounts/1000/dataSharingSettings`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -5049,20 +5216,23 @@ pub struct AcknowledgeUserDataCollectionRequest {
 }
 /// Response message for AcknowledgeUserDataCollection RPC.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AcknowledgeUserDataCollectionResponse {}
 /// Request message for SearchChangeHistoryEvents RPC.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchChangeHistoryEventsRequest {
     /// Required. The account resource for which to return change history
-    /// resources. Format: accounts/{account} Example: "accounts/100"
+    /// resources. Format: accounts/{account}
+    ///
+    /// Example: `accounts/100`
     #[prost(string, tag = "1")]
     pub account: ::prost::alloc::string::String,
     /// Optional. Resource name for a child property. If set, only return changes
     /// made to this property or its child resources.
     /// Format: properties/{propertyId}
-    /// Example: "properties/100"
+    ///
+    /// Example: `properties/100`
     #[prost(string, tag = "2")]
     pub property: ::prost::alloc::string::String,
     /// Optional. If set, only return changes if they are for a resource that
@@ -5381,6 +5551,85 @@ pub struct ListConversionEventsResponse {
     /// The requested conversion events
     #[prost(message, repeated, tag = "1")]
     pub conversion_events: ::prost::alloc::vec::Vec<ConversionEvent>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for CreateKeyEvent RPC
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateKeyEventRequest {
+    /// Required. The Key Event to create.
+    #[prost(message, optional, tag = "1")]
+    pub key_event: ::core::option::Option<KeyEvent>,
+    /// Required. The resource name of the parent property where this Key Event
+    /// will be created. Format: properties/123
+    #[prost(string, tag = "2")]
+    pub parent: ::prost::alloc::string::String,
+}
+/// Request message for UpdateKeyEvent RPC
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateKeyEventRequest {
+    /// Required. The Key Event to update.
+    /// The `name` field is used to identify the settings to be updated.
+    #[prost(message, optional, tag = "1")]
+    pub key_event: ::core::option::Option<KeyEvent>,
+    /// Required. The list of fields to be updated. Field names must be in snake
+    /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "*" to match all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for GetKeyEvent RPC
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetKeyEventRequest {
+    /// Required. The resource name of the Key Event to retrieve.
+    /// Format: properties/{property}/keyEvents/{key_event}
+    /// Example: "properties/123/keyEvents/456"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for DeleteKeyEvent RPC
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteKeyEventRequest {
+    /// Required. The resource name of the Key Event to delete.
+    /// Format: properties/{property}/keyEvents/{key_event}
+    /// Example: "properties/123/keyEvents/456"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListKeyEvents RPC
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListKeyEventsRequest {
+    /// Required. The resource name of the parent property.
+    /// Example: 'properties/123'
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200; (higher values will be coerced to the maximum)
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListKeyEvents` call.
+    /// Provide this to retrieve the subsequent page.
+    /// When paginating, all other parameters provided to `ListKeyEvents`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListKeyEvents RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListKeyEventsResponse {
+    /// The requested Key Events
+    #[prost(message, repeated, tag = "1")]
+    pub key_events: ::prost::alloc::vec::Vec<KeyEvent>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
@@ -6415,7 +6664,7 @@ pub struct SetAutomatedGa4ConfigurationOptOutRequest {
 /// Response message for setting the opt out status for the automated GA4 setup
 /// process.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SetAutomatedGa4ConfigurationOptOutResponse {}
 /// Request for fetching the opt out status for the automated GA4 setup process.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6431,11 +6680,22 @@ pub struct FetchAutomatedGa4ConfigurationOptOutRequest {
 /// Response message for fetching the opt out status for the automated GA4 setup
 /// process.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FetchAutomatedGa4ConfigurationOptOutResponse {
     /// The opt out status for the UA property.
     #[prost(bool, tag = "1")]
     pub opt_out: bool,
+}
+/// Request message for CreateBigQueryLink RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateBigQueryLinkRequest {
+    /// Required. Example format: properties/1234
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The BigQueryLink to create.
+    #[prost(message, optional, tag = "2")]
+    pub bigquery_link: ::core::option::Option<BigQueryLink>,
 }
 /// Request message for GetBigQueryLink RPC.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6480,6 +6740,30 @@ pub struct ListBigQueryLinksResponse {
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for UpdateBigQueryLink RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateBigQueryLinkRequest {
+    /// Required. The settings to update.
+    /// The `name` field is used to identify the settings to be updated.
+    #[prost(message, optional, tag = "1")]
+    pub bigquery_link: ::core::option::Option<BigQueryLink>,
+    /// Required. The list of fields to be updated. Field names must be in snake
+    /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "*" to match all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for DeleteBigQueryLink RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteBigQueryLinkRequest {
+    /// Required. The BigQueryLink to delete.
+    /// Example format: properties/1234/bigQueryLinks/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetEnhancedMeasurementSettings RPC.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6551,7 +6835,7 @@ pub struct CreateConnectedSiteTagRequest {
 }
 /// Response message for CreateConnectedSiteTag RPC.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateConnectedSiteTagResponse {}
 /// Request message for DeleteConnectedSiteTag RPC.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6756,6 +7040,96 @@ pub struct ListEventCreateRulesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Request message for CreateEventEditRule RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateEventEditRuleRequest {
+    /// Required. Example format: properties/123/dataStreams/456
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The EventEditRule to create.
+    #[prost(message, optional, tag = "2")]
+    pub event_edit_rule: ::core::option::Option<EventEditRule>,
+}
+/// Request message for UpdateEventEditRule RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateEventEditRuleRequest {
+    /// Required. The EventEditRule to update.
+    /// The resource's `name` field is used to identify the EventEditRule to be
+    /// updated.
+    #[prost(message, optional, tag = "1")]
+    pub event_edit_rule: ::core::option::Option<EventEditRule>,
+    /// Required. The list of fields to be updated. Field names must be in snake
+    /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "*" to match all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for DeleteEventEditRule RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteEventEditRuleRequest {
+    /// Required. Example format: properties/123/dataStreams/456/eventEditRules/789
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for GetEventEditRule RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetEventEditRuleRequest {
+    /// Required. The name of the EventEditRule to get.
+    /// Example format: properties/123/dataStreams/456/eventEditRules/789
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListEventEditRules RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEventEditRulesRequest {
+    /// Required. Example format: properties/123/dataStreams/456
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200 (higher values will be coerced to the maximum).
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListEventEditRules` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListEventEditRules`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListEventEditRules RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEventEditRulesResponse {
+    /// List of EventEditRules. These will be ordered stably, but in an arbitrary
+    /// order.
+    #[prost(message, repeated, tag = "1")]
+    pub event_edit_rules: ::prost::alloc::vec::Vec<EventEditRule>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for ReorderEventEditRules RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReorderEventEditRulesRequest {
+    /// Required. Example format: properties/123/dataStreams/456
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. EventEditRule resource names for the specified data stream, in
+    /// the needed processing order. All EventEditRules for the stream must be
+    /// present in the list.
+    #[prost(string, repeated, tag = "2")]
+    pub event_edit_rules: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// Request message for CreateRollupProperty RPC.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6849,12 +7223,7 @@ pub struct DeleteRollupPropertySourceLinkRequest {
 /// Request message for CreateSubproperty RPC.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateSubpropertyRequest {
-    /// Required. The ordinary property for which to create a subproperty.
-    /// Format: properties/property_id
-    /// Example: properties/123
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
+pub struct ProvisionSubpropertyRequest {
     /// Required. The subproperty to create.
     #[prost(message, optional, tag = "2")]
     pub subproperty: ::core::option::Option<Property>,
@@ -6862,10 +7231,10 @@ pub struct CreateSubpropertyRequest {
     #[prost(message, optional, tag = "3")]
     pub subproperty_event_filter: ::core::option::Option<SubpropertyEventFilter>,
 }
-/// Response message for CreateSubproperty RPC.
+/// Response message for ProvisionSubproperty RPC.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateSubpropertyResponse {
+pub struct ProvisionSubpropertyResponse {
     /// The created subproperty.
     #[prost(message, optional, tag = "1")]
     pub subproperty: ::core::option::Option<Property>,
@@ -8110,6 +8479,7 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Deprecated: Use `CreateKeyEvent` instead.
         /// Creates a conversion event with the specified attributes.
         pub async fn create_conversion_event(
             &mut self,
@@ -8141,6 +8511,7 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Deprecated: Use `UpdateKeyEvent` instead.
         /// Updates a conversion event with the specified attributes.
         pub async fn update_conversion_event(
             &mut self,
@@ -8172,6 +8543,7 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Deprecated: Use `GetKeyEvent` instead.
         /// Retrieve a single conversion event.
         pub async fn get_conversion_event(
             &mut self,
@@ -8203,6 +8575,7 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Deprecated: Use `DeleteKeyEvent` instead.
         /// Deletes a conversion event in a property.
         pub async fn delete_conversion_event(
             &mut self,
@@ -8231,6 +8604,7 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Deprecated: Use `ListKeyEvents` instead.
         /// Returns a list of conversion events in the specified parent property.
         ///
         /// Returns an empty list if no conversion events are found.
@@ -8260,6 +8634,150 @@ pub mod analytics_admin_service_client {
                     GrpcMethod::new(
                         "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "ListConversionEvents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a Key Event.
+        pub async fn create_key_event(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateKeyEventRequest>,
+        ) -> std::result::Result<tonic::Response<super::KeyEvent>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateKeyEvent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "CreateKeyEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a Key Event.
+        pub async fn update_key_event(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateKeyEventRequest>,
+        ) -> std::result::Result<tonic::Response<super::KeyEvent>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateKeyEvent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "UpdateKeyEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieve a single Key Event.
+        pub async fn get_key_event(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetKeyEventRequest>,
+        ) -> std::result::Result<tonic::Response<super::KeyEvent>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetKeyEvent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "GetKeyEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a Key Event.
+        pub async fn delete_key_event(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteKeyEventRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteKeyEvent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "DeleteKeyEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns a list of Key Events in the specified parent property.
+        /// Returns an empty list if no Key Events are found.
+        pub async fn list_key_events(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListKeyEventsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListKeyEventsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListKeyEvents",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "ListKeyEvents",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -10172,6 +10690,34 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Creates a BigQueryLink.
+        pub async fn create_big_query_link(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateBigQueryLinkRequest>,
+        ) -> std::result::Result<tonic::Response<super::BigQueryLink>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateBigQueryLink",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "CreateBigQueryLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Lookup for a single BigQuery Link.
         pub async fn get_big_query_link(
             &mut self,
@@ -10227,6 +10773,62 @@ pub mod analytics_admin_service_client {
                     GrpcMethod::new(
                         "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "ListBigQueryLinks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a BigQueryLink on a property.
+        pub async fn delete_big_query_link(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteBigQueryLinkRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteBigQueryLink",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "DeleteBigQueryLink",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a BigQueryLink.
+        pub async fn update_big_query_link(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateBigQueryLinkRequest>,
+        ) -> std::result::Result<tonic::Response<super::BigQueryLink>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateBigQueryLink",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "UpdateBigQueryLink",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -10695,6 +11297,177 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Lookup for a single EventEditRule.
+        pub async fn get_event_edit_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetEventEditRuleRequest>,
+        ) -> std::result::Result<tonic::Response<super::EventEditRule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetEventEditRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "GetEventEditRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists EventEditRules on a web data stream.
+        pub async fn list_event_edit_rules(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListEventEditRulesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListEventEditRulesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListEventEditRules",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "ListEventEditRules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates an EventEditRule.
+        pub async fn create_event_edit_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateEventEditRuleRequest>,
+        ) -> std::result::Result<tonic::Response<super::EventEditRule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateEventEditRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "CreateEventEditRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an EventEditRule.
+        pub async fn update_event_edit_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateEventEditRuleRequest>,
+        ) -> std::result::Result<tonic::Response<super::EventEditRule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateEventEditRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "UpdateEventEditRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes an EventEditRule.
+        pub async fn delete_event_edit_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteEventEditRuleRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteEventEditRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "DeleteEventEditRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Changes the processing order of event edit rules on the specified stream.
+        pub async fn reorder_event_edit_rules(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ReorderEventEditRulesRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ReorderEventEditRules",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "ReorderEventEditRules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Updates a DataRedactionSettings on a property.
         pub async fn update_data_redaction_settings(
             &mut self,
@@ -11075,11 +11848,11 @@ pub mod analytics_admin_service_client {
         }
         /// Create a subproperty and a subproperty event filter that applies to the
         /// created subproperty.
-        pub async fn create_subproperty(
+        pub async fn provision_subproperty(
             &mut self,
-            request: impl tonic::IntoRequest<super::CreateSubpropertyRequest>,
+            request: impl tonic::IntoRequest<super::ProvisionSubpropertyRequest>,
         ) -> std::result::Result<
-            tonic::Response<super::CreateSubpropertyResponse>,
+            tonic::Response<super::ProvisionSubpropertyResponse>,
             tonic::Status,
         > {
             self.inner
@@ -11093,14 +11866,14 @@ pub mod analytics_admin_service_client {
                 })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateSubproperty",
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ProvisionSubproperty",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
                         "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "CreateSubproperty",
+                        "ProvisionSubproperty",
                     ),
                 );
             self.inner.unary(req, path, codec).await

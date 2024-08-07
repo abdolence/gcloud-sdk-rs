@@ -104,7 +104,7 @@ pub struct DeleteMonitoredProjectRequest {
 /// Contains metadata for longrunning operation for the edit Metrics Scope
 /// endpoints.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Current state of the batch operation.
     #[prost(enumeration = "operation_metadata::State", tag = "1")]

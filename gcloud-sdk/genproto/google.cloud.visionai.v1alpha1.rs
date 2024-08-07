@@ -16,7 +16,7 @@ pub struct PersonalProtectiveEquipmentDetectionOutput {
 pub mod personal_protective_equipment_detection_output {
     /// The entity info for annotations from person detection prediction result.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PersonEntity {
         /// Entity id.
         #[prost(int64, tag = "1")]
@@ -42,7 +42,7 @@ pub mod personal_protective_equipment_detection_output {
     }
     /// Bounding Box in the normalized coordinates.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct NormalizedBoundingBox {
         /// Min in x coordinate.
         #[prost(float, tag = "1")]
@@ -60,7 +60,7 @@ pub mod personal_protective_equipment_detection_output {
     /// PersonIdentified box contains the location and the entity info of the
     /// person.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PersonIdentifiedBox {
         /// An unique id for this box.
         #[prost(int64, tag = "1")]
@@ -176,7 +176,7 @@ pub mod object_detection_prediction_result {
     pub mod identified_box {
         /// Bounding Box in the normalized coordinates.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct NormalizedBoundingBox {
             /// Min in x coordinate.
             #[prost(float, tag = "1")]
@@ -319,7 +319,7 @@ pub mod video_object_tracking_prediction_result {
     /// pinpointing the found AnnotationSpec. The coordinates are relative to the
     /// frame size, and the point 0,0 is in the top left of the frame.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BoundingBox {
         /// The leftmost coordinate of the bounding box.
         #[prost(float, tag = "1")]
@@ -469,7 +469,7 @@ pub mod occupancy_counting_prediction_result {
     pub mod identified_box {
         /// Bounding Box in the normalized coordinates.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct NormalizedBoundingBox {
             /// Min in x coordinate.
             #[prost(float, tag = "1")]
@@ -654,7 +654,7 @@ pub struct NormalizedPolyline {
 /// NOTE: the normalized vertex coordinates are relative to the original image
 /// and range from 0 to 1.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NormalizedVertex {
     /// X coordinate.
     #[prost(float, tag = "1")]
@@ -1459,15 +1459,15 @@ pub mod live_video_analytics_client {
 }
 /// Message for DeleteApplicationInstance Response.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteApplicationInstancesResponse {}
 /// Message for CreateApplicationInstance Response.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateApplicationInstancesResponse {}
 /// Message for UpdateApplicationInstances Response.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpdateApplicationInstancesResponse {}
 /// Message for adding stream input to an Application.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1528,23 +1528,23 @@ pub struct DeleteApplicationInstancesRequest {
 /// RPC Request Messages.
 /// Message for DeployApplication Response.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeployApplicationResponse {}
 /// Message for UndeployApplication Response.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UndeployApplicationResponse {}
 /// Message for RemoveApplicationStreamInput Response.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RemoveApplicationStreamInputResponse {}
 /// Message for AddApplicationStreamInput Response.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddApplicationStreamInputResponse {}
 /// Message for AddApplicationStreamInput Response.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpdateApplicationStreamInputResponse {}
 /// Message for requesting list of Applications.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2288,7 +2288,7 @@ pub mod application {
         }
         /// Monitoring-related configuration for an application.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct MonitoringConfig {
             /// Whether this application has monitoring enabled.
             #[prost(bool, tag = "1")]
@@ -2447,7 +2447,7 @@ pub mod node {
         pub connected_input_channel: ::prost::alloc::string::String,
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum StreamOutputConfig {
         /// By default, the output of the node will only be available to downstream
         /// nodes. To consume the direct output from the application node, the output
@@ -3265,7 +3265,7 @@ pub struct VideoStreamInputConfig {
 }
 /// Message describing AI-enabled Devices Input Config.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AiEnabledDevicesInputConfig {}
 /// Message describing MediaWarehouseConfig.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3287,7 +3287,7 @@ pub struct MediaWarehouseConfig {
 }
 /// Message describing FaceBlurConfig.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PersonBlurConfig {
     /// Person blur type.
     #[prost(enumeration = "person_blur_config::PersonBlurType", tag = "1")]
@@ -3344,7 +3344,7 @@ pub mod person_blur_config {
 }
 /// Message describing OccupancyCountConfig.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct OccupancyCountConfig {
     /// Whether to count the appearances of people, output counts have 'people' as
     /// the key.
@@ -3361,7 +3361,7 @@ pub struct OccupancyCountConfig {
 }
 /// Message describing PersonVehicleDetectionConfig.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PersonVehicleDetectionConfig {
     /// At least one of enable_people_counting and enable_vehicle_counting fields
     /// must be set to true.
@@ -3376,7 +3376,7 @@ pub struct PersonVehicleDetectionConfig {
 }
 /// Message describing PersonalProtectiveEquipmentDetectionConfig.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PersonalProtectiveEquipmentDetectionConfig {
     /// Whether to enable face coverage detection.
     #[prost(bool, tag = "1")]
@@ -3390,7 +3390,7 @@ pub struct PersonalProtectiveEquipmentDetectionConfig {
 }
 /// Message of configurations for General Object Detection processor.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GeneralObjectDetectionConfig {}
 /// Message of configurations for BigQuery processor.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3449,7 +3449,7 @@ pub struct BigQueryConfig {
 }
 /// Message of configurations of Vertex AutoML Vision Processors.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VertexAutoMlVisionConfig {
     /// Only entities with higher score than the threshold will be returned.
     /// Value 0.0 means to return all the detected entities.
@@ -4720,7 +4720,7 @@ pub mod packet_type {
 }
 /// The message that represents server metadata.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ServerMetadata {
     /// The offset position for the packet in its stream.
     #[prost(int64, tag = "1")]
@@ -4872,7 +4872,7 @@ pub struct EventUpdate {
 }
 /// Control message for a ReceiveEventsResponse.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReceiveEventsControlResponse {
     /// Possible control messages.
     #[prost(oneof = "receive_events_control_response::Control", tags = "1, 2")]
@@ -4882,7 +4882,7 @@ pub struct ReceiveEventsControlResponse {
 pub mod receive_events_control_response {
     /// Possible control messages.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Control {
         /// A server heartbeat.
         #[prost(bool, tag = "1")]
@@ -4992,7 +4992,7 @@ pub struct ReleaseLeaseRequest {
 }
 /// Response message for release lease.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReleaseLeaseResponse {}
 /// RequestMetadata is the metadata message for the request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5042,7 +5042,7 @@ pub mod send_packets_request {
 }
 /// Response message for sending packets.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SendPacketsResponse {}
 /// Request message for receiving packets.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5116,7 +5116,7 @@ pub mod receive_packets_request {
 }
 /// Control message for a ReceivePacketsResponse.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReceivePacketsControlResponse {
     /// Possible control messages.
     #[prost(oneof = "receive_packets_control_response::Control", tags = "1, 2")]
@@ -5126,7 +5126,7 @@ pub struct ReceivePacketsControlResponse {
 pub mod receive_packets_control_response {
     /// Possible control messages.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Control {
         /// A server heartbeat.
         #[prost(bool, tag = "1")]
@@ -5168,7 +5168,7 @@ pub mod receive_packets_response {
 }
 /// The options for receiver under the eager mode.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EagerMode {}
 /// The options for receiver under the controlled mode.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5214,7 +5214,7 @@ pub mod controlled_mode {
 /// This may only be used when `ReceivePacketsControlledMode` is set in the
 /// initial setup request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CommitRequest {
     /// The offset to commit.
     #[prost(int64, tag = "1")]
@@ -5965,7 +5965,7 @@ pub struct DeleteStreamRequest {
 /// Message for the response of GetStreamThumbnail. The empty response message
 /// indicates the thumbnail image has been uploaded to GCS successfully.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GetStreamThumbnailResponse {}
 /// Request message for getting the auth token to access the stream HLS contents.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -7153,7 +7153,7 @@ pub struct CreateCorpusRequest {
 }
 /// Metadata for CreateCorpus API.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateCorpusMetadata {}
 /// Corpus is a set of video contents for management. Within a corpus, videos
 /// share the same data schema. Search is also restricted within a single corpus.
@@ -7299,7 +7299,7 @@ pub mod data_schema_details {
     }
     /// The search strategy for annotations value of the `key`.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SearchStrategy {
         /// The type of search strategy to be applied on the `key` above.
         /// The allowed `search_strategy_type` is different for different data types,
@@ -7633,7 +7633,7 @@ pub struct UserSpecifiedAnnotation {
 }
 /// Location Coordinate Representation
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GeoCoordinate {
     /// Latitude Coordinate. Degrees \[-90 .. 90\]
     #[prost(double, tag = "1")]
@@ -7944,7 +7944,7 @@ pub mod facet_property {
     }
     /// If bucket type is DATE, specify how date values are bucketized.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DateTimeBucketSpec {
         /// Granularity of date type facet.
         #[prost(enumeration = "date_time_bucket_spec::Granularity", tag = "1")]
@@ -8158,7 +8158,7 @@ pub mod ingest_asset_request {
     pub mod config {
         /// Type information for video data.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct VideoType {
             /// Container format of the video data.
             #[prost(enumeration = "video_type::ContainerFormat", tag = "1")]
@@ -8207,7 +8207,7 @@ pub mod ingest_asset_request {
             }
         }
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum DataType {
             /// Type information for video data.
             #[prost(message, tag = "2")]
@@ -8242,7 +8242,7 @@ pub mod ingest_asset_request {
 }
 /// Response message for IngestAsset API.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct IngestAssetResponse {
     /// Time range of the data that has been successfully ingested.
     #[prost(message, optional, tag = "1")]
@@ -8355,7 +8355,7 @@ pub struct SearchAssetsRequest {
 /// The metadata for DeleteAsset API that embeds in
 /// [metadata][google.longrunning.Operation.metadata] field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteAssetMetadata {}
 /// Stores the criteria-annotation matching results for each search result item.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8418,7 +8418,7 @@ pub struct SearchAssetsResponse {
 }
 /// Integer range type.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct IntRange {
     /// Start of the int range.
     #[prost(int64, optional, tag = "1")]
@@ -8429,7 +8429,7 @@ pub struct IntRange {
 }
 /// Float range type.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FloatRange {
     /// Start of the float range.
     #[prost(float, optional, tag = "1")]
@@ -8483,7 +8483,7 @@ pub struct DateTimeRangeArray {
 }
 /// Representation of a circle area.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CircleArea {
     /// Latitude of circle area's center. Degrees \[-90 .. 90\]
     #[prost(double, tag = "1")]
@@ -8504,7 +8504,7 @@ pub struct GeoLocationArray {
     pub circle_areas: ::prost::alloc::vec::Vec<CircleArea>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BoolValue {
     #[prost(bool, tag = "1")]
     pub value: bool,
@@ -8556,7 +8556,7 @@ pub mod criteria {
 /// Partition to specify the partition in time and space for sub-asset level
 /// annotation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Partition {
     /// Partition of asset in time.
     #[prost(message, optional, tag = "1")]
@@ -8569,7 +8569,7 @@ pub struct Partition {
 pub mod partition {
     /// Partition of asset in UTC Epoch time.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TemporalPartition {
         /// Start time of the partition.
         #[prost(message, optional, tag = "1")]
@@ -8580,7 +8580,7 @@ pub mod partition {
     }
     /// Partition of asset in space.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SpatialPartition {
         /// The minimum x coordinate value.
         #[prost(int64, optional, tag = "1")]

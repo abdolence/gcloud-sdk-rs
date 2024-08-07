@@ -59,6 +59,66 @@ pub struct VerifyAttestationRequest {
     /// the token output.
     #[prost(message, optional, tag = "5")]
     pub token_options: ::core::option::Option<TokenOptions>,
+    /// An optional tee attestation report, used to populate hardware rooted
+    /// claims.
+    #[prost(oneof = "verify_attestation_request::TeeAttestation", tags = "6, 7")]
+    pub tee_attestation: ::core::option::Option<
+        verify_attestation_request::TeeAttestation,
+    >,
+}
+/// Nested message and enum types in `VerifyAttestationRequest`.
+pub mod verify_attestation_request {
+    /// An optional tee attestation report, used to populate hardware rooted
+    /// claims.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TeeAttestation {
+        /// Optional. A TDX with CCEL and RTMR Attestation Quote.
+        #[prost(message, tag = "6")]
+        TdCcel(super::TdxCcelAttestation),
+        /// Optional. An SEV-SNP Attestation Report.
+        #[prost(message, tag = "7")]
+        SevSnpAttestation(super::SevSnpAttestation),
+    }
+}
+/// A TDX Attestation quote.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TdxCcelAttestation {
+    /// Optional. The Confidential Computing Event Log (CCEL) ACPI table. Formatted
+    /// as described in the ACPI Specification 6.5.
+    #[prost(bytes = "vec", tag = "1")]
+    pub ccel_acpi_table: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. The CCEL event log. Formatted as described in the UEFI 2.10.
+    #[prost(bytes = "vec", tag = "2")]
+    pub ccel_data: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. An Event Log containing additional events measured into the RTMR
+    /// that are not already present in the CCEL.
+    #[prost(bytes = "vec", tag = "3")]
+    pub canonical_event_log: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. The TDX attestation quote from the guest. It contains the RTMR
+    /// values.
+    #[prost(bytes = "vec", tag = "4")]
+    pub td_quote: ::prost::alloc::vec::Vec<u8>,
+}
+/// An SEV-SNP Attestation Report.
+/// Contains the attestation report and the certificate bundle that the client
+/// collects.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SevSnpAttestation {
+    /// Optional. The SEV-SNP Attestation Report
+    /// Format is in revision 1.55, §7.3 Attestation, Table 22. ATTESTATION_REPORT
+    /// Structure in this document:
+    /// <https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/56860.pdf>
+    #[prost(bytes = "vec", tag = "1")]
+    pub report: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. Certificate bundle defined in the GHCB protocol definition
+    /// Format is documented in GHCB revision 2.03, section 4.1.8.1 struct
+    /// cert_table in this document:
+    /// <https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/56421.pdf>
+    #[prost(bytes = "vec", tag = "2")]
+    pub aux_blob: ::prost::alloc::vec::Vec<u8>,
 }
 /// A response once an attestation has been successfully verified, containing a
 /// signed OIDC token.

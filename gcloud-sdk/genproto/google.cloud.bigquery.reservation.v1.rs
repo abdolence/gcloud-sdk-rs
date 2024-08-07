@@ -71,7 +71,7 @@ pub struct Reservation {
 pub mod reservation {
     /// Auto scaling settings.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Autoscale {
         /// Output only. The slot capacity added to this reservation when autoscale
         /// happens. Will be between \[0, max_slots\].

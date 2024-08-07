@@ -162,7 +162,7 @@ pub struct SetPropertyServiceLevelRequest {
 }
 /// Response message for SetPropertyServiceLevel RPC.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SetPropertyServiceLevelResponse {}
 /// Various levels of service for Google Analytics.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

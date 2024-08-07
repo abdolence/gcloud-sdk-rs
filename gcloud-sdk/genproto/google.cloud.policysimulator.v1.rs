@@ -151,7 +151,7 @@ pub struct BindingExplanation {
 pub mod binding_explanation {
     /// Details about whether the binding includes the principal.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AnnotatedMembership {
         /// Indicates whether the binding includes the principal.
         #[prost(enumeration = "Membership", tag = "1")]
@@ -383,7 +383,7 @@ pub struct Replay {
 pub mod replay {
     /// Summary statistics about the replayed log entries.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ResultsSummary {
         /// The total number of log entries replayed.
         #[prost(int32, tag = "1")]
@@ -534,7 +534,7 @@ pub struct CreateReplayRequest {
 }
 /// Metadata about a Replay operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReplayOperationMetadata {
     /// Time when the request was received.
     #[prost(message, optional, tag = "1")]

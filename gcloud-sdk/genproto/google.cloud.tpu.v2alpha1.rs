@@ -99,7 +99,7 @@ pub mod attached_disk {
 }
 /// Sets the scheduling options for this node.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SchedulingConfig {
     /// Defines whether the node is preemptible.
     #[prost(bool, tag = "1")]
@@ -547,15 +547,15 @@ pub mod queued_resource {
     }
     /// BestEffort tier definition.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BestEffort {}
     /// Spot tier definition.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Spot {}
     /// Guaranteed tier definition.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Guaranteed {
         /// Optional. Defines the minimum duration of the guarantee. If specified,
         /// the requested resources will only be provisioned if they can be
@@ -568,7 +568,7 @@ pub mod queued_resource {
     }
     /// Defines the policy of the QueuedRequest.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct QueueingPolicy {
         /// Time flexibility specification.
         #[prost(
@@ -583,7 +583,7 @@ pub mod queued_resource {
     pub mod queueing_policy {
         /// Time flexibility specification.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum StartTimingConstraints {
             /// A relative time after which resources should not be created.
             /// If the request cannot be fulfilled by this time the request will be
@@ -616,7 +616,7 @@ pub mod queued_resource {
     }
     /// Tier specifies the required tier.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Tier {
         /// The BestEffort tier.
         #[prost(message, tag = "3")]
@@ -647,15 +647,15 @@ pub struct QueuedResourceState {
 pub mod queued_resource_state {
     /// Further data for the creating state.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CreatingData {}
     /// Further data for the accepted state.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AcceptedData {}
     /// Further data for the provisioning state.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ProvisioningData {}
     /// Further data for the failed state.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -667,19 +667,19 @@ pub mod queued_resource_state {
     }
     /// Further data for the deleting state.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DeletingData {}
     /// Further data for the active state.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ActiveData {}
     /// Further data for the suspending state.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SuspendingData {}
     /// Further data for the suspended state.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SuspendedData {}
     /// Output only state of the request
     #[derive(
@@ -1375,7 +1375,7 @@ pub mod accelerator_config {
 }
 /// A set of Shielded Instance options.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ShieldedInstanceConfig {
     /// Defines whether the instance has Secure Boot enabled.
     #[prost(bool, tag = "1")]

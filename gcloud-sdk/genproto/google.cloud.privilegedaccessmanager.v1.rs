@@ -122,7 +122,7 @@ pub mod entitlement {
     /// Defines how a requester must provide a justification when requesting
     /// access.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RequesterJustificationConfig {
         /// This is a required field and the user must explicitly opt out if a
         /// justification from the requester isn't mandatory.
@@ -139,16 +139,16 @@ pub mod entitlement {
         /// The justification is not mandatory but can be provided in any of the
         /// supported formats.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct NotMandatory {}
         /// The requester has to provide a justification in the form of a string.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Unstructured {}
         /// This is a required field and the user must explicitly opt out if a
         /// justification from the requester isn't mandatory.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum JustificationType {
             /// This option means the requester isn't required to provide a
             /// justification.
@@ -671,7 +671,7 @@ pub mod grant {
         pub mod event {
             /// An event representing that a grant was requested.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct Requested {
                 /// Output only. The time at which this grant expires unless the approval
                 /// workflow completes. If omitted, then the request never expires.
@@ -716,7 +716,7 @@ pub mod grant {
             /// An event representing that the grant has been scheduled to be
             /// activated later.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct Scheduled {
                 /// Output only. The time at which the access is granted.
                 #[prost(message, optional, tag = "1")]
@@ -727,7 +727,7 @@ pub mod grant {
             /// An event representing that the grant was successfully
             /// activated.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct Activated {}
             /// An event representing that the grant activation failed.
             #[allow(clippy::derive_partial_eq_without_eq)]
@@ -741,16 +741,16 @@ pub mod grant {
             }
             /// An event representing that the grant was expired.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct Expired {}
             /// An event representing that the grant has ended.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct Ended {}
             /// An event representing that the policy bindings made by this grant were
             /// modified externally.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct ExternallyModified {}
             #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -792,7 +792,7 @@ pub mod grant {
     }
     /// Audit trail for the access provided by this grant.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AuditTrail {
         /// Output only. The time at which access was given.
         #[prost(message, optional, tag = "1")]

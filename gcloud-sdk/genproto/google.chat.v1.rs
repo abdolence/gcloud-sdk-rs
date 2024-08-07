@@ -17,7 +17,7 @@ pub struct ActionStatus {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Attachment {
     /// Resource name of the attachment, in the form
-    /// `spaces/*/messages/*/attachments/*`.
+    /// `spaces/{space}/messages/{message}/attachments/{attachment}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The original file name for the content, not the full path.
@@ -129,7 +129,7 @@ pub struct AttachmentDataRef {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAttachmentRequest {
     /// Required. Resource name of the attachment, in the form
-    /// `spaces/*/messages/*/attachments/*`.
+    /// `spaces/{space}/messages/{message}/attachments/{attachment}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -794,16 +794,23 @@ pub struct ListMembershipsRequest {
     ///
     /// To filter by role, set `role` to `ROLE_MEMBER` or `ROLE_MANAGER`.
     ///
-    /// To filter by type, set `member.type` to `HUMAN` or `BOT`.
+    /// To filter by type, set `member.type` to `HUMAN` or `BOT`. Developer
+    /// Preview: You can also filter for `member.type` using the `!=` operator.
     ///
     /// To filter by both role and type, use the `AND` operator. To filter by
     /// either role or type, use the `OR` operator.
+    ///
+    /// Either `member.type = "HUMAN"` or `member.type != "BOT"` is required
+    /// when `use_admin_access` is set to true. Other member type filters will be
+    /// rejected.
     ///
     /// For example, the following queries are valid:
     ///
     /// ```
     /// role = "ROLE_MANAGER" OR role = "ROLE_MEMBER"
     /// member.type = "HUMAN" AND role = "ROLE_MANAGER"
+    ///
+    /// member.type != "BOT"
     /// ```
     ///
     /// The following queries are invalid:
@@ -812,7 +819,6 @@ pub struct ListMembershipsRequest {
     /// member.type = "HUMAN" AND member.type = "BOT"
     /// role = "ROLE_MANAGER" AND role = "ROLE_MEMBER"
     /// ```
-    ///
     ///
     /// Invalid queries are rejected by the server with an `INVALID_ARGUMENT`
     /// error.
@@ -1274,7 +1280,7 @@ pub mod widget_markup {
 }
 /// The markup for developers to specify the contents of a contextual AddOn.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ContextualAddOnMarkup {}
 /// Nested message and enum types in `ContextualAddOnMarkup`.
 pub mod contextual_add_on_markup {
@@ -1403,7 +1409,7 @@ pub mod contextual_add_on_markup {
 /// Information about a deleted message. A message is deleted when `delete_time`
 /// is set.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeletionMetadata {
     /// Indicates who deleted the message.
     #[prost(enumeration = "deletion_metadata::DeletionType", tag = "1")]
@@ -1647,7 +1653,7 @@ pub struct DeleteReactionRequest {
 /// command](<https://developers.google.com/workspace/chat/slash-commands>) in
 /// Google Chat.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SlashCommand {
     /// The ID of the slash command invoked.
     #[prost(int64, tag = "1")]
@@ -1782,6 +1788,14 @@ pub struct Space {
     /// To support admin install, your Chat app must feature direct messaging.
     #[prost(bool, tag = "19")]
     pub admin_installed: bool,
+    /// Optional. Specifies the [access
+    /// setting](<https://support.google.com/chat/answer/11971020>) of the space.
+    /// Only populated when the `space_type` is `SPACE`.
+    #[prost(message, optional, tag = "23")]
+    pub access_settings: ::core::option::Option<space::AccessSettings>,
+    /// Output only. The URI for a user to access the space.
+    #[prost(string, tag = "25")]
+    pub space_uri: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Space`.
 pub mod space {
@@ -1800,6 +1814,75 @@ pub mod space {
         /// Supports up to 5,000 characters.
         #[prost(string, tag = "2")]
         pub guidelines: ::prost::alloc::string::String,
+    }
+    /// Represents the [access
+    /// setting](<https://support.google.com/chat/answer/11971020>) of the space.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AccessSettings {
+        /// Output only. Indicates the access state of the space.
+        #[prost(enumeration = "access_settings::AccessState", tag = "1")]
+        pub access_state: i32,
+        /// Optional. The resource name of the [target
+        /// audience](<https://support.google.com/a/answer/9934697>) who can discover
+        /// the space, join the space, and preview the messages in the space. For
+        /// details, see [Make a space discoverable to a target
+        /// audience](<https://developers.google.com/workspace/chat/space-target-audience>).
+        ///
+        /// Format: `audiences/{audience}`
+        ///
+        /// To use the default target audience for the Google Workspace organization,
+        /// set to `audiences/default`.
+        #[prost(string, tag = "3")]
+        pub audience: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `AccessSettings`.
+    pub mod access_settings {
+        /// Represents the access state of the space.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum AccessState {
+            /// Access state is unknown or not supported in this API.
+            Unspecified = 0,
+            /// Space is discoverable by added or invited members or groups.
+            Private = 1,
+            /// Space is discoverable by the selected [target
+            /// audience](<https://support.google.com/a/answer/9934697>), as well as
+            /// added or invited members or groups.
+            Discoverable = 2,
+        }
+        impl AccessState {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    AccessState::Unspecified => "ACCESS_STATE_UNSPECIFIED",
+                    AccessState::Private => "PRIVATE",
+                    AccessState::Discoverable => "DISCOVERABLE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ACCESS_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PRIVATE" => Some(Self::Private),
+                    "DISCOVERABLE" => Some(Self::Discoverable),
+                    _ => None,
+                }
+            }
+        }
     }
     /// Deprecated: Use `SpaceType` instead.
     #[derive(
@@ -2031,7 +2114,7 @@ pub struct ListSpacesResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSpaceRequest {
-    /// Required. Resource name of the space, in the form "spaces/*".
+    /// Required. Resource name of the space, in the form `spaces/{space}`.
     ///
     /// Format: `spaces/{space}`
     #[prost(string, tag = "1")]
@@ -2087,6 +2170,7 @@ pub struct UpdateSpaceRequest {
     /// the display name is optional if the existing space already has the `SPACE`
     /// type. Trying to update the space type in other ways results in an invalid
     /// argument error).
+    /// `space_type` is not supported with admin access.
     ///
     /// - `space_details`
     ///
@@ -2095,12 +2179,27 @@ pub struct UpdateSpaceRequest {
     /// allows users to change their history
     /// setting](<https://support.google.com/a/answer/7664184>).
     /// Warning: mutually exclusive with all other field paths.)
+    /// `space_history_state` is not supported with admin access.
     ///
-    /// - Developer Preview: `access_settings.audience` (Supports changing the
-    /// [access setting](<https://support.google.com/chat/answer/11971020>) of a
-    /// space. If no audience is specified in the access setting, the space's
-    /// access setting is updated to restricted. Warning: mutually exclusive with
-    /// all other field paths.)
+    /// - `access_settings.audience` (Supports changing the [access
+    /// setting](<https://support.google.com/chat/answer/11971020>) of who can
+    /// discover the space, join the space, and preview the messages in space. If
+    /// no audience is specified in the access setting, the space's access setting
+    /// is updated to private. Warning: mutually exclusive with all other field
+    /// paths.)
+    /// `access_settings.audience` is not supported with admin access.
+    ///
+    /// - Developer Preview: Supports changing the [permission
+    /// settings](<https://support.google.com/chat/answer/13340792>) of a space,
+    /// supported field paths
+    /// include: `permission_settings.manage_members_and_groups`,
+    /// `permission_settings.modify_space_details`,
+    /// `permission_settings.toggle_history`,
+    /// `permission_settings.use_at_mention_all`,
+    /// `permission_settings.manage_apps`, `permission_settings.manage_webhooks`,
+    /// `permission_settings.reply_messages`
+    ///   (Warning: mutually exclusive with all other non-permission settings field
+    /// paths). `permission_settings` is not supported with admin access.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -2857,6 +2956,454 @@ pub struct CardWithId {
     #[prost(message, optional, tag = "2")]
     pub card: ::core::option::Option<super::super::apps::card::v1::Card>,
 }
+/// Event payload for a new membership.
+///
+/// Event type: `google.workspace.chat.membership.v1.created`.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MembershipCreatedEventData {
+    /// The new membership.
+    #[prost(message, optional, tag = "1")]
+    pub membership: ::core::option::Option<Membership>,
+}
+/// Event payload for a deleted membership.
+///
+/// Event type: `google.workspace.chat.membership.v1.deleted`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MembershipDeletedEventData {
+    /// The deleted membership. Only the `name` and `state` fields are populated.
+    #[prost(message, optional, tag = "1")]
+    pub membership: ::core::option::Option<Membership>,
+}
+/// Event payload for an updated membership.
+///
+/// Event type: `google.workspace.chat.membership.v1.updated`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MembershipUpdatedEventData {
+    /// The updated membership.
+    #[prost(message, optional, tag = "1")]
+    pub membership: ::core::option::Option<Membership>,
+}
+/// Event payload for multiple new memberships.
+///
+/// Event type: `google.workspace.chat.membership.v1.batchCreated`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MembershipBatchCreatedEventData {
+    /// A list of new memberships.
+    #[prost(message, repeated, tag = "1")]
+    pub memberships: ::prost::alloc::vec::Vec<MembershipCreatedEventData>,
+}
+/// Event payload for multiple updated memberships.
+///
+/// Event type: `google.workspace.chat.membership.v1.batchUpdated`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MembershipBatchUpdatedEventData {
+    /// A list of updated memberships.
+    #[prost(message, repeated, tag = "1")]
+    pub memberships: ::prost::alloc::vec::Vec<MembershipUpdatedEventData>,
+}
+/// Event payload for multiple deleted memberships.
+///
+/// Event type: `google.workspace.chat.membership.v1.batchDeleted`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MembershipBatchDeletedEventData {
+    /// A list of deleted memberships.
+    #[prost(message, repeated, tag = "1")]
+    pub memberships: ::prost::alloc::vec::Vec<MembershipDeletedEventData>,
+}
+/// Event payload for a new message.
+///
+/// Event type: `google.workspace.chat.message.v1.created`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MessageCreatedEventData {
+    /// The new message.
+    #[prost(message, optional, tag = "1")]
+    pub message: ::core::option::Option<Message>,
+}
+/// Event payload for an updated message.
+///
+/// Event type: `google.workspace.chat.message.v1.updated`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MessageUpdatedEventData {
+    /// The updated message.
+    #[prost(message, optional, tag = "1")]
+    pub message: ::core::option::Option<Message>,
+}
+/// Event payload for a deleted message.
+///
+/// Event type: `google.workspace.chat.message.v1.deleted`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MessageDeletedEventData {
+    /// The deleted message. Only the `name`, `createTime`, `deleteTime`, and
+    /// `deletionMetadata` fields are populated.
+    #[prost(message, optional, tag = "1")]
+    pub message: ::core::option::Option<Message>,
+}
+/// Event payload for multiple new messages.
+///
+/// Event type: `google.workspace.chat.message.v1.batchCreated`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MessageBatchCreatedEventData {
+    /// A list of new messages.
+    #[prost(message, repeated, tag = "1")]
+    pub messages: ::prost::alloc::vec::Vec<MessageCreatedEventData>,
+}
+/// Event payload for multiple updated messages.
+///
+/// Event type: `google.workspace.chat.message.v1.batchUpdated`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MessageBatchUpdatedEventData {
+    /// A list of updated messages.
+    #[prost(message, repeated, tag = "1")]
+    pub messages: ::prost::alloc::vec::Vec<MessageUpdatedEventData>,
+}
+/// Event payload for multiple deleted messages.
+///
+/// Event type: `google.workspace.chat.message.v1.batchDeleted`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MessageBatchDeletedEventData {
+    /// A list of deleted messages.
+    #[prost(message, repeated, tag = "1")]
+    pub messages: ::prost::alloc::vec::Vec<MessageDeletedEventData>,
+}
+/// Event payload for an updated space.
+///
+/// Event type: `google.workspace.chat.space.v1.updated`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SpaceUpdatedEventData {
+    /// The updated space.
+    #[prost(message, optional, tag = "1")]
+    pub space: ::core::option::Option<Space>,
+}
+/// Event payload for multiple updates to a space.
+///
+/// Event type: `google.workspace.chat.space.v1.batchUpdated`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SpaceBatchUpdatedEventData {
+    /// A list of updated spaces.
+    #[prost(message, repeated, tag = "1")]
+    pub spaces: ::prost::alloc::vec::Vec<SpaceUpdatedEventData>,
+}
+/// Event payload for a new reaction.
+///
+/// Event type: `google.workspace.chat.reaction.v1.created`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReactionCreatedEventData {
+    /// The new reaction.
+    #[prost(message, optional, tag = "1")]
+    pub reaction: ::core::option::Option<Reaction>,
+}
+/// Event payload for a deleted reaction.
+///
+/// Type: `google.workspace.chat.reaction.v1.deleted`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReactionDeletedEventData {
+    /// The deleted reaction.
+    #[prost(message, optional, tag = "1")]
+    pub reaction: ::core::option::Option<Reaction>,
+}
+/// Event payload for multiple new reactions.
+///
+/// Event type: `google.workspace.chat.reaction.v1.batchCreated`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReactionBatchCreatedEventData {
+    /// A list of new reactions.
+    #[prost(message, repeated, tag = "1")]
+    pub reactions: ::prost::alloc::vec::Vec<ReactionCreatedEventData>,
+}
+/// Event payload for multiple deleted reactions.
+///
+/// Event type: `google.workspace.chat.reaction.v1.batchDeleted`
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReactionBatchDeletedEventData {
+    /// A list of deleted reactions.
+    #[prost(message, repeated, tag = "1")]
+    pub reactions: ::prost::alloc::vec::Vec<ReactionDeletedEventData>,
+}
+/// An event that represents a change or activity in a Google Chat space. To
+/// learn more, see [Work with events from Google
+/// Chat](<https://developers.google.com/workspace/chat/events-overview>).
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SpaceEvent {
+    /// Resource name of the space event.
+    ///
+    /// Format: `spaces/{space}/spaceEvents/{spaceEvent}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Time when the event occurred.
+    #[prost(message, optional, tag = "3")]
+    pub event_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Type of space event. Each event type has a batch version, which
+    /// represents multiple instances of the event type that occur in a short
+    /// period of time. For `spaceEvents.list()` requests, omit batch event types
+    /// in your query filter. By default, the server returns both event type and
+    /// its batch version.
+    ///
+    /// Supported event types for
+    /// [messages](<https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages>):
+    ///
+    ///     * New message: `google.workspace.chat.message.v1.created`
+    ///     * Updated message: `google.workspace.chat.message.v1.updated`
+    ///     * Deleted message: `google.workspace.chat.message.v1.deleted`
+    ///     * Multiple new messages: `google.workspace.chat.message.v1.batchCreated`
+    ///     * Multiple updated messages:
+    ///     `google.workspace.chat.message.v1.batchUpdated`
+    ///     * Multiple deleted messages:
+    ///     `google.workspace.chat.message.v1.batchDeleted`
+    ///
+    /// Supported event types for
+    /// [memberships](<https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.members>):
+    ///
+    ///    * New membership: `google.workspace.chat.membership.v1.created`
+    ///    * Updated membership: `google.workspace.chat.membership.v1.updated`
+    ///    * Deleted membership: `google.workspace.chat.membership.v1.deleted`
+    ///    * Multiple new memberships:
+    ///    `google.workspace.chat.membership.v1.batchCreated`
+    ///    * Multiple updated memberships:
+    ///    `google.workspace.chat.membership.v1.batchUpdated`
+    ///    * Multiple deleted memberships:
+    ///    `google.workspace.chat.membership.v1.batchDeleted`
+    ///
+    /// Supported event types for
+    /// [reactions](<https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages.reactions>):
+    ///
+    ///    * New reaction: `google.workspace.chat.reaction.v1.created`
+    ///    * Deleted reaction: `google.workspace.chat.reaction.v1.deleted`
+    ///    * Multiple new reactions:
+    ///    `google.workspace.chat.reaction.v1.batchCreated`
+    ///    * Multiple deleted reactions:
+    ///    `google.workspace.chat.reaction.v1.batchDeleted`
+    ///
+    /// Supported event types about the
+    /// [space](<https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces>):
+    ///
+    ///    * Updated space: `google.workspace.chat.space.v1.updated`
+    ///    * Multiple space updates: `google.workspace.chat.space.v1.batchUpdated`
+    #[prost(string, tag = "6")]
+    pub event_type: ::prost::alloc::string::String,
+    #[prost(
+        oneof = "space_event::Payload",
+        tags = "12, 13, 14, 26, 27, 28, 15, 29, 17, 18, 219, 31, 32, 33, 21, 22, 34, 35"
+    )]
+    pub payload: ::core::option::Option<space_event::Payload>,
+}
+/// Nested message and enum types in `SpaceEvent`.
+pub mod space_event {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Payload {
+        /// Event payload for a new message.
+        ///
+        /// Event type: `google.workspace.chat.message.v1.created`
+        #[prost(message, tag = "12")]
+        MessageCreatedEventData(super::MessageCreatedEventData),
+        /// Event payload for an updated message.
+        ///
+        /// Event type: `google.workspace.chat.message.v1.updated`
+        #[prost(message, tag = "13")]
+        MessageUpdatedEventData(super::MessageUpdatedEventData),
+        /// Event payload for a deleted message.
+        ///
+        /// Event type: `google.workspace.chat.message.v1.deleted`
+        #[prost(message, tag = "14")]
+        MessageDeletedEventData(super::MessageDeletedEventData),
+        /// Event payload for multiple new messages.
+        ///
+        /// Event type: `google.workspace.chat.message.v1.batchCreated`
+        #[prost(message, tag = "26")]
+        MessageBatchCreatedEventData(super::MessageBatchCreatedEventData),
+        /// Event payload for multiple updated messages.
+        ///
+        /// Event type: `google.workspace.chat.message.v1.batchUpdated`
+        #[prost(message, tag = "27")]
+        MessageBatchUpdatedEventData(super::MessageBatchUpdatedEventData),
+        /// Event payload for multiple deleted messages.
+        ///
+        /// Event type: `google.workspace.chat.message.v1.batchDeleted`
+        #[prost(message, tag = "28")]
+        MessageBatchDeletedEventData(super::MessageBatchDeletedEventData),
+        /// Event payload for a space update.
+        ///
+        /// Event type: `google.workspace.chat.space.v1.updated`
+        #[prost(message, tag = "15")]
+        SpaceUpdatedEventData(super::SpaceUpdatedEventData),
+        /// Event payload for multiple updates to a space.
+        ///
+        /// Event type: `google.workspace.chat.space.v1.batchUpdated`
+        #[prost(message, tag = "29")]
+        SpaceBatchUpdatedEventData(super::SpaceBatchUpdatedEventData),
+        /// Event payload for a new membership.
+        ///
+        /// Event type: `google.workspace.chat.membership.v1.created`
+        #[prost(message, tag = "17")]
+        MembershipCreatedEventData(super::MembershipCreatedEventData),
+        /// Event payload for an updated membership.
+        ///
+        /// Event type: `google.workspace.chat.membership.v1.updated`
+        #[prost(message, tag = "18")]
+        MembershipUpdatedEventData(super::MembershipUpdatedEventData),
+        /// Event payload for a deleted membership.
+        ///
+        /// Event type: `google.workspace.chat.membership.v1.deleted`
+        #[prost(message, tag = "219")]
+        MembershipDeletedEventData(super::MembershipDeletedEventData),
+        /// Event payload for multiple new memberships.
+        ///
+        /// Event type: `google.workspace.chat.membership.v1.batchCreated`
+        #[prost(message, tag = "31")]
+        MembershipBatchCreatedEventData(super::MembershipBatchCreatedEventData),
+        /// Event payload for multiple updated memberships.
+        ///
+        /// Event type: `google.workspace.chat.membership.v1.batchUpdated`
+        #[prost(message, tag = "32")]
+        MembershipBatchUpdatedEventData(super::MembershipBatchUpdatedEventData),
+        /// Event payload for multiple deleted memberships.
+        ///
+        /// Event type: `google.workspace.chat.membership.v1.batchDeleted`
+        #[prost(message, tag = "33")]
+        MembershipBatchDeletedEventData(super::MembershipBatchDeletedEventData),
+        /// Event payload for a new reaction.
+        ///
+        /// Event type: `google.workspace.chat.reaction.v1.created`
+        #[prost(message, tag = "21")]
+        ReactionCreatedEventData(super::ReactionCreatedEventData),
+        /// Event payload for a deleted reaction.
+        ///
+        /// Event type: `google.workspace.chat.reaction.v1.deleted`
+        #[prost(message, tag = "22")]
+        ReactionDeletedEventData(super::ReactionDeletedEventData),
+        /// Event payload for multiple new reactions.
+        ///
+        /// Event type: `google.workspace.chat.reaction.v1.batchCreated`
+        #[prost(message, tag = "34")]
+        ReactionBatchCreatedEventData(super::ReactionBatchCreatedEventData),
+        /// Event payload for multiple deleted reactions.
+        ///
+        /// Event type: `google.workspace.chat.reaction.v1.batchDeleted`
+        #[prost(message, tag = "35")]
+        ReactionBatchDeletedEventData(super::ReactionBatchDeletedEventData),
+    }
+}
+/// Request message for getting a space event.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetSpaceEventRequest {
+    /// Required. The resource name of the space event.
+    ///
+    /// Format: `spaces/{space}/spaceEvents/{spaceEvent}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for listing space events.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSpaceEventsRequest {
+    /// Required. Resource name of the [Google Chat
+    /// space](<https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces>)
+    /// where the events occurred.
+    ///
+    /// Format: `spaces/{space}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of space events returned. The service might
+    /// return fewer than this value.
+    ///
+    /// Negative values return an `INVALID_ARGUMENT` error.
+    #[prost(int32, tag = "5")]
+    pub page_size: i32,
+    /// A page token, received from a previous list space events call. Provide this
+    /// to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to list space events must
+    /// match the call that provided the page token. Passing different values to
+    /// the other parameters might lead to unexpected results.
+    #[prost(string, tag = "6")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Required. A query filter.
+    ///
+    /// You must specify at least one event type (`event_type`)
+    /// using the has `:` operator. To filter by multiple event types, use the `OR`
+    /// operator. Omit batch event types in your filter. The request automatically
+    /// returns any related batch events. For example, if you filter by new
+    /// reactions
+    /// (`google.workspace.chat.reaction.v1.created`), the server also returns
+    /// batch new reactions events
+    /// (`google.workspace.chat.reaction.v1.batchCreated`). For a list of supported
+    /// event types, see the [`SpaceEvents` reference
+    /// documentation](<https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.spaceEvents#SpaceEvent.FIELDS.event_type>).
+    ///
+    /// Optionally, you can also filter by start time (`start_time`) and
+    /// end time (`end_time`):
+    ///
+    /// * `start_time`: Exclusive timestamp from which to start listing space
+    /// events.
+    ///   You can list events that occurred up to 28 days ago. If unspecified, lists
+    ///   space events from the past 28 days.
+    /// * `end_time`: Inclusive timestamp until which space events are listed.
+    ///   If unspecified, lists events up to the time of the request.
+    ///
+    /// To specify a start or end time, use the equals `=` operator and format in
+    /// [RFC-3339](<https://www.rfc-editor.org/rfc/rfc3339>). To filter by both
+    /// `start_time` and `end_time`, use the `AND` operator.
+    ///
+    /// For example, the following queries are valid:
+    ///
+    /// ```
+    /// start_time="2023-08-23T19:20:33+00:00" AND
+    /// end_time="2023-08-23T19:21:54+00:00"
+    /// ```
+    /// ```
+    /// start_time="2023-08-23T19:20:33+00:00" AND
+    /// (event_types:"google.workspace.chat.space.v1.updated" OR
+    /// event_types:"google.workspace.chat.message.v1.created")
+    /// ```
+    ///
+    /// The following queries are invalid:
+    ///
+    /// ```
+    /// start_time="2023-08-23T19:20:33+00:00" OR
+    /// end_time="2023-08-23T19:21:54+00:00"
+    /// ```
+    /// ```
+    /// event_types:"google.workspace.chat.space.v1.updated" AND
+    /// event_types:"google.workspace.chat.message.v1.created"
+    /// ```
+    ///
+    /// Invalid queries are rejected by the server with an `INVALID_ARGUMENT`
+    /// error.
+    #[prost(string, tag = "8")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response message for listing space events.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSpaceEventsResponse {
+    /// Results are returned in chronological order (oldest event first).
+    #[prost(message, repeated, tag = "1")]
+    pub space_events: ::prost::alloc::vec::Vec<SpaceEvent>,
+    /// Continuation token used to fetch more events.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// A user's read state within a space, used to identify read and unread
 /// messages.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3459,6 +4006,9 @@ pub mod chat_service_client {
         /// Lists spaces visible to the caller or authenticated user. Group chats
         /// and DMs aren't listed until the first message is sent.
         ///
+        /// To list all named spaces by Google Workspace organization, use the
+        /// [`spaces.search()`](https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces/search)
+        /// method using Workspace administrator privileges instead.
         pub async fn list_spaces(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSpacesRequest>,
@@ -4056,6 +4606,83 @@ pub mod chat_service_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.chat.v1.ChatService", "GetThreadReadState"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns an event from a Google Chat space. The [event
+        /// payload](https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.spaceEvents#SpaceEvent.FIELDS.oneof_payload)
+        /// contains the most recent version of the resource that changed. For example,
+        /// if you request an event about a new message but the message was later
+        /// updated, the server returns the updated `Message` resource in the event
+        /// payload.
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// To get an event, the authenticated user must be a member of the space.
+        ///
+        /// For an example, see [Get details about an
+        /// event from a Google Chat
+        /// space](https://developers.google.com/workspace/chat/get-space-event).
+        pub async fn get_space_event(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSpaceEventRequest>,
+        ) -> std::result::Result<tonic::Response<super::SpaceEvent>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/GetSpaceEvent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.chat.v1.ChatService", "GetSpaceEvent"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists events from a Google Chat space. For each event, the
+        /// [payload](https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.spaceEvents#SpaceEvent.FIELDS.oneof_payload)
+        /// contains the most recent version of the Chat resource. For example, if you
+        /// list events about new space members, the server returns `Membership`
+        /// resources that contain the latest membership details. If new members were
+        /// removed during the requested period, the event payload contains an empty
+        /// `Membership` resource.
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// To list events, the authenticated user must be a member of the space.
+        ///
+        /// For an example, see [List events from a Google Chat
+        /// space](https://developers.google.com/workspace/chat/list-space-events).
+        pub async fn list_space_events(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSpaceEventsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSpaceEventsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/ListSpaceEvents",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.chat.v1.ChatService", "ListSpaceEvents"),
                 );
             self.inner.unary(req, path, codec).await
         }

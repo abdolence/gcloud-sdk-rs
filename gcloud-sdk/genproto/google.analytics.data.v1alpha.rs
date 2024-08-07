@@ -312,7 +312,7 @@ pub struct InListFilter {
 }
 /// Filters for numeric or date values.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NumericFilter {
     /// The operation type for this filter.
     #[prost(enumeration = "numeric_filter::Operation", tag = "1")]
@@ -486,7 +486,7 @@ pub mod order_by {
 }
 /// To express that the result needs to be between two numbers (inclusive).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BetweenFilter {
     /// Begins with this number.
     #[prost(message, optional, tag = "1")]
@@ -497,7 +497,7 @@ pub struct BetweenFilter {
 }
 /// To represent a number.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NumericValue {
     /// One of a numeric value
     #[prost(oneof = "numeric_value::OneValue", tags = "1, 2")]
@@ -507,7 +507,7 @@ pub struct NumericValue {
 pub mod numeric_value {
     /// One of a numeric value
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum OneValue {
         /// Integer value
         #[prost(int64, tag = "1")]
@@ -588,7 +588,7 @@ pub struct Cohort {
 /// Configures the extended reporting date range for a cohort report. Specifies
 /// an offset duration to follow the cohorts over.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CohortsRange {
     /// Required. The granularity used to interpret the `startOffset` and
     /// `endOffset` for the extended reporting date range for a cohort report.
@@ -681,7 +681,7 @@ pub mod cohorts_range {
 }
 /// Optional settings of a cohort report.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CohortReportSettings {
     /// If true, accumulates the result from first touch day to the end day. Not
     /// supported in `RunReportRequest`.
@@ -898,7 +898,7 @@ pub mod metric_value {
 /// property is exhausted, all requests to that property will return Resource
 /// Exhausted errors.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PropertyQuota {
     /// Standard Analytics Properties can use up to 200,000 tokens per day;
     /// Analytics 360 Properties can use 2,000,000 tokens per day. Most requests
@@ -937,7 +937,7 @@ pub struct PropertyQuota {
 }
 /// Current state for a particular quota group.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct QuotaStatus {
     /// Quota consumed by this request.
     #[prost(int32, tag = "1")]
@@ -1429,7 +1429,7 @@ pub mod segment_filter {
 /// Scopings specify how the dimensions & metrics of multiple events
 /// should be considered when evaluating a segment filter.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SegmentFilterScoping {
     /// If `atAnyPointInTime` is true, this filter evaluates to true for all
     /// events if it evaluates to true for any event in the date range of the
@@ -1574,7 +1574,7 @@ pub mod segment_parameter_filter {
 /// Scopings specify how multiple events should be considered when evaluating a
 /// segment parameter filter.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SegmentParameterFilterScoping {
     /// Accumulates the parameter over the specified period of days before
     /// applying the filter. Only supported if criteria scoping is
@@ -1819,7 +1819,7 @@ pub struct FunnelResponseMetadata {
 /// all data in order to uncover the meaningful information in the larger data
 /// set.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SamplingMetadata {
     /// The total number of events read in this sampled report for a date range.
     /// This is the size of the subset this property's data that was analyzed in
@@ -2590,7 +2590,7 @@ pub mod audience_list {
 }
 /// This metadata is currently blank.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AudienceListMetadata {}
 /// A request to list users in an audience list.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3132,7 +3132,7 @@ pub struct CreateReportTaskRequest {
 /// Represents the metadata of a long-running operation. Currently, this metadata
 /// is blank.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReportTaskMetadata {}
 /// A request to fetch the report content for a report task.
 #[allow(clippy::derive_partial_eq_without_eq)]

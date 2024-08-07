@@ -124,7 +124,7 @@ pub struct ImageClassificationAnnotation {
 /// A vertex represents a 2D point in the image.
 /// NOTE: the vertex coordinates are in the same scale as the original image.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Vertex {
     /// X coordinate.
     #[prost(int32, tag = "1")]
@@ -137,7 +137,7 @@ pub struct Vertex {
 /// NOTE: the normalized vertex coordinates are relative to the original image
 /// and range from 0 to 1.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NormalizedVertex {
     /// X coordinate.
     #[prost(float, tag = "1")]
@@ -267,7 +267,7 @@ pub struct TextEntityExtractionAnnotation {
 }
 /// Start and end position in a sequence (e.g. text segment).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SequentialSegment {
     /// Start position (inclusive).
     #[prost(int32, tag = "1")]
@@ -278,7 +278,7 @@ pub struct SequentialSegment {
 }
 /// A time period inside of an example that has a time dimension (e.g. video).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeSegment {
     /// Start of the time segment (inclusive), represented as the duration since
     /// the example start.
@@ -788,7 +788,7 @@ pub struct TextClassificationConfig {
 }
 /// Config for setting up sentiments.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SentimentConfig {
     /// If set to true, contributors will have the option to select sentiment of
     /// the label they selected, to mark it as negative or positive label. Default
@@ -930,7 +930,7 @@ pub struct TextMetadata {
 }
 /// Metadata for classification annotations.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ClassificationMetadata {
     /// Whether the classification task is multi-label or not.
     #[prost(bool, tag = "1")]
@@ -1276,7 +1276,7 @@ pub struct Evaluation {
 /// Configuration details used for calculating evaluation metrics and creating an
 /// [Evaluation][google.cloud.datalabeling.v1beta1.Evaluation].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EvaluationConfig {
     /// Vertical specific options for general metrics.
     #[prost(oneof = "evaluation_config::VerticalOption", tags = "1")]
@@ -1286,7 +1286,7 @@ pub struct EvaluationConfig {
 pub mod evaluation_config {
     /// Vertical specific options for general metrics.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum VerticalOption {
         /// Only specify this field if the related model performs image object
         /// detection (`IMAGE_BOUNDING_BOX_ANNOTATION`). Describes how to evaluate
@@ -1297,7 +1297,7 @@ pub mod evaluation_config {
 }
 /// Options regarding evaluation between bounding boxes.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BoundingBoxEvaluationOptions {
     /// Minimum
     /// [intersection-over-union
@@ -1372,7 +1372,7 @@ pub struct PrCurve {
 /// Nested message and enum types in `PrCurve`.
 pub mod pr_curve {
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ConfidenceMetricsEntry {
         /// Threshold used for this entry.
         ///

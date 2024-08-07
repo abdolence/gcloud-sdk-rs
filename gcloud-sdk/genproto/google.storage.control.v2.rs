@@ -273,7 +273,7 @@ pub mod storage_layout {
     }
     /// Configuration for a bucket's hierarchical namespace feature.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct HierarchicalNamespace {
         /// Enables the hierarchical namespace feature.
         #[prost(bool, tag = "1")]

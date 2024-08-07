@@ -85,7 +85,7 @@ pub mod version {
 }
 /// Identifies Data Fusion accelerators for an instance.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Accelerator {
     /// The type of an accelator for a CDF instance.
     #[prost(enumeration = "accelerator::AcceleratorType", tag = "1")]
@@ -624,7 +624,7 @@ pub struct RemoveIamPolicyRequest {
 }
 /// Response message for RemoveIamPolicy method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RemoveIamPolicyResponse {}
 /// List namespaces request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -717,7 +717,7 @@ pub struct AddDnsPeeringRequest {
 }
 /// Response message for set dns peering method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddDnsPeeringResponse {}
 /// Request message to remove dns peering.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -732,7 +732,7 @@ pub struct RemoveDnsPeeringRequest {
 }
 /// Response message for set dns peering method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RemoveDnsPeeringResponse {}
 /// List dns peering request.
 #[allow(clippy::derive_partial_eq_without_eq)]

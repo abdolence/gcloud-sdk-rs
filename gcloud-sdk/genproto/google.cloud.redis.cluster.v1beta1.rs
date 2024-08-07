@@ -209,7 +209,7 @@ pub struct Cluster {
 pub mod cluster {
     /// Represents additional information about the state of the cluster.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct StateInfo {
         #[prost(oneof = "state_info::Info", tags = "1")]
         pub info: ::core::option::Option<state_info::Info>,
@@ -218,7 +218,7 @@ pub mod cluster {
     pub mod state_info {
         /// Represents information about an updating cluster.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct UpdateInfo {
             /// Target number of shards for redis cluster
             #[prost(int32, optional, tag = "1")]
@@ -228,7 +228,7 @@ pub mod cluster {
             pub target_replica_count: ::core::option::Option<i32>,
         }
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Info {
             /// Describes ongoing update on the cluster when cluster state is UPDATING.
             #[prost(message, tag = "1")]
@@ -411,7 +411,7 @@ pub mod certificate_authority {
 }
 /// Configuration of the persistence functionality.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ClusterPersistenceConfig {
     /// Optional. The mode of persistence.
     #[prost(enumeration = "cluster_persistence_config::PersistenceMode", tag = "1")]
@@ -427,7 +427,7 @@ pub struct ClusterPersistenceConfig {
 pub mod cluster_persistence_config {
     /// Configuration of the RDB based persistence.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RdbConfig {
         /// Optional. Period between RDB snapshots.
         #[prost(enumeration = "rdb_config::SnapshotPeriod", tag = "1")]
@@ -494,7 +494,7 @@ pub mod cluster_persistence_config {
     }
     /// Configuration of the AOF based persistence.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AofConfig {
         /// Optional. fsync configuration.
         #[prost(enumeration = "aof_config::AppendFsync", tag = "1")]

@@ -7,7 +7,7 @@ pub struct ChannelActivity {
     #[prost(string, tag = "1")]
     pub message: ::prost::alloc::string::String,
     /// Different types of the logs.
-    #[prost(oneof = "channel_activity::ActivityType", tags = "2, 3, 4, 5, 6")]
+    #[prost(oneof = "channel_activity::ActivityType", tags = "2, 3, 4, 5, 6, 7, 8")]
     pub activity_type: ::core::option::Option<channel_activity::ActivityType>,
 }
 /// Nested message and enum types in `ChannelActivity`.
@@ -31,11 +31,17 @@ pub mod channel_activity {
         /// An input stream disconnects.
         #[prost(message, tag = "6")]
         InputDisconnect(super::InputDisconnect),
+        /// An event state changes.
+        #[prost(message, tag = "7")]
+        EventStateChange(super::EventStateChange),
+        /// A SCTE35 command is received.
+        #[prost(message, tag = "8")]
+        Scte35CommandReceived(super::Scte35Command),
     }
 }
 /// StreamingStateChange records when the channel streaming state changes.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StreamingStateChange {
     /// New streaming state of the channel.
     #[prost(enumeration = "super::super::v1::channel::StreamingState", tag = "1")]
@@ -158,4 +164,121 @@ pub struct InputDisconnect {
     /// The user-defined key for the input attachment.
     #[prost(string, tag = "2")]
     pub input_attachment: ::prost::alloc::string::String,
+}
+/// EventStateChange records when an Event state changes.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EventStateChange {
+    /// Resource name of the event.
+    #[prost(string, tag = "1")]
+    pub event_id: ::prost::alloc::string::String,
+    /// New state of the event.
+    #[prost(enumeration = "super::super::v1::event::State", tag = "2")]
+    pub new_state: i32,
+    /// Previous state of the event.
+    #[prost(enumeration = "super::super::v1::event::State", tag = "3")]
+    pub previous_state: i32,
+}
+/// Scte35Command includes details of a received SCTE35 command.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Scte35Command {
+    /// Information about the splice insert.
+    #[prost(message, optional, tag = "1")]
+    pub splice_info_section: ::core::option::Option<scte35_command::SpliceInfoSection>,
+}
+/// Nested message and enum types in `Scte35Command`.
+pub mod scte35_command {
+    /// SpliceTime contains information about the execution time of the splice
+    /// insert.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct SpliceTime {
+        /// If true, the execution time of the splice insert is specified.
+        #[prost(bool, tag = "1")]
+        pub time_specified_flag: bool,
+        /// The time of the splice insert.
+        #[prost(int64, tag = "2")]
+        pub pts_time: i64,
+    }
+    /// BreakDuration contains information about the duration of the splice
+    /// insert.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct BreakDuration {
+        /// If true, the splice insert will automatically return upon finishing.
+        #[prost(bool, tag = "1")]
+        pub auto_return: bool,
+        /// Duration of the splice insert.
+        #[prost(int64, tag = "2")]
+        pub duration: i64,
+    }
+    /// Fine grained control on the scte command insertion for a specific
+    /// elementary stream. This is ignored if program_splice_flag is true.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct Component {
+        /// Elementary stream PID that the scte command should be inserted into.
+        #[prost(int32, tag = "1")]
+        pub component_tag: i32,
+        /// The time of the insert.
+        #[prost(message, optional, tag = "2")]
+        pub splice_time: ::core::option::Option<SpliceTime>,
+    }
+    /// SpliceInsert contains information about the splice insert.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SpliceInsert {
+        /// Event ID of the scte command.
+        #[prost(int32, tag = "1")]
+        pub splice_event_id: i32,
+        /// Whether this scte command is to cancel another scheduled scte command.
+        #[prost(bool, tag = "2")]
+        pub splice_event_cancel_indicator: bool,
+        /// Whether this scte command is cueing out the current program.
+        #[prost(bool, tag = "3")]
+        pub out_of_network_indicator: bool,
+        /// If true, send splice insert to all streams.
+        #[prost(bool, tag = "4")]
+        pub program_splice_flag: bool,
+        /// If true, the duration of the event is specified.
+        #[prost(bool, tag = "5")]
+        pub duration_flag: bool,
+        /// If true, the event should be executed immediately.
+        #[prost(bool, tag = "6")]
+        pub splice_immediate_flag: bool,
+        /// Information about the execution time of the splice insert.
+        #[prost(message, optional, tag = "7")]
+        pub splice_time: ::core::option::Option<SpliceTime>,
+        /// Information about the duration of the splice insert.
+        #[prost(message, optional, tag = "8")]
+        pub break_duration: ::core::option::Option<BreakDuration>,
+        /// Unique ID for a viewing event.
+        #[prost(int32, tag = "9")]
+        pub unique_program_id: i32,
+        /// ID for an avail within one unique_program_id.
+        #[prost(int32, tag = "10")]
+        pub avail_num: i32,
+        /// The number of avails within the current viewing event.
+        #[prost(int32, tag = "11")]
+        pub avails_expected: i32,
+        /// Number of components.
+        #[prost(int32, tag = "12")]
+        pub component_count: i32,
+        /// Components of the program.
+        #[prost(message, repeated, tag = "13")]
+        pub components: ::prost::alloc::vec::Vec<Component>,
+    }
+    /// SpliceInfoSection contains information about the splice insert.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SpliceInfoSection {
+        /// Overflow of pts_time, when pts_time doesn't have enough bits
+        /// to represent the time.
+        #[prost(int64, tag = "1")]
+        pub pts_adjustment: i64,
+        /// Information about the splice insert.
+        #[prost(message, optional, tag = "2")]
+        pub splice_insert: ::core::option::Option<SpliceInsert>,
+    }
 }

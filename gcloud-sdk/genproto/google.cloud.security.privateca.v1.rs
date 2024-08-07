@@ -421,7 +421,7 @@ pub mod ca_pool {
     /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
     /// in the [CaPool][google.cloud.security.privateca.v1.CaPool].
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PublishingOptions {
         /// Optional. When true, publishes each
         /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
@@ -579,7 +579,7 @@ pub mod ca_pool {
         /// may refer to either a fully-qualified key algorithm, such as RSA 4096, or
         /// a family of key algorithms, such as any RSA key.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct AllowedKeyType {
             #[prost(oneof = "allowed_key_type::KeyType", tags = "1, 2")]
             pub key_type: ::core::option::Option<allowed_key_type::KeyType>,
@@ -590,7 +590,7 @@ pub mod ca_pool {
             /// [Certificate][google.cloud.security.privateca.v1.Certificate] issued
             /// from a [CaPool][google.cloud.security.privateca.v1.CaPool].
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct RsaKeyType {
                 /// Optional. The minimum allowed RSA modulus size (inclusive), in bits.
                 /// If this is not set, or if set to zero, the service-level min RSA
@@ -607,7 +607,7 @@ pub mod ca_pool {
             /// [Certificate][google.cloud.security.privateca.v1.Certificate] issued
             /// from a [CaPool][google.cloud.security.privateca.v1.CaPool].
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct EcKeyType {
                 /// Optional. A signature algorithm that must be used. If this is
                 /// omitted, any EC-based signature algorithm will be allowed.
@@ -675,7 +675,7 @@ pub mod ca_pool {
                 }
             }
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
             pub enum KeyType {
                 /// Represents an allowed RSA key type.
                 #[prost(message, tag = "1")]
@@ -690,7 +690,7 @@ pub mod ca_pool {
         /// [Certificates][google.cloud.security.privateca.v1.Certificate] may be
         /// requested from this [CaPool][google.cloud.security.privateca.v1.CaPool].
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct IssuanceModes {
             /// Optional. When true, allows callers to create
             /// [Certificates][google.cloud.security.privateca.v1.Certificate] by
@@ -955,7 +955,7 @@ pub mod certificate {
     /// Describes fields that are relavent to the revocation of a
     /// [Certificate][google.cloud.security.privateca.v1.Certificate].
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RevocationDetails {
         /// Indicates why a
         /// [Certificate][google.cloud.security.privateca.v1.Certificate] was
@@ -1102,7 +1102,7 @@ pub struct X509Parameters {
 pub mod x509_parameters {
     /// Describes values that are relevant in a CA certificate.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CaOptions {
         /// Optional. Refers to the "CA" X.509 extension, which is a boolean value.
         /// When this value is missing, the extension will be omitted from the CA
@@ -1498,7 +1498,7 @@ pub mod key_usage {
     /// corresponds to the key usage values described in
     /// <https://tools.ietf.org/html/rfc5280#section-4.2.1.3.>
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct KeyUsageOptions {
         /// The key may be used for digital signatures.
         #[prost(bool, tag = "1")]
@@ -1533,7 +1533,7 @@ pub mod key_usage {
     /// has fields that correspond to certain common OIDs that could be specified
     /// as an extended key usage value.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ExtendedKeyUsageOptions {
         /// Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW
         /// server authentication", though regularly used for non-WWW TLS.

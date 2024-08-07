@@ -98,7 +98,7 @@ pub mod content_filter {
 /// well as the lowest HarmProbability that should be allowed in order to return
 /// a result.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SafetyFeedback {
     /// Safety rating evaluated from content.
     #[prost(message, optional, tag = "1")]
@@ -115,7 +115,7 @@ pub struct SafetyFeedback {
 /// harm categories and the probability of the harm classification is included
 /// here.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SafetyRating {
     /// Required. The category for this rating.
     #[prost(enumeration = "HarmCategory", tag = "3")]
@@ -186,7 +186,7 @@ pub mod safety_rating {
 /// Passing a safety setting for a category changes the allowed proability that
 /// content is blocked.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SafetySetting {
     /// Required. The category for this setting.
     #[prost(enumeration = "HarmCategory", tag = "3")]
@@ -485,7 +485,7 @@ pub struct CountMessageTokensRequest {
 ///
 /// It returns the model's `token_count` for the `prompt`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CountMessageTokensResponse {
     /// The number of tokens that the `model` tokenizes the `prompt` into.
     ///
@@ -886,7 +886,7 @@ pub struct TuningTask {
 }
 /// Hyperparameters controlling the tuning process.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Hyperparameters {
     /// Immutable. The number of training epochs. An epoch is one pass through the
     /// training data. If not set, a default of 10 will be used.
@@ -955,7 +955,7 @@ pub mod tuning_example {
 }
 /// Record for a single tuning step.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TuningSnapshot {
     /// Output only. The tuning step.
     #[prost(int32, tag = "1")]
@@ -1648,7 +1648,7 @@ pub struct TransferOwnershipRequest {
 }
 /// Response from `TransferOwnership`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TransferOwnershipResponse {}
 /// Generated client implementations.
 pub mod permission_service_client {
@@ -2124,7 +2124,7 @@ pub struct CountTextTokensRequest {
 ///
 /// It returns the model's `token_count` for the `prompt`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CountTextTokensResponse {
     /// The number of tokens that the `model` tokenizes the `prompt` into.
     ///

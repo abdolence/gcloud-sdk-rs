@@ -181,7 +181,7 @@ pub mod build_event {
     /// Notification of the end of a build event stream published by a build
     /// component other than CONTROLLER (See StreamId.BuildComponents).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BuildComponentStreamFinished {
         /// How the event stream finished.
         #[prost(enumeration = "build_component_stream_finished::FinishType", tag = "1")]

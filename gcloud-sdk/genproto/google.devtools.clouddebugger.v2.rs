@@ -625,7 +625,7 @@ pub struct UpdateActiveBreakpointRequest {
 /// Response for updating an active breakpoint.
 /// The message is defined to allow future extensions.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpdateActiveBreakpointResponse {}
 /// Generated client implementations.
 pub mod controller2_client {
@@ -959,7 +959,7 @@ pub mod list_breakpoints_request {
     /// Wrapper message for `Breakpoint.Action`. Defines a filter on the action
     /// field of breakpoints.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BreakpointActionValue {
         /// Only breakpoints with the specified action will pass the filter.
         #[prost(enumeration = "super::breakpoint::Action", tag = "1")]

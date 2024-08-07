@@ -115,7 +115,7 @@ pub struct Imu {
 pub mod imu {
     /// A Generic 3d measurement sample.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Measurement3d {
         /// The timestamp of the IMU measurement.
         #[prost(message, optional, tag = "1")]
@@ -444,7 +444,7 @@ pub mod photo_sequence {
 }
 /// A rectangle in geographical coordinates.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LatLngBounds {
     /// The southwest corner of these bounds.
     #[prost(message, optional, tag = "1")]
@@ -458,7 +458,7 @@ pub struct LatLngBounds {
 /// ProcessingFailureReason, and the oneof value set in this message should match
 /// the FailureReason.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ProcessingFailureDetails {
     /// Only one set of details will be set, and must match the corresponding enum
     /// in ProcessingFailureReason.
@@ -470,7 +470,7 @@ pub mod processing_failure_details {
     /// Only one set of details will be set, and must match the corresponding enum
     /// in ProcessingFailureReason.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// See InsufficientGpsFailureDetails.
         #[prost(message, tag = "1")]
@@ -491,7 +491,7 @@ pub mod processing_failure_details {
 }
 /// Details related to ProcessingFailureReason#INSUFFICIENT_GPS.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InsufficientGpsFailureDetails {
     /// The number of GPS points that were found in the video.
     #[prost(int32, optional, tag = "1")]
@@ -501,7 +501,7 @@ pub struct InsufficientGpsFailureDetails {
 /// If there are multiple GPS data gaps, only the one with the largest duration
 /// is reported here.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GpsDataGapFailureDetails {
     /// The duration of the gap in GPS data that was found.
     #[prost(message, optional, tag = "1")]
@@ -514,7 +514,7 @@ pub struct GpsDataGapFailureDetails {
 /// If there are multiple IMU data gaps, only the one with the largest duration
 /// is reported here.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImuDataGapFailureDetails {
     /// The duration of the gap in IMU data that was found.
     #[prost(message, optional, tag = "1")]
@@ -526,7 +526,7 @@ pub struct ImuDataGapFailureDetails {
 /// Details related to ProcessingFailureReason#NOT_OUTDOORS.
 /// If there are multiple indoor frames found, the first frame is recorded here.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NotOutdoorsFailureDetails {
     /// Relative time (from the start of the video stream) when an indoor frame was
     /// found.
@@ -535,7 +535,7 @@ pub struct NotOutdoorsFailureDetails {
 }
 /// Details related to PhotoSequenceProcessingFailureReason#NO_OVERLAP_GPS.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NoOverlapGpsFailureDetails {
     /// Time of first recorded GPS point.
     #[prost(message, optional, tag = "1")]

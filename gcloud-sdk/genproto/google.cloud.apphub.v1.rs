@@ -22,7 +22,7 @@ pub struct Attributes {
 }
 /// Criticality of the Application, Service, or Workload
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Criticality {
     /// Required. Criticality Type.
     #[prost(enumeration = "criticality::Type", tag = "3")]
@@ -84,7 +84,7 @@ pub mod criticality {
 }
 /// Environment of the Application, Service, or Workload
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Environment {
     /// Required. Environment Type.
     #[prost(enumeration = "environment::Type", tag = "2")]
@@ -248,7 +248,7 @@ pub mod application {
 }
 /// Scope of an application.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Scope {
     /// Required. Scope Type.
     #[prost(enumeration = "scope::Type", tag = "1")]
@@ -802,7 +802,7 @@ pub struct DetachServiceProjectAttachmentRequest {
 }
 /// Response for DetachServiceProjectAttachment.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DetachServiceProjectAttachmentResponse {}
 /// Request for ListServices.
 #[allow(clippy::derive_partial_eq_without_eq)]

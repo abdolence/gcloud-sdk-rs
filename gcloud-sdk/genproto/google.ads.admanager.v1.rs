@@ -16,7 +16,7 @@ pub struct AdPartnerDeclaration {
 /// Wrapper message for
 /// [DeclarationTypeEnum][google.ads.admanager.v1.DeclarationTypeEnum].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeclarationTypeEnum {}
 /// Nested message and enum types in `DeclarationTypeEnum`.
 pub mod declaration_type_enum {
@@ -293,7 +293,7 @@ pub mod ad_partner_service_client {
 /// Wrapper message for
 /// [AppliedAdsenseEnabled][google.ads.admanager.v1.AppliedAdsenseEnabledEnum.AppliedAdsenseEnabled]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AppliedAdsenseEnabledEnum {}
 /// Nested message and enum types in `AppliedAdsenseEnabledEnum`.
 pub mod applied_adsense_enabled_enum {
@@ -347,7 +347,7 @@ pub mod applied_adsense_enabled_enum {
 /// Wrapper message for
 /// [EnvironmentType][google.ads.admanager.v1.EnvironmentTypeEnum.EnvironmentType].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EnvironmentTypeEnum {}
 /// Nested message and enum types in `EnvironmentTypeEnum`.
 pub mod environment_type_enum {
@@ -397,7 +397,7 @@ pub mod environment_type_enum {
 }
 /// Represents the dimensions of an AdUnit, LineItem, or Creative.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Size {
     /// Required. The width of the [Creative](google.ads.admanager.v1.Creative),
     /// [AdUnit](google.ads.admanager.v1.AdUnit), or
@@ -419,7 +419,7 @@ pub struct Size {
 /// Wrapper message for
 /// [SizeType][google.ads.admanager.v1.SizeTypeEnum.SizeType].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SizeTypeEnum {}
 /// Nested message and enum types in `SizeTypeEnum`.
 pub mod size_type_enum {
@@ -523,7 +523,7 @@ pub struct AppliedLabel {
 }
 /// Represents a Frequency Cap that can be applied to an entity.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FrequencyCap {
     /// The maximum number of impressions for this frequency cap.
     #[prost(int64, optional, tag = "1")]
@@ -537,7 +537,7 @@ pub struct FrequencyCap {
 }
 /// Wrapper message for TimeUnit.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeUnitEnum {}
 /// Nested message and enum types in `TimeUnitEnum`.
 pub mod time_unit_enum {
@@ -793,7 +793,7 @@ pub struct AdUnitParent {
 /// Wrapper message for
 /// [TargetWindow][google.ads.admanager.v1.TargetWindowEnum.TargetWindow].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TargetWindowEnum {}
 /// Nested message and enum types in `TargetWindowEnum`.
 pub mod target_window_enum {
@@ -857,7 +857,7 @@ pub struct LabelFrequencyCap {
 /// Wrapper message for
 /// [SmartSizeMode][google.ads.admanager.v1.SmartSizeModeEnum.SmartSizeMode].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SmartSizeModeEnum {}
 /// Nested message and enum types in `SmartSizeModeEnum`.
 pub mod smart_size_mode_enum {
@@ -1153,7 +1153,7 @@ pub struct AdManagerError {
 /// Wrapper message for
 /// [CompanyCreditStatus][google.ads.admanager.v1.CompanyCreditStatusEnum.CompanyCreditStatus]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CompanyCreditStatusEnum {}
 /// Nested message and enum types in `CompanyCreditStatusEnum`.
 pub mod company_credit_status_enum {
@@ -1263,7 +1263,7 @@ pub mod company_credit_status_enum {
 /// Wrapper message for
 /// [CompanyType][google.ads.admanager.v1.CompanyTypeEnum.CompanyType]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CompanyTypeEnum {}
 /// Nested message and enum types in `CompanyTypeEnum`.
 pub mod company_type_enum {
@@ -1615,7 +1615,7 @@ pub mod company_service_client {
 /// Wrapper message for
 /// [ComputedStatus][google.ads.admanager.v1.ComputedStatusEnum.ComputedStatus].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ComputedStatusEnum {}
 /// Nested message and enum types in `ComputedStatusEnum`.
 pub mod computed_status_enum {
@@ -2225,7 +2225,7 @@ pub mod creative_service_client {
 /// Wrapper message for
 /// [CustomFieldDataType][google.ads.admanager.v1.CustomFieldDataTypeEnum.CustomFieldDataType]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomFieldDataTypeEnum {}
 /// Nested message and enum types in `CustomFieldDataTypeEnum`.
 pub mod custom_field_data_type_enum {
@@ -2286,7 +2286,7 @@ pub mod custom_field_data_type_enum {
 /// Wrapper message for
 /// [CustomFieldEntityType][google.ads.admanager.v1.CustomFieldEntityTypeEnum.CustomFieldEntityType]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomFieldEntityTypeEnum {}
 /// Nested message and enum types in `CustomFieldEntityTypeEnum`.
 pub mod custom_field_entity_type_enum {
@@ -2351,7 +2351,7 @@ pub mod custom_field_entity_type_enum {
 /// Wrapper message for
 /// [CustomFieldStatus][google.ads.admanager.v1.CustomFieldStatusEnum.CustomFieldStatus]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomFieldStatusEnum {}
 /// Nested message and enum types in `CustomFieldStatusEnum`.
 pub mod custom_field_status_enum {
@@ -2402,7 +2402,7 @@ pub mod custom_field_status_enum {
 /// Wrapper message for
 /// [CustomFieldVisibility][google.ads.admanager.v1.CustomFieldVisibilityEnum.CustomFieldVisibility]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomFieldVisibilityEnum {}
 /// Nested message and enum types in `CustomFieldVisibilityEnum`.
 pub mod custom_field_visibility_enum {
@@ -2733,7 +2733,7 @@ pub mod custom_field_service_client {
 /// Wrapper message for
 /// [CustomTargetingKeyStatus][google.ads.admanager.v1.CustomTargetingKeyStatusEnum.CustomTargetingKeyStatus]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomTargetingKeyStatusEnum {}
 /// Nested message and enum types in `CustomTargetingKeyStatusEnum`.
 pub mod custom_targeting_key_status_enum {
@@ -2786,7 +2786,7 @@ pub mod custom_targeting_key_status_enum {
 /// Wrapper message for
 /// [CustomTargetingKeyType][google.ads.admanager.v1.CustomTargetingKeyTypeEnum.CustomTargetingKeyType]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomTargetingKeyTypeEnum {}
 /// Nested message and enum types in `CustomTargetingKeyTypeEnum`.
 pub mod custom_targeting_key_type_enum {
@@ -2839,7 +2839,7 @@ pub mod custom_targeting_key_type_enum {
 /// Wrapper message for
 /// [CustomTargetingKeyReportableType][google.ads.admanager.v1.CustomTargetingKeyReportableTypeEnum.CustomTargetingKeyReportableType]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomTargetingKeyReportableTypeEnum {}
 /// Nested message and enum types in `CustomTargetingKeyReportableTypeEnum`.
 pub mod custom_targeting_key_reportable_type_enum {
@@ -3162,7 +3162,7 @@ pub mod custom_targeting_key_service_client {
 /// Wrapper message for
 /// [CustomTargetingValueStatus][google.ads.admanager.v1.CustomTargetingValueStatusEnum.CustomTargetingValueStatus]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomTargetingValueStatusEnum {}
 /// Nested message and enum types in `CustomTargetingValueStatusEnum`.
 pub mod custom_targeting_value_status_enum {
@@ -3215,7 +3215,7 @@ pub mod custom_targeting_value_status_enum {
 /// Wrapper message for
 /// [CustomTargetingValueMatchType][google.ads.admanager.v1.CustomTargetingValueMatchTypeEnum.CustomTargetingValueMatchType]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomTargetingValueMatchTypeEnum {}
 /// Nested message and enum types in `CustomTargetingValueMatchTypeEnum`.
 pub mod custom_targeting_value_match_type_enum {
@@ -3567,7 +3567,7 @@ pub mod custom_targeting_value_service_client {
 /// satisfy to meet its delivery
 ///   goal.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Goal {
     /// The type of the goal for the LineItem. It defines the period over which the
     /// goal should be reached.
@@ -3599,7 +3599,7 @@ pub struct Goal {
 /// Wrapper message for
 /// [GoalType][google.ads.admanager.v1.GoalTypeEnum.GoalType].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GoalTypeEnum {}
 /// Nested message and enum types in `GoalTypeEnum`.
 pub mod goal_type_enum {
@@ -3682,7 +3682,7 @@ pub mod goal_type_enum {
 /// Wrapper message for
 /// [UnitType][google.ads.admanager.v1.UnitTypeEnum.UnitType].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UnitTypeEnum {}
 /// Nested message and enum types in `UnitTypeEnum`.
 pub mod unit_type_enum {
@@ -4000,7 +4000,7 @@ pub mod label_service_client {
 /// Wrapper message for
 /// [LineItemCostType][google.ads.admanager.v1.LineItemCostTypeEnum.LineItemCostType].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LineItemCostTypeEnum {}
 /// Nested message and enum types in `LineItemCostTypeEnum`.
 pub mod line_item_cost_type_enum {
@@ -4107,7 +4107,7 @@ pub mod line_item_cost_type_enum {
 /// Wrapper message for
 /// [CreativeRotationType][google.ads.admanager.v1.CreativeRotationTypeEnum.CreativeRotationType].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreativeRotationTypeEnum {}
 /// Nested message and enum types in `CreativeRotationTypeEnum`.
 pub mod creative_rotation_type_enum {
@@ -4171,7 +4171,7 @@ pub mod creative_rotation_type_enum {
 /// Wrapper message for
 /// [DeliveryRateType][google.ads.admanager.v1.DeliveryRateTypeEnum.DeliveryRateType].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeliveryRateTypeEnum {}
 /// Nested message and enum types in `DeliveryRateTypeEnum`.
 pub mod delivery_rate_type_enum {
@@ -4233,7 +4233,7 @@ pub mod delivery_rate_type_enum {
 /// Wrapper message for
 /// [LineItemDiscountType][google.ads.admanager.v1.LineItemDiscountTypeEnum.LineItemDiscountType].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LineItemDiscountTypeEnum {}
 /// Nested message and enum types in `LineItemDiscountTypeEnum`.
 pub mod line_item_discount_type_enum {
@@ -4286,7 +4286,7 @@ pub mod line_item_discount_type_enum {
 /// Wrapper message for
 /// [LineItemType][google.ads.admanager.v1.LineItemTypeEnum.LineItemType].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LineItemTypeEnum {}
 /// Nested message and enum types in `LineItemTypeEnum`.
 pub mod line_item_type_enum {
@@ -4396,7 +4396,7 @@ pub mod line_item_type_enum {
 /// Wrapper message for
 /// [ReservationStatus][google.ads.admanager.v1.ReservationStatusEnum.ReservationStatus].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReservationStatusEnum {}
 /// Nested message and enum types in `ReservationStatusEnum`.
 pub mod reservation_status_enum {
@@ -5426,7 +5426,7 @@ pub mod order_service_client {
 /// Wrapper message for
 /// [PlacementStatus][google.ads.admanager.v1.PlacementStatusEnum.PlacementStatus]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PlacementStatusEnum {}
 /// Nested message and enum types in `PlacementStatusEnum`.
 pub mod placement_status_enum {
@@ -5830,7 +5830,7 @@ pub mod export_saved_report_request {
 /// The message stored in the google.longrunning.Operation.metadata field.
 /// Contains metadata regarding this execution.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportSavedReportMetadata {
     /// The result generated in this report run.
     #[prost(int64, tag = "1")]

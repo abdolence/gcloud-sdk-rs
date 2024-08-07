@@ -172,7 +172,7 @@ pub struct ApproveDecision {
 }
 /// A decision that has been made to dismiss an approval request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DismissDecision {
     /// The time at which the approval request was dismissed.
     #[prost(message, optional, tag = "1")]
@@ -185,7 +185,7 @@ pub struct DismissDecision {
 }
 /// The properties associated with the resource of the request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ResourceProperties {
     /// Whether an approval will exclude the descendants of the resource being
     /// requested.

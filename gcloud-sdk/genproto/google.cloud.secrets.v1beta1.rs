@@ -124,7 +124,7 @@ pub mod replication {
     /// A replication policy that replicates the [Secret][google.cloud.secrets.v1beta1.Secret] payload without any
     /// restrictions.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Automatic {}
     /// A replication policy that replicates the [Secret][google.cloud.secrets.v1beta1.Secret] payload into the
     /// locations specified in [Secret.replication.user_managed.replicas][]

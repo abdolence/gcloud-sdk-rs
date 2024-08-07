@@ -77,7 +77,7 @@ pub mod temporal_asset {
 }
 /// A time window specified by its `start_time` and `end_time`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeWindow {
     /// Start time of the time window (exclusive).
     #[prost(message, optional, tag = "1")]
@@ -927,7 +927,7 @@ pub struct IamPolicyAnalysisState {
 }
 /// The condition evaluation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ConditionEvaluation {
     /// The evaluation result.
     #[prost(enumeration = "condition_evaluation::EvaluationValue", tag = "1")]
@@ -1159,7 +1159,7 @@ pub mod iam_policy_analysis_result {
 /// Represents the metadata of the longrunning operation for the
 /// AnalyzeIamPolicyLongrunning RPC.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AnalyzeIamPolicyLongrunningMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -1634,7 +1634,7 @@ pub struct BigQueryDestination {
 }
 /// Specifications of BigQuery partitioned table as export destination.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PartitionSpec {
     /// The partition key for BigQuery partitioned table.
     #[prost(enumeration = "partition_spec::PartitionKey", tag = "1")]
@@ -2213,7 +2213,7 @@ pub mod iam_policy_analysis_query {
     }
     /// Contains query options.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Options {
         /// Optional. If true, the identities section of the result will expand any
         /// Google groups appearing in an IAM policy binding.
@@ -2318,7 +2318,7 @@ pub mod iam_policy_analysis_query {
     }
     /// The IAM conditions context.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ConditionContext {
         /// The IAM conditions time context.
         #[prost(oneof = "condition_context::TimeContext", tags = "1")]
@@ -2328,7 +2328,7 @@ pub mod iam_policy_analysis_query {
     pub mod condition_context {
         /// The IAM conditions time context.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum TimeContext {
             /// The hypothetical access timestamp to evaluate IAM conditions. Note that
             /// this value must not be earlier than the current time; otherwise, an
@@ -2588,7 +2588,7 @@ pub struct AnalyzeIamPolicyLongrunningRequest {
 /// A response message for
 /// [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AnalyzeIamPolicyLongrunningResponse {}
 /// A saved query which can be shared with others or used later.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3021,7 +3021,7 @@ pub mod query_assets_request {
     /// If data for the timestamp/date range selected does not exist,
     /// it will simply return a valid response with no rows.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Time {
         /// Optional. \[start_time\] is required. \[start_time\] must be less than
         /// \[end_time\] Defaults \[end_time\] to now if \[start_time\] is set and
@@ -3388,7 +3388,7 @@ pub mod analyzer_org_policy_constraint {
         /// A `Constraint` that allows or disallows a list of string values, which
         /// are configured by an organization's policy administrator with a `Policy`.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct ListConstraint {
             /// Indicates whether values grouped into categories can be used in
             /// `Policy.allowed_values` and `Policy.denied_values`. For example,
@@ -3408,7 +3408,7 @@ pub mod analyzer_org_policy_constraint {
         /// If it is enforced on a VM instance, serial port connections will not be
         /// opened to that instance.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct BooleanConstraint {}
         /// Specifies the default behavior in the absence of any `Policy` for the
         /// `Constraint`. This must not be `CONSTRAINT_DEFAULT_UNSPECIFIED`.
@@ -3461,7 +3461,7 @@ pub mod analyzer_org_policy_constraint {
         ///
         /// Immutable after creation.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum ConstraintType {
             /// Defines this constraint as being a ListConstraint.
             #[prost(message, tag = "5")]

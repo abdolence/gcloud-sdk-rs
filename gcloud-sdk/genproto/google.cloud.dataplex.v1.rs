@@ -142,7 +142,7 @@ pub mod lake {
 }
 /// Aggregated status of the underlying assets of a lake or zone.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AssetStatus {
     /// Last update time of the status.
     #[prost(message, optional, tag = "1")]
@@ -210,7 +210,7 @@ pub struct Zone {
 pub mod zone {
     /// Settings for resources attached as assets within a zone.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ResourceSpec {
         /// Required. Immutable. The location type of the resources that are allowed
         /// to be attached to the assets within this zone.
@@ -438,13 +438,13 @@ pub struct Action {
 pub mod action {
     /// Action details for resource references in assets that cannot be located.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MissingResource {}
     /// Action details for unauthorized resource issues raised to indicate that the
     /// service account associated with the lake instance is not authorized to
     /// access or manage the resource associated with an asset.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UnauthorizedResource {}
     /// Failed to apply security policy to the managed resource(s) under a
     /// lake, zone or an asset. For a lake or zone resource, one or more underlying
@@ -549,7 +549,7 @@ pub mod action {
     }
     /// Action details for invalid or unsupported partitions detected by discovery.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct InvalidDataPartition {
         /// The issue type of InvalidDataPartition.
         #[prost(enumeration = "invalid_data_partition::PartitionStructure", tag = "1")]
@@ -603,11 +603,11 @@ pub mod action {
     }
     /// Action details for absence of data detected by discovery.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MissingData {}
     /// Action details for invalid data arrangement.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct InvalidDataOrganization {}
     /// The category of issues.
     #[derive(
@@ -1092,7 +1092,7 @@ pub mod asset {
     pub mod discovery_status {
         /// The aggregated data statistics for the asset reported by discovery.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Stats {
             /// The count of data items within the referenced resource.
             #[prost(int64, tag = "1")]
@@ -1268,7 +1268,7 @@ pub mod environment {
     pub mod infrastructure_spec {
         /// Compute resources associated with the analyze interactive workloads.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct ComputeResources {
             /// Optional. Size in GB of the disk. Default is 100 GB.
             #[prost(int32, tag = "1")]
@@ -1313,7 +1313,7 @@ pub mod environment {
         }
         /// Hardware config
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Resources {
             /// Optional. Compute resources needed for analyze interactive workloads.
             #[prost(message, tag = "50")]
@@ -1331,7 +1331,7 @@ pub mod environment {
     }
     /// Configuration for sessions created for this environment.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SessionSpec {
         /// Optional. The idle time configuration of the session. The session will be
         /// auto-terminated at the end of this period.
@@ -1347,7 +1347,7 @@ pub mod environment {
     }
     /// Status of sessions created for this environment.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SessionStatus {
         /// Output only. Queries over sessions to mark whether the environment is
         /// currently active or not
@@ -1410,7 +1410,7 @@ pub struct Content {
 pub mod content {
     /// Configuration for the Sql Script content.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SqlScript {
         /// Required. Query Engine to be used for the Sql Query.
         #[prost(enumeration = "sql_script::QueryEngine", tag = "1")]
@@ -1460,7 +1460,7 @@ pub mod content {
     }
     /// Configuration for Notebook content.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Notebook {
         /// Required. Kernel Type of the notebook.
         #[prost(enumeration = "notebook::KernelType", tag = "1")]
@@ -1518,7 +1518,7 @@ pub mod content {
     }
     /// Types of content
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Content {
         /// Sql Script related configurations.
         #[prost(message, tag = "100")]
@@ -1613,7 +1613,7 @@ pub mod task {
     pub mod infrastructure_spec {
         /// Batch compute resources associated with the task.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct BatchComputeResources {
             /// Optional. Total number of job executors.
             /// Executor Count should be between 2 and 100. \[Default=2\]
@@ -1683,7 +1683,7 @@ pub mod task {
         }
         /// Hardware config.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Resources {
             /// Compute resources needed for a Task when using Dataproc Serverless.
             #[prost(message, tag = "52")]
@@ -4090,7 +4090,7 @@ pub mod aspect_type {
         }
         /// Definition of the constraints of a field
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Constraints {
             /// Optional. Marks this as an optional/required field.
             #[prost(bool, tag = "1")]
@@ -4269,7 +4269,7 @@ pub struct Aspect {
 /// AspectSource contains source system related information for the
 /// aspect.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AspectSource {
     /// The create time of the aspect in the source system.
     #[prost(message, optional, tag = "10")]
@@ -6262,7 +6262,7 @@ pub struct Trigger {
 pub mod trigger {
     /// The scan runs once via `RunDataScan` API.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct OnDemand {}
     /// The scan is scheduled to run periodically.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6521,7 +6521,7 @@ pub mod data_profile_result {
             pub mod profile_info {
                 /// The profile information for a string type field.
                 #[allow(clippy::derive_partial_eq_without_eq)]
-                #[derive(Clone, PartialEq, ::prost::Message)]
+                #[derive(Clone, Copy, PartialEq, ::prost::Message)]
                 pub struct StringFieldInfo {
                     /// Minimum length of non-null values in the scanned data.
                     #[prost(int64, tag = "1")]
@@ -6780,7 +6780,7 @@ pub mod data_quality_spec {
         /// This trigger is triggered when the DQ score in the job result is less
         /// than a specified input score.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct ScoreThresholdTrigger {
             /// Optional. The score range is in \[0,100\].
             #[prost(float, tag = "2")]
@@ -6789,12 +6789,12 @@ pub mod data_quality_spec {
         /// This trigger is triggered when the scan job itself fails, regardless of
         /// the result.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct JobFailureTrigger {}
         /// This trigger is triggered whenever a scan job run ends, regardless
         /// of the result.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct JobEndTrigger {}
         /// The configuration of notification report post scan action.
         #[allow(clippy::derive_partial_eq_without_eq)]
@@ -7093,7 +7093,7 @@ pub mod data_quality_rule {
     }
     /// Evaluates whether each column value is null.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct NonNullExpectation {}
     /// Evaluates whether each column value is contained by a specified set.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -7113,7 +7113,7 @@ pub mod data_quality_rule {
     }
     /// Evaluates whether the column has duplicates.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UniquenessExpectation {}
     /// Evaluates whether the column aggregate statistic lies between a specified
     /// range.
@@ -8825,7 +8825,7 @@ pub mod data_scan {
     }
     /// Status of the data scan execution.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ExecutionStatus {
         /// The time when the latest DataScanJob started.
         #[prost(message, optional, tag = "4")]
@@ -10212,7 +10212,7 @@ pub struct DataScanEvent {
 pub mod data_scan_event {
     /// Data profile result for data scan job.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DataProfileResult {
         /// The count of rows processed in the data scan job.
         #[prost(int64, tag = "1")]
@@ -10268,7 +10268,7 @@ pub mod data_scan_event {
     }
     /// Applied configs for data profile type data scan job.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DataProfileAppliedConfigs {
         /// The percentage of the records selected from the dataset for DataScan.
         ///
@@ -10286,7 +10286,7 @@ pub mod data_scan_event {
     }
     /// Applied configs for data quality type data scan job.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DataQualityAppliedConfigs {
         /// The percentage of the records selected from the dataset for DataScan.
         ///
@@ -10570,7 +10570,7 @@ pub mod data_scan_event {
     }
     /// The applied configs in the data scan job.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum AppliedConfigs {
         /// Applied configs for data profile type data scan.
         #[prost(message, tag = "201")]
@@ -11748,7 +11748,7 @@ pub mod storage_format {
 }
 /// Describes the access mechanism of the data within its storage location.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StorageAccess {
     /// Output only. Describes the read access mechanism of the data. Not user
     /// settable.

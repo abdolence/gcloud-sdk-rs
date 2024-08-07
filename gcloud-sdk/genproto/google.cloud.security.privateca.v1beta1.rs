@@ -89,7 +89,7 @@ pub struct CertificateAuthority {
 pub mod certificate_authority {
     /// Options that affect all certificates issued by a [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct IssuingOptions {
         /// Required. When true, includes a URL to the issuing CA certificate in the
         /// "authority information access" X.509 extension.
@@ -212,7 +212,7 @@ pub mod certificate_authority {
         /// [Certificates][google.cloud.security.privateca.v1beta1.Certificate] may be requested from this
         /// [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct IssuanceModes {
             /// Required. When true, allows callers to create [Certificates][google.cloud.security.privateca.v1beta1.Certificate] by
             /// specifying a CSR.
@@ -646,7 +646,7 @@ pub struct Certificate {
 pub mod certificate {
     /// Describes fields that are relavent to the revocation of a [Certificate][google.cloud.security.privateca.v1beta1.Certificate].
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RevocationDetails {
         /// Indicates why a [Certificate][google.cloud.security.privateca.v1beta1.Certificate] was revoked.
         #[prost(enumeration = "super::RevocationReason", tag = "1")]
@@ -729,7 +729,7 @@ pub struct ReusableConfigValues {
 pub mod reusable_config_values {
     /// Describes values that are relevant in a CA certificate.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CaOptions {
         /// Optional. Refers to the "CA" X.509 extension, which is a boolean value. When this
         /// value is missing, the extension will be omitted from the CA certificate.
@@ -1043,7 +1043,7 @@ pub mod key_usage {
     /// [KeyUsage.KeyUsageOptions][google.cloud.security.privateca.v1beta1.KeyUsage.KeyUsageOptions] corresponds to the key usage values
     /// described in <https://tools.ietf.org/html/rfc5280#section-4.2.1.3.>
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct KeyUsageOptions {
         /// The key may be used for digital signatures.
         #[prost(bool, tag = "1")]
@@ -1077,7 +1077,7 @@ pub mod key_usage {
     /// [KeyUsage.ExtendedKeyUsageOptions][google.cloud.security.privateca.v1beta1.KeyUsage.ExtendedKeyUsageOptions] has fields that correspond to
     /// certain common OIDs that could be specified as an extended key usage value.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ExtendedKeyUsageOptions {
         /// Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW
         /// server authentication", though regularly used for non-WWW TLS.

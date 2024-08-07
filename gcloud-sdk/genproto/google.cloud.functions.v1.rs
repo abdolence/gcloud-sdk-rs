@@ -280,7 +280,7 @@ pub mod cloud_function {
     /// Security patches are applied automatically to the runtime without requiring
     /// the function to be redeployed.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AutomaticUpdatePolicy {}
     /// Security patches are only applied when a function is redeployed.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -631,7 +631,7 @@ pub struct EventTrigger {
 /// Describes the policy in case of function's execution failure.
 /// If empty, then defaults to ignoring failures (i.e. not retrying them).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FailurePolicy {
     /// Defines the action taken in case of a function execution failure.
     #[prost(oneof = "failure_policy::Action", tags = "1")]
@@ -645,11 +645,11 @@ pub mod failure_policy {
     /// (capped at 10 seconds).
     /// Retried execution is charged as any other execution.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Retry {}
     /// Defines the action taken in case of a function execution failure.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Action {
         /// If specified, then the function will be retried in case of a failure.
         #[prost(message, tag = "1")]

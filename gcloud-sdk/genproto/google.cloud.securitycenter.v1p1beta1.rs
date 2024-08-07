@@ -603,7 +603,7 @@ pub mod organization_settings {
 }
 /// Response of asset discovery run
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RunAssetDiscoveryResponse {
     /// The state of an asset discovery run.
     #[prost(enumeration = "run_asset_discovery_response::State", tag = "1")]

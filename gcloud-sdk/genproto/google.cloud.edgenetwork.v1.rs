@@ -385,7 +385,7 @@ pub mod router {
     }
     /// BGP information specific to this router.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Bgp {
         /// Locally assigned BGP ASN.
         #[prost(uint32, tag = "1")]
@@ -462,7 +462,7 @@ pub mod interconnect_diagnostics {
     }
     /// Containing a collection of interface-related statistics objects.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PacketCounts {
         /// The number of packets that are delivered.
         #[prost(int64, tag = "1")]
@@ -680,7 +680,7 @@ pub mod router_status {
     }
     /// PrefixCounter contains a collection of prefixes related counts.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PrefixCounter {
         /// Number of prefixes advertised.
         #[prost(int64, tag = "1")]
@@ -1448,7 +1448,7 @@ pub struct InitializeZoneRequest {
 }
 /// The response of initializing a zone
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InitializeZoneResponse {}
 /// Generated client implementations.
 pub mod edge_network_client {

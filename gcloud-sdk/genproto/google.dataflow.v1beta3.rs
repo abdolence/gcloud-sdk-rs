@@ -284,7 +284,7 @@ pub struct TaskRunnerSettings {
 }
 /// Settings for WorkerPool autoscaling.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoscalingSettings {
     /// The algorithm to use for autoscaling.
     #[prost(enumeration = "AutoscalingAlgorithm", tag = "1")]
@@ -433,7 +433,7 @@ pub struct WorkerPool {
 }
 /// Describes any options that have an effect on the debugging of pipelines.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DebugOptions {
     /// When true, enables the logging of the literal hot key to the user's Cloud
     /// Logging.
@@ -774,7 +774,7 @@ pub struct DeleteSnapshotRequest {
 }
 /// Response from deleting a snapshot.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteSnapshotResponse {}
 /// Request to list snapshots.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1837,7 +1837,7 @@ pub struct CheckActiveJobsRequest {
 }
 /// Response for CheckActiveJobsRequest.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CheckActiveJobsResponse {
     /// If True, active jobs exists for project. False otherwise.
     #[prost(bool, tag = "1")]
@@ -2902,7 +2902,7 @@ pub struct ProgressTimeseries {
 pub mod progress_timeseries {
     /// A point in the timeseries.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Point {
         /// The timestamp of the point.
         #[prost(message, optional, tag = "1")]
@@ -3355,7 +3355,7 @@ pub struct StreamingSideInputLocation {
 }
 /// Identifies the location of a custom souce.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomSourceLocation {
     /// Whether this source is stateful.
     #[prost(bool, tag = "1")]

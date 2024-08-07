@@ -781,7 +781,7 @@ pub struct BatchTranslateTextRequest {
 }
 /// State metadata for the batch translation operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BatchTranslateMetadata {
     /// The state of the operation.
     #[prost(enumeration = "batch_translate_metadata::State", tag = "1")]
@@ -869,7 +869,7 @@ pub mod batch_translate_metadata {
 /// field returned by BatchTranslateText if at least one sentence is translated
 /// successfully.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BatchTranslateResponse {
     /// Total number of characters (Unicode codepoints).
     #[prost(int64, tag = "1")]
@@ -1433,7 +1433,7 @@ pub mod batch_document_output_config {
 /// field returned by BatchTranslateDocument if at least one document is
 /// translated successfully.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BatchTranslateDocumentResponse {
     /// Total number of pages to translate in all documents. Documents without
     /// clear page definition (such as XLSX) are not counted.
@@ -1477,7 +1477,7 @@ pub struct BatchTranslateDocumentResponse {
 }
 /// State metadata for the batch translation operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BatchTranslateDocumentMetadata {
     /// The state of the operation.
     #[prost(enumeration = "batch_translate_document_metadata::State", tag = "1")]

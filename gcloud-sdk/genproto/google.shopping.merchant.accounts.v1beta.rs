@@ -104,7 +104,7 @@ pub mod tax_rule {
     /// What is the way to calculate tax rate for deliveries to this admin's area.
     /// Can only be set on US states.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum RateCalculation {
         /// Rate that depends on delivery location: if merchant has a nexus in
         /// corresponding US state, rates from authorities with jurisdiction over
@@ -1134,7 +1134,7 @@ pub mod create_and_configure_account_request {
         /// [Multi-client](<https://support.google.com/merchants/answer/188487>)
         /// parent account type.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum ServiceType {
             /// The provider is an aggregator for the account.
             #[prost(message, tag = "2")]
@@ -1552,7 +1552,7 @@ pub struct BusinessIdentity {
 pub mod business_identity {
     /// All information related to an identity attribute.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct IdentityAttribute {
         /// Required. The declaration of identity for this attribute.
         #[prost(enumeration = "identity_attribute::IdentityDeclaration", tag = "1")]
@@ -2782,7 +2782,7 @@ pub mod online_return_policy {
     }
     /// The available policies.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Policy {
         /// Policy type.
         #[prost(enumeration = "policy::Type", tag = "1")]
@@ -3982,7 +3982,7 @@ pub mod service {
     pub mod store_config {
         /// Configs related to local delivery ends for the day.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct CutoffConfig {
             /// Time that local delivery ends for the day.
             #[prost(message, optional, tag = "1")]
@@ -4008,7 +4008,7 @@ pub mod service {
         pub mod cutoff_config {
             /// Time that local delivery ends for the day.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct LocalCutoffTime {
                 /// Hour local delivery orders must be placed by to process the same
                 /// day.
@@ -4150,7 +4150,7 @@ pub mod service {
 /// Maximum delivery radius.
 /// This is only required for the local delivery shipment type.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Distance {
     /// Integer value of distance.
     #[prost(int64, optional, tag = "1")]
@@ -4237,7 +4237,7 @@ pub struct Warehouse {
 /// Later orders will be processed in the next day. The time is based on the
 /// warehouse postal code.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WarehouseCutoffTime {
     /// Required. Hour of the cutoff time until which an order has to be placed to
     /// be processed in the same day by the warehouse. Hour is based on the
@@ -4538,7 +4538,7 @@ pub mod transit_table {
     pub mod transit_time_row {
         /// Transit time range (min-max) in business days.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct TransitTimeValue {
             /// Minimum transit time range in business days. 0 means same
             /// day delivery, 1 means next day delivery.

@@ -71,7 +71,7 @@ pub mod typed_value {
 ///        previous interval, then data written at the new start time could
 ///        overwrite data written at the previous end time.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeInterval {
     /// Required. The end of the time interval.
     #[prost(message, optional, tag = "2")]
@@ -849,7 +849,7 @@ pub mod alert_policy {
         /// Specifies how many time series must fail a predicate to trigger a
         /// condition. If not specified, then a `{count: 1}` trigger is used.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Trigger {
             /// A type of trigger.
             #[prost(oneof = "trigger::Type", tags = "1, 2")]
@@ -859,7 +859,7 @@ pub mod alert_policy {
         pub mod trigger {
             /// A type of trigger.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
             pub enum Type {
                 /// The absolute number of time series that must fail
                 /// the predicate for the condition to be triggered.
@@ -978,7 +978,7 @@ pub mod alert_policy {
             /// Options used when forecasting the time series and testing
             /// the predicted value against the threshold.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct ForecastOptions {
                 /// Required. The length of time into the future to forecast whether a
                 /// time series will violate the threshold. If the predicted value is
@@ -1305,7 +1305,7 @@ pub mod alert_policy {
         /// Control over the rate of notifications sent to this alert policy's
         /// notification channels.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct NotificationRateLimit {
             /// Not more than one notification per `period`.
             #[prost(message, optional, tag = "1")]
@@ -2601,7 +2601,7 @@ pub struct TextLocator {
 pub mod text_locator {
     /// The position of a byte within the text.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Position {
         /// The line, starting with 1, where the byte is positioned.
         #[prost(int32, tag = "1")]
@@ -4440,7 +4440,7 @@ pub mod service {
     /// when none of the other service types (like App Engine, Cloud Run, or
     /// a GKE type) matches your intended service.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Custom {}
     /// App Engine service. Learn more at <https://cloud.google.com/appengine.>
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -4782,7 +4782,7 @@ pub mod service_level_objective {
     }
     /// The time period over which the objective will be evaluated.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Period {
         /// A rolling time period, semantically "in the past `<rolling_period>`".
         /// Must be an integer multiple of 1 day no larger than 30 days.
@@ -4874,11 +4874,11 @@ pub struct BasicSli {
 pub mod basic_sli {
     /// Future parameters for the availability SLI.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AvailabilityCriteria {}
     /// Parameters for a latency threshold SLI.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LatencyCriteria {
         /// Good service is defined to be the count of requests made to this service
         /// that return in no more than `threshold`.
@@ -4887,7 +4887,7 @@ pub mod basic_sli {
     }
     /// This SLI can be evaluated on the basis of availability or latency.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum SliCriteria {
         /// Good service is defined to be the count of requests made to this service
         /// that return successfully.
@@ -4901,7 +4901,7 @@ pub mod basic_sli {
 }
 /// Range of numerical values within `min` and `max`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Range {
     /// Range minimum.
     #[prost(double, tag = "1")]
@@ -6286,7 +6286,7 @@ pub mod uptime_check_config {
     /// checks. For HTTP, the pings are performed for each part of the redirect
     /// chain.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PingConfig {
         /// Number of ICMP pings. A maximum of 3 ICMP pings is currently supported.
         #[prost(int32, tag = "1")]
@@ -6412,7 +6412,7 @@ pub mod uptime_check_config {
         /// A status to accept. Either a status code class like "2xx", or an integer
         /// status code like "200".
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct ResponseStatusCode {
             /// Either a specific value or a class of status codes.
             #[prost(oneof = "response_status_code::StatusCode", tags = "1, 2")]
@@ -6481,7 +6481,7 @@ pub mod uptime_check_config {
             }
             /// Either a specific value or a class of status codes.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
             pub enum StatusCode {
                 /// A status code to accept.
                 #[prost(int32, tag = "1")]
@@ -6497,7 +6497,7 @@ pub mod uptime_check_config {
         /// The OIDC token will be generated for the Monitoring service agent service
         /// account.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct ServiceAgentAuthentication {
             /// Type of authentication.
             #[prost(
@@ -6645,7 +6645,7 @@ pub mod uptime_check_config {
         /// an authenticated uptime check.
         /// Do not set both `auth_method` and `auth_info`.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum AuthMethod {
             /// If specified, Uptime will generate and attach an OIDC JWT token for the
             /// Monitoring service agent service account as an `Authorization` header
@@ -6656,7 +6656,7 @@ pub mod uptime_check_config {
     }
     /// Information required for a TCP Uptime check request.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TcpCheck {
         /// The TCP port on the server against which to run the check. Will be
         /// combined with host (specified within the `monitored_resource`) to

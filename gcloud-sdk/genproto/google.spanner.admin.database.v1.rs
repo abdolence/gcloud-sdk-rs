@@ -2,7 +2,7 @@
 /// Encapsulates progress related information for a Cloud Spanner long
 /// running operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct OperationProgress {
     /// Percent completion of the operation.
     /// Values are between 0 and 100 inclusive.
@@ -199,6 +199,24 @@ pub struct Backup {
     /// Output only. Size of the backup in bytes.
     #[prost(int64, tag = "5")]
     pub size_bytes: i64,
+    /// Output only. The number of bytes that will be freed by deleting this
+    /// backup. This value will be zero if, for example, this backup is part of an
+    /// incremental backup chain and younger backups in the chain require that we
+    /// keep its data. For backups not in an incremental backup chain, this is
+    /// always the size of the backup. This value may change if backups on the same
+    /// chain get created, deleted or expired.
+    #[prost(int64, tag = "15")]
+    pub freeable_size_bytes: i64,
+    /// Output only. For a backup in an incremental backup chain, this is the
+    /// storage space needed to keep the data that has changed since the previous
+    /// backup. For all other backups, this is always the size of the backup. This
+    /// value may change if backups on the same chain get deleted or expired.
+    ///
+    /// This field can be used to calculate the total storage space used by a set
+    /// of backups. For example, the total space used by all backups of a database
+    /// can be computed by summing up this field.
+    #[prost(int64, tag = "16")]
+    pub exclusive_size_bytes: i64,
     /// Output only. The current state of the backup.
     #[prost(enumeration = "backup::State", tag = "6")]
     pub state: i32,
@@ -241,6 +259,32 @@ pub struct Backup {
     /// less than `Backup.max_expire_time`.
     #[prost(message, optional, tag = "12")]
     pub max_expire_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. List of backup schedule URIs that are associated with
+    /// creating this backup. This is only applicable for scheduled backups, and
+    /// is empty for on-demand backups.
+    ///
+    /// To optimize for storage, whenever possible, multiple schedules are
+    /// collapsed together to create one backup. In such cases, this field captures
+    /// the list of all backup schedule URIs that are associated with creating
+    /// this backup. If collapsing is not done, then this field captures the
+    /// single backup schedule URI associated with creating this backup.
+    #[prost(string, repeated, tag = "14")]
+    pub backup_schedules: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Populated only for backups in an incremental backup chain.
+    /// Backups share the same chain id if and only if they belong to the same
+    /// incremental backup chain. Use this field to determine which backups are
+    /// part of the same incremental backup chain. The ordering of backups in the
+    /// chain can be determined by ordering the backup `version_time`.
+    #[prost(string, tag = "17")]
+    pub incremental_backup_chain_id: ::prost::alloc::string::String,
+    /// Output only. Data deleted at a time older than this is guaranteed not to be
+    /// retained in order to support this backup. For a backup in an incremental
+    /// backup chain, this is the version time of the oldest backup that exists or
+    /// ever existed in the chain. For all other backups, this is the version time
+    /// of the backup. This field can be used to understand what data is being
+    /// retained by the backup system.
+    #[prost(message, optional, tag = "18")]
+    pub oldest_version_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `Backup`.
 pub mod backup {
@@ -862,6 +906,222 @@ pub mod copy_backup_encryption_config {
             }
         }
     }
+}
+/// The specification for full backups.
+/// A full backup stores the entire contents of the database at a given
+/// version time.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct FullBackupSpec {}
+/// The specification for incremental backup chains.
+/// An incremental backup stores the delta of changes between a previous
+/// backup and the database contents at a given version time. An
+/// incremental backup chain consists of a full backup and zero or more
+/// successive incremental backups. The first backup created for an
+/// incremental backup chain is always a full backup.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct IncrementalBackupSpec {}
+/// Defines specifications of the backup schedule.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BackupScheduleSpec {
+    /// Required.
+    #[prost(oneof = "backup_schedule_spec::ScheduleSpec", tags = "1")]
+    pub schedule_spec: ::core::option::Option<backup_schedule_spec::ScheduleSpec>,
+}
+/// Nested message and enum types in `BackupScheduleSpec`.
+pub mod backup_schedule_spec {
+    /// Required.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ScheduleSpec {
+        /// Cron style schedule specification.
+        #[prost(message, tag = "1")]
+        CronSpec(super::CrontabSpec),
+    }
+}
+/// BackupSchedule expresses the automated backup creation specification for a
+/// Spanner database.
+/// Next ID: 10
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BackupSchedule {
+    /// Identifier. Output only for the
+    /// [CreateBackupSchedule][DatabaseAdmin.CreateBackupSchededule] operation.
+    /// Required for the
+    /// [UpdateBackupSchedule][google.spanner.admin.database.v1.DatabaseAdmin.UpdateBackupSchedule]
+    /// operation. A globally unique identifier for the backup schedule which
+    /// cannot be changed. Values are of the form
+    /// `projects/<project>/instances/<instance>/databases/<database>/backupSchedules/[a-z][a-z0-9_\-]*\[a-z0-9\]`
+    /// The final segment of the name must be between 2 and 60 characters in
+    /// length.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The schedule specification based on which the backup creations
+    /// are triggered.
+    #[prost(message, optional, tag = "6")]
+    pub spec: ::core::option::Option<BackupScheduleSpec>,
+    /// Optional. The retention duration of a backup that must be at least 6 hours
+    /// and at most 366 days. The backup is eligible to be automatically deleted
+    /// once the retention period has elapsed.
+    #[prost(message, optional, tag = "3")]
+    pub retention_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. The encryption configuration that will be used to encrypt the
+    /// backup. If this field is not specified, the backup will use the same
+    /// encryption configuration as the database.
+    #[prost(message, optional, tag = "4")]
+    pub encryption_config: ::core::option::Option<CreateBackupEncryptionConfig>,
+    /// Output only. The timestamp at which the schedule was last updated.
+    /// If the schedule has never been updated, this field contains the timestamp
+    /// when the schedule was first created.
+    #[prost(message, optional, tag = "9")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. Backup type spec determines the type of backup that is created by
+    /// the backup schedule. Currently, only full backups are supported.
+    #[prost(oneof = "backup_schedule::BackupTypeSpec", tags = "7, 8")]
+    pub backup_type_spec: ::core::option::Option<backup_schedule::BackupTypeSpec>,
+}
+/// Nested message and enum types in `BackupSchedule`.
+pub mod backup_schedule {
+    /// Required. Backup type spec determines the type of backup that is created by
+    /// the backup schedule. Currently, only full backups are supported.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum BackupTypeSpec {
+        /// The schedule creates only full backups.
+        #[prost(message, tag = "7")]
+        FullBackupSpec(super::FullBackupSpec),
+        /// The schedule creates incremental backup chains.
+        #[prost(message, tag = "8")]
+        IncrementalBackupSpec(super::IncrementalBackupSpec),
+    }
+}
+/// CrontabSpec can be used to specify the version time and frequency at
+/// which the backup should be created.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CrontabSpec {
+    /// Required. Textual representation of the crontab. User can customize the
+    /// backup frequency and the backup version time using the cron
+    /// expression. The version time must be in UTC timzeone.
+    ///
+    /// The backup will contain an externally consistent copy of the
+    /// database at the version time. Allowed frequencies are 12 hour, 1 day,
+    /// 1 week and 1 month. Examples of valid cron specifications:
+    ///    * `0 2/12 * * * ` : every 12 hours at (2, 14) hours past midnight in UTC.
+    ///    * `0 2,14 * * * ` : every 12 hours at (2,14) hours past midnight in UTC.
+    ///    * `0 2 * * * `    : once a day at 2 past midnight in UTC.
+    ///    * `0 2 * * 0 `    : once a week every Sunday at 2 past midnight in UTC.
+    ///    * `0 2 8 * * `    : once a month on 8th day at 2 past midnight in UTC.
+    #[prost(string, tag = "1")]
+    pub text: ::prost::alloc::string::String,
+    /// Output only. The time zone of the times in `CrontabSpec.text`. Currently
+    /// only UTC is supported.
+    #[prost(string, tag = "2")]
+    pub time_zone: ::prost::alloc::string::String,
+    /// Output only. Schedule backups will contain an externally consistent copy
+    /// of the database at the version time specified in
+    /// `schedule_spec.cron_spec`. However, Spanner may not initiate the creation
+    /// of the scheduled backups at that version time. Spanner will initiate
+    /// the creation of scheduled backups within the time window bounded by the
+    /// version_time specified in `schedule_spec.cron_spec` and version_time +
+    /// `creation_window`.
+    #[prost(message, optional, tag = "3")]
+    pub creation_window: ::core::option::Option<::prost_types::Duration>,
+}
+/// The request for
+/// [CreateBackupSchedule][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackupSchedule].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateBackupScheduleRequest {
+    /// Required. The name of the database that this backup schedule applies to.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The Id to use for the backup schedule. The `backup_schedule_id`
+    /// appended to `parent` forms the full backup schedule name of the form
+    /// `projects/<project>/instances/<instance>/databases/<database>/backupSchedules/<backup_schedule_id>`.
+    #[prost(string, tag = "2")]
+    pub backup_schedule_id: ::prost::alloc::string::String,
+    /// Required. The backup schedule to create.
+    #[prost(message, optional, tag = "3")]
+    pub backup_schedule: ::core::option::Option<BackupSchedule>,
+}
+/// The request for
+/// [GetBackupSchedule][google.spanner.admin.database.v1.DatabaseAdmin.GetBackupSchedule].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetBackupScheduleRequest {
+    /// Required. The name of the schedule to retrieve.
+    /// Values are of the form
+    /// `projects/<project>/instances/<instance>/databases/<database>/backupSchedules/<backup_schedule_id>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for
+/// [DeleteBackupSchedule][google.spanner.admin.database.v1.DatabaseAdmin.DeleteBackupSchedule].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteBackupScheduleRequest {
+    /// Required. The name of the schedule to delete.
+    /// Values are of the form
+    /// `projects/<project>/instances/<instance>/databases/<database>/backupSchedules/<backup_schedule_id>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for
+/// [ListBackupSchedules][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupSchedules].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupSchedulesRequest {
+    /// Required. Database is the parent resource whose backup schedules should be
+    /// listed. Values are of the form
+    /// projects/<project>/instances/<instance>/databases/<database>
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Number of backup schedules to be returned in the response. If 0
+    /// or less, defaults to the server's maximum allowed page size.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. If non-empty, `page_token` should contain a
+    /// [next_page_token][google.spanner.admin.database.v1.ListBackupSchedulesResponse.next_page_token]
+    /// from a previous
+    /// [ListBackupSchedulesResponse][google.spanner.admin.database.v1.ListBackupSchedulesResponse]
+    /// to the same `parent`.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response for
+/// [ListBackupSchedules][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupSchedules].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupSchedulesResponse {
+    /// The list of backup schedules for a database.
+    #[prost(message, repeated, tag = "1")]
+    pub backup_schedules: ::prost::alloc::vec::Vec<BackupSchedule>,
+    /// `next_page_token` can be sent in a subsequent
+    /// [ListBackupSchedules][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupSchedules]
+    /// call to fetch more of the schedules.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request for
+/// [UpdateBackupScheduleRequest][google.spanner.admin.database.v1.DatabaseAdmin.UpdateBackupSchedule].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateBackupScheduleRequest {
+    /// Required. The backup schedule to update. `backup_schedule.name`, and the
+    /// fields to be updated as specified by `update_mask` are required. Other
+    /// fields are ignored.
+    #[prost(message, optional, tag = "1")]
+    pub backup_schedule: ::core::option::Option<BackupSchedule>,
+    /// Required. A mask specifying which fields in the BackupSchedule resource
+    /// should be updated. This mask is relative to the BackupSchedule resource,
+    /// not to the request message. The field mask must always be
+    /// specified; this prevents any future fields from being erased
+    /// accidentally.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Information about the database restore.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2527,6 +2787,149 @@ pub mod database_admin_client {
                     GrpcMethod::new(
                         "google.spanner.admin.database.v1.DatabaseAdmin",
                         "ListDatabaseRoles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new backup schedule.
+        pub async fn create_backup_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateBackupScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<super::BackupSchedule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.spanner.admin.database.v1.DatabaseAdmin/CreateBackupSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "CreateBackupSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets backup schedule for the input schedule name.
+        pub async fn get_backup_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetBackupScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<super::BackupSchedule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.spanner.admin.database.v1.DatabaseAdmin/GetBackupSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "GetBackupSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a backup schedule.
+        pub async fn update_backup_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateBackupScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<super::BackupSchedule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.spanner.admin.database.v1.DatabaseAdmin/UpdateBackupSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "UpdateBackupSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a backup schedule.
+        pub async fn delete_backup_schedule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteBackupScheduleRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.spanner.admin.database.v1.DatabaseAdmin/DeleteBackupSchedule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "DeleteBackupSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the backup schedules for the database.
+        pub async fn list_backup_schedules(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListBackupSchedulesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListBackupSchedulesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.spanner.admin.database.v1.DatabaseAdmin/ListBackupSchedules",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "ListBackupSchedules",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -74,7 +74,7 @@ pub struct Feature {
 /// GkeHub API. See `FeatureState` for the "running state" of the Feature in the
 /// Hub and across Memberships.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FeatureResourceState {
     /// The current state of the Feature resource in the Hub API.
     #[prost(enumeration = "feature_resource_state::State", tag = "1")]

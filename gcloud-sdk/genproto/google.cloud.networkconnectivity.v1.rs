@@ -1102,7 +1102,7 @@ pub mod spoke_summary {
     /// with a specific hub. The type indicates what kind of
     /// resource is associated with the spoke.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SpokeTypeCount {
         /// Output only. The type of the spokes.
         #[prost(enumeration = "super::SpokeType", tag = "1")]
@@ -1115,7 +1115,7 @@ pub mod spoke_summary {
     /// The number of spokes that are in a particular state
     /// and associated with a given hub.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SpokeStateCount {
         /// Output only. The state of the spokes.
         #[prost(enumeration = "super::State", tag = "1")]
@@ -1127,7 +1127,7 @@ pub mod spoke_summary {
     }
     /// The number of spokes in the hub that are inactive for this reason.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SpokeStateReasonCount {
         /// Output only. The reason that a spoke is inactive.
         #[prost(enumeration = "super::spoke::state_reason::Code", tag = "1")]

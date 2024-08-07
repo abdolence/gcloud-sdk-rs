@@ -186,6 +186,35 @@ pub struct Metric {
     #[prost(bool, tag = "3")]
     pub invisible: bool,
 }
+/// Defines an individual comparison. Most requests will include multiple
+/// comparisons so that the report compares between the comparisons.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Comparison {
+    /// Each comparison produces separate rows in the response. In the response,
+    /// this comparison is identified by this name. If name is unspecified, we will
+    /// use the saved comparisons display name.
+    #[prost(string, optional, tag = "1")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// One kind of comparison value
+    #[prost(oneof = "comparison::OneComparison", tags = "2, 3")]
+    pub one_comparison: ::core::option::Option<comparison::OneComparison>,
+}
+/// Nested message and enum types in `Comparison`.
+pub mod comparison {
+    /// One kind of comparison value
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum OneComparison {
+        /// A basic comparison.
+        #[prost(message, tag = "2")]
+        DimensionFilter(super::FilterExpression),
+        /// A saved comparison identified by the comparison's resource name.
+        /// For example, 'comparisons/1234'.
+        #[prost(string, tag = "3")]
+        Comparison(::prost::alloc::string::String),
+    }
+}
 /// To express dimension or metric filters. The fields in the same
 /// FilterExpression need to be either all dimensions or all metrics.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -332,7 +361,7 @@ pub mod filter {
     }
     /// Filters for numeric or date values.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct NumericFilter {
         /// The operation type for this filter.
         #[prost(enumeration = "numeric_filter::Operation", tag = "1")]
@@ -401,7 +430,7 @@ pub mod filter {
     }
     /// To express that the result needs to be between two numbers (inclusive).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BetweenFilter {
         /// Begins with this number.
         #[prost(message, optional, tag = "1")]
@@ -685,7 +714,7 @@ pub struct Cohort {
 /// Configures the extended reporting date range for a cohort report. Specifies
 /// an offset duration to follow the cohorts over.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CohortsRange {
     /// Required. The granularity used to interpret the `startOffset` and
     /// `endOffset` for the extended reporting date range for a cohort report.
@@ -778,7 +807,7 @@ pub mod cohorts_range {
 }
 /// Optional settings of a cohort report.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CohortReportSettings {
     /// If true, accumulates the result from first touch day to the end day. Not
     /// supported in `RunReportRequest`.
@@ -894,7 +923,7 @@ pub mod response_meta_data {
 /// practice of analyzing a subset of all data in order to uncover the meaningful
 /// information in the larger data set.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SamplingMetadata {
     /// The total number of events read in this sampled report for a date range.
     /// This is the size of the subset this property's data that was analyzed in
@@ -1046,7 +1075,7 @@ pub mod metric_value {
 }
 /// To represent a number.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NumericValue {
     /// One of a numeric value
     #[prost(oneof = "numeric_value::OneValue", tags = "1, 2")]
@@ -1056,7 +1085,7 @@ pub struct NumericValue {
 pub mod numeric_value {
     /// One of a numeric value
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum OneValue {
         /// Integer value
         #[prost(int64, tag = "1")]
@@ -1070,7 +1099,7 @@ pub mod numeric_value {
 /// property is exhausted, all requests to that property will return Resource
 /// Exhausted errors.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PropertyQuota {
     /// Standard Analytics Properties can use up to 200,000 tokens per day;
     /// Analytics 360 Properties can use 2,000,000 tokens per day. Most requests
@@ -1109,7 +1138,7 @@ pub struct PropertyQuota {
 }
 /// Current state for a particular quota group.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct QuotaStatus {
     /// Quota consumed by this request.
     #[prost(int32, optional, tag = "1")]
@@ -1139,7 +1168,11 @@ pub struct DimensionMetadata {
     /// available only by `apiName`.
     #[prost(string, repeated, tag = "4")]
     pub deprecated_api_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// True if the dimension is a custom dimension for this property.
+    /// True if the dimension is custom to this property. This includes user,
+    /// event, & item scoped custom dimensions; to learn more about custom
+    /// dimensions, see <https://support.google.com/analytics/answer/14240153.> This
+    /// also include custom channel groups; to learn more about custom channel
+    /// groups, see <https://support.google.com/analytics/answer/13051316.>
     #[prost(bool, tag = "5")]
     pub custom_definition: bool,
     /// The display name of the category that this dimension belongs to. Similar
@@ -1241,6 +1274,21 @@ pub mod metric_metadata {
             }
         }
     }
+}
+/// The metadata for a single comparison.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComparisonMetadata {
+    /// This comparison's resource name. Useable in [Comparison](#Comparison)'s
+    /// `comparison` field. For example, 'comparisons/1234'.
+    #[prost(string, tag = "1")]
+    pub api_name: ::prost::alloc::string::String,
+    /// This comparison's name within the Google Analytics user interface.
+    #[prost(string, tag = "2")]
+    pub ui_name: ::prost::alloc::string::String,
+    /// This comparison's description.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
 }
 /// The compatibility for a single dimension.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1515,6 +1563,9 @@ pub struct Metadata {
     /// The metric descriptions.
     #[prost(message, repeated, tag = "2")]
     pub metrics: ::prost::alloc::vec::Vec<MetricMetadata>,
+    /// The comparison descriptions.
+    #[prost(message, repeated, tag = "4")]
+    pub comparisons: ::prost::alloc::vec::Vec<ComparisonMetadata>,
 }
 /// The request to generate a report.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1609,6 +1660,11 @@ pub struct RunReportRequest {
     /// quota. Quota is returned in [PropertyQuota](#PropertyQuota).
     #[prost(bool, tag = "14")]
     pub return_property_quota: bool,
+    /// Optional. The configuration of comparisons requested and displayed. The
+    /// request only requires a comparisons field in order to receive a comparison
+    /// column in the response.
+    #[prost(message, repeated, tag = "15")]
+    pub comparisons: ::prost::alloc::vec::Vec<Comparison>,
 }
 /// The response report table corresponding to a request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1725,6 +1781,11 @@ pub struct RunPivotReportRequest {
     /// quota. Quota is returned in [PropertyQuota](#PropertyQuota).
     #[prost(bool, tag = "11")]
     pub return_property_quota: bool,
+    /// Optional. The configuration of comparisons requested and displayed. The
+    /// request requires both a comparisons field and a comparisons dimension to
+    /// receive a comparison column in the response.
+    #[prost(message, repeated, tag = "12")]
+    pub comparisons: ::prost::alloc::vec::Vec<Comparison>,
 }
 /// The response pivot report table corresponding to a pivot request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2139,7 +2200,7 @@ pub mod audience_export {
 }
 /// This metadata is currently blank.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AudienceExportMetadata {}
 /// A request to list users in an audience export.
 #[allow(clippy::derive_partial_eq_without_eq)]

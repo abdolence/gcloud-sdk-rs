@@ -901,7 +901,7 @@ pub mod pricing_expression {
 }
 /// Represents the aggregation level and interval for pricing of a single SKU.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AggregationInfo {
     #[prost(enumeration = "aggregation_info::AggregationLevel", tag = "1")]
     pub aggregation_level: i32,

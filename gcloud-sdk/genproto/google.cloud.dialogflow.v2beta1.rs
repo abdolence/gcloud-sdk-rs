@@ -1065,7 +1065,7 @@ pub struct SpeechWordInfo {
 /// No-speech event is a response with END_OF_UTTERANCE without any transcript
 /// following up.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BargeInConfig {
     /// Duration that is not eligible for barge-in at the beginning of the input
     /// audio.
@@ -1158,6 +1158,10 @@ pub struct InputAudioConfig {
     /// Enable automatic punctuation option at the speech backend.
     #[prost(bool, tag = "17")]
     pub enable_automatic_punctuation: bool,
+    /// If set, use this no-speech timeout when the agent does not provide a
+    /// no-speech timeout itself.
+    #[prost(message, optional, tag = "18")]
+    pub default_no_speech_timeout: ::core::option::Option<::prost_types::Duration>,
     /// If `true`, the request will opt out for STT conformer model migration.
     /// This field will be deprecated once force migration takes place in June
     /// 2024. Please refer to [Dialogflow ES Speech model
@@ -1288,6 +1292,31 @@ pub struct SpeechToTextConfig {
     /// for model selection.
     #[prost(string, tag = "2")]
     pub model: ::prost::alloc::string::String,
+    /// Audio encoding of the audio content to process.
+    #[prost(enumeration = "AudioEncoding", tag = "6")]
+    pub audio_encoding: i32,
+    /// Sample rate (in Hertz) of the audio content sent in the query.
+    /// Refer to
+    /// [Cloud Speech API
+    /// documentation](<https://cloud.google.com/speech-to-text/docs/basics>) for
+    /// more details.
+    #[prost(int32, tag = "7")]
+    pub sample_rate_hertz: i32,
+    /// The language of the supplied audio. Dialogflow does not do  translations.
+    /// See [Language
+    /// Support](<https://cloud.google.com/dialogflow/docs/reference/language>)
+    /// for a list of the currently supported language codes. Note that queries in
+    /// the same session do not necessarily need to specify the same language.
+    #[prost(string, tag = "8")]
+    pub language_code: ::prost::alloc::string::String,
+    /// If `true`, Dialogflow returns
+    /// [SpeechWordInfo][google.cloud.dialogflow.v2beta1.SpeechWordInfo] in
+    /// [StreamingRecognitionResult][google.cloud.dialogflow.v2beta1.StreamingRecognitionResult]
+    /// with information about the recognized speech words, e.g. start and end time
+    /// offsets. If false or unspecified, Speech doesn't return any word-level
+    /// information.
+    #[prost(bool, tag = "9")]
+    pub enable_word_info: bool,
     /// Use timeout based endpointing, interpreting endpointer sensitivy as
     /// seconds of timeout value.
     #[prost(bool, tag = "11")]
@@ -3103,7 +3132,7 @@ pub mod intent {
             /// Opens the device's location chooser so the user can pick a location
             /// to send back to the agent.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct RbmSuggestedActionShareLocation {}
             /// Action that needs to be triggered.
             #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6568,7 +6597,7 @@ pub struct EventInput {
 }
 /// Configures the types of sentiment analysis to perform.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SentimentAnalysisRequestConfig {
     /// Instructs the service to perform sentiment analysis on
     /// `query_text`. If not provided, sentiment analysis is not performed on
@@ -6590,7 +6619,7 @@ pub struct SentimentAnalysisRequestConfig {
 /// it needs to be configured in
 /// [ConversationProfile.human_agent_assistant_config][google.cloud.dialogflow.v2beta1.ConversationProfile.human_agent_assistant_config]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SentimentAnalysisResult {
     /// The sentiment analysis result for `query_text`.
     #[prost(message, optional, tag = "1")]
@@ -6601,7 +6630,7 @@ pub struct SentimentAnalysisResult {
 /// <https://cloud.google.com/natural-language/docs/basics#interpreting_sentiment_analysis_values>
 /// for how to interpret the result.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Sentiment {
     /// Sentiment score between -1.0 (negative sentiment) and 1.0 (positive
     /// sentiment).
@@ -6930,6 +6959,9 @@ pub struct Message {
     /// Required. The message content.
     #[prost(string, tag = "2")]
     pub content: ::prost::alloc::string::String,
+    /// Optional. Automated agent responses.
+    #[prost(message, repeated, tag = "11")]
+    pub response_messages: ::prost::alloc::vec::Vec<ResponseMessage>,
     /// Optional. The message language.
     /// This should be a [BCP-47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>)
     /// language tag. Example: "en-US".
@@ -7031,7 +7063,7 @@ pub struct AudioInput {
     #[prost(message, optional, tag = "1")]
     pub config: ::core::option::Option<InputAudioConfig>,
     /// Required. The natural language speech audio to be processed.
-    /// A single request can contain up to 1 minute of speech audio data.
+    /// A single request can contain up to 2 minutes of speech audio data.
     /// The transcribed text cannot contain more than 256 bytes for virtual agent
     /// interactions.
     #[prost(bytes = "vec", tag = "2")]
@@ -7086,6 +7118,9 @@ pub struct AutomatedAgentReply {
     /// ID>/flows/<Flow ID>/pages/<Page ID>`.
     #[prost(string, tag = "11")]
     pub cx_current_page: ::prost::alloc::string::String,
+    /// The auth code for accessing Call Companion UI.
+    #[prost(bytes = "vec", tag = "12")]
+    pub call_companion_auth_code: ::prost::alloc::vec::Vec<u8>,
     /// Required.
     #[prost(oneof = "automated_agent_reply::Response", tags = "1")]
     pub response: ::core::option::Option<automated_agent_reply::Response>,
@@ -7233,7 +7268,7 @@ pub struct IntentInput {
 /// number of results to return for that type. Multiple `Feature` objects can
 /// be specified in the `features` list.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SuggestionFeature {
     /// Type of Human Agent Assistant API feature to request.
     #[prost(enumeration = "suggestion_feature::Type", tag = "1")]
@@ -7270,6 +7305,8 @@ pub mod suggestion_feature {
         ConversationSummarization = 8,
         /// Run knowledge search with text input from agent or text generated query.
         KnowledgeSearch = 14,
+        /// Run knowledge assist with automatic query generation.
+        KnowledgeAssist = 15,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -7285,6 +7322,7 @@ pub mod suggestion_feature {
                 Type::DialogflowAssist => "DIALOGFLOW_ASSIST",
                 Type::ConversationSummarization => "CONVERSATION_SUMMARIZATION",
                 Type::KnowledgeSearch => "KNOWLEDGE_SEARCH",
+                Type::KnowledgeAssist => "KNOWLEDGE_ASSIST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7297,6 +7335,7 @@ pub mod suggestion_feature {
                 "DIALOGFLOW_ASSIST" => Some(Self::DialogflowAssist),
                 "CONVERSATION_SUMMARIZATION" => Some(Self::ConversationSummarization),
                 "KNOWLEDGE_SEARCH" => Some(Self::KnowledgeSearch),
+                "KNOWLEDGE_ASSIST" => Some(Self::KnowledgeAssist),
                 _ => None,
             }
         }
@@ -7426,7 +7465,7 @@ pub mod analyze_content_request {
 }
 /// The message in the response that indicates the parameters of DTMF.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DtmfParameters {
     /// Indicates whether DTMF input can be handled in the next request.
     #[prost(bool, tag = "1")]
@@ -7941,7 +7980,10 @@ pub mod dialogflow_assist_answer {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestionResult {
     /// Different type of suggestion response.
-    #[prost(oneof = "suggestion_result::SuggestionResponse", tags = "1, 2, 3, 4, 5, 7")]
+    #[prost(
+        oneof = "suggestion_result::SuggestionResponse",
+        tags = "1, 2, 8, 3, 4, 5, 7"
+    )]
     pub suggestion_response: ::core::option::Option<
         suggestion_result::SuggestionResponse,
     >,
@@ -7958,6 +8000,9 @@ pub mod suggestion_result {
         /// SuggestArticlesResponse if request is for ARTICLE_SUGGESTION.
         #[prost(message, tag = "2")]
         SuggestArticlesResponse(super::SuggestArticlesResponse),
+        /// SuggestKnowledgeAssistResponse if request is for KNOWLEDGE_ASSIST.
+        #[prost(message, tag = "8")]
+        SuggestKnowledgeAssistResponse(super::SuggestKnowledgeAssistResponse),
         /// SuggestFaqAnswersResponse if request is for FAQ_ANSWER.
         #[prost(message, tag = "3")]
         SuggestFaqAnswersResponse(super::SuggestFaqAnswersResponse),
@@ -8370,7 +8415,7 @@ pub mod response_message {
     }
     /// Indicates that interaction with the Dialogflow agent has ended.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct EndInteraction {}
     /// Represents an audio message that is composed of both segments
     /// synthesized from the Dialogflow agent prompts and ones hosted externally
@@ -8463,6 +8508,147 @@ pub mod response_message {
         /// this agent to a third-party endpoint.
         #[prost(message, tag = "6")]
         TelephonyTransferCall(TelephonyTransferCall),
+    }
+}
+/// The request message for
+/// [Participants.SuggestKnowledgeAssist][google.cloud.dialogflow.v2beta1.Participants.SuggestKnowledgeAssist].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SuggestKnowledgeAssistRequest {
+    /// Required. The name of the participant to fetch suggestions for.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>/participants/<Participant ID>`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The name of the latest conversation message to compile
+    /// suggestions for. If empty, it will be the latest message of the
+    /// conversation. Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>/messages/<Message ID>`.
+    #[prost(string, tag = "2")]
+    pub latest_message: ::prost::alloc::string::String,
+    /// Optional. Max number of messages prior to and including
+    /// [latest_message][google.cloud.dialogflow.v2beta1.SuggestKnowledgeAssistRequest.latest_message]
+    /// to use as context when compiling the suggestion. The context size is by
+    /// default 100 and at most 100.
+    #[prost(int32, tag = "3")]
+    pub context_size: i32,
+    /// Optional. The previously suggested query for the given conversation. This
+    /// helps identify whether the next suggestion we generate is resonably
+    /// different from the previous one. This is useful to avoid similar
+    /// suggestions within the conversation.
+    #[prost(string, tag = "4")]
+    pub previous_suggested_query: ::prost::alloc::string::String,
+}
+/// The response message for
+/// [Participants.SuggestKnowledgeAssist][google.cloud.dialogflow.v2beta1.Participants.SuggestKnowledgeAssist].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SuggestKnowledgeAssistResponse {
+    /// Output only. Knowledge Assist suggestion.
+    #[prost(message, optional, tag = "1")]
+    pub knowledge_assist_answer: ::core::option::Option<KnowledgeAssistAnswer>,
+    /// The name of the latest conversation message used to compile suggestion for.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>/messages/<Message ID>`.
+    #[prost(string, tag = "2")]
+    pub latest_message: ::prost::alloc::string::String,
+    /// Number of messages prior to and including
+    /// [latest_message][google.cloud.dialogflow.v2beta1.SuggestKnowledgeAssistResponse.latest_message]
+    /// to compile the suggestion. It may be smaller than the
+    /// [SuggestKnowledgeAssistRequest.context_size][google.cloud.dialogflow.v2beta1.SuggestKnowledgeAssistRequest.context_size]
+    /// field in the request if there are fewer messages in the conversation.
+    #[prost(int32, tag = "3")]
+    pub context_size: i32,
+}
+/// Represents a Knowledge Assist answer.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct KnowledgeAssistAnswer {
+    /// The query suggested based on the context. Suggestion is made only if it
+    /// is different from the previous suggestion.
+    #[prost(message, optional, tag = "1")]
+    pub suggested_query: ::core::option::Option<knowledge_assist_answer::SuggestedQuery>,
+    /// The answer generated for the suggested query. Whether or not an answer is
+    /// generated depends on how confident we are about the generated query.
+    #[prost(message, optional, tag = "2")]
+    pub suggested_query_answer: ::core::option::Option<
+        knowledge_assist_answer::KnowledgeAnswer,
+    >,
+    /// The name of the answer record.
+    /// Format: `projects/<Project ID>/locations/<location ID>/answer
+    /// Records/<Answer Record ID>`.
+    #[prost(string, tag = "3")]
+    pub answer_record: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `KnowledgeAssistAnswer`.
+pub mod knowledge_assist_answer {
+    /// Represents a suggested query.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SuggestedQuery {
+        /// Suggested query text.
+        #[prost(string, tag = "1")]
+        pub query_text: ::prost::alloc::string::String,
+    }
+    /// Represents an answer from Knowledge. Currently supports FAQ and Generative
+    /// answers.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct KnowledgeAnswer {
+        /// The piece of text from the `source` that answers this suggested query.
+        #[prost(string, tag = "1")]
+        pub answer_text: ::prost::alloc::string::String,
+        /// Source of result.
+        #[prost(oneof = "knowledge_answer::Source", tags = "3, 4")]
+        pub source: ::core::option::Option<knowledge_answer::Source>,
+    }
+    /// Nested message and enum types in `KnowledgeAnswer`.
+    pub mod knowledge_answer {
+        /// Details about source of FAQ answer.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct FaqSource {
+            /// The corresponding FAQ question.
+            #[prost(string, tag = "2")]
+            pub question: ::prost::alloc::string::String,
+        }
+        /// Details about source of Generative answer.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct GenerativeSource {
+            /// All snippets used for this Generative Prediction, with their source URI
+            /// and data.
+            #[prost(message, repeated, tag = "1")]
+            pub snippets: ::prost::alloc::vec::Vec<generative_source::Snippet>,
+        }
+        /// Nested message and enum types in `GenerativeSource`.
+        pub mod generative_source {
+            /// Snippet Source for a Generative Prediction.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct Snippet {
+                /// URI the data is sourced from.
+                #[prost(string, tag = "2")]
+                pub uri: ::prost::alloc::string::String,
+                /// Text taken from that URI.
+                #[prost(string, tag = "3")]
+                pub text: ::prost::alloc::string::String,
+                /// Title of the document.
+                #[prost(string, tag = "4")]
+                pub title: ::prost::alloc::string::String,
+            }
+        }
+        /// Source of result.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Source {
+            /// Populated if the prediction came from FAQ.
+            #[prost(message, tag = "3")]
+            FaqSource(FaqSource),
+            /// Populated if the prediction was Generative.
+            #[prost(message, tag = "4")]
+            GenerativeSource(GenerativeSource),
+        }
     }
 }
 /// Generated client implementations.
@@ -8855,6 +9041,37 @@ pub mod participants_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Gets knowledge assist suggestions based on historical messages.
+        pub async fn suggest_knowledge_assist(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SuggestKnowledgeAssistRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SuggestKnowledgeAssistResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.Participants/SuggestKnowledgeAssist",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.Participants",
+                        "SuggestKnowledgeAssist",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Deprecated: Use inline suggestion, event based suggestion or
         /// Suggestion* API instead.
         /// See
@@ -9165,6 +9382,11 @@ pub struct AgentAssistantFeedback {
     pub knowledge_search_feedback: ::core::option::Option<
         agent_assistant_feedback::KnowledgeSearchFeedback,
     >,
+    /// Optional. Feedback for knowledge assist.
+    #[prost(message, optional, tag = "6")]
+    pub knowledge_assist_feedback: ::core::option::Option<
+        agent_assistant_feedback::KnowledgeAssistFeedback,
+    >,
 }
 /// Nested message and enum types in `AgentAssistantFeedback`.
 pub mod agent_assistant_feedback {
@@ -9200,6 +9422,24 @@ pub mod agent_assistant_feedback {
         pub answer_copied: bool,
         /// The URIs clicked by the human agent. The value is appended for each
         /// UpdateAnswerRecordRequest.
+        /// If the value is not empty,
+        /// [AnswerFeedback.clicked][google.cloud.dialogflow.v2beta1.AnswerFeedback.clicked]
+        /// will be updated to be true.
+        #[prost(string, repeated, tag = "2")]
+        pub clicked_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Feedback for knowledge assist.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct KnowledgeAssistFeedback {
+        /// Whether the suggested answer was copied by the human agent.
+        /// If the value is set to be true,
+        /// [AnswerFeedback.clicked][google.cloud.dialogflow.v2beta1.AnswerFeedback.clicked]
+        /// will be updated to be true.
+        #[prost(bool, tag = "1")]
+        pub answer_copied: bool,
+        /// The URIs clicked by the human agent. The value is appended for each
+        /// [UpdateAnswerRecordRequest][google.cloud.dialogflow.v2beta1.UpdateAnswerRecordRequest].
         /// If the value is not empty,
         /// [AnswerFeedback.clicked][google.cloud.dialogflow.v2beta1.AnswerFeedback.clicked]
         /// will be updated to be true.
@@ -9713,7 +9953,7 @@ pub struct HumanAgentAssistantConfig {
 pub mod human_agent_assistant_config {
     /// Settings of suggestion trigger.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SuggestionTriggerSettings {
         /// Do not trigger if last utterance is small talk.
         #[prost(bool, tag = "1")]
@@ -9743,10 +9983,19 @@ pub mod human_agent_assistant_config {
         /// Supported features: KNOWLEDGE_SEARCH.
         #[prost(bool, tag = "14")]
         pub disable_agent_query_logging: bool,
+        /// Optional. Enable query suggestion even if we can't find its answer.
+        /// By default, queries are suggested only if we find its answer.
+        /// Supported features: KNOWLEDGE_ASSIST
+        #[prost(bool, tag = "15")]
+        pub enable_query_suggestion_when_no_answer: bool,
         /// Optional. Enable including conversation context during query answer
         /// generation. Supported features: KNOWLEDGE_SEARCH.
         #[prost(bool, tag = "16")]
         pub enable_conversation_augmented_query: bool,
+        /// Optional. Enable query suggestion only.
+        /// Supported features: KNOWLEDGE_ASSIST
+        #[prost(bool, tag = "17")]
+        pub enable_query_suggestion_only: bool,
         /// Settings of suggestion trigger.
         ///
         /// Currently, only ARTICLE_SUGGESTION, FAQ, and DIALOGFLOW_ASSIST will use
@@ -9787,6 +10036,19 @@ pub mod human_agent_assistant_config {
         /// Pub/Sub event or StreamingAnalyzeContentResponse.
         #[prost(bool, tag = "3")]
         pub group_suggestion_responses: bool,
+        /// Optional. List of various generator resource names used in the
+        /// conversation profile.
+        #[prost(string, repeated, tag = "4")]
+        pub generators: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. When disable_high_latency_features_sync_delivery is true and
+        /// using the AnalyzeContent API, we will not deliver the responses from high
+        /// latency features in the API response. The
+        /// human_agent_assistant_config.notification_config must be configured and
+        /// enable_event_based_suggestion must be set to true to receive the
+        /// responses from high latency features in Pub/Sub. High latency feature(s):
+        /// KNOWLEDGE_ASSIST
+        #[prost(bool, tag = "5")]
+        pub disable_high_latency_features_sync_delivery: bool,
     }
     /// Config for suggestion query.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -9897,7 +10159,7 @@ pub mod human_agent_assistant_config {
         /// Settings that determine how to filter recent conversation context when
         /// generating suggestions.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct ContextFilterSettings {
             /// If set to true, the last message from virtual agent (hand off message)
             /// and the message before it (trigger message of hand off) are dropped.
@@ -10040,7 +10302,7 @@ pub mod human_agent_assistant_config {
     }
     /// Config to process conversation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ConversationProcessConfig {
         /// Number of recent non-small-talk sentences to use as context for article
         /// and FAQ suggestion
@@ -10049,7 +10311,7 @@ pub mod human_agent_assistant_config {
     }
     /// Configuration for analyses to run on each conversation message.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MessageAnalysisConfig {
         /// Enable entity extraction in conversation messages on [agent assist
         /// stage](<https://cloud.google.com/dialogflow/priv/docs/contact-center/basics#stages>).
@@ -10097,7 +10359,7 @@ pub struct HumanAgentHandoffConfig {
 }
 /// Nested message and enum types in `HumanAgentHandoffConfig`.
 pub mod human_agent_handoff_config {
-    /// Configuration specific to LivePerson (<https://www.liveperson.com>).
+    /// Configuration specific to [LivePerson](<https://www.liveperson.com>).
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LivePersonConfig {
@@ -10130,7 +10392,7 @@ pub mod human_agent_handoff_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AgentService {
-        /// Uses LivePerson (<https://www.liveperson.com>).
+        /// Uses [LivePerson](<https://www.liveperson.com>).
         #[prost(message, tag = "1")]
         LivePersonConfig(LivePersonConfig),
         /// Uses Salesforce Live Agent.
@@ -10213,7 +10475,7 @@ pub mod notification_config {
 }
 /// Defines logging behavior for conversation lifecycle events.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LoggingConfig {
     /// Whether to log conversation events like
     /// [CONVERSATION_STARTED][google.cloud.dialogflow.v2beta1.ConversationEvent.Type.CONVERSATION_STARTED]
@@ -10723,6 +10985,705 @@ pub mod conversation_profiles_client {
         }
     }
 }
+/// Request message of CreateGenerator.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateGeneratorRequest {
+    /// Required. The project/location to create generator for. Format:
+    /// `projects/<Project ID>/locations/<Location ID>`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The generator to create.
+    #[prost(message, optional, tag = "2")]
+    pub generator: ::core::option::Option<Generator>,
+    /// Optional. The ID to use for the generator, which will become the final
+    /// component of the generator's resource name.
+    ///
+    /// The generator ID must be compliant with the regression fomula
+    /// `[a-zA-Z][a-zA-Z0-9_-]*` with the characters length in range of \[3,64\].
+    /// If the field is not provided, an Id will be auto-generated.
+    /// If the field is provided, the caller is resposible for
+    /// 1. the uniqueness of the ID, otherwise the request will be rejected.
+    /// 2. the consistency for whether to use custom ID or not under a project to
+    /// better ensure uniqueness.
+    #[prost(string, tag = "3")]
+    pub generator_id: ::prost::alloc::string::String,
+}
+/// Request message of GetGenerator.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetGeneratorRequest {
+    /// Required. The generator resource name to retrieve. Format:
+    /// `projects/<Project ID>/locations/<Location ID>`/generators/<Generator ID>`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message of ListGenerators.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGeneratorsRequest {
+    /// Required. The project/location to list generators for. Format:
+    /// `projects/<Project ID>/locations/<Location ID>`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of conversation models to return in a single page.
+    /// Default to 10.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The next_page_token value returned from a previous list request.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response of ListGenerators.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGeneratorsResponse {
+    /// List of generators retrieved.
+    #[prost(message, repeated, tag = "1")]
+    pub generators: ::prost::alloc::vec::Vec<Generator>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request of DeleteGenerator.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteGeneratorRequest {
+    /// Required. The generator resource name to delete. Format:
+    /// `projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request of UpdateGenerator.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateGeneratorRequest {
+    /// Required. The generator to update.
+    /// The name field of generator is to identify the generator to update.
+    #[prost(message, optional, tag = "1")]
+    pub generator: ::core::option::Option<Generator>,
+    /// Optional. The list of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Represents a message entry of a conversation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MessageEntry {
+    /// Optional. Participant role of the message.
+    #[prost(enumeration = "message_entry::Role", tag = "1")]
+    pub role: i32,
+    /// Optional. Transcript content of the message.
+    #[prost(string, tag = "2")]
+    pub text: ::prost::alloc::string::String,
+    /// Optional. The language of the text. See [Language
+    /// Support](<https://cloud.google.com/dialogflow/docs/reference/language>) for a
+    /// list of the currently supported language codes.
+    #[prost(string, tag = "3")]
+    pub language_code: ::prost::alloc::string::String,
+    /// Optional. Create time of the message entry.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `MessageEntry`.
+pub mod message_entry {
+    /// Enumeration of the roles a participant can play in a conversation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Role {
+        /// Participant role not set.
+        Unspecified = 0,
+        /// Participant is a human agent.
+        HumanAgent = 1,
+        /// Participant is an automated agent, such as a Dialogflow agent.
+        AutomatedAgent = 2,
+        /// Participant is an end user that has called or chatted with
+        /// Dialogflow services.
+        EndUser = 3,
+    }
+    impl Role {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Role::Unspecified => "ROLE_UNSPECIFIED",
+                Role::HumanAgent => "HUMAN_AGENT",
+                Role::AutomatedAgent => "AUTOMATED_AGENT",
+                Role::EndUser => "END_USER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROLE_UNSPECIFIED" => Some(Self::Unspecified),
+                "HUMAN_AGENT" => Some(Self::HumanAgent),
+                "AUTOMATED_AGENT" => Some(Self::AutomatedAgent),
+                "END_USER" => Some(Self::EndUser),
+                _ => None,
+            }
+        }
+    }
+}
+/// Context of the conversation, including transcripts.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversationContext {
+    /// Optional. List of message transcripts in the conversation.
+    #[prost(message, repeated, tag = "1")]
+    pub message_entries: ::prost::alloc::vec::Vec<MessageEntry>,
+}
+/// List of summarization sections.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarizationSectionList {
+    /// Optional. Summarization sections.
+    #[prost(message, repeated, tag = "1")]
+    pub summarization_sections: ::prost::alloc::vec::Vec<SummarizationSection>,
+}
+/// Providing examples in the generator (i.e. building a few-shot generator)
+/// helps convey the desired format of the LLM response.
+/// NEXT_ID: 10
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FewShotExample {
+    /// Optional. Conversation transcripts.
+    #[prost(message, optional, tag = "3")]
+    pub conversation_context: ::core::option::Option<ConversationContext>,
+    /// Optional. Key is the placeholder field name in input, value is the value of
+    /// the placeholder. E.g. instruction contains "@price", and ingested data has
+    /// <"price", "10">
+    #[prost(map = "string, string", tag = "4")]
+    pub extra_info: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Required. Example output of the model.
+    #[prost(message, optional, tag = "7")]
+    pub output: ::core::option::Option<GeneratorSuggestion>,
+    /// Instruction list of this few_shot example.
+    #[prost(oneof = "few_shot_example::InstructionList", tags = "6")]
+    pub instruction_list: ::core::option::Option<few_shot_example::InstructionList>,
+}
+/// Nested message and enum types in `FewShotExample`.
+pub mod few_shot_example {
+    /// Instruction list of this few_shot example.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum InstructionList {
+        /// Summarization sections.
+        #[prost(message, tag = "6")]
+        SummarizationSectionList(super::SummarizationSectionList),
+    }
+}
+/// The parameters of inference.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct InferenceParameter {
+    /// Optional. Maximum number of the output tokens for the generator.
+    #[prost(int32, optional, tag = "1")]
+    pub max_output_tokens: ::core::option::Option<i32>,
+    /// Optional. Controls the randomness of LLM predictions.
+    /// Low temperature = less random. High temperature = more random.
+    /// If unset (or 0), uses a default value of 0.
+    #[prost(double, optional, tag = "2")]
+    pub temperature: ::core::option::Option<f64>,
+    /// Optional. Top-k changes how the model selects tokens for output. A top-k of
+    /// 1 means the selected token is the most probable among all tokens in the
+    /// model's vocabulary (also called greedy decoding), while a top-k of 3 means
+    /// that the next token is selected from among the 3 most probable tokens
+    /// (using temperature). For each token selection step, the top K tokens with
+    /// the highest probabilities are sampled. Then tokens are further filtered
+    /// based on topP with the final token selected using temperature sampling.
+    /// Specify a lower value for less random responses and a higher value for more
+    /// random responses. Acceptable value is \[1, 40\], default to 40.
+    #[prost(int32, optional, tag = "3")]
+    pub top_k: ::core::option::Option<i32>,
+    /// Optional. Top-p changes how the model selects tokens for output. Tokens are
+    /// selected from most K (see topK parameter) probable to least until the sum
+    /// of their probabilities equals the top-p value. For example, if tokens A, B,
+    /// and C have a probability of 0.3, 0.2, and 0.1 and the top-p value is 0.5,
+    /// then the model will select either A or B as the next token (using
+    /// temperature) and doesn't consider C. The default top-p value is 0.95.
+    /// Specify a lower value for less random responses and a higher value for more
+    /// random responses. Acceptable value is \[0.0, 1.0\], default to 0.95.
+    #[prost(double, optional, tag = "4")]
+    pub top_p: ::core::option::Option<f64>,
+}
+/// Represents the section of summarization.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarizationSection {
+    /// Optional. Name of the section, for example, "situation".
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+    /// Optional. Definition of the section, for example, "what the customer needs
+    /// help with or has question about."
+    #[prost(string, tag = "2")]
+    pub definition: ::prost::alloc::string::String,
+    /// Optional. Type of the summarization section.
+    #[prost(enumeration = "summarization_section::Type", tag = "3")]
+    pub r#type: i32,
+}
+/// Nested message and enum types in `SummarizationSection`.
+pub mod summarization_section {
+    /// Type enum of the summarization sections.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Undefined section type, does not return anything.
+        Unspecified = 0,
+        /// What the customer needs help with or has question about.
+        /// Section name: "situation".
+        Situation = 1,
+        /// What the agent does to help the customer.
+        /// Section name: "action".
+        Action = 2,
+        /// Result of the customer service. A single word describing the result
+        /// of the conversation.
+        /// Section name: "resolution".
+        Resolution = 3,
+        /// Reason for cancellation if the customer requests for a cancellation.
+        /// "N/A" otherwise.
+        /// Section name: "reason_for_cancellation".
+        ReasonForCancellation = 4,
+        /// "Unsatisfied" or "Satisfied" depending on the customer's feelings at
+        /// the end of the conversation.
+        /// Section name: "customer_satisfaction".
+        CustomerSatisfaction = 5,
+        /// Key entities extracted from the conversation, such as ticket number,
+        /// order number, dollar amount, etc.
+        /// Section names are prefixed by "entities/".
+        Entities = 6,
+        /// Customer defined sections.
+        CustomerDefined = 7,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Type::Unspecified => "TYPE_UNSPECIFIED",
+                Type::Situation => "SITUATION",
+                Type::Action => "ACTION",
+                Type::Resolution => "RESOLUTION",
+                Type::ReasonForCancellation => "REASON_FOR_CANCELLATION",
+                Type::CustomerSatisfaction => "CUSTOMER_SATISFACTION",
+                Type::Entities => "ENTITIES",
+                Type::CustomerDefined => "CUSTOMER_DEFINED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SITUATION" => Some(Self::Situation),
+                "ACTION" => Some(Self::Action),
+                "RESOLUTION" => Some(Self::Resolution),
+                "REASON_FOR_CANCELLATION" => Some(Self::ReasonForCancellation),
+                "CUSTOMER_SATISFACTION" => Some(Self::CustomerSatisfaction),
+                "ENTITIES" => Some(Self::Entities),
+                "CUSTOMER_DEFINED" => Some(Self::CustomerDefined),
+                _ => None,
+            }
+        }
+    }
+}
+/// Summarization context that customer can configure.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarizationContext {
+    /// Optional. List of sections. Note it contains both predefined section sand
+    /// customer defined sections.
+    #[prost(message, repeated, tag = "1")]
+    pub summarization_sections: ::prost::alloc::vec::Vec<SummarizationSection>,
+    /// Optional. List of few shot examples.
+    #[prost(message, repeated, tag = "2")]
+    pub few_shot_examples: ::prost::alloc::vec::Vec<FewShotExample>,
+    /// Optional. Version of the feature. If not set, default to latest version.
+    /// Current candidates are \["1.0"\].
+    #[prost(string, tag = "3")]
+    pub version: ::prost::alloc::string::String,
+    /// Optional. The target language of the generated summary. The language code
+    /// for conversation will be used if this field is empty. Supported 2.0 and
+    /// later versions.
+    #[prost(string, tag = "6")]
+    pub output_language_code: ::prost::alloc::string::String,
+}
+/// LLM generator.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Generator {
+    /// Output only. Identifier. The resource name of the generator. Format:
+    /// `projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Human readable description of the generator.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Inference parameters for this generator.
+    #[prost(message, optional, tag = "4")]
+    pub inference_parameter: ::core::option::Option<InferenceParameter>,
+    /// Optional. The trigger event of the generator. It defines when the generator
+    /// is triggered in a conversation.
+    #[prost(enumeration = "TriggerEvent", tag = "5")]
+    pub trigger_event: i32,
+    /// Output only. Creation time of this generator.
+    #[prost(message, optional, tag = "8")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Update time of this generator.
+    #[prost(message, optional, tag = "9")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. Input context of the generator.
+    #[prost(oneof = "generator::Context", tags = "13")]
+    pub context: ::core::option::Option<generator::Context>,
+}
+/// Nested message and enum types in `Generator`.
+pub mod generator {
+    /// Required. Input context of the generator.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Context {
+        /// Input of prebuilt Summarization feature.
+        #[prost(message, tag = "13")]
+        SummarizationContext(super::SummarizationContext),
+    }
+}
+/// Suggested summary of the conversation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarySuggestion {
+    /// Required. All the parts of generated summary.
+    #[prost(message, repeated, tag = "1")]
+    pub summary_sections: ::prost::alloc::vec::Vec<summary_suggestion::SummarySection>,
+}
+/// Nested message and enum types in `SummarySuggestion`.
+pub mod summary_suggestion {
+    /// A component of the generated summary.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SummarySection {
+        /// Required. Name of the section.
+        #[prost(string, tag = "1")]
+        pub section: ::prost::alloc::string::String,
+        /// Required. Summary text for the section.
+        #[prost(string, tag = "2")]
+        pub summary: ::prost::alloc::string::String,
+    }
+}
+/// Suggestion generated using a Generator.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GeneratorSuggestion {
+    /// The suggestion could be one of the many types
+    #[prost(oneof = "generator_suggestion::Suggestion", tags = "2")]
+    pub suggestion: ::core::option::Option<generator_suggestion::Suggestion>,
+}
+/// Nested message and enum types in `GeneratorSuggestion`.
+pub mod generator_suggestion {
+    /// The suggestion could be one of the many types
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Suggestion {
+        /// Optional. Suggested summary.
+        #[prost(message, tag = "2")]
+        SummarySuggestion(super::SummarySuggestion),
+    }
+}
+/// The event that triggers the generator and LLM execution.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum TriggerEvent {
+    /// Default value for TriggerEvent.
+    Unspecified = 0,
+    /// Triggers when each chat message or voice utterance ends.
+    EndOfUtterance = 1,
+    /// Triggers on the conversation manually by API calls, such as
+    /// Conversations.GenerateStatelessSuggestion and
+    /// Conversations.GenerateSuggestions.
+    ManualCall = 2,
+}
+impl TriggerEvent {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            TriggerEvent::Unspecified => "TRIGGER_EVENT_UNSPECIFIED",
+            TriggerEvent::EndOfUtterance => "END_OF_UTTERANCE",
+            TriggerEvent::ManualCall => "MANUAL_CALL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TRIGGER_EVENT_UNSPECIFIED" => Some(Self::Unspecified),
+            "END_OF_UTTERANCE" => Some(Self::EndOfUtterance),
+            "MANUAL_CALL" => Some(Self::ManualCall),
+            _ => None,
+        }
+    }
+}
+/// Generated client implementations.
+pub mod generators_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Generator Service for LLM powered Agent Assist. This service manages the
+    /// configurations of user owned Generators, such as description, context and
+    /// instruction, input/output format, etc. The generator resources will be used
+    /// inside a conversation and will be triggered by TriggerEvent to query LLM for
+    /// answers.
+    #[derive(Debug, Clone)]
+    pub struct GeneratorsClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl GeneratorsClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> GeneratorsClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> GeneratorsClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            GeneratorsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a generator.
+        pub async fn create_generator(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateGeneratorRequest>,
+        ) -> std::result::Result<tonic::Response<super::Generator>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.Generators/CreateGenerator",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.Generators",
+                        "CreateGenerator",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves a generator.
+        pub async fn get_generator(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetGeneratorRequest>,
+        ) -> std::result::Result<tonic::Response<super::Generator>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.Generators/GetGenerator",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.Generators",
+                        "GetGenerator",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists generators.
+        pub async fn list_generators(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListGeneratorsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListGeneratorsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.Generators/ListGenerators",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.Generators",
+                        "ListGenerators",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a generator.
+        pub async fn delete_generator(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteGeneratorRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.Generators/DeleteGenerator",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.Generators",
+                        "DeleteGenerator",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a generator.
+        pub async fn update_generator(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateGeneratorRequest>,
+        ) -> std::result::Result<tonic::Response<super::Generator>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.Generators/UpdateGenerator",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.Generators",
+                        "UpdateGenerator",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// Represents a conversation.
 /// A conversation is an interaction between an agent, including live agents
 /// and Dialogflow agents, and a support customer. Conversations can
@@ -10730,7 +11691,7 @@ pub mod conversation_profiles_client {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Conversation {
-    /// Output only. The unique identifier of this conversation.
+    /// Output only. Identifier. The unique identifier of this conversation.
     /// Format: `projects/<Project ID>/locations/<Location
     /// ID>/conversations/<Conversation ID>`.
     #[prost(string, tag = "1")]
@@ -10748,8 +11709,8 @@ pub struct Conversation {
     /// telephony.
     #[prost(message, optional, tag = "4")]
     pub phone_number: ::core::option::Option<ConversationPhoneNumber>,
-    /// The stage of a conversation. It indicates whether the virtual agent or a
-    /// human agent is handling the conversation.
+    /// Optional. The stage of a conversation. It indicates whether the virtual
+    /// agent or a human agent is handling the conversation.
     ///
     /// If the conversation is created with the conversation profile that has
     /// Dialogflow config set, defaults to
@@ -10917,18 +11878,9 @@ pub struct ListConversationsRequest {
     /// Optional. The next_page_token value returned from a previous list request.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// A filter expression that filters conversations listed in the response. In
-    /// general, the expression must specify the field name, a comparison operator,
-    /// and the value to use for filtering:
-    /// <ul>
-    ///    <li>The value must be a string, a number, or a boolean.</li>
-    ///    <li>The comparison operator must be either `=`,`!=`, `>`, or `<`.</li>
-    ///    <li>To filter on multiple expressions, separate the
-    ///        expressions with `AND` or `OR` (omitting both implies `AND`).</li>
-    ///    <li>For clarity, expressions can be enclosed in parentheses.</li>
-    /// </ul>
-    /// Only `lifecycle_state` can be filtered on in this way. For example,
-    /// the following expression only returns `COMPLETED` conversations:
+    /// Optional. A filter expression that filters conversations listed in the
+    /// response. Only `lifecycle_state` can be filtered on in this way. For
+    /// example, the following expression only returns `COMPLETED` conversations:
     ///
     /// `lifecycle_state = "COMPLETED"`
     ///
@@ -11066,7 +12018,7 @@ pub struct SuggestConversationSummaryRequest {
     /// ID>/conversations/<Conversation ID>`.
     #[prost(string, tag = "1")]
     pub conversation: ::prost::alloc::string::String,
-    /// The name of the latest conversation message used as context for
+    /// Optional. The name of the latest conversation message used as context for
     /// compiling suggestion. If empty, the latest message of the conversation will
     /// be used.
     ///
@@ -11074,12 +12026,13 @@ pub struct SuggestConversationSummaryRequest {
     /// ID>/conversations/<Conversation ID>/messages/<Message ID>`.
     #[prost(string, tag = "3")]
     pub latest_message: ::prost::alloc::string::String,
-    /// Max number of messages prior to and including
+    /// Optional. Max number of messages prior to and including
     /// \[latest_message\] to use as context when compiling the
     /// suggestion. By default 500 and at most 1000.
     #[prost(int32, tag = "4")]
     pub context_size: i32,
-    /// Parameters for a human assist query. Only used for POC/demo purpose.
+    /// Optional. Parameters for a human assist query. Only used for POC/demo
+    /// purpose.
     #[prost(message, optional, tag = "5")]
     pub assist_query_params: ::core::option::Option<AssistQueryParameters>,
 }
@@ -11148,13 +12101,13 @@ pub struct GenerateStatelessSummaryRequest {
     /// Optional fields: {agent_assistant_config}
     #[prost(message, optional, tag = "2")]
     pub conversation_profile: ::core::option::Option<ConversationProfile>,
-    /// The name of the latest conversation message used as context for
+    /// Optional. The name of the latest conversation message used as context for
     /// generating a Summary. If empty, the latest message of the conversation will
     /// be used. The format is specific to the user and the names of the messages
     /// provided.
     #[prost(string, tag = "3")]
     pub latest_message: ::prost::alloc::string::String,
-    /// Max number of messages prior to and including
+    /// Optional. Max number of messages prior to and including
     /// \[latest_message\] to use as context when compiling the
     /// suggestion. By default 500 and at most 1000.
     #[prost(int32, tag = "4")]
@@ -11224,11 +12177,61 @@ pub mod generate_stateless_summary_response {
     }
 }
 /// The request message for
+/// [Conversations.GenerateStatelessSuggestion][google.cloud.dialogflow.v2beta1.Conversations.GenerateStatelessSuggestion].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateStatelessSuggestionRequest {
+    /// Required. The parent resource to charge for the Suggestion's generation.
+    /// Format: `projects/<Project ID>/locations/<Location ID>`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Context of the conversation, including transcripts.
+    #[prost(message, optional, tag = "5")]
+    pub conversation_context: ::core::option::Option<ConversationContext>,
+    /// Optional. A list of trigger events. Generator will be triggered only if
+    /// it's trigger event is included here.
+    #[prost(enumeration = "TriggerEvent", repeated, packed = "false", tag = "6")]
+    pub trigger_events: ::prost::alloc::vec::Vec<i32>,
+    /// Generator.
+    #[prost(
+        oneof = "generate_stateless_suggestion_request::GeneratorResource",
+        tags = "2, 3"
+    )]
+    pub generator_resource: ::core::option::Option<
+        generate_stateless_suggestion_request::GeneratorResource,
+    >,
+}
+/// Nested message and enum types in `GenerateStatelessSuggestionRequest`.
+pub mod generate_stateless_suggestion_request {
+    /// Generator.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum GeneratorResource {
+        /// Uncreated generator. It should be a complete generator that includes all
+        /// information about the generator.
+        #[prost(message, tag = "2")]
+        Generator(super::Generator),
+        /// The resource name of the existing created generator. Format:
+        /// `projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>`
+        #[prost(string, tag = "3")]
+        GeneratorName(::prost::alloc::string::String),
+    }
+}
+/// The response message for
+/// [Conversations.GenerateStatelessSuggestion][google.cloud.dialogflow.v2beta1.Conversations.GenerateStatelessSuggestion].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateStatelessSuggestionResponse {
+    /// Required. Generated suggestion for a conversation.
+    #[prost(message, optional, tag = "1")]
+    pub generator_suggestion: ::core::option::Option<GeneratorSuggestion>,
+}
+/// The request message for
 /// [Conversations.SearchKnowledge][google.cloud.dialogflow.v2beta1.Conversations.SearchKnowledge].
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchKnowledgeRequest {
-    /// The parent resource contains the conversation profile
+    /// Required. The parent resource contains the conversation profile
     /// Format: 'projects/<Project ID>' or `projects/<Project
     /// ID>/locations/<Location ID>`.
     #[prost(string, tag = "6")]
@@ -11241,7 +12244,7 @@ pub struct SearchKnowledgeRequest {
     /// ID>/conversationProfiles/<Conversation Profile ID>`.
     #[prost(string, tag = "2")]
     pub conversation_profile: ::prost::alloc::string::String,
-    /// The ID of the search session.
+    /// Required. The ID of the search session.
     /// The session_id can be combined with Dialogflow V3 Agent ID retrieved from
     /// conversation profile or on its own to identify a search session. The search
     /// history of the same session will impact the search result. It's up to the
@@ -11250,12 +12253,12 @@ pub struct SearchKnowledgeRequest {
     /// not exceed 36 characters.
     #[prost(string, tag = "3")]
     pub session_id: ::prost::alloc::string::String,
-    /// The conversation (between human agent and end user) where the search
-    /// request is triggered. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/conversations/<Conversation ID>`.
+    /// Optional. The conversation (between human agent and end user) where the
+    /// search request is triggered. Format: `projects/<Project
+    /// ID>/locations/<Location ID>/conversations/<Conversation ID>`.
     #[prost(string, tag = "4")]
     pub conversation: ::prost::alloc::string::String,
-    /// The name of the latest conversation message when the request is
+    /// Optional. The name of the latest conversation message when the request is
     /// triggered.
     /// Format: `projects/<Project ID>/locations/<Location
     /// ID>/conversations/<Conversation ID>/messages/<Message ID>`.
@@ -11710,6 +12713,38 @@ pub mod conversations_client {
                     GrpcMethod::new(
                         "google.cloud.dialogflow.v2beta1.Conversations",
                         "GenerateStatelessSummary",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Generates and returns a suggestion for a conversation that does not have a
+        /// resource created for it.
+        pub async fn generate_stateless_suggestion(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GenerateStatelessSuggestionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerateStatelessSuggestionResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.Conversations/GenerateStatelessSuggestion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.Conversations",
+                        "GenerateStatelessSuggestion",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -12799,6 +13834,206 @@ pub mod documents_client {
         }
     }
 }
+/// The request to get location-level encryption specification.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetEncryptionSpecRequest {
+    /// Required. The name of the encryption spec resource to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A customer-managed encryption key specification that can be applied to all
+/// created resources (e.g. Conversation).
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EncryptionSpec {
+    /// Immutable. The resource name of the encryption key specification resource.
+    /// Format:
+    /// projects/{project}/locations/{location}/encryptionSpec
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The name of customer-managed encryption key that is used to
+    /// secure a resource and its sub-resources. If empty, the resource is secured
+    /// by the default Google encryption key. Only the key in the same location as
+    /// this resource is allowed to be used for encryption. Format:
+    /// `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{key}`
+    #[prost(string, tag = "2")]
+    pub kms_key: ::prost::alloc::string::String,
+}
+/// The request to initialize a location-level encryption specification.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InitializeEncryptionSpecRequest {
+    /// Required. The encryption spec used for CMEK encryption. It is required that
+    /// the kms key is in the same region as the endpoint. The same key will be
+    /// used for all provisioned resources, if encryption is available. If the
+    /// kms_key_name is left empty, no encryption will be enforced.
+    #[prost(message, optional, tag = "1")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+}
+/// The response to initialize a location-level encryption specification.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct InitializeEncryptionSpecResponse {}
+/// Metadata for initializing a location-level encryption specification.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InitializeEncryptionSpecMetadata {
+    /// Output only. The original request for initialization.
+    #[prost(message, optional, tag = "4")]
+    pub request: ::core::option::Option<InitializeEncryptionSpecRequest>,
+}
+/// Generated client implementations.
+pub mod encryption_spec_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Manages encryption spec settings for Dialogflow and Agent Assist.
+    #[derive(Debug, Clone)]
+    pub struct EncryptionSpecServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl EncryptionSpecServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> EncryptionSpecServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> EncryptionSpecServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            EncryptionSpecServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Gets location-level encryption key specification.
+        pub async fn get_encryption_spec(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetEncryptionSpecRequest>,
+        ) -> std::result::Result<tonic::Response<super::EncryptionSpec>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.EncryptionSpecService/GetEncryptionSpec",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.EncryptionSpecService",
+                        "GetEncryptionSpec",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Initializes a location-level encryption key specification.  An error will
+        /// be thrown if the location has resources already created before the
+        /// initialization. Once the encryption specification is initialized at a
+        /// location, it is immutable and all newly created resources under the
+        /// location will be encrypted with the existing specification.
+        pub async fn initialize_encryption_spec(
+            &mut self,
+            request: impl tonic::IntoRequest<super::InitializeEncryptionSpecRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.EncryptionSpecService/InitializeEncryptionSpec",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.EncryptionSpecService",
+                        "InitializeEncryptionSpec",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// By default, your agent responds to a matched intent with a static response.
 /// As an alternative, you can provide a more dynamic response by using
 /// fulfillment. When you enable fulfillment for an intent, Dialogflow responds
@@ -12876,7 +14111,7 @@ pub mod fulfillment {
     }
     /// Whether fulfillment is enabled for the specific feature.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Feature {
         /// The type of the feature that enabled for fulfillment.
         #[prost(enumeration = "feature::Type", tag = "1")]

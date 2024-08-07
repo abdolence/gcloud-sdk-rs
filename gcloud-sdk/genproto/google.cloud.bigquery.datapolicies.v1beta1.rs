@@ -161,7 +161,7 @@ pub mod data_policy {
     }
     /// The policy that is bound to this data policy.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Policy {
         /// The data masking policy that specifies the data masking rule to use.
         #[prost(message, tag = "5")]
@@ -170,7 +170,7 @@ pub mod data_policy {
 }
 /// The data masking policy that is used to specify data masking rule.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DataMaskingPolicy {
     /// A masking expression to bind to the data masking rule.
     #[prost(oneof = "data_masking_policy::MaskingExpression", tags = "1")]
@@ -248,7 +248,7 @@ pub mod data_masking_policy {
     }
     /// A masking expression to bind to the data masking rule.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum MaskingExpression {
         /// A predefined masking expression.
         #[prost(enumeration = "PredefinedExpression", tag = "1")]

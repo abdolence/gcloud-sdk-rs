@@ -5620,7 +5620,7 @@ pub struct ListAudienceInsightsAttributesResponse {
 /// Request message for
 /// [AudienceInsightsService.ListInsightsEligibleDates][google.ads.googleads.v15.services.AudienceInsightsService.ListInsightsEligibleDates].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ListInsightsEligibleDatesRequest {}
 /// Response message for
 /// [AudienceInsightsService.ListInsightsEligibleDates][google.ads.googleads.v15.services.AudienceInsightsService.ListInsightsEligibleDates].
@@ -5820,7 +5820,7 @@ pub mod audience_insights_attribute_metadata {
 }
 /// Metadata associated with a YouTube channel attribute.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct YouTubeChannelAttributeMetadata {
     /// The approximate number of subscribers to the YouTube channel.
     #[prost(int64, tag = "1")]
@@ -5975,7 +5975,7 @@ pub struct AudienceCompositionAttributeCluster {
 /// The share and index metrics associated with an attribute in an audience
 /// composition insights report.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AudienceCompositionMetrics {
     /// The fraction (from 0 to 1 inclusive) of the baseline audience that match
     /// the attribute.
@@ -13383,7 +13383,7 @@ pub struct MutateCustomerResult {
 /// Request message for
 /// [CustomerService.ListAccessibleCustomers][google.ads.googleads.v15.services.CustomerService.ListAccessibleCustomers].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ListAccessibleCustomersRequest {}
 /// Response message for
 /// [CustomerService.ListAccessibleCustomers][google.ads.googleads.v15.services.CustomerService.ListAccessibleCustomers].
@@ -18410,7 +18410,7 @@ pub struct GetSmartCampaignStatusRequest {
 }
 /// Details related to Smart campaigns that are not eligible to serve.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SmartCampaignNotEligibleDetails {
     /// The reason why the Smart campaign is not eligible to serve.
     #[prost(
@@ -25207,7 +25207,7 @@ pub struct CampaignToForecast {
 pub mod campaign_to_forecast {
     /// Supported bidding strategies for new campaign forecasts.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CampaignBiddingStrategy {
         /// Bidding strategies.
         #[prost(oneof = "campaign_bidding_strategy::BiddingStrategy", tags = "1, 2, 3")]
@@ -25219,7 +25219,7 @@ pub mod campaign_to_forecast {
     pub mod campaign_bidding_strategy {
         /// Bidding strategies.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum BiddingStrategy {
             /// Use manual CPC bidding strategy for forecasting.
             #[prost(message, tag = "1")]
@@ -25282,7 +25282,7 @@ pub struct CriterionBidModifier {
 }
 /// Manual CPC Bidding Strategy.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ManualCpcBiddingStrategy {
     /// Campaign level budget in micros. If set, a minimum value
     /// is enforced for the local currency used in the campaign. An error
@@ -25296,7 +25296,7 @@ pub struct ManualCpcBiddingStrategy {
 }
 /// Maximize Clicks Bidding Strategy.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MaximizeClicksBiddingStrategy {
     /// Required. The daily target spend in micros to be used for estimation. A
     /// minimum value is enforced for the local currency used in the campaign. An
@@ -25309,7 +25309,7 @@ pub struct MaximizeClicksBiddingStrategy {
 }
 /// Maximize Conversions Bidding Strategy.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MaximizeConversionsBiddingStrategy {
     /// Required. The daily target spend in micros to be used for estimation. This
     /// value must be greater than zero.
@@ -25318,7 +25318,7 @@ pub struct MaximizeConversionsBiddingStrategy {
 }
 /// Response message for \[KeywordPlanIdeaService.GenerateKeywordForecastMetrics\].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GenerateKeywordForecastMetricsResponse {
     /// Results of the campaign forecast.
     #[prost(message, optional, tag = "1")]
@@ -25326,7 +25326,7 @@ pub struct GenerateKeywordForecastMetricsResponse {
 }
 /// The forecast metrics for the planless keyword campaign.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct KeywordForecastMetrics {
     /// The total number of impressions.
     #[prost(double, optional, tag = "1")]
@@ -26625,7 +26625,7 @@ pub mod product_link_service_client {
 /// Request message for
 /// [ReachPlanService.ListPlannableLocations][google.ads.googleads.v15.services.ReachPlanService.ListPlannableLocations].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ListPlannableLocationsRequest {}
 /// The list of plannable locations.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -26809,7 +26809,7 @@ pub struct GenerateReachForecastRequest {
 }
 /// Effective frequency limit.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EffectiveFrequencyLimit {
     /// The highest effective frequency value to include in
     /// Forecast.effective_frequency_breakdowns.
@@ -26820,7 +26820,7 @@ pub struct EffectiveFrequencyLimit {
 /// A rule specifying the maximum number of times an ad can be shown to a user
 /// over a particular time period.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FrequencyCap {
     /// Required. The number of impressions, inclusive.
     #[prost(int32, tag = "3")]
@@ -27056,7 +27056,7 @@ pub struct PlannedProductReachForecast {
 }
 /// Forecasted traffic metrics for a planned product.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PlannedProductForecast {
     /// Number of unique people reached that exactly matches the Targeting.
     ///
@@ -27128,7 +27128,7 @@ pub struct PlannedProductForecast {
 /// - PlannableAgeRange
 /// - Gender
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct OnTargetAudienceMetrics {
     /// Reference audience size matching the considered targeting for YouTube.
     #[prost(int64, optional, tag = "3")]
@@ -27140,7 +27140,7 @@ pub struct OnTargetAudienceMetrics {
 /// A breakdown of the number of unique people reached at a given effective
 /// frequency.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EffectiveFrequencyBreakdown {
     /// The effective frequency \[1-10\].
     #[prost(int32, tag = "1")]
@@ -27172,7 +27172,7 @@ pub struct EffectiveFrequencyBreakdown {
 }
 /// Controls forecast metrics to return.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ForecastMetricOptions {
     /// Indicates whether to include co-view metrics in the response forecast.
     #[prost(bool, tag = "1")]
@@ -27210,7 +27210,7 @@ pub struct AdvancedProductTargeting {
 pub mod advanced_product_targeting {
     /// Targeting options for this product.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum AdvancedTargeting {
         /// Settings for YouTube Select targeting.
         #[prost(message, tag = "1")]
@@ -27219,7 +27219,7 @@ pub mod advanced_product_targeting {
 }
 /// Request settings for YouTube Select Lineups
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct YouTubeSelectSettings {
     /// Lineup for YouTube Select Targeting.
     #[prost(int64, tag = "1")]
@@ -27262,7 +27262,7 @@ pub struct SurfaceTargeting {
 }
 /// Target Frequency settings for a supported product.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TargetFrequencySettings {
     /// Required. The time unit used to describe the time frame for
     /// target_frequency.
@@ -27529,7 +27529,7 @@ pub struct ApplyRecommendationOperation {
 pub mod apply_recommendation_operation {
     /// Parameters to use when applying a campaign budget recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CampaignBudgetParameters {
         /// New budget amount to set for target budget resource. This is a required
         /// field.
@@ -27539,7 +27539,7 @@ pub mod apply_recommendation_operation {
     /// Parameters to use when applying a forecasting set target roas
     /// recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ForecastingSetTargetRoasParameters {
         /// New target ROAS (revenue per unit of spend) to set for a campaign
         /// resource.
@@ -27579,7 +27579,7 @@ pub mod apply_recommendation_operation {
     }
     /// Parameters to use when applying Target CPA recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TargetCpaOptInParameters {
         /// Average CPA to use for Target CPA bidding strategy. This is a required
         /// field.
@@ -27591,7 +27591,7 @@ pub mod apply_recommendation_operation {
     }
     /// Parameters to use when applying a Target ROAS opt-in recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TargetRoasOptInParameters {
         /// Average ROAS (revenue per unit of spend) to use for Target ROAS bidding
         /// strategy. The value is between 0.01 and 1000.0, inclusive. This is a
@@ -27658,7 +27658,7 @@ pub mod apply_recommendation_operation {
     }
     /// Parameters to use when applying raise Target CPA recommendations.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RaiseTargetCpaParameters {
         /// Required. Target to set CPA multiplier to. This is a required field.
         #[prost(double, tag = "1")]
@@ -27666,7 +27666,7 @@ pub mod apply_recommendation_operation {
     }
     /// Parameters to use when applying lower Target ROAS recommendations.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LowerTargetRoasParameters {
         /// Required. Target to set ROAS multiplier to. This is a required field.
         #[prost(double, tag = "1")]
@@ -27744,7 +27744,7 @@ pub mod apply_recommendation_operation {
     }
     /// Parameters to use when applying move unused budget recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MoveUnusedBudgetParameters {
         /// Budget amount to move from excess budget to constrained budget. This is
         /// a required field.
@@ -27781,7 +27781,7 @@ pub mod apply_recommendation_operation {
     /// recommendation. The apply is asynchronous and can take minutes depending on
     /// the number of ad groups there is in the related campaign..
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RaiseTargetCpaBidTooLowParameters {
         /// Required. A number greater than 1.0 indicating the factor by which to
         /// increase the target CPA. This is a required field.
@@ -27790,7 +27790,7 @@ pub mod apply_recommendation_operation {
     }
     /// Parameters to use when applying a use broad match keyword recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UseBroadMatchKeywordParameters {
         /// New budget amount to set for target budget resource.
         #[prost(int64, optional, tag = "1")]
@@ -27798,7 +27798,7 @@ pub mod apply_recommendation_operation {
     }
     /// Parameters to use when applying a set target CPA recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ForecastingSetTargetCpaParameters {
         /// Average CPA to use for Target CPA bidding strategy.
         #[prost(int64, optional, tag = "1")]
@@ -28277,7 +28277,7 @@ pub mod smart_campaign_suggestion_info {
 /// Depending on whether the system could suggest the options, either all of the
 /// options or none of them might be returned.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SuggestSmartCampaignBudgetOptionsResponse {
     /// Optional. The lowest budget option.
     #[prost(message, optional, tag = "1")]
@@ -28299,7 +28299,7 @@ pub struct SuggestSmartCampaignBudgetOptionsResponse {
 pub mod suggest_smart_campaign_budget_options_response {
     /// Performance metrics for a given budget option.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Metrics {
         /// The estimated min daily clicks.
         #[prost(int64, tag = "1")]
@@ -28310,7 +28310,7 @@ pub mod suggest_smart_campaign_budget_options_response {
     }
     /// Smart Campaign budget option.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BudgetOption {
         /// The amount of the budget, in the local currency for the account.
         /// Amount is specified in micros, where one million is equivalent to one
@@ -28603,7 +28603,7 @@ pub struct RegenerateShareableLinkIdRequest {
 /// Response message for
 /// [ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId][google.ads.googleads.v15.services.ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RegenerateShareableLinkIdResponse {}
 /// Generated client implementations.
 pub mod third_party_app_analytics_link_service_client {

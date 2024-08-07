@@ -101,7 +101,7 @@ pub mod restrict_allowed_resources_request {
 }
 /// Response for restricting the list of allowed resources.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RestrictAllowedResourcesResponse {}
 /// Request for deleting a Workload.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -320,7 +320,7 @@ pub struct Workload {
 pub mod workload {
     /// Represent the resources that are children of this Workload.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ResourceInfo {
         /// Resource identifier.
         /// For a project this represents project_number.
@@ -387,7 +387,7 @@ pub mod workload {
     }
     /// Settings specific to the Key Management Service.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct KmsSettings {
         /// Required. Input only. Immutable. The time at which the Key Management Service will automatically create a
         /// new version of the crypto key and mark it as the primary.
@@ -401,7 +401,7 @@ pub mod workload {
     }
     /// Settings specific to resources needed for IL4.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Il4Settings {
         /// Input only. Immutable. Settings used to create a CMEK crypto key.
         #[prost(message, optional, tag = "1")]
@@ -409,7 +409,7 @@ pub mod workload {
     }
     /// Settings specific to resources needed for CJIS.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CjisSettings {
         /// Input only. Immutable. Settings used to create a CMEK crypto key.
         #[prost(message, optional, tag = "1")]
@@ -417,7 +417,7 @@ pub mod workload {
     }
     /// Settings specific to resources needed for FedRAMP High.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct FedrampHighSettings {
         /// Input only. Immutable. Settings used to create a CMEK crypto key.
         #[prost(message, optional, tag = "1")]
@@ -425,7 +425,7 @@ pub mod workload {
     }
     /// Settings specific to resources needed for FedRAMP Moderate.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct FedrampModerateSettings {
         /// Input only. Immutable. Settings used to create a CMEK crypto key.
         #[prost(message, optional, tag = "1")]
@@ -704,7 +704,7 @@ pub mod workload {
     }
     /// Settings specific to the selected \[compliance_regime\]
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ComplianceRegimeSettings {
         /// Input only. Immutable. Settings specific to resources needed for IL4.
         #[prost(message, tag = "7")]

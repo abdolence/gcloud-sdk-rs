@@ -296,7 +296,7 @@ pub mod commit_repository_changes_request {
         }
         /// Represents the delete file operation.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct DeleteFile {}
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -445,7 +445,7 @@ pub struct ComputeRepositoryAccessTokenStatusRequest {
 }
 /// `ComputeRepositoryAccessTokenStatus` response message.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ComputeRepositoryAccessTokenStatusResponse {
     /// Indicates the status of the Git access token.
     #[prost(
@@ -747,7 +747,7 @@ pub struct FetchGitAheadBehindRequest {
 }
 /// `FetchGitAheadBehind` response message.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FetchGitAheadBehindResponse {
     /// The number of commits in the remote branch that are not in the workspace.
     #[prost(int32, tag = "1")]
@@ -880,7 +880,7 @@ pub struct MakeDirectoryRequest {
 }
 /// `MakeDirectory` response message.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MakeDirectoryResponse {}
 /// `RemoveDirectory` request message.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -912,7 +912,7 @@ pub struct MoveDirectoryRequest {
 }
 /// `MoveDirectory` response message.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MoveDirectoryResponse {}
 /// `ReadFile` request message.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -964,7 +964,7 @@ pub struct MoveFileRequest {
 }
 /// `MoveFile` response message.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MoveFileResponse {}
 /// `WriteFile` request message.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -982,7 +982,7 @@ pub struct WriteFileRequest {
 }
 /// `WriteFile` response message.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WriteFileResponse {}
 /// `InstallNpmPackages` request message.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -994,7 +994,7 @@ pub struct InstallNpmPackagesRequest {
 }
 /// `InstallNpmPackages` response message.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InstallNpmPackagesResponse {}
 /// Represents a Dataform release configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]

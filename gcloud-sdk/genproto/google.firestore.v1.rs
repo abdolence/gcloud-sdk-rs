@@ -104,7 +104,7 @@ pub mod value {
         GeoPointValue(super::super::super::r#type::LatLng),
         /// An array value.
         ///
-        /// Cannot directly contain another array value, though can contain an
+        /// Cannot directly contain another array value, though can contain a
         /// map which contains another array.
         #[prost(message, tag = "9")]
         ArrayValue(super::ArrayValue),
@@ -244,7 +244,7 @@ pub struct StructuredQuery {
     /// * The value must be greater than or equal to zero if specified.
     #[prost(message, optional, tag = "5")]
     pub limit: ::core::option::Option<i32>,
-    /// Optional. A potential Nearest Neighbors Search.
+    /// Optional. A potential nearest neighbors search.
     ///
     /// Applies after all other filters and ordering.
     ///
@@ -607,7 +607,10 @@ pub mod structured_query {
         #[prost(message, repeated, tag = "2")]
         pub fields: ::prost::alloc::vec::Vec<FieldReference>,
     }
-    /// Nearest Neighbors search config.
+    /// Nearest Neighbors search config. The ordering provided by FindNearest
+    /// supersedes the order_by stage. If multiple documents have the same vector
+    /// distance, the returned document order is not guaranteed to be stable
+    /// between queries.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FindNearest {
@@ -620,7 +623,7 @@ pub mod structured_query {
         /// no more than 2048 dimensions.
         #[prost(message, optional, tag = "2")]
         pub query_vector: ::core::option::Option<super::Value>,
-        /// Required. The Distance Measure to use, required.
+        /// Required. The distance measure to use, required.
         #[prost(enumeration = "find_nearest::DistanceMeasure", tag = "3")]
         pub distance_measure: i32,
         /// Required. The number of nearest neighbors to return. Must be a positive
@@ -648,18 +651,21 @@ pub mod structured_query {
             Unspecified = 0,
             /// Measures the EUCLIDEAN distance between the vectors. See
             /// [Euclidean](<https://en.wikipedia.org/wiki/Euclidean_distance>) to learn
-            /// more
+            /// more. The resulting distance decreases the more similar two vectors
+            /// are.
             Euclidean = 1,
-            /// Compares vectors based on the angle between them, which allows you to
-            /// measure similarity that isn't based on the vectors magnitude.
-            /// We recommend using DOT_PRODUCT with unit normalized vectors instead of
-            /// COSINE distance, which is mathematically equivalent with better
-            /// performance. See [Cosine
+            /// COSINE distance compares vectors based on the angle between them, which
+            /// allows you to measure similarity that isn't based on the vectors
+            /// magnitude. We recommend using DOT_PRODUCT with unit normalized vectors
+            /// instead of COSINE distance, which is mathematically equivalent with
+            /// better performance. See [Cosine
             /// Similarity](<https://en.wikipedia.org/wiki/Cosine_similarity>) to learn
-            /// more.
+            /// more about COSINE similarity and COSINE distance. The resulting
+            /// COSINE distance decreases the more similar two vectors are.
             Cosine = 2,
             /// Similar to cosine but is affected by the magnitude of the vectors. See
             /// [Dot Product](<https://en.wikipedia.org/wiki/Dot_product>) to learn more.
+            /// The resulting distance increases the more similar two vectors are.
             DotProduct = 3,
         }
         impl DistanceMeasure {
@@ -804,7 +810,7 @@ pub mod structured_aggregation_query {
         /// The `COUNT(*)` aggregation function operates on the entire document
         /// so it does not require a field reference.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Count {
             /// Optional. Optional constraint on the maximum number of documents to
             /// count.
@@ -1003,7 +1009,7 @@ pub struct DocumentMask {
 }
 /// A precondition on a document, used for conditional operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Precondition {
     /// The type of precondition.
     #[prost(oneof = "precondition::ConditionType", tags = "1, 2")]
@@ -1013,7 +1019,7 @@ pub struct Precondition {
 pub mod precondition {
     /// The type of precondition.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ConditionType {
         /// When set to `true`, the target document must exist.
         /// When set to `false`, the target document must not exist.
@@ -1048,7 +1054,7 @@ pub mod transaction_options {
     }
     /// Options for a transaction that can only be used to read documents.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ReadOnly {
         /// The consistency mode for this transaction. If not set, defaults to strong
         /// consistency.
@@ -1060,7 +1066,7 @@ pub mod transaction_options {
         /// The consistency mode for this transaction. If not set, defaults to strong
         /// consistency.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum ConsistencySelector {
             /// Reads documents at the given time.
             ///
@@ -1085,7 +1091,7 @@ pub mod transaction_options {
 }
 /// Explain options for the query.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExplainOptions {
     /// Optional. Whether to execute this query.
     ///
@@ -1953,7 +1959,7 @@ pub mod run_query_response {
     /// query response stream has finished. This can be set with or without a
     /// `document` present, but when set, no more results are returned.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ContinuationSelector {
         /// If present, Firestore has completely finished the request and no more
         /// documents will be returned.
@@ -2127,7 +2133,7 @@ pub mod partition_query_request {
     /// The consistency mode for this request.
     /// If not set, defaults to strong consistency.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ConsistencySelector {
         /// Reads documents as they were at the given time.
         ///
@@ -2563,7 +2569,7 @@ pub mod list_collection_ids_request {
     /// The consistency mode for this request.
     /// If not set, defaults to strong consistency.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ConsistencySelector {
         /// Reads documents as they were at the given time.
         ///

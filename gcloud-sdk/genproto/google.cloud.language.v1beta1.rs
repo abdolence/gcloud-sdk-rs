@@ -217,7 +217,7 @@ pub struct Token {
 /// Represents the feeling associated with the entire text or entities in
 /// the text.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Sentiment {
     /// DEPRECATED FIELD - This field is being deprecated in
     /// favor of score. Please refer to our documentation at
@@ -236,7 +236,7 @@ pub struct Sentiment {
 }
 /// Represents part of speech information for a token.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PartOfSpeech {
     /// The part of speech tag.
     #[prost(enumeration = "part_of_speech::Tag", tag = "1")]
@@ -987,7 +987,7 @@ pub mod part_of_speech {
 }
 /// Represents dependency parse tree information for a token.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DependencyEdge {
     /// Represents the head of this token in the dependency tree.
     /// This is the index of the token which has an arc going to this token.
@@ -1516,7 +1516,7 @@ pub mod annotate_text_request {
     /// All available features for sentiment, syntax, and semantic analysis.
     /// Setting each one to true will enable that specific analysis for the input.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Features {
         /// Extract syntax information.
         #[prost(bool, tag = "1")]

@@ -184,7 +184,7 @@ pub struct DeviceRegistry {
 }
 /// The configuration of MQTT for a device registry.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MqttConfig {
     /// If enabled, allows connections using the MQTT protocol. Otherwise, MQTT
     /// connections to this registry will fail.
@@ -193,7 +193,7 @@ pub struct MqttConfig {
 }
 /// The configuration of the HTTP bridge for a device registry.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HttpConfig {
     /// If enabled, allows devices to use DeviceService via the HTTP protocol.
     /// Otherwise, any requests to DeviceService will fail for this registry.
@@ -966,7 +966,7 @@ pub struct SendCommandToDeviceRequest {
 }
 /// Response for `SendCommandToDevice`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SendCommandToDeviceResponse {}
 /// Request for `BindDeviceToGateway`.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -988,7 +988,7 @@ pub struct BindDeviceToGatewayRequest {
 }
 /// Response for `BindDeviceToGateway`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BindDeviceToGatewayResponse {}
 /// Request for `UnbindDeviceFromGateway`.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1010,7 +1010,7 @@ pub struct UnbindDeviceFromGatewayRequest {
 }
 /// Response for `UnbindDeviceFromGateway`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UnbindDeviceFromGatewayResponse {}
 /// Generated client implementations.
 pub mod device_manager_client {

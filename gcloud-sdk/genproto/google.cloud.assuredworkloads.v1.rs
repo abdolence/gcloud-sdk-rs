@@ -190,7 +190,7 @@ pub struct Workload {
 pub mod workload {
     /// Represent the resources that are children of this Workload.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ResourceInfo {
         /// Resource identifier.
         /// For a project this represents project_number.
@@ -263,7 +263,7 @@ pub mod workload {
     /// In order to create a Keyring, callers should specify,
     /// ENCRYPTION_KEYS_PROJECT or KEYRING in ResourceSettings.resource_type field.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct KmsSettings {
         /// Required. Input only. Immutable. The time at which the Key Management Service will automatically create a
         /// new version of the crypto key and mark it as the primary.
@@ -684,7 +684,7 @@ pub mod restrict_allowed_resources_request {
 }
 /// Response for restricting the list of allowed resources.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RestrictAllowedResourcesResponse {}
 /// Request for acknowledging the violation
 /// Next Id: 4
@@ -712,11 +712,11 @@ pub struct AcknowledgeViolationRequest {
 }
 /// Response for violation acknowledgement
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AcknowledgeViolationResponse {}
 /// Interval defining a time window.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeWindow {
     /// The start of the time window.
     #[prost(message, optional, tag = "1")]

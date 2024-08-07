@@ -31,6 +31,14 @@ pub struct AdvancedSettings {
     /// - Flow level
     #[prost(message, optional, tag = "2")]
     pub audio_export_gcs_destination: ::core::option::Option<GcsDestination>,
+    /// Settings for speech to text detection.
+    /// Exposed at the following levels:
+    /// - Agent level
+    /// - Flow level
+    /// - Page level
+    /// - Parameter level
+    #[prost(message, optional, tag = "3")]
+    pub speech_settings: ::core::option::Option<advanced_settings::SpeechSettings>,
     /// Settings for DTMF.
     /// Exposed at the following levels:
     /// - Agent level
@@ -49,6 +57,32 @@ pub struct AdvancedSettings {
 }
 /// Nested message and enum types in `AdvancedSettings`.
 pub mod advanced_settings {
+    /// Define behaviors of speech to text detection.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SpeechSettings {
+        /// Sensitivity of the speech model that detects the end of speech.
+        /// Scale from 0 to 100.
+        #[prost(int32, tag = "1")]
+        pub endpointer_sensitivity: i32,
+        /// Timeout before detecting no speech.
+        #[prost(message, optional, tag = "2")]
+        pub no_speech_timeout: ::core::option::Option<::prost_types::Duration>,
+        /// Use timeout based endpointing, interpreting endpointer sensitivy as
+        /// seconds of timeout value.
+        #[prost(bool, tag = "3")]
+        pub use_timeout_based_endpointing: bool,
+        /// Mapping from language to Speech-to-Text model. The mapped Speech-to-Text
+        /// model will be selected for requests from its corresponding language.
+        /// For more information, see
+        /// [Speech
+        /// models](<https://cloud.google.com/dialogflow/cx/docs/concept/speech-models>).
+        #[prost(map = "string, string", tag = "5")]
+        pub models: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+    }
     /// Define behaviors for DTMF (dual tone multi frequency).
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -67,17 +101,30 @@ pub mod advanced_settings {
         /// The digit that terminates a DTMF digit sequence.
         #[prost(string, tag = "3")]
         pub finish_digit: ::prost::alloc::string::String,
+        /// Interdigit timeout setting for matching dtmf input to regex.
+        #[prost(message, optional, tag = "6")]
+        pub interdigit_timeout_duration: ::core::option::Option<::prost_types::Duration>,
+        /// Endpoint timeout setting for matching dtmf input to regex.
+        #[prost(message, optional, tag = "7")]
+        pub endpointing_timeout_duration: ::core::option::Option<
+            ::prost_types::Duration,
+        >,
     }
     /// Define behaviors on logging.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LoggingSettings {
-        /// If true, StackDriver logging is currently enabled.
+        /// Enables StackDriver logging.
         #[prost(bool, tag = "2")]
         pub enable_stackdriver_logging: bool,
-        /// If true, DF Interaction logging is currently enabled.
+        /// Enables DF Interaction logging.
         #[prost(bool, tag = "3")]
         pub enable_interaction_logging: bool,
+        /// Enables consent-based end-user input redaction, if true, a pre-defined
+        /// session parameter `$session.params.conversation-redaction` will be
+        /// used to determine if the utterance should be redacted.
+        #[prost(bool, tag = "4")]
+        pub enable_consent_based_redaction: bool,
     }
 }
 /// Information for a word recognized by the speech recognizer.
@@ -132,7 +179,7 @@ pub struct SpeechWordInfo {
 /// No-speech event is a response with END_OF_UTTERANCE without any transcript
 /// following up.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BargeInConfig {
     /// Duration that is not eligible for barge-in at the beginning of the input
     /// audio.
@@ -590,6 +637,350 @@ pub struct DataStoreConnection {
     #[prost(string, tag = "2")]
     pub data_store: ::prost::alloc::string::String,
 }
+/// Data store connection feature output signals.
+/// Might be only partially field if processing stop before the final answer.
+/// Reasons for this can be, but are not limited to: empty UCS search results,
+/// positive RAI check outcome, grounding failure, ...
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataStoreConnectionSignals {
+    /// Optional. Diagnostic info related to the rewriter model call.
+    #[prost(message, optional, tag = "1")]
+    pub rewriter_model_call_signals: ::core::option::Option<
+        data_store_connection_signals::RewriterModelCallSignals,
+    >,
+    /// Optional. Rewritten string query used for search.
+    #[prost(string, tag = "2")]
+    pub rewritten_query: ::prost::alloc::string::String,
+    /// Optional. Search snippets included in the answer generation prompt.
+    #[prost(message, repeated, tag = "3")]
+    pub search_snippets: ::prost::alloc::vec::Vec<
+        data_store_connection_signals::SearchSnippet,
+    >,
+    /// Optional. Diagnostic info related to the answer generation model call.
+    #[prost(message, optional, tag = "4")]
+    pub answer_generation_model_call_signals: ::core::option::Option<
+        data_store_connection_signals::AnswerGenerationModelCallSignals,
+    >,
+    /// Optional. The final compiled answer.
+    #[prost(string, tag = "5")]
+    pub answer: ::prost::alloc::string::String,
+    /// Optional. Answer parts with relevant citations.
+    /// Concatenation of texts should add up the `answer` (not counting
+    /// whitespaces).
+    #[prost(message, repeated, tag = "6")]
+    pub answer_parts: ::prost::alloc::vec::Vec<
+        data_store_connection_signals::AnswerPart,
+    >,
+    /// Optional. Snippets cited by the answer generation model from the most to
+    /// least relevant.
+    #[prost(message, repeated, tag = "7")]
+    pub cited_snippets: ::prost::alloc::vec::Vec<
+        data_store_connection_signals::CitedSnippet,
+    >,
+    /// Optional. Grounding signals.
+    #[prost(message, optional, tag = "8")]
+    pub grounding_signals: ::core::option::Option<
+        data_store_connection_signals::GroundingSignals,
+    >,
+    /// Optional. Safety check result.
+    #[prost(message, optional, tag = "9")]
+    pub safety_signals: ::core::option::Option<
+        data_store_connection_signals::SafetySignals,
+    >,
+}
+/// Nested message and enum types in `DataStoreConnectionSignals`.
+pub mod data_store_connection_signals {
+    /// Diagnostic info related to the rewriter model call.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RewriterModelCallSignals {
+        /// Prompt as sent to the model.
+        #[prost(string, tag = "1")]
+        pub rendered_prompt: ::prost::alloc::string::String,
+        /// Output of the generative model.
+        #[prost(string, tag = "2")]
+        pub model_output: ::prost::alloc::string::String,
+        /// Name of the generative model. For example, "gemini-ultra", "gemini-pro",
+        /// "gemini-1.5-flash" etc. Defaults to "Other" if the model is unknown.
+        #[prost(string, tag = "3")]
+        pub model: ::prost::alloc::string::String,
+    }
+    /// Search snippet details.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SearchSnippet {
+        /// Title of the enclosing document.
+        #[prost(string, tag = "1")]
+        pub document_title: ::prost::alloc::string::String,
+        /// Uri for the document. Present if specified for the document.
+        #[prost(string, tag = "2")]
+        pub document_uri: ::prost::alloc::string::String,
+        /// Text included in the prompt.
+        #[prost(string, tag = "3")]
+        pub text: ::prost::alloc::string::String,
+    }
+    /// Diagnostic info related to the answer generation model call.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AnswerGenerationModelCallSignals {
+        /// Prompt as sent to the model.
+        #[prost(string, tag = "1")]
+        pub rendered_prompt: ::prost::alloc::string::String,
+        /// Output of the generative model.
+        #[prost(string, tag = "2")]
+        pub model_output: ::prost::alloc::string::String,
+        /// Name of the generative model. For example, "gemini-ultra", "gemini-pro",
+        /// "gemini-1.5-flash" etc. Defaults to "Other" if the model is unknown.
+        #[prost(string, tag = "3")]
+        pub model: ::prost::alloc::string::String,
+    }
+    /// Answer part with citation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AnswerPart {
+        /// Substring of the answer.
+        #[prost(string, tag = "1")]
+        pub text: ::prost::alloc::string::String,
+        /// Citations for this answer part. Indices of `search_snippets`.
+        #[prost(int32, repeated, tag = "2")]
+        pub supporting_indices: ::prost::alloc::vec::Vec<i32>,
+    }
+    /// Snippet cited by the answer generation model.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CitedSnippet {
+        /// Details of the snippet.
+        #[prost(message, optional, tag = "1")]
+        pub search_snippet: ::core::option::Option<SearchSnippet>,
+        /// Index of the snippet in `search_snippets` field.
+        #[prost(int32, tag = "2")]
+        pub snippet_index: i32,
+    }
+    /// Grounding signals.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct GroundingSignals {
+        /// Represents the decision of the grounding check.
+        #[prost(enumeration = "grounding_signals::GroundingDecision", tag = "1")]
+        pub decision: i32,
+        /// Grounding score bucket setting.
+        #[prost(enumeration = "grounding_signals::GroundingScoreBucket", tag = "2")]
+        pub score: i32,
+    }
+    /// Nested message and enum types in `GroundingSignals`.
+    pub mod grounding_signals {
+        /// Represents the decision of the grounding check.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum GroundingDecision {
+            /// Decision not specified.
+            Unspecified = 0,
+            /// Grounding have accepted the answer.
+            AcceptedByGrounding = 1,
+            /// Grounding have rejected the answer.
+            RejectedByGrounding = 2,
+        }
+        impl GroundingDecision {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    GroundingDecision::Unspecified => "GROUNDING_DECISION_UNSPECIFIED",
+                    GroundingDecision::AcceptedByGrounding => "ACCEPTED_BY_GROUNDING",
+                    GroundingDecision::RejectedByGrounding => "REJECTED_BY_GROUNDING",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "GROUNDING_DECISION_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ACCEPTED_BY_GROUNDING" => Some(Self::AcceptedByGrounding),
+                    "REJECTED_BY_GROUNDING" => Some(Self::RejectedByGrounding),
+                    _ => None,
+                }
+            }
+        }
+        /// Grounding score buckets.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum GroundingScoreBucket {
+            /// Score not specified.
+            Unspecified = 0,
+            /// We have very low confidence that the answer is grounded.
+            VeryLow = 1,
+            /// We have low confidence that the answer is grounded.
+            Low = 3,
+            /// We have medium confidence that the answer is grounded.
+            Medium = 4,
+            /// We have high confidence that the answer is grounded.
+            High = 5,
+            /// We have very high confidence that the answer is grounded.
+            VeryHigh = 6,
+        }
+        impl GroundingScoreBucket {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    GroundingScoreBucket::Unspecified => {
+                        "GROUNDING_SCORE_BUCKET_UNSPECIFIED"
+                    }
+                    GroundingScoreBucket::VeryLow => "VERY_LOW",
+                    GroundingScoreBucket::Low => "LOW",
+                    GroundingScoreBucket::Medium => "MEDIUM",
+                    GroundingScoreBucket::High => "HIGH",
+                    GroundingScoreBucket::VeryHigh => "VERY_HIGH",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "GROUNDING_SCORE_BUCKET_UNSPECIFIED" => Some(Self::Unspecified),
+                    "VERY_LOW" => Some(Self::VeryLow),
+                    "LOW" => Some(Self::Low),
+                    "MEDIUM" => Some(Self::Medium),
+                    "HIGH" => Some(Self::High),
+                    "VERY_HIGH" => Some(Self::VeryHigh),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Safety check results.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SafetySignals {
+        /// Safety decision.
+        #[prost(enumeration = "safety_signals::SafetyDecision", tag = "1")]
+        pub decision: i32,
+        /// Specifies banned phrase match subject.
+        #[prost(enumeration = "safety_signals::BannedPhraseMatch", tag = "2")]
+        pub banned_phrase_match: i32,
+        /// The matched banned phrase if there was a match.
+        #[prost(string, tag = "3")]
+        pub matched_banned_phrase: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `SafetySignals`.
+    pub mod safety_signals {
+        /// Safety decision.
+        /// All kinds of check are incorporated into this final decision, including
+        /// banned phrases check.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum SafetyDecision {
+            /// Decision not specified.
+            Unspecified = 0,
+            /// No manual or automatic safety check fired.
+            AcceptedBySafetyCheck = 1,
+            /// One ore more safety checks fired.
+            RejectedBySafetyCheck = 2,
+        }
+        impl SafetyDecision {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    SafetyDecision::Unspecified => "SAFETY_DECISION_UNSPECIFIED",
+                    SafetyDecision::AcceptedBySafetyCheck => "ACCEPTED_BY_SAFETY_CHECK",
+                    SafetyDecision::RejectedBySafetyCheck => "REJECTED_BY_SAFETY_CHECK",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SAFETY_DECISION_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ACCEPTED_BY_SAFETY_CHECK" => Some(Self::AcceptedBySafetyCheck),
+                    "REJECTED_BY_SAFETY_CHECK" => Some(Self::RejectedBySafetyCheck),
+                    _ => None,
+                }
+            }
+        }
+        /// Specifies banned phrase match subject.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum BannedPhraseMatch {
+            /// No banned phrase check was executed.
+            Unspecified = 0,
+            /// All banned phrase checks led to no match.
+            None = 1,
+            /// A banned phrase matched the query.
+            Query = 2,
+            /// A banned phrase matched the response.
+            Response = 3,
+        }
+        impl BannedPhraseMatch {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    BannedPhraseMatch::Unspecified => "BANNED_PHRASE_MATCH_UNSPECIFIED",
+                    BannedPhraseMatch::None => "BANNED_PHRASE_MATCH_NONE",
+                    BannedPhraseMatch::Query => "BANNED_PHRASE_MATCH_QUERY",
+                    BannedPhraseMatch::Response => "BANNED_PHRASE_MATCH_RESPONSE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "BANNED_PHRASE_MATCH_UNSPECIFIED" => Some(Self::Unspecified),
+                    "BANNED_PHRASE_MATCH_NONE" => Some(Self::None),
+                    "BANNED_PHRASE_MATCH_QUERY" => Some(Self::Query),
+                    "BANNED_PHRASE_MATCH_RESPONSE" => Some(Self::Response),
+                    _ => None,
+                }
+            }
+        }
+    }
+}
 /// Type of a data store.
 /// Determines how search is performed in the data store.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -758,7 +1149,7 @@ pub mod response_message {
     /// This message is generated by Dialogflow only and not supposed to be
     /// defined by the user.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct EndInteraction {}
     /// Specifies an audio clip to be played by the client as part of the response.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -847,7 +1238,7 @@ pub mod response_message {
     ///
     /// Otherwise, the info card response is skipped.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct KnowledgeInfoCard {}
     /// Represents different response types.
     #[derive(
@@ -2073,7 +2464,7 @@ pub struct ResourceName {
 }
 /// Settings related to NLU.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NluSettings {
     /// Indicates the type of NLU model.
     #[prost(enumeration = "nlu_settings::ModelType", tag = "1")]
@@ -2270,6 +2661,38 @@ pub struct Flow {
     /// Optional. Knowledge connector configuration.
     #[prost(message, optional, tag = "18")]
     pub knowledge_connector_settings: ::core::option::Option<KnowledgeConnectorSettings>,
+    /// Optional. Multi-lingual agent settings for this flow.
+    #[prost(message, optional, tag = "28")]
+    pub multi_language_settings: ::core::option::Option<flow::MultiLanguageSettings>,
+    /// Indicates whether the flow is locked for changes. If the flow is locked,
+    /// modifications to the flow will be rejected.
+    #[prost(bool, tag = "30")]
+    pub locked: bool,
+}
+/// Nested message and enum types in `Flow`.
+pub mod flow {
+    /// Settings for multi-lingual agents.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MultiLanguageSettings {
+        /// Optional. Enable multi-language detection for this flow. This can be set
+        /// only if [agent level multi language
+        /// setting][Agent.enable_multi_language_training] is enabled.
+        #[prost(bool, tag = "1")]
+        pub enable_multi_language_detection: bool,
+        /// Optional. Agent will respond in the detected language if the detected
+        /// language code is in the supported resolved languages for this flow. This
+        /// will be used only if multi-language training is enabled in the
+        /// [agent][google.cloud.dialogflow.cx.v3.Agent.enable_multi_language_training]
+        /// and multi-language detection is enabled in the
+        /// [flow][google.cloud.dialogflow.cx.v3.Flow.MultiLanguageSettings.enable_multi_language_detection].
+        /// The supported languages must be a subset of the languages supported by
+        /// the agent.
+        #[prost(string, repeated, tag = "2")]
+        pub supported_response_language_codes: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
+    }
 }
 /// The request message for
 /// [Flows.CreateFlow][google.cloud.dialogflow.cx.v3.Flows.CreateFlow].
@@ -2568,7 +2991,7 @@ pub mod import_flow_request {
 /// The flow import strategy used for resource conflict resolution associated
 /// with an [ImportFlowRequest][google.cloud.dialogflow.cx.v3.ImportFlowRequest].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FlowImportStrategy {
     /// Optional. Import strategy for resource conflict resolution, applied
     /// globally throughout the flow. It will be applied for all display name
@@ -3166,7 +3589,7 @@ pub mod generative_settings {
 }
 /// Settings related to speech recognition.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SpeechToTextSettings {
     /// Whether to use speech adaptation for speech recognition.
     #[prost(bool, tag = "1")]
@@ -3236,8 +3659,7 @@ pub struct Agent {
     /// Immutable. Name of the start flow in this agent. A start flow will be
     /// automatically created when the agent is created, and can only be deleted by
     /// deleting the agent. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/flows/<Flow ID>`. Currently only the default start
-    /// flow with id "00000000-0000-0000-0000-000000000000" is allowed.
+    /// ID>/agents/<Agent ID>/flows/<Flow ID>`.
     #[prost(string, tag = "16")]
     pub start_flow: ::prost::alloc::string::String,
     /// Name of the
@@ -3257,6 +3679,10 @@ pub struct Agent {
     /// requests.
     #[prost(bool, tag = "20")]
     pub enable_spell_correction: bool,
+    /// Optional. Enable training multi-lingual models for this agent. These models
+    /// will be trained on all the languages supported by the agent.
+    #[prost(bool, tag = "40")]
+    pub enable_multi_language_training: bool,
     /// Indicates whether the agent is locked for changes. If the agent is locked,
     /// modifications to the agent will be rejected except for [RestoreAgent][].
     #[prost(bool, tag = "27")]
@@ -3278,6 +3704,9 @@ pub struct Agent {
     /// Optional. Answer feedback collection settings.
     #[prost(message, optional, tag = "38")]
     pub answer_feedback_settings: ::core::option::Option<agent::AnswerFeedbackSettings>,
+    /// Optional. Settings for end user personalization.
+    #[prost(message, optional, tag = "42")]
+    pub personalization_settings: ::core::option::Option<agent::PersonalizationSettings>,
 }
 /// Nested message and enum types in `Agent`.
 pub mod agent {
@@ -3333,7 +3762,7 @@ pub mod agent {
     }
     /// Settings for answer feedback collection.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AnswerFeedbackSettings {
         /// Optional. If enabled, end users will be able to provide
         /// [answer feedback][google.cloud.dialogflow.cx.v3.AnswerFeedback] to
@@ -3341,6 +3770,21 @@ pub mod agent {
         /// enabled in the Dialogflow agent.
         #[prost(bool, tag = "1")]
         pub enable_answer_feedback: bool,
+    }
+    /// Settings for end user personalization.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PersonalizationSettings {
+        /// Optional. Default end user metadata, used when processing DetectIntent
+        /// requests. Recommended to be filled as a template instead of hard-coded
+        /// value, for example { "age": "$session.params.age" }. The data will be
+        /// merged with the
+        /// [QueryParameters.end_user_metadata][google.cloud.dialogflow.cx.v3.QueryParameters.end_user_metadata]
+        /// in
+        /// [DetectIntentRequest.query_params][google.cloud.dialogflow.cx.v3.DetectIntentRequest.query_params]
+        /// during query processing.
+        #[prost(message, optional, tag = "1")]
+        pub default_end_user_metadata: ::core::option::Option<::prost_types::Struct>,
     }
 }
 /// The request message for
@@ -5048,7 +5492,7 @@ pub mod export_entity_types_response {
 /// [EntityTypes.ExportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes]
 /// long running operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportEntityTypesMetadata {}
 /// The request message for
 /// [EntityTypes.ImportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes].
@@ -5200,7 +5644,7 @@ pub mod import_entity_types_response {
 /// [EntityTypes.ImportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes]
 /// long running operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportEntityTypesMetadata {}
 /// The request message for
 /// [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes].
@@ -6078,7 +6522,7 @@ pub mod import_intents_response {
 /// [Intents.ImportIntents][google.cloud.dialogflow.cx.v3.Intents.ImportIntents]
 /// long running operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportIntentsMetadata {}
 /// The request message for
 /// [Intents.ExportIntents][google.cloud.dialogflow.cx.v3.Intents.ExportIntents].
@@ -6204,7 +6648,7 @@ pub mod export_intents_response {
 /// [Intents.ExportIntents][google.cloud.dialogflow.cx.v3.Intents.ExportIntents]
 /// long running operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportIntentsMetadata {}
 /// Represents the options for views of an intent.
 /// An intent can be a sizable object. Therefore, we provide a resource view that
@@ -7691,6 +8135,12 @@ pub struct QueryParameters {
     /// Optional. Search configuration for UCS search queries.
     #[prost(message, optional, tag = "20")]
     pub search_config: ::core::option::Option<SearchConfig>,
+    /// Optional. If set to true and data stores are involved in serving the
+    /// request then
+    /// DetectIntentResponse.query_result.data_store_connection_signals
+    /// will be filled with data that can help evaluations.
+    #[prost(bool, tag = "25")]
+    pub populate_data_store_connection_signals: bool,
 }
 /// Search configuration for UCS search queries.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -7958,6 +8408,14 @@ pub struct QueryResult {
     /// shown for the response in the Dialogflow Messenger widget.
     #[prost(bool, tag = "32")]
     pub allow_answer_feedback: bool,
+    /// Optional. Data store connection feature output signals.
+    /// Filled only when data stores are involved in serving the query and
+    /// DetectIntentRequest.populate data_store_connection_quality_signals is set
+    /// to true in the request.
+    #[prost(message, optional, tag = "35")]
+    pub data_store_connection_signals: ::core::option::Option<
+        DataStoreConnectionSignals,
+    >,
     /// The original conversational query.
     #[prost(oneof = "query_result::Query", tags = "1, 11, 12, 14, 23")]
     pub query: ::core::option::Option<query_result::Query>,
@@ -8131,6 +8589,10 @@ pub mod r#match {
         NoInput = 5,
         /// The query directly triggered an event.
         Event = 6,
+        /// The query was matched to a Knowledge Connector answer.
+        KnowledgeConnector = 8,
+        /// The query was handled by a [`Playbook`][Playbook].
+        Playbook = 9,
     }
     impl MatchType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -8146,6 +8608,8 @@ pub mod r#match {
                 MatchType::NoMatch => "NO_MATCH",
                 MatchType::NoInput => "NO_INPUT",
                 MatchType::Event => "EVENT",
+                MatchType::KnowledgeConnector => "KNOWLEDGE_CONNECTOR",
+                MatchType::Playbook => "PLAYBOOK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8158,6 +8622,8 @@ pub mod r#match {
                 "NO_MATCH" => Some(Self::NoMatch),
                 "NO_INPUT" => Some(Self::NoInput),
                 "EVENT" => Some(Self::Event),
+                "KNOWLEDGE_CONNECTOR" => Some(Self::KnowledgeConnector),
+                "PLAYBOOK" => Some(Self::Playbook),
                 _ => None,
             }
         }
@@ -8282,7 +8748,7 @@ pub struct FulfillIntentResponse {
 /// and identifies the prevailing subjective opinion, especially to determine a
 /// user's attitude as positive, negative, or neutral.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SentimentAnalysisResult {
     /// Sentiment score between -1.0 (negative sentiment) and 1.0 (positive
     /// sentiment).
@@ -9107,9 +9573,8 @@ pub struct TestConfig {
     /// ID>/flows/<Flow ID>`.
     ///
     /// Only one of `flow` and `page` should be set to indicate the starting point
-    /// of the test case. If both are set, `page` takes precedence over `flow`. If
-    /// neither is set, the test case will start with start page on the default
-    /// start flow.
+    /// of the test case. If neither is set, the test case will start with start
+    /// page on the default start flow.
     #[prost(string, tag = "2")]
     pub flow: ::prost::alloc::string::String,
     /// The [page][google.cloud.dialogflow.cx.v3.Page] to start the test case with.
@@ -9117,9 +9582,8 @@ pub struct TestConfig {
     /// ID>/flows/<Flow ID>/pages/<Page ID>`.
     ///
     /// Only one of `flow` and `page` should be set to indicate the starting point
-    /// of the test case. If both are set, `page` takes precedence over `flow`. If
-    /// neither is set, the test case will start with start page on the default
-    /// start flow.
+    /// of the test case. If neither is set, the test case will start with start
+    /// page on the default start flow.
     #[prost(string, tag = "3")]
     pub page: ::prost::alloc::string::String,
 }
@@ -9674,7 +10138,7 @@ pub struct RunTestCaseResponse {
 /// [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3.TestCases.RunTestCase]
 /// long running operation. This message currently has no fields.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RunTestCaseMetadata {}
 /// The request message for
 /// [TestCases.BatchRunTestCases][google.cloud.dialogflow.cx.v3.TestCases.BatchRunTestCases].
@@ -9919,7 +10383,7 @@ pub mod export_test_cases_response {
 /// [TestCases.ExportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ExportTestCases]
 /// long running operation. This message currently has no fields.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportTestCasesMetadata {}
 /// The request message for
 /// [TestCases.ListTestCaseResults][google.cloud.dialogflow.cx.v3.TestCases.ListTestCaseResults].
@@ -10579,6 +11043,17 @@ pub mod webhook {
         /// ```
         #[prost(bytes = "vec", repeated, tag = "5")]
         pub allowed_ca_certs: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
+        /// Optional. The OAuth configuration of the webhook. If specified,
+        /// Dialogflow will initiate the OAuth client credential flow to exchange an
+        /// access token from the 3rd party platform and put it in the auth header.
+        #[prost(message, optional, tag = "11")]
+        pub oauth_config: ::core::option::Option<generic_web_service::OAuthConfig>,
+        /// Optional. Indicate the auth token type generated from the [Diglogflow
+        /// service
+        /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
+        /// The generated token is sent in the Authorization header.
+        #[prost(enumeration = "generic_web_service::ServiceAgentAuth", tag = "12")]
+        pub service_agent_auth: i32,
         /// Optional. Type of the webhook.
         #[prost(enumeration = "generic_web_service::WebhookType", tag = "6")]
         pub webhook_type: i32,
@@ -10602,6 +11077,81 @@ pub mod webhook {
     }
     /// Nested message and enum types in `GenericWebService`.
     pub mod generic_web_service {
+        /// Represents configuration of OAuth client credential flow for 3rd party
+        /// API authentication.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct OAuthConfig {
+            /// Required. The client ID provided by the 3rd party platform.
+            #[prost(string, tag = "1")]
+            pub client_id: ::prost::alloc::string::String,
+            /// Required. The client secret provided by the 3rd party platform.
+            #[prost(string, tag = "2")]
+            pub client_secret: ::prost::alloc::string::String,
+            /// Required. The token endpoint provided by the 3rd party platform to
+            /// exchange an access token.
+            #[prost(string, tag = "3")]
+            pub token_endpoint: ::prost::alloc::string::String,
+            /// Optional. The OAuth scopes to grant.
+            #[prost(string, repeated, tag = "4")]
+            pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
+        /// Indicate the auth token type generated from the [Diglogflow service
+        /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ServiceAgentAuth {
+            /// Service agent auth type unspecified. Default to ID_TOKEN.
+            Unspecified = 0,
+            /// No token used.
+            None = 1,
+            /// Use [ID
+            /// token](<https://cloud.google.com/docs/authentication/token-types#id>)
+            /// generated from service agent. This can be used to access Cloud Function
+            /// and Cloud Run after you grant Invoker role to
+            /// `service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com`.
+            IdToken = 2,
+            /// Use [access
+            /// token](<https://cloud.google.com/docs/authentication/token-types#access>)
+            /// generated from service agent. This can be used to access other Google
+            /// Cloud APIs after you grant required roles to
+            /// `service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com`.
+            AccessToken = 3,
+        }
+        impl ServiceAgentAuth {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    ServiceAgentAuth::Unspecified => "SERVICE_AGENT_AUTH_UNSPECIFIED",
+                    ServiceAgentAuth::None => "NONE",
+                    ServiceAgentAuth::IdToken => "ID_TOKEN",
+                    ServiceAgentAuth::AccessToken => "ACCESS_TOKEN",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SERVICE_AGENT_AUTH_UNSPECIFIED" => Some(Self::Unspecified),
+                    "NONE" => Some(Self::None),
+                    "ID_TOKEN" => Some(Self::IdToken),
+                    "ACCESS_TOKEN" => Some(Self::AccessToken),
+                    _ => None,
+                }
+            }
+        }
         /// Represents the type of webhook configuration.
         #[derive(
             Clone,
@@ -10875,6 +11425,9 @@ pub struct WebhookRequest {
     pub sentiment_analysis_result: ::core::option::Option<
         webhook_request::SentimentAnalysisResult,
     >,
+    /// Information about the language of the request.
+    #[prost(message, optional, tag = "18")]
+    pub language_info: ::core::option::Option<LanguageInfo>,
     /// The original conversational query.
     #[prost(oneof = "webhook_request::Query", tags = "10, 11, 12, 14, 17")]
     pub query: ::core::option::Option<webhook_request::Query>,
@@ -10940,7 +11493,7 @@ pub mod webhook_request {
     }
     /// Represents the result of sentiment analysis.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SentimentAnalysisResult {
         /// Sentiment score between -1.0 (negative sentiment) and 1.0 (positive
         /// sentiment).
@@ -11257,6 +11810,22 @@ pub struct SessionInfo {
         ::prost::alloc::string::String,
         ::prost_types::Value,
     >,
+}
+/// Represents the language information of the request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LanguageInfo {
+    /// The language code specified in the original
+    /// [request][google.cloud.dialogflow.cx.v3.QueryInput.language_code].
+    #[prost(string, tag = "1")]
+    pub input_language_code: ::prost::alloc::string::String,
+    /// The language code detected for this request based on the user
+    /// conversation.
+    #[prost(string, tag = "2")]
+    pub resolved_language_code: ::prost::alloc::string::String,
+    /// The confidence score of the detected language between 0 and 1.
+    #[prost(float, tag = "3")]
+    pub confidence_score: f32,
 }
 /// Generated client implementations.
 pub mod webhooks_client {
@@ -12371,7 +12940,7 @@ pub mod experiment {
         /// A confidence interval is a range of possible values for the experiment
         /// objective you are trying to measure.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct ConfidenceInterval {
             /// The confidence level used to construct the interval, i.e. there is X%
             /// chance that the true value is within this interval.
@@ -12390,7 +12959,7 @@ pub mod experiment {
         }
         /// Metric and corresponding confidence intervals.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Metric {
             /// Ratio-based metric type. Only one of type or count_type is specified in
             /// each Metric.
@@ -12412,7 +12981,7 @@ pub mod experiment {
         pub mod metric {
             /// The actual value of the metric.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
             pub enum Value {
                 /// Ratio value of a metric.
                 #[prost(double, tag = "2")]
@@ -13694,12 +14263,18 @@ pub mod security_settings {
         #[prost(string, tag = "2")]
         pub audio_export_pattern: ::prost::alloc::string::String,
         /// Enable audio redaction if it is true.
+        /// Note that this only redacts end-user audio data;
+        /// Synthesised audio from the virtual agent is not redacted.
         #[prost(bool, tag = "3")]
         pub enable_audio_redaction: bool,
         /// File format for exported audio file. Currently only in telephony
         /// recordings.
         #[prost(enumeration = "audio_export_settings::AudioFormat", tag = "4")]
         pub audio_format: i32,
+        /// Whether to store TTS audio. By default, TTS audio from the virtual agent
+        /// is not exported.
+        #[prost(bool, tag = "6")]
+        pub store_tts_audio: bool,
     }
     /// Nested message and enum types in `AudioExportSettings`.
     pub mod audio_export_settings {
@@ -13755,7 +14330,7 @@ pub mod security_settings {
     /// Settings for exporting conversations to
     /// [Insights](<https://cloud.google.com/contact-center/insights/docs>).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct InsightsExportSettings {
         /// If enabled, we will automatically exports
         /// conversations to Insights and Insights runs its analyzers.
@@ -13927,13 +14502,16 @@ pub mod security_settings {
     /// purged due to retention policy, we may still hold it in backup storage for
     /// a few days without allowing direct readings.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum DataRetention {
         /// Retains the data for the specified number of days.
         /// User must set a value lower than Dialogflow's default 365d TTL (30 days
         /// for Agent Assist traffic), higher value will be ignored and use default.
         /// Setting a value higher than that has no effect. A missing value or
         /// setting to 0 also means we use default TTL.
+        /// When data retention configuration is changed, it only applies to the data
+        /// created after the change; the TTL of existing data created before the
+        /// change stays intact.
         #[prost(int32, tag = "6")]
         RetentionWindowDays(i32),
         /// Specifies the retention behavior defined by

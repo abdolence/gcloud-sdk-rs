@@ -108,7 +108,7 @@ pub mod cluster {
     pub mod control_plane {
         /// Configuration specific to clusters with a control plane hosted remotely.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Remote {}
         /// Configuration specific to clusters with a control plane hosted locally.
         ///
@@ -431,7 +431,7 @@ pub mod cluster {
     /// Configuration of the cluster survivability, e.g., for the case when network
     /// connectivity is lost.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SurvivabilityConfig {
         /// Optional. Time period that allows the cluster nodes to be rebooted and
         /// become functional without network connectivity to Google. The default 0
@@ -1038,7 +1038,7 @@ pub struct RecurringTimeWindow {
 }
 /// Represents an arbitrary window of time.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeWindow {
     /// The time that the window first starts.
     #[prost(message, optional, tag = "1")]

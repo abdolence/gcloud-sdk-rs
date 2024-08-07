@@ -48,7 +48,7 @@ pub struct WorkloadIdentityConfig {
 }
 /// Constraints applied to pods.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MaxPodsConstraint {
     /// Required. The maximum number of pods to schedule on a single node.
     #[prost(int64, tag = "1")]
@@ -247,7 +247,7 @@ pub mod logging_component_config {
 }
 /// Parameters that describe the Monitoring configuration in a cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MonitoringConfig {
     /// Enable Google Cloud Managed Service for Prometheus in the cluster.
     #[prost(message, optional, tag = "2")]
@@ -256,7 +256,7 @@ pub struct MonitoringConfig {
 /// ManagedPrometheusConfig defines the configuration for
 /// Google Cloud Managed Service for Prometheus.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ManagedPrometheusConfig {
     /// Enable Managed Collection.
     #[prost(bool, tag = "1")]
@@ -264,7 +264,7 @@ pub struct ManagedPrometheusConfig {
 }
 /// Configuration for Binary Authorization.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BinaryAuthorization {
     /// Mode of operation for binauthz policy evaluation. If unspecified, defaults
     /// to DISABLED.
@@ -1899,7 +1899,7 @@ pub mod aws_node_pool {
 /// 3. (max_surge + max_unavailable) determines the level of parallelism (i.e.,
 /// the number of nodes being updated at the same time).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpdateSettings {
     /// Optional. Settings for surge update.
     #[prost(message, optional, tag = "1")]
@@ -1907,7 +1907,7 @@ pub struct UpdateSettings {
 }
 /// SurgeSettings contains the parameters for Surge update.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SurgeSettings {
     /// Optional. The maximum number of nodes that can be created beyond the
     /// current size of the node pool during the update process.
@@ -1922,7 +1922,7 @@ pub struct SurgeSettings {
 /// AwsNodeManagement defines the set of node management features turned on for
 /// an AWS node pool.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AwsNodeManagement {
     /// Optional. Whether or not the nodes will be automatically repaired. When set
     /// to true, the nodes in this node pool will be monitored and if they fail
@@ -2015,7 +2015,7 @@ pub struct AwsNodeConfig {
 /// AwsNodePoolAutoscaling contains information required by cluster autoscaler
 /// to adjust the size of the node pool to the current cluster usage.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AwsNodePoolAutoscaling {
     /// Required. Minimum number of nodes in the node pool. Must be greater than or
     /// equal to 1 and less than or equal to max_node_count.
@@ -2152,7 +2152,7 @@ pub struct AwsConfigEncryption {
 ///   * T3 instances that use the unlimited CPU credit option don't support host
 ///   tenancy.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AwsInstancePlacement {
     /// Required. The tenancy for instance.
     #[prost(enumeration = "aws_instance_placement::Tenancy", tag = "1")]
@@ -3746,7 +3746,7 @@ pub struct AzureConfigEncryption {
 }
 /// Configuration for Azure Disks.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AzureDiskTemplate {
     /// Optional. The size of the disk, in GiBs.
     ///
@@ -4011,7 +4011,7 @@ pub mod azure_node_pool {
 /// AzureNodeManagement defines the set of node management features turned on for
 /// an Azure node pool.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AzureNodeManagement {
     /// Optional. Whether or not the nodes will be automatically repaired. When set
     /// to true, the nodes in this node pool will be monitored and if they fail
@@ -4082,7 +4082,7 @@ pub struct AzureNodeConfig {
 /// The Kubernetes cluster autoscaler will automatically adjust the
 /// size of the node pool based on the cluster load.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AzureNodePoolAutoscaling {
     /// Required. Minimum number of nodes in the node pool. Must be greater than or
     /// equal to 1 and less than or equal to max_node_count.

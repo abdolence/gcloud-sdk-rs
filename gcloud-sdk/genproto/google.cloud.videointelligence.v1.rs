@@ -154,7 +154,7 @@ pub struct FaceDetectionConfig {
 }
 /// Config for PERSON_DETECTION.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PersonDetectionConfig {
     /// Whether bounding boxes are included in the person detection annotation
     /// output.
@@ -200,7 +200,7 @@ pub struct TextDetectionConfig {
 }
 /// Video segment.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VideoSegment {
     /// Time-offset, relative to the beginning of the video,
     /// corresponding to the start of the segment (inclusive).
@@ -213,7 +213,7 @@ pub struct VideoSegment {
 }
 /// Video segment level annotation results for label detection.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LabelSegment {
     /// Video segment where a label was detected.
     #[prost(message, optional, tag = "1")]
@@ -224,7 +224,7 @@ pub struct LabelSegment {
 }
 /// Video frame level annotation results for label detection.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LabelFrame {
     /// Time-offset, relative to the beginning of the video, corresponding to the
     /// video frame for this location.
@@ -275,7 +275,7 @@ pub struct LabelAnnotation {
 }
 /// Video frame level annotation results for explicit content.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExplicitContentFrame {
     /// Time-offset, relative to the beginning of the video, corresponding to the
     /// video frame for this location.
@@ -302,7 +302,7 @@ pub struct ExplicitContentAnnotation {
 /// The normalized vertex coordinates are relative to the original image.
 /// Range: \[0, 1\].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NormalizedBoundingBox {
     /// Left X coordinate.
     #[prost(float, tag = "1")]
@@ -344,7 +344,7 @@ pub struct PersonDetectionAnnotation {
 }
 /// Video segment level annotation results for face detection.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FaceSegment {
     /// Video segment where a face was detected.
     #[prost(message, optional, tag = "1")]
@@ -721,7 +721,7 @@ pub struct WordInfo {
 /// NOTE: the normalized vertex coordinates are relative to the original image
 /// and range from 0 to 1.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NormalizedVertex {
     /// X coordinate.
     #[prost(float, tag = "1")]
@@ -801,7 +801,7 @@ pub struct TextAnnotation {
 /// Video frame level annotations for object detection and tracking. This field
 /// stores per frame location, time offset, and confidence.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ObjectTrackingFrame {
     /// The normalized bounding box location of this object track for the frame.
     #[prost(message, optional, tag = "1")]
@@ -839,7 +839,7 @@ pub mod object_tracking_annotation {
     /// Different representation of tracking info in non-streaming batch
     /// and streaming modes.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum TrackInfo {
         /// Non-streaming batch mode ONLY.
         /// Each object track corresponds to one video segment where it appears.

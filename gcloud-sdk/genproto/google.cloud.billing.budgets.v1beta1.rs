@@ -82,7 +82,7 @@ pub mod budget_amount {
 /// a
 /// [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LastPeriodAmount {}
 /// ThresholdRule contains the definition of a threshold. Threshold rules define
 /// the triggering events used to generate a budget notification email. When a
@@ -107,7 +107,7 @@ pub struct LastPeriodAmount {}
 /// [set budget threshold rules and
 /// actions](<https://cloud.google.com/billing/docs/how-to/budgets#budget-actions>).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ThresholdRule {
     /// Required. Send an alert when this threshold is exceeded.
     /// This is a 1.0-based percentage, so 0.5 = 50%.
@@ -357,7 +357,7 @@ pub mod filter {
     /// usage that occurs during this time period should be included in the budget.
     /// If not set, the <code>usage_period</code> defaults to CalendarPeriod.MONTH.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum UsagePeriod {
         /// Optional. Specifies to track usage for recurring calendar period.
         /// For example, assume that CalendarPeriod.QUARTER is set. The budget will
@@ -375,7 +375,7 @@ pub mod filter {
 }
 /// All date times begin at 12 AM US and Canadian Pacific Time (UTC-8).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomPeriod {
     /// Required. The start date must be after January 1, 2017.
     #[prost(message, optional, tag = "1")]

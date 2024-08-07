@@ -305,7 +305,7 @@ pub mod service {
 /// Maintenance window. This specifies when Dataproc Metastore
 /// may perform system maintenance operation to the service.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MaintenanceWindow {
     /// The hour of day (0-23) when the window starts.
     #[prost(message, optional, tag = "1")]
@@ -526,7 +526,7 @@ pub mod network_config {
 }
 /// Telemetry Configuration for the Dataproc Metastore service.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TelemetryConfig {
     /// The output format of the Dataproc Metastore service's logs.
     #[prost(enumeration = "telemetry_config::LogFormat", tag = "1")]
@@ -1038,7 +1038,7 @@ pub mod restore {
 }
 /// Represents the scaling configuration of a metastore service.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ScalingConfig {
     /// Represents either a predetermined instance size or a numeric
     /// scaling factor.
@@ -1105,7 +1105,7 @@ pub mod scaling_config {
     /// Represents either a predetermined instance size or a numeric
     /// scaling factor.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ScalingModel {
         /// An enum of readable instance sizes, with each instance size mapping to a
         /// float value (e.g. InstanceSize.EXTRA_SMALL = scaling_factor(0.1))
@@ -1683,7 +1683,7 @@ pub mod location_metadata {
 }
 /// The specification of database dump to import from or export to.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DatabaseDumpSpec {}
 /// Nested message and enum types in `DatabaseDumpSpec`.
 pub mod database_dump_spec {
@@ -1798,7 +1798,7 @@ pub struct MoveTableToDatabaseRequest {
 /// Response message for
 /// [DataprocMetastore.MoveTableToDatabase][google.cloud.metastore.v1.DataprocMetastore.MoveTableToDatabase].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MoveTableToDatabaseResponse {}
 /// Request message for
 /// [DataprocMetastore.AlterMetadataResourceLocation][google.cloud.metastore.v1.DataprocMetastore.AlterMetadataResourceLocation].
@@ -1827,7 +1827,7 @@ pub struct AlterMetadataResourceLocationRequest {
 /// Response message for
 /// [DataprocMetastore.AlterMetadataResourceLocation][google.cloud.metastore.v1.DataprocMetastore.AlterMetadataResourceLocation].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AlterMetadataResourceLocationResponse {}
 /// Generated client implementations.
 pub mod dataproc_metastore_client {

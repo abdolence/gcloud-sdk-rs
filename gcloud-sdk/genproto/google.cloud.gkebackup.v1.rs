@@ -38,7 +38,7 @@ pub struct EncryptionKey {
 }
 /// Message to encapsulate VolumeType enum.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VolumeTypeEnum {}
 /// Nested message and enum types in `VolumeTypeEnum`.
 pub mod volume_type_enum {
@@ -446,7 +446,7 @@ pub struct BackupPlan {
 pub mod backup_plan {
     /// RetentionPolicy defines a Backup retention policy for a BackupPlan.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RetentionPolicy {
         /// Optional. Minimum age for Backups created via this BackupPlan (in days).
         /// This field MUST be an integer value between 0-90 (inclusive).
@@ -1239,7 +1239,7 @@ pub mod restore_config {
     }
     /// Binds resources in the scope to the given VolumeDataRestorePolicy.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct VolumeDataRestorePolicyBinding {
         /// Required. The VolumeDataRestorePolicy to apply when restoring volumes in
         /// scope.
@@ -1251,7 +1251,7 @@ pub mod restore_config {
     /// Nested message and enum types in `VolumeDataRestorePolicyBinding`.
     pub mod volume_data_restore_policy_binding {
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Scope {
             /// The volume type, as determined by the PVC's bound PV,
             /// to apply the policy to.

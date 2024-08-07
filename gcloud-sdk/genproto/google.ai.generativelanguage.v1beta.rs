@@ -251,7 +251,7 @@ pub struct Tool {
 /// See also `ExecutableCode` and `CodeExecutionResult` which are only generated
 /// when using this tool.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CodeExecution {}
 /// The Tool configuration containing parameters for specifying `Tool` use
 /// in the request.
@@ -549,7 +549,7 @@ pub struct CachedContent {
 pub mod cached_content {
     /// Metadata on the usage of the cached content.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UsageMetadata {
         /// Total number of tokens that the cached content consumes.
         #[prost(int32, tag = "1")]
@@ -557,7 +557,7 @@ pub mod cached_content {
     }
     /// Specifies when this resource will expire.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Expiration {
         /// Timestamp in UTC of when this resource is considered expired.
         /// This is *always* provided on output, regardless of what was sent
@@ -969,7 +969,7 @@ pub mod content_filter {
 /// well as the lowest HarmProbability that should be allowed in order to return
 /// a result.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SafetyFeedback {
     /// Safety rating evaluated from content.
     #[prost(message, optional, tag = "1")]
@@ -986,7 +986,7 @@ pub struct SafetyFeedback {
 /// harm categories and the probability of the harm classification is included
 /// here.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SafetyRating {
     /// Required. The category for this rating.
     #[prost(enumeration = "HarmCategory", tag = "3")]
@@ -1060,7 +1060,7 @@ pub mod safety_rating {
 /// Passing a safety setting for a category changes the allowed probability that
 /// content is blocked.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SafetySetting {
     /// Required. The category for this setting.
     #[prost(enumeration = "HarmCategory", tag = "3")]
@@ -1375,7 +1375,7 @@ pub struct CountMessageTokensRequest {
 ///
 /// It returns the model's `token_count` for the `prompt`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CountMessageTokensResponse {
     /// The number of tokens that the `model` tokenizes the `prompt` into.
     ///
@@ -1635,7 +1635,7 @@ pub mod file {
     }
     /// Metadata for the File.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Metadata {
         /// Output only. Metadata for a video.
         #[prost(message, tag = "12")]
@@ -1644,7 +1644,7 @@ pub mod file {
 }
 /// Metadata for a video `File`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VideoMetadata {
     /// Duration of the video.
     #[prost(message, optional, tag = "1")]
@@ -2469,7 +2469,7 @@ pub mod generate_content_response {
     }
     /// Metadata on the generation request's token usage.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UsageMetadata {
         /// Number of tokens in the prompt. When cached_content is set, this is still
         /// the total effective prompt size. I.e. this includes the number of tokens
@@ -2964,7 +2964,7 @@ pub struct CountTokensRequest {
 ///
 /// It returns the model's `token_count` for the `prompt`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CountTokensResponse {
     /// The number of tokens that the `model` tokenizes the `prompt` into.
     ///
@@ -3561,7 +3561,7 @@ pub struct TuningTask {
 /// Hyperparameters controlling the tuning process. Read more at
 /// <https://ai.google.dev/docs/model_tuning_guidance>
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Hyperparameters {
     /// Immutable. The number of training epochs. An epoch is one pass through the
     /// training data. If not set, a default of 5 will be used.
@@ -3582,7 +3582,7 @@ pub struct Hyperparameters {
 pub mod hyperparameters {
     /// Options for specifying learning rate during tuning.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum LearningRateOption {
         /// Optional. Immutable. The learning rate hyperparameter for tuning.
         /// If not set, a default of 0.001 or 0.0002 will be calculated based on the
@@ -3650,7 +3650,7 @@ pub mod tuning_example {
 }
 /// Record for a single tuning step.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TuningSnapshot {
     /// Output only. The tuning step.
     #[prost(int32, tag = "1")]
@@ -4370,7 +4370,7 @@ pub struct TransferOwnershipRequest {
 }
 /// Response from `TransferOwnership`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TransferOwnershipResponse {}
 /// Generated client implementations.
 pub mod permission_service_client {
@@ -5958,7 +5958,7 @@ pub struct CountTextTokensRequest {
 ///
 /// It returns the model's `token_count` for the `prompt`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CountTextTokensResponse {
     /// The number of tokens that the `model` tokenizes the `prompt` into.
     ///

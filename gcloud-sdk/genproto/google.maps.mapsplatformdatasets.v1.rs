@@ -328,6 +328,39 @@ pub struct ListDatasetsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Request to list detailed errors belonging to a dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchDatasetErrorsRequest {
+    /// Required. The name of the dataset to list all the errors for.
+    /// Format: projects/{project}/datasets/{dataset_id}
+    #[prost(string, tag = "1")]
+    pub dataset: ::prost::alloc::string::String,
+    /// The maximum number of errors to return per page.
+    ///
+    /// The maximum value is 500; values above 500 will be capped to 500.
+    ///
+    /// If unspecified, at most 50 errors will be returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The page token, received from a previous ListDatasetErrors call.
+    /// Provide this to retrieve the subsequent page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response object of FetchDatasetErrors.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchDatasetErrorsResponse {
+    /// A token that can be sent as `page_token` to retrieve the next page.
+    ///
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// The errors associated with a dataset.
+    #[prost(message, repeated, tag = "3")]
+    pub errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+}
 /// Request to delete a dataset.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -503,6 +536,37 @@ pub mod maps_platform_datasets_client {
                     GrpcMethod::new(
                         "google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets",
                         "GetDataset",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets all the errors of a dataset.
+        pub async fn fetch_dataset_errors(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchDatasetErrorsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FetchDatasetErrorsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets/FetchDatasetErrors",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets",
+                        "FetchDatasetErrors",
                     ),
                 );
             self.inner.unary(req, path, codec).await

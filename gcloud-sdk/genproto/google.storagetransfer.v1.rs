@@ -390,7 +390,7 @@ pub mod aws_s3_compatible_data {
     /// may contain some attributes that do not apply to all S3-compatible data
     /// providers. When not specified, S3CompatibleMetadata is used by default.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum DataProvider {
         /// A S3 compatible metadata.
         #[prost(message, tag = "4")]
@@ -400,7 +400,7 @@ pub mod aws_s3_compatible_data {
 /// S3CompatibleMetadata contains the metadata fields that apply to the basic
 /// types of S3-compatible data providers.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct S3CompatibleMetadata {
     /// Specifies the authentication and authorization method used by the storage
     /// service. When not specified, Transfer Service will attempt to determine
@@ -624,7 +624,7 @@ pub struct AgentPool {
 pub mod agent_pool {
     /// Specifies a bandwidth limit for an agent pool.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BandwidthLimit {
         /// Bandwidth rate in megabytes per second, distributed across all the agents
         /// in the pool.
@@ -684,7 +684,7 @@ pub mod agent_pool {
 }
 /// TransferOptions define the actions to be performed on objects in a transfer.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TransferOptions {
     /// When to overwrite objects that already exist in the sink. The default is
     /// that only objects that are different from the source are ovewritten. If
@@ -861,7 +861,7 @@ pub mod transfer_spec {
 }
 /// Specifies the metadata options for running a transfer.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MetadataOptions {
     /// Specifies how symlinks should be handled by the transfer. By default,
     /// symlinks are not preserved. Only applicable to transfers involving
@@ -1354,7 +1354,7 @@ pub struct TransferManifest {
 }
 /// Transfers can be scheduled to recur or to run just once.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Schedule {
     /// Required. The start date of a transfer. Date boundaries are determined
     /// relative to UTC time. If `schedule_start_date` and
@@ -1619,7 +1619,7 @@ pub struct ErrorSummary {
 }
 /// A collection of counters that report the progress of a transfer operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TransferCounters {
     /// Objects found in the data source that are scheduled to be transferred,
     /// excluding any that are filtered based on object conditions or skipped due

@@ -245,7 +245,7 @@ pub struct LogPlayerReportsRequest {
 ///
 /// This method returns no data upon success.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LogPlayerReportsResponse {}
 /// A request for logging impressions.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -273,7 +273,7 @@ pub struct LogImpressionsRequest {
 /// [LogImpressions][google.maps.playablelocations.v3.PlayableLocations.LogImpressions]
 /// method. This method returns no data upon success.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LogImpressionsResponse {}
 /// Generated client implementations.
 pub mod playable_locations_client {

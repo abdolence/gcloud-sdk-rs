@@ -332,7 +332,7 @@ pub mod pinned_dimension {
 /// Parameters that control the sensitivity and other options for the time series
 /// forecast.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ForecastParams {
     /// Optional. Penalize variations between the actual and forecasted values smaller than
     /// this. For more information about how this parameter affects the score, see
@@ -441,7 +441,7 @@ pub mod forecast_params {
 }
 /// A point in a time series.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeseriesPoint {
     /// The timestamp of this point.
     #[prost(message, optional, tag = "1")]

@@ -428,7 +428,7 @@ pub mod aggregation_query {
         /// The `COUNT(*)` aggregation function operates on the entire entity
         /// so it does not require a field reference.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Count {
             /// Optional. Optional constraint on the maximum number of entities to
             /// count.
@@ -1019,7 +1019,7 @@ pub struct AggregationResultBatch {
 }
 /// Explain options for the query.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExplainOptions {
     /// Optional. Whether to execute this query.
     ///
@@ -1342,7 +1342,7 @@ pub struct RollbackRequest {
 /// [Datastore.Rollback][google.datastore.v1.Datastore.Rollback]. (an empty
 /// message).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RollbackResponse {}
 /// The request for [Datastore.Commit][google.datastore.v1.Datastore.Commit].
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1512,7 +1512,7 @@ pub struct ReserveIdsRequest {
 /// The response for
 /// [Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReserveIdsResponse {}
 /// A mutation to apply to an entity.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1580,7 +1580,7 @@ pub mod mutation {
     /// with the current version of the entity on the server. Conflicting mutations
     /// are not applied, and are marked as such in MutationResult.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ConflictDetectionStrategy {
         /// The version of the entity that this mutation is being applied
         /// to. If this does not match the current version on the server, the
@@ -1771,7 +1771,7 @@ pub mod transaction_options {
     }
     /// Options specific to read-only transactions.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ReadOnly {
         /// Reads entities at the given time.
         ///

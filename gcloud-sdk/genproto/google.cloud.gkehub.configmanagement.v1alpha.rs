@@ -128,7 +128,7 @@ pub struct PolicyController {
 }
 /// Configuration for Binauthz
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BinauthzConfig {
     /// Whether binauthz is enabled in this cluster.
     #[prost(bool, tag = "1")]
@@ -136,7 +136,7 @@ pub struct BinauthzConfig {
 }
 /// Configuration for Hierarchy Controller
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HierarchyControllerConfig {
     /// Whether Hierarchy Controller is enabled in this cluster.
     #[prost(bool, tag = "1")]
@@ -150,7 +150,7 @@ pub struct HierarchyControllerConfig {
 }
 /// Deployment state for Hierarchy Controller
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HierarchyControllerDeploymentState {
     /// The deployment state for open source HNC (e.g. v0.7.0-hc.0)
     #[prost(enumeration = "DeploymentState", tag = "1")]
@@ -243,7 +243,7 @@ pub struct ConfigSyncVersion {
 }
 /// The state of ConfigSync's deployment on a cluster
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ConfigSyncDeploymentState {
     /// Deployment state of the importer pod
     #[prost(enumeration = "DeploymentState", tag = "1")]
@@ -448,7 +448,7 @@ pub struct BinauthzVersion {
 }
 /// State of Policy Controller installation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GatekeeperDeploymentState {
     /// Status of gatekeeper-controller-manager pod.
     #[prost(enumeration = "DeploymentState", tag = "1")]

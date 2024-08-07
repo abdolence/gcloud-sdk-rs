@@ -132,7 +132,7 @@ pub mod secret {
     /// is recommended for granting time-based permissions because the operation
     /// can be reversed.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Expiration {
         /// Optional. Timestamp in UTC when the
         /// [Secret][google.cloud.secretmanager.v1beta2.Secret] is scheduled to
@@ -492,7 +492,7 @@ pub struct Topic {
 /// the Secret. [Secret.topics][google.cloud.secretmanager.v1beta2.Secret.topics]
 /// must be set to configure rotation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Rotation {
     /// Optional. Timestamp in UTC at which the
     /// [Secret][google.cloud.secretmanager.v1beta2.Secret] is scheduled to rotate.

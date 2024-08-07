@@ -388,7 +388,7 @@ pub mod annotate_assessment_request {
 }
 /// Empty response for AnnotateAssessment.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AnnotateAssessmentResponse {}
 /// Information about a verification endpoint that can be used for 2FA.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1124,7 +1124,7 @@ pub mod token_properties {
 }
 /// Assessment for Fraud Prevention.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FraudPreventionAssessment {
     /// Output only. Probability of this transaction being fraudulent. Summarizes
     /// the combined risk of attack vectors below. Values are from 0.0 (lowest)
@@ -1154,7 +1154,7 @@ pub mod fraud_prevention_assessment {
     /// Information about stolen instrument fraud, where the user is not the
     /// legitimate owner of the instrument being used for the purchase.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct StolenInstrumentVerdict {
         /// Output only. Probability of this transaction being executed with a stolen
         /// instrument. Values are from 0.0 (lowest) to 1.0 (highest).
@@ -1164,7 +1164,7 @@ pub mod fraud_prevention_assessment {
     /// Information about card testing fraud, where an adversary is testing
     /// fraudulently obtained cards or brute forcing their details.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CardTestingVerdict {
         /// Output only. Probability of this transaction attempt being part of a card
         /// testing attack. Values are from 0.0 (lowest) to 1.0 (highest).
@@ -1173,7 +1173,7 @@ pub mod fraud_prevention_assessment {
     }
     /// Information about behavioral trust of the transaction.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BehavioralTrustVerdict {
         /// Output only. Probability of this transaction attempt being executed in a
         /// behaviorally trustworthy way. Values are from 0.0 (lowest) to 1.0
@@ -1198,7 +1198,7 @@ pub struct FraudSignals {
 pub mod fraud_signals {
     /// Signals describing the user involved in this transaction.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UserSignals {
         /// Output only. This user (based on email, phone, and other identifiers) has
         /// been seen on the internet for at least this number of days.
@@ -1587,7 +1587,7 @@ pub struct ReorderFirewallPoliciesRequest {
 }
 /// The reorder firewall policies response message.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReorderFirewallPoliciesResponse {}
 /// The migrate key request message.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1703,7 +1703,7 @@ pub mod key {
 }
 /// Options for user acceptance testing.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TestingOptions {
     /// Optional. All assessments for this Key will return this score. Must be
     /// between 0 (likely not legitimate) and 1 (likely legitimate) inclusive.
@@ -1976,7 +1976,7 @@ pub struct ScoreMetrics {
 }
 /// Metrics related to challenges.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ChallengeMetrics {
     /// Count of reCAPTCHA checkboxes or badges rendered. This is mostly equivalent
     /// to a count of pageloads for pages that include reCAPTCHA.
@@ -2023,12 +2023,12 @@ pub struct FirewallAction {
 pub mod firewall_action {
     /// An allow action continues processing a request unimpeded.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AllowAction {}
     /// A block action serves an HTTP error code a prevents the request from
     /// hitting the backend.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BlockAction {}
     /// An include reCAPTCHA script action involves injecting reCAPTCHA JavaScript
     /// code into the HTML returned by the site backend. This reCAPTCHA
@@ -2036,12 +2036,12 @@ pub mod firewall_action {
     /// issuing tokens as a cookie within the site domain, and enabling their
     /// utilization in subsequent page requests.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct IncludeRecaptchaScriptAction {}
     /// A redirect action returns a 307 (temporary redirect) response, pointing
     /// the user to a ReCaptcha interstitial page to attach a token.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RedirectAction {}
     /// A substitute action transparently serves a different page than the one
     /// requested.
@@ -2291,7 +2291,7 @@ pub struct RelatedAccountGroup {
 /// Settings specific to keys that can be used for WAF (Web Application
 /// Firewall).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WafSettings {
     /// Required. The WAF service that uses this key.
     #[prost(enumeration = "waf_settings::WafService", tag = "1")]

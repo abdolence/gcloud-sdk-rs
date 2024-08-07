@@ -1096,7 +1096,7 @@ pub mod case_response {
 }
 /// The adjusment flag and reason code for raising complaint.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RaiseComplaintAdjustment {
     /// Required. The adjustment flag in URCS for the complaint transaction. This
     /// maps to `reqAdjFlag` in complaint request and `respAdjFlag` in complaint
@@ -1245,7 +1245,7 @@ pub mod raise_complaint_adjustment {
 }
 /// The adjusment flag and reason code for resolving the complaint.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ResolveComplaintAdjustment {
     /// Required. The adjustment flag in URCS for the complaint transaction. This
     /// maps to `reqAdjFlag` in complaint request and `respAdjFlag` in complaint
@@ -1443,7 +1443,7 @@ pub mod resolve_complaint_adjustment {
 }
 /// The adjusment flag and reason code for raising dispute.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RaiseDisputeAdjustment {
     /// Required. The adjustment flag in URCS for the complaint transaction. This
     /// maps to `reqAdjFlag` in dispute request and `respAdjFlag` in dispute
@@ -1715,7 +1715,7 @@ pub mod raise_dispute_adjustment {
 }
 /// The adjusment flag and reason code for resolving the dispute.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ResolveDisputeAdjustment {
     /// Required. The adjustment flag in URCS for the complaint transaction. This
     /// maps to `reqAdjFlag` in dispute request and `respAdjFlag` in dispute
@@ -2277,19 +2277,19 @@ pub mod resolve_dispute_adjustment {
 }
 /// Metadata for CreateComplaint.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateComplaintMetadata {}
 /// Metadata for ResolveComplaint.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ResolveComplaintMetadata {}
 /// Metadata for CreateDispute.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateDisputeMetadata {}
 /// Metadata for ResolveDispute.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ResolveDisputeMetadata {}
 /// The subtype of the complaint or dispute.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3674,7 +3674,7 @@ pub struct ExportComplaintTransactionsResponse {
 }
 /// Metadata for ExportFinancialTransactions.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportFinancialTransactionsMetadata {
     /// Output only. The time at which the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -3682,7 +3682,7 @@ pub struct ExportFinancialTransactionsMetadata {
 }
 /// Metadata for ExportMandateTransactions.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportMandateTransactionsMetadata {
     /// Output only. The time at which the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -3690,7 +3690,7 @@ pub struct ExportMandateTransactionsMetadata {
 }
 /// Metadata for ExportMetadataTransactions.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportMetadataTransactionsMetadata {
     /// Output only. The time at which the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -3698,7 +3698,7 @@ pub struct ExportMetadataTransactionsMetadata {
 }
 /// Metadata for ExportComplaintTransactions.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportComplaintTransactionsMetadata {
     /// Output only. The time at which the operation was created.
     #[prost(message, optional, tag = "1")]

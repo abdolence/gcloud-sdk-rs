@@ -120,7 +120,7 @@ pub struct AttackExposure {
     pub latest_calculation_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The resource name of the attack path simulation result that contains the
     /// details regarding this attack exposure score.
-    /// Example: organizations/123/simulations/456/attackExposureResults/789
+    /// Example: `organizations/123/simulations/456/attackExposureResults/789`
     #[prost(string, tag = "3")]
     pub attack_exposure_result: ::prost::alloc::string::String,
     /// Output only. What state this AttackExposure is in. This captures whether or
@@ -210,11 +210,11 @@ pub mod attack_path {
         /// The name of the resource at this point in the attack path.
         /// The format of the name follows the Cloud Asset Inventory [resource
         /// name
-        /// format]("<https://cloud.google.com/asset-inventory/docs/resource-name-format">)
+        /// format](<https://cloud.google.com/asset-inventory/docs/resource-name-format>)
         #[prost(string, tag = "1")]
         pub resource: ::prost::alloc::string::String,
         /// The [supported resource
-        /// type](<https://cloud.google.com/asset-inventory/docs/supported-asset-types">)
+        /// type](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
         #[prost(string, tag = "2")]
         pub resource_type: ::prost::alloc::string::String,
         /// Human-readable name of this resource.
@@ -239,7 +239,7 @@ pub mod attack_path {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct PathNodeAssociatedFinding {
             /// Canonical name of the associated findings. Example:
-            /// organizations/123/sources/456/findings/789
+            /// `organizations/123/sources/456/findings/789`
             #[prost(string, tag = "1")]
             pub canonical_finding: ::prost::alloc::string::String,
             /// The additional taxonomy group within findings from a given source.
@@ -404,7 +404,7 @@ pub struct BackupDisasterRecovery {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryExport {
-    /// The relative resource name of this export. See:
+    /// Identifier. The relative resource name of this export. See:
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name.>
     /// The following list shows some examples:
     ///
@@ -445,7 +445,7 @@ pub struct BigQueryExport {
     pub filter: ::prost::alloc::string::String,
     /// The dataset to write findings' updates to. Its format is
     /// "projects/\[project_id\]/datasets/\[bigquery_dataset_id\]".
-    /// BigQuery Dataset unique ID  must contain only letters (a-z, A-Z), numbers
+    /// BigQuery dataset unique ID  must contain only letters (a-z, A-Z), numbers
     /// (0-9), or underscores (_).
     #[prost(string, tag = "4")]
     pub dataset: ::prost::alloc::string::String,
@@ -522,7 +522,7 @@ pub struct SecurityPolicy {
 }
 /// Information about the requests relevant to the finding.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Requests {
     /// For 'Increasing deny ratio', the ratio is the denied traffic divided by the
     /// allowed traffic. For 'Allowed traffic spike', the ratio is the allowed
@@ -542,7 +542,7 @@ pub struct Requests {
 /// Information about [Google Cloud Armor Adaptive
 /// Protection](<https://cloud.google.com/armor/docs/cloud-armor-overview#google-cloud-armor-adaptive-protection>).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AdaptiveProtection {
     /// A score of 0 means that there is low confidence that the detected event is
     /// an actual attack. A score of 1 means that there is high confidence that the
@@ -1732,7 +1732,7 @@ pub mod mitre_attack {
     }
     /// MITRE ATT&CK techniques that can be referenced by SCC findings.
     /// See: <https://attack.mitre.org/techniques/enterprise/>
-    /// Next ID: 63
+    /// Next ID: 65
     #[derive(
         Clone,
         Copy,
@@ -1766,10 +1766,14 @@ pub mod mitre_attack {
         UnixShell = 7,
         /// T1059.006
         Python = 59,
+        /// T1068
+        ExploitationForPrivilegeEscalation = 63,
         /// T1069
         PermissionGroupsDiscovery = 18,
         /// T1069.003
         CloudGroups = 19,
+        /// T1070.004
+        IndicatorRemovalFileDeletion = 64,
         /// T1071
         ApplicationLayerProtocol = 45,
         /// T1071.004
@@ -1864,7 +1868,7 @@ pub mod mitre_attack {
         ActiveScanning = 1,
         /// T1595.001
         ScanningIpBlocks = 2,
-        /// T1613
+        /// T1609
         ContainerAdministrationCommand = 60,
         /// T1611
         EscapeToHost = 61,
@@ -1896,8 +1900,14 @@ pub mod mitre_attack {
                 }
                 Technique::UnixShell => "UNIX_SHELL",
                 Technique::Python => "PYTHON",
+                Technique::ExploitationForPrivilegeEscalation => {
+                    "EXPLOITATION_FOR_PRIVILEGE_ESCALATION"
+                }
                 Technique::PermissionGroupsDiscovery => "PERMISSION_GROUPS_DISCOVERY",
                 Technique::CloudGroups => "CLOUD_GROUPS",
+                Technique::IndicatorRemovalFileDeletion => {
+                    "INDICATOR_REMOVAL_FILE_DELETION"
+                }
                 Technique::ApplicationLayerProtocol => "APPLICATION_LAYER_PROTOCOL",
                 Technique::Dns => "DNS",
                 Technique::SoftwareDeploymentTools => "SOFTWARE_DEPLOYMENT_TOOLS",
@@ -1990,8 +2000,14 @@ pub mod mitre_attack {
                 }
                 "UNIX_SHELL" => Some(Self::UnixShell),
                 "PYTHON" => Some(Self::Python),
+                "EXPLOITATION_FOR_PRIVILEGE_ESCALATION" => {
+                    Some(Self::ExploitationForPrivilegeEscalation)
+                }
                 "PERMISSION_GROUPS_DISCOVERY" => Some(Self::PermissionGroupsDiscovery),
                 "CLOUD_GROUPS" => Some(Self::CloudGroups),
+                "INDICATOR_REMOVAL_FILE_DELETION" => {
+                    Some(Self::IndicatorRemovalFileDeletion)
+                }
                 "APPLICATION_LAYER_PROTOCOL" => Some(Self::ApplicationLayerProtocol),
                 "DNS" => Some(Self::Dns),
                 "SOFTWARE_DEPLOYMENT_TOOLS" => Some(Self::SoftwareDeploymentTools),
@@ -2332,6 +2348,9 @@ pub struct Cve {
     /// published.
     #[prost(bool, tag = "8")]
     pub zero_day: bool,
+    /// Date the first publicly available exploit or PoC was released.
+    #[prost(message, optional, tag = "9")]
+    pub exploit_release_date: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `Cve`.
 pub mod cve {
@@ -2463,7 +2482,7 @@ pub struct Reference {
 }
 /// Common Vulnerability Scoring System version 3.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Cvssv3 {
     /// The base score is a function of the base metric scores.
     #[prost(double, tag = "1")]
@@ -2958,6 +2977,9 @@ pub struct Finding {
     /// shouldn't set the value of mute.
     #[prost(enumeration = "finding::Mute", tag = "15")]
     pub mute: i32,
+    /// Output only. The mute information regarding this finding.
+    #[prost(message, optional, tag = "53")]
+    pub mute_info: ::core::option::Option<finding::MuteInfo>,
     /// The class of the finding.
     #[prost(enumeration = "finding::FindingClass", tag = "16")]
     pub finding_class: i32,
@@ -3115,6 +3137,50 @@ pub struct Finding {
 }
 /// Nested message and enum types in `Finding`.
 pub mod finding {
+    /// Mute information about the finding, including whether the finding has a
+    /// static mute or any matching dynamic mute rules.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MuteInfo {
+        /// If set, the static mute applied to this finding. Static mutes override
+        /// dynamic mutes. If unset, there is no static mute.
+        #[prost(message, optional, tag = "1")]
+        pub static_mute: ::core::option::Option<mute_info::StaticMute>,
+        /// The list of dynamic mute rules that currently match the finding.
+        #[prost(message, repeated, tag = "2")]
+        pub dynamic_mute_records: ::prost::alloc::vec::Vec<mute_info::DynamicMuteRecord>,
+    }
+    /// Nested message and enum types in `MuteInfo`.
+    pub mod mute_info {
+        /// Information about the static mute state. A static mute state overrides
+        /// any dynamic mute rules that apply to this finding. The static mute state
+        /// can be set by a static mute rule or by muting the finding directly.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct StaticMute {
+            /// The static mute state. If the value is `MUTED` or `UNMUTED`, then the
+            /// finding's overall mute state will have the same value.
+            #[prost(enumeration = "super::Mute", tag = "1")]
+            pub state: i32,
+            /// When the static mute was applied.
+            #[prost(message, optional, tag = "2")]
+            pub apply_time: ::core::option::Option<::prost_types::Timestamp>,
+        }
+        /// The record of a dynamic mute rule that matches the finding.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct DynamicMuteRecord {
+            /// The relative resource name of the mute rule, represented by a mute
+            /// config, that created this record, for example
+            /// `organizations/123/muteConfigs/mymuteconfig` or
+            /// `organizations/123/locations/global/muteConfigs/mymuteconfig`.
+            #[prost(string, tag = "1")]
+            pub mute_config: ::prost::alloc::string::String,
+            /// When the dynamic mute rule first matched the finding.
+            #[prost(message, optional, tag = "2")]
+            pub match_time: ::core::option::Option<::prost_types::Timestamp>,
+        }
+    }
     /// The state of the finding.
     #[derive(
         Clone,
@@ -3385,8 +3451,8 @@ pub struct Folder {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MuteConfig {
-    /// This field will be ignored if provided on config creation. The following
-    /// list shows some examples of the format:
+    /// Identifier. This field will be ignored if provided on config creation. The
+    /// following list shows some examples of the format:
     ///
     /// + `organizations/{organization}/muteConfigs/{mute_config}`
     /// +
@@ -3441,6 +3507,11 @@ pub struct MuteConfig {
     /// state the config affects. Immutable after creation.
     #[prost(enumeration = "mute_config::MuteConfigType", tag = "8")]
     pub r#type: i32,
+    /// Optional. The expiry of the mute config. Only applicable for dynamic
+    /// configs. If the expiry is set, when the config expires, it is removed from
+    /// all findings.
+    #[prost(message, optional, tag = "9")]
+    pub expiry_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `MuteConfig`.
 pub mod mute_config {
@@ -3464,6 +3535,13 @@ pub mod mute_config {
         /// findings to muted. Once the static mute state has been set, finding or
         /// config modifications will not affect the state.
         Static = 1,
+        /// A dynamic mute config, which is applied to existing and future matching
+        /// findings, setting their dynamic mute state to "muted". If the config is
+        /// updated or deleted, or a matching finding is updated, such that the
+        /// finding doesn't match the config, the config will be removed from the
+        /// finding, and the finding's dynamic mute state may become "unmuted"
+        /// (unless other configs still match).
+        Dynamic = 2,
     }
     impl MuteConfigType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3474,6 +3552,7 @@ pub mod mute_config {
             match self {
                 MuteConfigType::Unspecified => "MUTE_CONFIG_TYPE_UNSPECIFIED",
                 MuteConfigType::Static => "STATIC",
+                MuteConfigType::Dynamic => "DYNAMIC",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3481,6 +3560,7 @@ pub mod mute_config {
             match value {
                 "MUTE_CONFIG_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "STATIC" => Some(Self::Static),
+                "DYNAMIC" => Some(Self::Dynamic),
                 _ => None,
             }
         }
@@ -3493,7 +3573,7 @@ pub mod mute_config {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationConfig {
-    /// The relative resource name of this notification config. See:
+    /// Identifier. The relative resource name of this notification config. See:
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// The following list shows some examples:
     /// +
@@ -3587,13 +3667,13 @@ pub struct Resource {
     pub resource_path: ::core::option::Option<ResourcePath>,
     /// A string representation of the resource path.
     /// For Google Cloud, it has the format of
-    /// organizations/{organization_id}/folders/{folder_id}/folders/{folder_id}/projects/{project_id}
+    /// `organizations/{organization_id}/folders/{folder_id}/folders/{folder_id}/projects/{project_id}`
     /// where there can be any number of folders.
     /// For AWS, it has the format of
-    /// org/{organization_id}/ou/{organizational_unit_id}/ou/{organizational_unit_id}/account/{account_id}
+    /// `org/{organization_id}/ou/{organizational_unit_id}/ou/{organizational_unit_id}/account/{account_id}`
     /// where there can be any number of organizational units.
     /// For Azure, it has the format of
-    /// mg/{management_group_id}/mg/{management_group_id}/subscription/{subscription_id}/rg/{resource_group_name}
+    /// `mg/{management_group_id}/mg/{management_group_id}/subscription/{subscription_id}/rg/{resource_group_name}`
     /// where there can be any number of management groups.
     #[prost(string, tag = "11")]
     pub resource_path_string: ::prost::alloc::string::String,
@@ -3728,7 +3808,7 @@ pub mod azure_metadata {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AzureManagementGroup {
         /// The UUID of the Azure management group, for example,
-        /// "20000000-0001-0000-0000-000000000000".
+        /// `20000000-0001-0000-0000-000000000000`.
         #[prost(string, tag = "1")]
         pub id: ::prost::alloc::string::String,
         /// The display name of the Azure management group.
@@ -3740,7 +3820,7 @@ pub mod azure_metadata {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AzureSubscription {
         /// The UUID of the Azure subscription, for example,
-        /// "291bba3f-e0a5-47bc-a099-3bdcb2a50a05".
+        /// `291bba3f-e0a5-47bc-a099-3bdcb2a50a05`.
         #[prost(string, tag = "1")]
         pub id: ::prost::alloc::string::String,
         /// The display name of the Azure subscription.
@@ -3925,34 +4005,34 @@ pub mod notification_message {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceValueConfig {
-    /// Name for the resource value configuration
+    /// Identifier. Name for the resource value configuration
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Resource value level this expression represents
-    /// Only required when there is no SDP mapping in the request
+    /// Only required when there is no Sensitive Data Protection mapping in the
+    /// request
     #[prost(enumeration = "ResourceValue", tag = "2")]
     pub resource_value: i32,
-    /// Required. Tag values combined with <code>AND</code> to check against.
+    /// Tag values combined with `AND` to check against.
     /// Values in the form "tagValues/123"
-    /// Example: \[ "tagValues/123", "tagValues/456", "tagValues/789" \]
+    /// Example: `\[ "tagValues/123", "tagValues/456", "tagValues/789" \]`
     /// <https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing>
     #[prost(string, repeated, tag = "3")]
     pub tag_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Apply resource_value only to resources that match resource_type.
-    /// resource_type will be checked with <code>AND</code> of other resources.
+    /// resource_type will be checked with `AND` of other resources.
     /// For example, "storage.googleapis.com/Bucket" with resource_value "HIGH"
     /// will apply "HIGH" value only to "storage.googleapis.com/Bucket" resources.
     #[prost(string, tag = "4")]
     pub resource_type: ::prost::alloc::string::String,
     /// Project or folder to scope this configuration to.
     /// For example, "project/456" would apply this configuration only to resources
-    /// in "project/456" scope will be checked with <code>AND</code> of other
-    /// resources.
+    /// in "project/456" scope and will be checked with `AND` of other resources.
     #[prost(string, tag = "5")]
     pub scope: ::prost::alloc::string::String,
-    /// List of resource labels to search for, evaluated with <code>AND</code>.
+    /// List of resource labels to search for, evaluated with `AND`.
     /// For example, "resource_labels_selector": {"key": "value", "env": "prod"}
-    /// will match resources with labels "key": "value" <code>AND</code> "env":
+    /// will match resources with labels "key": "value" `AND` "env":
     /// "prod"
     /// <https://cloud.google.com/resource-manager/docs/creating-managing-labels>
     #[prost(map = "string, string", tag = "6")]
@@ -3987,7 +4067,7 @@ pub mod resource_value_config {
     /// If any of these mappings have a resource value that is not unspecified,
     /// the resource_value field will be ignored when reading this configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SensitiveDataProtectionMapping {
         /// Resource value mapping for high-sensitivity Sensitive Data Protection
         /// findings
@@ -4140,7 +4220,7 @@ pub struct ResourceValueConfigMetadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Simulation {
     /// Full resource name of the Simulation:
-    /// organizations/123/simulations/456
+    /// `organizations/123/simulations/456`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Time simulation was created
@@ -4258,19 +4338,70 @@ pub struct BulkMuteFindingsRequest {
     /// * boolean literals `true` and `false` without quotes.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
+    /// Optional. All findings matching the given filter will have their mute state
+    /// set to this value. The default value is `MUTED`. Setting this to
+    /// `UNDEFINED` will clear the mute state on all matching findings.
+    #[prost(enumeration = "bulk_mute_findings_request::MuteState", tag = "3")]
+    pub mute_state: i32,
+}
+/// Nested message and enum types in `BulkMuteFindingsRequest`.
+pub mod bulk_mute_findings_request {
+    /// The mute state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MuteState {
+        /// Unused.
+        Unspecified = 0,
+        /// Matching findings will be muted (default).
+        Muted = 1,
+        /// Matching findings will have their mute state cleared.
+        Undefined = 2,
+    }
+    impl MuteState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                MuteState::Unspecified => "MUTE_STATE_UNSPECIFIED",
+                MuteState::Muted => "MUTED",
+                MuteState::Undefined => "UNDEFINED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MUTE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MUTED" => Some(Self::Muted),
+                "UNDEFINED" => Some(Self::Undefined),
+                _ => None,
+            }
+        }
+    }
 }
 /// The response to a BulkMute request. Contains the LRO information.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BulkMuteFindingsResponse {}
 /// Request message for creating a BigQuery export.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBigQueryExportRequest {
     /// Required. The name of the parent resource of the new BigQuery export. Its
-    /// format is "organizations/\[organization_id\]/locations/\[location_id\]",
-    /// "folders/\[folder_id\]/locations/\[location_id\]", or
-    /// "projects/\[project_id\]/locations/\[location_id\]".
+    /// format is `organizations/\[organization_id\]/locations/\[location_id\]`,
+    /// `folders/\[folder_id\]/locations/\[location_id\]`, or
+    /// `projects/\[project_id\]/locations/\[location_id\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The BigQuery export being created.
@@ -4310,9 +4441,9 @@ pub struct CreateFindingRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMuteConfigRequest {
     /// Required. Resource name of the new mute configs's parent. Its format is
-    /// "organizations/\[organization_id\]/locations/\[location_id\]",
-    /// "folders/\[folder_id\]/locations/\[location_id\]", or
-    /// "projects/\[project_id\]/locations/\[location_id\]".
+    /// `organizations/\[organization_id\]/locations/\[location_id\]`,
+    /// `folders/\[folder_id\]/locations/\[location_id\]`, or
+    /// `projects/\[project_id\]/locations/\[location_id\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The mute config being created.
@@ -4330,9 +4461,9 @@ pub struct CreateMuteConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNotificationConfigRequest {
     /// Required. Resource name of the new notification config's parent. Its format
-    /// is "organizations/\[organization_id\]/locations/\[location_id\]",
-    /// "folders/\[folder_id\]/locations/\[location_id\]", or
-    /// "projects/\[project_id\]/locations/\[location_id\]".
+    /// is `organizations/\[organization_id\]/locations/\[location_id\]`,
+    /// `folders/\[folder_id\]/locations/\[location_id\]`, or
+    /// `projects/\[project_id\]/locations/\[location_id\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required.
@@ -4363,7 +4494,7 @@ pub struct CreateResourceValueConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSourceRequest {
     /// Required. Resource name of the new source's parent. Its format should be
-    /// "organizations/\[organization_id\]".
+    /// `organizations/\[organization_id\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Source being created, only the display_name and description
@@ -4489,7 +4620,7 @@ pub struct GetResourceValueConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSourceRequest {
     /// Required. Relative resource name of the source. Its format is
-    /// "organizations/\[organization_id\]/source/\[source_id\]".
+    /// `organizations/\[organization_id\]/source/\[source_id\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -4623,10 +4754,10 @@ pub struct ListAttackPathsRequest {
     /// Required. Name of parent to list attack paths.
     ///
     /// Valid formats:
-    /// "organizations/{organization}",
-    /// "organizations/{organization}/simulations/{simulation}"
-    /// "organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}"
-    /// "organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}"
+    /// `organizations/{organization}`,
+    /// `organizations/{organization}/simulations/{simulation}`
+    /// `organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}`
+    /// `organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The filter expression that filters the attack path in the response.
@@ -4667,8 +4798,8 @@ pub struct GetSimulationRequest {
     /// Required. The organization name or simulation name of this simulation
     ///
     /// Valid format:
-    /// "organizations/{organization}/simulations/latest"
-    /// "organizations/{organization}/simulations/{simulation}"
+    /// `organizations/{organization}/simulations/latest`
+    /// `organizations/{organization}/simulations/{simulation}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -4679,7 +4810,7 @@ pub struct GetValuedResourceRequest {
     /// Required. The name of this valued resource
     ///
     /// Valid format:
-    /// "organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}"
+    /// `organizations/{organization}/simulations/{simulation}/valuedResources/{valued_resource}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -4689,9 +4820,9 @@ pub struct GetValuedResourceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBigQueryExportsRequest {
     /// Required. The parent, which owns the collection of BigQuery exports. Its
-    /// format is "organizations/\[organization_id\]/locations/\[location_id\]",
-    /// "folders/\[folder_id\]/locations/\[location_id\]", or
-    /// "projects/\[project_id\]/locations/\[location_id\]".
+    /// format is `organizations/\[organization_id\]/locations/\[location_id\]`,
+    /// `folders/\[folder_id\]/locations/\[location_id\]`, or
+    /// `projects/\[project_id\]/locations/\[location_id\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of configs to return. The service may return fewer than
@@ -4890,13 +5021,13 @@ pub mod list_findings_response {
             pub resource_path: ::core::option::Option<super::super::ResourcePath>,
             /// A string representation of the resource path.
             /// For Google Cloud, it has the format of
-            /// organizations/{organization_id}/folders/{folder_id}/folders/{folder_id}/projects/{project_id}
+            /// `organizations/{organization_id}/folders/{folder_id}/folders/{folder_id}/projects/{project_id}`
             /// where there can be any number of folders.
             /// For AWS, it has the format of
-            /// org/{organization_id}/ou/{organizational_unit_id}/ou/{organizational_unit_id}/account/{account_id}
+            /// `org/{organization_id}/ou/{organizational_unit_id}/ou/{organizational_unit_id}/account/{account_id}`
             /// where there can be any number of organizational units.
             /// For Azure, it has the format of
-            /// mg/{management_group_id}/mg/{management_group_id}/subscription/{subscription_id}/rg/{resource_group_name}
+            /// `mg/{management_group_id}/mg/{management_group_id}/subscription/{subscription_id}/rg/{resource_group_name}`
             /// where there can be any number of management groups.
             #[prost(string, tag = "11")]
             pub resource_path_string: ::prost::alloc::string::String,
@@ -4930,11 +5061,11 @@ pub mod list_findings_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMuteConfigsRequest {
     /// Required. The parent, which owns the collection of mute configs. Its format
-    /// is "organizations/\[organization_id\]", "folders/\[folder_id\]",
-    /// "projects/\[project_id\]",
-    /// "organizations/\[organization_id\]/locations/\[location_id\]",
-    /// "folders/\[folder_id\]/locations/\[location_id\]",
-    /// "projects/\[project_id\]/locations/\[location_id\]".
+    /// is `organizations/\[organization_id\]", "folders/\[folder_id\]`,
+    /// `projects/\[project_id\]`,
+    /// `organizations/\[organization_id\]/locations/\[location_id\]`,
+    /// `folders/\[folder_id\]/locations/\[location_id\]`,
+    /// `projects/\[project_id\]/locations/\[location_id\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of configs to return. The service may return fewer than
@@ -5002,7 +5133,7 @@ pub struct ListNotificationConfigsResponse {
 pub struct ListResourceValueConfigsRequest {
     /// Required. The parent, which owns the collection of resource value configs.
     /// Its format is
-    /// "organizations/\[organization_id\]"
+    /// `organizations/\[organization_id\]`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of configs to return. The service may return fewer than
@@ -5039,8 +5170,8 @@ pub struct ListResourceValueConfigsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSourcesRequest {
     /// Required. Resource name of the parent of sources to list. Its format should
-    /// be "organizations/\[organization_id\]", "folders/\[folder_id\]", or
-    /// "projects/\[project_id\]".
+    /// be `organizations/\[organization_id\]`, `folders/\[folder_id\]`, or
+    /// `projects/\[project_id\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The value returned by the last `ListSourcesResponse`; indicates
@@ -5072,9 +5203,9 @@ pub struct ListValuedResourcesRequest {
     /// Required. Name of parent to list exposed resources.
     ///
     /// Valid formats:
-    /// "organizations/{organization}",
-    /// "organizations/{organization}/simulations/{simulation}"
-    /// "organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}"
+    /// `organizations/{organization}`,
+    /// `organizations/{organization}/simulations/{simulation}`
+    /// `organizations/{organization}/simulations/{simulation}/attackExposureResults/{attack_exposure_result_v2}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The filter expression that filters the valued resources in the response.

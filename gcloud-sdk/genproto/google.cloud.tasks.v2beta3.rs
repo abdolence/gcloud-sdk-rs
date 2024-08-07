@@ -1079,7 +1079,7 @@ pub mod queue {
 /// even if the queue has reached its
 /// [RateLimits][google.cloud.tasks.v2beta3.RateLimits].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RateLimits {
     /// The maximum rate at which tasks are dispatched from this queue.
     ///
@@ -1154,7 +1154,7 @@ pub struct RateLimits {
 ///
 /// These settings determine when a failed task attempt is retried.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RetryConfig {
     /// Number of attempts per task.
     ///
@@ -1264,7 +1264,7 @@ pub struct RetryConfig {
 /// Configuration options for writing logs to
 /// [Stackdriver Logging](<https://cloud.google.com/logging/docs/>).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StackdriverLoggingConfig {
     /// Specifies the fraction of operations to write to
     /// [Stackdriver Logging](<https://cloud.google.com/logging/docs/>).
@@ -1275,7 +1275,7 @@ pub struct StackdriverLoggingConfig {
 }
 /// Statistics for a queue.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct QueueStats {
     /// Output only. An estimation of the number of tasks in the queue, that is,
     /// the tasks in the queue that haven't been executed, the tasks in the queue

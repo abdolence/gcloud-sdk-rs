@@ -44,7 +44,7 @@ pub mod accessible_bidding_strategy {
     /// An automated bidding strategy to help get the most conversion value for
     /// your campaigns while spending your budget.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MaximizeConversionValue {
         /// Output only. The target return on ad spend (ROAS) option. If set, the bid
         /// strategy will maximize revenue while averaging the target return on ad
@@ -57,7 +57,7 @@ pub mod accessible_bidding_strategy {
     /// An automated bidding strategy to help get the most conversions for your
     /// campaigns while spending your budget.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MaximizeConversions {
         /// Output only. The target cost per acquisition (CPA) option. This is the
         /// average amount that you would like to spend per acquisition.
@@ -67,7 +67,7 @@ pub mod accessible_bidding_strategy {
     /// An automated bid strategy that sets bids to help get as many conversions as
     /// possible at the target cost-per-acquisition (CPA) you set.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TargetCpa {
         /// Output only. Average CPA target.
         /// This target should be greater than or equal to minimum billable unit
@@ -79,7 +79,7 @@ pub mod accessible_bidding_strategy {
     /// of search ads are shown at the top of the first page (or other targeted
     /// location).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TargetImpressionShare {
         /// Output only. The targeted location on the search results page.
         #[prost(
@@ -100,7 +100,7 @@ pub mod accessible_bidding_strategy {
     /// An automated bidding strategy that helps you maximize revenue while
     /// averaging a specific target return on ad spend (ROAS).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TargetRoas {
         /// Output only. The chosen revenue (based on conversion data) per unit of
         /// spend.
@@ -110,7 +110,7 @@ pub mod accessible_bidding_strategy {
     /// An automated bid strategy that sets your bids to help get as many clicks
     /// as possible within your budget.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TargetSpend {
         /// Output only. The spend target under which to maximize clicks.
         /// A TargetSpend bidder will attempt to spend the smaller of this value
@@ -131,7 +131,7 @@ pub mod accessible_bidding_strategy {
     ///
     /// Only one can be set.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Scheme {
         /// Output only. An automated bidding strategy to help get the most
         /// conversion value for your campaigns while spending your budget.
@@ -340,7 +340,7 @@ pub mod account_budget {
         }
         /// The spending limit.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum SpendingLimit {
             /// Output only. The spending limit in micros.  One million is equivalent
             /// to one unit.
@@ -390,7 +390,7 @@ pub mod account_budget {
     }
     /// The proposed spending limit.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ProposedSpendingLimit {
         /// Output only. The proposed spending limit in micros.  One million is
         /// equivalent to one unit.
@@ -410,7 +410,7 @@ pub mod account_budget {
     /// proposed spending limit at the time the proposal is approved, the approved
     /// spending limit is set to the amount already spent.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ApprovedSpendingLimit {
         /// Output only. The approved spending limit in micros.  One million is
         /// equivalent to one unit.  This will only be populated if the proposed
@@ -432,7 +432,7 @@ pub mod account_budget {
     ///
     /// This value has the final say on how much the account is allowed to spend.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum AdjustedSpendingLimit {
         /// Output only. The adjusted spending limit in micros.  One million is
         /// equivalent to one unit.
@@ -604,7 +604,7 @@ pub mod account_budget_proposal {
     }
     /// The proposed spending limit.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ProposedSpendingLimit {
         /// Immutable. The proposed spending limit in micros.  One million is
         /// equivalent to one unit.
@@ -620,7 +620,7 @@ pub mod account_budget_proposal {
     }
     /// The approved spending limit.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ApprovedSpendingLimit {
         /// Output only. The approved spending limit in micros.  One million is
         /// equivalent to one unit.
@@ -1069,7 +1069,7 @@ pub struct AdGroup {
 pub mod ad_group {
     /// Settings for the audience targeting.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AudienceSetting {
         /// Immutable. If true, this ad group uses an Audience resource for audience
         /// targeting. If false, this ad group may use audience segment criteria
@@ -1603,7 +1603,7 @@ pub struct AdGroupCriterion {
 pub mod ad_group_criterion {
     /// A container for ad group criterion quality information.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct QualityInfo {
         /// Output only. The quality score.
         ///
@@ -1633,7 +1633,7 @@ pub mod ad_group_criterion {
     }
     /// Estimates for criterion bids at various positions.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PositionEstimates {
         /// Output only. The estimate of the CPC bid required for ad to be shown on
         /// first page of search results.
@@ -2602,7 +2602,7 @@ pub mod listing_group_filter_dimension {
     /// level of the category. All cases of the same subdivision must have the same
     /// dimension type (category level).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ProductCategory {
         /// ID of the product category.
         ///
@@ -2627,7 +2627,7 @@ pub mod listing_group_filter_dimension {
     }
     /// Locality of a product offer.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ProductChannel {
         /// Value of the locality.
         #[prost(
@@ -2638,7 +2638,7 @@ pub mod listing_group_filter_dimension {
     }
     /// Condition of a product offer.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ProductCondition {
         /// Value of the condition.
         #[prost(
@@ -3356,7 +3356,7 @@ pub mod bidding_strategy {
     ///
     /// Only one can be set.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Scheme {
         /// A bidding strategy that raises bids for clicks that seem more likely to
         /// lead to a conversion and lowers them for clicks where they seem less
@@ -3966,7 +3966,7 @@ pub mod campaign {
     }
     /// The network settings for the campaign.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct NetworkSettings {
         /// Whether ads will be served with google.com search results.
         #[prost(bool, optional, tag = "5")]
@@ -3992,7 +3992,7 @@ pub mod campaign {
     }
     /// Campaign-level settings for hotel ads.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct HotelSettingInfo {
         /// Immutable. The linked Hotel Center account.
         #[prost(int64, optional, tag = "2")]
@@ -4073,7 +4073,7 @@ pub mod campaign {
     }
     /// Represents a collection of settings related to ads geotargeting.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct GeoTargetTypeSetting {
         /// The setting used for positive geotargeting in this particular campaign.
         #[prost(
@@ -4090,7 +4090,7 @@ pub mod campaign {
     }
     /// Campaign setting for local campaigns.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LocalCampaignSetting {
         /// The location source type for this local campaign.
         #[prost(
@@ -4122,7 +4122,7 @@ pub mod campaign {
     }
     /// Describes how unbranded pharma ads will be displayed.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct VanityPharma {
         /// The display mode for vanity pharma URLs.
         #[prost(
@@ -4165,7 +4165,7 @@ pub mod campaign {
     }
     /// Settings for the audience targeting.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AudienceSetting {
         /// Immutable. If true, this campaign uses an Audience resource for audience
         /// targeting. If false, this campaign may use audience segment criteria
@@ -4197,7 +4197,7 @@ pub mod campaign {
     }
     /// Settings for Travel campaign.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TravelCampaignSettings {
         /// Immutable. The Travel account ID associated with the Travel campaign.
         #[prost(int64, optional, tag = "1")]
@@ -4205,7 +4205,7 @@ pub mod campaign {
     }
     /// Settings for Discovery campaign.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DiscoveryCampaignSettings {
         /// Immutable. Specifies whether this campaign uses upgraded targeting
         /// options. When this field is set to `true`, you can use location and
@@ -4218,7 +4218,7 @@ pub mod campaign {
     /// Asset automation setting contains pair of AssetAutomationType and the
     /// asset automation opt-in/out status
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AssetAutomationSetting {
         /// The asset automation type advertiser would like to opt-in/out.
         #[prost(
@@ -4432,7 +4432,7 @@ pub mod campaign_bid_modifier {
     ///
     /// Required in create operations starting in V5.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Criterion {
         /// Immutable. Criterion for interaction type. Only supported for search
         /// campaigns.
@@ -4975,7 +4975,7 @@ pub struct CampaignLifecycleGoal {
 }
 /// The customer acquisition goal settings for the campaign.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomerAcquisitionGoalSettings {
     /// Output only. Customer acquisition optimization mode of this campaign.
     #[prost(
@@ -6020,7 +6020,7 @@ pub struct ConversionAction {
 pub mod conversion_action {
     /// Settings related to this conversion action's attribution model.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AttributionModelSettings {
         /// The attribution model type of this conversion action.
         #[prost(
@@ -6217,7 +6217,7 @@ pub struct ConversionValueRule {
 pub mod conversion_value_rule {
     /// Action applied when rule is applied.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ValueRuleAction {
         /// Specifies applied operation.
         #[prost(
@@ -6737,7 +6737,7 @@ pub struct RemarketingSetting {
 }
 /// Customer Agreement Setting for a customer.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomerAgreementSetting {
     /// Output only. Whether the customer has accepted lead form term of service.
     #[prost(bool, tag = "1")]
@@ -7356,7 +7356,7 @@ pub mod customer_sk_ad_network_conversion_value_schema {
         pub mod event {
             /// Defines a range for revenue values.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct RevenueRange {
                 /// Output only. For revenue ranges, the minimum value in `currency_code`
                 /// for which this conversion value would be updated. A value of 0 will
@@ -7371,7 +7371,7 @@ pub mod customer_sk_ad_network_conversion_value_schema {
             }
             /// Defines a range for event counter values.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct EventOccurrenceRange {
                 /// Output only. For event counter ranges, the minimum of the defined
                 /// range. A value of 0 will be treated as unset.
@@ -7384,7 +7384,7 @@ pub mod customer_sk_ad_network_conversion_value_schema {
             }
             /// Either a range or specific value for event revenue.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
             pub enum RevenueRate {
                 /// Output only. The event revenue range.
                 #[prost(message, tag = "3")]
@@ -7395,7 +7395,7 @@ pub mod customer_sk_ad_network_conversion_value_schema {
             }
             /// Either a range or specific value for event counter.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
             pub enum EventRate {
                 /// Output only. The event counter range.
                 #[prost(message, tag = "5")]
@@ -8126,7 +8126,7 @@ pub mod feed_mapping {
     /// Feed mapping target. Can be either a placeholder or a criterion. For a
     /// given feed, the active FeedMappings must have unique targets. Required.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Target {
         /// Immutable. The placeholder type of this mapping (for example, if the
         /// mapping maps feed attributes to placeholder fields).
@@ -8146,7 +8146,7 @@ pub mod feed_mapping {
 }
 /// Maps from feed attribute id to a placeholder or criterion field id.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AttributeFieldMapping {
     /// Immutable. Feed attribute from which to map.
     #[prost(int64, optional, tag = "24")]
@@ -8169,7 +8169,7 @@ pub mod attribute_field_mapping {
     /// Placeholder or criterion field to be populated using data from
     /// the above feed attribute. Required.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Field {
         /// Immutable. Sitelink Placeholder Fields.
         #[prost(
@@ -9923,7 +9923,7 @@ pub struct MediaBundle {
 }
 /// Encapsulates an Audio.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MediaAudio {
     /// Output only. The duration of the Audio in milliseconds.
     #[prost(int64, optional, tag = "2")]
@@ -10076,7 +10076,7 @@ pub mod offline_conversion_summary {
 }
 /// Alert for offline conversion client summary.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct OfflineConversionAlert {
     /// Output only. Error for offline conversion client alert.
     #[prost(message, optional, tag = "1")]
@@ -10088,7 +10088,7 @@ pub struct OfflineConversionAlert {
 }
 /// Possible errors for offline conversion client summary.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct OfflineConversionError {
     /// Error with description.
     #[prost(
@@ -10101,7 +10101,7 @@ pub struct OfflineConversionError {
 pub mod offline_conversion_error {
     /// Error with description.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ErrorCode {
         /// Output only. Collection size error.
         #[prost(
@@ -10227,7 +10227,7 @@ pub mod offline_user_data_job {
 }
 /// Metadata of offline user data job.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct OfflineUserDataJobMetadata {
     /// Output only. Match rate of the Customer Match user list upload. Describes
     /// the estimated match rate when the status of the job is "RUNNING" and final
@@ -10466,7 +10466,7 @@ pub mod product_link {
 }
 /// The identifier for Data Partner account.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DataPartnerIdentifier {
     /// Immutable. The customer ID of the Data partner account.
     /// This field is required and should not be empty when creating a new
@@ -10488,7 +10488,7 @@ pub struct GoogleAdsIdentifier {
 }
 /// The identifier for Google Merchant Center account
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MerchantCenterIdentifier {
     /// Immutable. The customer ID of the Google Merchant Center account.
     /// This field is required and should not be empty when creating a new
@@ -10561,7 +10561,7 @@ pub mod product_link_invitation {
 }
 /// The identifier for Hotel account.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HotelCenterLinkInvitationIdentifier {
     /// Output only. The hotel center id of the hotel account.
     /// This field is read only
@@ -10570,7 +10570,7 @@ pub struct HotelCenterLinkInvitationIdentifier {
 }
 /// The identifier for Merchant Center Account.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MerchantCenterLinkInvitationIdentifier {
     /// Output only. The Merchant Center id of the Merchant account.
     /// This field is read only
@@ -10700,7 +10700,7 @@ pub mod recommendation {
     /// The impact of making the change as described in the recommendation.
     /// Some types of recommendations may not have impact information.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RecommendationImpact {
         /// Output only. Base metrics at the time the recommendation was generated.
         #[prost(message, optional, tag = "1")]
@@ -10712,7 +10712,7 @@ pub mod recommendation {
     /// Weekly account performance metrics. For some recommendation types, these
     /// are averaged over the past 90-day period and hence can be fractional.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RecommendationMetrics {
         /// Output only. Number of ad impressions.
         #[prost(double, optional, tag = "6")]
@@ -10755,7 +10755,7 @@ pub mod recommendation {
     pub mod campaign_budget_recommendation {
         /// The impact estimates for a given budget amount.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct CampaignBudgetRecommendationOption {
             /// Output only. The budget amount for this option.
             #[prost(int64, optional, tag = "3")]
@@ -10831,7 +10831,7 @@ pub mod recommendation {
     pub mod target_cpa_opt_in_recommendation {
         /// The Target CPA opt-in option with impact estimate.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct TargetCpaOptInRecommendationOption {
             /// Output only. The goal achieved by this option.
             #[prost(
@@ -10854,7 +10854,7 @@ pub mod recommendation {
     }
     /// The Maximize Conversions Opt-In recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MaximizeConversionsOptInRecommendation {
         /// Output only. The recommended new budget amount.
         #[prost(int64, optional, tag = "2")]
@@ -10862,15 +10862,15 @@ pub mod recommendation {
     }
     /// The Enhanced Cost-Per-Click Opt-In recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct EnhancedCpcOptInRecommendation {}
     /// The Search Partners Opt-In recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SearchPartnersOptInRecommendation {}
     /// The Maximize Clicks opt-in recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MaximizeClicksOptInRecommendation {
         /// Output only. The recommended new budget amount.
         /// Only set if the current budget is too high.
@@ -10879,7 +10879,7 @@ pub mod recommendation {
     }
     /// The Optimize Ad Rotation recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct OptimizeAdRotationRecommendation {}
     /// The callout asset recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -10907,7 +10907,7 @@ pub mod recommendation {
     }
     /// The call asset recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CallAssetRecommendation {}
     /// The keyword match type recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -10939,7 +10939,7 @@ pub mod recommendation {
     }
     /// The Target ROAS opt-in recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TargetRoasOptInRecommendation {
         /// Output only. The recommended target ROAS (revenue per unit of spend).
         /// The value is between 0.01 and 1000.0, inclusive.
@@ -11019,7 +11019,7 @@ pub mod recommendation {
     }
     /// The raise target CPA bid too low recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RaiseTargetCpaBidTooLowRecommendation {
         /// Output only. A number greater than 1.0 indicating the factor by which we
         /// recommend the target CPA should be increased.
@@ -11032,11 +11032,11 @@ pub mod recommendation {
     }
     /// The Display Expansion opt-in recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DisplayExpansionOptInRecommendation {}
     /// The Upgrade Local campaign to Performance Max campaign recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UpgradeLocalCampaignToPerformanceMaxRecommendation {}
     /// The forecasting set target ROAS recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -11195,7 +11195,7 @@ pub mod recommendation {
     /// allowing Google to find the best images from ad landing pages and
     /// complement text ads.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DynamicImageExtensionOptInRecommendation {}
     /// A campaign budget shared amongst various budget recommendation types.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -11216,7 +11216,7 @@ pub mod recommendation {
     }
     /// The Performance Max Opt In recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PerformanceMaxOptInRecommendation {}
     /// Recommendation to improve the asset group strength of a Performance Max
     /// campaign to an "Excellent" rating.
@@ -11249,16 +11249,16 @@ pub mod recommendation {
     }
     /// Recommendation to opt into Maximize Conversion Value bidding strategy.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MaximizeConversionValueOptInRecommendation {}
     /// Recommendation to deploy Google Tag on more pages.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ImproveGoogleTagCoverageRecommendation {}
     /// Recommendation to turn on Final URL expansion for your Performance Max
     /// campaigns.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PerformanceMaxFinalUrlOptInRecommendation {}
     /// The recommendation to update a customer list that hasn't been updated in
     /// the last 90 days. The customer receiving the recommendation is not
@@ -11310,7 +11310,7 @@ pub mod recommendation {
     }
     /// The lead form asset recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LeadFormAssetRecommendation {}
     /// The improve Demand Gen ad strength recommendation.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -11798,7 +11798,7 @@ pub mod smart_campaign_setting {
     /// Settings for configuring a business profile optimized for ads as this
     /// campaign's landing page.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AdOptimizedBusinessProfileSetting {
         /// Enabling a lead form on your business profile enables prospective
         /// customers to contact your business by filling out a simple form,

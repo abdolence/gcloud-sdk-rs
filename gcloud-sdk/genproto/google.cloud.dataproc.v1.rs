@@ -51,7 +51,7 @@ pub struct AutoscalingPolicy {
 pub mod autoscaling_policy {
     /// Autoscaling algorithm for policy.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Algorithm {
         #[prost(message, tag = "3")]
         BasicAlgorithm(super::BasicAutoscalingAlgorithm),
@@ -59,7 +59,7 @@ pub mod autoscaling_policy {
 }
 /// Basic algorithm for autoscaling.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BasicAutoscalingAlgorithm {
     /// Optional. Duration between scaling events. A scaling period starts after
     /// the update operation from the previous event has completed.
@@ -73,7 +73,7 @@ pub struct BasicAutoscalingAlgorithm {
 /// Nested message and enum types in `BasicAutoscalingAlgorithm`.
 pub mod basic_autoscaling_algorithm {
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Config {
         /// Required. YARN autoscaling configuration.
         #[prost(message, tag = "1")]
@@ -82,7 +82,7 @@ pub mod basic_autoscaling_algorithm {
 }
 /// Basic autoscaling configurations for YARN.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BasicYarnAutoscalingConfig {
     /// Required. Timeout for YARN graceful decommissioning of Node Managers.
     /// Specifies the duration to wait for jobs to complete before forcefully
@@ -138,7 +138,7 @@ pub struct BasicYarnAutoscalingConfig {
 /// Configuration for the size bounds of an instance group, including its
 /// proportional size to other groups.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InstanceGroupAutoscalingPolicyConfig {
     /// Optional. Minimum number of instances for this group.
     ///
@@ -1030,7 +1030,7 @@ pub mod gke_node_pool_config {
     /// GkeNodePoolAutoscaling contains information the cluster autoscaler needs to
     /// adjust the size of the node pool to the current cluster usage.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct GkeNodePoolAutoscalingConfig {
         /// The minimum number of nodes in the node pool. Must be >= 0 and <=
         /// max_node_count.
@@ -2615,7 +2615,7 @@ pub struct NodeGroupAffinity {
 /// Shielded Instance Config for clusters using [Compute Engine Shielded
 /// VMs](<https://cloud.google.com/security/shielded-cloud/shielded-vm>).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ShieldedInstanceConfig {
     /// Optional. Defines whether instances have Secure Boot enabled.
     #[prost(bool, optional, tag = "1")]
@@ -2630,7 +2630,7 @@ pub struct ShieldedInstanceConfig {
 /// Confidential Instance Config for clusters using [Confidential
 /// VMs](<https://cloud.google.com/compute/confidential-vm/docs>)
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ConfidentialInstanceConfig {
     /// Optional. Defines whether the instance should have confidential compute
     /// enabled.
@@ -2816,7 +2816,7 @@ pub mod instance_group_config {
 /// Configuration to handle the startup of instances during cluster create and
 /// update process.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StartupConfig {
     /// Optional. The config setting to enable cluster creation/ updation to be
     /// successful only after required_registration_fraction of instances are up
@@ -3363,7 +3363,7 @@ pub struct SoftwareConfig {
 }
 /// Specifies the cluster auto-delete schedule configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LifecycleConfig {
     /// Optional. The duration to keep the cluster alive while idling (when no jobs
     /// are running). Passing this threshold will cause the cluster to be
@@ -3388,7 +3388,7 @@ pub mod lifecycle_config {
     /// Either the exact time the cluster should be deleted at or
     /// the cluster maximum age.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Ttl {
         /// Optional. The time when cluster will be auto-deleted (see JSON
         /// representation of
@@ -5269,7 +5269,7 @@ pub mod job {
 }
 /// Driver scheduling configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DriverSchedulingConfig {
     /// Required. The amount of memory in MB the driver is requesting.
     #[prost(int32, tag = "1")]
@@ -5280,7 +5280,7 @@ pub struct DriverSchedulingConfig {
 }
 /// Job scheduling options.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct JobScheduling {
     /// Optional. Maximum number of times per hour a driver may be restarted as
     /// a result of driver exiting with non-zero code before job is

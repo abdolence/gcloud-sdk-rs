@@ -62,7 +62,7 @@ impl JobState {
 }
 /// The common metadata for long running operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CommonOperationMetadata {
     /// The state of the operation.
     #[prost(enumeration = "common_operation_metadata::State", tag = "1")]
@@ -257,7 +257,7 @@ pub struct ReconConfig {
 pub mod recon_config {
     /// Options for experimental changes on entity clustering behavior.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Options {
         /// If true, separate clusters by their geographic region (from geocoding).
         /// Uses the following entity features:
@@ -284,7 +284,7 @@ pub mod recon_config {
     }
     /// Choice of clustering algorithm. Default is ConnectedComponentsConfig.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ClusteringConfig {
         /// Configs for connected components.
         #[prost(message, tag = "1")]
@@ -296,7 +296,7 @@ pub mod recon_config {
 }
 /// Options for connected components.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ConnectedComponentsConfig {
     /// Threshold used for connected components. Default value is 0.85.
     #[prost(float, tag = "1")]
@@ -304,7 +304,7 @@ pub struct ConnectedComponentsConfig {
 }
 /// Options for affinity clustering.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AffinityClusteringConfig {
     /// Number of iterations to perform. Default value is 1.
     #[prost(int64, tag = "1")]
@@ -312,7 +312,7 @@ pub struct AffinityClusteringConfig {
 }
 /// Details of operations that perform deletes of any entities.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteOperationMetadata {
     /// The common part of the operation metadata.
     #[prost(message, optional, tag = "1")]

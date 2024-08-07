@@ -138,7 +138,7 @@ pub struct ImportAptArtifactsResponse {
 }
 /// The operation metadata for importing artifacts.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportAptArtifactsMetadata {}
 /// DockerImage represents a docker artifact.
 /// The following fields are returned as untyped metadata in the Version
@@ -867,7 +867,7 @@ pub mod remote_repository_config {
     }
     /// Configuration for a Docker remote repository.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DockerRepository {
         /// Address of the remote repository.
         #[prost(oneof = "docker_repository::Upstream", tags = "1")]
@@ -917,7 +917,7 @@ pub mod remote_repository_config {
         }
         /// Address of the remote repository.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Upstream {
             /// One of the publicly available Docker repositories supported by Artifact
             /// Registry.
@@ -927,7 +927,7 @@ pub mod remote_repository_config {
     }
     /// Configuration for a Maven remote repository.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MavenRepository {
         /// Address of the remote repository.
         #[prost(oneof = "maven_repository::Upstream", tags = "1")]
@@ -977,7 +977,7 @@ pub mod remote_repository_config {
         }
         /// Address of the remote repository.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Upstream {
             /// One of the publicly available Maven repositories supported by Artifact
             /// Registry.
@@ -987,7 +987,7 @@ pub mod remote_repository_config {
     }
     /// Configuration for a Npm remote repository.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct NpmRepository {
         /// Address of the remote repository
         #[prost(oneof = "npm_repository::Upstream", tags = "1")]
@@ -1036,7 +1036,7 @@ pub mod remote_repository_config {
         }
         /// Address of the remote repository
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Upstream {
             /// One of the publicly available Npm repositories supported by Artifact
             /// Registry.
@@ -1046,7 +1046,7 @@ pub mod remote_repository_config {
     }
     /// Configuration for a Python remote repository.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PythonRepository {
         /// Address of the remote repository.
         #[prost(oneof = "python_repository::Upstream", tags = "1")]
@@ -1095,7 +1095,7 @@ pub mod remote_repository_config {
         }
         /// Address of the remote repository.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Upstream {
             /// One of the publicly available Python repositories supported by Artifact
             /// Registry.
@@ -1373,7 +1373,7 @@ pub mod repository {
     /// Provides additional configuration details for repositories of the maven
     /// format type.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MavenRepositoryConfig {
         /// The repository with this flag will allow publishing
         /// the same snapshot versions.
@@ -1435,7 +1435,7 @@ pub mod repository {
     /// Provides additional configuration details for repositories of the docker
     /// format type.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DockerRepositoryConfig {
         /// The repository which enabled this flag prevents all tags from being
         /// modified, moved or deleted. This does not prevent tags from being
@@ -1560,7 +1560,7 @@ pub mod repository {
     }
     /// Repository-specific configurations.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum FormatConfig {
         /// Maven repository config contains repository level configuration
         /// for the repositories of maven type.
@@ -2218,11 +2218,11 @@ pub struct ImportYumArtifactsResponse {
 }
 /// The operation metadata for importing artifacts.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportYumArtifactsMetadata {}
 /// Metadata type for longrunning-operations, currently empty.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {}
 /// Generated client implementations.
 pub mod artifact_registry_client {

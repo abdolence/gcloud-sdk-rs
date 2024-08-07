@@ -875,7 +875,7 @@ pub struct Connection {
 }
 /// Node configuration for the connection.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NodeConfig {
     /// Minimum number of nodes in the runtime nodes.
     #[prost(int32, tag = "1")]
@@ -1778,7 +1778,7 @@ pub struct ListConnectorVersionsResponse {
 /// Details about how this proto is passed to the management layer is covered in
 /// this doc - go/runtime-manifest.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SupportedRuntimeFeatures {
     /// Specifies if the connector supports entity apis like 'createEntity'.
     #[prost(bool, tag = "1")]

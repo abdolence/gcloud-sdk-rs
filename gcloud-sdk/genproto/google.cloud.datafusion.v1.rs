@@ -86,7 +86,7 @@ pub mod version {
 }
 /// Identifies Data Fusion accelerators for an instance.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Accelerator {
     /// The type of an accelator for a CDF instance.
     #[prost(enumeration = "accelerator::AcceleratorType", tag = "1")]

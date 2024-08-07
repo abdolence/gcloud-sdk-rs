@@ -3,7 +3,7 @@
 /// exists in a provider's project. A `Discovery` occurrence is created in a
 /// consumer's project at the start of analysis.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Discovery {
     /// Required. Immutable. The kind of analysis that is handled by this
     /// discovery.

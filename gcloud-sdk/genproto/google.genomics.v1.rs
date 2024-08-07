@@ -417,7 +417,7 @@ pub struct Transcript {
 /// Nested message and enum types in `Transcript`.
 pub mod transcript {
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Exon {
         /// The start position of the exon on this annotation's reference sequence,
         /// 0-based inclusive. Note that this is relative to the reference start, and
@@ -446,7 +446,7 @@ pub mod transcript {
         pub frame: ::core::option::Option<i32>,
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CodingSequence {
         /// The start of the coding sequence on this annotation's reference sequence,
         /// 0-based inclusive. Note that this position is relative to the reference

@@ -18,7 +18,7 @@ pub struct ConverseConfig {
 /// [best
 /// practices](<https://developers.google.com/assistant/sdk/develop/grpc/best-practices/audio>).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AudioInConfig {
     /// *Required* Encoding of audio data sent in all `audio_in` messages.
     #[prost(enumeration = "audio_in_config::Encoding", tag = "1")]
@@ -88,7 +88,7 @@ pub mod audio_in_config {
 /// Specifies the desired format for the server to use when it returns
 /// `audio_out` messages.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AudioOutConfig {
     /// *Required* The encoding of audio data to be returned in all `audio_out`
     /// messages.

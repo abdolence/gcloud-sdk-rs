@@ -48,7 +48,7 @@ pub struct Barcode {
 /// A vertex represents a 2D point in the image.
 /// NOTE: the vertex coordinates are in the same scale as the original image.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Vertex {
     /// X coordinate.
     #[prost(int32, tag = "1")]
@@ -61,7 +61,7 @@ pub struct Vertex {
 /// NOTE: the normalized vertex coordinates are relative to the original image
 /// and range from 0 to 1.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NormalizedVertex {
     /// X coordinate.
     #[prost(float, tag = "1")]
@@ -145,7 +145,7 @@ pub mod document {
     /// document shards. Each document shard contains this field to detail which
     /// shard it is.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ShardInfo {
         /// The 0-based index of this shard.
         #[prost(int64, tag = "1")]
@@ -499,7 +499,7 @@ pub mod document {
             /// Detected break at the end of a
             /// [Token][google.cloud.documentai.v1beta3.Document.Page.Token].
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct DetectedBreak {
                 /// Detected break type.
                 #[prost(enumeration = "detected_break::Type", tag = "1")]
@@ -963,7 +963,7 @@ pub mod document {
         /// another document shard for large sharded documents. See
         /// [ShardInfo.text_offset][google.cloud.documentai.v1beta3.Document.ShardInfo.text_offset]
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct TextSegment {
             /// [TextSegment][google.cloud.documentai.v1beta3.Document.TextAnchor.TextSegment]
             /// start UTF-8 char index in the
@@ -1129,7 +1129,7 @@ pub mod document {
         /// The parent element the current element is based on. Used for
         /// referencing/aligning, removal and replacement operations.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Parent {
             /// The index of the index into current revision's parent_ids list.
             #[prost(int32, tag = "1")]
@@ -1320,7 +1320,7 @@ pub mod document {
         pub mod document_layout_block {
             /// Represents where the block starts and ends in the document.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct LayoutPageSpan {
                 /// Page where block starts in the document.
                 #[prost(int32, tag = "1")]
@@ -1436,9 +1436,7 @@ pub mod document {
             /// ID of the chunk.
             #[prost(string, tag = "1")]
             pub chunk_id: ::prost::alloc::string::String,
-            /// DO NOT USE.
-            /// List of all parsed documents layout source blocks used to generate the
-            /// chunk.
+            /// Unused.
             #[prost(string, repeated, tag = "2")]
             pub source_block_ids: ::prost::alloc::vec::Vec<
                 ::prost::alloc::string::String,
@@ -1460,7 +1458,7 @@ pub mod document {
         pub mod chunk {
             /// Represents where the chunk starts and ends in the document.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct ChunkPageSpan {
                 /// Page where chunk starts in the document.
                 #[prost(int32, tag = "1")]
@@ -1683,7 +1681,7 @@ pub mod document_output_config {
     pub mod gcs_output_config {
         /// The sharding config for the output document.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct ShardingConfig {
             /// The number of pages per shard.
             #[prost(int32, tag = "1")]
@@ -1762,7 +1760,7 @@ pub mod ocr_config {
     }
     /// Configurations for premium OCR features.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PremiumFeatures {
         /// Turn on selection mark detector in OCR engine. Only available in OCR 2.0
         /// (and later) processors.
@@ -1778,7 +1776,7 @@ pub mod ocr_config {
 }
 /// Metadata for document summarization.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SummaryOptions {
     /// How long the summary should be.
     #[prost(enumeration = "summary_options::Length", tag = "1")]
@@ -1882,7 +1880,7 @@ pub mod summary_options {
 }
 /// Metadata for how this field value is extracted.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FieldExtractionMetadata {
     /// Summary options config.
     #[prost(message, optional, tag = "2")]
@@ -1890,7 +1888,7 @@ pub struct FieldExtractionMetadata {
 }
 /// Metadata about a property.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PropertyMetadata {
     /// Whether the property should be considered as "inactive".
     #[prost(bool, tag = "3")]
@@ -1901,7 +1899,7 @@ pub struct PropertyMetadata {
 }
 /// Metadata about an entity type.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EntityTypeMetadata {
     /// Whether the entity type should be considered inactive.
     #[prost(bool, tag = "5")]
@@ -2076,7 +2074,7 @@ pub mod document_schema {
     }
     /// Metadata for global schema behavior.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Metadata {
         /// If true, a `document` entity type can be applied to subdocument
         /// (splitting). Otherwise, it can only be applied to the entire document
@@ -2111,6 +2109,12 @@ pub struct Dataset {
     /// Required. State of the dataset. Ignored when updating dataset.
     #[prost(enumeration = "dataset::State", tag = "2")]
     pub state: i32,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "8")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "9")]
+    pub satisfies_pzi: bool,
     #[prost(oneof = "dataset::StorageSource", tags = "3, 5, 6")]
     pub storage_source: ::core::option::Option<dataset::StorageSource>,
     #[prost(oneof = "dataset::IndexingSource", tags = "4")]
@@ -2142,11 +2146,11 @@ pub mod dataset {
     }
     /// Configuration specific to an unmanaged dataset.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UnmanagedDatasetConfig {}
     /// Configuration specific to spanner-based indexing.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SpannerIndexingConfig {}
     /// Different states of a dataset.
     #[derive(
@@ -2214,7 +2218,7 @@ pub mod dataset {
         UnmanagedDatasetConfig(UnmanagedDatasetConfig),
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum IndexingSource {
         /// Optional. A lightweight indexing source with low latency and high
         /// reliability, but lacking advanced features like CMEK and content-based
@@ -2364,7 +2368,7 @@ pub struct Evaluation {
 pub mod evaluation {
     /// Evaluation counters for the documents that were used.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Counters {
         /// How many documents were sent for evaluation.
         #[prost(int32, tag = "1")]
@@ -2383,7 +2387,7 @@ pub mod evaluation {
     }
     /// Evaluation metrics, either in aggregate or about a specific entity.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Metrics {
         /// The calculated precision.
         #[prost(float, tag = "1")]
@@ -2421,7 +2425,7 @@ pub mod evaluation {
     }
     /// Evaluations metrics, at a specific confidence level.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ConfidenceLevelMetrics {
         /// The confidence level.
         #[prost(float, tag = "1")]
@@ -2631,6 +2635,16 @@ pub struct ProcessorVersion {
     /// Output only. The model type of this processor version.
     #[prost(enumeration = "processor_version::ModelType", tag = "15")]
     pub model_type: i32,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "16")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "17")]
+    pub satisfies_pzi: bool,
+    /// Output only. Information about Generative AI model-based processor
+    /// versions.
+    #[prost(message, optional, tag = "18")]
+    pub gen_ai_model_info: ::core::option::Option<processor_version::GenAiModelInfo>,
 }
 /// Nested message and enum types in `ProcessorVersion`.
 pub mod processor_version {
@@ -2644,6 +2658,104 @@ pub mod processor_version {
         /// If set, the processor version that will be used as a replacement.
         #[prost(string, tag = "2")]
         pub replacement_processor_version: ::prost::alloc::string::String,
+    }
+    /// Information about Generative AI model-based processor versions.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GenAiModelInfo {
+        /// The processor version is either a pretrained Google-managed foundation
+        /// model or a custom Generative AI model created by the user.
+        #[prost(oneof = "gen_ai_model_info::ModelInfo", tags = "1, 2")]
+        pub model_info: ::core::option::Option<gen_ai_model_info::ModelInfo>,
+    }
+    /// Nested message and enum types in `GenAiModelInfo`.
+    pub mod gen_ai_model_info {
+        /// Information for a pretrained Google-managed foundation model.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct FoundationGenAiModelInfo {
+            /// Whether finetuning is allowed for this base processor version.
+            #[prost(bool, tag = "1")]
+            pub finetuning_allowed: bool,
+            /// The minimum number of labeled documents in the training dataset
+            /// required for finetuning.
+            #[prost(int32, tag = "2")]
+            pub min_train_labeled_documents: i32,
+        }
+        /// Information for a custom Generative AI model created by the user. These
+        /// are created with `Create New Version` in either the `Call foundation
+        /// model` or `Fine tuning` tabs.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct CustomGenAiModelInfo {
+            /// The type of custom model created by the user.
+            #[prost(
+                enumeration = "custom_gen_ai_model_info::CustomModelType",
+                tag = "1"
+            )]
+            pub custom_model_type: i32,
+            /// The base processor version ID for the custom model.
+            #[prost(string, tag = "2")]
+            pub base_processor_version_id: ::prost::alloc::string::String,
+        }
+        /// Nested message and enum types in `CustomGenAiModelInfo`.
+        pub mod custom_gen_ai_model_info {
+            /// The type of custom model created by the user.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum CustomModelType {
+                /// The model type is unspecified.
+                Unspecified = 0,
+                /// The model is a versioned foundation model.
+                VersionedFoundation = 1,
+                /// The model is a finetuned foundation model.
+                FineTuned = 2,
+            }
+            impl CustomModelType {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        CustomModelType::Unspecified => "CUSTOM_MODEL_TYPE_UNSPECIFIED",
+                        CustomModelType::VersionedFoundation => "VERSIONED_FOUNDATION",
+                        CustomModelType::FineTuned => "FINE_TUNED",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "CUSTOM_MODEL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "VERSIONED_FOUNDATION" => Some(Self::VersionedFoundation),
+                        "FINE_TUNED" => Some(Self::FineTuned),
+                        _ => None,
+                    }
+                }
+            }
+        }
+        /// The processor version is either a pretrained Google-managed foundation
+        /// model or a custom Generative AI model created by the user.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum ModelInfo {
+            /// Information for a pretrained Google-managed foundation model.
+            #[prost(message, tag = "1")]
+            FoundationGenAiModelInfo(FoundationGenAiModelInfo),
+            /// Information for a custom Generative AI model created by the user.
+            #[prost(message, tag = "2")]
+            CustomGenAiModelInfo(CustomGenAiModelInfo),
+        }
     }
     /// The possible states of the processor version.
     #[derive(
@@ -2804,6 +2916,12 @@ pub struct Processor {
     /// encryption and decryption in CMEK scenarios.
     #[prost(string, tag = "8")]
     pub kms_key_name: ::prost::alloc::string::String,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "12")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "13")]
+    pub satisfies_pzi: bool,
 }
 /// Nested message and enum types in `Processor`.
 pub mod processor {
@@ -2952,7 +3070,7 @@ pub struct ProcessOptions {
 pub mod process_options {
     /// Serving config for layout parser processor.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LayoutConfig {
         /// Optional. Config for chunking in layout parser processor.
         #[prost(message, optional, tag = "1")]
@@ -2962,7 +3080,7 @@ pub mod process_options {
     pub mod layout_config {
         /// Serving config for chunking.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct ChunkingConfig {
             /// Optional. The chunk sizes to use when splitting documents, in order of
             /// level.
@@ -3060,6 +3178,9 @@ pub struct ProcessRequest {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. Option to remove images from the document.
+    #[prost(bool, tag = "11")]
+    pub imageless_mode: bool,
     /// The document payload.
     #[prost(oneof = "process_request::Source", tags = "4, 5, 8")]
     pub source: ::core::option::Option<process_request::Source>,
@@ -3262,7 +3383,7 @@ pub mod batch_process_request {
 /// Response message for
 /// [BatchProcessDocuments][google.cloud.documentai.v1beta3.DocumentProcessorService.BatchProcessDocuments].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BatchProcessResponse {}
 /// The long-running operation metadata for
 /// [BatchProcessDocuments][google.cloud.documentai.v1beta3.DocumentProcessorService.BatchProcessDocuments].
@@ -3562,7 +3683,7 @@ pub struct DeployProcessorVersionRequest {
 /// [DeployProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.DeployProcessorVersion]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeployProcessorVersionResponse {}
 /// The long-running operation metadata for the
 /// [DeployProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.DeployProcessorVersion]
@@ -3588,7 +3709,7 @@ pub struct UndeployProcessorVersionRequest {
 /// [UndeployProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.UndeployProcessorVersion]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UndeployProcessorVersionResponse {}
 /// The long-running operation metadata for the
 /// [UndeployProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.UndeployProcessorVersion]
@@ -3655,7 +3776,7 @@ pub struct EnableProcessorRequest {
 /// [EnableProcessor][google.cloud.documentai.v1beta3.DocumentProcessorService.EnableProcessor]
 /// method. Intentionally empty proto for adding fields in future.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EnableProcessorResponse {}
 /// The long-running operation metadata for the
 /// [EnableProcessor][google.cloud.documentai.v1beta3.DocumentProcessorService.EnableProcessor]
@@ -3681,7 +3802,7 @@ pub struct DisableProcessorRequest {
 /// [DisableProcessor][google.cloud.documentai.v1beta3.DocumentProcessorService.DisableProcessor]
 /// method. Intentionally empty proto for adding fields in future.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DisableProcessorResponse {}
 /// The long-running operation metadata for the
 /// [DisableProcessor][google.cloud.documentai.v1beta3.DocumentProcessorService.DisableProcessor]
@@ -3715,7 +3836,7 @@ pub struct SetDefaultProcessorVersionRequest {
 /// [SetDefaultProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.SetDefaultProcessorVersion]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SetDefaultProcessorVersionResponse {}
 /// The long-running operation metadata for the
 /// [SetDefaultProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.SetDefaultProcessorVersion]
@@ -3775,7 +3896,7 @@ pub mod train_processor_version_request {
     /// Options to control the training of the Custom Document Extraction (CDE)
     /// Processor.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CustomDocumentExtractionOptions {
         /// Training method to use for CDE training.
         #[prost(
@@ -3830,7 +3951,7 @@ pub mod train_processor_version_request {
     }
     /// Options to control foundation model tuning of the processor.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct FoundationModelTuningOptions {
         /// Optional. The number of steps to run for model tuning. Valid values are
         /// between 1 and 400. If not provided, recommended steps will be used.
@@ -3843,7 +3964,7 @@ pub mod train_processor_version_request {
         pub learning_rate_multiplier: f32,
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ProcessorFlags {
         /// Options to control Custom Document Extraction (CDE) Processor.
         #[prost(message, tag = "5")]
@@ -4790,6 +4911,10 @@ pub mod document_processor_service_client {
         /// Creates a processor from the
         /// [ProcessorType][google.cloud.documentai.v1beta3.ProcessorType] provided.
         /// The processor will be at `ENABLED` state by default after its creation.
+        /// Note that this method requires the `documentai.processors.create`
+        /// permission on the project, which is highly privileged. A user or service
+        /// account with this permission can create new processors that can interact
+        /// with any gcs bucket in your project.
         pub async fn create_processor(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateProcessorRequest>,
@@ -5154,14 +5279,14 @@ pub mod import_documents_request {
     pub mod batch_documents_import_config {
         /// The config for auto-split.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct AutoSplitConfig {
             /// Ratio of training dataset split.
             #[prost(float, tag = "1")]
             pub training_split_ratio: f32,
         }
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum SplitTypeConfig {
             /// Target dataset split where the documents must be stored.
             #[prost(enumeration = "super::super::DatasetSplitType", tag = "2")]
@@ -5175,7 +5300,7 @@ pub mod import_documents_request {
 }
 /// Response of the import document operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsResponse {}
 /// Metadata of the import document operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5349,7 +5474,7 @@ pub struct BatchDeleteDocumentsRequest {
 }
 /// Response of the delete documents operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BatchDeleteDocumentsResponse {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5410,7 +5535,7 @@ pub struct UpdateDatasetSchemaRequest {
 }
 /// Range of pages present in a document.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DocumentPageRange {
     /// First page number (one-based index) to be returned.
     #[prost(int32, tag = "1")]
@@ -5601,6 +5726,11 @@ pub mod document_service_client {
             self
         }
         /// Updates metadata associated with a dataset.
+        /// Note that this method requires the
+        /// `documentai.googleapis.com/datasets.update` permission on the project,
+        /// which is highly privileged. A user or service account with this permission
+        /// can create new processors that can interact with any gcs bucket in your
+        /// project.
         pub async fn update_dataset(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDatasetRequest>,

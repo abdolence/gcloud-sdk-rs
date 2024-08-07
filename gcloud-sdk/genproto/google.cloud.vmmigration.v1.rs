@@ -92,7 +92,7 @@ pub mod replication_cycle {
 }
 /// CycleStep holds information about a step progress.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CycleStep {
     /// The time the cycle step has started.
     #[prost(message, optional, tag = "1")]
@@ -106,7 +106,7 @@ pub struct CycleStep {
 /// Nested message and enum types in `CycleStep`.
 pub mod cycle_step {
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Step {
         /// Initializing replication step.
         #[prost(message, tag = "3")]
@@ -121,11 +121,11 @@ pub mod cycle_step {
 }
 /// InitializingReplicationStep contains specific step details.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InitializingReplicationStep {}
 /// ReplicatingStep contains specific step details.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReplicatingStep {
     /// Total bytes to be handled in the step.
     #[prost(int64, tag = "1")]
@@ -144,11 +144,11 @@ pub struct ReplicatingStep {
 }
 /// PostProcessingStep contains specific step details.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PostProcessingStep {}
 /// ReplicationSync contain information about the last replica sync to the cloud.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReplicationSync {
     /// The most updated snapshot created time in the source that finished
     /// replication.
@@ -333,7 +333,7 @@ pub mod migrating_vm {
     }
     /// Details about the source VM.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum SourceVmDetails {
         /// Output only. Details of the VM from an AWS source.
         #[prost(message, tag = "29")]
@@ -457,7 +457,7 @@ pub mod clone_job {
 }
 /// CloneStep holds information about the clone step progress.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CloneStep {
     /// The time the step has started.
     #[prost(message, optional, tag = "1")]
@@ -471,7 +471,7 @@ pub struct CloneStep {
 /// Nested message and enum types in `CloneStep`.
 pub mod clone_step {
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Step {
         /// Adapting OS step.
         #[prost(message, tag = "3")]
@@ -486,15 +486,15 @@ pub mod clone_step {
 }
 /// AdaptingOSStep contains specific step details.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AdaptingOsStep {}
 /// PreparingVMDisksStep contains specific step details.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PreparingVmDisksStep {}
 /// InstantiatingMigratedVMStep contains specific step details.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InstantiatingMigratedVmStep {}
 /// CutoverJob message describes a cutover of a migrating VM. The CutoverJob is
 /// the operation of shutting down the VM, creating a snapshot and
@@ -648,7 +648,7 @@ pub mod cutover_step {
 }
 /// ShuttingDownSourceVMStep contains specific step details.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ShuttingDownSourceVmStep {}
 /// Request message for 'CreateCloneJob' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -689,7 +689,7 @@ pub struct CancelCloneJobRequest {
 }
 /// Response message for 'CancelCloneJob' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CancelCloneJobResponse {}
 /// Request message for 'ListCloneJobsRequest' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1896,7 +1896,7 @@ pub mod vm_utilization_info {
 }
 /// Utilization metrics values for a single VM.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VmUtilizationMetrics {
     /// Max CPU usage, percent.
     #[prost(int32, tag = "9")]
@@ -2143,7 +2143,7 @@ pub struct UpgradeApplianceRequest {
 }
 /// Response message for 'UpgradeAppliance' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpgradeApplianceResponse {}
 /// Request message for 'ListDatacenterConnectors' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2572,7 +2572,7 @@ pub mod compute_scheduling {
 }
 /// A policy for scheduling replications.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SchedulePolicy {
     /// The idle duration between replication stages.
     #[prost(message, optional, tag = "1")]
@@ -2716,7 +2716,7 @@ pub struct StartMigrationRequest {
 }
 /// Response message for 'StartMigration' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StartMigrationResponse {}
 /// Request message for 'PauseMigration' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2728,7 +2728,7 @@ pub struct PauseMigrationRequest {
 }
 /// Response message for 'PauseMigration' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PauseMigrationResponse {}
 /// Request message for 'ResumeMigration' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2740,7 +2740,7 @@ pub struct ResumeMigrationRequest {
 }
 /// Response message for 'ResumeMigration' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ResumeMigrationResponse {}
 /// Request message for 'FinalizeMigration' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2752,7 +2752,7 @@ pub struct FinalizeMigrationRequest {
 }
 /// Response message for 'FinalizeMigration' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FinalizeMigrationResponse {}
 /// TargetProject message represents a target Compute Engine project for a
 /// migration or a clone.
@@ -3074,7 +3074,7 @@ pub struct AddGroupMigrationRequest {
 }
 /// Response message for 'AddGroupMigration' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddGroupMigrationResponse {}
 /// Request message for 'RemoveMigration' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3089,7 +3089,7 @@ pub struct RemoveGroupMigrationRequest {
 }
 /// Response message for 'RemoveMigration' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RemoveGroupMigrationResponse {}
 /// Request message for 'CreateCutoverJob' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3130,7 +3130,7 @@ pub struct CancelCutoverJobRequest {
 }
 /// Response message for 'CancelCutoverJob' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CancelCutoverJobResponse {}
 /// Request message for 'ListCutoverJobsRequest' request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3315,7 +3315,7 @@ pub mod migration_error {
 }
 /// Represent the source AWS VM details.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AwsSourceVmDetails {
     /// The firmware type of the source VM.
     #[prost(enumeration = "aws_source_vm_details::Firmware", tag = "1")]

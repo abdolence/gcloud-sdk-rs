@@ -58,7 +58,7 @@ pub struct ErrorDetail {
 }
 /// Holds information about where the error is located.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ErrorLocation {
     /// Optional. If applicable, denotes the line where the error occurred. A zero value
     /// means that there is no line information.
@@ -129,7 +129,7 @@ pub struct Point {
 /// If the start time is the same as the end time, then the interval
 /// represents a single point in time.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeInterval {
     /// Optional. The beginning of the time interval.  The default value
     /// for the start time is the end time. The start time must not be
@@ -382,7 +382,7 @@ pub struct Filter {
 }
 /// Settings related to SQL identifiers.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct IdentifierSettings {
     /// The setting to control output queries' identifier case.
     #[prost(enumeration = "identifier_settings::IdentifierCase", tag = "1")]
@@ -488,7 +488,7 @@ pub mod identifier_settings {
 }
 /// Teradata SQL specific translation task related settings.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TeradataOptions {}
 /// BTEQ translation task related settings.
 #[allow(clippy::derive_partial_eq_without_eq)]

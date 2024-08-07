@@ -2,7 +2,7 @@
 /// Encapsulates progress related information for a Cloud Spanner long
 /// running instance operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct OperationProgress {
     /// Percent completion of the operation.
     /// Values are between 0 and 100 inclusive.
@@ -309,7 +309,7 @@ pub mod instance_config {
 }
 /// Autoscaling config for an instance.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoscalingConfig {
     /// Required. Autoscaling limits for an instance.
     #[prost(message, optional, tag = "1")]
@@ -330,7 +330,7 @@ pub mod autoscaling_config {
     /// units to specify the limits, but should use the same unit to set both the
     /// min_limit and max_limit.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AutoscalingLimits {
         /// The minimum compute capacity for the instance.
         #[prost(oneof = "autoscaling_limits::MinLimit", tags = "1, 2")]
@@ -345,7 +345,7 @@ pub mod autoscaling_config {
     pub mod autoscaling_limits {
         /// The minimum compute capacity for the instance.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum MinLimit {
             /// Minimum number of nodes allocated to the instance. If set, this number
             /// should be greater than or equal to 1.
@@ -360,7 +360,7 @@ pub mod autoscaling_config {
         /// capacity should be less than or equal to 10X the minimum compute
         /// capacity.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum MaxLimit {
             /// Maximum number of nodes allocated to the instance. If set, this number
             /// should be greater than or equal to min_nodes.
@@ -375,7 +375,7 @@ pub mod autoscaling_config {
     }
     /// The autoscaling targets for an instance.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AutoscalingTargets {
         /// Required. The target high priority cpu utilization percentage that the
         /// autoscaler should be trying to achieve for the instance. This number is
@@ -1081,7 +1081,7 @@ pub mod instance_partition {
     /// documentation](<https://cloud.google.com/spanner/docs/compute-capacity>)
     /// for more information about nodes and processing units.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ComputeCapacity {
         /// The number of nodes allocated to this instance partition.
         ///

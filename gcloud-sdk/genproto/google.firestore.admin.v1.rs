@@ -41,7 +41,7 @@ pub struct Backup {
 pub mod backup {
     /// Backup specific statistics.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Stats {
         /// Output only. Summation of the size of all documents and index entries in
         /// the backup, measured in bytes.
@@ -513,7 +513,7 @@ pub mod index {
     pub mod index_field {
         /// The index configuration to support vector search operations
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct VectorConfig {
             /// Required. The vector dimension this configuration applies to.
             ///
@@ -530,11 +530,11 @@ pub mod index {
             /// An index that stores vectors in a flat data structure, and supports
             /// exhaustive search.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct FlatIndex {}
             /// The type of index used.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
             pub enum Type {
                 /// Indicates the vector index is a flat index.
                 #[prost(message, tag = "2")]
@@ -625,7 +625,7 @@ pub mod index {
         }
         /// How the field value is indexed.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum ValueMode {
             /// Indicates that this field supports ordering by the specified order or
             /// comparing using =, !=, <, <=, >, >=.
@@ -879,7 +879,7 @@ pub mod field {
     /// other data type or leaving the field absent will disable expiration for the
     /// individual document.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TtlConfig {
         /// Output only. The state of the TTL configuration.
         #[prost(enumeration = "ttl_config::State", tag = "1")]
@@ -1070,7 +1070,7 @@ pub mod field_operation_metadata {
     }
     /// Information about a TTL configuration change.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TtlConfigDelta {
         /// Specifies how the TTL configuration is changing.
         #[prost(enumeration = "ttl_config_delta::ChangeType", tag = "1")]
@@ -1266,7 +1266,7 @@ pub struct RestoreDatabaseMetadata {
 /// Unit of work is generic and must be interpreted based on where
 /// [Progress][google.firestore.admin.v1.Progress] is used.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Progress {
     /// The amount of work estimated.
     #[prost(int64, tag = "1")]
@@ -1369,7 +1369,7 @@ pub struct BackupSchedule {
 pub mod backup_schedule {
     /// A oneof field to represent when backups will be taken.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Recurrence {
         /// For a schedule that runs daily.
         #[prost(message, tag = "7")]
@@ -1383,13 +1383,13 @@ pub mod backup_schedule {
 ///
 /// The time zone is UTC.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DailyRecurrence {}
 /// Represents a recurring schedule that runs on a specified day of the week.
 ///
 /// The time zone is UTC.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WeeklyRecurrence {
     /// The day of week to run.
     ///
@@ -1434,7 +1434,7 @@ pub struct CreateDatabaseRequest {
 }
 /// Metadata related to the create database operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateDatabaseMetadata {}
 /// The list of databases for a project.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1479,7 +1479,7 @@ pub struct UpdateDatabaseRequest {
 }
 /// Metadata related to the update database operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpdateDatabaseMetadata {}
 /// The request for
 /// [FirestoreAdmin.DeleteDatabase][google.firestore.admin.v1.FirestoreAdmin.DeleteDatabase].
@@ -1498,7 +1498,7 @@ pub struct DeleteDatabaseRequest {
 }
 /// Metadata related to the delete database operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteDatabaseMetadata {}
 /// The request for
 /// [FirestoreAdmin.CreateBackupSchedule][google.firestore.admin.v1.FirestoreAdmin.CreateBackupSchedule].
@@ -1808,7 +1808,7 @@ pub struct BulkDeleteDocumentsRequest {
 /// The response for
 /// [FirestoreAdmin.BulkDeleteDocuments][google.firestore.admin.v1.FirestoreAdmin.BulkDeleteDocuments].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BulkDeleteDocumentsResponse {}
 /// The request for
 /// [FirestoreAdmin.GetBackup][google.firestore.admin.v1.FirestoreAdmin.GetBackup].
@@ -2788,5 +2788,5 @@ pub mod firestore_admin_client {
 /// The metadata message for
 /// [google.cloud.location.Location.metadata][google.cloud.location.Location.metadata].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {}

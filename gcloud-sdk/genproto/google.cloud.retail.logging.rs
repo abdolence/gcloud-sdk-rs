@@ -10,7 +10,7 @@ pub struct ServiceContext {
 }
 /// HTTP request data that is related to a reported error.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HttpRequestContext {
     /// The HTTP response status code for the request.
     #[prost(int32, tag = "1")]

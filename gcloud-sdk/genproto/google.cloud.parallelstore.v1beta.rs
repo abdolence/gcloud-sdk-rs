@@ -74,6 +74,16 @@ pub struct Instance {
     /// service.
     #[prost(string, tag = "14")]
     pub effective_reserved_ip_range: ::prost::alloc::string::String,
+    /// Optional. Stripe level for files.
+    /// MIN better suited for small size files.
+    /// MAX higher throughput performance for larger files.
+    #[prost(enumeration = "FileStripeLevel", tag = "15")]
+    pub file_stripe_level: i32,
+    /// Optional. Stripe level for directories.
+    /// MIN when directory has a small number of files.
+    /// MAX when directory has a large number of files.
+    #[prost(enumeration = "DirectoryStripeLevel", tag = "16")]
+    pub directory_stripe_level: i32,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
@@ -449,7 +459,7 @@ pub mod export_data_request {
 }
 /// ImportDataResponse is the response returned from ImportData rpc.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportDataResponse {}
 /// ImportDataMetadata contains import data operation metadata
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -486,7 +496,7 @@ pub struct ImportDataMetadata {
 }
 /// ExportDataResponse is the response returned from ExportData rpc
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportDataResponse {}
 /// ExportDataMetadata contains export data operation metadata
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -565,7 +575,7 @@ pub mod transfer_operation_metadata {
 }
 /// A collection of counters that report the progress of a transfer operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TransferCounters {
     /// Objects found in the data source that are scheduled to be transferred,
     /// excluding any that are filtered based on object conditions or skipped due
@@ -621,6 +631,80 @@ impl TransferType {
             "TRANSFER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
             "IMPORT" => Some(Self::Import),
             "EXPORT" => Some(Self::Export),
+            _ => None,
+        }
+    }
+}
+/// Represents the striping options for files.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum FileStripeLevel {
+    /// Default file striping
+    Unspecified = 0,
+    /// Minimum file striping
+    Min = 1,
+    /// Medium file striping
+    Balanced = 2,
+    /// Maximum file striping
+    Max = 3,
+}
+impl FileStripeLevel {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            FileStripeLevel::Unspecified => "FILE_STRIPE_LEVEL_UNSPECIFIED",
+            FileStripeLevel::Min => "FILE_STRIPE_LEVEL_MIN",
+            FileStripeLevel::Balanced => "FILE_STRIPE_LEVEL_BALANCED",
+            FileStripeLevel::Max => "FILE_STRIPE_LEVEL_MAX",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FILE_STRIPE_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+            "FILE_STRIPE_LEVEL_MIN" => Some(Self::Min),
+            "FILE_STRIPE_LEVEL_BALANCED" => Some(Self::Balanced),
+            "FILE_STRIPE_LEVEL_MAX" => Some(Self::Max),
+            _ => None,
+        }
+    }
+}
+/// Represents the striping options for directories.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DirectoryStripeLevel {
+    /// Default directory striping
+    Unspecified = 0,
+    /// Minimum directory striping
+    Min = 1,
+    /// Medium directory striping
+    Balanced = 2,
+    /// Maximum directory striping
+    Max = 3,
+}
+impl DirectoryStripeLevel {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            DirectoryStripeLevel::Unspecified => "DIRECTORY_STRIPE_LEVEL_UNSPECIFIED",
+            DirectoryStripeLevel::Min => "DIRECTORY_STRIPE_LEVEL_MIN",
+            DirectoryStripeLevel::Balanced => "DIRECTORY_STRIPE_LEVEL_BALANCED",
+            DirectoryStripeLevel::Max => "DIRECTORY_STRIPE_LEVEL_MAX",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DIRECTORY_STRIPE_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+            "DIRECTORY_STRIPE_LEVEL_MIN" => Some(Self::Min),
+            "DIRECTORY_STRIPE_LEVEL_BALANCED" => Some(Self::Balanced),
+            "DIRECTORY_STRIPE_LEVEL_MAX" => Some(Self::Max),
             _ => None,
         }
     }

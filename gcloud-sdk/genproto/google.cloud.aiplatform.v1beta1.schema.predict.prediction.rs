@@ -76,7 +76,7 @@ pub struct TabularClassificationPredictionResult {
 }
 /// Prediction output format for Tabular Regression.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TabularRegressionPredictionResult {
     /// The regression value.
     #[prost(float, tag = "1")]
@@ -117,7 +117,7 @@ pub struct TextExtractionPredictionResult {
 }
 /// Prediction output format for Text Sentiment
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TextSentimentPredictionResult {
     /// The integer sentiment labels between 0 (inclusive) and sentimentMax label
     /// (inclusive), while 0 maps to the least positive sentiment and
@@ -129,7 +129,7 @@ pub struct TextSentimentPredictionResult {
 }
 /// Prediction output format for Time Series Forecasting.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeSeriesForecastingPredictionResult {
     /// The regression value.
     #[prost(float, tag = "1")]
@@ -240,7 +240,7 @@ pub mod video_object_tracking_prediction_result {
     /// AnnotationSpec. The coordinates are relative to the frame size, and the
     /// point 0,0 is in the top left of the frame.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Frame {
         /// A time (frame) of a video in which the object has been detected.
         /// Expressed as a number of seconds as measured from the

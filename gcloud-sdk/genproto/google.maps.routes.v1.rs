@@ -597,7 +597,7 @@ pub mod waypoint {
 }
 /// Encapsulates a location (a geographic point, and an optional heading).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Location {
     /// The waypoint's geographic coordinates.
     #[prost(message, optional, tag = "1")]
@@ -934,7 +934,7 @@ pub struct RouteObjective {
 pub mod route_objective {
     /// Encapsulates a RateCard route objective.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RateCard {
         /// Optional. Cost per minute.
         #[prost(message, optional, tag = "2")]
@@ -950,7 +950,7 @@ pub mod route_objective {
     pub mod rate_card {
         /// Encapsulates the cost used in the rate card.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct MonetaryCost {
             /// Required. The cost value in local currency inferred from the request.
             #[prost(double, tag = "1")]
@@ -983,7 +983,7 @@ pub mod route_objective {
     }
     /// The route objective.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Objective {
         /// The RateCard objective.
         #[prost(message, tag = "1")]
@@ -1251,7 +1251,7 @@ pub struct NavigationInstruction {
 /// SpeedReadingInterval defines an interval and describes its traffic using the
 /// following categories.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SpeedReadingInterval {
     /// The starting index of this interval in the polyline.
     /// In JSON, when the index is 0, the field appears to be unpopulated.
@@ -1469,7 +1469,7 @@ pub struct CustomRoute {
 /// is set, then it means the server used a different routing mode from your
 /// preferred mode as fallback.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FallbackInfo {
     /// Routing mode used for the response. If fallback was triggered, the mode
     /// may be different from routing preference set in the original client
@@ -1589,7 +1589,7 @@ pub mod compute_custom_routes_response {
     /// fallback_route_objective is used to communicate the fallback route
     /// objective.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct FallbackInfo {
         /// Routing mode used for the response. If fallback was triggered, the mode
         /// may be different from routing preference set in the original client

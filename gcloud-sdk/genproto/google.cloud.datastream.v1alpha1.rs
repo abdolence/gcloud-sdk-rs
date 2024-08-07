@@ -59,11 +59,11 @@ pub struct GcsProfile {
 }
 /// No connectivity settings.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NoConnectivitySettings {}
 /// Static IP address connectivity.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StaticServiceIpConnectivity {}
 /// Forward SSH Tunnel connectivity.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -492,11 +492,11 @@ pub mod source_config {
 }
 /// AVRO file format configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AvroFileFormat {}
 /// JSON file format configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct JsonFileFormat {
     /// The schema file format along JSON data files.
     #[prost(enumeration = "SchemaFileFormat", tag = "1")]
@@ -578,7 +578,7 @@ pub struct GcsDestinationConfig {
 pub mod gcs_destination_config {
     /// File Format that the data should be written in.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum FileFormat {
         /// AVRO file format configuration.
         #[prost(message, tag = "100")]
@@ -677,7 +677,7 @@ pub mod stream {
     }
     /// Backfill strategy to disable automatic backfill for the Stream's objects.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BackfillNoneStrategy {}
     /// Stream state.
     #[derive(
@@ -1026,7 +1026,7 @@ pub mod discover_connection_profile_request {
         ConnectionProfileName(::prost::alloc::string::String),
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Depth {
         /// Whether to retrieve the full hierarchy of data objects (TRUE) or only the
         /// current level (FALSE).

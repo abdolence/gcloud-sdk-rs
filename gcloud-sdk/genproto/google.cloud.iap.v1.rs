@@ -188,7 +188,7 @@ pub struct GcipSettings {
 /// Allows customers to configure HTTP request paths that'll allow HTTP OPTIONS
 /// call to bypass authentication and authorization.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CorsSettings {
     /// Configuration to allow HTTP OPTIONS calls to skip authorization. If
     /// undefined, IAP will not apply any special logic to OPTIONS requests.
@@ -213,7 +213,7 @@ pub struct OAuthSettings {
 }
 /// Configuration for IAP reauthentication policies.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReauthSettings {
     /// Reauth method requested.
     #[prost(enumeration = "reauth_settings::Method", tag = "1")]

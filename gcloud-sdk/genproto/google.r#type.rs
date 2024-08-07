@@ -5,7 +5,7 @@
 /// <a href="<http://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf">WGS84>
 /// standard</a>. Values must be within normalized ranges.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LatLng {
     /// The latitude in degrees. It must be in the range \[-90.0, +90.0\].
     #[prost(double, tag = "1")]
@@ -28,7 +28,7 @@ pub struct LatLng {
 /// Related types are [google.type.TimeOfDay][google.type.TimeOfDay] and
 /// `google.protobuf.Timestamp`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Date {
     /// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
     /// a year.
@@ -283,7 +283,7 @@ pub struct Money {
 ///
 ///      // ...
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Color {
     /// The amount of red in the color as a value in the interval \[0, 1\].
     #[prost(float, tag = "1")]
@@ -367,7 +367,7 @@ pub struct Expr {
 /// When the start equals the end, the interval is empty (matches no time).
 /// When both start and end are unspecified, the interval matches any time.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Interval {
     /// Optional. Inclusive start of the interval.
     ///
@@ -440,7 +440,7 @@ impl DayOfWeek {
 /// types are [google.type.Date][google.type.Date] and
 /// `google.protobuf.Timestamp`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeOfDay {
     /// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
     /// to allow the value "24:00:00" for scenarios like business closing time.
@@ -820,7 +820,7 @@ pub mod phone_number {
 }
 /// Represents a fraction in terms of a numerator divided by a denominator.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Fraction {
     /// The numerator in the fraction, e.g. 2 in 2/3.
     #[prost(int64, tag = "1")]
@@ -960,7 +960,7 @@ impl Month {
 /// negative.
 ///
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Quaternion {
     /// The x component.
     #[prost(double, tag = "1")]

@@ -5,7 +5,8 @@
 pub enum AcceleratorType {
     /// Unspecified accelerator type, which means no accelerator.
     Unspecified = 0,
-    /// Nvidia Tesla K80 GPU.
+    /// Deprecated: Nvidia Tesla K80 GPU has reached end of support,
+    /// see <https://cloud.google.com/compute/docs/eol/k80-eol.>
     NvidiaTeslaK80 = 1,
     /// Nvidia Tesla P100 GPU.
     NvidiaTeslaP100 = 2,
@@ -309,7 +310,7 @@ pub mod artifact {
 /// Success and error statistics of processing multiple entities
 /// (for example, DataItems or structured data rows) in batch.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CompletionStats {
     /// Output only. The number of entities that had been processed successfully.
     #[prost(int64, tag = "1")]
@@ -506,7 +507,7 @@ pub mod explanation_metadata {
         /// mean and stddev of the original feature (e.g. image tensor) from which
         /// input feature (with mean = 0 and stddev = 1) was obtained.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct FeatureValueDomain {
             /// The minimum permissible value for this feature.
             #[prost(float, tag = "1")]
@@ -527,7 +528,7 @@ pub mod explanation_metadata {
         }
         /// Visualization configurations for image explanation.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Visualization {
             /// Type of the image visualization. Only applicable to
             /// [Integrated Gradients
@@ -1316,7 +1317,7 @@ pub mod explanation_parameters {
 /// contribute to the label being predicted. A sampling strategy is used to
 /// approximate the value rather than considering all subsets of features.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SampledShapleyAttribution {
     /// Required. The number of feature permutations to consider when approximating
     /// the Shapley values.
@@ -1483,7 +1484,7 @@ pub mod feature_noise_sigma {
 /// motivated by the BlurIG approach explained here:
 /// <https://arxiv.org/abs/2004.03383>
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BlurBaselineConfig {
     /// The standard deviation of the blur kernel for the blurred baseline. The
     /// same blurring parameter is used for both the height and the width
@@ -1585,7 +1586,7 @@ pub mod examples {
 }
 /// Preset configuration for example-based explanations
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Presets {
     /// Preset option controlling parameters for speed-precision trade-off when
     /// querying for examples. If omitted, defaults to `PRECISE`.
@@ -1892,6 +1893,77 @@ impl JobState {
         }
     }
 }
+/// A ReservationAffinity can be used to configure a Vertex AI resource (e.g., a
+/// DeployedModel) to draw its Compute Engine resources from a Shared
+/// Reservation, or exclusively from on-demand capacity.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReservationAffinity {
+    /// Required. Specifies the reservation affinity type.
+    #[prost(enumeration = "reservation_affinity::Type", tag = "1")]
+    pub reservation_affinity_type: i32,
+    /// Optional. Corresponds to the label key of a reservation resource. To target
+    /// a SPECIFIC_RESERVATION by name, use
+    /// `compute.googleapis.com/reservation-name` as the key and specify the name
+    /// of your reservation as its value.
+    #[prost(string, tag = "2")]
+    pub key: ::prost::alloc::string::String,
+    /// Optional. Corresponds to the label values of a reservation resource. This
+    /// must be the full resource name of the reservation.
+    #[prost(string, repeated, tag = "3")]
+    pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `ReservationAffinity`.
+pub mod reservation_affinity {
+    /// Identifies a type of reservation affinity.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Default value. This should not be used.
+        Unspecified = 0,
+        /// Do not consume from any reserved capacity, only use on-demand.
+        NoReservation = 1,
+        /// Consume any reservation available, falling back to on-demand.
+        AnyReservation = 2,
+        /// Consume from a specific reservation. When chosen, the reservation
+        /// must be identified via the `key` and `values` fields.
+        SpecificReservation = 3,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Type::Unspecified => "TYPE_UNSPECIFIED",
+                Type::NoReservation => "NO_RESERVATION",
+                Type::AnyReservation => "ANY_RESERVATION",
+                Type::SpecificReservation => "SPECIFIC_RESERVATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_RESERVATION" => Some(Self::NoReservation),
+                "ANY_RESERVATION" => Some(Self::AnyReservation),
+                "SPECIFIC_RESERVATION" => Some(Self::SpecificReservation),
+                _ => None,
+            }
+        }
+    }
+}
 /// Specification of a single machine.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1923,6 +1995,10 @@ pub struct MachineSpec {
     /// available from GKE. (Example: tpu_topology: "2x2x1").
     #[prost(string, tag = "4")]
     pub tpu_topology: ::prost::alloc::string::String,
+    /// Optional. Immutable. Configuration controlling how this resource pool
+    /// consumes reservation.
+    #[prost(message, optional, tag = "5")]
+    pub reservation_affinity: ::core::option::Option<ReservationAffinity>,
 }
 /// A description of resources that are dedicated to a DeployedModel, and
 /// that need a higher degree of manual configuration.
@@ -1983,12 +2059,16 @@ pub struct DedicatedResources {
     /// to `80`.
     #[prost(message, repeated, tag = "4")]
     pub autoscaling_metric_specs: ::prost::alloc::vec::Vec<AutoscalingMetricSpec>,
+    /// Optional. If true, schedule the deployment workload on [spot
+    /// VMs](<https://cloud.google.com/kubernetes-engine/docs/concepts/spot-vms>).
+    #[prost(bool, tag = "5")]
+    pub spot: bool,
 }
 /// A description of resources that to large degree are decided by Vertex AI,
 /// and require only a modest additional configuration.
 /// Each Model supporting these resources documents its specific guidelines.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutomaticResources {
     /// Immutable. The minimum number of replicas this DeployedModel will be always
     /// deployed on. If traffic against it increases, it may dynamically be
@@ -2030,7 +2110,7 @@ pub struct BatchDedicatedResources {
 }
 /// Statistics information about resource consumption.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ResourcesConsumed {
     /// Output only. The number of replica hours used. Note that many replicas may
     /// run in parallel, and additionally any given work may be queued for some
@@ -2109,7 +2189,7 @@ pub struct AutoscalingMetricSpec {
 /// See [Images using supported Shielded VM
 /// features](<https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ShieldedVmConfig {
     /// Defines whether the instance has [Secure
     /// Boot](<https://cloud.google.com/compute/shielded-vm/docs/shielded-vm#secure-boot>)
@@ -2123,7 +2203,7 @@ pub struct ShieldedVmConfig {
 }
 /// Manual batch tuning parameters.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ManualBatchTuningParameters {
     /// Immutable. The number of the records (e.g. instances) of the operation
     /// given in each batch to a machine replica. Machine type, and size of a
@@ -2557,7 +2637,7 @@ pub mod model {
     }
     /// Stats of data used for train or evaluate the Model.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DataStats {
         /// Number of DataItems that were used for training this Model.
         #[prost(int64, tag = "1")]
@@ -2999,7 +3079,7 @@ pub struct ModelContainerSpec {
 }
 /// Represents a network port in a container.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Port {
     /// The number of the port to expose on the pod's IP address.
     /// Must be a valid port number, between 1 and 65535 inclusive.
@@ -3008,7 +3088,7 @@ pub struct Port {
 }
 /// Detail description of the source information of the model.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ModelSourceInfo {
     /// Type of the model source.
     #[prost(enumeration = "model_source_info::ModelSourceType", tag = "1")]
@@ -3824,9 +3904,8 @@ pub struct FunctionResponse {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Retrieval {
-    /// Optional. Disable using the result from this tool in detecting grounding
-    /// attribution. This does not affect how the result is given to the model for
-    /// generation.
+    /// Optional. Deprecated. This option is no longer supported.
+    #[deprecated]
     #[prost(bool, tag = "3")]
     pub disable_attribution: bool,
     /// The source of the retrieval.
@@ -3857,7 +3936,7 @@ pub struct VertexAiSearch {
 }
 /// Tool to retrieve public web data for grounding, powered by Google.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GoogleSearchRetrieval {}
 /// Tool config. This config is shared for all tools provided in the request.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3996,7 +4075,7 @@ pub mod part {
         FunctionResponse(super::FunctionResponse),
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Metadata {
         /// Optional. Video metadata. The metadata should only be specified while the
         /// video data is presented in inline_data or file_data.
@@ -4031,7 +4110,7 @@ pub struct FileData {
 }
 /// Metadata describes the input video content.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VideoMetadata {
     /// Optional. The start offset of the video.
     #[prost(message, optional, tag = "1")]
@@ -4089,7 +4168,7 @@ pub struct GenerationConfig {
 }
 /// Safety settings.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SafetySetting {
     /// Required. Harm category.
     #[prost(enumeration = "HarmCategory", tag = "1")]
@@ -4201,7 +4280,7 @@ pub mod safety_setting {
 }
 /// Safety rating corresponding to the generated content.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SafetyRating {
     /// Output only. Harm category.
     #[prost(enumeration = "HarmCategory", tag = "1")]
@@ -4369,6 +4448,9 @@ pub struct Candidate {
     /// Output only. Content parts of the candidate.
     #[prost(message, optional, tag = "2")]
     pub content: ::core::option::Option<Content>,
+    /// Output only. Confidence score of the candidate.
+    #[prost(double, tag = "8")]
+    pub score: f64,
     /// Output only. The reason why the model stopped generating tokens.
     /// If empty, the model has not stopped generating the tokens.
     #[prost(enumeration = "candidate::FinishReason", tag = "3")]
@@ -4470,6 +4552,88 @@ pub mod candidate {
         }
     }
 }
+/// Segment of the content.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Segment {
+    /// Output only. The index of a Part object within its parent Content object.
+    #[prost(int32, tag = "1")]
+    pub part_index: i32,
+    /// Output only. Start index in the given Part, measured in bytes. Offset from
+    /// the start of the Part, inclusive, starting at zero.
+    #[prost(int32, tag = "2")]
+    pub start_index: i32,
+    /// Output only. End index in the given Part, measured in bytes. Offset from
+    /// the start of the Part, exclusive, starting at zero.
+    #[prost(int32, tag = "3")]
+    pub end_index: i32,
+    /// Output only. The text corresponding to the segment from the response.
+    #[prost(string, tag = "4")]
+    pub text: ::prost::alloc::string::String,
+}
+/// Grounding chunk.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GroundingChunk {
+    /// Chunk type.
+    #[prost(oneof = "grounding_chunk::ChunkType", tags = "1, 2")]
+    pub chunk_type: ::core::option::Option<grounding_chunk::ChunkType>,
+}
+/// Nested message and enum types in `GroundingChunk`.
+pub mod grounding_chunk {
+    /// Chunk from the web.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Web {
+        /// URI reference of the chunk.
+        #[prost(string, optional, tag = "1")]
+        pub uri: ::core::option::Option<::prost::alloc::string::String>,
+        /// Title of the chunk.
+        #[prost(string, optional, tag = "2")]
+        pub title: ::core::option::Option<::prost::alloc::string::String>,
+    }
+    /// Chunk from context retrieved by the retrieval tools.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RetrievedContext {
+        /// URI reference of the attribution.
+        #[prost(string, optional, tag = "1")]
+        pub uri: ::core::option::Option<::prost::alloc::string::String>,
+        /// Title of the attribution.
+        #[prost(string, optional, tag = "2")]
+        pub title: ::core::option::Option<::prost::alloc::string::String>,
+    }
+    /// Chunk type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ChunkType {
+        /// Grounding chunk from the web.
+        #[prost(message, tag = "1")]
+        Web(Web),
+        /// Grounding chunk from context retrieved by the retrieval tools.
+        #[prost(message, tag = "2")]
+        RetrievedContext(RetrievedContext),
+    }
+}
+/// Grounding support.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GroundingSupport {
+    /// Segment of the content this support belongs to.
+    #[prost(message, optional, tag = "1")]
+    pub segment: ::core::option::Option<Segment>,
+    /// A list of indices (into 'grounding_chunk') specifying the
+    /// citations associated with the claim. For instance \[1,3,4\] means
+    /// that grounding_chunk\[1\], grounding_chunk\[3\],
+    /// grounding_chunk\[4\] are the retrieved content attributed to the claim.
+    #[prost(int32, repeated, tag = "2")]
+    pub grounding_chunk_indices: ::prost::alloc::vec::Vec<i32>,
+    /// Confidence score of the support references. Ranges from 0 to 1. 1 is the
+    /// most confident. This list must have the same size as the
+    /// grounding_chunk_indices.
+    #[prost(float, repeated, tag = "3")]
+    pub confidence_scores: ::prost::alloc::vec::Vec<f32>,
+}
 /// Metadata returned to client when grounding is enabled.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4480,6 +4644,12 @@ pub struct GroundingMetadata {
     /// Optional. Google search entry for the following-up web searches.
     #[prost(message, optional, tag = "4")]
     pub search_entry_point: ::core::option::Option<SearchEntryPoint>,
+    /// List of supporting references retrieved from specified grounding source.
+    #[prost(message, repeated, tag = "5")]
+    pub grounding_chunks: ::prost::alloc::vec::Vec<GroundingChunk>,
+    /// Optional. List of grounding support.
+    #[prost(message, repeated, tag = "6")]
+    pub grounding_supports: ::prost::alloc::vec::Vec<GroundingSupport>,
 }
 /// Google search entry point.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -4892,7 +5062,7 @@ pub struct PythonPackageSpec {
 }
 /// All parameters related to queuing and scheduling of custom jobs.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Scheduling {
     /// The maximum job running time. The default is 7 days.
     #[prost(message, optional, tag = "1")]
@@ -4902,11 +5072,72 @@ pub struct Scheduling {
     /// resilient to workers leaving and joining a job.
     #[prost(bool, tag = "3")]
     pub restart_job_on_worker_restart: bool,
+    /// Optional. This determines which type of scheduling strategy to use.
+    #[prost(enumeration = "scheduling::Strategy", tag = "4")]
+    pub strategy: i32,
     /// Optional. Indicates if the job should retry for internal errors after the
     /// job starts running. If true, overrides
     /// `Scheduling.restart_job_on_worker_restart` to false.
     #[prost(bool, tag = "5")]
     pub disable_retries: bool,
+}
+/// Nested message and enum types in `Scheduling`.
+pub mod scheduling {
+    /// Optional. This determines which type of scheduling strategy to use. Right
+    /// now users have two options such as ON_DEMAND which will use regular on
+    /// demand resources to schedule the job, the other is LOW_COST which would
+    /// leverage spot resources alongwith regular resources to schedule
+    /// the job.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Strategy {
+        /// Strategy will default to ON_DEMAND.
+        Unspecified = 0,
+        /// Regular on-demand provisioning strategy.
+        OnDemand = 1,
+        /// Low cost by making potential use of spot resources.
+        LowCost = 2,
+        /// Standard provisioning strategy uses regular on-demand resources.
+        Standard = 3,
+        /// Spot provisioning strategy uses spot resources.
+        Spot = 4,
+    }
+    impl Strategy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Strategy::Unspecified => "STRATEGY_UNSPECIFIED",
+                Strategy::OnDemand => "ON_DEMAND",
+                Strategy::LowCost => "LOW_COST",
+                Strategy::Standard => "STANDARD",
+                Strategy::Spot => "SPOT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                "ON_DEMAND" => Some(Self::OnDemand),
+                "LOW_COST" => Some(Self::LowCost),
+                "STANDARD" => Some(Self::Standard),
+                "SPOT" => Some(Self::Spot),
+                _ => None,
+            }
+        }
+    }
 }
 /// A piece of data in a Dataset. Could be an image, a video, a document or plain
 /// text.
@@ -5058,7 +5289,7 @@ pub struct DataLabelingJob {
 ///   label the data incrementally by several iterations. For every iteration, it
 ///   will select a batch of data based on the sampling strategy.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ActiveLearningConfig {
     /// Active learning data sampling config. For every active learning labeling
     /// iteration, it will select a batch of data based on the sampling strategy.
@@ -5081,7 +5312,7 @@ pub mod active_learning_config {
     /// Required. Max human labeling DataItems. The rest part will be labeled by
     /// machine.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum HumanLabelingBudget {
         /// Max number of human labeled DataItems.
         #[prost(int64, tag = "1")]
@@ -5094,7 +5325,7 @@ pub mod active_learning_config {
 /// Active learning data sampling config. For every active learning labeling
 /// iteration, it will select a batch of data based on the sampling strategy.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SampleConfig {
     /// Field to choose sampling strategy. Sampling strategy will decide which data
     /// should be selected for human labeling in every batch.
@@ -5158,7 +5389,7 @@ pub mod sample_config {
     /// Decides sample size for the initial batch. initial_batch_sample_percentage
     /// is used by default.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum InitialBatchSampleSize {
         /// The percentage of data needed to be labeled in the first batch.
         #[prost(int32, tag = "1")]
@@ -5167,7 +5398,7 @@ pub mod sample_config {
     /// Decides sample size for the following batches.
     /// following_batch_sample_percentage is used by default.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum FollowingBatchSampleSize {
         /// The percentage of data needed to be labeled in each following batch
         /// (except the first batch).
@@ -5179,7 +5410,7 @@ pub mod sample_config {
 /// will train a machine learning model on CMLE. The trained model will be used
 /// by data sampling algorithm to select DataItems.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TrainingConfig {
     /// The timeout hours for the CMLE training job, expressed in milli hours
     /// i.e. 1,000 value in this field means 1 hour.
@@ -5242,7 +5473,7 @@ pub struct SavedQuery {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dataset {
-    /// Output only. The resource name of the Dataset.
+    /// Output only. Identifier. The resource name of the Dataset.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The user-defined name of the Dataset.
@@ -5527,7 +5758,7 @@ pub mod export_data_config {
 /// decided by Vertex AI. If none of the fractions are set, by default roughly
 /// 80% of data is used for training, 10% for validation, and 10% for test.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportFractionSplit {
     /// The fraction of the input data that is to be used to train the Model.
     #[prost(double, tag = "1")]
@@ -5581,7 +5812,7 @@ pub struct ExportFilterSplit {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatasetVersion {
-    /// Output only. The resource name of the DatasetVersion.
+    /// Output only. Identifier. The resource name of the DatasetVersion.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Timestamp when this DatasetVersion was created.
@@ -5790,7 +6021,7 @@ pub struct ImportDataRequest {
 /// Response message for
 /// [DatasetService.ImportData][google.cloud.aiplatform.v1.DatasetService.ImportData].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportDataResponse {}
 /// Runtime operation information for
 /// [DatasetService.ImportData][google.cloud.aiplatform.v1.DatasetService.ImportData].
@@ -7093,6 +7324,27 @@ pub struct Endpoint {
     pub predict_request_response_logging_config: ::core::option::Option<
         PredictRequestResponseLoggingConfig,
     >,
+    /// If true, the endpoint will be exposed through a dedicated
+    /// DNS \[Endpoint.dedicated_endpoint_dns\]. Your request to the dedicated DNS
+    /// will be isolated from other users' traffic and will have better performance
+    /// and reliability.
+    /// Note: Once you enabled dedicated endpoint, you won't be able to send
+    /// request to the shared DNS {region}-aiplatform.googleapis.com. The
+    /// limitation will be removed soon.
+    #[prost(bool, tag = "24")]
+    pub dedicated_endpoint_enabled: bool,
+    /// Output only. DNS of the dedicated endpoint. Will only be populated if
+    /// dedicated_endpoint_enabled is true.
+    /// Format:
+    /// `<https://{endpoint_id}.{region}-{project_number}.prediction.vertexai.goog`.>
+    #[prost(string, tag = "25")]
+    pub dedicated_endpoint_dns: ::prost::alloc::string::String,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "27")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "28")]
+    pub satisfies_pzi: bool,
 }
 /// A deployment of a Model. Endpoints contain one or more DeployedModels.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -7913,7 +8165,7 @@ pub struct UndeployModelRequest {
 /// Response message for
 /// [EndpointService.UndeployModel][google.cloud.aiplatform.v1.EndpointService.UndeployModel].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UndeployModelResponse {}
 /// Runtime operation information for
 /// [EndpointService.UndeployModel][google.cloud.aiplatform.v1.EndpointService.UndeployModel].
@@ -8307,7 +8559,7 @@ pub mod endpoint_service_client {
 }
 /// Configuration of how features in Featurestore are monitored.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FeaturestoreMonitoringConfig {
     /// The config for Snapshot Analysis Based Feature Monitoring.
     #[prost(message, optional, tag = "1")]
@@ -8345,7 +8597,7 @@ pub mod featurestore_monitoring_config {
     /// snapshot of the latest feature value of each entities every
     /// monitoring_interval.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SnapshotAnalysis {
         /// The monitoring schedule for snapshot analysis.
         /// For EntityType-level config:
@@ -8376,7 +8628,7 @@ pub mod featurestore_monitoring_config {
     /// [ImportFeatureValues][google.cloud.aiplatform.v1.FeaturestoreService.ImportFeatureValues]
     /// operation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ImportFeaturesAnalysis {
         /// Whether to enable / disable / inherite default hebavior for import
         /// features analysis.
@@ -8506,7 +8758,7 @@ pub mod featurestore_monitoring_config {
     }
     /// The config for Featurestore Monitoring threshold.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ThresholdConfig {
         #[prost(oneof = "threshold_config::Threshold", tags = "1")]
         pub threshold: ::core::option::Option<threshold_config::Threshold>,
@@ -8514,7 +8766,7 @@ pub mod featurestore_monitoring_config {
     /// Nested message and enum types in `ThresholdConfig`.
     pub mod threshold_config {
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Threshold {
             /// Specify a threshold value that can trigger the alert.
             /// 1. For categorical feature, the distribution distance is calculated by
@@ -8820,6 +9072,1494 @@ pub mod error_analysis_annotation {
                 "SAME_CLASS_DISSIMILAR" => Some(Self::SameClassDissimilar),
                 _ => None,
             }
+        }
+    }
+}
+/// Request message for EvaluationService.EvaluateInstances.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EvaluateInstancesRequest {
+    /// Required. The resource name of the Location to evaluate the instances.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub location: ::prost::alloc::string::String,
+    /// Instances and specs for evaluation
+    #[prost(
+        oneof = "evaluate_instances_request::MetricInputs",
+        tags = "2, 3, 4, 5, 6, 8, 9, 12, 7, 23, 14, 15, 10, 24, 16, 17, 18, 28, 29, 19, 20, 21, 22"
+    )]
+    pub metric_inputs: ::core::option::Option<evaluate_instances_request::MetricInputs>,
+}
+/// Nested message and enum types in `EvaluateInstancesRequest`.
+pub mod evaluate_instances_request {
+    /// Instances and specs for evaluation
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum MetricInputs {
+        /// Auto metric instances.
+        /// Instances and metric spec for exact match metric.
+        #[prost(message, tag = "2")]
+        ExactMatchInput(super::ExactMatchInput),
+        /// Instances and metric spec for bleu metric.
+        #[prost(message, tag = "3")]
+        BleuInput(super::BleuInput),
+        /// Instances and metric spec for rouge metric.
+        #[prost(message, tag = "4")]
+        RougeInput(super::RougeInput),
+        /// LLM-based metric instance.
+        /// General text generation metrics, applicable to other categories.
+        /// Input for fluency metric.
+        #[prost(message, tag = "5")]
+        FluencyInput(super::FluencyInput),
+        /// Input for coherence metric.
+        #[prost(message, tag = "6")]
+        CoherenceInput(super::CoherenceInput),
+        /// Input for safety metric.
+        #[prost(message, tag = "8")]
+        SafetyInput(super::SafetyInput),
+        /// Input for groundedness metric.
+        #[prost(message, tag = "9")]
+        GroundednessInput(super::GroundednessInput),
+        /// Input for fulfillment metric.
+        #[prost(message, tag = "12")]
+        FulfillmentInput(super::FulfillmentInput),
+        /// Input for summarization quality metric.
+        #[prost(message, tag = "7")]
+        SummarizationQualityInput(super::SummarizationQualityInput),
+        /// Input for pairwise summarization quality metric.
+        #[prost(message, tag = "23")]
+        PairwiseSummarizationQualityInput(super::PairwiseSummarizationQualityInput),
+        /// Input for summarization helpfulness metric.
+        #[prost(message, tag = "14")]
+        SummarizationHelpfulnessInput(super::SummarizationHelpfulnessInput),
+        /// Input for summarization verbosity metric.
+        #[prost(message, tag = "15")]
+        SummarizationVerbosityInput(super::SummarizationVerbosityInput),
+        /// Input for question answering quality metric.
+        #[prost(message, tag = "10")]
+        QuestionAnsweringQualityInput(super::QuestionAnsweringQualityInput),
+        /// Input for pairwise question answering quality metric.
+        #[prost(message, tag = "24")]
+        PairwiseQuestionAnsweringQualityInput(
+            super::PairwiseQuestionAnsweringQualityInput,
+        ),
+        /// Input for question answering relevance metric.
+        #[prost(message, tag = "16")]
+        QuestionAnsweringRelevanceInput(super::QuestionAnsweringRelevanceInput),
+        /// Input for question answering helpfulness
+        /// metric.
+        #[prost(message, tag = "17")]
+        QuestionAnsweringHelpfulnessInput(super::QuestionAnsweringHelpfulnessInput),
+        /// Input for question answering correctness
+        /// metric.
+        #[prost(message, tag = "18")]
+        QuestionAnsweringCorrectnessInput(super::QuestionAnsweringCorrectnessInput),
+        /// Input for pointwise metric.
+        #[prost(message, tag = "28")]
+        PointwiseMetricInput(super::PointwiseMetricInput),
+        /// Input for pairwise metric.
+        #[prost(message, tag = "29")]
+        PairwiseMetricInput(super::PairwiseMetricInput),
+        /// Tool call metric instances.
+        /// Input for tool call valid metric.
+        #[prost(message, tag = "19")]
+        ToolCallValidInput(super::ToolCallValidInput),
+        /// Input for tool name match metric.
+        #[prost(message, tag = "20")]
+        ToolNameMatchInput(super::ToolNameMatchInput),
+        /// Input for tool parameter key match metric.
+        #[prost(message, tag = "21")]
+        ToolParameterKeyMatchInput(super::ToolParameterKeyMatchInput),
+        /// Input for tool parameter key value match metric.
+        #[prost(message, tag = "22")]
+        ToolParameterKvMatchInput(super::ToolParameterKvMatchInput),
+    }
+}
+/// Response message for EvaluationService.EvaluateInstances.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EvaluateInstancesResponse {
+    /// Evaluation results will be served in the same order as presented in
+    /// EvaluationRequest.instances.
+    #[prost(
+        oneof = "evaluate_instances_response::EvaluationResults",
+        tags = "1, 2, 3, 4, 5, 7, 8, 11, 6, 22, 13, 14, 9, 23, 15, 16, 17, 27, 28, 18, 19, 20, 21"
+    )]
+    pub evaluation_results: ::core::option::Option<
+        evaluate_instances_response::EvaluationResults,
+    >,
+}
+/// Nested message and enum types in `EvaluateInstancesResponse`.
+pub mod evaluate_instances_response {
+    /// Evaluation results will be served in the same order as presented in
+    /// EvaluationRequest.instances.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum EvaluationResults {
+        /// Auto metric evaluation results.
+        /// Results for exact match metric.
+        #[prost(message, tag = "1")]
+        ExactMatchResults(super::ExactMatchResults),
+        /// Results for bleu metric.
+        #[prost(message, tag = "2")]
+        BleuResults(super::BleuResults),
+        /// Results for rouge metric.
+        #[prost(message, tag = "3")]
+        RougeResults(super::RougeResults),
+        /// LLM-based metric evaluation result.
+        /// General text generation metrics, applicable to other categories.
+        /// Result for fluency metric.
+        #[prost(message, tag = "4")]
+        FluencyResult(super::FluencyResult),
+        /// Result for coherence metric.
+        #[prost(message, tag = "5")]
+        CoherenceResult(super::CoherenceResult),
+        /// Result for safety metric.
+        #[prost(message, tag = "7")]
+        SafetyResult(super::SafetyResult),
+        /// Result for groundedness metric.
+        #[prost(message, tag = "8")]
+        GroundednessResult(super::GroundednessResult),
+        /// Result for fulfillment metric.
+        #[prost(message, tag = "11")]
+        FulfillmentResult(super::FulfillmentResult),
+        /// Summarization only metrics.
+        /// Result for summarization quality metric.
+        #[prost(message, tag = "6")]
+        SummarizationQualityResult(super::SummarizationQualityResult),
+        /// Result for pairwise summarization quality metric.
+        #[prost(message, tag = "22")]
+        PairwiseSummarizationQualityResult(super::PairwiseSummarizationQualityResult),
+        /// Result for summarization helpfulness metric.
+        #[prost(message, tag = "13")]
+        SummarizationHelpfulnessResult(super::SummarizationHelpfulnessResult),
+        /// Result for summarization verbosity metric.
+        #[prost(message, tag = "14")]
+        SummarizationVerbosityResult(super::SummarizationVerbosityResult),
+        /// Question answering only metrics.
+        /// Result for question answering quality metric.
+        #[prost(message, tag = "9")]
+        QuestionAnsweringQualityResult(super::QuestionAnsweringQualityResult),
+        /// Result for pairwise question answering quality metric.
+        #[prost(message, tag = "23")]
+        PairwiseQuestionAnsweringQualityResult(
+            super::PairwiseQuestionAnsweringQualityResult,
+        ),
+        /// Result for question answering relevance metric.
+        #[prost(message, tag = "15")]
+        QuestionAnsweringRelevanceResult(super::QuestionAnsweringRelevanceResult),
+        /// Result for question answering helpfulness metric.
+        #[prost(message, tag = "16")]
+        QuestionAnsweringHelpfulnessResult(super::QuestionAnsweringHelpfulnessResult),
+        /// Result for question answering correctness metric.
+        #[prost(message, tag = "17")]
+        QuestionAnsweringCorrectnessResult(super::QuestionAnsweringCorrectnessResult),
+        /// Generic metrics.
+        /// Result for pointwise metric.
+        #[prost(message, tag = "27")]
+        PointwiseMetricResult(super::PointwiseMetricResult),
+        /// Result for pairwise metric.
+        #[prost(message, tag = "28")]
+        PairwiseMetricResult(super::PairwiseMetricResult),
+        /// Tool call metrics.
+        ///   Results for tool call valid metric.
+        #[prost(message, tag = "18")]
+        ToolCallValidResults(super::ToolCallValidResults),
+        /// Results for tool name match metric.
+        #[prost(message, tag = "19")]
+        ToolNameMatchResults(super::ToolNameMatchResults),
+        /// Results for tool parameter key match  metric.
+        #[prost(message, tag = "20")]
+        ToolParameterKeyMatchResults(super::ToolParameterKeyMatchResults),
+        /// Results for tool parameter key value match metric.
+        #[prost(message, tag = "21")]
+        ToolParameterKvMatchResults(super::ToolParameterKvMatchResults),
+    }
+}
+/// Input for exact match metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExactMatchInput {
+    /// Required. Spec for exact match metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<ExactMatchSpec>,
+    /// Required. Repeated exact match instances.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<ExactMatchInstance>,
+}
+/// Spec for exact match instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExactMatchInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for exact match metric - returns 1 if prediction and reference exactly
+/// matches, otherwise 0.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ExactMatchSpec {}
+/// Results for exact match metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExactMatchResults {
+    /// Output only. Exact match metric values.
+    #[prost(message, repeated, tag = "1")]
+    pub exact_match_metric_values: ::prost::alloc::vec::Vec<ExactMatchMetricValue>,
+}
+/// Exact match metric value for an instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ExactMatchMetricValue {
+    /// Output only. Exact match score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+}
+/// Input for bleu metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BleuInput {
+    /// Required. Spec for bleu score metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<BleuSpec>,
+    /// Required. Repeated bleu instances.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<BleuInstance>,
+}
+/// Spec for bleu instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BleuInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for bleu score metric - calculates the precision of n-grams in the
+/// prediction as compared to reference - returns a score ranging between 0 to 1.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct BleuSpec {
+    /// Optional. Whether to use_effective_order to compute bleu score.
+    #[prost(bool, tag = "1")]
+    pub use_effective_order: bool,
+}
+/// Results for bleu metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BleuResults {
+    /// Output only. Bleu metric values.
+    #[prost(message, repeated, tag = "1")]
+    pub bleu_metric_values: ::prost::alloc::vec::Vec<BleuMetricValue>,
+}
+/// Bleu metric value for an instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct BleuMetricValue {
+    /// Output only. Bleu score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+}
+/// Input for rouge metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RougeInput {
+    /// Required. Spec for rouge score metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<RougeSpec>,
+    /// Required. Repeated rouge instances.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<RougeInstance>,
+}
+/// Spec for rouge instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RougeInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for rouge score metric - calculates the recall of n-grams in prediction
+/// as compared to reference - returns a score ranging between 0 and 1.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RougeSpec {
+    /// Optional. Supported rouge types are rougen\[1-9\], rougeL, and rougeLsum.
+    #[prost(string, tag = "1")]
+    pub rouge_type: ::prost::alloc::string::String,
+    /// Optional. Whether to use stemmer to compute rouge score.
+    #[prost(bool, tag = "2")]
+    pub use_stemmer: bool,
+    /// Optional. Whether to split summaries while using rougeLsum.
+    #[prost(bool, tag = "3")]
+    pub split_summaries: bool,
+}
+/// Results for rouge metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RougeResults {
+    /// Output only. Rouge metric values.
+    #[prost(message, repeated, tag = "1")]
+    pub rouge_metric_values: ::prost::alloc::vec::Vec<RougeMetricValue>,
+}
+/// Rouge metric value for an instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RougeMetricValue {
+    /// Output only. Rouge score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+}
+/// Input for coherence metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CoherenceInput {
+    /// Required. Spec for coherence score metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<CoherenceSpec>,
+    /// Required. Coherence instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<CoherenceInstance>,
+}
+/// Spec for coherence instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CoherenceInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for coherence score metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct CoherenceSpec {
+    /// Optional. Which version to use for evaluation.
+    #[prost(int32, tag = "1")]
+    pub version: i32,
+}
+/// Spec for coherence result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CoherenceResult {
+    /// Output only. Coherence score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+    /// Output only. Explanation for coherence score.
+    #[prost(string, tag = "2")]
+    pub explanation: ::prost::alloc::string::String,
+    /// Output only. Confidence for coherence score.
+    #[prost(float, optional, tag = "3")]
+    pub confidence: ::core::option::Option<f32>,
+}
+/// Input for fluency metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FluencyInput {
+    /// Required. Spec for fluency score metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<FluencySpec>,
+    /// Required. Fluency instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<FluencyInstance>,
+}
+/// Spec for fluency instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FluencyInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for fluency score metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct FluencySpec {
+    /// Optional. Which version to use for evaluation.
+    #[prost(int32, tag = "1")]
+    pub version: i32,
+}
+/// Spec for fluency result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FluencyResult {
+    /// Output only. Fluency score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+    /// Output only. Explanation for fluency score.
+    #[prost(string, tag = "2")]
+    pub explanation: ::prost::alloc::string::String,
+    /// Output only. Confidence for fluency score.
+    #[prost(float, optional, tag = "3")]
+    pub confidence: ::core::option::Option<f32>,
+}
+/// Input for safety metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SafetyInput {
+    /// Required. Spec for safety metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<SafetySpec>,
+    /// Required. Safety instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<SafetyInstance>,
+}
+/// Spec for safety instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SafetyInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for safety metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct SafetySpec {
+    /// Optional. Which version to use for evaluation.
+    #[prost(int32, tag = "1")]
+    pub version: i32,
+}
+/// Spec for safety result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SafetyResult {
+    /// Output only. Safety score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+    /// Output only. Explanation for safety score.
+    #[prost(string, tag = "2")]
+    pub explanation: ::prost::alloc::string::String,
+    /// Output only. Confidence for safety score.
+    #[prost(float, optional, tag = "3")]
+    pub confidence: ::core::option::Option<f32>,
+}
+/// Input for groundedness metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GroundednessInput {
+    /// Required. Spec for groundedness metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<GroundednessSpec>,
+    /// Required. Groundedness instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<GroundednessInstance>,
+}
+/// Spec for groundedness instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GroundednessInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Background information provided in context used to compare
+    /// against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub context: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for groundedness metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct GroundednessSpec {
+    /// Optional. Which version to use for evaluation.
+    #[prost(int32, tag = "1")]
+    pub version: i32,
+}
+/// Spec for groundedness result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GroundednessResult {
+    /// Output only. Groundedness score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+    /// Output only. Explanation for groundedness score.
+    #[prost(string, tag = "2")]
+    pub explanation: ::prost::alloc::string::String,
+    /// Output only. Confidence for groundedness score.
+    #[prost(float, optional, tag = "3")]
+    pub confidence: ::core::option::Option<f32>,
+}
+/// Input for fulfillment metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FulfillmentInput {
+    /// Required. Spec for fulfillment score metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<FulfillmentSpec>,
+    /// Required. Fulfillment instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<FulfillmentInstance>,
+}
+/// Spec for fulfillment instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FulfillmentInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Inference instruction prompt to compare prediction with.
+    #[prost(string, optional, tag = "2")]
+    pub instruction: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for fulfillment metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct FulfillmentSpec {
+    /// Optional. Which version to use for evaluation.
+    #[prost(int32, tag = "1")]
+    pub version: i32,
+}
+/// Spec for fulfillment result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FulfillmentResult {
+    /// Output only. Fulfillment score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+    /// Output only. Explanation for fulfillment score.
+    #[prost(string, tag = "2")]
+    pub explanation: ::prost::alloc::string::String,
+    /// Output only. Confidence for fulfillment score.
+    #[prost(float, optional, tag = "3")]
+    pub confidence: ::core::option::Option<f32>,
+}
+/// Input for summarization quality metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarizationQualityInput {
+    /// Required. Spec for summarization quality score metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<SummarizationQualitySpec>,
+    /// Required. Summarization quality instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<SummarizationQualityInstance>,
+}
+/// Spec for summarization quality instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarizationQualityInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Text to be summarized.
+    #[prost(string, optional, tag = "3")]
+    pub context: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Summarization prompt for LLM.
+    #[prost(string, optional, tag = "4")]
+    pub instruction: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for summarization quality score metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct SummarizationQualitySpec {
+    /// Optional. Whether to use instance.reference to compute summarization
+    /// quality.
+    #[prost(bool, tag = "1")]
+    pub use_reference: bool,
+    /// Optional. Which version to use for evaluation.
+    #[prost(int32, tag = "2")]
+    pub version: i32,
+}
+/// Spec for summarization quality result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarizationQualityResult {
+    /// Output only. Summarization Quality score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+    /// Output only. Explanation for summarization quality score.
+    #[prost(string, tag = "2")]
+    pub explanation: ::prost::alloc::string::String,
+    /// Output only. Confidence for summarization quality score.
+    #[prost(float, optional, tag = "3")]
+    pub confidence: ::core::option::Option<f32>,
+}
+/// Input for pairwise summarization quality metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PairwiseSummarizationQualityInput {
+    /// Required. Spec for pairwise summarization quality score metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<PairwiseSummarizationQualitySpec>,
+    /// Required. Pairwise summarization quality instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<PairwiseSummarizationQualityInstance>,
+}
+/// Spec for pairwise summarization quality instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PairwiseSummarizationQualityInstance {
+    /// Required. Output of the candidate model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Output of the baseline model.
+    #[prost(string, optional, tag = "2")]
+    pub baseline_prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "3")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Text to be summarized.
+    #[prost(string, optional, tag = "4")]
+    pub context: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Summarization prompt for LLM.
+    #[prost(string, optional, tag = "5")]
+    pub instruction: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for pairwise summarization quality score metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct PairwiseSummarizationQualitySpec {
+    /// Optional. Whether to use instance.reference to compute pairwise
+    /// summarization quality.
+    #[prost(bool, tag = "1")]
+    pub use_reference: bool,
+    /// Optional. Which version to use for evaluation.
+    #[prost(int32, tag = "2")]
+    pub version: i32,
+}
+/// Spec for pairwise summarization quality result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PairwiseSummarizationQualityResult {
+    /// Output only. Pairwise summarization prediction choice.
+    #[prost(enumeration = "PairwiseChoice", tag = "1")]
+    pub pairwise_choice: i32,
+    /// Output only. Explanation for summarization quality score.
+    #[prost(string, tag = "2")]
+    pub explanation: ::prost::alloc::string::String,
+    /// Output only. Confidence for summarization quality score.
+    #[prost(float, optional, tag = "3")]
+    pub confidence: ::core::option::Option<f32>,
+}
+/// Input for summarization helpfulness metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarizationHelpfulnessInput {
+    /// Required. Spec for summarization helpfulness score metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<SummarizationHelpfulnessSpec>,
+    /// Required. Summarization helpfulness instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<SummarizationHelpfulnessInstance>,
+}
+/// Spec for summarization helpfulness instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarizationHelpfulnessInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Text to be summarized.
+    #[prost(string, optional, tag = "3")]
+    pub context: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Summarization prompt for LLM.
+    #[prost(string, optional, tag = "4")]
+    pub instruction: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for summarization helpfulness score metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct SummarizationHelpfulnessSpec {
+    /// Optional. Whether to use instance.reference to compute summarization
+    /// helpfulness.
+    #[prost(bool, tag = "1")]
+    pub use_reference: bool,
+    /// Optional. Which version to use for evaluation.
+    #[prost(int32, tag = "2")]
+    pub version: i32,
+}
+/// Spec for summarization helpfulness result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarizationHelpfulnessResult {
+    /// Output only. Summarization Helpfulness score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+    /// Output only. Explanation for summarization helpfulness score.
+    #[prost(string, tag = "2")]
+    pub explanation: ::prost::alloc::string::String,
+    /// Output only. Confidence for summarization helpfulness score.
+    #[prost(float, optional, tag = "3")]
+    pub confidence: ::core::option::Option<f32>,
+}
+/// Input for summarization verbosity metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarizationVerbosityInput {
+    /// Required. Spec for summarization verbosity score metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<SummarizationVerbositySpec>,
+    /// Required. Summarization verbosity instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<SummarizationVerbosityInstance>,
+}
+/// Spec for summarization verbosity instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarizationVerbosityInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Text to be summarized.
+    #[prost(string, optional, tag = "3")]
+    pub context: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Summarization prompt for LLM.
+    #[prost(string, optional, tag = "4")]
+    pub instruction: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for summarization verbosity score metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct SummarizationVerbositySpec {
+    /// Optional. Whether to use instance.reference to compute summarization
+    /// verbosity.
+    #[prost(bool, tag = "1")]
+    pub use_reference: bool,
+    /// Optional. Which version to use for evaluation.
+    #[prost(int32, tag = "2")]
+    pub version: i32,
+}
+/// Spec for summarization verbosity result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarizationVerbosityResult {
+    /// Output only. Summarization Verbosity score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+    /// Output only. Explanation for summarization verbosity score.
+    #[prost(string, tag = "2")]
+    pub explanation: ::prost::alloc::string::String,
+    /// Output only. Confidence for summarization verbosity score.
+    #[prost(float, optional, tag = "3")]
+    pub confidence: ::core::option::Option<f32>,
+}
+/// Input for question answering quality metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QuestionAnsweringQualityInput {
+    /// Required. Spec for question answering quality score metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<QuestionAnsweringQualitySpec>,
+    /// Required. Question answering quality instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<QuestionAnsweringQualityInstance>,
+}
+/// Spec for question answering quality instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QuestionAnsweringQualityInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Text to answer the question.
+    #[prost(string, optional, tag = "3")]
+    pub context: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Question Answering prompt for LLM.
+    #[prost(string, optional, tag = "4")]
+    pub instruction: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for question answering quality score metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct QuestionAnsweringQualitySpec {
+    /// Optional. Whether to use instance.reference to compute question answering
+    /// quality.
+    #[prost(bool, tag = "1")]
+    pub use_reference: bool,
+    /// Optional. Which version to use for evaluation.
+    #[prost(int32, tag = "2")]
+    pub version: i32,
+}
+/// Spec for question answering quality result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QuestionAnsweringQualityResult {
+    /// Output only. Question Answering Quality score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+    /// Output only. Explanation for question answering quality score.
+    #[prost(string, tag = "2")]
+    pub explanation: ::prost::alloc::string::String,
+    /// Output only. Confidence for question answering quality score.
+    #[prost(float, optional, tag = "3")]
+    pub confidence: ::core::option::Option<f32>,
+}
+/// Input for pairwise question answering quality metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PairwiseQuestionAnsweringQualityInput {
+    /// Required. Spec for pairwise question answering quality score metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<PairwiseQuestionAnsweringQualitySpec>,
+    /// Required. Pairwise question answering quality instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<PairwiseQuestionAnsweringQualityInstance>,
+}
+/// Spec for pairwise question answering quality instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PairwiseQuestionAnsweringQualityInstance {
+    /// Required. Output of the candidate model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Output of the baseline model.
+    #[prost(string, optional, tag = "2")]
+    pub baseline_prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "3")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Text to answer the question.
+    #[prost(string, optional, tag = "4")]
+    pub context: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Question Answering prompt for LLM.
+    #[prost(string, optional, tag = "5")]
+    pub instruction: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for pairwise question answering quality score metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct PairwiseQuestionAnsweringQualitySpec {
+    /// Optional. Whether to use instance.reference to compute question answering
+    /// quality.
+    #[prost(bool, tag = "1")]
+    pub use_reference: bool,
+    /// Optional. Which version to use for evaluation.
+    #[prost(int32, tag = "2")]
+    pub version: i32,
+}
+/// Spec for pairwise question answering quality result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PairwiseQuestionAnsweringQualityResult {
+    /// Output only. Pairwise question answering prediction choice.
+    #[prost(enumeration = "PairwiseChoice", tag = "1")]
+    pub pairwise_choice: i32,
+    /// Output only. Explanation for question answering quality score.
+    #[prost(string, tag = "2")]
+    pub explanation: ::prost::alloc::string::String,
+    /// Output only. Confidence for question answering quality score.
+    #[prost(float, optional, tag = "3")]
+    pub confidence: ::core::option::Option<f32>,
+}
+/// Input for question answering relevance metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QuestionAnsweringRelevanceInput {
+    /// Required. Spec for question answering relevance score metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<QuestionAnsweringRelevanceSpec>,
+    /// Required. Question answering relevance instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<QuestionAnsweringRelevanceInstance>,
+}
+/// Spec for question answering relevance instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QuestionAnsweringRelevanceInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Text provided as context to answer the question.
+    #[prost(string, optional, tag = "3")]
+    pub context: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. The question asked and other instruction in the inference prompt.
+    #[prost(string, optional, tag = "4")]
+    pub instruction: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for question answering relevance metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct QuestionAnsweringRelevanceSpec {
+    /// Optional. Whether to use instance.reference to compute question answering
+    /// relevance.
+    #[prost(bool, tag = "1")]
+    pub use_reference: bool,
+    /// Optional. Which version to use for evaluation.
+    #[prost(int32, tag = "2")]
+    pub version: i32,
+}
+/// Spec for question answering relevance result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QuestionAnsweringRelevanceResult {
+    /// Output only. Question Answering Relevance score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+    /// Output only. Explanation for question answering relevance score.
+    #[prost(string, tag = "2")]
+    pub explanation: ::prost::alloc::string::String,
+    /// Output only. Confidence for question answering relevance score.
+    #[prost(float, optional, tag = "3")]
+    pub confidence: ::core::option::Option<f32>,
+}
+/// Input for question answering helpfulness metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QuestionAnsweringHelpfulnessInput {
+    /// Required. Spec for question answering helpfulness score metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<QuestionAnsweringHelpfulnessSpec>,
+    /// Required. Question answering helpfulness instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<QuestionAnsweringHelpfulnessInstance>,
+}
+/// Spec for question answering helpfulness instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QuestionAnsweringHelpfulnessInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Text provided as context to answer the question.
+    #[prost(string, optional, tag = "3")]
+    pub context: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. The question asked and other instruction in the inference prompt.
+    #[prost(string, optional, tag = "4")]
+    pub instruction: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for question answering helpfulness metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct QuestionAnsweringHelpfulnessSpec {
+    /// Optional. Whether to use instance.reference to compute question answering
+    /// helpfulness.
+    #[prost(bool, tag = "1")]
+    pub use_reference: bool,
+    /// Optional. Which version to use for evaluation.
+    #[prost(int32, tag = "2")]
+    pub version: i32,
+}
+/// Spec for question answering helpfulness result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QuestionAnsweringHelpfulnessResult {
+    /// Output only. Question Answering Helpfulness score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+    /// Output only. Explanation for question answering helpfulness score.
+    #[prost(string, tag = "2")]
+    pub explanation: ::prost::alloc::string::String,
+    /// Output only. Confidence for question answering helpfulness score.
+    #[prost(float, optional, tag = "3")]
+    pub confidence: ::core::option::Option<f32>,
+}
+/// Input for question answering correctness metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QuestionAnsweringCorrectnessInput {
+    /// Required. Spec for question answering correctness score metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<QuestionAnsweringCorrectnessSpec>,
+    /// Required. Question answering correctness instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<QuestionAnsweringCorrectnessInstance>,
+}
+/// Spec for question answering correctness instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QuestionAnsweringCorrectnessInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Text provided as context to answer the question.
+    #[prost(string, optional, tag = "3")]
+    pub context: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. The question asked and other instruction in the inference prompt.
+    #[prost(string, optional, tag = "4")]
+    pub instruction: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for question answering correctness metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct QuestionAnsweringCorrectnessSpec {
+    /// Optional. Whether to use instance.reference to compute question answering
+    /// correctness.
+    #[prost(bool, tag = "1")]
+    pub use_reference: bool,
+    /// Optional. Which version to use for evaluation.
+    #[prost(int32, tag = "2")]
+    pub version: i32,
+}
+/// Spec for question answering correctness result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QuestionAnsweringCorrectnessResult {
+    /// Output only. Question Answering Correctness score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+    /// Output only. Explanation for question answering correctness score.
+    #[prost(string, tag = "2")]
+    pub explanation: ::prost::alloc::string::String,
+    /// Output only. Confidence for question answering correctness score.
+    #[prost(float, optional, tag = "3")]
+    pub confidence: ::core::option::Option<f32>,
+}
+/// Input for pointwise metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PointwiseMetricInput {
+    /// Required. Spec for pointwise metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<PointwiseMetricSpec>,
+    /// Required. Pointwise metric instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<PointwiseMetricInstance>,
+}
+/// Pointwise metric instance. Usually one instance corresponds to one row in an
+/// evaluation dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PointwiseMetricInstance {
+    /// Instance for pointwise metric.
+    #[prost(oneof = "pointwise_metric_instance::Instance", tags = "1")]
+    pub instance: ::core::option::Option<pointwise_metric_instance::Instance>,
+}
+/// Nested message and enum types in `PointwiseMetricInstance`.
+pub mod pointwise_metric_instance {
+    /// Instance for pointwise metric.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Instance {
+        /// Instance specified as a json string. String key-value pairs are expected
+        /// in the json_instance to render
+        /// PointwiseMetricSpec.instance_prompt_template.
+        #[prost(string, tag = "1")]
+        JsonInstance(::prost::alloc::string::String),
+    }
+}
+/// Spec for pointwise metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PointwiseMetricSpec {
+    /// Required. Metric prompt template for pointwise metric.
+    #[prost(string, optional, tag = "1")]
+    pub metric_prompt_template: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for pointwise metric result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PointwiseMetricResult {
+    /// Output only. Pointwise metric score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+    /// Output only. Explanation for pointwise metric score.
+    #[prost(string, tag = "2")]
+    pub explanation: ::prost::alloc::string::String,
+}
+/// Input for pairwise metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PairwiseMetricInput {
+    /// Required. Spec for pairwise metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<PairwiseMetricSpec>,
+    /// Required. Pairwise metric instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<PairwiseMetricInstance>,
+}
+/// Pairwise metric instance. Usually one instance corresponds to one row in an
+/// evaluation dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PairwiseMetricInstance {
+    /// Instance for pairwise metric.
+    #[prost(oneof = "pairwise_metric_instance::Instance", tags = "1")]
+    pub instance: ::core::option::Option<pairwise_metric_instance::Instance>,
+}
+/// Nested message and enum types in `PairwiseMetricInstance`.
+pub mod pairwise_metric_instance {
+    /// Instance for pairwise metric.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Instance {
+        /// Instance specified as a json string. String key-value pairs are expected
+        /// in the json_instance to render
+        /// PairwiseMetricSpec.instance_prompt_template.
+        #[prost(string, tag = "1")]
+        JsonInstance(::prost::alloc::string::String),
+    }
+}
+/// Spec for pairwise metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PairwiseMetricSpec {
+    /// Required. Metric prompt template for pairwise metric.
+    #[prost(string, optional, tag = "1")]
+    pub metric_prompt_template: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for pairwise metric result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PairwiseMetricResult {
+    /// Output only. Pairwise metric choice.
+    #[prost(enumeration = "PairwiseChoice", tag = "1")]
+    pub pairwise_choice: i32,
+    /// Output only. Explanation for pairwise metric score.
+    #[prost(string, tag = "2")]
+    pub explanation: ::prost::alloc::string::String,
+}
+/// Input for tool call valid metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolCallValidInput {
+    /// Required. Spec for tool call valid metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<ToolCallValidSpec>,
+    /// Required. Repeated tool call valid instances.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<ToolCallValidInstance>,
+}
+/// Spec for tool call valid metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ToolCallValidSpec {}
+/// Spec for tool call valid instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolCallValidInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Results for tool call valid metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolCallValidResults {
+    /// Output only. Tool call valid metric values.
+    #[prost(message, repeated, tag = "1")]
+    pub tool_call_valid_metric_values: ::prost::alloc::vec::Vec<
+        ToolCallValidMetricValue,
+    >,
+}
+/// Tool call valid metric value for an instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ToolCallValidMetricValue {
+    /// Output only. Tool call valid score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+}
+/// Input for tool name match metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolNameMatchInput {
+    /// Required. Spec for tool name match metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<ToolNameMatchSpec>,
+    /// Required. Repeated tool name match instances.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<ToolNameMatchInstance>,
+}
+/// Spec for tool name match metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ToolNameMatchSpec {}
+/// Spec for tool name match instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolNameMatchInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Results for tool name match metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolNameMatchResults {
+    /// Output only. Tool name match metric values.
+    #[prost(message, repeated, tag = "1")]
+    pub tool_name_match_metric_values: ::prost::alloc::vec::Vec<
+        ToolNameMatchMetricValue,
+    >,
+}
+/// Tool name match metric value for an instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ToolNameMatchMetricValue {
+    /// Output only. Tool name match score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+}
+/// Input for tool parameter key match metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolParameterKeyMatchInput {
+    /// Required. Spec for tool parameter key match metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<ToolParameterKeyMatchSpec>,
+    /// Required. Repeated tool parameter key match instances.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<ToolParameterKeyMatchInstance>,
+}
+/// Spec for tool parameter key match metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ToolParameterKeyMatchSpec {}
+/// Spec for tool parameter key match instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolParameterKeyMatchInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Results for tool parameter key match metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolParameterKeyMatchResults {
+    /// Output only. Tool parameter key match metric values.
+    #[prost(message, repeated, tag = "1")]
+    pub tool_parameter_key_match_metric_values: ::prost::alloc::vec::Vec<
+        ToolParameterKeyMatchMetricValue,
+    >,
+}
+/// Tool parameter key match metric value for an instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ToolParameterKeyMatchMetricValue {
+    /// Output only. Tool parameter key match score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+}
+/// Input for tool parameter key value match metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolParameterKvMatchInput {
+    /// Required. Spec for tool parameter key value match metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<ToolParameterKvMatchSpec>,
+    /// Required. Repeated tool parameter key value match instances.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<ToolParameterKvMatchInstance>,
+}
+/// Spec for tool parameter key value match metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ToolParameterKvMatchSpec {
+    /// Optional. Whether to use STRCIT string match on parameter values.
+    #[prost(bool, tag = "1")]
+    pub use_strict_string_match: bool,
+}
+/// Spec for tool parameter key value match instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolParameterKvMatchInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Required. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Results for tool parameter key value match metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolParameterKvMatchResults {
+    /// Output only. Tool parameter key value match metric values.
+    #[prost(message, repeated, tag = "1")]
+    pub tool_parameter_kv_match_metric_values: ::prost::alloc::vec::Vec<
+        ToolParameterKvMatchMetricValue,
+    >,
+}
+/// Tool parameter key value match metric value for an instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ToolParameterKvMatchMetricValue {
+    /// Output only. Tool parameter key value match score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+}
+/// Pairwise prediction autorater preference.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum PairwiseChoice {
+    /// Unspecified prediction choice.
+    Unspecified = 0,
+    /// Baseline prediction wins
+    Baseline = 1,
+    /// Candidate prediction wins
+    Candidate = 2,
+    /// Winner cannot be determined
+    Tie = 3,
+}
+impl PairwiseChoice {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            PairwiseChoice::Unspecified => "PAIRWISE_CHOICE_UNSPECIFIED",
+            PairwiseChoice::Baseline => "BASELINE",
+            PairwiseChoice::Candidate => "CANDIDATE",
+            PairwiseChoice::Tie => "TIE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PAIRWISE_CHOICE_UNSPECIFIED" => Some(Self::Unspecified),
+            "BASELINE" => Some(Self::Baseline),
+            "CANDIDATE" => Some(Self::Candidate),
+            "TIE" => Some(Self::Tie),
+            _ => None,
+        }
+    }
+}
+/// Generated client implementations.
+pub mod evaluation_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Vertex AI Online Evaluation Service.
+    #[derive(Debug, Clone)]
+    pub struct EvaluationServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl EvaluationServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> EvaluationServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> EvaluationServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            EvaluationServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Evaluates instances based on a given metric.
+        pub async fn evaluate_instances(
+            &mut self,
+            request: impl tonic::IntoRequest<super::EvaluateInstancesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::EvaluateInstancesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.EvaluationService/EvaluateInstances",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.EvaluationService",
+                        "EvaluateInstances",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -9433,7 +11173,7 @@ pub struct FeatureOnlineStore {
 /// Nested message and enum types in `FeatureOnlineStore`.
 pub mod feature_online_store {
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Bigtable {
         /// Required. Autoscaling config applied to Bigtable Instance.
         #[prost(message, optional, tag = "1")]
@@ -9442,7 +11182,7 @@ pub mod feature_online_store {
     /// Nested message and enum types in `Bigtable`.
     pub mod bigtable {
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct AutoScaling {
             /// Required. The minimum number of nodes to scale down to. Must be greater
             /// than or equal to 1.
@@ -9464,7 +11204,7 @@ pub mod feature_online_store {
     }
     /// Optimized storage type
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Optimized {}
     /// The dedicated serving endpoint for this FeatureOnlineStore. Only need to
     /// set when you choose Optimized storage type. Public endpoint is provisioned
@@ -9540,7 +11280,7 @@ pub mod feature_online_store {
         }
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum StorageType {
         /// Contains settings for the Cloud Bigtable instance that will be created
         /// to serve featureValues for all FeatureViews under this
@@ -9670,11 +11410,11 @@ pub mod feature_view {
     pub mod index_config {
         /// Configuration options for using brute force search.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct BruteForceConfig {}
         /// Configuration options for the tree-AH algorithm.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct TreeAhConfig {
             /// Optional. Number of embeddings on each leaf node. The default value is
             /// 1000 if not set.
@@ -9739,7 +11479,7 @@ pub mod feature_view {
         /// The configuration with regard to the algorithms used for efficient
         /// search.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum AlgorithmConfig {
             /// Optional. Configuration options for the tree-AH algorithm (Shallow tree
             /// + Asymmetric Hashing). Please refer to this paper for more details:
@@ -9825,7 +11565,7 @@ pub mod feature_view_sync {
     /// Summary from the Sync job. For continuous syncs, the summary is updated
     /// periodically. For batch syncs, it gets updated on completion of the sync.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SyncSummary {
         /// Output only. Total number of rows synced.
         #[prost(int64, tag = "1")]
@@ -9955,10 +11695,11 @@ pub struct UpdateFeatureOnlineStoreRequest {
     ///
     /// Updatable fields:
     ///
-    ///    * `big_query_source`
-    ///    * `bigtable`
     ///    * `labels`
-    ///    * `sync_config`
+    ///    * `description`
+    ///    * `bigtable`
+    ///    * `bigtable.auto_scaling`
+    ///    * `bigtable.enable_multi_region_replica`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -10110,7 +11851,14 @@ pub struct UpdateFeatureViewRequest {
     /// Updatable fields:
     ///
     ///    * `labels`
-    ///    * `serviceAgentType`
+    ///    * `service_agent_type`
+    ///    * `big_query_source`
+    ///    * `big_query_source.uri`
+    ///    * `big_query_source.entity_id_columns`
+    ///    * `feature_registry_source`
+    ///    * `feature_registry_source.feature_groups`
+    ///    * `sync_config`
+    ///    * `sync_config.cron`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -10964,7 +12712,7 @@ pub struct WriteFeatureValuesPayload {
 /// Response message for
 /// [FeaturestoreOnlineServingService.WriteFeatureValues][google.cloud.aiplatform.v1.FeaturestoreOnlineServingService.WriteFeatureValues].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WriteFeatureValuesResponse {}
 /// Request message for
 /// [FeaturestoreOnlineServingService.ReadFeatureValues][google.cloud.aiplatform.v1.FeaturestoreOnlineServingService.ReadFeatureValues].
@@ -11111,7 +12859,7 @@ pub struct FeatureValue {
 pub mod feature_value {
     /// Metadata of feature value.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Metadata {
         /// Feature generation timestamp. Typically, it is provided by user at
         /// feature ingestion time. If not, feature store
@@ -11496,6 +13244,9 @@ pub struct NearestNeighborQuery {
     /// Optional. The list of string filters.
     #[prost(message, repeated, tag = "4")]
     pub string_filters: ::prost::alloc::vec::Vec<nearest_neighbor_query::StringFilter>,
+    /// Optional. The list of numeric filters.
+    #[prost(message, repeated, tag = "8")]
+    pub numeric_filters: ::prost::alloc::vec::Vec<nearest_neighbor_query::NumericFilter>,
     /// Optional. Crowding is a constraint on a neighbor list produced by nearest
     /// neighbor search requiring that no more than
     /// sper_crowding_attribute_neighbor_count of the k neighbors returned have the
@@ -11539,10 +13290,111 @@ pub mod nearest_neighbor_query {
         #[prost(string, repeated, tag = "3")]
         pub deny_tokens: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
+    /// Numeric filter is used to search a subset of the entities by using boolean
+    /// rules on numeric columns.
+    /// For example:
+    /// Database Point 0: {name: “a” value_int: 42} {name: “b” value_float: 1.0}
+    /// Database Point 1:  {name: “a” value_int: 10} {name: “b” value_float: 2.0}
+    /// Database Point 2: {name: “a” value_int: -1} {name: “b” value_float: 3.0}
+    /// Query: {name: “a” value_int: 12 operator: LESS}    // Matches Point 1, 2
+    /// {name: “b” value_float: 2.0 operator: EQUAL} // Matches Point 1
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NumericFilter {
+        /// Required. Column name in BigQuery that used as filters.
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Optional. This MUST be specified for queries and must NOT be specified
+        /// for database points.
+        #[prost(enumeration = "numeric_filter::Operator", optional, tag = "5")]
+        pub op: ::core::option::Option<i32>,
+        /// The type of Value must be consistent for all datapoints with a given
+        /// name.  This is verified at runtime.
+        #[prost(oneof = "numeric_filter::Value", tags = "2, 3, 4")]
+        pub value: ::core::option::Option<numeric_filter::Value>,
+    }
+    /// Nested message and enum types in `NumericFilter`.
+    pub mod numeric_filter {
+        /// Datapoints for which Operator is true relative to the query’s Value
+        /// field will be allowlisted.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Operator {
+            /// Unspecified operator.
+            Unspecified = 0,
+            /// Entities are eligible if their value is < the query's.
+            Less = 1,
+            /// Entities are eligible if their value is <= the query's.
+            LessEqual = 2,
+            /// Entities are eligible if their value is == the query's.
+            Equal = 3,
+            /// Entities are eligible if their value is >= the query's.
+            GreaterEqual = 4,
+            /// Entities are eligible if their value is > the query's.
+            Greater = 5,
+            /// Entities are eligible if their value is != the query's.
+            NotEqual = 6,
+        }
+        impl Operator {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Operator::Unspecified => "OPERATOR_UNSPECIFIED",
+                    Operator::Less => "LESS",
+                    Operator::LessEqual => "LESS_EQUAL",
+                    Operator::Equal => "EQUAL",
+                    Operator::GreaterEqual => "GREATER_EQUAL",
+                    Operator::Greater => "GREATER",
+                    Operator::NotEqual => "NOT_EQUAL",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                    "LESS" => Some(Self::Less),
+                    "LESS_EQUAL" => Some(Self::LessEqual),
+                    "EQUAL" => Some(Self::Equal),
+                    "GREATER_EQUAL" => Some(Self::GreaterEqual),
+                    "GREATER" => Some(Self::Greater),
+                    "NOT_EQUAL" => Some(Self::NotEqual),
+                    _ => None,
+                }
+            }
+        }
+        /// The type of Value must be consistent for all datapoints with a given
+        /// name.  This is verified at runtime.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum Value {
+            /// int value type.
+            #[prost(int64, tag = "2")]
+            ValueInt(i64),
+            /// float value type.
+            #[prost(float, tag = "3")]
+            ValueFloat(f32),
+            /// double value type.
+            #[prost(double, tag = "4")]
+            ValueDouble(f64),
+        }
+    }
     /// Parameters that can be overrided in each query to tune query latency and
     /// recall.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Parameters {
         /// Optional. The number of neighbors to find via approximate search before
         /// exact reordering is performed; if set, this value must be >
@@ -11876,7 +13728,7 @@ pub mod featurestore {
     /// OnlineServingConfig specifies the details for provisioning online serving
     /// resources.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct OnlineServingConfig {
         /// The number of nodes for the online store. The number of nodes doesn't
         /// scale automatically, but you can manually update the number of
@@ -11896,7 +13748,7 @@ pub mod featurestore {
         /// max_node_count are set to the same value, the cluster will be configured
         /// with the fixed number of node (no auto-scaling).
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Scaling {
             /// Required. The minimum number of nodes to scale down to. Must be greater
             /// than or equal to 1.
@@ -12214,7 +14066,7 @@ pub mod import_feature_values_request {
 /// Response message for
 /// [FeaturestoreService.ImportFeatureValues][google.cloud.aiplatform.v1.FeaturestoreService.ImportFeatureValues].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportFeatureValuesResponse {
     /// Number of entities that have been imported by the operation.
     #[prost(int64, tag = "1")]
@@ -12367,7 +14219,7 @@ pub mod export_feature_values_request {
     /// Describes exporting the latest Feature values of all entities of the
     /// EntityType between \[start_time, snapshot_time\].
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SnapshotExport {
         /// Exports Feature values as of this timestamp. If not set,
         /// retrieve values as of now. Timestamp, if present, must not have higher
@@ -12383,7 +14235,7 @@ pub mod export_feature_values_request {
     /// Describes exporting all historical Feature values of all entities of the
     /// EntityType between \[start_time, end_time\].
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct FullExport {
         /// Excludes Feature values with feature generation timestamp before this
         /// timestamp. If not set, retrieve oldest values kept in Feature Store.
@@ -12398,7 +14250,7 @@ pub mod export_feature_values_request {
     }
     /// Required. The mode in which Feature values are exported.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Mode {
         /// Exports the latest Feature values of all entities of the EntityType
         /// within a time range.
@@ -12462,12 +14314,12 @@ pub mod feature_value_destination {
 /// Response message for
 /// [FeaturestoreService.ExportFeatureValues][google.cloud.aiplatform.v1.FeaturestoreService.ExportFeatureValues].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportFeatureValuesResponse {}
 /// Response message for
 /// [FeaturestoreService.BatchReadFeatureValues][google.cloud.aiplatform.v1.FeaturestoreService.BatchReadFeatureValues].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BatchReadFeatureValuesResponse {}
 /// Request message for
 /// [FeaturestoreService.CreateEntityType][google.cloud.aiplatform.v1.FeaturestoreService.CreateEntityType].
@@ -12925,7 +14777,8 @@ pub struct UpdateFeatureRequest {
     ///
     ///    * `description`
     ///    * `labels`
-    ///    * `disable_monitoring` (Not supported for FeatureRegistry Feature)
+    ///    * `disable_monitoring` (Not supported for FeatureRegistryService Feature)
+    ///    * `point_of_contact` (Not supported for FeaturestoreService FeatureStore)
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -13109,7 +14962,7 @@ pub mod delete_feature_values_request {
 /// Response message for
 /// [FeaturestoreService.DeleteFeatureValues][google.cloud.aiplatform.v1.FeaturestoreService.DeleteFeatureValues].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteFeatureValuesResponse {
     /// Response based on which delete option is specified in the
     /// request
@@ -13120,7 +14973,7 @@ pub struct DeleteFeatureValuesResponse {
 pub mod delete_feature_values_response {
     /// Response message if the request uses the SelectEntity option.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SelectEntity {
         /// The count of deleted entity rows in the offline storage.
         /// Each row corresponds to the combination of an entity ID and a timestamp.
@@ -13134,7 +14987,7 @@ pub mod delete_feature_values_response {
     }
     /// Response message if the request uses the SelectTimeRangeAndFeature option.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SelectTimeRangeAndFeature {
         /// The count of the features or columns impacted.
         /// This is the same as the feature count in the request.
@@ -13157,7 +15010,7 @@ pub mod delete_feature_values_response {
     /// Response based on which delete option is specified in the
     /// request
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Response {
         /// Response for request specifying the entities to delete
         #[prost(message, tag = "1")]
@@ -14072,6 +15925,9 @@ pub struct UpdateFeatureGroupRequest {
     /// Updatable fields:
     ///
     ///    * `labels`
+    ///    * `description`
+    ///    * `big_query`
+    ///    * `big_query.entity_id_columns`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -14636,6 +16492,9 @@ pub struct SupervisedTuningDatasetDistribution {
     /// Output only. Sum of a given population of values.
     #[prost(int64, tag = "1")]
     pub sum: i64,
+    /// Output only. Sum of a given population of values that are billable.
+    #[prost(int64, tag = "9")]
+    pub billable_sum: i64,
     /// Output only. The minimum of the population values.
     #[prost(double, tag = "2")]
     pub min: f64,
@@ -14665,7 +16524,7 @@ pub mod supervised_tuning_dataset_distribution {
     /// Dataset bucket used to create a histogram for the distribution given a
     /// population of values.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DatasetBucket {
         /// Output only. Number of values in the bucket.
         #[prost(double, tag = "1")]
@@ -14689,8 +16548,12 @@ pub struct SupervisedTuningDataStats {
     #[prost(int64, tag = "2")]
     pub total_tuning_character_count: i64,
     /// Output only. Number of billable characters in the tuning dataset.
+    #[deprecated]
     #[prost(int64, tag = "3")]
     pub total_billable_character_count: i64,
+    /// Output only. Number of billable tokens in the tuning dataset.
+    #[prost(int64, tag = "9")]
+    pub total_billable_token_count: i64,
     /// Output only. Number of tuning steps for this Tuning Job.
     #[prost(int64, tag = "4")]
     pub tuning_step_count: i64,
@@ -14733,7 +16596,7 @@ pub mod tuning_data_stats {
 }
 /// Hyperparameters for SFT.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SupervisedHyperParameters {
     /// Optional. Number of complete passes the model makes over the entire
     /// training dataset during training.
@@ -15326,7 +17189,6 @@ pub mod trial {
         }
     }
 }
-/// Next ID: 3
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrialContext {
@@ -15348,7 +17210,7 @@ pub struct TrialContext {
 }
 /// Time-based Constraint for Study
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StudyTimeConstraint {
     #[prost(oneof = "study_time_constraint::Constraint", tags = "1, 2")]
     pub constraint: ::core::option::Option<study_time_constraint::Constraint>,
@@ -15356,7 +17218,7 @@ pub struct StudyTimeConstraint {
 /// Nested message and enum types in `StudyTimeConstraint`.
 pub mod study_time_constraint {
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Constraint {
         /// Counts the wallclock time passed since the creation of this Study.
         #[prost(message, tag = "1")]
@@ -15418,7 +17280,7 @@ pub mod study_spec {
     pub mod metric_spec {
         /// Used in safe optimization to specify threshold levels and risk tolerance.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct SafetyMetricConfig {
             /// Safety threshold (boundary value between safe and unsafe). NOTE that if
             /// you leave SafetyMetricConfig unset, a default value of 0 will be used.
@@ -15507,7 +17369,7 @@ pub mod study_spec {
     pub mod parameter_spec {
         /// Value specification for a parameter in `DOUBLE` type.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct DoubleValueSpec {
             /// Required. Inclusive minimum value of the parameter.
             #[prost(double, tag = "1")]
@@ -15526,7 +17388,7 @@ pub mod study_spec {
         }
         /// Value specification for a parameter in `INTEGER` type.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct IntegerValueSpec {
             /// Required. Inclusive minimum value of the parameter.
             #[prost(int64, tag = "1")]
@@ -15721,7 +17583,7 @@ pub mod study_spec {
     /// Trial. Early stopping is requested for the current Trial if there is very
     /// low probability to exceed the optimal value found so far.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DecayCurveAutomatedStoppingSpec {
         /// True if
         /// [Measurement.elapsed_duration][google.cloud.aiplatform.v1.Measurement.elapsed_duration]
@@ -15737,7 +17599,7 @@ pub mod study_spec {
     /// Currently, 'performance' refers to the running average of the objective
     /// values reported by the Trial in each measurement.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MedianAutomatedStoppingSpec {
         /// True if median automated stopping rule applies on
         /// [Measurement.elapsed_duration][google.cloud.aiplatform.v1.Measurement.elapsed_duration].
@@ -15809,7 +17671,7 @@ pub mod study_spec {
     /// The configuration (stopping conditions) for automated stopping of a Study.
     /// Conditions include trial budgets, time budgets, and convergence detection.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct StudyStoppingConfig {
         /// If true, a Study enters STOPPING_ASAP whenever it would normally enters
         /// STOPPING state.
@@ -16417,7 +18279,7 @@ pub mod index_datapoint {
         /// The type of Value must be consistent for all datapoints with a given
         /// namespace name. This is verified at runtime.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Value {
             /// Represents 64 bit integer.
             #[prost(int64, tag = "2")]
@@ -16447,7 +18309,7 @@ pub mod index_datapoint {
 }
 /// Stats of the Index.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct IndexStats {
     /// Output only. The number of dense vectors in the Index.
     #[prost(int64, tag = "1")]
@@ -16890,7 +18752,7 @@ pub struct UndeployIndexRequest {
 /// Response message for
 /// [IndexEndpointService.UndeployIndex][google.cloud.aiplatform.v1.IndexEndpointService.UndeployIndex].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UndeployIndexResponse {}
 /// Runtime operation information for
 /// [IndexEndpointService.UndeployIndex][google.cloud.aiplatform.v1.IndexEndpointService.UndeployIndex].
@@ -17416,7 +19278,7 @@ pub struct UpsertDatapointsRequest {
 /// Response message for
 /// [IndexService.UpsertDatapoints][google.cloud.aiplatform.v1.IndexService.UpsertDatapoints]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpsertDatapointsResponse {}
 /// Request message for
 /// [IndexService.RemoveDatapoints][google.cloud.aiplatform.v1.IndexService.RemoveDatapoints]
@@ -17435,7 +19297,7 @@ pub struct RemoveDatapointsRequest {
 /// Response message for
 /// [IndexService.RemoveDatapoints][google.cloud.aiplatform.v1.IndexService.RemoveDatapoints]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RemoveDatapointsResponse {}
 /// Runtime operation metadata with regard to Matching Engine Index.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -18179,7 +20041,7 @@ pub mod model_monitoring_alert_config {
 }
 /// The config for feature monitoring threshold.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ThresholdConfig {
     #[prost(oneof = "threshold_config::Threshold", tags = "1")]
     pub threshold: ::core::option::Option<threshold_config::Threshold>,
@@ -18187,7 +20049,7 @@ pub struct ThresholdConfig {
 /// Nested message and enum types in `ThresholdConfig`.
 pub mod threshold_config {
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Threshold {
         /// Specify a threshold value that can trigger the alert.
         /// If this threshold config is for feature distribution distance:
@@ -18204,7 +20066,7 @@ pub mod threshold_config {
 /// Sampling Strategy for logging, can be for both training and prediction
 /// dataset.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SamplingStrategy {
     /// Random sample config. Will support more sampling strategies later.
     #[prost(message, optional, tag = "1")]
@@ -18216,7 +20078,7 @@ pub struct SamplingStrategy {
 pub mod sampling_strategy {
     /// Requests are randomly selected.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RandomSampleConfig {
         /// Sample rate (0, 1]
         #[prost(double, tag = "1")]
@@ -18557,7 +20419,7 @@ pub struct ModelDeploymentMonitoringObjectiveConfig {
 }
 /// The config for scheduling monitoring job.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ModelDeploymentMonitoringScheduleConfig {
     /// Required. The model monitoring job scheduling interval. It will be rounded
     /// up to next full hour. This defines how often the monitoring jobs are
@@ -19729,7 +21591,7 @@ pub struct SearchModelDeploymentMonitoringStatsAnomaliesRequest {
 pub mod search_model_deployment_monitoring_stats_anomalies_request {
     /// Stats requested for specific objective.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct StatsAnomaliesObjective {
         #[prost(
             enumeration = "super::ModelDeploymentMonitoringObjectiveType",
@@ -21530,22 +23392,35 @@ pub struct CountTokensRequest {
     /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
     #[prost(string, tag = "1")]
     pub endpoint: ::prost::alloc::string::String,
-    /// Required. The name of the publisher model requested to serve the
+    /// Optional. The name of the publisher model requested to serve the
     /// prediction. Format:
     /// `projects/{project}/locations/{location}/publishers/*/models/*`
     #[prost(string, tag = "3")]
     pub model: ::prost::alloc::string::String,
-    /// Required. The instances that are the input to token counting call.
+    /// Optional. The instances that are the input to token counting call.
     /// Schema is identical to the prediction schema of the underlying model.
     #[prost(message, repeated, tag = "2")]
     pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
-    /// Required. Input content.
+    /// Optional. Input content.
     #[prost(message, repeated, tag = "4")]
     pub contents: ::prost::alloc::vec::Vec<Content>,
+    /// Optional. The user provided system instructions for the model.
+    /// Note: only text should be used in parts and content in each part will be in
+    /// a separate paragraph.
+    #[prost(message, optional, tag = "5")]
+    pub system_instruction: ::core::option::Option<Content>,
+    /// Optional. A list of `Tools` the model may use to generate the next
+    /// response.
+    ///
+    /// A `Tool` is a piece of code that enables the system to interact with
+    /// external systems to perform an action, or set of actions, outside of
+    /// knowledge and scope of the model.
+    #[prost(message, repeated, tag = "6")]
+    pub tools: ::prost::alloc::vec::Vec<Tool>,
 }
 /// Response message for [PredictionService.CountTokens][].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CountTokensResponse {
     /// The total number of tokens counted across all instances from the request.
     #[prost(int32, tag = "1")]
@@ -21687,9 +23562,11 @@ pub mod generate_content_response {
     }
     /// Usage metadata about response(s).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UsageMetadata {
-        /// Number of tokens in the request.
+        /// Number of tokens in the request. When `cached_content` is set, this is
+        /// still the total effective prompt size meaning this includes the number of
+        /// tokens in the cached content.
         #[prost(int32, tag = "1")]
         pub prompt_token_count: i32,
         /// Number of tokens in the response(s).
@@ -22236,11 +24113,19 @@ pub struct ComputeTokensRequest {
     /// token ids.
     #[prost(string, tag = "1")]
     pub endpoint: ::prost::alloc::string::String,
-    /// Required. The instances that are the input to token computing API call.
+    /// Optional. The instances that are the input to token computing API call.
     /// Schema is identical to the prediction schema of the text model, even for
     /// the non-text models, like chat models, or Codey models.
     #[prost(message, repeated, tag = "2")]
     pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
+    /// Optional. The name of the publisher model requested to serve the
+    /// prediction. Format:
+    /// projects/{project}/locations/{location}/publishers/*/models/*
+    #[prost(string, tag = "3")]
+    pub model: ::prost::alloc::string::String,
+    /// Optional. Input content.
+    #[prost(message, repeated, tag = "4")]
+    pub contents: ::prost::alloc::vec::Vec<Content>,
 }
 /// Tokens info with a list of tokens and the corresponding list of token ids.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -22252,6 +24137,9 @@ pub struct TokensInfo {
     /// A list of token ids from the input.
     #[prost(int64, repeated, tag = "2")]
     pub token_ids: ::prost::alloc::vec::Vec<i64>,
+    /// Optional. Optional fields for the role from the corresponding Content.
+    #[prost(string, tag = "3")]
+    pub role: ::prost::alloc::string::String,
 }
 /// Response message for ComputeTokens RPC call.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -22484,7 +24372,7 @@ pub mod find_neighbors_request {
     pub mod query {
         /// Parameters for RRF algorithm that combines search results.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Rrf {
             /// Required. Users can provide an alpha value to give more weight to dense
             /// vs sparse results. For example, if the alpha is 0, we only return
@@ -22493,7 +24381,7 @@ pub mod find_neighbors_request {
             pub alpha: f32,
         }
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Ranking {
             /// Optional. Represents RRF algorithm that combines search results.
             #[prost(message, tag = "6")]
@@ -22836,7 +24724,7 @@ pub struct MetadataStore {
 pub mod metadata_store {
     /// Represents state information for a MetadataStore.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MetadataStoreState {
         /// The disk utilization of the MetadataStore in bytes.
         #[prost(int64, tag = "1")]
@@ -22844,7 +24732,7 @@ pub mod metadata_store {
     }
     /// Represents Dataplex integration settings.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DataplexConfig {
         /// Optional. Whether or not Data Lineage synchronization is enabled for
         /// Vertex Pipelines.
@@ -23383,7 +25271,7 @@ pub struct AddContextArtifactsAndExecutionsRequest {
 /// Response message for
 /// [MetadataService.AddContextArtifactsAndExecutions][google.cloud.aiplatform.v1.MetadataService.AddContextArtifactsAndExecutions].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddContextArtifactsAndExecutionsResponse {}
 /// Request message for
 /// [MetadataService.AddContextChildren][google.cloud.aiplatform.v1.MetadataService.AddContextChildren].
@@ -23403,7 +25291,7 @@ pub struct AddContextChildrenRequest {
 /// Response message for
 /// [MetadataService.AddContextChildren][google.cloud.aiplatform.v1.MetadataService.AddContextChildren].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddContextChildrenResponse {}
 /// Request message for
 /// [MetadataService.DeleteContextChildrenRequest][].
@@ -23423,7 +25311,7 @@ pub struct RemoveContextChildrenRequest {
 /// Response message for
 /// [MetadataService.RemoveContextChildren][google.cloud.aiplatform.v1.MetadataService.RemoveContextChildren].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RemoveContextChildrenResponse {}
 /// Request message for
 /// [MetadataService.QueryContextLineageSubgraph][google.cloud.aiplatform.v1.MetadataService.QueryContextLineageSubgraph].
@@ -23656,7 +25544,7 @@ pub struct AddExecutionEventsRequest {
 /// Response message for
 /// [MetadataService.AddExecutionEvents][google.cloud.aiplatform.v1.MetadataService.AddExecutionEvents].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddExecutionEventsResponse {}
 /// Request message for
 /// [MetadataService.QueryExecutionInputsAndOutputs][google.cloud.aiplatform.v1.MetadataService.QueryExecutionInputsAndOutputs].
@@ -25652,7 +27540,7 @@ pub mod model_evaluation_slice {
             /// A range of values for slice(s).
             /// `low` is inclusive, `high` is exclusive.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct Range {
                 /// Inclusive low value for the range.
                 #[prost(float, tag = "1")]
@@ -26152,12 +28040,16 @@ pub struct GetPublisherModelRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The IETF BCP-47 language code representing the language in which
-    /// the publisher model's text information should be written in (see go/bcp47).
+    /// the publisher model's text information should be written in.
     #[prost(string, tag = "2")]
     pub language_code: ::prost::alloc::string::String,
     /// Optional. PublisherModel view specifying which fields to read.
     #[prost(enumeration = "PublisherModelView", tag = "3")]
     pub view: i32,
+    /// Optional. Boolean indicates whether the requested model is a Hugging Face
+    /// model.
+    #[prost(bool, tag = "5")]
+    pub is_hugging_face_model: bool,
 }
 /// View enumeration of PublisherModel.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -26712,13 +28604,13 @@ pub mod export_model_operation_metadata {
 /// [ModelService.UpdateExplanationDataset][google.cloud.aiplatform.v1.ModelService.UpdateExplanationDataset]
 /// operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpdateExplanationDatasetResponse {}
 /// Response message of
 /// [ModelService.ExportModel][google.cloud.aiplatform.v1.ModelService.ExportModel]
 /// operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportModelResponse {}
 /// Request message for
 /// [ModelService.CopyModel][google.cloud.aiplatform.v1.ModelService.CopyModel].
@@ -26842,7 +28734,7 @@ pub struct BatchImportEvaluatedAnnotationsRequest {
 /// Response message for
 /// [ModelService.BatchImportEvaluatedAnnotations][google.cloud.aiplatform.v1.ModelService.BatchImportEvaluatedAnnotations]
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BatchImportEvaluatedAnnotationsResponse {
     /// Output only. Number of EvaluatedAnnotations imported.
     #[prost(int32, tag = "1")]
@@ -27638,7 +29530,7 @@ pub struct NetworkSpec {
 }
 /// The euc configuration of NotebookRuntimeTemplate.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NotebookEucConfig {
     /// Input only. Whether EUC is disabled in this NotebookRuntimeTemplate.
     /// In proto3, the default value of a boolean is false. In this way, by default
@@ -27655,10 +29547,157 @@ pub struct NotebookEucConfig {
     #[prost(bool, tag = "2")]
     pub bypass_actas_check: bool,
 }
+/// NotebookExecutionJob represents an instance of a notebook execution.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NotebookExecutionJob {
+    /// Output only. The resource name of this NotebookExecutionJob. Format:
+    /// `projects/{project_id}/locations/{location}/notebookExecutionJobs/{job_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The display name of the NotebookExecutionJob. The name can be up to 128
+    /// characters long and can consist of any UTF-8 characters.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Max running time of the execution job in seconds (default 86400s / 24 hrs).
+    #[prost(message, optional, tag = "5")]
+    pub execution_timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Output only. The Schedule resource name if this job is triggered by one.
+    /// Format:
+    /// `projects/{project_id}/locations/{location}/schedules/{schedule_id}`
+    #[prost(string, tag = "6")]
+    pub schedule_resource_name: ::prost::alloc::string::String,
+    /// Output only. The state of the NotebookExecutionJob.
+    #[prost(enumeration = "JobState", tag = "10")]
+    pub job_state: i32,
+    /// Output only. Populated when the NotebookExecutionJob is completed. When
+    /// there is an error during notebook execution, the error details are
+    /// populated.
+    #[prost(message, optional, tag = "11")]
+    pub status: ::core::option::Option<super::super::super::rpc::Status>,
+    /// Output only. Timestamp when this NotebookExecutionJob was created.
+    #[prost(message, optional, tag = "12")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this NotebookExecutionJob was most recently
+    /// updated.
+    #[prost(message, optional, tag = "13")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The labels with user-defined metadata to organize NotebookExecutionJobs.
+    ///
+    /// Label keys and values can be no longer than 64 characters
+    /// (Unicode codepoints), can only contain lowercase letters, numeric
+    /// characters, underscores and dashes. International characters are allowed.
+    ///
+    /// See <https://goo.gl/xmQnxf> for more information and examples of labels.
+    /// System reserved label keys are prefixed with "aiplatform.googleapis.com/"
+    /// and are immutable.
+    #[prost(map = "string, string", tag = "19")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// The input notebook.
+    #[prost(oneof = "notebook_execution_job::NotebookSource", tags = "3, 4, 17")]
+    pub notebook_source: ::core::option::Option<notebook_execution_job::NotebookSource>,
+    /// The compute config to use for an execution job.
+    #[prost(oneof = "notebook_execution_job::EnvironmentSpec", tags = "14")]
+    pub environment_spec: ::core::option::Option<
+        notebook_execution_job::EnvironmentSpec,
+    >,
+    /// The location to store the notebook execution result.
+    #[prost(oneof = "notebook_execution_job::ExecutionSink", tags = "8")]
+    pub execution_sink: ::core::option::Option<notebook_execution_job::ExecutionSink>,
+    /// The identity to run the execution as.
+    #[prost(oneof = "notebook_execution_job::ExecutionIdentity", tags = "9, 18")]
+    pub execution_identity: ::core::option::Option<
+        notebook_execution_job::ExecutionIdentity,
+    >,
+}
+/// Nested message and enum types in `NotebookExecutionJob`.
+pub mod notebook_execution_job {
+    /// The Dataform Repository containing the input notebook.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataformRepositorySource {
+        /// The resource name of the Dataform Repository. Format:
+        /// `projects/{project_id}/locations/{location}/repositories/{repository_id}`
+        #[prost(string, tag = "1")]
+        pub dataform_repository_resource_name: ::prost::alloc::string::String,
+        /// The commit SHA to read repository with. If unset, the file will be read
+        /// at HEAD.
+        #[prost(string, tag = "2")]
+        pub commit_sha: ::prost::alloc::string::String,
+    }
+    /// The Cloud Storage uri for the input notebook.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GcsNotebookSource {
+        /// The Cloud Storage uri pointing to the ipynb file. Format:
+        /// `gs://bucket/notebook_file.ipynb`
+        #[prost(string, tag = "1")]
+        pub uri: ::prost::alloc::string::String,
+        /// The version of the Cloud Storage object to read. If unset, the current
+        /// version of the object is read. See
+        /// <https://cloud.google.com/storage/docs/metadata#generation-number.>
+        #[prost(string, tag = "2")]
+        pub generation: ::prost::alloc::string::String,
+    }
+    /// The content of the input notebook in ipynb format.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DirectNotebookSource {
+        /// The base64-encoded contents of the input notebook file.
+        #[prost(bytes = "vec", tag = "1")]
+        pub content: ::prost::alloc::vec::Vec<u8>,
+    }
+    /// The input notebook.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum NotebookSource {
+        /// The Dataform Repository pointing to a single file notebook repository.
+        #[prost(message, tag = "3")]
+        DataformRepositorySource(DataformRepositorySource),
+        /// The Cloud Storage url pointing to the ipynb file. Format:
+        /// `gs://bucket/notebook_file.ipynb`
+        #[prost(message, tag = "4")]
+        GcsNotebookSource(GcsNotebookSource),
+        /// The contents of an input notebook file.
+        #[prost(message, tag = "17")]
+        DirectNotebookSource(DirectNotebookSource),
+    }
+    /// The compute config to use for an execution job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum EnvironmentSpec {
+        /// The NotebookRuntimeTemplate to source compute configuration from.
+        #[prost(string, tag = "14")]
+        NotebookRuntimeTemplateResourceName(::prost::alloc::string::String),
+    }
+    /// The location to store the notebook execution result.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ExecutionSink {
+        /// The Cloud Storage location to upload the result to. Format:
+        /// `gs://bucket-name`
+        #[prost(string, tag = "8")]
+        GcsOutputUri(::prost::alloc::string::String),
+    }
+    /// The identity to run the execution as.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ExecutionIdentity {
+        /// The user email to run the execution as. Only supported by Colab runtimes.
+        #[prost(string, tag = "9")]
+        ExecutionUser(::prost::alloc::string::String),
+        /// The service account to run the execution as.
+        #[prost(string, tag = "18")]
+        ServiceAccount(::prost::alloc::string::String),
+    }
+}
 /// The idle shutdown configuration of NotebookRuntimeTemplate, which contains
 /// the idle_timeout as required field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NotebookIdleShutdownConfig {
     /// Required. Duration is accurate to the second. In Notebook, Idle Timeout is
     /// accurate to minute so the range of idle_timeout (second) is: 10 * 60 ~ 1440
@@ -28318,7 +30357,7 @@ pub struct UpgradeNotebookRuntimeOperationMetadata {
 /// Response message for
 /// [NotebookService.UpgradeNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.UpgradeNotebookRuntime].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpgradeNotebookRuntimeResponse {}
 /// Request message for
 /// [NotebookService.StartNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.StartNotebookRuntime].
@@ -28348,8 +30387,150 @@ pub struct StartNotebookRuntimeOperationMetadata {
 /// Response message for
 /// [NotebookService.StartNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.StartNotebookRuntime].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StartNotebookRuntimeResponse {}
+/// Request message for \[NotebookService.CreateNotebookExecutionJob\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateNotebookExecutionJobRequest {
+    /// Required. The resource name of the Location to create the
+    /// NotebookExecutionJob. Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The NotebookExecutionJob to create.
+    #[prost(message, optional, tag = "2")]
+    pub notebook_execution_job: ::core::option::Option<NotebookExecutionJob>,
+    /// Optional. User specified ID for the NotebookExecutionJob.
+    #[prost(string, tag = "3")]
+    pub notebook_execution_job_id: ::prost::alloc::string::String,
+}
+/// Metadata information for
+/// [NotebookService.CreateNotebookExecutionJob][google.cloud.aiplatform.v1.NotebookService.CreateNotebookExecutionJob].
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateNotebookExecutionJobOperationMetadata {
+    /// The operation generic information.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+    /// A human-readable message that shows the intermediate progress details of
+    /// NotebookRuntime.
+    #[prost(string, tag = "2")]
+    pub progress_message: ::prost::alloc::string::String,
+}
+/// Request message for \[NotebookService.GetNotebookExecutionJob\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetNotebookExecutionJobRequest {
+    /// Required. The name of the NotebookExecutionJob resource.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The NotebookExecutionJob view. Defaults to BASIC.
+    #[prost(enumeration = "NotebookExecutionJobView", tag = "6")]
+    pub view: i32,
+}
+/// Request message for \[NotebookService.ListNotebookExecutionJobs\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNotebookExecutionJobsRequest {
+    /// Required. The resource name of the Location from which to list the
+    /// NotebookExecutionJobs.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. An expression for filtering the results of the request. For field
+    /// names both snake_case and camelCase are supported.
+    ///
+    ///    * `notebookExecutionJob` supports = and !=. `notebookExecutionJob`
+    ///    represents the NotebookExecutionJob ID.
+    ///    * `displayName` supports = and != and regex.
+    ///    * `schedule` supports = and != and regex.
+    ///
+    /// Some examples:
+    ///    * `notebookExecutionJob="123"`
+    ///    * `notebookExecutionJob="my-execution-job"`
+    ///    * `displayName="myDisplayName"` and `displayName=~"myDisplayNameRegex"`
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The standard list page size.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. The standard list page token.
+    /// Typically obtained via
+    /// [ListNotebookExecutionJobs.next_page_token][] of the previous
+    /// [NotebookService.ListNotebookExecutionJobs][google.cloud.aiplatform.v1.NotebookService.ListNotebookExecutionJobs]
+    /// call.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. A comma-separated list of fields to order by, sorted in ascending
+    /// order. Use "desc" after a field name for descending. Supported fields:
+    ///
+    ///    * `display_name`
+    ///    * `create_time`
+    ///    * `update_time`
+    ///
+    /// Example: `display_name, create_time desc`.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. The NotebookExecutionJob view. Defaults to BASIC.
+    #[prost(enumeration = "NotebookExecutionJobView", tag = "6")]
+    pub view: i32,
+}
+/// Response message for \[NotebookService.CreateNotebookExecutionJob\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNotebookExecutionJobsResponse {
+    /// List of NotebookExecutionJobs in the requested page.
+    #[prost(message, repeated, tag = "1")]
+    pub notebook_execution_jobs: ::prost::alloc::vec::Vec<NotebookExecutionJob>,
+    /// A token to retrieve next page of results.
+    /// Pass to [ListNotebookExecutionJobs.page_token][] to obtain that
+    /// page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for \[NotebookService.DeleteNotebookExecutionJob\]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteNotebookExecutionJobRequest {
+    /// Required. The name of the NotebookExecutionJob resource to be deleted.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Views for Get/List NotebookExecutionJob
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum NotebookExecutionJobView {
+    /// When unspecified, the API defaults to the BASIC view.
+    Unspecified = 0,
+    /// Includes all fields except for direct notebook inputs.
+    Basic = 1,
+    /// Includes all fields.
+    Full = 2,
+}
+impl NotebookExecutionJobView {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            NotebookExecutionJobView::Unspecified => {
+                "NOTEBOOK_EXECUTION_JOB_VIEW_UNSPECIFIED"
+            }
+            NotebookExecutionJobView::Basic => "NOTEBOOK_EXECUTION_JOB_VIEW_BASIC",
+            NotebookExecutionJobView::Full => "NOTEBOOK_EXECUTION_JOB_VIEW_FULL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "NOTEBOOK_EXECUTION_JOB_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "NOTEBOOK_EXECUTION_JOB_VIEW_BASIC" => Some(Self::Basic),
+            "NOTEBOOK_EXECUTION_JOB_VIEW_FULL" => Some(Self::Full),
+            _ => None,
+        }
+    }
+}
 /// Generated client implementations.
 pub mod notebook_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -28778,6 +30959,130 @@ pub mod notebook_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Creates a NotebookExecutionJob.
+        pub async fn create_notebook_execution_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateNotebookExecutionJobRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.NotebookService/CreateNotebookExecutionJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.NotebookService",
+                        "CreateNotebookExecutionJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a NotebookExecutionJob.
+        pub async fn get_notebook_execution_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetNotebookExecutionJobRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::NotebookExecutionJob>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.NotebookService/GetNotebookExecutionJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.NotebookService",
+                        "GetNotebookExecutionJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists NotebookExecutionJobs in a Location.
+        pub async fn list_notebook_execution_jobs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListNotebookExecutionJobsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListNotebookExecutionJobsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.NotebookService/ListNotebookExecutionJobs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.NotebookService",
+                        "ListNotebookExecutionJobs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a NotebookExecutionJob.
+        pub async fn delete_notebook_execution_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteNotebookExecutionJobRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.NotebookService/DeleteNotebookExecutionJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.NotebookService",
+                        "DeleteNotebookExecutionJob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Represents long-lasting resources that are dedicated to users to runs custom
@@ -28965,7 +31270,7 @@ pub struct ResourcePool {
 pub mod resource_pool {
     /// The min/max number of replicas allowed if enabling autoscaling
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AutoscalingSpec {
         /// Optional. min replicas in the node pool,
         /// must be ≤ replica_count and < max_replica_count or will throw error.
@@ -29037,6 +31342,9 @@ pub struct RaySpec {
     /// Optional. Ray metrics configurations.
     #[prost(message, optional, tag = "8")]
     pub ray_metric_spec: ::core::option::Option<RayMetricSpec>,
+    /// Optional. OSS Ray logging configurations.
+    #[prost(message, optional, tag = "10")]
+    pub ray_logs_spec: ::core::option::Option<RayLogsSpec>,
 }
 /// Persistent Cluster runtime information as output
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -29080,9 +31388,17 @@ pub struct ServiceAccountSpec {
 }
 /// Configuration for the Ray metrics.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RayMetricSpec {
     /// Optional. Flag to disable the Ray metrics collection.
+    #[prost(bool, tag = "1")]
+    pub disabled: bool,
+}
+/// Configuration for the Ray OSS Logs.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RayLogsSpec {
+    /// Optional. Flag to disable the export of Ray OSS logs to Cloud Logging.
     #[prost(bool, tag = "1")]
     pub disabled: bool,
 }
@@ -30397,7 +32713,7 @@ pub mod input_data_config {
 /// decided by Vertex AI. If none of the fractions are set, by default roughly
 /// 80% of data is used for training, 10% for validation, and 10% for test.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FractionSplit {
     /// The fraction of the input data that is to be used to train the Model.
     #[prost(double, tag = "1")]
@@ -32480,7 +34796,7 @@ pub struct TensorboardTimeSeries {
 pub mod tensorboard_time_series {
     /// Describes metadata for a TensorboardTimeSeries.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Metadata {
         /// Output only. Max step index of all data points within a
         /// TensorboardTimeSeries.
@@ -32595,7 +34911,7 @@ pub mod time_series_data_point {
 }
 /// One point viewable on a scalar metric plot.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Scalar {
     /// Value of the point at this step / timestamp.
     #[prost(double, tag = "1")]
@@ -32904,7 +35220,7 @@ pub struct ReadTensorboardSizeRequest {
 /// Response message for
 /// [TensorboardService.ReadTensorboardSize][google.cloud.aiplatform.v1.TensorboardService.ReadTensorboardSize].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReadTensorboardSizeResponse {
     /// Payload storage size for the TensorBoard
     #[prost(int64, tag = "1")]
@@ -33400,7 +35716,7 @@ pub struct WriteTensorboardExperimentDataRequest {
 /// Response message for
 /// [TensorboardService.WriteTensorboardExperimentData][google.cloud.aiplatform.v1.TensorboardService.WriteTensorboardExperimentData].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WriteTensorboardExperimentDataResponse {}
 /// Request message for
 /// [TensorboardService.WriteTensorboardRunData][google.cloud.aiplatform.v1.TensorboardService.WriteTensorboardRunData].
@@ -33423,7 +35739,7 @@ pub struct WriteTensorboardRunDataRequest {
 /// Response message for
 /// [TensorboardService.WriteTensorboardRunData][google.cloud.aiplatform.v1.TensorboardService.WriteTensorboardRunData].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WriteTensorboardRunDataResponse {}
 /// Request message for
 /// [TensorboardService.ExportTensorboardTimeSeriesData][google.cloud.aiplatform.v1.TensorboardService.ExportTensorboardTimeSeriesData].
@@ -34807,7 +37123,7 @@ pub struct CheckTrialEarlyStoppingStateRequest {
 /// Response message for
 /// [VizierService.CheckTrialEarlyStoppingState][google.cloud.aiplatform.v1.VizierService.CheckTrialEarlyStoppingState].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CheckTrialEarlyStoppingStateResponse {
     /// True if the Trial should stop.
     #[prost(bool, tag = "1")]

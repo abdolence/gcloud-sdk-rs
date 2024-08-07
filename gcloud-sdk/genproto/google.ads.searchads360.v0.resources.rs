@@ -44,7 +44,7 @@ pub mod accessible_bidding_strategy {
     /// An automated bidding strategy to help get the most conversion value for
     /// your campaigns while spending your budget.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MaximizeConversionValue {
         /// Output only. The target return on ad spend (ROAS) option. If set, the bid
         /// strategy will maximize revenue while averaging the target return on ad
@@ -57,7 +57,7 @@ pub mod accessible_bidding_strategy {
     /// An automated bidding strategy to help get the most conversions for your
     /// campaigns while spending your budget.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MaximizeConversions {
         /// Output only. The target cost per acquisition (CPA) option. This is the
         /// average amount that you would like to spend per acquisition.
@@ -71,7 +71,7 @@ pub mod accessible_bidding_strategy {
     /// An automated bid strategy that sets bids to help get as many conversions as
     /// possible at the target cost-per-acquisition (CPA) you set.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TargetCpa {
         /// Output only. Average CPA target.
         /// This target should be greater than or equal to minimum billable unit
@@ -83,7 +83,7 @@ pub mod accessible_bidding_strategy {
     /// of search ads are shown at the top of the first page (or other targeted
     /// location).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TargetImpressionShare {
         /// Output only. The targeted location on the search results page.
         #[prost(
@@ -104,7 +104,7 @@ pub mod accessible_bidding_strategy {
     /// An automated bidding strategy that helps you maximize revenue while
     /// averaging a specific target return on ad spend (ROAS).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TargetRoas {
         /// Output only. The chosen revenue (based on conversion data) per unit of
         /// spend.
@@ -114,7 +114,7 @@ pub mod accessible_bidding_strategy {
     /// An automated bid strategy that sets your bids to help get as many clicks
     /// as possible within your budget.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TargetSpend {
         /// Output only. The spend target under which to maximize clicks.
         /// A TargetSpend bidder will attempt to spend the smaller of this value
@@ -135,7 +135,7 @@ pub mod accessible_bidding_strategy {
     ///
     /// Only one can be set.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Scheme {
         /// Output only. An automated bidding strategy to help get the most
         /// conversion value for your campaigns while spending your budget.
@@ -343,8 +343,8 @@ pub struct AdGroupAd {
     #[prost(string, repeated, tag = "10")]
     pub labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. ID of the ad in the external engine account. This field is for
-    /// SearchAds 360 account only, for example, Yahoo Japan, Microsoft, Baidu etc.
-    /// For non-SearchAds 360 entity, use "ad_group_ad.ad.id" instead.
+    /// Search Ads 360 account only, for example, Yahoo Japan, Microsoft, Baidu
+    /// etc. For non-Search Ads 360 entity, use "ad_group_ad.ad.id" instead.
     #[prost(string, tag = "11")]
     pub engine_id: ::prost::alloc::string::String,
     /// Output only. Additional status of the ad in the external engine account.
@@ -465,7 +465,7 @@ pub mod ad_group_bid_modifier {
     ///
     /// Required in create operations starting in V5.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Criterion {
         /// Immutable. A device criterion.
         #[prost(message, tag = "11")]
@@ -585,7 +585,7 @@ pub struct AdGroupCriterion {
 pub mod ad_group_criterion {
     /// A container for ad group criterion quality information.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct QualityInfo {
         /// Output only. The quality score.
         ///
@@ -596,7 +596,7 @@ pub mod ad_group_criterion {
     }
     /// Estimates for criterion bids at various positions.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PositionEstimates {
         /// Output only. The estimate of the CPC bid required for ad to be displayed
         /// at the top of the first page of search results.
@@ -915,7 +915,7 @@ pub mod listing_group_filter_dimension {
     /// level of the category. All cases of the same subdivision must have the same
     /// dimension type (category level).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ProductBiddingCategory {
         /// ID of the product bidding category.
         ///
@@ -940,7 +940,7 @@ pub mod listing_group_filter_dimension {
     }
     /// Locality of a product offer.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ProductChannel {
         /// Value of the locality.
         #[prost(
@@ -951,7 +951,7 @@ pub mod listing_group_filter_dimension {
     }
     /// Condition of a product offer.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ProductCondition {
         /// Value of the condition.
         #[prost(
@@ -1226,7 +1226,7 @@ pub mod bidding_strategy {
     ///
     /// Only one can be set.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Scheme {
         /// A bidding strategy that raises bids for clicks that seem more likely to
         /// lead to a conversion and lowers them for clicks where they seem less
@@ -1478,7 +1478,7 @@ pub struct Campaign {
 pub mod campaign {
     /// The network settings for the campaign.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct NetworkSettings {
         /// Whether ads will be served with google.com search results.
         #[prost(bool, optional, tag = "5")]
@@ -1560,7 +1560,7 @@ pub mod campaign {
     }
     /// Represents a collection of settings related to ads geotargeting.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct GeoTargetTypeSetting {
         /// The setting used for positive geotargeting in this particular campaign.
         #[prost(
@@ -1881,9 +1881,9 @@ pub struct Conversion {
     /// criterion is unattributed.
     #[prost(int64, optional, tag = "3")]
     pub criterion_id: ::core::option::Option<i64>,
-    /// Output only. The SearchAds360 inventory account ID containing the product
-    /// that was clicked on. SearchAds360 generates this ID when you link an
-    /// inventory account in SearchAds360.
+    /// Output only. The Search Ads 360 inventory account ID containing the product
+    /// that was clicked on. Search Ads 360 generates this ID when you link an
+    /// inventory account in Search Ads 360.
     #[prost(int64, optional, tag = "4")]
     pub merchant_id: ::core::option::Option<i64>,
     /// Output only. Ad ID. A value of 0 indicates that the ad is unattributed.
@@ -1894,7 +1894,7 @@ pub struct Conversion {
     /// parameter.
     #[prost(string, optional, tag = "6")]
     pub click_id: ::core::option::Option<::prost::alloc::string::String>,
-    /// Output only. The SearchAds360 visit ID that the conversion is attributed
+    /// Output only. The Search Ads 360 visit ID that the conversion is attributed
     /// to.
     #[prost(int64, optional, tag = "7")]
     pub visit_id: ::core::option::Option<i64>,
@@ -2078,7 +2078,7 @@ pub struct ConversionAction {
 pub mod conversion_action {
     /// Settings related to this conversion action's attribution model.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AttributionModelSettings {
         /// The attribution model type of this conversion action.
         #[prost(
@@ -2197,7 +2197,7 @@ pub struct ConversionCustomVariable {
 pub mod conversion_custom_variable {
     /// Information for Search Ads 360 Floodlight Conversion Custom Variables.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct FloodlightConversionCustomVariableInfo {
         /// Output only. Floodlight variable type defined in Search Ads 360.
         #[prost(
@@ -2523,6 +2523,11 @@ pub struct CustomerManagerLink {
         tag = "5"
     )]
     pub status: i32,
+    /// Output only. The timestamp when the CustomerManagerLink was created. The
+    /// timestamp is in the customer's time zone and in "yyyy-MM-dd HH:mm:ss"
+    /// format.
+    #[prost(string, optional, tag = "8")]
+    pub start_time: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A dynamic search ads search term view.
 #[allow(clippy::derive_partial_eq_without_eq)]

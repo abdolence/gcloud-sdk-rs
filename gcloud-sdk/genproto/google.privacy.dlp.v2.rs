@@ -23,7 +23,7 @@ pub struct InfoType {
 /// Score is calculated from of all elements in the data profile.
 /// A higher level means the data is more sensitive.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SensitivityScore {
     /// The sensitivity score applied to the resource.
     #[prost(enumeration = "sensitivity_score::SensitivityScoreLevel", tag = "1")]
@@ -50,6 +50,8 @@ pub mod sensitivity_score {
         /// No sensitive information detected. The resource isn't publicly
         /// accessible.
         SensitivityLow = 10,
+        /// Unable to determine sensitivity.
+        SensitivityUnknown = 12,
         /// Medium risk. Contains personally identifiable information (PII),
         /// potentially sensitive data, or fields with free-text data that are at a
         /// higher risk of having intermittent sensitive data. Consider limiting
@@ -72,6 +74,7 @@ pub mod sensitivity_score {
                     "SENSITIVITY_SCORE_UNSPECIFIED"
                 }
                 SensitivityScoreLevel::SensitivityLow => "SENSITIVITY_LOW",
+                SensitivityScoreLevel::SensitivityUnknown => "SENSITIVITY_UNKNOWN",
                 SensitivityScoreLevel::SensitivityModerate => "SENSITIVITY_MODERATE",
                 SensitivityScoreLevel::SensitivityHigh => "SENSITIVITY_HIGH",
             }
@@ -83,6 +86,7 @@ pub mod sensitivity_score {
                     Some(Self::SensitivityScoreUnspecified)
                 }
                 "SENSITIVITY_LOW" => Some(Self::SensitivityLow),
+                "SENSITIVITY_UNKNOWN" => Some(Self::SensitivityUnknown),
                 "SENSITIVITY_MODERATE" => Some(Self::SensitivityModerate),
                 "SENSITIVITY_HIGH" => Some(Self::SensitivityHigh),
                 _ => None,
@@ -222,7 +226,7 @@ pub mod custom_info_type {
     /// transformation such as `surrogate_info_type`. This CustomInfoType does
     /// not support the use of `detection_rules`.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SurrogateType {}
     /// Deprecated; use `InspectionRuleSet` instead. Rule for modifying a
     /// `CustomInfoType` to alter behavior under certain circumstances, depending
@@ -240,7 +244,7 @@ pub mod custom_info_type {
         /// Message for specifying a window around a finding to apply a detection
         /// rule.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Proximity {
             /// Number of characters before the finding to consider. For tabular data,
             /// if you want to modify the likelihood of an entire column of findngs,
@@ -256,7 +260,7 @@ pub mod custom_info_type {
         /// Message for specifying an adjustment to the likelihood of a finding as
         /// part of a detection rule.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct LikelihoodAdjustment {
             /// How the likelihood will be modified.
             #[prost(oneof = "likelihood_adjustment::Adjustment", tags = "1, 2")]
@@ -266,7 +270,7 @@ pub mod custom_info_type {
         pub mod likelihood_adjustment {
             /// How the likelihood will be modified.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
             pub enum Adjustment {
                 /// Set the likelihood of a finding to a fixed value.
                 #[prost(enumeration = "super::super::super::Likelihood", tag = "1")]
@@ -743,7 +747,7 @@ pub mod storage_config {
         /// Specification of the field containing the timestamp of scanned items.
         /// Used for data sources like Datastore and BigQuery.
         ///
-        /// <b>For BigQuery</b>
+        /// **For BigQuery**
         ///
         /// If this value is not specified and the table was modified between the
         /// given start and end times, the entire table will be scanned. If this
@@ -758,13 +762,11 @@ pub mod storage_config {
         /// you can use any of the following pseudo-columns as your timestamp field.
         /// When used with Cloud DLP, these pseudo-column names are case sensitive.
         ///
-        /// <ul>
-        /// <li><code>_PARTITIONTIME</code></li>
-        /// <li><code>_PARTITIONDATE</code></li>
-        /// <li><code>_PARTITION_LOAD_TIME</code></li>
-        /// </ul>
+        /// - `_PARTITIONTIME`
+        /// - `_PARTITIONDATE`
+        /// - `_PARTITION_LOAD_TIME`
         ///
-        /// <b>For Datastore</b>
+        /// **For Datastore**
         ///
         /// If this value is specified, then entities are filtered based on the given
         /// start and end times. If an entity does not contain the provided timestamp
@@ -846,6 +848,7 @@ pub struct HybridOptions {
     /// No more than 10 labels can be associated with a given finding.
     ///
     /// Examples:
+    ///
     /// * `"environment" : "production"`
     /// * `"pipeline" : "etl"`
     #[prost(map = "string, string", tag = "3")]
@@ -1507,6 +1510,12 @@ pub mod byte_content_item {
         Csv = 12,
         /// tsv
         Tsv = 13,
+        /// Audio file types. Only used for profiling.
+        Audio = 15,
+        /// Video file types. Only used for profiling.
+        Video = 16,
+        /// Executable file types. Only used for profiling.
+        Executable = 17,
     }
     impl BytesType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1529,6 +1538,9 @@ pub mod byte_content_item {
                 BytesType::Avro => "AVRO",
                 BytesType::Csv => "CSV",
                 BytesType::Tsv => "TSV",
+                BytesType::Audio => "AUDIO",
+                BytesType::Video => "VIDEO",
+                BytesType::Executable => "EXECUTABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1548,6 +1560,9 @@ pub mod byte_content_item {
                 "AVRO" => Some(Self::Avro),
                 "CSV" => Some(Self::Csv),
                 "TSV" => Some(Self::Tsv),
+                "AUDIO" => Some(Self::Audio),
+                "VIDEO" => Some(Self::Video),
+                "EXECUTABLE" => Some(Self::Executable),
                 _ => None,
             }
         }
@@ -1671,6 +1686,7 @@ pub struct Finding {
     /// No more than 10 labels can be associated with a given finding.
     ///
     /// Examples:
+    ///
     /// * `"environment" : "production"`
     /// * `"pipeline" : "etl"`
     #[prost(map = "string, string", tag = "10")]
@@ -1797,7 +1813,7 @@ pub struct StorageMetadataLabel {
 }
 /// Location of a finding within a document.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DocumentLocation {
     /// Offset of the line, from the beginning of the file, where the finding
     /// is located.
@@ -1820,7 +1836,7 @@ pub struct RecordLocation {
 }
 /// Location of a finding within a table.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TableLocation {
     /// The zero-based index of the row where the finding is located. Only
     /// populated for resources that have a natural ordering, not BigQuery. In
@@ -1880,7 +1896,7 @@ pub struct Container {
 }
 /// Generic half-open interval [start, end)
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Range {
     /// Index of the first character of the range (inclusive).
     #[prost(int64, tag = "1")]
@@ -1899,7 +1915,7 @@ pub struct ImageLocation {
 }
 /// Bounding box encompassing detected text within an image.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BoundingBox {
     /// Top coordinate of the bounding box. (0,0) is upper left.
     #[prost(int32, tag = "1")]
@@ -1925,10 +1941,10 @@ pub struct RedactImageRequest {
     /// processing
     /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
-    /// + Projects scope, location specified:<br/>
-    ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Projects scope, no location specified (defaults to global):<br/>
-    ///    `projects/`<var>PROJECT_ID</var>
+    /// + Projects scope, location specified:
+    ///    `projects/{project_id}/locations/{location_id}`
+    /// + Projects scope, no location specified (defaults to global):
+    ///    `projects/{project_id}`
     ///
     /// The following example `parent` string specifies a parent project with the
     /// identifier `example-project`, and specifies the `europe-west3` location
@@ -1991,7 +2007,7 @@ pub mod redact_image_request {
 }
 /// Represents a color in the RGB color space.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Color {
     /// The amount of red in the color as a value in the interval \[0, 1\].
     #[prost(float, tag = "1")]
@@ -2029,10 +2045,10 @@ pub struct DeidentifyContentRequest {
     /// processing
     /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
-    /// + Projects scope, location specified:<br/>
-    ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Projects scope, no location specified (defaults to global):<br/>
-    ///    `projects/`<var>PROJECT_ID</var>
+    /// + Projects scope, location specified:
+    ///    `projects/{project_id}/locations/{location_id}`
+    /// + Projects scope, no location specified (defaults to global):
+    ///    `projects/{project_id}`
     ///
     /// The following example `parent` string specifies a parent project with the
     /// identifier `example-project`, and specifies the `europe-west3` location
@@ -2100,10 +2116,10 @@ pub struct ReidentifyContentRequest {
     /// processing
     /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
-    /// + Projects scope, location specified:<br/>
-    ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Projects scope, no location specified (defaults to global):<br/>
-    ///    `projects/`<var>PROJECT_ID</var>
+    /// + Projects scope, location specified:
+    ///    `projects/{project_id}/locations/{location_id}`
+    /// + Projects scope, no location specified (defaults to global):
+    ///    `projects/{project_id}`
     ///
     /// The following example `parent` string specifies a parent project with the
     /// identifier `example-project`, and specifies the `europe-west3` location
@@ -2171,10 +2187,10 @@ pub struct InspectContentRequest {
     /// processing
     /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
-    /// + Projects scope, location specified:<br/>
-    ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Projects scope, no location specified (defaults to global):<br/>
-    ///    `projects/`<var>PROJECT_ID</var>
+    /// + Projects scope, location specified:
+    ///    `projects/{project_id}/locations/{location_id}`
+    /// + Projects scope, no location specified (defaults to global):
+    ///    `projects/{project_id}`
     ///
     /// The following example `parent` string specifies a parent project with the
     /// identifier `example-project`, and specifies the `europe-west3` location
@@ -2377,7 +2393,7 @@ pub mod inspect_data_source_details {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfileBigQueryRowSchema {
     /// Data profile type.
-    #[prost(oneof = "data_profile_big_query_row_schema::DataProfile", tags = "1, 2")]
+    #[prost(oneof = "data_profile_big_query_row_schema::DataProfile", tags = "1, 2, 3")]
     pub data_profile: ::core::option::Option<
         data_profile_big_query_row_schema::DataProfile,
     >,
@@ -2394,11 +2410,14 @@ pub mod data_profile_big_query_row_schema {
         /// Column data profile column
         #[prost(message, tag = "2")]
         ColumnProfile(super::ColumnDataProfile),
+        /// File store data profile column.
+        #[prost(message, tag = "3")]
+        FileStoreProfile(super::FileStoreDataProfile),
     }
 }
 /// Statistics related to processing hybrid inspect requests.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HybridInspectStatistics {
     /// The number of hybrid inspection requests processed within this job.
     #[prost(int64, tag = "1")]
@@ -2436,7 +2455,7 @@ pub mod action_details {
 }
 /// Summary of what was modified during a transformation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeidentifyDataSourceStats {
     /// Total size in bytes that were transformed in some way.
     #[prost(int64, tag = "1")]
@@ -2519,7 +2538,7 @@ pub struct InfoTypeDescription {
 /// Classification of infoTypes to organize them according to geographic
 /// location, industry, and data type.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InfoTypeCategory {
     /// Categories of infotypes.
     #[prost(oneof = "info_type_category::Category", tags = "1, 2, 3")]
@@ -2549,10 +2568,14 @@ pub mod info_type_category {
         Global = 1,
         /// The infoType is typically used in Argentina.
         Argentina = 2,
+        /// The infoType is typically used in Armenia.
+        Armenia = 51,
         /// The infoType is typically used in Australia.
         Australia = 3,
         /// The infoType is typically used in Azerbaijan.
         Azerbaijan = 48,
+        /// The infoType is typically used in Belarus.
+        Belarus = 50,
         /// The infoType is typically used in Belgium.
         Belgium = 4,
         /// The infoType is typically used in Brazil.
@@ -2652,8 +2675,10 @@ pub mod info_type_category {
                 LocationCategory::LocationUnspecified => "LOCATION_UNSPECIFIED",
                 LocationCategory::Global => "GLOBAL",
                 LocationCategory::Argentina => "ARGENTINA",
+                LocationCategory::Armenia => "ARMENIA",
                 LocationCategory::Australia => "AUSTRALIA",
                 LocationCategory::Azerbaijan => "AZERBAIJAN",
+                LocationCategory::Belarus => "BELARUS",
                 LocationCategory::Belgium => "BELGIUM",
                 LocationCategory::Brazil => "BRAZIL",
                 LocationCategory::Canada => "CANADA",
@@ -2706,8 +2731,10 @@ pub mod info_type_category {
                 "LOCATION_UNSPECIFIED" => Some(Self::LocationUnspecified),
                 "GLOBAL" => Some(Self::Global),
                 "ARGENTINA" => Some(Self::Argentina),
+                "ARMENIA" => Some(Self::Armenia),
                 "AUSTRALIA" => Some(Self::Australia),
                 "AZERBAIJAN" => Some(Self::Azerbaijan),
+                "BELARUS" => Some(Self::Belarus),
                 "BELGIUM" => Some(Self::Belgium),
                 "BRAZIL" => Some(Self::Brazil),
                 "CANADA" => Some(Self::Canada),
@@ -2874,7 +2901,7 @@ pub mod info_type_category {
     }
     /// Categories of infotypes.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Category {
         /// The region or country that issued the ID or document represented by the
         /// infoType.
@@ -2907,7 +2934,7 @@ pub struct ListInfoTypesRequest {
     ///
     /// The format of this value is as follows:
     ///
-    ///      locations/<var>LOCATION_ID</var>
+    ///      `locations/{location_id}`
     #[prost(string, tag = "4")]
     pub parent: ::prost::alloc::string::String,
     /// BCP-47 language code for localized infoType friendly
@@ -3644,7 +3671,7 @@ pub mod value {
 }
 /// Message for infoType-dependent details parsed from quote.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct QuoteInfo {
     /// Object representation of the quote.
     #[prost(oneof = "quote_info::ParsedQuote", tags = "2")]
@@ -3654,7 +3681,7 @@ pub struct QuoteInfo {
 pub mod quote_info {
     /// Object representation of the quote.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ParsedQuote {
         /// The date time indicated by the quote.
         #[prost(message, tag = "2")]
@@ -3664,7 +3691,7 @@ pub mod quote_info {
 /// Message for a date time object.
 /// e.g. 2018-01-01, 5th August.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DateTime {
     /// One or more of the following must be set.
     /// Must be a valid date or time value.
@@ -3684,7 +3711,7 @@ pub struct DateTime {
 pub mod date_time {
     /// Time zone of the date time object.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TimeZone {
         /// Set only if the offset can be determined. Positive for time ahead of UTC.
         /// E.g. For "UTC-9", this value is -540.
@@ -3761,11 +3788,11 @@ pub mod image_transformations {
         }
         /// Apply transformation to all findings.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct AllInfoTypes {}
         /// Apply to all text.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct AllText {}
         /// Part of the image to transform.
         #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3795,7 +3822,7 @@ pub mod image_transformations {
 /// handled, is returned in the response as part of the
 /// `TransformationOverviews`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TransformationErrorHandling {
     /// How transformation errors should be handled.
     #[prost(oneof = "transformation_error_handling::Mode", tags = "1, 2")]
@@ -3805,18 +3832,18 @@ pub struct TransformationErrorHandling {
 pub mod transformation_error_handling {
     /// Throw an error and fail the request when a transformation error occurs.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ThrowError {}
     /// Skips the data without modifying it if the requested transformation would
     /// cause an error. For example, if a `DateShift` transformation were applied
     /// an an IP address, this mode would leave the IP address unchanged in the
     /// response.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LeaveUntransformed {}
     /// How transformation errors should be handled.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Mode {
         /// Throw an error
         #[prost(message, tag = "1")]
@@ -3884,7 +3911,7 @@ pub mod primitive_transformation {
 /// For use with `Date`, `Timestamp`, and `TimeOfDay`, extract or preserve a
 /// portion of the value.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimePartConfig {
     /// The part of the time to keep.
     #[prost(enumeration = "time_part_config::TimePart", tag = "1")]
@@ -4064,13 +4091,13 @@ pub mod replace_dictionary_config {
 }
 /// Replace each matching finding with the name of the info_type.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReplaceWithInfoTypeConfig {}
 /// Redact a given value. For example, if used with an `InfoTypeTransformation`
 /// transforming PHONE_NUMBER, and input 'My phone number is 206-555-0123', the
 /// output would be 'My phone number is '.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RedactConfig {}
 /// Characters to skip when doing deidentification of a value. These will be left
 /// alone and skipped.
@@ -4239,9 +4266,10 @@ pub struct FixedSizeBucketingConfig {
 }
 /// Generalization function that buckets values based on ranges. The ranges and
 /// replacement values are dynamically provided by the user for custom behavior,
-/// such as 1-30 -> LOW 31-65 -> MEDIUM 66-100 -> HIGH
-/// This can be used on
-/// data of type: number, long, string, timestamp.
+/// such as 1-30 -> LOW, 31-65 -> MEDIUM, 66-100 -> HIGH.
+///
+/// This can be used on data of type: number, long, string, timestamp.
+///
 /// If the bound `Value` type differs from the type of data being transformed, we
 /// will first attempt converting the type of the data to be transformed to match
 /// the type of the bound before comparing.
@@ -4420,8 +4448,7 @@ pub mod crypto_replace_ffx_fpe_config {
         /// This must be encoded as ASCII.
         /// The order of characters does not matter.
         /// The full list of allowed characters is:
-        /// <code>0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
-        /// ~`!@#$%^&*()_-+={\[}\]|\:;"'<,>.?/</code>
+        /// ``0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_-+={\[}\]|\:;"'<,>.?/``
         #[prost(string, tag = "5")]
         CustomAlphabet(::prost::alloc::string::String),
         /// The native way to select the alphabet. Must be in the range \[2, 95\].
@@ -5007,7 +5034,7 @@ pub mod transformation_details_storage_config {
 }
 /// Schedule for inspect job triggers.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Schedule {
     /// Type of schedule.
     #[prost(oneof = "schedule::Option", tags = "1")]
@@ -5017,7 +5044,7 @@ pub struct Schedule {
 pub mod schedule {
     /// Type of schedule.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Option {
         /// With this option a job is started on a regular periodic basis. For
         /// example: every day (86400 seconds).
@@ -5034,7 +5061,7 @@ pub mod schedule {
 /// Job trigger option for hybrid jobs. Jobs must be manually created
 /// and finished.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Manual {}
 /// The inspectTemplate contains a configuration (set of types of sensitive data
 /// to be detected) to be used anywhere you otherwise would normally specify
@@ -5109,6 +5136,63 @@ pub struct Error {
     /// last 9 timestamps.
     #[prost(message, repeated, tag = "2")]
     pub timestamps: ::prost::alloc::vec::Vec<::prost_types::Timestamp>,
+    /// Additional information about the error.
+    #[prost(enumeration = "error::ErrorExtraInfo", tag = "4")]
+    pub extra_info: i32,
+}
+/// Nested message and enum types in `Error`.
+pub mod error {
+    /// Additional information about the error.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ErrorExtraInfo {
+        /// Unused.
+        ErrorInfoUnspecified = 0,
+        /// Image scan is not available in the region.
+        ImageScanUnavailableInRegion = 1,
+        /// File store cluster is not supported for profile generation.
+        FileStoreClusterUnsupported = 2,
+    }
+    impl ErrorExtraInfo {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ErrorExtraInfo::ErrorInfoUnspecified => "ERROR_INFO_UNSPECIFIED",
+                ErrorExtraInfo::ImageScanUnavailableInRegion => {
+                    "IMAGE_SCAN_UNAVAILABLE_IN_REGION"
+                }
+                ErrorExtraInfo::FileStoreClusterUnsupported => {
+                    "FILE_STORE_CLUSTER_UNSUPPORTED"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ERROR_INFO_UNSPECIFIED" => Some(Self::ErrorInfoUnspecified),
+                "IMAGE_SCAN_UNAVAILABLE_IN_REGION" => {
+                    Some(Self::ImageScanUnavailableInRegion)
+                }
+                "FILE_STORE_CLUSTER_UNSUPPORTED" => {
+                    Some(Self::FileStoreClusterUnsupported)
+                }
+                _ => None,
+            }
+        }
+    }
 }
 /// Contains a configuration to make API calls on a repeating basis.
 /// See
@@ -5159,7 +5243,7 @@ pub struct JobTrigger {
 pub mod job_trigger {
     /// What event needs to occur for a new job to be started.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Trigger {
         /// What event needs to occur for a new job to be started.
         #[prost(oneof = "trigger::Trigger", tags = "1, 2")]
@@ -5169,7 +5253,7 @@ pub mod job_trigger {
     pub mod trigger {
         /// What event needs to occur for a new job to be started.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Trigger {
             /// Create a job on a repeating basis based on the elapse of time.
             #[prost(message, tag = "1")]
@@ -5285,7 +5369,7 @@ pub mod action {
     /// Center](<https://cloud.google.com/terms/service-terms>). Only a single
     /// instance of this action can be specified. Compatible with: Inspect
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PublishSummaryToCscc {}
     /// Publish findings of a DlpJob to Data Catalog. In Data Catalog, tag
     /// templates are applied to the resource that Cloud DLP scanned. Data
@@ -5306,7 +5390,7 @@ pub mod action {
     /// allowed only if all resources being scanned are BigQuery tables.
     /// Compatible with: Inspect
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PublishFindingsToCloudDataCatalog {}
     /// Create a de-identified copy of the requested table or files.
     ///
@@ -5341,12 +5425,12 @@ pub mod action {
             super::TransformationDetailsStorageConfig,
         >,
         /// List of user-specified file type groups to transform. If specified, only
-        /// the files with these filetypes will be transformed. If empty, all
+        /// the files with these file types will be transformed. If empty, all
         /// supported files will be transformed. Supported types may be automatically
         /// added over time. If a file type is set in this field that isn't supported
         /// by the Deidentify action then the job will fail and will not be
-        /// successfully created/started. Currently the only filetypes supported are:
-        /// IMAGES, TEXT_FILES, CSV, TSV.
+        /// successfully created/started. Currently the only file types supported
+        /// are: IMAGES, TEXT_FILES, CSV, TSV.
         #[prost(enumeration = "super::FileType", repeated, tag = "8")]
         pub file_types_to_transform: ::prost::alloc::vec::Vec<i32>,
         /// Where to store the output.
@@ -5360,7 +5444,7 @@ pub mod action {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Output {
             /// Required. User settable Cloud Storage bucket and folders to store
-            /// de-identified files. This field must be set for cloud storage
+            /// de-identified files. This field must be set for Cloud Storage
             /// deidentification. The output Cloud Storage bucket must be different
             /// from the input bucket. De-identified files will overwrite files in the
             /// output path.
@@ -5374,14 +5458,14 @@ pub mod action {
     /// and technical [Essential
     /// Contacts](<https://cloud.google.com/resource-manager/docs/managing-notification-contacts>).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct JobNotificationEmails {}
     /// Enable Stackdriver metric dlp.googleapis.com/finding_count. This
     /// will publish a metric to stack driver on each infotype requested and
     /// how many findings were found for it. CustomDetectors will be bucketed
     /// as 'Custom' under the Stackdriver label 'info_type'.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PublishToStackdriver {}
     /// Extra events to execute after the job has finished.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5452,14 +5536,14 @@ pub struct CreateInspectTemplateRequest {
     /// (project or organization) and whether you have [specified a processing
     /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
-    /// + Projects scope, location specified:<br/>
-    ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Projects scope, no location specified (defaults to global):<br/>
-    ///    `projects/`<var>PROJECT_ID</var>
-    /// + Organizations scope, location specified:<br/>
-    ///    `organizations/`<var>ORG_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Organizations scope, no location specified (defaults to global):<br/>
-    ///    `organizations/`<var>ORG_ID</var>
+    /// + Projects scope, location specified:
+    ///    `projects/{project_id}/locations/{location_id}`
+    /// + Projects scope, no location specified (defaults to global):
+    ///    `projects/{project_id}`
+    /// + Organizations scope, location specified:
+    ///    `organizations/{org_id}/locations/{location_id}`
+    /// + Organizations scope, no location specified (defaults to global):
+    ///    `organizations/{org_id}`
     ///
     /// The following example `parent` string specifies a parent project with the
     /// identifier `example-project`, and specifies the `europe-west3` location
@@ -5517,14 +5601,14 @@ pub struct ListInspectTemplatesRequest {
     /// (project or organization) and whether you have [specified a processing
     /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
-    /// + Projects scope, location specified:<br/>
-    ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Projects scope, no location specified (defaults to global):<br/>
-    ///    `projects/`<var>PROJECT_ID</var>
-    /// + Organizations scope, location specified:<br/>
-    ///    `organizations/`<var>ORG_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Organizations scope, no location specified (defaults to global):<br/>
-    ///    `organizations/`<var>ORG_ID</var>
+    /// + Projects scope, location specified:
+    ///    `projects/{project_id}/locations/{location_id}`
+    /// + Projects scope, no location specified (defaults to global):
+    ///    `projects/{project_id}`
+    /// + Organizations scope, location specified:
+    ///    `organizations/{org_id}/locations/{location_id}`
+    /// + Organizations scope, no location specified (defaults to global):
+    ///    `organizations/{org_id}`
     ///
     /// The following example `parent` string specifies a parent project with the
     /// identifier `example-project`, and specifies the `europe-west3` location
@@ -5541,7 +5625,7 @@ pub struct ListInspectTemplatesRequest {
     /// returns a page of max size 100.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
-    /// Comma separated list of fields to order by,
+    /// Comma-separated list of fields to order by,
     /// followed by `asc` or `desc` postfix. This list is case insensitive. The
     /// default sorting order is ascending. Redundant space characters are
     /// insignificant.
@@ -5592,10 +5676,10 @@ pub struct CreateJobTriggerRequest {
     /// processing
     /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
-    /// + Projects scope, location specified:<br/>
-    ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Projects scope, no location specified (defaults to global):<br/>
-    ///    `projects/`<var>PROJECT_ID</var>
+    /// + Projects scope, location specified:
+    ///    `projects/{project_id}/locations/{location_id}`
+    /// + Projects scope, no location specified (defaults to global):
+    ///    `projects/{project_id}`
     ///
     /// The following example `parent` string specifies a parent project with the
     /// identifier `example-project`, and specifies the `europe-west3` location
@@ -5656,8 +5740,13 @@ pub struct GetJobTriggerRequest {
 pub struct CreateDiscoveryConfigRequest {
     /// Required. Parent resource name.
     ///
-    /// The format of this value is as follows:
-    /// `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// The format of this value varies depending on the scope of the request
+    /// (project or organization):
+    ///
+    /// + Projects scope:
+    ///    `projects/{project_id}/locations/{location_id}`
+    /// + Organizations scope:
+    ///    `organizations/{org_id}/locations/{location_id}`
     ///
     /// The following example `parent` string specifies a parent project with the
     /// identifier `example-project`, and specifies the `europe-west3` location
@@ -5707,7 +5796,7 @@ pub struct ListDiscoveryConfigsRequest {
     /// Required. Parent resource name.
     ///
     /// The format of this value is as follows:
-    /// `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
+    /// `projects/{project_id}/locations/{location_id}`
     ///
     /// The following example `parent` string specifies a parent project with the
     /// identifier `example-project`, and specifies the `europe-west3` location
@@ -5724,7 +5813,7 @@ pub struct ListDiscoveryConfigsRequest {
     /// Size of the page. This value can be limited by a server.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
-    /// Comma separated list of config fields to order by,
+    /// Comma-separated list of config fields to order by,
     /// followed by `asc` or `desc` postfix. This list is case insensitive. The
     /// default sorting order is ascending. Redundant space characters are
     /// insignificant.
@@ -5772,10 +5861,10 @@ pub struct CreateDlpJobRequest {
     /// processing
     /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
-    /// + Projects scope, location specified:<br/>
-    ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Projects scope, no location specified (defaults to global):<br/>
-    ///    `projects/`<var>PROJECT_ID</var>
+    /// + Projects scope, location specified:
+    ///    `projects/{project_id}/locations/{location_id}`
+    /// + Projects scope, no location specified (defaults to global):
+    ///    `projects/{project_id}`
     ///
     /// The following example `parent` string specifies a parent project with the
     /// identifier `example-project`, and specifies the `europe-west3` location
@@ -5822,10 +5911,10 @@ pub struct ListJobTriggersRequest {
     /// processing
     /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
-    /// + Projects scope, location specified:<br/>
-    ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Projects scope, no location specified (defaults to global):<br/>
-    ///    `projects/`<var>PROJECT_ID</var>
+    /// + Projects scope, location specified:
+    ///    `projects/{project_id}/locations/{location_id}`
+    /// + Projects scope, no location specified (defaults to global):
+    ///    `projects/{project_id}`
     ///
     /// The following example `parent` string specifies a parent project with the
     /// identifier `example-project`, and specifies the `europe-west3` location
@@ -5842,7 +5931,7 @@ pub struct ListJobTriggersRequest {
     /// Size of the page. This value can be limited by a server.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
-    /// Comma separated list of triggeredJob fields to order by,
+    /// Comma-separated list of triggeredJob fields to order by,
     /// followed by `asc` or `desc` postfix. This list is case insensitive. The
     /// default sorting order is ascending. Redundant space characters are
     /// insignificant.
@@ -5937,7 +6026,7 @@ pub struct InspectJobConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfileAction {
     /// Type of action to execute when a profile is generated.
-    #[prost(oneof = "data_profile_action::Action", tags = "1, 2")]
+    #[prost(oneof = "data_profile_action::Action", tags = "1, 2, 8")]
     pub action: ::core::option::Option<data_profile_action::Action>,
 }
 /// Nested message and enum types in `DataProfileAction`.
@@ -6005,6 +6094,8 @@ pub mod data_profile_action {
             TableProfile = 1,
             /// The name of the profiled resource.
             ResourceName = 2,
+            /// The full file store data profile.
+            FileStoreProfile = 3,
         }
         impl DetailLevel {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -6016,6 +6107,7 @@ pub mod data_profile_action {
                     DetailLevel::Unspecified => "DETAIL_LEVEL_UNSPECIFIED",
                     DetailLevel::TableProfile => "TABLE_PROFILE",
                     DetailLevel::ResourceName => "RESOURCE_NAME",
+                    DetailLevel::FileStoreProfile => "FILE_STORE_PROFILE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6024,8 +6116,88 @@ pub mod data_profile_action {
                     "DETAIL_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
                     "TABLE_PROFILE" => Some(Self::TableProfile),
                     "RESOURCE_NAME" => Some(Self::ResourceName),
+                    "FILE_STORE_PROFILE" => Some(Self::FileStoreProfile),
                     _ => None,
                 }
+            }
+        }
+    }
+    /// If set, attaches the \[tags\]
+    /// (<https://cloud.google.com/resource-manager/docs/tags/tags-overview>)
+    /// provided to profiled resources. Tags support [access
+    /// control](<https://cloud.google.com/iam/docs/tags-access-control>). You can
+    /// conditionally grant or deny access to a resource based on whether the
+    /// resource has a specific tag.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TagResources {
+        /// The tags to associate with different conditions.
+        #[prost(message, repeated, tag = "1")]
+        pub tag_conditions: ::prost::alloc::vec::Vec<tag_resources::TagCondition>,
+        /// The profile generations for which the tag should be attached to
+        /// resources. If you attach a tag to only new profiles, then if the
+        /// sensitivity score of a profile subsequently changes, its tag doesn't
+        /// change. By default, this field includes only new profiles. To include
+        /// both new and updated profiles for tagging, this field should explicitly
+        /// include both `PROFILE_GENERATION_NEW` and `PROFILE_GENERATION_UPDATE`.
+        #[prost(enumeration = "super::ProfileGeneration", repeated, tag = "2")]
+        pub profile_generations_to_tag: ::prost::alloc::vec::Vec<i32>,
+        /// Whether applying a tag to a resource should lower the risk of the profile
+        /// for that resource. For example, in conjunction with an [IAM deny
+        /// policy](<https://cloud.google.com/iam/docs/deny-overview>), you can deny
+        /// all principals a permission if a tag value is present, mitigating the
+        /// risk of the resource. This also lowers the data risk of resources at the
+        /// lower levels of the resource hierarchy. For example, reducing the data
+        /// risk of a table data profile also reduces the data risk of the
+        /// constituent column data profiles.
+        #[prost(bool, tag = "3")]
+        pub lower_data_risk_to_low: bool,
+    }
+    /// Nested message and enum types in `TagResources`.
+    pub mod tag_resources {
+        /// The tag to attach to profiles matching the condition. At most one
+        /// `TagCondition` can be specified per sensitivity level.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct TagCondition {
+            /// The tag value to attach to resources.
+            #[prost(message, optional, tag = "1")]
+            pub tag: ::core::option::Option<TagValue>,
+            /// The type of condition on which attaching the tag will be predicated.
+            #[prost(oneof = "tag_condition::Type", tags = "2")]
+            pub r#type: ::core::option::Option<tag_condition::Type>,
+        }
+        /// Nested message and enum types in `TagCondition`.
+        pub mod tag_condition {
+            /// The type of condition on which attaching the tag will be predicated.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+            pub enum Type {
+                /// Conditions attaching the tag to a resource on its profile having this
+                /// sensitivity score.
+                #[prost(message, tag = "2")]
+                SensitivityScore(super::super::super::SensitivityScore),
+            }
+        }
+        /// A value of a tag.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct TagValue {
+            /// The format of the tag value.
+            #[prost(oneof = "tag_value::Format", tags = "1")]
+            pub format: ::core::option::Option<tag_value::Format>,
+        }
+        /// Nested message and enum types in `TagValue`.
+        pub mod tag_value {
+            /// The format of the tag value.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum Format {
+                /// The namespaced name for the tag value to attach to resources. Must be
+                /// in the format `{parent_id}/{tag_key_short_name}/{short_name}`, for
+                /// example, "123456/environment/prod".
+                #[prost(string, tag = "1")]
+                NamespacedValue(::prost::alloc::string::String),
             }
         }
     }
@@ -6092,6 +6264,9 @@ pub mod data_profile_action {
         /// Publish a message into the Pub/Sub topic.
         #[prost(message, tag = "2")]
         PubSubNotification(PubSubNotification),
+        /// Tags the profiled resources with the specified tag values.
+        #[prost(message, tag = "8")]
+        TagResources(TagResources),
     }
 }
 /// Configuration for setting up a job to scan resources for profile generation.
@@ -6173,11 +6348,11 @@ pub struct BigQueryTableTypes {
 }
 /// Do not profile the tables.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Disabled {}
 /// The data that will be profiled.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DataProfileLocation {
     /// The location to be scanned.
     #[prost(oneof = "data_profile_location::Location", tags = "1, 2")]
@@ -6187,12 +6362,12 @@ pub struct DataProfileLocation {
 pub mod data_profile_location {
     /// The location to be scanned.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Location {
         /// The ID of an organization to scan.
         #[prost(int64, tag = "1")]
         OrganizationId(i64),
-        /// The ID of the Folder within an organization to scan.
+        /// The ID of the folder within an organization to scan.
         #[prost(int64, tag = "2")]
         FolderId(i64),
     }
@@ -6326,7 +6501,7 @@ pub mod discovery_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoveryTarget {
     /// A target to match against for Discovery.
-    #[prost(oneof = "discovery_target::Target", tags = "1, 2, 3")]
+    #[prost(oneof = "discovery_target::Target", tags = "1, 2, 3, 4")]
     pub target: ::core::option::Option<discovery_target::Target>,
 }
 /// Nested message and enum types in `DiscoveryTarget`.
@@ -6348,6 +6523,10 @@ pub mod discovery_target {
         /// Center. Only one target of this type is allowed.
         #[prost(message, tag = "3")]
         SecretsTarget(super::SecretsDiscoveryTarget),
+        /// Cloud Storage target for Discovery. The first target to match a table
+        /// will be the one applied.
+        #[prost(message, tag = "4")]
+        CloudStorageTarget(super::CloudStorageDiscoveryTarget),
     }
 }
 /// Target used to match against for discovery with BigQuery tables
@@ -6405,7 +6584,7 @@ pub mod discovery_big_query_filter {
     /// always be last, except for single-table configurations, which will only
     /// have a TableReference target.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AllOtherBigQueryTables {}
     /// Whether the filter applies to a specific set of tables or all other tables
     /// within the location being profiled. The first filter to match will be
@@ -6484,7 +6663,7 @@ pub mod discovery_big_query_conditions {
     /// There is an OR relationship between these attributes. They are used to
     /// determine if a table should be scanned or not in Discovery.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct OrConditions {
         /// Minimum number of rows that should be present before Cloud DLP
         /// profiles a table
@@ -6522,6 +6701,17 @@ pub struct DiscoveryGenerationCadence {
     /// Governs when to update data profiles when a table is modified.
     #[prost(message, optional, tag = "2")]
     pub table_modified_cadence: ::core::option::Option<DiscoveryTableModifiedCadence>,
+    /// Governs when to update data profiles when the inspection rules
+    /// defined by the `InspectTemplate` change.
+    /// If not set, changing the template will not cause a data profile to update.
+    #[prost(message, optional, tag = "3")]
+    pub inspect_template_modified_cadence: ::core::option::Option<
+        DiscoveryInspectTemplateModifiedCadence,
+    >,
+    /// Frequency at which profiles should be updated, regardless of whether the
+    /// underlying resource has changed. Defaults to never.
+    #[prost(enumeration = "DataProfileUpdateFrequency", tag = "4")]
+    pub refresh_frequency: i32,
 }
 /// The cadence at which to update data profiles when a table is modified.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6549,6 +6739,16 @@ pub struct DiscoverySchemaModifiedCadence {
     /// How frequently profiles may be updated when schemas are
     /// modified. Defaults to monthly.
     #[prost(enumeration = "DataProfileUpdateFrequency", tag = "2")]
+    pub frequency: i32,
+}
+/// The cadence at which to update data profiles when the inspection rules
+/// defined by the `InspectTemplate` change.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct DiscoveryInspectTemplateModifiedCadence {
+    /// How frequently data profiles can be updated when the template is modified.
+    /// Defaults to never.
+    #[prost(enumeration = "DataProfileUpdateFrequency", tag = "1")]
     pub frequency: i32,
 }
 /// Target used to match against for discovery with Cloud SQL tables.
@@ -6680,7 +6880,7 @@ pub struct DatabaseResourceRegex {
 }
 /// Match database resources not covered by any other filter.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AllOtherDatabaseResources {}
 /// Identifies a single database resource, like a table within a database.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -6928,12 +7128,377 @@ pub mod discovery_cloud_sql_generation_cadence {
 /// Credentials and secrets discovered will be reported as vulnerabilities to
 /// Security Command Center.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SecretsDiscoveryTarget {}
+/// Target used to match against for discovery with Cloud Storage buckets.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudStorageDiscoveryTarget {
+    /// Required. The buckets the generation_cadence applies to. The first target
+    /// with a matching filter will be the one to apply to a bucket.
+    #[prost(message, optional, tag = "1")]
+    pub filter: ::core::option::Option<DiscoveryCloudStorageFilter>,
+    /// Optional. In addition to matching the filter, these conditions must be true
+    /// before a profile is generated.
+    #[prost(message, optional, tag = "4")]
+    pub conditions: ::core::option::Option<DiscoveryFileStoreConditions>,
+    /// How often and when to update profiles.
+    #[prost(oneof = "cloud_storage_discovery_target::Cadence", tags = "2, 3")]
+    pub cadence: ::core::option::Option<cloud_storage_discovery_target::Cadence>,
+}
+/// Nested message and enum types in `CloudStorageDiscoveryTarget`.
+pub mod cloud_storage_discovery_target {
+    /// How often and when to update profiles.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum Cadence {
+        /// Optional. How often and when to update profiles. New buckets that match
+        /// both the filter and conditions are scanned as quickly as possible
+        /// depending on system capacity.
+        #[prost(message, tag = "2")]
+        GenerationCadence(super::DiscoveryCloudStorageGenerationCadence),
+        /// Optional. Disable profiling for buckets that match this filter.
+        #[prost(message, tag = "3")]
+        Disabled(super::Disabled),
+    }
+}
+/// Determines which buckets will have profiles generated within an organization
+/// or project. Includes the ability to filter by regular expression patterns
+/// on project ID and bucket name.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiscoveryCloudStorageFilter {
+    /// Whether the filter applies to a specific set of buckets or all
+    /// other buckets within the location being profiled. The first
+    /// filter to match will be applied, regardless of the condition. If none is
+    /// set, will default to `others`.
+    #[prost(oneof = "discovery_cloud_storage_filter::Filter", tags = "1, 2, 100")]
+    pub filter: ::core::option::Option<discovery_cloud_storage_filter::Filter>,
+}
+/// Nested message and enum types in `DiscoveryCloudStorageFilter`.
+pub mod discovery_cloud_storage_filter {
+    /// Whether the filter applies to a specific set of buckets or all
+    /// other buckets within the location being profiled. The first
+    /// filter to match will be applied, regardless of the condition. If none is
+    /// set, will default to `others`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Filter {
+        /// Optional. A specific set of buckets for this filter to apply to.
+        #[prost(message, tag = "1")]
+        Collection(super::FileStoreCollection),
+        /// Optional. The bucket to scan. Targets including this can only include one
+        /// target (the target with this bucket). This enables profiling the contents
+        /// of a single bucket, while the other options allow for easy profiling of
+        /// many bucets within a project or an organization.
+        #[prost(message, tag = "2")]
+        CloudStorageResourceReference(super::CloudStorageResourceReference),
+        /// Optional. Catch-all. This should always be the last target in the list
+        /// because anything above it will apply first. Should only appear once in a
+        /// configuration. If none is specified, a default one will be added
+        /// automatically.
+        #[prost(message, tag = "100")]
+        Others(super::AllOtherResources),
+    }
+}
+/// Match file stores (e.g. buckets) using regex filters.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileStoreCollection {
+    /// The first filter containing a pattern that matches a file store will
+    /// be used.
+    #[prost(oneof = "file_store_collection::Pattern", tags = "1")]
+    pub pattern: ::core::option::Option<file_store_collection::Pattern>,
+}
+/// Nested message and enum types in `FileStoreCollection`.
+pub mod file_store_collection {
+    /// The first filter containing a pattern that matches a file store will
+    /// be used.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Pattern {
+        /// Optional. A collection of regular expressions to match a file store
+        /// against.
+        #[prost(message, tag = "1")]
+        IncludeRegexes(super::FileStoreRegexes),
+    }
+}
+/// A collection of regular expressions to determine what file store to match
+/// against.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileStoreRegexes {
+    /// Required. The group of regular expression patterns to match against one or
+    /// more file stores. Maximum of 100 entries. The sum of all regular
+    /// expression's length can't exceed 10 KiB.
+    #[prost(message, repeated, tag = "1")]
+    pub patterns: ::prost::alloc::vec::Vec<FileStoreRegex>,
+}
+/// A pattern to match against one or more file stores.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileStoreRegex {
+    /// The type of resource regex to use.
+    #[prost(oneof = "file_store_regex::ResourceRegex", tags = "1")]
+    pub resource_regex: ::core::option::Option<file_store_regex::ResourceRegex>,
+}
+/// Nested message and enum types in `FileStoreRegex`.
+pub mod file_store_regex {
+    /// The type of resource regex to use.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ResourceRegex {
+        /// Optional. Regex for Cloud Storage.
+        #[prost(message, tag = "1")]
+        CloudStorageRegex(super::CloudStorageRegex),
+    }
+}
+/// A pattern to match against one or more file stores. At least one
+/// pattern must be specified. Regular expressions use RE2
+/// [syntax](<https://github.com/google/re2/wiki/Syntax>); a guide can be found
+/// under the google/re2 repository on GitHub.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudStorageRegex {
+    /// Optional. For organizations, if unset, will match all projects.
+    #[prost(string, tag = "1")]
+    pub project_id_regex: ::prost::alloc::string::String,
+    /// Optional. Regex to test the bucket name against. If empty, all buckets
+    /// match. Example: "marketing2021" or "(marketing)\d{4}" will both match the
+    /// bucket gs://marketing2021
+    #[prost(string, tag = "2")]
+    pub bucket_name_regex: ::prost::alloc::string::String,
+}
+/// Identifies a single Cloud Storage bucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudStorageResourceReference {
+    /// Required. The bucket to scan.
+    #[prost(string, tag = "1")]
+    pub bucket_name: ::prost::alloc::string::String,
+    /// Required. If within a project-level config, then this must match the
+    /// config's project id.
+    #[prost(string, tag = "2")]
+    pub project_id: ::prost::alloc::string::String,
+}
+/// How often existing buckets should have their profiles refreshed.
+/// New buckets are scanned as quickly as possible depending on system
+/// capacity.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct DiscoveryCloudStorageGenerationCadence {
+    /// Optional. Data changes in Cloud Storage can't trigger reprofiling. If you
+    /// set this field, profiles are refreshed at this frequency regardless of
+    /// whether the underlying buckets have changed. Defaults to never.
+    #[prost(enumeration = "DataProfileUpdateFrequency", tag = "1")]
+    pub refresh_frequency: i32,
+    /// Optional. Governs when to update data profiles when the inspection rules
+    /// defined by the `InspectTemplate` change.
+    /// If not set, changing the template will not cause a data profile to update.
+    #[prost(message, optional, tag = "2")]
+    pub inspect_template_modified_cadence: ::core::option::Option<
+        DiscoveryInspectTemplateModifiedCadence,
+    >,
+}
+/// Requirements that must be true before a Cloud Storage bucket or object is
+/// scanned in discovery for the first time. There is an AND relationship between
+/// the top-level attributes.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiscoveryCloudStorageConditions {
+    /// Required. Only objects with the specified attributes will be scanned. If an
+    /// object has one of the specified attributes but is inside an excluded
+    /// bucket, it will not be scanned. Defaults to \[ALL_SUPPORTED_OBJECTS\]. A
+    /// profile will be created even if no objects match the
+    /// included_object_attributes.
+    #[prost(
+        enumeration = "discovery_cloud_storage_conditions::CloudStorageObjectAttribute",
+        repeated,
+        packed = "false",
+        tag = "1"
+    )]
+    pub included_object_attributes: ::prost::alloc::vec::Vec<i32>,
+    /// Required. Only objects with the specified attributes will be scanned.
+    /// Defaults to \[ALL_SUPPORTED_BUCKETS\] if unset.
+    #[prost(
+        enumeration = "discovery_cloud_storage_conditions::CloudStorageBucketAttribute",
+        repeated,
+        packed = "false",
+        tag = "2"
+    )]
+    pub included_bucket_attributes: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `DiscoveryCloudStorageConditions`.
+pub mod discovery_cloud_storage_conditions {
+    /// The attribute of an object. See
+    /// <https://cloud.google.com/storage/docs/storage-classes> for more information
+    /// on storage classes.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CloudStorageObjectAttribute {
+        /// Unused.
+        Unspecified = 0,
+        /// Scan objects regardless of the attribute.
+        AllSupportedObjects = 1,
+        /// Scan objects with the standard storage class.
+        Standard = 2,
+        /// Scan objects with the nearline storage class. This will incur retrieval
+        /// fees.
+        Nearline = 3,
+        /// Scan objects with the coldline storage class. This will incur retrieval
+        /// fees.
+        Coldline = 4,
+        /// Scan objects with the archive storage class. This will incur retrieval
+        /// fees.
+        Archive = 5,
+        /// Scan objects with the regional storage class.
+        Regional = 6,
+        /// Scan objects with the multi-regional storage class.
+        MultiRegional = 7,
+        /// Scan objects with the dual-regional storage class. This will incur
+        /// retrieval fees.
+        DurableReducedAvailability = 8,
+    }
+    impl CloudStorageObjectAttribute {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                CloudStorageObjectAttribute::Unspecified => {
+                    "CLOUD_STORAGE_OBJECT_ATTRIBUTE_UNSPECIFIED"
+                }
+                CloudStorageObjectAttribute::AllSupportedObjects => {
+                    "ALL_SUPPORTED_OBJECTS"
+                }
+                CloudStorageObjectAttribute::Standard => "STANDARD",
+                CloudStorageObjectAttribute::Nearline => "NEARLINE",
+                CloudStorageObjectAttribute::Coldline => "COLDLINE",
+                CloudStorageObjectAttribute::Archive => "ARCHIVE",
+                CloudStorageObjectAttribute::Regional => "REGIONAL",
+                CloudStorageObjectAttribute::MultiRegional => "MULTI_REGIONAL",
+                CloudStorageObjectAttribute::DurableReducedAvailability => {
+                    "DURABLE_REDUCED_AVAILABILITY"
+                }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLOUD_STORAGE_OBJECT_ATTRIBUTE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALL_SUPPORTED_OBJECTS" => Some(Self::AllSupportedObjects),
+                "STANDARD" => Some(Self::Standard),
+                "NEARLINE" => Some(Self::Nearline),
+                "COLDLINE" => Some(Self::Coldline),
+                "ARCHIVE" => Some(Self::Archive),
+                "REGIONAL" => Some(Self::Regional),
+                "MULTI_REGIONAL" => Some(Self::MultiRegional),
+                "DURABLE_REDUCED_AVAILABILITY" => Some(Self::DurableReducedAvailability),
+                _ => None,
+            }
+        }
+    }
+    /// The attribute of a bucket.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CloudStorageBucketAttribute {
+        /// Unused.
+        Unspecified = 0,
+        /// Scan buckets regardless of the attribute.
+        AllSupportedBuckets = 1,
+        /// Buckets with autoclass disabled
+        /// (<https://cloud.google.com/storage/docs/autoclass>). Only one of
+        /// AUTOCLASS_DISABLED or AUTOCLASS_ENABLED should be set.
+        AutoclassDisabled = 2,
+        /// Buckets with autoclass enabled
+        /// (<https://cloud.google.com/storage/docs/autoclass>). Only one of
+        /// AUTOCLASS_DISABLED or AUTOCLASS_ENABLED should be set. Scanning
+        /// Autoclass-enabled buckets can affect object storage classes.
+        AutoclassEnabled = 3,
+    }
+    impl CloudStorageBucketAttribute {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                CloudStorageBucketAttribute::Unspecified => {
+                    "CLOUD_STORAGE_BUCKET_ATTRIBUTE_UNSPECIFIED"
+                }
+                CloudStorageBucketAttribute::AllSupportedBuckets => {
+                    "ALL_SUPPORTED_BUCKETS"
+                }
+                CloudStorageBucketAttribute::AutoclassDisabled => "AUTOCLASS_DISABLED",
+                CloudStorageBucketAttribute::AutoclassEnabled => "AUTOCLASS_ENABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLOUD_STORAGE_BUCKET_ATTRIBUTE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALL_SUPPORTED_BUCKETS" => Some(Self::AllSupportedBuckets),
+                "AUTOCLASS_DISABLED" => Some(Self::AutoclassDisabled),
+                "AUTOCLASS_ENABLED" => Some(Self::AutoclassEnabled),
+                _ => None,
+            }
+        }
+    }
+}
+/// Requirements that must be true before a file store is scanned in discovery
+/// for the first time. There is an AND relationship between the top-level
+/// attributes.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiscoveryFileStoreConditions {
+    /// Optional. File store must have been created after this date. Used to avoid
+    /// backfilling.
+    #[prost(message, optional, tag = "1")]
+    pub created_after: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Minimum age a file store must have. If set, the value must be 1
+    /// hour or greater.
+    #[prost(message, optional, tag = "2")]
+    pub min_age: ::core::option::Option<::prost_types::Duration>,
+    /// File store specific conditions.
+    #[prost(oneof = "discovery_file_store_conditions::Conditions", tags = "3")]
+    pub conditions: ::core::option::Option<discovery_file_store_conditions::Conditions>,
+}
+/// Nested message and enum types in `DiscoveryFileStoreConditions`.
+pub mod discovery_file_store_conditions {
+    /// File store specific conditions.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Conditions {
+        /// Optional. Cloud Storage conditions.
+        #[prost(message, tag = "3")]
+        CloudStorageConditions(super::DiscoveryCloudStorageConditions),
+    }
+}
 /// The location to begin a discovery scan. Denotes an organization ID or folder
 /// ID within an organization.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DiscoveryStartingLocation {
     /// The location to be scanned.
     #[prost(oneof = "discovery_starting_location::Location", tags = "1, 2")]
@@ -6943,16 +7508,20 @@ pub struct DiscoveryStartingLocation {
 pub mod discovery_starting_location {
     /// The location to be scanned.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Location {
         /// The ID of an organization to scan.
         #[prost(int64, tag = "1")]
         OrganizationId(i64),
-        /// The ID of the Folder within an organization to scan.
+        /// The ID of the folder within an organization to be scanned.
         #[prost(int64, tag = "2")]
         FolderId(i64),
     }
 }
+/// Match discovery resources not covered by any other filter.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AllOtherResources {}
 /// Combines all of the information about a DLP job.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7087,10 +7656,10 @@ pub struct ListDlpJobsRequest {
     /// processing
     /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
-    /// + Projects scope, location specified:<br/>
-    ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Projects scope, no location specified (defaults to global):<br/>
-    ///    `projects/`<var>PROJECT_ID</var>
+    /// + Projects scope, location specified:
+    ///    `projects/{project_id}/locations/{location_id}`
+    /// + Projects scope, no location specified (defaults to global):
+    ///    `projects/{project_id}`
     ///
     /// The following example `parent` string specifies a parent project with the
     /// identifier `example-project`, and specifies the `europe-west3` location
@@ -7138,7 +7707,7 @@ pub struct ListDlpJobsRequest {
     /// The type of job. Defaults to `DlpJobType.INSPECT`
     #[prost(enumeration = "DlpJobType", tag = "5")]
     pub r#type: i32,
-    /// Comma separated list of fields to order by,
+    /// Comma-separated list of fields to order by,
     /// followed by `asc` or `desc` postfix. This list is case insensitive. The
     /// default sorting order is ascending. Redundant space characters are
     /// insignificant.
@@ -7202,14 +7771,14 @@ pub struct CreateDeidentifyTemplateRequest {
     /// (project or organization) and whether you have [specified a processing
     /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
-    /// + Projects scope, location specified:<br/>
-    ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Projects scope, no location specified (defaults to global):<br/>
-    ///    `projects/`<var>PROJECT_ID</var>
-    /// + Organizations scope, location specified:<br/>
-    ///    `organizations/`<var>ORG_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Organizations scope, no location specified (defaults to global):<br/>
-    ///    `organizations/`<var>ORG_ID</var>
+    /// + Projects scope, location specified:
+    ///    `projects/{project_id}/locations/{location_id}`
+    /// + Projects scope, no location specified (defaults to global):
+    ///    `projects/{project_id}`
+    /// + Organizations scope, location specified:
+    ///    `organizations/{org_id}/locations/{location_id}`
+    /// + Organizations scope, no location specified (defaults to global):
+    ///    `organizations/{org_id}`
     ///
     /// The following example `parent` string specifies a parent project with the
     /// identifier `example-project`, and specifies the `europe-west3` location
@@ -7268,14 +7837,14 @@ pub struct ListDeidentifyTemplatesRequest {
     /// (project or organization) and whether you have [specified a processing
     /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
-    /// + Projects scope, location specified:<br/>
-    ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Projects scope, no location specified (defaults to global):<br/>
-    ///    `projects/`<var>PROJECT_ID</var>
-    /// + Organizations scope, location specified:<br/>
-    ///    `organizations/`<var>ORG_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Organizations scope, no location specified (defaults to global):<br/>
-    ///    `organizations/`<var>ORG_ID</var>
+    /// + Projects scope, location specified:
+    ///    `projects/{project_id}/locations/{location_id}`
+    /// + Projects scope, no location specified (defaults to global):
+    ///    `projects/{project_id}`
+    /// + Organizations scope, location specified:
+    ///    `organizations/{org_id}/locations/{location_id}`
+    /// + Organizations scope, no location specified (defaults to global):
+    ///    `organizations/{org_id}`
     ///
     /// The following example `parent` string specifies a parent project with the
     /// identifier `example-project`, and specifies the `europe-west3` location
@@ -7292,7 +7861,7 @@ pub struct ListDeidentifyTemplatesRequest {
     /// returns a page of max size 100.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
-    /// Comma separated list of fields to order by,
+    /// Comma-separated list of fields to order by,
     /// followed by `asc` or `desc` postfix. This list is case insensitive. The
     /// default sorting order is ascending. Redundant space characters are
     /// insignificant.
@@ -7370,7 +7939,7 @@ pub mod large_custom_dictionary_config {
 }
 /// Summary statistics of a custom dictionary.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LargeCustomDictionaryStats {
     /// Approximate number of distinct phrases in the dictionary.
     #[prost(int64, tag = "1")]
@@ -7411,7 +7980,7 @@ pub mod stored_info_type_config {
 }
 /// Statistics for a StoredInfoType.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StoredInfoTypeStats {
     /// Stat types
     #[prost(oneof = "stored_info_type_stats::Type", tags = "1")]
@@ -7421,7 +7990,7 @@ pub struct StoredInfoTypeStats {
 pub mod stored_info_type_stats {
     /// Stat types
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// StoredInfoType where findings are defined by a dictionary of phrases.
         #[prost(message, tag = "1")]
@@ -7489,14 +8058,14 @@ pub struct CreateStoredInfoTypeRequest {
     /// (project or organization) and whether you have [specified a processing
     /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
-    /// + Projects scope, location specified:<br/>
-    ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Projects scope, no location specified (defaults to global):<br/>
-    ///    `projects/`<var>PROJECT_ID</var>
-    /// + Organizations scope, location specified:<br/>
-    ///    `organizations/`<var>ORG_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Organizations scope, no location specified (defaults to global):<br/>
-    ///    `organizations/`<var>ORG_ID</var>
+    /// + Projects scope, location specified:
+    ///    `projects/{project_id}/locations/{location_id}`
+    /// + Projects scope, no location specified (defaults to global):
+    ///    `projects/{project_id}`
+    /// + Organizations scope, location specified:
+    ///    `organizations/{org_id}/locations/{location_id}`
+    /// + Organizations scope, no location specified (defaults to global):
+    ///    `organizations/{org_id}`
     ///
     /// The following example `parent` string specifies a parent project with the
     /// identifier `example-project`, and specifies the `europe-west3` location
@@ -7556,10 +8125,10 @@ pub struct ListStoredInfoTypesRequest {
     /// (project or organization) and whether you have [specified a processing
     /// location](<https://cloud.google.com/sensitive-data-protection/docs/specifying-location>):
     ///
-    /// + Projects scope, location specified:<br/>
-    ///    `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
-    /// + Projects scope, no location specified (defaults to global):<br/>
-    ///    `projects/`<var>PROJECT_ID</var>
+    /// + Projects scope, location specified:
+    ///    `projects/{project_id}/locations/{location_id}`
+    /// + Projects scope, no location specified (defaults to global):
+    ///    `projects/{project_id}`
     ///
     /// The following example `parent` string specifies a parent project with the
     /// identifier `example-project`, and specifies the `europe-west3` location
@@ -7576,7 +8145,7 @@ pub struct ListStoredInfoTypesRequest {
     /// returns a page of max size 100.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
-    /// Comma separated list of fields to order by,
+    /// Comma-separated list of fields to order by,
     /// followed by `asc` or `desc` postfix. This list is case insensitive. The
     /// default sorting order is ascending. Redundant space characters are
     /// insignificant.
@@ -7693,6 +8262,7 @@ pub struct HybridFindingDetails {
     /// No more than 10 labels can be associated with a given finding.
     ///
     /// Examples:
+    ///
     /// * `"environment" : "production"`
     /// * `"pipeline" : "etl"`
     #[prost(map = "string, string", tag = "5")]
@@ -7703,7 +8273,7 @@ pub struct HybridFindingDetails {
 }
 /// Quota exceeded errors will be thrown once quota has been met.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HybridInspectResponse {}
 /// Request to list the profiles generated for a given organization or project.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -7719,7 +8289,7 @@ pub struct ListProjectDataProfilesRequest {
     /// returns a page of max size 100.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
-    /// Comma separated list of fields to order by, followed by `asc` or `desc`
+    /// Comma-separated list of fields to order by, followed by `asc` or `desc`
     /// postfix. This list is case insensitive. The default sorting order is
     /// ascending. Redundant space characters are insignificant. Only one order
     /// field at a time is allowed.
@@ -7788,7 +8358,7 @@ pub struct ListTableDataProfilesRequest {
     /// returns a page of max size 100.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
-    /// Comma separated list of fields to order by, followed by `asc` or `desc`
+    /// Comma-separated list of fields to order by, followed by `asc` or `desc`
     /// postfix. This list is case insensitive. The default sorting order is
     /// ascending. Redundant space characters are insignificant. Only one order
     /// field at a time is allowed.
@@ -7868,12 +8438,13 @@ pub struct ListColumnDataProfilesRequest {
     /// returns a page of max size 100.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
-    /// Comma separated list of fields to order by, followed by `asc` or `desc`
+    /// Comma-separated list of fields to order by, followed by `asc` or `desc`
     /// postfix. This list is case insensitive. The default sorting order is
     /// ascending. Redundant space characters are insignificant. Only one order
     /// field at a time is allowed.
     ///
     /// Examples:
+    ///
     /// * `project_id asc`
     /// * `table_id`
     /// * `sensitivity_level desc`
@@ -7936,7 +8507,7 @@ pub struct ListColumnDataProfilesResponse {
 /// Score is a summary of all elements in the data profile.
 /// A higher number means more risk.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DataRiskLevel {
     /// The score applied to the resource.
     #[prost(enumeration = "data_risk_level::DataRiskLevelScore", tag = "1")]
@@ -7964,6 +8535,8 @@ pub mod data_risk_level {
         /// additional access restrictions in place or no indication of sensitive
         /// data found.
         RiskLow = 10,
+        /// Unable to determine risk.
+        RiskUnknown = 12,
         /// Medium risk - Sensitive data may be present but additional access or fine
         /// grain access restrictions appear to be present.  Consider limiting
         /// access even further or transform data to mask.
@@ -7982,6 +8555,7 @@ pub mod data_risk_level {
             match self {
                 DataRiskLevelScore::RiskScoreUnspecified => "RISK_SCORE_UNSPECIFIED",
                 DataRiskLevelScore::RiskLow => "RISK_LOW",
+                DataRiskLevelScore::RiskUnknown => "RISK_UNKNOWN",
                 DataRiskLevelScore::RiskModerate => "RISK_MODERATE",
                 DataRiskLevelScore::RiskHigh => "RISK_HIGH",
             }
@@ -7991,6 +8565,7 @@ pub mod data_risk_level {
             match value {
                 "RISK_SCORE_UNSPECIFIED" => Some(Self::RiskScoreUnspecified),
                 "RISK_LOW" => Some(Self::RiskLow),
+                "RISK_UNKNOWN" => Some(Self::RiskUnknown),
                 "RISK_MODERATE" => Some(Self::RiskModerate),
                 "RISK_HIGH" => Some(Self::RiskHigh),
                 _ => None,
@@ -8021,6 +8596,12 @@ pub struct ProjectDataProfile {
     /// Success or error status of the last attempt to profile the project.
     #[prost(message, optional, tag = "7")]
     pub profile_status: ::core::option::Option<ProfileStatus>,
+    /// The number of table data profiles generated for this project.
+    #[prost(int64, tag = "9")]
+    pub table_data_profile_count: i64,
+    /// The number of file store data profiles generated for this project.
+    #[prost(int64, tag = "10")]
+    pub file_store_data_profile_count: i64,
 }
 /// Snapshot of the configurations used to generate the profile.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8058,7 +8639,7 @@ pub struct TableDataProfile {
     /// The resource type that was profiled.
     #[prost(message, optional, tag = "36")]
     pub data_source_type: ::core::option::Option<DataSourceType>,
-    /// The resource name to the project data profile for this table.
+    /// The resource name of the project data profile for this table.
     #[prost(string, tag = "2")]
     pub project_data_profile: ::prost::alloc::string::String,
     /// The Google Cloud project ID that owns the resource.
@@ -8497,12 +9078,315 @@ pub mod column_data_profile {
         }
     }
 }
+/// The profile for a file store.
+///
+/// * Cloud Storage: maps 1:1 with a bucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileStoreDataProfile {
+    /// The name of the profile.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The resource type that was profiled.
+    #[prost(message, optional, tag = "2")]
+    pub data_source_type: ::core::option::Option<DataSourceType>,
+    /// The resource name of the project data profile for this file store.
+    #[prost(string, tag = "3")]
+    pub project_data_profile: ::prost::alloc::string::String,
+    /// The Google Cloud project ID that owns the resource.
+    #[prost(string, tag = "4")]
+    pub project_id: ::prost::alloc::string::String,
+    /// The location of the file store.
+    ///
+    /// * Cloud Storage:
+    /// <https://cloud.google.com/storage/docs/locations#available-locations>
+    #[prost(string, tag = "5")]
+    pub file_store_location: ::prost::alloc::string::String,
+    /// For resources that have multiple storage locations, these are those
+    /// regions. For Cloud Storage this is the list of regions chosen for
+    /// dual-region storage. `file_store_location` will normally be the
+    /// corresponding multi-region for the list of individual locations. The first
+    /// region is always picked as the processing and storage location for the data
+    /// profile.
+    #[prost(string, repeated, tag = "19")]
+    pub data_storage_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The location type of the bucket (region, dual-region, multi-region, etc).
+    /// If dual-region, expect data_storage_locations to be populated.
+    #[prost(string, tag = "20")]
+    pub location_type: ::prost::alloc::string::String,
+    /// The file store path.
+    ///
+    /// * Cloud Storage: `gs://{bucket}`
+    #[prost(string, tag = "6")]
+    pub file_store_path: ::prost::alloc::string::String,
+    /// The resource name of the resource profiled.
+    /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
+    #[prost(string, tag = "24")]
+    pub full_resource: ::prost::alloc::string::String,
+    /// The snapshot of the configurations used to generate the profile.
+    #[prost(message, optional, tag = "7")]
+    pub config_snapshot: ::core::option::Option<DataProfileConfigSnapshot>,
+    /// Success or error status from the most recent profile generation attempt.
+    /// May be empty if the profile is still being generated.
+    #[prost(message, optional, tag = "8")]
+    pub profile_status: ::core::option::Option<ProfileStatus>,
+    /// State of a profile.
+    #[prost(enumeration = "file_store_data_profile::State", tag = "9")]
+    pub state: i32,
+    /// The last time the profile was generated.
+    #[prost(message, optional, tag = "10")]
+    pub profile_last_generated: ::core::option::Option<::prost_types::Timestamp>,
+    /// How broadly a resource has been shared.
+    #[prost(enumeration = "ResourceVisibility", tag = "11")]
+    pub resource_visibility: i32,
+    /// The sensitivity score of this resource.
+    #[prost(message, optional, tag = "12")]
+    pub sensitivity_score: ::core::option::Option<SensitivityScore>,
+    /// The data risk level of this resource.
+    #[prost(message, optional, tag = "13")]
+    pub data_risk_level: ::core::option::Option<DataRiskLevel>,
+    /// The time the file store was first created.
+    #[prost(message, optional, tag = "14")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time the file store was last modified.
+    #[prost(message, optional, tag = "15")]
+    pub last_modified_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// FileClusterSummary per each cluster.
+    #[prost(message, repeated, tag = "16")]
+    pub file_cluster_summaries: ::prost::alloc::vec::Vec<FileClusterSummary>,
+    /// Attributes of the resource being profiled.
+    /// Currently used attributes:
+    ///
+    /// * customer_managed_encryption: boolean
+    ///      - true: the resource is encrypted with a customer-managed key.
+    ///      - false: the resource is encrypted with a provider-managed key.
+    #[prost(map = "string, message", tag = "17")]
+    pub resource_attributes: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        Value,
+    >,
+    /// The labels applied to the resource at the time the profile was generated.
+    #[prost(map = "string, string", tag = "18")]
+    pub resource_labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// InfoTypes detected in this file store.
+    #[prost(message, repeated, tag = "21")]
+    pub file_store_info_type_summaries: ::prost::alloc::vec::Vec<
+        FileStoreInfoTypeSummary,
+    >,
+    /// The file store does not have any files.
+    #[prost(bool, tag = "23")]
+    pub file_store_is_empty: bool,
+}
+/// Nested message and enum types in `FileStoreDataProfile`.
+pub mod file_store_data_profile {
+    /// Possible states of a profile. New items may be added.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unused.
+        Unspecified = 0,
+        /// The profile is currently running. Once a profile has finished it will
+        /// transition to DONE.
+        Running = 1,
+        /// The profile is no longer generating.
+        /// If profile_status.status.code is 0, the profile succeeded, otherwise, it
+        /// failed.
+        Done = 2,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Running => "RUNNING",
+                State::Done => "DONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNING" => Some(Self::Running),
+                "DONE" => Some(Self::Done),
+                _ => None,
+            }
+        }
+    }
+}
+/// Information regarding the discovered InfoType.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileStoreInfoTypeSummary {
+    /// The InfoType seen.
+    #[prost(message, optional, tag = "1")]
+    pub info_type: ::core::option::Option<InfoType>,
+}
+/// Information regarding the discovered file extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileExtensionInfo {
+    /// The file extension if set. (aka .pdf, .jpg, .txt)
+    #[prost(string, tag = "1")]
+    pub file_extension: ::prost::alloc::string::String,
+}
+/// The file cluster summary.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileClusterSummary {
+    /// The file cluster type.
+    #[prost(message, optional, tag = "1")]
+    pub file_cluster_type: ::core::option::Option<FileClusterType>,
+    /// InfoTypes detected in this cluster.
+    #[prost(message, repeated, tag = "2")]
+    pub file_store_info_type_summaries: ::prost::alloc::vec::Vec<
+        FileStoreInfoTypeSummary,
+    >,
+    /// The sensitivity score of this cluster. The score will be SENSITIVITY_LOW
+    /// if nothing has been scanned.
+    #[prost(message, optional, tag = "3")]
+    pub sensitivity_score: ::core::option::Option<SensitivityScore>,
+    /// The data risk level of this cluster. RISK_LOW if nothing has been
+    /// scanned.
+    #[prost(message, optional, tag = "4")]
+    pub data_risk_level: ::core::option::Option<DataRiskLevel>,
+    /// A list of errors detected while scanning this cluster. The list is
+    /// truncated to 10 per cluster.
+    #[prost(message, repeated, tag = "6")]
+    pub errors: ::prost::alloc::vec::Vec<Error>,
+    /// A sample of file types scanned in this cluster. Empty if no files were
+    /// scanned.
+    #[prost(message, repeated, tag = "7")]
+    pub file_extensions_scanned: ::prost::alloc::vec::Vec<FileExtensionInfo>,
+    /// A sample of file types seen in this cluster. Empty if no files were seen.
+    #[prost(message, repeated, tag = "8")]
+    pub file_extensions_seen: ::prost::alloc::vec::Vec<FileExtensionInfo>,
+    /// True if no files exist in this cluster. If the bucket had more files than
+    /// could be listed, this will be false even if no files for this cluster
+    /// were seen and file_extensions_seen is empty.
+    #[prost(bool, tag = "9")]
+    pub no_files_exist: bool,
+}
 /// Request to get a project data profile.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProjectDataProfileRequest {
     /// Required. Resource name, for example
     /// `organizations/12345/locations/us/projectDataProfiles/53234423`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request to get a file store data profile.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetFileStoreDataProfileRequest {
+    /// Required. Resource name, for example
+    /// `organizations/12345/locations/us/fileStoreDataProfiles/53234423`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request to list the file store profiles generated for a given organization or
+/// project.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFileStoreDataProfilesRequest {
+    /// Required. Resource name of the organization or project, for
+    /// example `organizations/433245324/locations/europe` or
+    /// `projects/project-id/locations/asia`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Page token to continue retrieval.
+    #[prost(string, tag = "2")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Size of the page. This value can be limited by the server. If
+    /// zero, server returns a page of max size 100.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. Comma-separated list of fields to order by, followed by `asc` or
+    /// `desc` postfix. This list is case insensitive. The default sorting order is
+    /// ascending. Redundant space characters are insignificant. Only one order
+    /// field at a time is allowed.
+    ///
+    /// Examples:
+    ///
+    /// * `project_id asc`
+    /// * `name`
+    /// * `sensitivity_level desc`
+    ///
+    /// Supported fields are:
+    ///
+    /// - `project_id`: The Google Cloud project ID.
+    /// - `sensitivity_level`: How sensitive the data in a table is, at most.
+    /// - `data_risk_level`: How much risk is associated with this data.
+    /// - `profile_last_generated`: When the profile was last updated in epoch
+    /// seconds.
+    /// - `last_modified`: The last time the resource was modified.
+    /// - `resource_visibility`: Visibility restriction for this resource.
+    /// - `name`: The name of the profile.
+    /// - `create_time`: The time the file store was first created.
+    #[prost(string, tag = "4")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. Allows filtering.
+    ///
+    /// Supported syntax:
+    ///
+    /// * Filter expressions are made up of one or more restrictions.
+    /// * Restrictions can be combined by `AND` or `OR` logical operators. A
+    /// sequence of restrictions implicitly uses `AND`.
+    /// * A restriction has the form of `{field} {operator} {value}`.
+    /// * Supported fields/values:
+    ///      - `project_id` - The Google Cloud project ID.
+    ///      - `file_store_path` - The path like "gs://bucket".
+    ///      - `sensitivity_level` - HIGH|MODERATE|LOW
+    ///      - `data_risk_level` - HIGH|MODERATE|LOW
+    ///      - `resource_visibility`: PUBLIC|RESTRICTED
+    ///      - `status_code` - an RPC status code as defined in
+    ///      <https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto>
+    /// * The operator must be `=` or `!=`.
+    ///
+    /// Examples:
+    ///
+    /// * `project_id = 12345 AND status_code = 1`
+    /// * `project_id = 12345 AND sensitivity_level = HIGH`
+    /// * `project_id = 12345 AND resource_visibility = PUBLIC`
+    /// * `file_store_path = "gs://mybucket"`
+    ///
+    /// The length of this field should be no more than 500 characters.
+    #[prost(string, tag = "5")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// List of file store data profiles generated for a given organization or
+/// project.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFileStoreDataProfilesResponse {
+    /// List of data profiles.
+    #[prost(message, repeated, tag = "1")]
+    pub file_store_data_profiles: ::prost::alloc::vec::Vec<FileStoreDataProfile>,
+    /// The next page token.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for DeleteFileStoreProfile.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteFileStoreDataProfileRequest {
+    /// Required. Resource name of the file store data profile.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -8538,7 +9422,7 @@ pub struct DataProfilePubSubCondition {
 pub mod data_profile_pub_sub_condition {
     /// A condition consisting of a value.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PubSubCondition {
         /// The value for the condition to trigger.
         #[prost(oneof = "pub_sub_condition::Value", tags = "1, 2")]
@@ -8548,7 +9432,7 @@ pub mod data_profile_pub_sub_condition {
     pub mod pub_sub_condition {
         /// The value for the condition to trigger.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Value {
             /// The minimum data risk score that triggers the condition.
             #[prost(enumeration = "super::ProfileScoreBucket", tag = "1")]
@@ -8674,6 +9558,11 @@ pub struct DataProfilePubSubMessage {
     /// `full_resource` will be populated.
     #[prost(message, optional, tag = "1")]
     pub profile: ::core::option::Option<TableDataProfile>,
+    /// If `DetailLevel` is `FILE_STORE_PROFILE` this will be fully populated.
+    /// Otherwise, if `DetailLevel` is `RESOURCE_NAME`, then only `name` and
+    /// `file_store_path` will be populated.
+    #[prost(message, optional, tag = "3")]
+    pub file_store_profile: ::core::option::Option<FileStoreDataProfile>,
     /// The event that caused the Pub/Sub message to be sent.
     #[prost(enumeration = "data_profile_action::EventType", tag = "2")]
     pub event: i32,
@@ -8682,8 +9571,15 @@ pub struct DataProfilePubSubMessage {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConnectionRequest {
-    /// Required. Parent resource name in the format:
-    /// `projects/{project}/locations/{location}`.
+    /// Required. Parent resource name.
+    ///
+    /// The format of this value varies depending on the scope of the request
+    /// (project or organization):
+    ///
+    /// + Projects scope:
+    ///    `projects/{project_id}/locations/{location_id}`
+    /// + Organizations scope:
+    ///    `organizations/{org_id}/locations/{location_id}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The connection resource.
@@ -8703,8 +9599,9 @@ pub struct GetConnectionRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionsRequest {
-    /// Required. Parent name, for example:
-    /// `projects/project-id/locations/global`.
+    /// Required. Resource name of the organization or project, for
+    /// example, `organizations/433245324/locations/europe` or
+    /// `projects/project-id/locations/asia`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Number of results per page, max 1000.
@@ -8722,8 +9619,9 @@ pub struct ListConnectionsRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchConnectionsRequest {
-    /// Required. Parent name, typically an organization, without location.
-    /// For example: `organizations/12345678`.
+    /// Required. Resource name of the organization or project with a wildcard
+    /// location, for example, `organizations/433245324/locations/-` or
+    /// `projects/project-id/locations/-`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Number of results per page, max 1000.
@@ -8838,7 +9736,7 @@ pub struct SecretManagerCredential {
 /// See <https://cloud.google.com/sql/docs/postgres/authentication> and
 /// <https://cloud.google.com/sql/docs/mysql/authentication.>
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CloudSqlIamCredential {}
 /// Cloud SQL connection properties.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8942,6 +9840,97 @@ pub struct DataSourceType {
     /// Current values: google/bigquery/table, google/project
     #[prost(string, tag = "1")]
     pub data_source: ::prost::alloc::string::String,
+}
+/// Message used to identify file cluster type being profiled.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct FileClusterType {
+    /// File cluster type.
+    #[prost(oneof = "file_cluster_type::FileClusterType", tags = "1")]
+    pub file_cluster_type: ::core::option::Option<file_cluster_type::FileClusterType>,
+}
+/// Nested message and enum types in `FileClusterType`.
+pub mod file_cluster_type {
+    /// Cluster type. Each cluster corresponds to a set of file types.
+    /// Over time, new types may be added and files may move between clusters.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Cluster {
+        /// Unused.
+        Unspecified = 0,
+        /// Unsupported files.
+        Unknown = 1,
+        /// Plain text.
+        Text = 2,
+        /// Structured data like CSV, TSV etc.
+        StructuredData = 3,
+        /// Source code.
+        SourceCode = 4,
+        /// Rich document like docx, xlsx etc.
+        RichDocument = 5,
+        /// Images like jpeg, bmp.
+        Image = 6,
+        /// Archives and containers like .zip, .tar etc.
+        Archive = 7,
+        /// Multimedia like .mp4, .avi etc.
+        Multimedia = 8,
+        /// Executable files like .exe, .class, .apk etc.
+        Executable = 9,
+    }
+    impl Cluster {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Cluster::Unspecified => "CLUSTER_UNSPECIFIED",
+                Cluster::Unknown => "CLUSTER_UNKNOWN",
+                Cluster::Text => "CLUSTER_TEXT",
+                Cluster::StructuredData => "CLUSTER_STRUCTURED_DATA",
+                Cluster::SourceCode => "CLUSTER_SOURCE_CODE",
+                Cluster::RichDocument => "CLUSTER_RICH_DOCUMENT",
+                Cluster::Image => "CLUSTER_IMAGE",
+                Cluster::Archive => "CLUSTER_ARCHIVE",
+                Cluster::Multimedia => "CLUSTER_MULTIMEDIA",
+                Cluster::Executable => "CLUSTER_EXECUTABLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLUSTER_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLUSTER_UNKNOWN" => Some(Self::Unknown),
+                "CLUSTER_TEXT" => Some(Self::Text),
+                "CLUSTER_STRUCTURED_DATA" => Some(Self::StructuredData),
+                "CLUSTER_SOURCE_CODE" => Some(Self::SourceCode),
+                "CLUSTER_RICH_DOCUMENT" => Some(Self::RichDocument),
+                "CLUSTER_IMAGE" => Some(Self::Image),
+                "CLUSTER_ARCHIVE" => Some(Self::Archive),
+                "CLUSTER_MULTIMEDIA" => Some(Self::Multimedia),
+                "CLUSTER_EXECUTABLE" => Some(Self::Executable),
+                _ => None,
+            }
+        }
+    }
+    /// File cluster type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum FileClusterType {
+        /// Cluster type.
+        #[prost(enumeration = "Cluster", tag = "1")]
+        Cluster(i32),
+    }
 }
 /// Enum of possible outcomes of transformations. SUCCESS if transformation and
 /// storing of transformation was successful, otherwise, reason for not
@@ -9117,6 +10106,39 @@ impl TransformationType {
             "DATE_SHIFT" => Some(Self::DateShift),
             "CRYPTO_DETERMINISTIC_CONFIG" => Some(Self::CryptoDeterministicConfig),
             "REDACT_IMAGE" => Some(Self::RedactImage),
+            _ => None,
+        }
+    }
+}
+/// Whether a profile being created is the first generation or an update.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ProfileGeneration {
+    /// Unused.
+    Unspecified = 0,
+    /// The profile is the first profile for the resource.
+    New = 1,
+    /// The profile is an update to a previous profile.
+    Update = 2,
+}
+impl ProfileGeneration {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ProfileGeneration::Unspecified => "PROFILE_GENERATION_UNSPECIFIED",
+            ProfileGeneration::New => "PROFILE_GENERATION_NEW",
+            ProfileGeneration::Update => "PROFILE_GENERATION_UPDATE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PROFILE_GENERATION_UNSPECIFIED" => Some(Self::Unspecified),
+            "PROFILE_GENERATION_NEW" => Some(Self::New),
+            "PROFILE_GENERATION_UPDATE" => Some(Self::Update),
             _ => None,
         }
     }
@@ -9610,7 +10632,7 @@ pub enum ResourceVisibility {
     Public = 10,
     /// May contain public items.
     /// For example, if a Cloud Storage bucket has uniform bucket level access
-    /// disabled, some objects inside it may be public.
+    /// disabled, some objects inside it may be public, but none are known yet.
     Inconclusive = 15,
     /// Visible only to specific users.
     Restricted = 20,
@@ -11222,6 +12244,97 @@ pub mod dlp_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Lists file store data profiles for an organization.
+        pub async fn list_file_store_data_profiles(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListFileStoreDataProfilesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListFileStoreDataProfilesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/ListFileStoreDataProfiles",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "ListFileStoreDataProfiles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a file store data profile.
+        pub async fn get_file_store_data_profile(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetFileStoreDataProfileRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FileStoreDataProfile>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/GetFileStoreDataProfile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "GetFileStoreDataProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Delete a FileStoreDataProfile. Will not prevent the profile from being
+        /// regenerated if the resource is still included in a discovery configuration.
+        pub async fn delete_file_store_data_profile(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteFileStoreDataProfileRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.privacy.dlp.v2.DlpService/DeleteFileStoreDataProfile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.privacy.dlp.v2.DlpService",
+                        "DeleteFileStoreDataProfile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Gets a table data profile.
         pub async fn get_table_data_profile(
             &mut self,
@@ -11425,7 +12538,8 @@ pub mod dlp_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists Connections in a parent.
+        /// Lists Connections in a parent. Use SearchConnections to see all connections
+        /// within an organization.
         pub async fn list_connections(
             &mut self,
             request: impl tonic::IntoRequest<super::ListConnectionsRequest>,

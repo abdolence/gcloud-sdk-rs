@@ -865,7 +865,7 @@ pub struct ImportAdminOverridesResponse {
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by ImportAdminOverrides.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportAdminOverridesMetadata {}
 /// Request message for CreateConsumerOverride.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1032,7 +1032,7 @@ pub struct ImportConsumerOverridesResponse {
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by ImportConsumerOverrides.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportConsumerOverridesMetadata {}
 /// Response message for ImportAdminQuotaPolicies
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1046,25 +1046,25 @@ pub struct ImportAdminQuotaPoliciesResponse {
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by ImportAdminQuotaPolicies.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportAdminQuotaPoliciesMetadata {}
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by CreateAdminQuotaPolicy.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateAdminQuotaPolicyMetadata {}
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by UpdateAdminQuotaPolicy.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpdateAdminQuotaPolicyMetadata {}
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by DeleteAdminQuotaPolicy.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteAdminQuotaPolicyMetadata {}
 /// Request message for generating service identity.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1140,7 +1140,7 @@ pub mod get_service_identity_response {
 }
 /// Metadata for the `GetServiceIdentity` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GetServiceIdentityMetadata {}
 /// Generated client implementations.
 pub mod service_usage_client {

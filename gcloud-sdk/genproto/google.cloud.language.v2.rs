@@ -111,8 +111,7 @@ pub struct Entity {
     pub r#type: i32,
     /// Metadata associated with the entity.
     ///
-    /// For most entity types, the metadata is a Wikipedia URL (`wikipedia_url`)
-    /// and Knowledge Graph MID (`mid`), if they are available. For the metadata
+    /// For the metadata
     /// associated with other entity types, see the Type table below.
     #[prost(map = "string, string", tag = "3")]
     pub metadata: ::std::collections::HashMap<
@@ -132,8 +131,7 @@ pub struct Entity {
 }
 /// Nested message and enum types in `Entity`.
 pub mod entity {
-    /// The type of the entity. For most entity types, the associated metadata is a
-    /// Wikipedia URL (`wikipedia_url`) and Knowledge Graph MID (`mid`). The table
+    /// The type of the entity. The table
     /// below lists the associated fields for entities that have different
     /// metadata.
     #[derive(
@@ -186,7 +184,7 @@ pub mod entity {
         /// * `locality` - city or town
         /// * `street_name` - street/route name, if detected
         /// * `postal_code` - postal code, if detected
-        /// * `country` - country, if detected<
+        /// * `country` - country, if detected
         /// * `broad_region` - administrative area, such as the state, if detected
         /// * `narrow_region` - smaller administrative area, such as county, if
         /// detected
@@ -256,7 +254,7 @@ pub mod entity {
 /// Represents the feeling associated with the entire text or entities in
 /// the text.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Sentiment {
     /// A non-negative number in the [0, +inf) range, which represents
     /// the absolute magnitude of sentiment regardless of score (positive or
@@ -363,6 +361,11 @@ pub struct ClassificationCategory {
     /// the classifier is that this category represents the given text.
     #[prost(float, tag = "2")]
     pub confidence: f32,
+    /// Optional. The classifier's severity of the category. This is only present
+    /// when the ModerateTextRequest.ModelVersion is set to MODEL_VERSION_2, and
+    /// the corresponding category has a severity score.
+    #[prost(float, tag = "3")]
+    pub severity: f32,
 }
 /// The sentiment analysis request message.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -458,6 +461,59 @@ pub struct ModerateTextRequest {
     /// Required. Input document.
     #[prost(message, optional, tag = "1")]
     pub document: ::core::option::Option<Document>,
+    /// Optional. The model version to use for ModerateText.
+    #[prost(enumeration = "moderate_text_request::ModelVersion", tag = "2")]
+    pub model_version: i32,
+}
+/// Nested message and enum types in `ModerateTextRequest`.
+pub mod moderate_text_request {
+    /// The model version to use for ModerateText.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ModelVersion {
+        /// The default model version.
+        Unspecified = 0,
+        /// Use the v1 model, this model is used by default when not provided.
+        /// The v1 model only returns probability (confidence) score for each
+        /// category.
+        ModelVersion1 = 1,
+        /// Use the v2 model.
+        /// The v2 model only returns probability (confidence) score for each
+        /// category, and returns severity score for a subset of the categories.
+        ModelVersion2 = 2,
+    }
+    impl ModelVersion {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ModelVersion::Unspecified => "MODEL_VERSION_UNSPECIFIED",
+                ModelVersion::ModelVersion1 => "MODEL_VERSION_1",
+                ModelVersion::ModelVersion2 => "MODEL_VERSION_2",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "MODEL_VERSION_1" => Some(Self::ModelVersion1),
+                "MODEL_VERSION_2" => Some(Self::ModelVersion2),
+                _ => None,
+            }
+        }
+    }
 }
 /// The document moderation response message.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -497,7 +553,7 @@ pub mod annotate_text_request {
     /// All available features.
     /// Setting each one to true will enable that specific analysis for the input.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Features {
         /// Optional. Extract entities.
         #[prost(bool, tag = "1")]

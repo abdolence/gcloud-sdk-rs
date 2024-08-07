@@ -99,7 +99,7 @@ pub mod attached_disk {
 }
 /// Sets the scheduling options for this node.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SchedulingConfig {
     /// Defines whether the node is preemptible.
     #[prost(bool, tag = "1")]
@@ -885,7 +885,7 @@ pub mod accelerator_config {
 }
 /// A set of Shielded Instance options.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ShieldedInstanceConfig {
     /// Defines whether the instance has Secure Boot enabled.
     #[prost(bool, tag = "1")]

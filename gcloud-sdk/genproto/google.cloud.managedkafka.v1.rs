@@ -93,7 +93,7 @@ pub mod cluster {
 }
 /// A capacity configuration of a Kafka cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CapacityConfig {
     /// Required. The number of vCPUs to provision for the cluster. Minimum: 3.
     #[prost(int64, tag = "1")]
@@ -106,7 +106,7 @@ pub struct CapacityConfig {
 }
 /// Defines rebalancing behavior of a Kafka cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RebalanceConfig {
     /// Optional. The rebalance behavior for the cluster.
     /// When not specified, defaults to `NO_REBALANCE`.
@@ -200,8 +200,6 @@ pub struct GcpConfig {
     /// must be located in the same region as the cluster and cannot be changed.
     /// Structured like:
     /// projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}.
-    /// Note that the project component only accepts a project ID, and not a
-    /// project number.
     #[prost(string, tag = "2")]
     pub kms_key: ::prost::alloc::string::String,
 }

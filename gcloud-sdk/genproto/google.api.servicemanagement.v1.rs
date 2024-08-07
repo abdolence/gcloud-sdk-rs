@@ -361,7 +361,7 @@ pub mod rollout {
     /// Strategy used to delete a service. This strategy is a placeholder only
     /// used by the system generated rollout to delete a service.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DeleteServiceStrategy {}
     /// Status of a Rollout.
     #[derive(
@@ -720,7 +720,7 @@ pub struct GetServiceRolloutRequest {
 }
 /// Operation payload for EnableService method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EnableServiceResponse {}
 /// Request message for GenerateConfigReport method.
 #[allow(clippy::derive_partial_eq_without_eq)]

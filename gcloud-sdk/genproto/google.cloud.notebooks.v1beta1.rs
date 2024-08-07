@@ -298,7 +298,7 @@ pub mod instance {
     /// Engine](<https://cloud.google.com/compute/docs/gpus/#gpus-list>) to find a
     /// valid combination. TPUs are not supported.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AcceleratorConfig {
         /// Type of this accelerator.
         #[prost(enumeration = "AcceleratorType", tag = "1")]

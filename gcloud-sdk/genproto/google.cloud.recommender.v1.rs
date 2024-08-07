@@ -543,7 +543,7 @@ pub struct SecurityProjection {
 /// Contains metadata about how much sustainability a recommendation can save or
 /// incur.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SustainabilityProjection {
     /// Carbon Footprint generated in kg of CO2 equivalent.
     /// Chose kg_c_o2e so that the name renders correctly in camelCase (kgCO2e).

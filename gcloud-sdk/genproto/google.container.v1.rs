@@ -35,7 +35,7 @@ pub struct LinuxNodeConfig {
 pub mod linux_node_config {
     /// Hugepages amount in both 2m and 1g size
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct HugepagesConfig {
         /// Optional. Amount of 2M hugepages
         #[prost(int32, optional, tag = "1")]
@@ -95,7 +95,7 @@ pub mod linux_node_config {
 /// Windows Node Config that define the parameters that will be used to
 /// configure the Windows node pool settings
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WindowsNodeConfig {
     /// OSVersion specifies the Windows node config to be used on the node
     #[prost(enumeration = "windows_node_config::OsVersion", tag = "1")]
@@ -439,7 +439,7 @@ pub struct NodeConfig {
 }
 /// Specifies options for controlling advanced machine features.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AdvancedMachineFeatures {
     /// The number of threads per physical core. To disable simultaneous
     /// multithreading (SMT) set this to 1. If unset, the maximum number of threads
@@ -533,7 +533,7 @@ pub struct NodeNetworkConfig {
     pub additional_pod_network_configs: ::prost::alloc::vec::Vec<
         AdditionalPodNetworkConfig,
     >,
-    /// Output only. \[Output only\] The utilization of the IPv4 range for the pod.
+    /// Output only. The utilization of the IPv4 range for the pod.
     /// The ratio is Usage/\[Total number of IPs in the secondary range\],
     /// Usage=numNodes*numZones*podIPsPerNode.
     #[prost(double, tag = "16")]
@@ -543,7 +543,7 @@ pub struct NodeNetworkConfig {
 pub mod node_network_config {
     /// Configuration of all network bandwidth tiers
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct NetworkPerformanceConfig {
         /// Specifies the total network bandwidth tier for the NodePool.
         #[prost(enumeration = "network_performance_config::Tier", optional, tag = "1")]
@@ -609,20 +609,20 @@ pub struct AdditionalNodeNetworkConfig {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdditionalPodNetworkConfig {
-    /// Name of the subnetwork where the additional pod network belongs
+    /// Name of the subnetwork where the additional pod network belongs.
     #[prost(string, tag = "1")]
     pub subnetwork: ::prost::alloc::string::String,
     /// The name of the secondary range on the subnet which provides IP address for
-    /// this pod range
+    /// this pod range.
     #[prost(string, tag = "2")]
     pub secondary_pod_range: ::prost::alloc::string::String,
-    /// The maximum number of pods per node which use this pod network
+    /// The maximum number of pods per node which use this pod network.
     #[prost(message, optional, tag = "3")]
     pub max_pods_per_node: ::core::option::Option<MaxPodsConstraint>,
 }
 /// A set of Shielded Instance options.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ShieldedInstanceConfig {
     /// Defines whether the instance has Secure Boot enabled.
     ///
@@ -642,7 +642,7 @@ pub struct ShieldedInstanceConfig {
 }
 /// SandboxConfig contains configurations of the sandbox to use for the node.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SandboxConfig {
     /// Type of the sandbox to use for the node.
     #[prost(enumeration = "sandbox_config::Type", tag = "2")]
@@ -693,7 +693,7 @@ pub mod sandbox_config {
 /// GcfsConfig contains configurations of Google Container File System
 /// (image streaming).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GcfsConfig {
     /// Whether to use GCFS.
     #[prost(bool, tag = "1")]
@@ -1066,22 +1066,22 @@ pub struct MasterAuth {
     /// certificate is issued.
     #[prost(message, optional, tag = "3")]
     pub client_certificate_config: ::core::option::Option<ClientCertificateConfig>,
-    /// \[Output only\] Base64-encoded public certificate that is the root of
+    /// Output only. Base64-encoded public certificate that is the root of
     /// trust for the cluster.
     #[prost(string, tag = "100")]
     pub cluster_ca_certificate: ::prost::alloc::string::String,
-    /// \[Output only\] Base64-encoded public certificate used by clients to
+    /// Output only. Base64-encoded public certificate used by clients to
     /// authenticate to the cluster endpoint.
     #[prost(string, tag = "101")]
     pub client_certificate: ::prost::alloc::string::String,
-    /// \[Output only\] Base64-encoded private key used by clients to authenticate
+    /// Output only. Base64-encoded private key used by clients to authenticate
     /// to the cluster endpoint.
     #[prost(string, tag = "102")]
     pub client_key: ::prost::alloc::string::String,
 }
 /// Configuration for client certificates on the cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ClientCertificateConfig {
     /// Issue a client certificate.
     #[prost(bool, tag = "1")]
@@ -1090,7 +1090,7 @@ pub struct ClientCertificateConfig {
 /// Configuration for the addons that can be automatically spun up in the
 /// cluster, enabling additional functionality.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddonsConfig {
     /// Configuration for the HTTP (L7) load balancing controller addon, which
     /// makes it easy to set up HTTP load balancers for services in a cluster.
@@ -1144,11 +1144,14 @@ pub struct AddonsConfig {
     /// Optional. Configuration for the StatefulHA add-on.
     #[prost(message, optional, tag = "18")]
     pub stateful_ha_config: ::core::option::Option<StatefulHaConfig>,
+    /// Optional. Configuration for Ray Operator addon.
+    #[prost(message, optional, tag = "21")]
+    pub ray_operator_config: ::core::option::Option<RayOperatorConfig>,
 }
 /// Configuration options for the HTTP (L7) load balancing controller addon,
 /// which makes it easy to set up HTTP load balancers for services in a cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HttpLoadBalancing {
     /// Whether the HTTP Load Balancing controller is enabled in the cluster.
     /// When enabled, it runs a small pod in the cluster that manages the load
@@ -1160,7 +1163,7 @@ pub struct HttpLoadBalancing {
 /// increases or decreases the number of replica pods a replication controller
 /// has based on the resource usage of the existing pods.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HorizontalPodAutoscaling {
     /// Whether the Horizontal Pod Autoscaling feature is enabled in the cluster.
     /// When enabled, it ensures that metrics are collected into Stackdriver
@@ -1170,7 +1173,7 @@ pub struct HorizontalPodAutoscaling {
 }
 /// Configuration for the Kubernetes Dashboard.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct KubernetesDashboard {
     /// Whether the Kubernetes Dashboard is enabled for this cluster.
     #[prost(bool, tag = "1")]
@@ -1180,7 +1183,7 @@ pub struct KubernetesDashboard {
 /// is enabled or not on the Master, it does not track whether network policy
 /// is enabled for the nodes.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NetworkPolicyConfig {
     /// Whether NetworkPolicy is enabled for this cluster.
     #[prost(bool, tag = "1")]
@@ -1188,7 +1191,7 @@ pub struct NetworkPolicyConfig {
 }
 /// Configuration for NodeLocal DNSCache
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DnsCacheConfig {
     /// Whether NodeLocal DNSCache is enabled for this cluster.
     #[prost(bool, tag = "1")]
@@ -1196,7 +1199,7 @@ pub struct DnsCacheConfig {
 }
 /// Configuration for controlling master global access settings.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PrivateClusterMasterGlobalAccessConfig {
     /// Whenever master is accessible globally or not.
     #[prost(bool, tag = "1")]
@@ -1254,7 +1257,7 @@ pub struct AuthenticatorGroupsConfig {
 }
 /// Configuration options for the Cloud Run feature.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CloudRunConfig {
     /// Whether Cloud Run addon is enabled for this cluster.
     #[prost(bool, tag = "1")]
@@ -1311,7 +1314,7 @@ pub mod cloud_run_config {
 }
 /// Configuration options for the Config Connector add-on.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ConfigConnectorConfig {
     /// Whether Cloud Connector is enabled for this cluster.
     #[prost(bool, tag = "1")]
@@ -1319,7 +1322,7 @@ pub struct ConfigConnectorConfig {
 }
 /// Configuration for the Compute Engine PD CSI driver.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GcePersistentDiskCsiDriverConfig {
     /// Whether the Compute Engine PD CSI driver is enabled for this cluster.
     #[prost(bool, tag = "1")]
@@ -1327,7 +1330,7 @@ pub struct GcePersistentDiskCsiDriverConfig {
 }
 /// Configuration for the GCP Filestore CSI driver.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GcpFilestoreCsiDriverConfig {
     /// Whether the GCP Filestore CSI driver is enabled for this cluster.
     #[prost(bool, tag = "1")]
@@ -1335,15 +1338,31 @@ pub struct GcpFilestoreCsiDriverConfig {
 }
 /// Configuration for the Cloud Storage Fuse CSI driver.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GcsFuseCsiDriverConfig {
     /// Whether the Cloud Storage Fuse CSI driver is enabled for this cluster.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }
+/// Configuration options for the Ray Operator add-on.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RayOperatorConfig {
+    /// Whether the Ray Operator addon is enabled for this cluster.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+    /// Optional. Logging configuration for Ray clusters.
+    #[prost(message, optional, tag = "2")]
+    pub ray_cluster_logging_config: ::core::option::Option<RayClusterLoggingConfig>,
+    /// Optional. Monitoring configuration for Ray clusters.
+    #[prost(message, optional, tag = "3")]
+    pub ray_cluster_monitoring_config: ::core::option::Option<
+        RayClusterMonitoringConfig,
+    >,
+}
 /// Configuration for the Backup for GKE Agent.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GkeBackupAgentConfig {
     /// Whether the Backup for GKE agent is enabled for this cluster.
     #[prost(bool, tag = "1")]
@@ -1351,7 +1370,7 @@ pub struct GkeBackupAgentConfig {
 }
 /// Configuration for the Stateful HA add-on.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StatefulHaConfig {
     /// Whether the Stateful HA add-on is enabled for this cluster.
     #[prost(bool, tag = "1")]
@@ -1394,7 +1413,7 @@ pub mod master_authorized_networks_config {
 /// Configuration for the legacy Attribute Based Access Control authorization
 /// mode.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LegacyAbac {
     /// Whether the ABAC authorizer is enabled for this cluster. When enabled,
     /// identities in the system, including service accounts, nodes, and
@@ -1406,7 +1425,7 @@ pub struct LegacyAbac {
 /// Configuration options for the NetworkPolicy feature.
 /// <https://kubernetes.io/docs/concepts/services-networking/networkpolicies/>
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NetworkPolicy {
     /// The selected network policy provider.
     #[prost(enumeration = "network_policy::Provider", tag = "1")]
@@ -1459,7 +1478,7 @@ pub mod network_policy {
 }
 /// Configuration for Binary Authorization.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BinaryAuthorization {
     /// This field is deprecated. Leave this unset and instead configure
     /// BinaryAuthorization using evaluation_mode. If evaluation_mode is set to
@@ -1527,7 +1546,7 @@ pub mod binary_authorization {
 /// \[PRIVATE FIELD\]
 /// Config for pod CIDR size overprovisioning.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PodCidrOverprovisionConfig {
     /// Whether Pod CIDR overprovisioning is disabled.
     /// Note: Pod CIDR overprovisioning is enabled by default.
@@ -1679,22 +1698,21 @@ pub struct IpAllocationPolicy {
     pub pod_cidr_overprovision_config: ::core::option::Option<
         PodCidrOverprovisionConfig,
     >,
-    /// Output only. \[Output only\] The subnet's IPv6 CIDR block used by nodes and
-    /// pods.
+    /// Output only. The subnet's IPv6 CIDR block used by nodes and pods.
     #[prost(string, tag = "22")]
     pub subnet_ipv6_cidr_block: ::prost::alloc::string::String,
-    /// Output only. \[Output only\] The services IPv6 CIDR block for the cluster.
+    /// Output only. The services IPv6 CIDR block for the cluster.
     #[prost(string, tag = "23")]
     pub services_ipv6_cidr_block: ::prost::alloc::string::String,
-    /// Output only. \[Output only\] The additional pod ranges that are added to the
-    /// cluster. These pod ranges can be used by new node pools to allocate pod IPs
+    /// Output only. The additional pod ranges that are added to the cluster.
+    /// These pod ranges can be used by new node pools to allocate pod IPs
     /// automatically. Once the range is removed it will not show up in
     /// IPAllocationPolicy.
     #[prost(message, optional, tag = "24")]
     pub additional_pod_ranges_config: ::core::option::Option<AdditionalPodRangesConfig>,
-    /// Output only. \[Output only\] The utilization of the cluster default IPv4
-    /// range for the pod. The ratio is Usage/[Total number of IPs in the secondary
-    /// range], Usage=numNodes*numZones*podIPsPerNode.
+    /// Output only. The utilization of the cluster default IPv4 range for the
+    /// pod. The ratio is Usage/\[Total number of IPs in the secondary range\],
+    /// Usage=numNodes*numZones*podIPsPerNode.
     #[prost(double, tag = "25")]
     pub default_pod_ipv4_range_utilization: f64,
 }
@@ -1909,16 +1927,16 @@ pub struct Cluster {
     /// Configuration for Identity Service component.
     #[prost(message, optional, tag = "54")]
     pub identity_service_config: ::core::option::Option<IdentityServiceConfig>,
-    /// \[Output only\] Server-defined URL for the resource.
+    /// Output only. Server-defined URL for the resource.
     #[prost(string, tag = "100")]
     pub self_link: ::prost::alloc::string::String,
-    /// \[Output only\] The name of the Google Compute Engine
+    /// Output only. The name of the Google Compute Engine
     /// [zone](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field is deprecated, use location instead.
     #[deprecated]
     #[prost(string, tag = "101")]
     pub zone: ::prost::alloc::string::String,
-    /// \[Output only\] The IP address of this cluster's master endpoint.
+    /// Output only. The IP address of this cluster's master endpoint.
     /// The endpoint can be accessed from the internet at
     /// `<https://username:password@endpoint/`.>
     ///
@@ -1941,10 +1959,10 @@ pub struct Cluster {
     /// - "","-": picks the default Kubernetes version
     #[prost(string, tag = "103")]
     pub initial_cluster_version: ::prost::alloc::string::String,
-    /// \[Output only\] The current software version of the master endpoint.
+    /// Output only. The current software version of the master endpoint.
     #[prost(string, tag = "104")]
     pub current_master_version: ::prost::alloc::string::String,
-    /// \[Output only\] Deprecated, use
+    /// Output only. Deprecated, use
     /// [NodePools.version](<https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools>)
     /// instead. The current version of the node software components. If they are
     /// currently at multiple versions because they're in the process of being
@@ -1952,46 +1970,46 @@ pub struct Cluster {
     #[deprecated]
     #[prost(string, tag = "105")]
     pub current_node_version: ::prost::alloc::string::String,
-    /// \[Output only\] The time the cluster was created, in
+    /// Output only. The time the cluster was created, in
     /// [RFC3339](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
     #[prost(string, tag = "106")]
     pub create_time: ::prost::alloc::string::String,
-    /// \[Output only\] The current status of this cluster.
+    /// Output only. The current status of this cluster.
     #[prost(enumeration = "cluster::Status", tag = "107")]
     pub status: i32,
-    /// \[Output only\] Deprecated. Use conditions instead.
+    /// Output only. Deprecated. Use conditions instead.
     /// Additional information about the current status of this
     /// cluster, if available.
     #[deprecated]
     #[prost(string, tag = "108")]
     pub status_message: ::prost::alloc::string::String,
-    /// \[Output only\] The size of the address space on each node for hosting
+    /// Output only. The size of the address space on each node for hosting
     /// containers. This is provisioned from within the `container_ipv4_cidr`
     /// range. This field will only be set when cluster is in route-based network
     /// mode.
     #[prost(int32, tag = "109")]
     pub node_ipv4_cidr_size: i32,
-    /// \[Output only\] The IP address range of the Kubernetes services in
+    /// Output only. The IP address range of the Kubernetes services in
     /// this cluster, in
     /// [CIDR](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `1.2.3.4/29`). Service addresses are
     /// typically put in the last `/16` from the container CIDR.
     #[prost(string, tag = "110")]
     pub services_ipv4_cidr: ::prost::alloc::string::String,
-    /// Deprecated. Use node_pools.instance_group_urls.
+    /// Output only. Deprecated. Use node_pools.instance_group_urls.
     #[deprecated]
     #[prost(string, repeated, tag = "111")]
     pub instance_group_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// \[Output only\]  The number of nodes currently in the cluster. Deprecated.
+    /// Output only. The number of nodes currently in the cluster. Deprecated.
     /// Call Kubernetes API directly to retrieve node information.
     #[deprecated]
     #[prost(int32, tag = "112")]
     pub current_node_count: i32,
-    /// \[Output only\] The time the cluster will be automatically
+    /// Output only. The time the cluster will be automatically
     /// deleted in [RFC3339](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
     #[prost(string, tag = "113")]
     pub expire_time: ::prost::alloc::string::String,
-    /// \[Output only\] The name of the Google Compute Engine
+    /// Output only. The name of the Google Compute Engine
     /// [zone](<https://cloud.google.com/compute/docs/regions-zones/regions-zones#available>)
     /// or
     /// [region](<https://cloud.google.com/compute/docs/regions-zones/regions-zones#available>)
@@ -2001,7 +2019,7 @@ pub struct Cluster {
     /// Enable the ability to use Cloud TPUs in this cluster.
     #[prost(bool, tag = "115")]
     pub enable_tpu: bool,
-    /// \[Output only\] The IP address range of the Cloud TPUs in this cluster, in
+    /// Output only. The IP address range of the Cloud TPUs in this cluster, in
     /// [CIDR](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `1.2.3.4/29`).
     #[prost(string, tag = "116")]
@@ -2131,7 +2149,7 @@ pub struct K8sBetaApiConfig {
 /// SecurityPostureConfig defines the flags needed to enable/disable features for
 /// the Security Posture API.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SecurityPostureConfig {
     /// Sets which mode to use for Security Posture features.
     #[prost(enumeration = "security_posture_config::Mode", optional, tag = "1")]
@@ -2563,7 +2581,7 @@ pub struct AdditionalPodRangesConfig {
     /// Name for pod secondary ipv4 range which has the actual range defined ahead.
     #[prost(string, repeated, tag = "1")]
     pub pod_range_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Output only. \[Output only\] Information for additional pod range.
+    /// Output only. Information for additional pod range.
     #[prost(message, repeated, tag = "2")]
     pub pod_range_info: ::prost::alloc::vec::Vec<RangeInfo>,
 }
@@ -2571,10 +2589,10 @@ pub struct AdditionalPodRangesConfig {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RangeInfo {
-    /// Output only. \[Output only\] Name of a range.
+    /// Output only. Name of a range.
     #[prost(string, tag = "1")]
     pub range_name: ::prost::alloc::string::String,
-    /// Output only. \[Output only\] The utilization of the range.
+    /// Output only. The utilization of the range.
     #[prost(double, tag = "2")]
     pub utilization: f64,
 }
@@ -2583,22 +2601,22 @@ pub struct RangeInfo {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Operation {
-    /// The server-assigned ID for the operation.
+    /// Output only. The server-assigned ID for the operation.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The name of the Google Compute Engine
+    /// Output only. The name of the Google Compute Engine
     /// [zone](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// operation is taking place. This field is deprecated, use location instead.
     #[deprecated]
     #[prost(string, tag = "2")]
     pub zone: ::prost::alloc::string::String,
-    /// The operation type.
+    /// Output only. The operation type.
     #[prost(enumeration = "operation::Type", tag = "3")]
     pub operation_type: i32,
-    /// The current status of the operation.
+    /// Output only. The current status of the operation.
     #[prost(enumeration = "operation::Status", tag = "4")]
     pub status: i32,
-    /// Detailed operation progress, if available.
+    /// Output only. Detailed operation progress, if available.
     #[prost(string, tag = "8")]
     pub detail: ::prost::alloc::string::String,
     /// Output only. If an error has occurred, a textual description of the error.
@@ -2606,14 +2624,14 @@ pub struct Operation {
     #[deprecated]
     #[prost(string, tag = "5")]
     pub status_message: ::prost::alloc::string::String,
-    /// Server-defined URI for the operation. Example:
+    /// Output only. Server-defined URI for the operation. Example:
     /// `<https://container.googleapis.com/v1alpha1/projects/123/locations/us-central1/operations/operation-123`.>
     #[prost(string, tag = "6")]
     pub self_link: ::prost::alloc::string::String,
-    /// Server-defined URI for the target of the operation. The format of this is a
-    /// URI to the resource being modified (such as a cluster, node pool, or node).
-    /// For node pool repairs, there may be multiple nodes being repaired, but only
-    /// one will be the target.
+    /// Output only. Server-defined URI for the target of the operation. The format
+    /// of this is a URI to the resource being modified (such as a cluster, node
+    /// pool, or node). For node pool repairs, there may be multiple nodes being
+    /// repaired, but only one will be the target.
     ///
     /// Examples:
     ///
@@ -2627,22 +2645,22 @@ pub struct Operation {
     /// `<https://container.googleapis.com/v1/projects/123/zones/us-central1-c/clusters/my-cluster/nodePools/my-np/node/my-node`>
     #[prost(string, tag = "7")]
     pub target_link: ::prost::alloc::string::String,
-    /// \[Output only\] The name of the Google Compute Engine
+    /// Output only. The name of the Google Compute Engine
     /// [zone](<https://cloud.google.com/compute/docs/regions-zones/regions-zones#available>)
     /// or
     /// [region](<https://cloud.google.com/compute/docs/regions-zones/regions-zones#available>)
     /// in which the cluster resides.
     #[prost(string, tag = "9")]
     pub location: ::prost::alloc::string::String,
-    /// \[Output only\] The time the operation started, in
+    /// Output only. The time the operation started, in
     /// [RFC3339](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
     #[prost(string, tag = "10")]
     pub start_time: ::prost::alloc::string::String,
-    /// \[Output only\] The time the operation completed, in
+    /// Output only. The time the operation completed, in
     /// [RFC3339](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
     #[prost(string, tag = "11")]
     pub end_time: ::prost::alloc::string::String,
-    /// Output only. \[Output only\] Progress information for an operation.
+    /// Output only. Progress information for an operation.
     #[prost(message, optional, tag = "12")]
     pub progress: ::core::option::Option<OperationProgress>,
     /// Which conditions caused the current cluster state.
@@ -3823,7 +3841,7 @@ pub struct GetNodePoolRequest {
 }
 /// Settings for blue-green upgrade.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BlueGreenSettings {
     /// Time needed after draining entire blue pool. After this period, blue pool
     /// will be cleaned up.
@@ -3837,7 +3855,7 @@ pub struct BlueGreenSettings {
 pub mod blue_green_settings {
     /// Standard rollout policy is the default policy for blue-green.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct StandardRolloutPolicy {
         /// Soak time after each batch gets drained. Default to zero.
         #[prost(message, optional, tag = "3")]
@@ -3852,7 +3870,7 @@ pub mod blue_green_settings {
     pub mod standard_rollout_policy {
         /// Blue pool size to drain in a batch.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum UpdateBatchSize {
             /// Percentage of the blue pool nodes to drain in a batch.
             /// The range of this field should be (0.0, 1.0].
@@ -3865,7 +3883,7 @@ pub mod blue_green_settings {
     }
     /// The rollout policy controls the general rollout progress of blue-green.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum RolloutPolicy {
         /// Standard policy for the blue-green upgrade.
         #[prost(message, tag = "1")]
@@ -3909,7 +3927,7 @@ pub struct NodePool {
     /// cluster-level defaults.
     #[prost(message, optional, tag = "14")]
     pub network_config: ::core::option::Option<NodeNetworkConfig>,
-    /// \[Output only\] Server-defined URL for the resource.
+    /// Output only. Server-defined URL for the resource.
     #[prost(string, tag = "100")]
     pub self_link: ::prost::alloc::string::String,
     /// The version of Kubernetes running on this NodePool's nodes. If unspecified,
@@ -3917,17 +3935,17 @@ pub struct NodePool {
     /// [here](<https://cloud.google.com/kubernetes-engine/versioning#specifying_node_version>).
     #[prost(string, tag = "101")]
     pub version: ::prost::alloc::string::String,
-    /// \[Output only\] The resource URLs of the [managed instance
+    /// Output only. The resource URLs of the [managed instance
     /// groups](<https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-managed-instances>)
     /// associated with this node pool.
     /// During the node pool blue-green upgrade operation, the URLs contain both
     /// blue and green resources.
     #[prost(string, repeated, tag = "102")]
     pub instance_group_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// \[Output only\] The status of the nodes in this pool instance.
+    /// Output only. The status of the nodes in this pool instance.
     #[prost(enumeration = "node_pool::Status", tag = "103")]
     pub status: i32,
-    /// \[Output only\] Deprecated. Use conditions instead.
+    /// Output only. Deprecated. Use conditions instead.
     /// Additional information about the current status of this
     /// node pool instance, if available.
     #[deprecated]
@@ -3947,7 +3965,7 @@ pub struct NodePool {
     /// Which conditions caused the current node pool state.
     #[prost(message, repeated, tag = "105")]
     pub conditions: ::prost::alloc::vec::Vec<StatusCondition>,
-    /// \[Output only\] The pod CIDR block size per node in this node pool.
+    /// Output only. The pod CIDR block size per node in this node pool.
     #[prost(int32, tag = "7")]
     pub pod_ipv4_cidr_size: i32,
     /// Upgrade settings control disruption and speed of the upgrade.
@@ -3956,8 +3974,8 @@ pub struct NodePool {
     /// Specifies the node placement policy.
     #[prost(message, optional, tag = "108")]
     pub placement_policy: ::core::option::Option<node_pool::PlacementPolicy>,
-    /// Output only. \[Output only\] Update info contains relevant information during
-    /// a node pool update.
+    /// Output only. Update info contains relevant information during a node
+    /// pool update.
     #[prost(message, optional, tag = "109")]
     pub update_info: ::core::option::Option<node_pool::UpdateInfo>,
     /// This checksum is computed by the server based on the value of node pool
@@ -4021,7 +4039,7 @@ pub mod node_pool {
     /// 2. node_pool_soak_duration is the soak time after all blue nodes are
     /// drained. After this period, the blue pool nodes will be deleted.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UpgradeSettings {
         /// The maximum number of nodes that can be created beyond the current size
         /// of the node pool during the upgrade process.
@@ -4209,7 +4227,7 @@ pub mod node_pool {
     }
     /// QueuedProvisioning defines the queued provisioning used by the node pool.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct QueuedProvisioning {
         /// Denotes that this nodepool is QRM specific, meaning nodes can be only
         /// obtained through queuing via the Cluster Autoscaler ProvisioningRequest
@@ -4306,7 +4324,7 @@ pub struct NodeManagement {
 }
 /// Best effort provisioning.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BestEffortProvisioning {
     /// When this is enabled, cluster/node pool creations will ignore non-fatal
     /// errors like stockout to best provision as many nodes as possible right now
@@ -4324,12 +4342,12 @@ pub struct BestEffortProvisioning {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoUpgradeOptions {
-    /// \[Output only\] This field is set when upgrades are about to commence
+    /// Output only. This field is set when upgrades are about to commence
     /// with the approximate start time for the upgrades, in
     /// [RFC3339](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
     #[prost(string, tag = "1")]
     pub auto_upgrade_start_time: ::prost::alloc::string::String,
-    /// \[Output only\] This field is set when upgrades are about to commence
+    /// Output only. This field is set when upgrades are about to commence
     /// with the description of the upgrade.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
@@ -4380,7 +4398,7 @@ pub mod maintenance_window {
 }
 /// Represents an arbitrary window of time.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeWindow {
     /// The time that the window first starts.
     #[prost(message, optional, tag = "1")]
@@ -4395,7 +4413,7 @@ pub struct TimeWindow {
 /// Nested message and enum types in `TimeWindow`.
 pub mod time_window {
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Options {
         /// MaintenanceExclusionOptions provides maintenance exclusion related
         /// options.
@@ -4405,7 +4423,7 @@ pub mod time_window {
 }
 /// Represents the Maintenance exclusion option.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MaintenanceExclusionOptions {
     /// Scope specifies the upgrade scope which upgrades are blocked by the
     /// exclusion.
@@ -4514,7 +4532,7 @@ pub struct DailyMaintenanceWindow {
     /// format "HH:MM", where HH : \[00-23\] and MM : \[00-59\] GMT.
     #[prost(string, tag = "2")]
     pub start_time: ::prost::alloc::string::String,
-    /// \[Output only\] Duration of the time window, automatically chosen to be
+    /// Output only. Duration of the time window, automatically chosen to be
     /// smallest possible in the given scenario.
     /// Duration will be in [RFC3339](<https://www.ietf.org/rfc/rfc3339.txt>)
     /// format "PTnHnMnS".
@@ -4810,7 +4828,7 @@ pub struct ResourceLimit {
 /// NodePoolAutoscaling contains information required by cluster autoscaler to
 /// adjust the size of the node pool to the current cluster usage.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NodePoolAutoscaling {
     /// Is autoscaling enabled for this node pool.
     #[prost(bool, tag = "1")]
@@ -5050,7 +5068,7 @@ pub struct AcceleratorConfig {
 /// GPUSharingConfig represents the GPU sharing configuration for Hardware
 /// Accelerators.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GpuSharingConfig {
     /// The max number of containers that can share a physical GPU.
     #[prost(int64, tag = "1")]
@@ -5108,7 +5126,7 @@ pub mod gpu_sharing_config {
 /// GPUDriverInstallationConfig specifies the version of GPU driver to be auto
 /// installed.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GpuDriverInstallationConfig {
     /// Mode for how the GPU driver is installed.
     #[prost(
@@ -5171,7 +5189,7 @@ pub mod gpu_driver_installation_config {
 /// WorkloadMetadataConfig defines the metadata configuration to expose to
 /// workloads on the node pool.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WorkloadMetadataConfig {
     /// Mode is the configuration for how to expose metadata to workloads running
     /// on the node pool.
@@ -5439,7 +5457,7 @@ pub struct NetworkConfig {
 pub mod network_config {
     /// Configuration of network bandwidth tiers
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ClusterNetworkPerformanceConfig {
         /// Specifies the total network bandwidth tier for NodePools in the cluster.
         #[prost(
@@ -5494,7 +5512,7 @@ pub mod network_config {
 }
 /// GatewayAPIConfig contains the desired config of Gateway API on this cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GatewayApiConfig {
     /// The Gateway API release channel to use for Gateway API.
     #[prost(enumeration = "gateway_api_config::Channel", tag = "1")]
@@ -5521,6 +5539,7 @@ pub mod gateway_api_config {
         Unspecified = 0,
         /// Gateway API support is disabled
         Disabled = 1,
+        /// Deprecated: use CHANNEL_STANDARD instead.
         /// Gateway API support is enabled, experimental CRDs are installed
         Experimental = 3,
         /// Gateway API support is enabled, standard CRDs are installed
@@ -5553,7 +5572,7 @@ pub mod gateway_api_config {
 }
 /// Config to block services with externalIPs field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ServiceExternalIPsConfig {
     /// Whether Services with ExternalIPs field are allowed or not.
     #[prost(bool, tag = "1")]
@@ -5761,7 +5780,7 @@ pub struct CheckAutopilotCompatibilityResponse {
 /// both the master version and the node version. Node auto-upgrade
 /// defaults to true and cannot be disabled.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReleaseChannel {
     /// channel specifies which release channel the cluster is subscribed to.
     #[prost(enumeration = "release_channel::Channel", tag = "1")]
@@ -5827,7 +5846,7 @@ pub mod release_channel {
 }
 /// Configuration for fine-grained cost management feature.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CostManagementConfig {
     /// Whether the feature is enabled or not.
     #[prost(bool, tag = "1")]
@@ -5836,7 +5855,7 @@ pub struct CostManagementConfig {
 /// IntraNodeVisibilityConfig contains the desired config of the intra-node
 /// visibility on this cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct IntraNodeVisibilityConfig {
     /// Enables intra node visibility for this cluster.
     #[prost(bool, tag = "1")]
@@ -5845,7 +5864,7 @@ pub struct IntraNodeVisibilityConfig {
 /// ILBSubsettingConfig contains the desired config of L4 Internal LoadBalancer
 /// subsetting on this cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct IlbSubsettingConfig {
     /// Enables l4 ILB subsetting for this cluster.
     #[prost(bool, tag = "1")]
@@ -5963,7 +5982,7 @@ pub mod dns_config {
 }
 /// Constraints applied to pods.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MaxPodsConstraint {
     /// Constraint enforced on the max num of pods per node.
     #[prost(int64, tag = "1")]
@@ -5981,7 +6000,7 @@ pub struct WorkloadIdentityConfig {
 /// IdentityServiceConfig is configuration for Identity Service which allows
 /// customers to use external identity providers with the K8S API
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct IdentityServiceConfig {
     /// Whether to enable the Identity Service component
     #[prost(bool, tag = "1")]
@@ -5989,7 +6008,7 @@ pub struct IdentityServiceConfig {
 }
 /// Configuration for issuance of mTLS keys and certificates to Kubernetes pods.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MeshCertificates {
     /// enable_certificates controls issuance of workload mTLS certificates.
     ///
@@ -6326,7 +6345,7 @@ pub mod resource_usage_export_config {
     }
     /// Parameters for controlling consumption metering.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ConsumptionMeteringConfig {
         /// Whether to enable consumption metering for this cluster. If enabled, a
         /// second BigQuery table will be created to hold resource consumption
@@ -6339,7 +6358,7 @@ pub mod resource_usage_export_config {
 /// required by Vertical Pod Autoscaler to automatically adjust
 /// the resources of pods controlled by it.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VerticalPodAutoscaling {
     /// Enables vertical pod autoscaling.
     #[prost(bool, tag = "1")]
@@ -6348,7 +6367,7 @@ pub struct VerticalPodAutoscaling {
 /// DefaultSnatStatus contains the desired state of whether default sNAT should
 /// be disabled on the cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DefaultSnatStatus {
     /// Disables cluster default sNAT rules.
     #[prost(bool, tag = "1")]
@@ -6356,7 +6375,7 @@ pub struct DefaultSnatStatus {
 }
 /// Configuration of Shielded Nodes feature.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ShieldedNodes {
     /// Whether Shielded Nodes features are enabled on all nodes in this cluster.
     #[prost(bool, tag = "1")]
@@ -6364,7 +6383,7 @@ pub struct ShieldedNodes {
 }
 /// Configuration of gVNIC feature.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VirtualNic {
     /// Whether gVNIC features are enabled in the node pool.
     #[prost(bool, tag = "1")]
@@ -6372,7 +6391,7 @@ pub struct VirtualNic {
 }
 /// Configuration of Fast Socket feature.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FastSocket {
     /// Whether Fast Socket features are enabled in the node pool.
     #[prost(bool, tag = "1")]
@@ -6468,7 +6487,7 @@ pub mod notification_config {
 /// ConfidentialNodes is configuration for the confidential nodes feature, which
 /// makes nodes run on confidential VMs.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ConfidentialNodes {
     /// Whether Confidential Nodes feature is enabled.
     #[prost(bool, tag = "1")]
@@ -6567,7 +6586,7 @@ pub struct SecurityBulletinEvent {
 }
 /// Autopilot is the configuration for Autopilot settings on the cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Autopilot {
     /// Enable Autopilot
     #[prost(bool, tag = "1")]
@@ -6579,7 +6598,7 @@ pub struct Autopilot {
 /// WorkloadPolicyConfig is the configuration of workload policy for autopilot
 /// clusters.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WorkloadPolicyConfig {
     /// If true, workloads can use NET_ADMIN capability.
     #[prost(bool, optional, tag = "1")]
@@ -6659,6 +6678,14 @@ pub mod logging_component_config {
         }
     }
 }
+/// RayClusterLoggingConfig specifies configuration of Ray logging.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RayClusterLoggingConfig {
+    /// Enable log collection for Ray clusters.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+}
 /// MonitoringConfig is cluster monitoring configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6679,7 +6706,7 @@ pub struct MonitoringConfig {
 /// AdvancedDatapathObservabilityConfig specifies configuration of observability
 /// features of advanced datapath.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AdvancedDatapathObservabilityConfig {
     /// Expose flow metrics on nodes
     #[prost(bool, tag = "1")]
@@ -6744,9 +6771,18 @@ pub mod advanced_datapath_observability_config {
         }
     }
 }
+/// RayClusterMonitoringConfig specifies monitoring configuration for Ray
+/// clusters.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RayClusterMonitoringConfig {
+    /// Enable metrics collection for Ray clusters.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+}
 /// NodePoolLoggingConfig specifies logging configuration for nodepools.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NodePoolLoggingConfig {
     /// Logging variant configuration.
     #[prost(message, optional, tag = "1")]
@@ -6754,7 +6790,7 @@ pub struct NodePoolLoggingConfig {
 }
 /// LoggingVariantConfig specifies the behaviour of the logging component.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LoggingVariantConfig {
     /// Logging variant deployed on nodes.
     #[prost(enumeration = "logging_variant_config::Variant", tag = "1")]
@@ -6857,6 +6893,8 @@ pub mod monitoring_component_config {
         Cadvisor = 13,
         /// KUBELET
         Kubelet = 14,
+        /// NVIDIA Data Center GPU Manager (DCGM)
+        Dcgm = 15,
     }
     impl Component {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -6878,6 +6916,7 @@ pub mod monitoring_component_config {
                 Component::Statefulset => "STATEFULSET",
                 Component::Cadvisor => "CADVISOR",
                 Component::Kubelet => "KUBELET",
+                Component::Dcgm => "DCGM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6896,6 +6935,7 @@ pub mod monitoring_component_config {
                 "STATEFULSET" => Some(Self::Statefulset),
                 "CADVISOR" => Some(Self::Cadvisor),
                 "KUBELET" => Some(Self::Kubelet),
+                "DCGM" => Some(Self::Dcgm),
                 _ => None,
             }
         }
@@ -6904,7 +6944,7 @@ pub mod monitoring_component_config {
 /// ManagedPrometheusConfig defines the configuration for
 /// Google Cloud Managed Service for Prometheus.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ManagedPrometheusConfig {
     /// Enable Managed Collection.
     #[prost(bool, tag = "1")]
@@ -6919,12 +6959,12 @@ pub struct Fleet {
     /// been registered.
     #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
-    /// \[Output only\] The full resource name of the registered fleet membership of
+    /// Output only. The full resource name of the registered fleet membership of
     /// the cluster, in the format
     /// `//gkehub.googleapis.com/projects/*/locations/*/memberships/*`.
     #[prost(string, tag = "2")]
     pub membership: ::prost::alloc::string::String,
-    /// \[Output only\] Whether the cluster has been registered through the fleet
+    /// Output only. Whether the cluster has been registered through the fleet
     /// API.
     #[prost(bool, tag = "3")]
     pub pre_registered: bool,
@@ -6932,7 +6972,7 @@ pub struct Fleet {
 /// LocalNvmeSsdBlockConfig contains configuration for using raw-block local
 /// NVMe SSDs
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LocalNvmeSsdBlockConfig {
     /// Number of local NVMe SSDs to use.  The limit for this value is dependent
     /// upon the maximum number of disk available on a machine per zone. See:
@@ -6956,7 +6996,7 @@ pub struct LocalNvmeSsdBlockConfig {
 /// EphemeralStorageLocalSsdConfig contains configuration for the node ephemeral
 /// storage using Local SSDs.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EphemeralStorageLocalSsdConfig {
     /// Number of local SSDs to use to back ephemeral storage. Uses NVMe
     /// interfaces.
@@ -7000,10 +7040,9 @@ pub struct ResourceManagerTags {
 }
 /// EnterpriseConfig is the cluster enterprise configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EnterpriseConfig {
-    /// Output only. \[Output only\] cluster_tier specifies the premium tier of the
-    /// cluster.
+    /// Output only. cluster_tier specifies the premium tier of the cluster.
     #[prost(enumeration = "enterprise_config::ClusterTier", tag = "1")]
     pub cluster_tier: i32,
 }
@@ -7112,7 +7151,7 @@ pub mod secondary_boot_disk {
 /// SecondaryBootDiskUpdateStrategy is a placeholder which will be extended
 /// in the future to define different options for updating secondary boot disks.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SecondaryBootDiskUpdateStrategy {}
 /// PrivateIPv6GoogleAccess controls whether and how the pods can communicate
 /// with Google Services through gRPC over IPv6.

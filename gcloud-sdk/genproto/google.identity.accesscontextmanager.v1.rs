@@ -1299,11 +1299,11 @@ pub struct DeleteGcpUserAccessBindingRequest {
 /// and a completed operation may indicate that the binding has taken effect and
 /// is affecting access decisions for all users.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GcpUserAccessBindingOperationMetadata {}
 /// Metadata of Access Context Manager's Long Running Operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AccessContextManagerOperationMetadata {}
 /// The format used in an `AccessLevel`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

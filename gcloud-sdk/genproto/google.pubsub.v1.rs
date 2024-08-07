@@ -237,7 +237,7 @@ pub struct ValidateSchemaRequest {
 /// Response for the `ValidateSchema` method.
 /// Empty for now.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ValidateSchemaResponse {}
 /// Request for the `ValidateMessage` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -274,7 +274,7 @@ pub mod validate_message_request {
 /// Response for the `ValidateMessage` method.
 /// Empty for now.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ValidateMessageResponse {}
 /// View of Schema object fields to be returned by GetSchema and ListSchemas.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1165,7 +1165,7 @@ pub struct DetachSubscriptionRequest {
 /// Response for the DetachSubscription method.
 /// Reserved for future use.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DetachSubscriptionResponse {}
 /// A subscription resource. If none of `push_config`, `bigquery_config`, or
 /// `cloud_storage_config` is set, then the subscriber will pull and ack messages
@@ -1379,7 +1379,7 @@ pub mod subscription {
 /// between consecutive deliveries may not match the configuration. That is,
 /// delay can be more or less than configured backoff.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RetryPolicy {
     /// Optional. The minimum delay between consecutive deliveries of a given
     /// message. Value should be between 0 and 600 seconds. Defaults to 10 seconds.
@@ -1429,7 +1429,7 @@ pub struct DeadLetterPolicy {
 /// A policy that specifies the conditions for resource expiration (i.e.,
 /// automatic resource deletion).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExpirationPolicy {
     /// Optional. Specifies the "time-to-live" duration for an associated resource.
     /// The resource expires if it is not active for a period of `ttl`. The
@@ -1515,11 +1515,11 @@ pub mod push_config {
     /// of a PubsubMessage
     /// (<https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#pubsubmessage>).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PubsubWrapper {}
     /// Sets the `data` field as the HTTP body for delivery.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct NoWrapper {
         /// Optional. When true, writes the Pub/Sub message metadata to
         /// `x-goog-pubsub-<KEY>:<VAL>` headers of the HTTP request. Writes the
@@ -1544,7 +1544,7 @@ pub mod push_config {
     /// The format of the delivered message to the push endpoint is defined by
     /// the chosen wrapper. When unset, `PubsubWrapper` is used.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Wrapper {
         /// Optional. When set, the payload to the push endpoint is in the form of
         /// the JSON representation of a PubsubMessage
@@ -1701,6 +1701,10 @@ pub struct CloudStorageConfig {
     /// be exceeded in cases where messages are larger than the limit.
     #[prost(int64, tag = "7")]
     pub max_bytes: i64,
+    /// Optional. The maximum number of messages that can be written to a Cloud
+    /// Storage file before a new file is created. Min 1000 messages.
+    #[prost(int64, tag = "8")]
+    pub max_messages: i64,
     /// Output only. An output-only field that indicates whether or not the
     /// subscription can receive messages.
     #[prost(enumeration = "cloud_storage_config::State", tag = "9")]
@@ -1723,12 +1727,12 @@ pub mod cloud_storage_config {
     /// Message payloads will be written to files as raw text, separated by a
     /// newline.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TextConfig {}
     /// Configuration for writing message data in Avro format.
     /// Message payloads and metadata will be written to files as an Avro binary.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AvroConfig {
         /// Optional. When true, write the subscription name, message_id,
         /// publish_time, attributes, and ordering_key as additional fields in the
@@ -1805,7 +1809,7 @@ pub mod cloud_storage_config {
     }
     /// Defaults to text format.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum OutputFormat {
         /// Optional. If set, message data will be written to Cloud Storage in text
         /// format.
@@ -2146,7 +2150,7 @@ pub mod streaming_pull_response {
     }
     /// Subscription properties sent as part of the response.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SubscriptionProperties {
         /// Optional. True iff exactly once delivery is enabled for this
         /// subscription.
@@ -2320,7 +2324,7 @@ pub mod seek_request {
 }
 /// Response for the `Seek` method (this response is empty).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SeekResponse {}
 /// Generated client implementations.
 pub mod publisher_client {

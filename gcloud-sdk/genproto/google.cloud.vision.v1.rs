@@ -2,7 +2,7 @@
 /// A vertex represents a 2D point in the image.
 /// NOTE: the vertex coordinates are in the same scale as the original image.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Vertex {
     /// X coordinate.
     #[prost(int32, tag = "1")]
@@ -15,7 +15,7 @@ pub struct Vertex {
 /// NOTE: the normalized vertex coordinates are relative to the original image
 /// and range from 0 to 1.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NormalizedVertex {
     /// X coordinate.
     #[prost(float, tag = "1")]
@@ -39,7 +39,7 @@ pub struct BoundingPoly {
 /// A valid Position must have both x and y coordinates.
 /// The position coordinates are in the same scale as the original image.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Position {
     /// X coordinate.
     #[prost(float, tag = "1")]
@@ -615,7 +615,7 @@ pub struct ImportProductSetsResponse {
 /// This is included in the `metadata` field of the `Operation` returned by the
 /// `GetOperation` call of the `google::longrunning::Operations` service.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BatchOperationMetadata {
     /// The current state of the batch operation.
     #[prost(enumeration = "batch_operation_metadata::State", tag = "1")]
@@ -1659,7 +1659,7 @@ pub mod text_annotation {
     }
     /// Detected start or end of a structural component.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DetectedBreak {
         /// Detected break type.
         #[prost(enumeration = "detected_break::BreakType", tag = "1")]
@@ -2276,7 +2276,7 @@ pub struct FaceAnnotation {
 pub mod face_annotation {
     /// A face-specific landmark (for example, a face feature).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Landmark {
         /// Face landmark type.
         #[prost(enumeration = "landmark::Type", tag = "3")]
@@ -2475,7 +2475,7 @@ pub mod face_annotation {
 }
 /// Detected entity location information.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LocationInfo {
     /// lat/long location coordinates.
     #[prost(message, optional, tag = "1")]
@@ -2571,7 +2571,7 @@ pub struct LocalizedObjectAnnotation {
 /// methods over safe-search verticals (for example, adult, spoof, medical,
 /// violence).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SafeSearchAnnotation {
     /// Represents the adult content likelihood for the image. Adult content may
     /// contain elements such as nudity, pornographic images or cartoons, or
@@ -2600,7 +2600,7 @@ pub struct SafeSearchAnnotation {
 }
 /// Rectangle determined by min and max `LatLng` pairs.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LatLongRect {
     /// Min lat/long pair.
     #[prost(message, optional, tag = "1")]
@@ -2612,7 +2612,7 @@ pub struct LatLongRect {
 /// Color information consists of RGB channels, score, and the fraction of
 /// the image that the color occupies in the image.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ColorInfo {
     /// RGB components of the color.
     #[prost(message, optional, tag = "1")]
@@ -2680,7 +2680,7 @@ pub struct CropHintsParams {
 }
 /// Parameters for web detection request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WebDetectionParams {
     /// This field has no effect on results.
     #[deprecated]
@@ -3148,7 +3148,7 @@ pub struct GcsDestination {
 }
 /// Contains metadata for the BatchAnnotateImages operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Current state of the batch operation.
     #[prost(enumeration = "operation_metadata::State", tag = "1")]

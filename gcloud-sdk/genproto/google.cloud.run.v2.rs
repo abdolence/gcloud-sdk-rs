@@ -393,15 +393,15 @@ pub mod condition {
     /// it will populate one of these fields.
     /// Successful conditions cannot have a reason.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Reasons {
-        /// A common (service-level) reason for this condition.
+        /// Output only. A common (service-level) reason for this condition.
         #[prost(enumeration = "CommonReason", tag = "6")]
         Reason(i32),
-        /// A reason for the revision condition.
+        /// Output only. A reason for the revision condition.
         #[prost(enumeration = "RevisionReason", tag = "9")]
         RevisionReason(i32),
-        /// A reason for the execution condition.
+        /// Output only. A reason for the execution condition.
         #[prost(enumeration = "ExecutionReason", tag = "11")]
         ExecutionReason(i32),
     }
@@ -773,18 +773,19 @@ pub struct NfsVolumeSource {
     /// Path that is exported by the NFS server.
     #[prost(string, tag = "2")]
     pub path: ::prost::alloc::string::String,
-    /// If true, mount the NFS volume as read only
+    /// If true, the volume will be mounted as read only for all mounts.
     #[prost(bool, tag = "3")]
     pub read_only: bool,
 }
-/// Represents a GCS Bucket mounted as a volume.
+/// Represents a volume backed by a Cloud Storage bucket using Cloud Storage
+/// FUSE.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsVolumeSource {
-    /// GCS Bucket name
+    /// Cloud Storage Bucket name.
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
-    /// If true, mount the GCS bucket as read-only
+    /// If true, the volume will be mounted as read only for all mounts.
     #[prost(bool, tag = "2")]
     pub read_only: bool,
 }
@@ -793,25 +794,24 @@ pub struct GcsVolumeSource {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Probe {
-    /// Number of seconds after the container has started before the probe is
-    /// initiated.
-    /// Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe
-    /// is 3600. Maximum value for startup probe is 240.
+    /// Optional. Number of seconds after the container has started before the
+    /// probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum
+    /// value for liveness probe is 3600. Maximum value for startup probe is 240.
     #[prost(int32, tag = "1")]
     pub initial_delay_seconds: i32,
-    /// Number of seconds after which the probe times out.
+    /// Optional. Number of seconds after which the probe times out.
     /// Defaults to 1 second. Minimum value is 1. Maximum value is 3600.
     /// Must be smaller than period_seconds.
     #[prost(int32, tag = "2")]
     pub timeout_seconds: i32,
-    /// How often (in seconds) to perform the probe.
+    /// Optional. How often (in seconds) to perform the probe.
     /// Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe
     /// is 3600. Maximum value for startup probe is 240.
     /// Must be greater or equal than timeout_seconds.
     #[prost(int32, tag = "3")]
     pub period_seconds: i32,
-    /// Minimum consecutive failures for the probe to be considered failed after
-    /// having succeeded. Defaults to 3. Minimum value is 1.
+    /// Optional. Minimum consecutive failures for the probe to be considered
+    /// failed after having succeeded. Defaults to 3. Minimum value is 1.
     #[prost(int32, tag = "4")]
     pub failure_threshold: i32,
     #[prost(oneof = "probe::ProbeType", tags = "5, 6, 7")]
@@ -822,15 +822,15 @@ pub mod probe {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ProbeType {
-        /// HTTPGet specifies the http request to perform.
+        /// Optional. HTTPGet specifies the http request to perform.
         /// Exactly one of httpGet, tcpSocket, or grpc must be specified.
         #[prost(message, tag = "5")]
         HttpGet(super::HttpGetAction),
-        /// TCPSocket specifies an action involving a TCP port.
+        /// Optional. TCPSocket specifies an action involving a TCP port.
         /// Exactly one of httpGet, tcpSocket, or grpc must be specified.
         #[prost(message, tag = "6")]
         TcpSocket(super::TcpSocketAction),
-        /// GRPC specifies an action involving a gRPC port.
+        /// Optional. GRPC specifies an action involving a gRPC port.
         /// Exactly one of httpGet, tcpSocket, or grpc must be specified.
         #[prost(message, tag = "7")]
         Grpc(super::GrpcAction),
@@ -840,15 +840,16 @@ pub mod probe {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpGetAction {
-    /// Path to access on the HTTP server. Defaults to '/'.
+    /// Optional. Path to access on the HTTP server. Defaults to '/'.
     #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
-    /// Custom headers to set in the request. HTTP allows repeated headers.
+    /// Optional. Custom headers to set in the request. HTTP allows repeated
+    /// headers.
     #[prost(message, repeated, tag = "4")]
     pub http_headers: ::prost::alloc::vec::Vec<HttpHeader>,
-    /// Port number to access on the container. Must be in the range 1 to 65535.
-    /// If not specified, defaults to the exposed port of the container, which is
-    /// the value of container.ports\[0\].containerPort.
+    /// Optional. Port number to access on the container. Must be in the range 1 to
+    /// 65535. If not specified, defaults to the exposed port of the container,
+    /// which is the value of container.ports\[0\].containerPort.
     #[prost(int32, tag = "5")]
     pub port: i32,
 }
@@ -859,17 +860,17 @@ pub struct HttpHeader {
     /// Required. The header field name
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The header field value
+    /// Optional. The header field value
     #[prost(string, tag = "2")]
     pub value: ::prost::alloc::string::String,
 }
 /// TCPSocketAction describes an action based on opening a socket
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TcpSocketAction {
-    /// Port number to access on the container. Must be in the range 1 to 65535.
-    /// If not specified, defaults to the exposed port of the container, which is
-    /// the value of container.ports\[0\].containerPort.
+    /// Optional. Port number to access on the container. Must be in the range 1 to
+    /// 65535. If not specified, defaults to the exposed port of the container,
+    /// which is the value of container.ports\[0\].containerPort.
     #[prost(int32, tag = "1")]
     pub port: i32,
 }
@@ -877,14 +878,15 @@ pub struct TcpSocketAction {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GrpcAction {
-    /// Port number of the gRPC service. Number must be in the range 1 to 65535.
-    /// If not specified, defaults to the exposed port of the container, which is
-    /// the value of container.ports\[0\].containerPort.
+    /// Optional. Port number of the gRPC service. Number must be in the range 1 to
+    /// 65535. If not specified, defaults to the exposed port of the container,
+    /// which is the value of container.ports\[0\].containerPort.
     #[prost(int32, tag = "1")]
     pub port: i32,
-    /// Service is the name of the service to place in the gRPC HealthCheckRequest
-    /// (see <https://github.com/grpc/grpc/blob/master/doc/health-checking.md> ). If
-    /// this is not specified, the default behavior is defined by gRPC.
+    /// Optional. Service is the name of the service to place in the gRPC
+    /// HealthCheckRequest (see
+    /// <https://github.com/grpc/grpc/blob/master/doc/health-checking.md> ). If this
+    /// is not specified, the default behavior is defined by gRPC.
     #[prost(string, tag = "2")]
     pub service: ::prost::alloc::string::String,
 }
@@ -900,12 +902,12 @@ pub struct VpcAccess {
     /// visit <https://cloud.google.com/run/docs/configuring/vpc-connectors.>
     #[prost(string, tag = "1")]
     pub connector: ::prost::alloc::string::String,
-    /// Traffic VPC egress settings. If not provided, it defaults to
+    /// Optional. Traffic VPC egress settings. If not provided, it defaults to
     /// PRIVATE_RANGES_ONLY.
     #[prost(enumeration = "vpc_access::VpcEgress", tag = "2")]
     pub egress: i32,
-    /// Direct VPC egress settings. Currently only single network interface is
-    /// supported.
+    /// Optional. Direct VPC egress settings. Currently only single network
+    /// interface is supported.
     #[prost(message, repeated, tag = "3")]
     pub network_interfaces: ::prost::alloc::vec::Vec<vpc_access::NetworkInterface>,
 }
@@ -915,21 +917,21 @@ pub mod vpc_access {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NetworkInterface {
-        /// The VPC network that the Cloud Run resource will be able to send traffic
-        /// to. At least one of network or subnetwork must be specified. If both
-        /// network and subnetwork are specified, the given VPC subnetwork must
-        /// belong to the given VPC network. If network is not specified, it will be
-        /// looked up from the subnetwork.
+        /// Optional. The VPC network that the Cloud Run resource will be able to
+        /// send traffic to. At least one of network or subnetwork must be specified.
+        /// If both network and subnetwork are specified, the given VPC subnetwork
+        /// must belong to the given VPC network. If network is not specified, it
+        /// will be looked up from the subnetwork.
         #[prost(string, tag = "1")]
         pub network: ::prost::alloc::string::String,
-        /// The VPC subnetwork that the Cloud Run resource will get IPs from. At
-        /// least one of network or subnetwork must be specified. If both
+        /// Optional. The VPC subnetwork that the Cloud Run resource will get IPs
+        /// from. At least one of network or subnetwork must be specified. If both
         /// network and subnetwork are specified, the given VPC subnetwork must
         /// belong to the given VPC network. If subnetwork is not specified, the
         /// subnetwork with the same name with the network will be used.
         #[prost(string, tag = "2")]
         pub subnetwork: ::prost::alloc::string::String,
-        /// Network tags applied to this Cloud Run resource.
+        /// Optional. Network tags applied to this Cloud Run resource.
         #[prost(string, repeated, tag = "3")]
         pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
@@ -981,13 +983,13 @@ pub mod vpc_access {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BinaryAuthorization {
-    /// If present, indicates to use Breakglass using this justification.
+    /// Optional. If present, indicates to use Breakglass using this justification.
     /// If use_default is False, then it must be empty.
     /// For more information on breakglass, see
     /// <https://cloud.google.com/binary-authorization/docs/using-breakglass>
     #[prost(string, tag = "2")]
     pub breakglass_justification: ::prost::alloc::string::String,
-    #[prost(oneof = "binary_authorization::BinauthzMethod", tags = "1")]
+    #[prost(oneof = "binary_authorization::BinauthzMethod", tags = "1, 3")]
     pub binauthz_method: ::core::option::Option<binary_authorization::BinauthzMethod>,
 }
 /// Nested message and enum types in `BinaryAuthorization`.
@@ -995,29 +997,35 @@ pub mod binary_authorization {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum BinauthzMethod {
-        /// If True, indicates to use the default project's binary authorization
-        /// policy. If False, binary authorization will be disabled.
+        /// Optional. If True, indicates to use the default project's binary
+        /// authorization policy. If False, binary authorization will be disabled.
         #[prost(bool, tag = "1")]
         UseDefault(bool),
+        /// Optional. The path to a binary authorization policy.
+        /// Format: projects/{project}/platforms/cloudRun/{policy-name}
+        #[prost(string, tag = "3")]
+        Policy(::prost::alloc::string::String),
     }
 }
 /// Settings for revision-level scaling settings.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RevisionScaling {
-    /// Minimum number of serving instances that this resource should have.
+    /// Optional. Minimum number of serving instances that this resource should
+    /// have.
     #[prost(int32, tag = "1")]
     pub min_instance_count: i32,
-    /// Maximum number of serving instances that this resource should have.
+    /// Optional. Maximum number of serving instances that this resource should
+    /// have.
     #[prost(int32, tag = "2")]
     pub max_instance_count: i32,
 }
 /// Scaling settings applied at the service level rather than
 /// at the revision level.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ServiceScaling {
-    /// total min instances for the service. This number of instances is
+    /// Optional. total min instances for the service. This number of instances is
     /// divided among all revisions with specified traffic based on the percent
     /// of traffic they are receiving. (BETA)
     #[prost(int32, tag = "1")]
@@ -1139,22 +1147,22 @@ pub struct TaskTemplate {
     /// task.
     #[prost(message, repeated, tag = "1")]
     pub containers: ::prost::alloc::vec::Vec<Container>,
-    /// A list of Volumes to make available to containers.
+    /// Optional. A list of Volumes to make available to containers.
     #[prost(message, repeated, tag = "2")]
     pub volumes: ::prost::alloc::vec::Vec<Volume>,
-    /// Max allowed time duration the Task may be active before the system will
-    /// actively try to mark it failed and kill associated containers. This applies
-    /// per attempt of a task, meaning each retry can run for the full timeout.
-    /// Defaults to 600 seconds.
+    /// Optional. Max allowed time duration the Task may be active before the
+    /// system will actively try to mark it failed and kill associated containers.
+    /// This applies per attempt of a task, meaning each retry can run for the full
+    /// timeout. Defaults to 600 seconds.
     #[prost(message, optional, tag = "4")]
     pub timeout: ::core::option::Option<::prost_types::Duration>,
-    /// Email address of the IAM service account associated with the Task of a
-    /// Job. The service account represents the identity of the
-    /// running task, and determines what permissions the task has. If
-    /// not provided, the task will use the project's default service account.
+    /// Optional. Email address of the IAM service account associated with the Task
+    /// of a Job. The service account represents the identity of the running task,
+    /// and determines what permissions the task has. If not provided, the task
+    /// will use the project's default service account.
     #[prost(string, tag = "5")]
     pub service_account: ::prost::alloc::string::String,
-    /// The execution environment being used to host this Task.
+    /// Optional. The execution environment being used to host this Task.
     #[prost(enumeration = "ExecutionEnvironment", tag = "6")]
     pub execution_environment: i32,
     /// A reference to a customer managed encryption key (CMEK) to use to encrypt
@@ -1162,8 +1170,9 @@ pub struct TaskTemplate {
     /// <https://cloud.google.com/run/docs/securing/using-cmek>
     #[prost(string, tag = "7")]
     pub encryption_key: ::prost::alloc::string::String,
-    /// VPC Access configuration to use for this Task. For more information,
-    /// visit <https://cloud.google.com/run/docs/configuring/connecting-vpc.>
+    /// Optional. VPC Access configuration to use for this Task. For more
+    /// information, visit
+    /// <https://cloud.google.com/run/docs/configuring/connecting-vpc.>
     #[prost(message, optional, tag = "8")]
     pub vpc_access: ::core::option::Option<VpcAccess>,
     #[prost(oneof = "task_template::Retries", tags = "3")]
@@ -1172,7 +1181,7 @@ pub struct TaskTemplate {
 /// Nested message and enum types in `TaskTemplate`.
 pub mod task_template {
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Retries {
         /// Number of retries allowed per Task, before marking this Task failed.
         /// Defaults to 3.
@@ -1507,7 +1516,8 @@ pub mod executions_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists Executions from a Job.
+        /// Lists Executions from a Job. Results are sorted by creation time,
+        /// descending.
         pub async fn list_executions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListExecutionsRequest>,
@@ -1692,9 +1702,9 @@ pub struct UpdateJobRequest {
     /// populated, without persisting the request or updating any resources.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
-    /// If set to true, and if the Job does not exist, it will create a new
-    /// one. Caller must have both create and update permissions for this call if
-    /// this is set to true.
+    /// Optional. If set to true, and if the Job does not exist, it will create a
+    /// new one. Caller must have both create and update permissions for this call
+    /// if this is set to true.
     #[prost(bool, tag = "4")]
     pub allow_missing: bool,
 }
@@ -1872,7 +1882,8 @@ pub struct Job {
     /// Output only. The last-modified time.
     #[prost(message, optional, tag = "7")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The deletion time.
+    /// Output only. The deletion time. It is only populated as a response to a
+    /// Delete request.
     #[prost(message, optional, tag = "8")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. For a deleted resource, the time after which it will be
@@ -1959,6 +1970,25 @@ pub struct Job {
     /// resource. May be used to detect modification conflict during updates.
     #[prost(string, tag = "99")]
     pub etag: ::prost::alloc::string::String,
+    #[prost(oneof = "job::CreateExecution", tags = "26, 27")]
+    pub create_execution: ::core::option::Option<job::CreateExecution>,
+}
+/// Nested message and enum types in `Job`.
+pub mod job {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum CreateExecution {
+        /// A unique string used as a suffix creating a new execution. The Job will
+        /// become ready when the execution is successfully started.
+        /// The sum of job name and token length must be fewer than 63 characters.
+        #[prost(string, tag = "26")]
+        StartExecutionToken(::prost::alloc::string::String),
+        /// A unique string used as a suffix for creating a new execution. The Job
+        /// will become ready when the execution is successfully completed.
+        /// The sum of job name and token length must be fewer than 63 characters.
+        #[prost(string, tag = "27")]
+        RunExecutionToken(::prost::alloc::string::String),
+    }
 }
 /// Reference to an Execution. Use /Executions.GetExecution with the given name
 /// to get full execution including the latest status.
@@ -1974,6 +2004,71 @@ pub struct ExecutionReference {
     /// Creation timestamp of the execution.
     #[prost(message, optional, tag = "3")]
     pub completion_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The deletion time of the execution. It is only
+    /// populated as a response to a Delete request.
+    #[prost(message, optional, tag = "5")]
+    pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Status for the execution completion.
+    #[prost(enumeration = "execution_reference::CompletionStatus", tag = "4")]
+    pub completion_status: i32,
+}
+/// Nested message and enum types in `ExecutionReference`.
+pub mod execution_reference {
+    /// Possible execution completion status.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CompletionStatus {
+        /// The default value. This value is used if the state is omitted.
+        Unspecified = 0,
+        /// Job execution has succeeded.
+        ExecutionSucceeded = 1,
+        /// Job execution has failed.
+        ExecutionFailed = 2,
+        /// Job execution is running normally.
+        ExecutionRunning = 3,
+        /// Waiting for backing resources to be provisioned.
+        ExecutionPending = 4,
+        /// Job execution has been cancelled by the user.
+        ExecutionCancelled = 5,
+    }
+    impl CompletionStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                CompletionStatus::Unspecified => "COMPLETION_STATUS_UNSPECIFIED",
+                CompletionStatus::ExecutionSucceeded => "EXECUTION_SUCCEEDED",
+                CompletionStatus::ExecutionFailed => "EXECUTION_FAILED",
+                CompletionStatus::ExecutionRunning => "EXECUTION_RUNNING",
+                CompletionStatus::ExecutionPending => "EXECUTION_PENDING",
+                CompletionStatus::ExecutionCancelled => "EXECUTION_CANCELLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPLETION_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXECUTION_SUCCEEDED" => Some(Self::ExecutionSucceeded),
+                "EXECUTION_FAILED" => Some(Self::ExecutionFailed),
+                "EXECUTION_RUNNING" => Some(Self::ExecutionRunning),
+                "EXECUTION_PENDING" => Some(Self::ExecutionPending),
+                "EXECUTION_CANCELLED" => Some(Self::ExecutionCancelled),
+                _ => None,
+            }
+        }
+    }
 }
 /// Generated client implementations.
 pub mod jobs_client {
@@ -2110,7 +2205,7 @@ pub mod jobs_client {
                 .insert(GrpcMethod::new("google.cloud.run.v2.Jobs", "GetJob"));
             self.inner.unary(req, path, codec).await
         }
-        /// Lists Jobs.
+        /// Lists Jobs. Results are sorted by creation time, descending.
         pub async fn list_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListJobsRequest>,
@@ -2310,7 +2405,7 @@ pub mod jobs_client {
 }
 /// Effective settings for the current revision
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RevisionScalingStatus {
     /// The current number of min instances provisioned for this revision.
     #[prost(int32, tag = "1")]
@@ -2628,7 +2723,8 @@ pub mod revisions_client {
                 .insert(GrpcMethod::new("google.cloud.run.v2.Revisions", "GetRevision"));
             self.inner.unary(req, path, codec).await
         }
-        /// Lists Revisions from a given Service, or from a given location.
+        /// Lists Revisions from a given Service, or from a given location.  Results
+        /// are sorted by creation time, descending.
         pub async fn list_revisions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRevisionsRequest>,
@@ -2691,15 +2787,14 @@ pub mod revisions_client {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RevisionTemplate {
-    /// The unique name for the revision. If this field is omitted, it will be
-    /// automatically generated based on the Service name.
+    /// Optional. The unique name for the revision. If this field is omitted, it
+    /// will be automatically generated based on the Service name.
     #[prost(string, tag = "1")]
     pub revision: ::prost::alloc::string::String,
-    /// Unstructured key value map that can be used to organize and categorize
-    /// objects.
-    /// User-provided labels are shared with Google's billing system, so they can
-    /// be used to filter, or break down billing charges by team, component,
-    /// environment, state, etc. For more information, visit
+    /// Optional. Unstructured key value map that can be used to organize and
+    /// categorize objects. User-provided labels are shared with Google's billing
+    /// system, so they can be used to filter, or break down billing charges by
+    /// team, component, environment, state, etc. For more information, visit
     /// <https://cloud.google.com/resource-manager/docs/creating-managing-labels> or
     /// <https://cloud.google.com/run/docs/configuring/labels.>
     ///
@@ -2712,9 +2807,9 @@ pub struct RevisionTemplate {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Unstructured key value map that may be set by external tools to store and
-    /// arbitrary metadata. They are not queryable and should be preserved
-    /// when modifying objects.
+    /// Optional. Unstructured key value map that may be set by external tools to
+    /// store and arbitrary metadata. They are not queryable and should be
+    /// preserved when modifying objects.
     ///
     /// <p>Cloud Run API v2 does not support annotations with `run.googleapis.com`,
     /// `cloud.googleapis.com`, `serving.knative.dev`, or `autoscaling.knative.dev`
@@ -2728,19 +2823,20 @@ pub struct RevisionTemplate {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Scaling settings for this Revision.
+    /// Optional. Scaling settings for this Revision.
     #[prost(message, optional, tag = "4")]
     pub scaling: ::core::option::Option<RevisionScaling>,
-    /// VPC Access configuration to use for this Revision. For more information,
-    /// visit <https://cloud.google.com/run/docs/configuring/connecting-vpc.>
+    /// Optional. VPC Access configuration to use for this Revision. For more
+    /// information, visit
+    /// <https://cloud.google.com/run/docs/configuring/connecting-vpc.>
     #[prost(message, optional, tag = "6")]
     pub vpc_access: ::core::option::Option<VpcAccess>,
-    /// Max allowed time for an instance to respond to a request.
+    /// Optional. Max allowed time for an instance to respond to a request.
     #[prost(message, optional, tag = "8")]
     pub timeout: ::core::option::Option<::prost_types::Duration>,
-    /// Email address of the IAM service account associated with the revision of
-    /// the service. The service account represents the identity of the running
-    /// revision, and determines what permissions the revision has. If not
+    /// Optional. Email address of the IAM service account associated with the
+    /// revision of the service. The service account represents the identity of the
+    /// running revision, and determines what permissions the revision has. If not
     /// provided, the revision will use the project's default service account.
     #[prost(string, tag = "9")]
     pub service_account: ::prost::alloc::string::String,
@@ -2748,10 +2844,10 @@ pub struct RevisionTemplate {
     /// Revision.
     #[prost(message, repeated, tag = "10")]
     pub containers: ::prost::alloc::vec::Vec<Container>,
-    /// A list of Volumes to make available to containers.
+    /// Optional. A list of Volumes to make available to containers.
     #[prost(message, repeated, tag = "11")]
     pub volumes: ::prost::alloc::vec::Vec<Volume>,
-    /// The sandbox environment to host this Revision.
+    /// Optional. The sandbox environment to host this Revision.
     #[prost(enumeration = "ExecutionEnvironment", tag = "13")]
     pub execution_environment: i32,
     /// A reference to a customer managed encryption key (CMEK) to use to encrypt
@@ -2759,7 +2855,8 @@ pub struct RevisionTemplate {
     /// <https://cloud.google.com/run/docs/securing/using-cmek>
     #[prost(string, tag = "14")]
     pub encryption_key: ::prost::alloc::string::String,
-    /// Sets the maximum number of requests that each serving instance can receive.
+    /// Optional. Sets the maximum number of requests that each serving instance
+    /// can receive.
     #[prost(int32, tag = "15")]
     pub max_instance_request_concurrency: i32,
     /// Optional. Enable session affinity.
@@ -2875,6 +2972,9 @@ pub struct CreateServiceRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateServiceRequest {
+    /// Optional. The list of fields to be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The Service to be updated.
     #[prost(message, optional, tag = "1")]
     pub service: ::core::option::Option<Service>,
@@ -2882,9 +2982,9 @@ pub struct UpdateServiceRequest {
     /// populated, without persisting the request or updating any resources.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
-    /// If set to true, and if the Service does not exist, it will create a new
-    /// one. The caller must have 'run.services.create' permissions if this is set
-    /// to true and the Service does not exist.
+    /// Optional. If set to true, and if the Service does not exist, it will create
+    /// a new one. The caller must have 'run.services.create' permissions if this
+    /// is set to true and the Service does not exist.
     #[prost(bool, tag = "4")]
     pub allow_missing: bool,
 }
@@ -3018,7 +3118,8 @@ pub struct Service {
     /// Output only. The last-modified time.
     #[prost(message, optional, tag = "8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The deletion time.
+    /// Output only. The deletion time. It is only populated as a response to a
+    /// Delete request.
     #[prost(message, optional, tag = "9")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. For a deleted resource, the time after which it will be
@@ -3037,12 +3138,12 @@ pub struct Service {
     /// Arbitrary version identifier for the API client.
     #[prost(string, tag = "14")]
     pub client_version: ::prost::alloc::string::String,
-    /// Provides the ingress settings for this Service. On output, returns the
-    /// currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no
-    /// revision is active.
+    /// Optional. Provides the ingress settings for this Service. On output,
+    /// returns the currently observed ingress settings, or
+    /// INGRESS_TRAFFIC_UNSPECIFIED if no revision is active.
     #[prost(enumeration = "IngressTraffic", tag = "15")]
     pub ingress: i32,
-    /// The launch stage as defined by [Google Cloud Platform
+    /// Optional. The launch stage as defined by [Google Cloud Platform
     /// Launch Stages](<https://cloud.google.com/terms/launch-stages>).
     /// Cloud Run supports `ALPHA`, `BETA`, and `GA`. If no value is specified, GA
     /// is assumed.
@@ -3054,15 +3155,15 @@ pub struct Service {
     /// features are used, this field will be BETA on output.
     #[prost(enumeration = "super::super::super::api::LaunchStage", tag = "16")]
     pub launch_stage: i32,
-    /// Settings for the Binary Authorization feature.
+    /// Optional. Settings for the Binary Authorization feature.
     #[prost(message, optional, tag = "17")]
     pub binary_authorization: ::core::option::Option<BinaryAuthorization>,
     /// Required. The template used to create revisions for this Service.
     #[prost(message, optional, tag = "18")]
     pub template: ::core::option::Option<RevisionTemplate>,
-    /// Specifies how to distribute traffic over a collection of Revisions
-    /// belonging to the Service. If traffic is empty or not provided, defaults to
-    /// 100% traffic to the latest `Ready` Revision.
+    /// Optional. Specifies how to distribute traffic over a collection of
+    /// Revisions belonging to the Service. If traffic is empty or not provided,
+    /// defaults to 100% traffic to the latest `Ready` Revision.
     #[prost(message, repeated, tag = "19")]
     pub traffic: ::prost::alloc::vec::Vec<TrafficTarget>,
     /// Optional. Specifies service-level scaling settings
@@ -3284,7 +3385,7 @@ pub mod services_client {
                 .insert(GrpcMethod::new("google.cloud.run.v2.Services", "GetService"));
             self.inner.unary(req, path, codec).await
         }
-        /// Lists Services.
+        /// Lists Services. Results are sorted by creation time, descending.
         pub async fn list_services(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServicesRequest>,

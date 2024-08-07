@@ -179,7 +179,7 @@ pub mod custom_column_service_client {
 /// Request message for
 /// [CustomerService.ListAccessibleCustomers][google.ads.searchads360.v0.services.CustomerService.ListAccessibleCustomers].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ListAccessibleCustomersRequest {}
 /// Response message for
 /// [CustomerService.ListAccessibleCustomers][google.ads.searchads360.v0.services.CustomerService.ListAccessibleCustomers].
