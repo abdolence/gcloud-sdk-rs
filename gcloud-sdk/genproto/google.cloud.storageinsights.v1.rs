@@ -171,7 +171,7 @@ pub struct ReportDetail {
 pub mod report_detail {
     /// Different metrics associated with the generated report.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Metrics {
         /// Count of Cloud Storage objects which are part of the report.
         #[prost(int64, tag = "1")]
@@ -255,7 +255,7 @@ pub struct OperationMetadata {
 ///
 /// Options to setup frequency of report generation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FrequencyOptions {
     /// Frequency of report generation.
     #[prost(enumeration = "frequency_options::Frequency", tag = "1")]
@@ -331,7 +331,7 @@ pub struct CsvOptions {
 }
 /// Options to configure Parquet formatted reports.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ParquetOptions {}
 /// Options to filter data on storage systems.
 /// Next ID: 2

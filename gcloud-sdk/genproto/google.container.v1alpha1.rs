@@ -215,7 +215,7 @@ pub struct MasterAuth {
 }
 /// Configuration for client certificates on the cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ClientCertificateConfig {
     /// Issue a client certificate.
     #[prost(bool, tag = "1")]
@@ -224,7 +224,7 @@ pub struct ClientCertificateConfig {
 /// Configuration for the addons that can be automatically spun up in the
 /// cluster, enabling additional functionality.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddonsConfig {
     /// Configuration for the HTTP (L7) load balancing controller addon, which
     /// makes it easy to set up HTTP load balancers for services in a cluster.
@@ -247,7 +247,7 @@ pub struct AddonsConfig {
 /// Configuration options for the HTTP (L7) load balancing controller addon,
 /// which makes it easy to set up HTTP load balancers for services in a cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HttpLoadBalancing {
     /// Whether the HTTP Load Balancing controller is enabled in the cluster.
     /// When enabled, it runs a small pod in the cluster that manages the load
@@ -259,7 +259,7 @@ pub struct HttpLoadBalancing {
 /// increases or decreases the number of replica pods a replication controller
 /// has based on the resource usage of the existing pods.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HorizontalPodAutoscaling {
     /// Whether the Horizontal Pod Autoscaling feature is enabled in the cluster.
     /// When enabled, it ensures that a Heapster pod is running in the cluster,
@@ -269,7 +269,7 @@ pub struct HorizontalPodAutoscaling {
 }
 /// Configuration for the Kubernetes Dashboard.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct KubernetesDashboard {
     /// Whether the Kubernetes Dashboard is enabled for this cluster.
     #[prost(bool, tag = "1")]
@@ -279,7 +279,7 @@ pub struct KubernetesDashboard {
 /// is enabled or not on the Master, it does not track whether network policy
 /// is enabled for the nodes.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NetworkPolicyConfig {
     /// Whether NetworkPolicy is enabled for this cluster.
     #[prost(bool, tag = "1")]
@@ -319,7 +319,7 @@ pub mod master_authorized_networks_config {
 /// Configuration options for the NetworkPolicy feature.
 /// <https://kubernetes.io/docs/concepts/services-networking/networkpolicies/>
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NetworkPolicy {
     /// The selected network policy provider.
     #[prost(enumeration = "network_policy::Provider", tag = "1")]
@@ -467,7 +467,7 @@ pub struct IpAllocationPolicy {
 }
 /// Configuration for the PodSecurityPolicy feature.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PodSecurityPolicyConfig {
     /// Enable the PodSecurityPolicy controller for this cluster. If enabled, pods
     /// must be valid under a PodSecurityPolicy to be created.
@@ -1936,7 +1936,7 @@ pub struct ListNodePoolsResponse {
 /// NodePoolAutoscaling contains information required by cluster autoscaler to
 /// adjust the size of the node pool to the current cluster usage.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NodePoolAutoscaling {
     /// Is autoscaling enabled for this node pool.
     #[prost(bool, tag = "1")]

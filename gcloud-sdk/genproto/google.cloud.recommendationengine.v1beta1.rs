@@ -178,7 +178,7 @@ pub struct ProductCatalogItem {
 pub mod product_catalog_item {
     /// Exact product price.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ExactPrice {
         /// Optional. Display price of the product.
         #[prost(float, tag = "1")]
@@ -191,7 +191,7 @@ pub mod product_catalog_item {
     /// Product price range when there are a range of prices for different
     /// variations of the same product.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PriceRange {
         /// Required. The minimum product price.
         #[prost(float, tag = "1")]
@@ -250,7 +250,7 @@ pub mod product_catalog_item {
     }
     /// Product price. Only one of 'exactPrice'/'priceRange' can be provided.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Price {
         /// Optional. The exact product price.
         #[prost(message, tag = "1")]
@@ -807,7 +807,7 @@ pub struct ImportUserEventsResponse {
 /// A summary of import result. The UserEventImportSummary summarizes
 /// the import status for user events.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UserEventImportSummary {
     /// Count of user events imported with complete existing catalog information.
     #[prost(int64, tag = "1")]

@@ -32,7 +32,7 @@ pub struct RunPipelineRequest {
 /// The response to the RunPipeline method, returned in the operation's result
 /// field on success.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RunPipelineResponse {}
 /// Specifies a series of actions to execute, expressed as Docker containers.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -770,7 +770,7 @@ pub struct ContainerStoppedEvent {
 /// continue, but only actions that are flagged as `ALWAYS_RUN` will be
 /// executed. Other actions will be skipped.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UnexpectedExitStatusEvent {
     /// The numeric ID of the action that started the container.
     #[prost(int32, tag = "1")]
@@ -783,7 +783,7 @@ pub struct UnexpectedExitStatusEvent {
 /// worker. Currently, this only occurs when the container outlives the
 /// timeout specified by the user.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ContainerKilledEvent {
     /// The numeric ID of the action that started the container.
     #[prost(int32, tag = "1")]

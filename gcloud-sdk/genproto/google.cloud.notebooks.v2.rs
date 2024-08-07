@@ -233,7 +233,7 @@ pub struct ContainerImage {
 /// Engine](<https://cloud.google.com/compute/docs/gpus/#gpus-list>) to find a
 /// valid combination.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AcceleratorConfig {
     /// Optional. Type of this accelerator.
     #[prost(enumeration = "accelerator_config::AcceleratorType", tag = "1")]
@@ -326,7 +326,7 @@ pub mod accelerator_config {
 /// features](<https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>).
 /// Not all combinations are valid.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ShieldedInstanceConfig {
     /// Optional. Defines whether the VM instance has Secure Boot enabled.
     ///

@@ -245,7 +245,7 @@ pub struct PromotionStatus {
 pub mod promotion_status {
     /// The status for the specified destination.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DestinationStatus {
         /// Output only. The name of the promotion destination.
         #[prost(

@@ -137,7 +137,7 @@ pub struct BigQueryRoutineSpec {
 }
 /// Entry metadata relevant only to the user and private to them.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PersonalDetails {
     /// True if the entry is starred by the user; false otherwise.
     #[prost(bool, tag = "1")]
@@ -378,15 +378,15 @@ pub mod physical_schema {
     }
     /// Marks a Parquet-encoded data source.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ParquetSchema {}
     /// Marks an ORC-encoded data source.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct OrcSchema {}
     /// Marks a CSV-encoded data source.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CsvSchema {}
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -482,7 +482,7 @@ pub struct DataplexExternalTable {
 }
 /// Timestamps associated with this resource in a particular system.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SystemTimestamps {
     /// Creation timestamp of the resource within the given system.
     #[prost(message, optional, tag = "1")]
@@ -630,7 +630,7 @@ pub struct ColumnSchema {
 pub mod column_schema {
     /// Column info specific to Looker System.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LookerColumnSpec {
         /// Looker specific column type of this column.
         #[prost(enumeration = "looker_column_spec::LookerColumnType", tag = "1")]
@@ -756,7 +756,7 @@ pub mod column_schema {
     }
     /// Information only applying for columns in Entries from a specific system.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum SystemSpec {
         /// Looker specific column info of this column.
         #[prost(message, tag = "18")]
@@ -1335,7 +1335,7 @@ pub mod field_type {
 ///    \[Querying multiple tables using a wildcard table\]
 ///    (<https://cloud.google.com/bigquery/docs/querying-wildcard-tables>)
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UsageStats {
     /// The number of successful uses of the underlying entry.
     #[prost(float, tag = "1")]
@@ -1354,7 +1354,7 @@ pub struct UsageStats {
 ///
 /// They can be set on any system.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CommonUsageStats {
     /// View count in source system.
     #[prost(int64, optional, tag = "1")]
@@ -2338,7 +2338,7 @@ pub mod routine_spec {
 /// Specification that applies to a dataset. Valid only for
 /// entries with the `DATASET` type.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DatasetSpec {
     /// Fields specific to the source system.
     #[prost(oneof = "dataset_spec::SystemSpec", tags = "2")]
@@ -2348,7 +2348,7 @@ pub struct DatasetSpec {
 pub mod dataset_spec {
     /// Fields specific to the source system.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum SystemSpec {
         /// Vertex AI Dataset specific fields
         #[prost(message, tag = "2")]
@@ -2478,7 +2478,7 @@ pub mod service_spec {
 }
 /// Detail description of the source information of a Vertex model.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VertexModelSourceInfo {
     /// Type of the model source.
     #[prost(enumeration = "vertex_model_source_info::ModelSourceType", tag = "1")]
@@ -2567,7 +2567,7 @@ pub struct VertexModelSpec {
 }
 /// Specification for vertex dataset resources.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VertexDatasetSpec {
     /// The number of DataItems in this Dataset. Only apply for non-structured
     /// Dataset.
@@ -3021,7 +3021,7 @@ pub struct ReconcileTagsRequest {
 /// response message returned by
 /// [ReconcileTags][google.cloud.datacatalog.v1.DataCatalog.ReconcileTags].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReconcileTagsResponse {
     /// Number of tags created in the request.
     #[prost(int64, tag = "1")]
@@ -3154,7 +3154,7 @@ pub struct StarEntryRequest {
 /// [StarEntry][google.cloud.datacatalog.v1.DataCatalog.StarEntry].
 /// Empty for now
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StarEntryResponse {}
 /// Request message for
 /// [UnstarEntry][google.cloud.datacatalog.v1.DataCatalog.UnstarEntry].
@@ -3169,7 +3169,7 @@ pub struct UnstarEntryRequest {
 /// [UnstarEntry][google.cloud.datacatalog.v1.DataCatalog.UnstarEntry].
 /// Empty for now
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UnstarEntryResponse {}
 /// Request message for
 /// [ImportEntries][google.cloud.datacatalog.v1.DataCatalog.ImportEntries]
@@ -3203,7 +3203,7 @@ pub mod import_entries_request {
 /// returned by the
 /// [ImportEntries][google.cloud.datacatalog.v1.DataCatalog.ImportEntries].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportEntriesResponse {
     /// Cumulative number of entries created and entries updated as a result of
     /// import operation.
@@ -5730,7 +5730,7 @@ pub struct ExportTaxonomiesRequest {
 pub mod export_taxonomies_request {
     /// Required. Export destination for taxonomies.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Serialized export taxonomies that contain all the policy
         /// tags as nested protocol buffers.

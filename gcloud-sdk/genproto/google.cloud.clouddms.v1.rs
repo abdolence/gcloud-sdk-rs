@@ -268,7 +268,7 @@ pub struct SqlAclEntry {
 pub mod sql_acl_entry {
     /// The access control entry entry expiration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Expiration {
         /// The time when this access control entry expires in
         /// [RFC 3339](<https://tools.ietf.org/html/rfc3339>) format, for example:
@@ -754,7 +754,7 @@ pub mod alloy_db_settings {
     pub mod primary_instance_settings {
         /// MachineConfig describes the configuration of a machine.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct MachineConfig {
             /// The number of CPU's in the VM instance.
             #[prost(int32, tag = "1")]
@@ -778,7 +778,7 @@ pub mod alloy_db_settings {
 /// instance from the Cloud SQL console or using Cloud SQL APIs. No additional
 /// configuration is required.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StaticIpConnectivity {}
 /// [Private Service Connect
 /// connectivity](<https://cloud.google.com/vpc/docs/private-service-connect#service-attachments>)
@@ -862,7 +862,7 @@ pub mod forward_ssh_tunnel_connectivity {
 }
 /// Static IP address connectivity configured on service project.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StaticServiceIpConnectivity {}
 /// Private Connectivity.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -874,7 +874,7 @@ pub struct PrivateConnectivity {
 }
 /// A message defining the database engine and provider.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DatabaseType {
     /// The database provider.
     #[prost(enumeration = "DatabaseProvider", tag = "1")]
@@ -1010,7 +1010,7 @@ pub mod migration_job {
     }
     /// Performance configuration definition.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PerformanceConfig {
         /// Initial dump parallelism level.
         #[prost(enumeration = "performance_config::DumpParallelLevel", tag = "1")]
@@ -2381,7 +2381,7 @@ pub struct MultiColumnDatatypeChange {
 pub mod multi_column_datatype_change {
     /// Filter on source column parameters.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum SourceFilter {
         /// Optional. Filter for text-based data types like varchar.
         #[prost(message, tag = "100")]
@@ -2394,7 +2394,7 @@ pub mod multi_column_datatype_change {
 }
 /// Filter for text-based data types like varchar.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SourceTextFilter {
     /// Optional. The filter will match columns with length greater than or equal
     /// to this number.
@@ -2407,7 +2407,7 @@ pub struct SourceTextFilter {
 }
 /// Filter for fixed point number data types such as NUMERIC/NUMBER
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SourceNumericFilter {
     /// Optional. The filter will match columns with scale greater than or equal to
     /// this number.
@@ -2453,7 +2453,7 @@ pub struct ConditionalColumnSetValue {
 /// Nested message and enum types in `ConditionalColumnSetValue`.
 pub mod conditional_column_set_value {
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum SourceFilter {
         /// Optional. Optional filter on source column length. Used for text based
         /// data types like varchar.
@@ -2536,7 +2536,7 @@ pub mod value_transformation {
 /// filter field, which is whether or not to work on tables which already have a
 /// primary key defined.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ConvertRowIdToColumn {
     /// Required. Only work on tables without primary key defined
     #[prost(bool, tag = "1")]
@@ -2626,7 +2626,7 @@ pub struct ValueListFilter {
 /// Filter based on relation between source value and compare value of type
 /// integer in ConditionalColumnSetValue
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct IntComparisonFilter {
     /// Required. Relation between source value and compare value
     #[prost(enumeration = "ValueComparison", tag = "1")]
@@ -2638,7 +2638,7 @@ pub struct IntComparisonFilter {
 /// Filter based on relation between source
 /// value and compare value of type double in ConditionalColumnSetValue
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DoubleComparisonFilter {
     /// Required. Relation between source value and compare value
     #[prost(enumeration = "ValueComparison", tag = "1")]
@@ -2657,7 +2657,7 @@ pub struct AssignSpecificValue {
 }
 /// Apply a hash function on the value.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ApplyHash {
     #[prost(oneof = "apply_hash::HashFunction", tags = "100")]
     pub hash_function: ::core::option::Option<apply_hash::HashFunction>,
@@ -2665,7 +2665,7 @@ pub struct ApplyHash {
 /// Nested message and enum types in `ApplyHash`.
 pub mod apply_hash {
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum HashFunction {
         /// Optional. Generate UUID from the data's byte array
         #[prost(message, tag = "100")]
@@ -2676,7 +2676,7 @@ pub mod apply_hash {
 /// after the decimal point, specify round to scale value = 2. If for example the
 /// value needs to be converted to an integer, use round to scale value = 0.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RoundToScale {
     /// Required. Scale value to be used
     #[prost(int32, tag = "1")]
@@ -3211,7 +3211,7 @@ pub struct EntityIssue {
 pub mod entity_issue {
     /// Issue position.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Position {
         /// Issue line number
         #[prost(int32, tag = "1")]

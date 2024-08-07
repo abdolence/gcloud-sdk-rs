@@ -154,7 +154,7 @@ pub mod policy_topic_evidence {
     pub mod destination_not_working {
         /// Indicates the reason of the DESTINATION_NOT_WORKING policy finding.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Reason {
             /// The type of DNS error.
             #[prost(
@@ -218,7 +218,7 @@ pub mod policy_topic_constraint {
     /// Indicates that a policy topic was constrained due to disapproval of the
     /// website for reseller purposes.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ResellerConstraint {}
     /// Indicates that a resource's ability to serve in a particular country is
     /// constrained.
@@ -440,19 +440,19 @@ pub struct ExpandedDynamicSearchAdInfo {
 }
 /// A hotel ad.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HotelAdInfo {}
 /// A travel ad.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TravelAdInfo {}
 /// A Smart Shopping ad.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ShoppingSmartAdInfo {}
 /// A standard Shopping ad.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ShoppingProductAdInfo {}
 /// A Shopping Comparison Listing ad.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1015,7 +1015,7 @@ pub mod display_upload_ad_info {
 }
 /// Specification for various creative controls for a responsive display ad.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ResponsiveDisplayAdControlSpec {
     /// Whether the advertiser has opted into the asset enhancements feature.
     #[prost(bool, tag = "1")]
@@ -1483,7 +1483,7 @@ pub struct LocationInfo {
 }
 /// A device criterion.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeviceInfo {
     /// Type of the device.
     #[prost(enumeration = "super::enums::device_enum::Device", tag = "1")]
@@ -1632,7 +1632,7 @@ pub struct HotelIdInfo {
 }
 /// Class of the hotel as a number of stars 1 to 5.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HotelClassInfo {
     /// Long value of the hotel class.
     #[prost(int64, optional, tag = "2")]
@@ -1664,7 +1664,7 @@ pub struct HotelCityInfo {
 }
 /// Category of a product offer.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ProductCategoryInfo {
     /// ID of the product category.
     ///
@@ -1689,7 +1689,7 @@ pub struct ProductBrandInfo {
 }
 /// Locality of a product offer.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ProductChannelInfo {
     /// Value of the locality.
     #[prost(
@@ -1700,7 +1700,7 @@ pub struct ProductChannelInfo {
 }
 /// Availability of a product offer.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ProductChannelExclusivityInfo {
     /// Value of the availability.
     #[prost(
@@ -1711,7 +1711,7 @@ pub struct ProductChannelExclusivityInfo {
 }
 /// Condition of a product offer.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ProductConditionInfo {
     /// Value of the condition.
     #[prost(
@@ -1794,11 +1794,11 @@ pub struct ProductTypeFullInfo {
 }
 /// Unknown listing dimension.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UnknownListingDimensionInfo {}
 /// Criterion for hotel date selection (default dates versus user selected).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HotelDateSelectionTypeInfo {
     /// Type of the hotel date selection
     #[prost(
@@ -1809,7 +1809,7 @@ pub struct HotelDateSelectionTypeInfo {
 }
 /// Criterion for number of days prior to the stay the booking is being made.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HotelAdvanceBookingWindowInfo {
     /// Low end of the number of days prior to the stay.
     #[prost(int64, optional, tag = "3")]
@@ -1820,7 +1820,7 @@ pub struct HotelAdvanceBookingWindowInfo {
 }
 /// Criterion for length of hotel stay in nights.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HotelLengthOfStayInfo {
     /// Low end of the number of nights in the stay.
     #[prost(int64, optional, tag = "3")]
@@ -1842,7 +1842,7 @@ pub struct HotelCheckInDateRangeInfo {
 }
 /// Criterion for day of the week the booking is for.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HotelCheckInDayInfo {
     /// The day of the week.
     #[prost(enumeration = "super::enums::day_of_week_enum::DayOfWeek", tag = "1")]
@@ -1858,7 +1858,7 @@ pub struct ActivityIdInfo {
 }
 /// Rating of the activity as a number 1 to 5, where 5 is the best.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ActivityRatingInfo {
     /// Long value of the activity rating.
     #[prost(int64, optional, tag = "1")]
@@ -1893,7 +1893,7 @@ pub struct ActivityCityInfo {
 }
 /// Criterion for Interaction Type.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InteractionTypeInfo {
     /// The interaction type.
     #[prost(
@@ -1909,7 +1909,7 @@ pub struct InteractionTypeInfo {
 ///
 /// No more than six AdSchedules can be added for the same day.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AdScheduleInfo {
     /// Minutes after the start hour at which this schedule starts.
     ///
@@ -1947,7 +1947,7 @@ pub struct AdScheduleInfo {
 }
 /// An age range criterion.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AgeRangeInfo {
     /// Type of the age range.
     #[prost(enumeration = "super::enums::age_range_type_enum::AgeRangeType", tag = "1")]
@@ -1955,7 +1955,7 @@ pub struct AgeRangeInfo {
 }
 /// A gender criterion.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GenderInfo {
     /// Type of the gender.
     #[prost(enumeration = "super::enums::gender_type_enum::GenderType", tag = "1")]
@@ -1963,7 +1963,7 @@ pub struct GenderInfo {
 }
 /// An income range criterion.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct IncomeRangeInfo {
     /// Type of the income range.
     #[prost(
@@ -1974,7 +1974,7 @@ pub struct IncomeRangeInfo {
 }
 /// A parental status criterion.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ParentalStatusInfo {
     /// Type of the parental status.
     #[prost(
@@ -2037,7 +2037,7 @@ pub struct ProximityInfo {
 }
 /// Geo point for proximity criterion.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GeoPointInfo {
     /// Micro degrees for the longitude.
     #[prost(int32, optional, tag = "3")]
@@ -2112,7 +2112,7 @@ pub struct IpBlockInfo {
 }
 /// Content Label for category exclusion.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ContentLabelInfo {
     /// Content label type, required for CREATE operations.
     #[prost(
@@ -2209,7 +2209,7 @@ pub struct OperatingSystemVersionInfo {
 }
 /// An app payment model criterion.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AppPaymentModelInfo {
     /// Type of the app payment model.
     #[prost(
@@ -2670,7 +2670,7 @@ pub struct WebhookDelivery {
 /// Book on Google will change the redirect url to book directly through
 /// Google.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BookOnGoogleAsset {}
 /// A Promotion asset.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3020,7 +3020,7 @@ pub struct PriceOffering {
 }
 /// A call to action asset.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CallToActionAsset {
     /// Call to action.
     #[prost(
@@ -3659,7 +3659,7 @@ pub struct AgeDimension {
 }
 /// Contiguous age range.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AgeSegment {
     /// Minimum age to include. A minimum age must be specified and must be at
     /// least 18. Allowed values are 18, 25, 35, 45, 55, and 65.
@@ -3802,7 +3802,7 @@ pub struct CustomAudienceSegment {
 /// Commission is an automatic bidding strategy in which the advertiser pays a
 /// certain portion of the conversion value.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Commission {
     /// Commission rate defines the portion of the conversion value that the
     /// advertiser will be billed. A commission rate of x should be passed into
@@ -3818,16 +3818,16 @@ pub struct Commission {
 /// This bidding strategy is deprecated and cannot be created anymore. Use
 /// ManualCpc with enhanced_cpc_enabled set to true for equivalent functionality.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EnhancedCpc {}
 /// Manual bidding strategy that allows advertiser to set the bid per
 /// advertiser-specified action.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ManualCpa {}
 /// Manual click-based bidding where user pays per click.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ManualCpc {
     /// Whether bids are to be enhanced based on conversion optimizer data.
     #[prost(bool, optional, tag = "2")]
@@ -3835,16 +3835,16 @@ pub struct ManualCpc {
 }
 /// Manual impression-based bidding where user pays per thousand impressions.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ManualCpm {}
 /// View based bidding where user pays per video view.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ManualCpv {}
 /// An automated bidding strategy to help get the most conversions for your
 /// campaigns while spending your budget.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MaximizeConversions {
     /// Maximum bid limit that can be set by the bid strategy.
     /// The limit applies to all keywords managed by the strategy.
@@ -3868,7 +3868,7 @@ pub struct MaximizeConversions {
 /// An automated bidding strategy to help get the most conversion value for your
 /// campaigns while spending your budget.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MaximizeConversionValue {
     /// The target return on ad spend (ROAS) option. If set, the bid strategy will
     /// maximize revenue while averaging the target return on ad spend. If the
@@ -3891,7 +3891,7 @@ pub struct MaximizeConversionValue {
 /// An automated bid strategy that sets bids to help get as many conversions as
 /// possible at the target cost-per-acquisition (CPA) you set.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TargetCpa {
     /// Average CPA target.
     /// This target should be greater than or equal to minimum billable unit based
@@ -3912,7 +3912,7 @@ pub struct TargetCpa {
 /// Target CPM (cost per thousand impressions) is an automated bidding strategy
 /// that sets bids to optimize performance given the target CPM you set.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TargetCpm {
     /// Additional information related to bidding goal.
     #[prost(oneof = "target_cpm::Goal", tags = "1")]
@@ -3922,7 +3922,7 @@ pub struct TargetCpm {
 pub mod target_cpm {
     /// Additional information related to bidding goal.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Goal {
         /// Target Frequency bidding goal details.
         #[prost(message, tag = "1")]
@@ -3931,7 +3931,7 @@ pub mod target_cpm {
 }
 /// Target Frequency bidding goal details.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TargetCpmTargetFrequencyGoal {
     /// Target Frequency count representing how many times you want to reach
     /// a single user.
@@ -3949,7 +3949,7 @@ pub struct TargetCpmTargetFrequencyGoal {
 /// search ads are shown at the top of the first page (or other targeted
 /// location).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TargetImpressionShare {
     /// The targeted location on the search results page.
     #[prost(
@@ -3970,7 +3970,7 @@ pub struct TargetImpressionShare {
 /// An automated bidding strategy that helps you maximize revenue while
 /// averaging a specific target return on ad spend (ROAS).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TargetRoas {
     /// Required. The chosen revenue (based on conversion data) per unit of spend.
     /// Value must be between 0.01 and 1000.0, inclusive.
@@ -3990,7 +3990,7 @@ pub struct TargetRoas {
 /// An automated bid strategy that sets your bids to help get as many clicks
 /// as possible within your budget.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TargetSpend {
     /// The spend target under which to maximize clicks.
     /// A TargetSpend bidder will attempt to spend the smaller of this value
@@ -4010,7 +4010,7 @@ pub struct TargetSpend {
 /// A bidding strategy where bids are a fraction of the advertised price for
 /// some good or service.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PercentCpc {
     /// Maximum bid limit that can be set by the bid strategy. This is
     /// an optional field entered by the advertiser and specified in local micros.
@@ -4047,7 +4047,7 @@ pub struct ClickLocation {
 }
 /// Consent
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Consent {
     /// This represents consent for ad user data.
     #[prost(enumeration = "super::enums::consent_status_enum::ConsentStatus", tag = "1")]
@@ -4168,7 +4168,7 @@ pub struct DateRange {
 /// The year month range inclusive of the start and end months.
 /// Eg: A year month range to represent Jan 2020 would be: (Jan 2020, Jan 2020).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct YearMonthRange {
     /// The inclusive start year month.
     #[prost(message, optional, tag = "1")]
@@ -4179,7 +4179,7 @@ pub struct YearMonthRange {
 }
 /// Year month.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct YearMonth {
     /// The year (for example, 2020).
     #[prost(int64, tag = "1")]
@@ -4629,7 +4629,7 @@ pub struct FinalAppUrl {
 /// A rule specifying the maximum number of times an ad (or some set of ads) can
 /// be shown to a user over a particular time period.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FrequencyCapEntry {
     /// The key of a particular frequency cap. There can be no more
     /// than one frequency cap with the same key.
@@ -4642,7 +4642,7 @@ pub struct FrequencyCapEntry {
 /// A group of fields used as keys for a frequency cap.
 /// There can be no more than one frequency cap with the same key.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FrequencyCapKey {
     /// The level on which the cap is to be applied (for example, ad group ad, ad
     /// group). The cap is applied to all the entities of this level.
@@ -4706,7 +4706,7 @@ pub struct KeywordPlanHistoricalMetrics {
 }
 /// Historical metrics options.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HistoricalMetricsOptions {
     /// The year month range for historical metrics. If not specified, metrics
     /// for the past 12 months are returned.
@@ -4722,7 +4722,7 @@ pub struct HistoricalMetricsOptions {
 }
 /// Monthly search volume.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MonthlySearchVolume {
     /// The year of the search volume (for example, 2020).
     #[prost(int64, optional, tag = "4")]
@@ -4763,7 +4763,7 @@ pub struct KeywordPlanAggregateMetricResults {
 }
 /// The total searches for the device type during the specified time period.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct KeywordPlanDeviceSearches {
     /// The device type.
     #[prost(enumeration = "super::enums::device_enum::Device", tag = "1")]
@@ -4807,7 +4807,7 @@ pub struct ConceptGroup {
 }
 /// Lifecycle goal value settings.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LifecycleGoalValueSettings {
     /// Value of the lifecycle goal. For example, for customer acquisition goal,
     /// value is the incremental conversion value for new customers who are not of
@@ -4915,7 +4915,7 @@ pub mod operand {
     /// A feed attribute operand in a matching function.
     /// Used to represent a feed attribute in feed.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct FeedAttributeOperand {
         /// The associated feed. Required.
         #[prost(int64, optional, tag = "3")]
@@ -4935,7 +4935,7 @@ pub mod operand {
     }
     /// An operand in a function referring to a value in the request context.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RequestContextOperand {
         /// Type of value to be referred in the request context.
         #[prost(
@@ -4965,7 +4965,7 @@ pub mod operand {
 }
 /// A metric goal for an experiment.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MetricGoal {
     /// The metric of the goal. For example, clicks, impressions, cost,
     /// conversions, etc.
@@ -6025,7 +6025,7 @@ pub struct Metrics {
 /// Search volume range.
 /// Actual search volume falls within this range.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SearchVolumeRange {
     /// Lower bound of search volume.
     #[prost(int64, optional, tag = "1")]
@@ -6412,7 +6412,7 @@ pub struct PolicySummary {
 /// Settings for Real-Time Bidding, a feature only available for campaigns
 /// targeting the Ad Exchange network.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RealTimeBiddingSetting {
     /// Whether the campaign is opted in to real-time bidding.
     #[prost(bool, optional, tag = "2")]
@@ -6979,7 +6979,7 @@ pub struct TargetImpressionShareSimulationPointList {
 }
 /// Projected metrics for a specific CPC bid amount.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CpcBidSimulationPoint {
     /// Projected required daily budget that the advertiser must set in order to
     /// receive the estimated traffic, in micros of advertiser currency.
@@ -7020,7 +7020,7 @@ pub mod cpc_bid_simulation_point {
     /// When SimulationModificationMethod = SCALING,
     /// cpc_bid_scaling_modifier is set.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum CpcSimulationKeyValue {
         /// The simulated CPC bid upon which projected metrics are based.
         #[prost(int64, tag = "15")]
@@ -7034,7 +7034,7 @@ pub mod cpc_bid_simulation_point {
 }
 /// Projected metrics for a specific CPV bid amount.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CpvBidSimulationPoint {
     /// The simulated CPV bid upon which projected metrics are based.
     #[prost(int64, optional, tag = "5")]
@@ -7051,7 +7051,7 @@ pub struct CpvBidSimulationPoint {
 }
 /// Projected metrics for a specific target CPA amount.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TargetCpaSimulationPoint {
     /// Projected required daily budget that the advertiser must set in order to
     /// receive the estimated traffic, in micros of advertiser currency.
@@ -7105,7 +7105,7 @@ pub mod target_cpa_simulation_point {
     /// When SimulationModificationMethod = SCALING,
     /// target_cpa_scaling_modifier is set.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum TargetCpaSimulationKeyValue {
         /// The simulated target CPA upon which projected metrics are based.
         #[prost(int64, tag = "17")]
@@ -7119,7 +7119,7 @@ pub mod target_cpa_simulation_point {
 }
 /// Projected metrics for a specific target ROAS amount.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TargetRoasSimulationPoint {
     /// The simulated target ROAS upon which projected metrics are based.
     #[prost(double, optional, tag = "8")]
@@ -7151,7 +7151,7 @@ pub struct TargetRoasSimulationPoint {
 /// Projected metrics for a specific percent CPC amount. Only Hotel advertising
 /// channel type supports this field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PercentCpcBidSimulationPoint {
     /// The simulated percent CPC upon which projected metrics are based. Percent
     /// CPC expressed as fraction of the advertised price for some good or service.
@@ -7179,7 +7179,7 @@ pub struct PercentCpcBidSimulationPoint {
 }
 /// Projected metrics for a specific budget amount.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BudgetSimulationPoint {
     /// The simulated budget upon which projected metrics are based.
     #[prost(int64, tag = "1")]
@@ -7215,7 +7215,7 @@ pub struct BudgetSimulationPoint {
 }
 /// Projected metrics for a specific target impression share value.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TargetImpressionShareSimulationPoint {
     /// The simulated target impression share value (in micros) upon which
     /// projected metrics are based.
@@ -7302,7 +7302,7 @@ pub struct TargetingSetting {
 }
 /// The list of per-targeting-dimension targeting settings.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TargetRestriction {
     /// The targeting dimension that these settings apply to.
     #[prost(
@@ -7322,7 +7322,7 @@ pub struct TargetRestriction {
 }
 /// Operation to be performed on a target restriction list in a mutate.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TargetRestrictionOperation {
     /// Type of list operation to perform.
     #[prost(enumeration = "target_restriction_operation::Operator", tag = "1")]
@@ -7562,7 +7562,7 @@ pub struct UserListDateRuleItemInfo {
 }
 /// A rule item composed of a number operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UserListNumberRuleItemInfo {
     /// Number comparison operator.
     /// This field is required and must be populated when creating a new number

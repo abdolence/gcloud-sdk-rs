@@ -224,7 +224,7 @@ pub struct PlusCode {
 /// The metadata for the address. `metadata` is not guaranteed to be fully
 /// populated for every address sent to the Address Validation API.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddressMetadata {
     /// Indicates that this is the address of a business.
     /// If unset, indicates that the value is unknown.
@@ -699,7 +699,7 @@ pub mod provide_validation_feedback_request {
 ///
 /// The response is empty if the feedback is sent successfully.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ProvideValidationFeedbackResponse {}
 /// The result of validating an address.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -725,7 +725,7 @@ pub struct ValidationResult {
 }
 /// High level overview of the address validation result and geocode.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Verdict {
     /// The granularity of the **input** address. This is the result of parsing the
     /// input address and does not give any validation signals. For validation

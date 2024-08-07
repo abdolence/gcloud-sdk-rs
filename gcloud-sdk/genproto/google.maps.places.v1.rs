@@ -182,7 +182,7 @@ pub mod contextual_content {
             pub mod highlighted_text {
                 /// The range of highlighted text.
                 #[allow(clippy::derive_partial_eq_without_eq)]
-                #[derive(Clone, PartialEq, ::prost::Message)]
+                #[derive(Clone, Copy, PartialEq, ::prost::Message)]
                 pub struct HighlightedTextRange {
                     #[prost(int32, tag = "1")]
                     pub start_index: i32,
@@ -197,7 +197,7 @@ pub mod contextual_content {
         /// BusinessAvailabilityAttributes justifications. This shows some attributes
         /// a business has that could interest an end user.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct BusinessAvailabilityAttributesJustification {
             /// If a place provides takeout.
             #[prost(bool, tag = "1")]
@@ -254,7 +254,7 @@ pub mod ev_charge_options {
     /// Shows EV charge aggregation of connectors that have the same type and max
     /// charge rate in kw.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ConnectorAggregation {
         /// The connector type of this aggregation.
         #[prost(enumeration = "super::EvConnectorType", tag = "1")]
@@ -492,7 +492,7 @@ pub mod fuel_options {
 }
 /// Circle with a LatLng as center and radius.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Circle {
     /// Required. Center latitude and longitude.
     ///
@@ -839,7 +839,7 @@ pub mod place {
     pub mod opening_hours {
         /// A period the place remains in open_now status.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Period {
             /// The time that the place starts to be open.
             #[prost(message, optional, tag = "1")]
@@ -852,7 +852,7 @@ pub mod place {
         pub mod period {
             /// Status changing points.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct Point {
                 /// A day of the week, as an integer in the range 0-6.  0 is Sunday, 1 is
                 /// Monday, etc.
@@ -882,7 +882,7 @@ pub mod place {
         /// the returned opening hours cover. Special days are days that could impact
         /// the business hours of a place, e.g. Christmas day.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct SpecialDay {
             /// The date of this special day.
             #[prost(message, optional, tag = "1")]
@@ -991,7 +991,7 @@ pub mod place {
     }
     /// Payment options the place accepts.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PaymentOptions {
         /// Place accepts credit cards as payment.
         #[prost(bool, optional, tag = "1")]
@@ -1010,7 +1010,7 @@ pub mod place {
     /// Information about parking options for the place. A parking lot could
     /// support more than one option at the same time.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ParkingOptions {
         /// Place offers free parking lots.
         #[prost(bool, optional, tag = "1")]
@@ -1048,7 +1048,7 @@ pub mod place {
     }
     /// Information about the accessibility options a place offers.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AccessibilityOptions {
         /// Place offers wheelchair accessible parking.
         #[prost(bool, optional, tag = "1")]
@@ -1315,7 +1315,7 @@ pub struct SearchNearbyRequest {
 pub mod search_nearby_request {
     /// The region to search.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LocationRestriction {
         #[prost(oneof = "location_restriction::Type", tags = "2")]
         pub r#type: ::core::option::Option<location_restriction::Type>,
@@ -1323,7 +1323,7 @@ pub mod search_nearby_request {
     /// Nested message and enum types in `LocationRestriction`.
     pub mod location_restriction {
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// A circle defined by center point and radius.
             #[prost(message, tag = "2")]
@@ -1469,7 +1469,7 @@ pub mod search_text_request {
     /// The region to search. This location serves as a bias which means results
     /// around given location might be returned.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LocationBias {
         #[prost(oneof = "location_bias::Type", tags = "1, 2")]
         pub r#type: ::core::option::Option<location_bias::Type>,
@@ -1477,7 +1477,7 @@ pub mod search_text_request {
     /// Nested message and enum types in `LocationBias`.
     pub mod location_bias {
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// A rectangle box defined by northeast and southwest corner.
             /// `rectangle.high()` must be the northeast point of the rectangle
@@ -1495,7 +1495,7 @@ pub mod search_text_request {
     /// The region to search. This location serves as a restriction which means
     /// results outside given location will not be returned.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LocationRestriction {
         #[prost(oneof = "location_restriction::Type", tags = "1")]
         pub r#type: ::core::option::Option<location_restriction::Type>,
@@ -1503,7 +1503,7 @@ pub mod search_text_request {
     /// Nested message and enum types in `LocationRestriction`.
     pub mod location_restriction {
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// A rectangle box defined by northeast and southwest corner.
             /// `rectangle.high()` must be the northeast point of the rectangle
@@ -1816,7 +1816,7 @@ pub mod autocomplete_places_request {
     /// The region to search. The results may be biased around the specified
     /// region.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LocationBias {
         #[prost(oneof = "location_bias::Type", tags = "1, 2")]
         pub r#type: ::core::option::Option<location_bias::Type>,
@@ -1824,7 +1824,7 @@ pub mod autocomplete_places_request {
     /// Nested message and enum types in `LocationBias`.
     pub mod location_bias {
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// A viewport defined by a northeast and a southwest corner.
             #[prost(message, tag = "1")]
@@ -1837,7 +1837,7 @@ pub mod autocomplete_places_request {
     /// The region to search. The results will be restricted to the specified
     /// region.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LocationRestriction {
         #[prost(oneof = "location_restriction::Type", tags = "1, 2")]
         pub r#type: ::core::option::Option<location_restriction::Type>,
@@ -1845,7 +1845,7 @@ pub mod autocomplete_places_request {
     /// Nested message and enum types in `LocationRestriction`.
     pub mod location_restriction {
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// A viewport defined by a northeast and a southwest corner.
             #[prost(message, tag = "1")]
@@ -1877,7 +1877,7 @@ pub mod autocomplete_places_response {
     pub mod suggestion {
         /// Identifies a substring within a given text.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct StringRange {
             /// Zero-based offset of the first Unicode character of the string
             /// (inclusive).

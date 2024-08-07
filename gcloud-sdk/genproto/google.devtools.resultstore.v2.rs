@@ -26,7 +26,7 @@ pub struct Property {
 /// The timing of a particular Invocation, Action, etc. The start_time is
 /// specified, stop time can be calculated by adding duration to start_time.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Timing {
     /// The time the resource started running. This is in UTC Epoch time.
     #[prost(message, optional, tag = "1")]
@@ -1078,7 +1078,7 @@ pub struct ActionAttributes {
 }
 /// File count and size information for the input files to a configured target.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InputFileInfo {
     /// The number of input files (counting every file, even if a duplicate).
     #[prost(int64, tag = "1")]
@@ -1099,7 +1099,7 @@ pub struct InputFileInfo {
 }
 /// Timing data for tests executed locally on the machine running the build.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LocalTestTiming {
     /// Time taken by the test process, typically surrounded by a small wrapper
     /// script.
@@ -1108,7 +1108,7 @@ pub struct LocalTestTiming {
 }
 /// Timing data for one attempt to execute a test action remotely.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RemoteTestAttemptTiming {
     /// Idle period before the test process is invoked on the remote machine.
     #[prost(message, optional, tag = "1")]
@@ -1388,7 +1388,7 @@ pub mod configured_target {
 }
 /// Attributes that apply only to test actions under this configured target.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ConfiguredTestAttributes {
     /// Total number of test runs. For example, in bazel this is specified with
     /// --runs_per_test. Zero if runs_per_test is not used.
@@ -1403,7 +1403,7 @@ pub struct ConfiguredTestAttributes {
 }
 /// Summary of line coverage
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LineCoverageSummary {
     /// Number of lines instrumented for coverage.
     #[prost(int32, tag = "1")]
@@ -1418,7 +1418,7 @@ pub struct LineCoverageSummary {
 ///   * executed but not taken.  Appears in total and executed.
 ///   * executed and taken.  Appears in all three fields.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BranchCoverageSummary {
     /// The number of branches present in the file.
     #[prost(int32, tag = "1")]
@@ -1436,7 +1436,7 @@ pub struct BranchCoverageSummary {
 }
 /// Summary of coverage in each language
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LanguageCoverageSummary {
     /// This summary is for all files written in this programming language.
     #[prost(enumeration = "Language", tag = "1")]
@@ -1602,7 +1602,7 @@ pub mod invocation {
 }
 /// If known, represents the state of the user/build-system workspace.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WorkspaceContext {}
 /// Describes the workspace under which the tool was invoked, this includes
 /// information that was fed into the command, the source code referenced, and
@@ -1781,7 +1781,7 @@ pub struct TargetAttributes {
 }
 /// Attributes that apply only to test actions under this target.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TestAttributes {
     /// Indicates how big the user indicated the test action was.
     #[prost(enumeration = "TestSize", tag = "1")]
@@ -4207,7 +4207,7 @@ pub struct UploadBatchRequest {
 }
 /// Response for UploadBatch
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UploadBatchResponse {}
 /// The individual upload requests for this batch.
 #[allow(clippy::derive_partial_eq_without_eq)]

@@ -657,7 +657,7 @@ pub mod queue {
 /// [RunTask][google.cloud.tasks.v2.CloudTasks.RunTask], will run a task even if
 /// the queue has reached its [RateLimits][google.cloud.tasks.v2.RateLimits].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RateLimits {
     /// The maximum rate at which tasks are dispatched from this queue.
     ///
@@ -729,7 +729,7 @@ pub struct RateLimits {
 ///
 /// These settings determine when a failed task attempt is retried.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RetryConfig {
     /// Number of attempts per task.
     ///
@@ -836,7 +836,7 @@ pub struct RetryConfig {
 /// Configuration options for writing logs to
 /// [Stackdriver Logging](<https://cloud.google.com/logging/docs/>).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StackdriverLoggingConfig {
     /// Specifies the fraction of operations to write to
     /// [Stackdriver Logging](<https://cloud.google.com/logging/docs/>).

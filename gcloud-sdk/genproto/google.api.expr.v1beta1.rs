@@ -530,7 +530,7 @@ pub struct EvalState {
 pub mod eval_state {
     /// A single evaluation result.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Result {
         /// The expression this result is for.
         #[prost(message, optional, tag = "1")]
@@ -625,7 +625,7 @@ pub struct UnknownSet {
 }
 /// A reference to an expression id.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct IdRef {
     /// The expression id.
     #[prost(int32, tag = "1")]

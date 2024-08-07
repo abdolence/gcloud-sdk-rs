@@ -1648,7 +1648,7 @@ pub mod os_policy_assignment_report {
 /// Message encapsulating a value that can be either absolute ("fixed") or
 /// relative ("percent") to a value.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FixedOrPercent {
     /// Type of the value.
     #[prost(oneof = "fixed_or_percent::Mode", tags = "1, 2")]
@@ -1658,7 +1658,7 @@ pub struct FixedOrPercent {
 pub mod fixed_or_percent {
     /// Type of the value.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Mode {
         /// Specifies a fixed value.
         #[prost(int32, tag = "1")]
@@ -1823,7 +1823,7 @@ pub mod os_policy_assignment {
     /// Message to configure the rollout at the zonal level for the OS policy
     /// assignment.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Rollout {
         /// Required. The maximum number (or percentage) of VMs per zone to disrupt
         /// at any given moment.
@@ -2331,7 +2331,7 @@ pub mod patch_job {
     /// map to `InstancePatchState`. List patch job instance details to see the
     /// specific states of each instance.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct InstanceDetailsSummary {
         /// Number of instances pending patch job.
         #[prost(int64, tag = "1")]
@@ -2538,7 +2538,7 @@ pub mod patch_config {
 }
 /// Namespace for instance state enums.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Instance {}
 /// Nested message and enum types in `Instance`.
 pub mod instance {
@@ -2740,7 +2740,7 @@ pub struct YumSettings {
 }
 /// Googet patching is performed by running `googet update`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GooSettings {}
 /// Zypper patching is performed by running `zypper patch`.
 /// See also <https://en.opensuse.org/SDB:Zypper_manual.>
@@ -3045,7 +3045,7 @@ pub mod patch_instance_filter {
 /// Patch rollout configuration specifications. Contains details on the
 /// concurrency control when applying patch(es) to all targeted VMs.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PatchRollout {
     /// Mode of the patch rollout.
     #[prost(enumeration = "patch_rollout::Mode", tag = "1")]
@@ -3239,7 +3239,7 @@ pub mod patch_deployment {
 /// Sets the time for a one time patch deployment. Timestamp is in
 /// [RFC3339](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct OneTimeSchedule {
     /// Required. The desired patch job execution time.
     #[prost(message, optional, tag = "1")]
@@ -3333,7 +3333,7 @@ pub mod recurring_schedule {
     /// Configurations for this recurring schedule.
     /// Configurations must match frequency.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ScheduleConfig {
         /// Required. Schedule with weekly executions.
         #[prost(message, tag = "6")]
@@ -3345,7 +3345,7 @@ pub mod recurring_schedule {
 }
 /// Represents a weekly schedule.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WeeklySchedule {
     /// Required. Day of the week.
     #[prost(enumeration = "super::super::super::r#type::DayOfWeek", tag = "1")]
@@ -3354,7 +3354,7 @@ pub struct WeeklySchedule {
 /// Represents a monthly schedule. An example of a valid monthly schedule is
 /// "on the third Tuesday of the month" or "on the 15th of the month".
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MonthlySchedule {
     /// One day in a month.
     #[prost(oneof = "monthly_schedule::DayOfMonth", tags = "1, 2")]
@@ -3364,7 +3364,7 @@ pub struct MonthlySchedule {
 pub mod monthly_schedule {
     /// One day in a month.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum DayOfMonth {
         /// Required. Week day in a month.
         #[prost(message, tag = "1")]
@@ -3379,7 +3379,7 @@ pub mod monthly_schedule {
 }
 /// Represents one week day in a month. An example is "the 4th Sunday".
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WeekDayOfMonth {
     /// Required. Week number in a month. 1-4 indicates the 1st to 4th week of the
     /// month. -1 indicates the last week of the month.
@@ -4143,7 +4143,7 @@ pub struct ListVulnerabilityReportsResponse {
 /// Common Vulnerability Scoring System version 3.
 /// For details, see <https://www.first.org/cvss/specification-document>
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CvsSv3 {
     /// The base score is a function of the base metric scores.
     /// <https://www.first.org/cvss/specification-document#Base-Metrics>

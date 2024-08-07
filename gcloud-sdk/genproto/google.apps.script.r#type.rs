@@ -200,7 +200,7 @@ pub struct LayoutProperties {
 }
 /// Options for sending requests to add-on HTTP endpoints
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HttpOptions {
     /// Configuration for the token sent in the HTTP Authorization header
     #[prost(enumeration = "HttpAuthorizationHeader", tag = "1")]

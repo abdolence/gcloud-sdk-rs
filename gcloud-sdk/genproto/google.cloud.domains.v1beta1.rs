@@ -200,7 +200,7 @@ pub mod registration {
 }
 /// Defines renewal, billing, and transfer settings for a `Registration`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ManagementSettings {
     /// Output only. The renewal method for this `Registration`.
     #[prost(enumeration = "management_settings::RenewalMethod", tag = "3")]

@@ -915,7 +915,7 @@ pub struct LoadSnapshotRequest {
 }
 /// Response to LoadSnapshotRequest.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LoadSnapshotResponse {}
 /// Request to trigger database failover (only for highly resilient
 /// environments).
@@ -929,7 +929,7 @@ pub struct DatabaseFailoverRequest {
 }
 /// Response for DatabaseFailoverRequest.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DatabaseFailoverResponse {}
 /// Request to fetch properties of environment's database.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1033,8 +1033,9 @@ pub struct EnvironmentConfig {
     /// This may be split into multiple chunks, each with a size of
     /// at least 4 hours.
     ///
-    /// If this value is omitted, Cloud Composer components may be subject to
-    /// maintenance at any time.
+    /// If this value is omitted, the default value for maintenance window is
+    /// applied. By default, maintenance windows are from 00:00:00 to 04:00:00
+    /// (GMT) on Friday, Saturday, and Sunday every week.
     #[prost(message, optional, tag = "13")]
     pub maintenance_window: ::core::option::Option<MaintenanceWindow>,
     /// Optional. The workloads configuration settings for the GKE cluster
@@ -1610,7 +1611,7 @@ pub struct PrivateClusterConfig {
 /// Configuration options for networking connections in the Composer 2
 /// environment.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NetworkingConfig {
     /// Optional. Indicates the user requested specifc connection type between
     /// Tenant and Customer projects. You cannot set networking connection type in
@@ -1829,7 +1830,7 @@ pub struct MaintenanceWindow {
 /// Cloud Composer environment. Supported for Cloud Composer environments in
 /// versions composer-2.*.*-airflow-*.*.* and newer.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WorkloadsConfig {
     /// Optional. Resources used by Airflow schedulers.
     #[prost(message, optional, tag = "1")]
@@ -1854,7 +1855,7 @@ pub struct WorkloadsConfig {
 pub mod workloads_config {
     /// Configuration for resources used by Airflow schedulers.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SchedulerResource {
         /// Optional. CPU request and limit for a single Airflow scheduler replica.
         #[prost(float, tag = "1")]
@@ -1873,7 +1874,7 @@ pub mod workloads_config {
     }
     /// Configuration for resources used by Airflow web server.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct WebServerResource {
         /// Optional. CPU request and limit for Airflow web server.
         #[prost(float, tag = "1")]
@@ -1887,7 +1888,7 @@ pub mod workloads_config {
     }
     /// Configuration for resources used by Airflow workers.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct WorkerResource {
         /// Optional. CPU request and limit for a single Airflow worker replica.
         #[prost(float, tag = "1")]
@@ -1909,7 +1910,7 @@ pub mod workloads_config {
     }
     /// Configuration for resources used by Airflow triggerers.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TriggererResource {
         /// Optional. The number of triggerers.
         #[prost(int32, tag = "1")]
@@ -1923,8 +1924,11 @@ pub mod workloads_config {
         pub memory_gb: f32,
     }
     /// Configuration for resources used by Airflow DAG processors.
+    ///
+    /// This field is supported for Cloud Composer environments in versions
+    /// composer-3.*.*-airflow-*.*.* and newer.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DagProcessorResource {
         /// Optional. CPU request and limit for a single Airflow DAG processor
         /// replica.
@@ -1946,18 +1950,28 @@ pub mod workloads_config {
 }
 /// The configuration setting for Airflow database data retention mechanism.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DataRetentionConfig {
+    /// Optional. The number of days describing for how long to store event-based
+    /// records in airflow database. If the retention mechanism is enabled this
+    /// value must be a positive integer otherwise, value should be set to 0.
+    #[deprecated]
+    #[prost(int32, tag = "1")]
+    pub airflow_database_retention_days: i32,
     /// Optional. The configuration settings for task logs retention
     #[prost(message, optional, tag = "4")]
     pub task_logs_retention_config: ::core::option::Option<TaskLogsRetentionConfig>,
+    /// Optional. The retention policy for airflow metadata database.
+    #[prost(message, optional, tag = "5")]
+    pub airflow_metadata_retention_config: ::core::option::Option<
+        AirflowMetadataRetentionPolicyConfig,
+    >,
 }
 /// The configuration setting for Task Logs.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TaskLogsRetentionConfig {
-    /// Optional. The mode of storage for Airflow workers task logs. For details,
-    /// see go/composer-store-task-logs-in-cloud-logging-only-design-doc
+    /// Optional. The mode of storage for Airflow workers task logs.
     #[prost(enumeration = "task_logs_retention_config::TaskLogsStorageMode", tag = "2")]
     pub storage_mode: i32,
 }
@@ -2007,6 +2021,66 @@ pub mod task_logs_retention_config {
                     Some(Self::CloudLoggingAndCloudStorage)
                 }
                 "CLOUD_LOGGING_ONLY" => Some(Self::CloudLoggingOnly),
+                _ => None,
+            }
+        }
+    }
+}
+/// The policy for airflow metadata database retention.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AirflowMetadataRetentionPolicyConfig {
+    /// Optional. Retention can be either enabled or disabled.
+    #[prost(
+        enumeration = "airflow_metadata_retention_policy_config::RetentionMode",
+        tag = "1"
+    )]
+    pub retention_mode: i32,
+    /// Optional. How many days data should be retained for.
+    #[prost(int32, tag = "2")]
+    pub retention_days: i32,
+}
+/// Nested message and enum types in `AirflowMetadataRetentionPolicyConfig`.
+pub mod airflow_metadata_retention_policy_config {
+    /// Describes retention policy.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RetentionMode {
+        /// Default mode doesn't change environment parameters.
+        Unspecified = 0,
+        /// Retention policy is enabled.
+        Enabled = 1,
+        /// Retention policy is disabled.
+        Disabled = 2,
+    }
+    impl RetentionMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RetentionMode::Unspecified => "RETENTION_MODE_UNSPECIFIED",
+                RetentionMode::Enabled => "RETENTION_MODE_ENABLED",
+                RetentionMode::Disabled => "RETENTION_MODE_DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RETENTION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RETENTION_MODE_ENABLED" => Some(Self::Enabled),
+                "RETENTION_MODE_DISABLED" => Some(Self::Disabled),
                 _ => None,
             }
         }
@@ -2083,7 +2157,7 @@ pub mod master_authorized_networks_config {
 }
 /// Configuration for Cloud Data Lineage integration.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CloudDataLineageIntegration {
     /// Optional. Whether or not Cloud Data Lineage integration is enabled.
     #[prost(bool, tag = "1")]

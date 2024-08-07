@@ -201,7 +201,7 @@ pub struct AccessInListFilter {
 }
 /// Filters for numeric or date values.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AccessNumericFilter {
     /// The operation type for this filter.
     #[prost(enumeration = "access_numeric_filter::Operation", tag = "1")]
@@ -270,7 +270,7 @@ pub mod access_numeric_filter {
 }
 /// To express that the result needs to be between two numbers (inclusive).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AccessBetweenFilter {
     /// Begins with this number.
     #[prost(message, optional, tag = "1")]
@@ -281,7 +281,7 @@ pub struct AccessBetweenFilter {
 }
 /// To represent a number.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NumericValue {
     /// One of a numeric value
     #[prost(oneof = "numeric_value::OneValue", tags = "1, 2")]
@@ -291,7 +291,7 @@ pub struct NumericValue {
 pub mod numeric_value {
     /// One of a numeric value
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum OneValue {
         /// Integer value
         #[prost(int64, tag = "1")]
@@ -463,7 +463,7 @@ pub struct AccessMetricValue {
 /// property is exhausted, all requests to that property will return Resource
 /// Exhausted errors.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AccessQuota {
     /// Properties can use 250,000 tokens per day. Most requests consume fewer than
     /// 10 tokens.
@@ -490,7 +490,7 @@ pub struct AccessQuota {
 }
 /// Current state for a particular quota group.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AccessQuotaStatus {
     /// Quota consumed by this request.
     #[prost(int32, tag = "1")]
@@ -524,6 +524,11 @@ pub struct Account {
     /// accounts are excluded from List results unless specifically requested.
     #[prost(bool, tag = "6")]
     pub deleted: bool,
+    /// Output only. The URI for a Google Marketing Platform organization resource.
+    /// Only set when this account is connected to a GMP organization.
+    /// Format: marketingplatformadmin.googleapis.com/organizations/{org_id}
+    #[prost(string, tag = "7")]
+    pub gmp_organization: ::prost::alloc::string::String,
 }
 /// A resource message representing a Google Analytics GA4 property.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -536,8 +541,7 @@ pub struct Property {
     pub name: ::prost::alloc::string::String,
     /// Immutable. The property type for this Property resource. When creating a
     /// property, if the type is "PROPERTY_TYPE_UNSPECIFIED", then
-    /// "ORDINARY_PROPERTY" will be implied. "SUBPROPERTY" and "ROLLUP_PROPERTY"
-    /// types cannot yet be created with the Google Analytics Admin API.
+    /// "ORDINARY_PROPERTY" will be implied.
     #[prost(enumeration = "PropertyType", tag = "14")]
     pub property_type: i32,
     /// Output only. Time when the entity was originally created.
@@ -1017,9 +1021,30 @@ pub struct ConversionEvent {
     /// `ONCE_PER_EVENT`.
     #[prost(enumeration = "conversion_event::ConversionCountingMethod", tag = "6")]
     pub counting_method: i32,
+    /// Optional. Defines a default value/currency for a conversion event.
+    #[prost(message, optional, tag = "7")]
+    pub default_conversion_value: ::core::option::Option<
+        conversion_event::DefaultConversionValue,
+    >,
 }
 /// Nested message and enum types in `ConversionEvent`.
 pub mod conversion_event {
+    /// Defines a default value/currency for a conversion event. Both value and
+    /// currency must be provided.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DefaultConversionValue {
+        /// This value will be used to populate the value for all conversions
+        /// of the specified event_name where the event "value" parameter is unset.
+        #[prost(double, optional, tag = "1")]
+        pub value: ::core::option::Option<f64>,
+        /// When a conversion event for this event_name has no set currency,
+        /// this currency will be applied as the default. Must be in ISO 4217
+        /// currency code format. See <https://en.wikipedia.org/wiki/ISO_4217> for
+        /// more information.
+        #[prost(string, optional, tag = "2")]
+        pub currency_code: ::core::option::Option<::prost::alloc::string::String>,
+    }
     /// The method by which conversions will be counted across multiple events
     /// within a session.
     #[derive(
@@ -1061,6 +1086,105 @@ pub mod conversion_event {
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "CONVERSION_COUNTING_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "ONCE_PER_EVENT" => Some(Self::OncePerEvent),
+                "ONCE_PER_SESSION" => Some(Self::OncePerSession),
+                _ => None,
+            }
+        }
+    }
+}
+/// A key event in a Google Analytics property.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct KeyEvent {
+    /// Output only. Resource name of this key event.
+    /// Format: properties/{property}/keyEvents/{key_event}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Immutable. The event name for this key event.
+    /// Examples: 'click', 'purchase'
+    #[prost(string, tag = "2")]
+    pub event_name: ::prost::alloc::string::String,
+    /// Output only. Time when this key event was created in the property.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. If set to true, this event can be deleted.
+    #[prost(bool, tag = "4")]
+    pub deletable: bool,
+    /// Output only. If set to true, this key event refers to a custom event.  If
+    /// set to false, this key event refers to a default event in GA. Default
+    /// events typically have special meaning in GA. Default events are usually
+    /// created for you by the GA system, but in some cases can be created by
+    /// property admins. Custom events count towards the maximum number of
+    /// custom key events that may be created per property.
+    #[prost(bool, tag = "5")]
+    pub custom: bool,
+    /// Required. The method by which Key Events will be counted across multiple
+    /// events within a session.
+    #[prost(enumeration = "key_event::CountingMethod", tag = "6")]
+    pub counting_method: i32,
+    /// Optional. Defines a default value/currency for a key event.
+    #[prost(message, optional, tag = "7")]
+    pub default_value: ::core::option::Option<key_event::DefaultValue>,
+}
+/// Nested message and enum types in `KeyEvent`.
+pub mod key_event {
+    /// Defines a default value/currency for a key event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DefaultValue {
+        /// Required. This will be used to populate the "value" parameter for all
+        /// occurrences of this Key Event (specified by event_name) where that
+        /// parameter is unset.
+        #[prost(double, tag = "1")]
+        pub numeric_value: f64,
+        /// Required. When an occurrence of this Key Event (specified by event_name)
+        /// has no set currency this currency will be applied as the default. Must be
+        /// in ISO 4217 currency code format.
+        ///
+        /// See <https://en.wikipedia.org/wiki/ISO_4217> for more information.
+        #[prost(string, tag = "2")]
+        pub currency_code: ::prost::alloc::string::String,
+    }
+    /// The method by which Key Events will be counted across multiple events
+    /// within a session.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CountingMethod {
+        /// Counting method not specified.
+        Unspecified = 0,
+        /// Each Event instance is considered a Key Event.
+        OncePerEvent = 1,
+        /// An Event instance is considered a Key Event at most once per session per
+        /// user.
+        OncePerSession = 2,
+    }
+    impl CountingMethod {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                CountingMethod::Unspecified => "COUNTING_METHOD_UNSPECIFIED",
+                CountingMethod::OncePerEvent => "ONCE_PER_EVENT",
+                CountingMethod::OncePerSession => "ONCE_PER_SESSION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COUNTING_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
                 "ONCE_PER_EVENT" => Some(Self::OncePerEvent),
                 "ONCE_PER_SESSION" => Some(Self::OncePerSession),
                 _ => None,
@@ -1889,6 +2013,19 @@ pub struct RunAccessReportRequest {
     /// requests, this field must be false.
     #[prost(bool, tag = "11")]
     pub return_entity_quota: bool,
+    /// Optional. Determines whether to include users who have never made an API
+    /// call in the response. If true, all users with access to the specified
+    /// property or account are included in the response, regardless of whether
+    /// they have made an API call or not. If false, only the users who have made
+    /// an API call will be included.
+    #[prost(bool, tag = "12")]
+    pub include_all_users: bool,
+    /// Optional. Decides whether to return the users within user groups. This
+    /// field works only when include_all_users is set to true. If true, it will
+    /// return all users with access to the specified property or account.
+    /// If false, only the users with direct access will be returned.
+    #[prost(bool, tag = "13")]
+    pub expand_groups: bool,
 }
 /// The customized Data Access Record Report response.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2113,7 +2250,8 @@ pub struct DeletePropertyRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFirebaseLinkRequest {
     /// Required. Format: properties/{property_id}
-    /// Example: properties/1234
+    ///
+    /// Example: `properties/1234`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Firebase link to create.
@@ -2125,7 +2263,8 @@ pub struct CreateFirebaseLinkRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFirebaseLinkRequest {
     /// Required. Format: properties/{property_id}/firebaseLinks/{firebase_link_id}
-    /// Example: properties/1234/firebaseLinks/5678
+    ///
+    /// Example: `properties/1234/firebaseLinks/5678`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -2134,7 +2273,8 @@ pub struct DeleteFirebaseLinkRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFirebaseLinksRequest {
     /// Required. Format: properties/{property_id}
-    /// Example: properties/1234
+    ///
+    /// Example: `properties/1234`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of resources to return. The service may return
@@ -2235,7 +2375,8 @@ pub struct ListGoogleAdsLinksResponse {
 pub struct GetDataSharingSettingsRequest {
     /// Required. The name of the settings to lookup.
     /// Format: accounts/{account}/dataSharingSettings
-    /// Example: "accounts/1000/dataSharingSettings"
+    ///
+    /// Example: `accounts/1000/dataSharingSettings`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -2288,18 +2429,23 @@ pub struct AcknowledgeUserDataCollectionRequest {
 }
 /// Response message for AcknowledgeUserDataCollection RPC.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AcknowledgeUserDataCollectionResponse {}
 /// Request message for SearchChangeHistoryEvents RPC.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchChangeHistoryEventsRequest {
     /// Required. The account resource for which to return change history
-    /// resources.
+    /// resources. Format: accounts/{account}
+    ///
+    /// Example: `accounts/100`
     #[prost(string, tag = "1")]
     pub account: ::prost::alloc::string::String,
     /// Optional. Resource name for a child property. If set, only return changes
     /// made to this property or its child resources.
+    /// Format: properties/{propertyId}
+    ///
+    /// Example: `properties/100`
     #[prost(string, tag = "2")]
     pub property: ::prost::alloc::string::String,
     /// Optional. If set, only return changes if they are for a resource that
@@ -2504,6 +2650,85 @@ pub struct ListConversionEventsResponse {
     /// The requested conversion events
     #[prost(message, repeated, tag = "1")]
     pub conversion_events: ::prost::alloc::vec::Vec<ConversionEvent>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for CreateKeyEvent RPC
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateKeyEventRequest {
+    /// Required. The Key Event to create.
+    #[prost(message, optional, tag = "1")]
+    pub key_event: ::core::option::Option<KeyEvent>,
+    /// Required. The resource name of the parent property where this Key Event
+    /// will be created. Format: properties/123
+    #[prost(string, tag = "2")]
+    pub parent: ::prost::alloc::string::String,
+}
+/// Request message for UpdateKeyEvent RPC
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateKeyEventRequest {
+    /// Required. The Key Event to update.
+    /// The `name` field is used to identify the settings to be updated.
+    #[prost(message, optional, tag = "1")]
+    pub key_event: ::core::option::Option<KeyEvent>,
+    /// Required. The list of fields to be updated. Field names must be in snake
+    /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "*" to match all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for GetKeyEvent RPC
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetKeyEventRequest {
+    /// Required. The resource name of the Key Event to retrieve.
+    /// Format: properties/{property}/keyEvents/{key_event}
+    /// Example: "properties/123/keyEvents/456"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for DeleteKeyEvent RPC
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteKeyEventRequest {
+    /// Required. The resource name of the Key Event to delete.
+    /// Format: properties/{property}/keyEvents/{key_event}
+    /// Example: "properties/123/keyEvents/456"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListKeyEvents RPC
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListKeyEventsRequest {
+    /// Required. The resource name of the parent property.
+    /// Example: 'properties/123'
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200; (higher values will be coerced to the maximum)
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListKeyEvents` call.
+    /// Provide this to retrieve the subsequent page.
+    /// When paginating, all other parameters provided to `ListKeyEvents`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListKeyEvents RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListKeyEventsResponse {
+    /// The requested Key Events
+    #[prost(message, repeated, tag = "1")]
+    pub key_events: ::prost::alloc::vec::Vec<KeyEvent>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
@@ -2913,7 +3138,7 @@ pub mod analytics_admin_service_client {
         ///
         /// If the accounts are not restored before the expiration time, the account
         /// and all child resources (eg: Properties, GoogleAdsLinks, Streams,
-        /// UserLinks) will be permanently purged.
+        /// AccessBindings) will be permanently purged.
         /// https://support.google.com/analytics/answer/6154772
         ///
         /// Returns an error if the target is not found.
@@ -3132,7 +3357,7 @@ pub mod analytics_admin_service_client {
         /// However, they can be restored using the Trash Can UI.
         ///
         /// If the properties are not restored before the expiration time, the Property
-        /// and all child resources (eg: GoogleAdsLinks, Streams, UserLinks)
+        /// and all child resources (eg: GoogleAdsLinks, Streams, AccessBindings)
         /// will be permanently purged.
         /// https://support.google.com/analytics/answer/6154772
         ///
@@ -3657,6 +3882,7 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Deprecated: Use `CreateKeyEvent` instead.
         /// Creates a conversion event with the specified attributes.
         pub async fn create_conversion_event(
             &mut self,
@@ -3688,6 +3914,7 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Deprecated: Use `UpdateKeyEvent` instead.
         /// Updates a conversion event with the specified attributes.
         pub async fn update_conversion_event(
             &mut self,
@@ -3719,6 +3946,7 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Deprecated: Use `GetKeyEvent` instead.
         /// Retrieve a single conversion event.
         pub async fn get_conversion_event(
             &mut self,
@@ -3750,6 +3978,7 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Deprecated: Use `DeleteKeyEvent` instead.
         /// Deletes a conversion event in a property.
         pub async fn delete_conversion_event(
             &mut self,
@@ -3778,6 +4007,7 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Deprecated: Use `ListKeyEvents` instead.
         /// Returns a list of conversion events in the specified parent property.
         ///
         /// Returns an empty list if no conversion events are found.
@@ -3807,6 +4037,150 @@ pub mod analytics_admin_service_client {
                     GrpcMethod::new(
                         "google.analytics.admin.v1beta.AnalyticsAdminService",
                         "ListConversionEvents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a Key Event.
+        pub async fn create_key_event(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateKeyEventRequest>,
+        ) -> std::result::Result<tonic::Response<super::KeyEvent>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1beta.AnalyticsAdminService/CreateKeyEvent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1beta.AnalyticsAdminService",
+                        "CreateKeyEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a Key Event.
+        pub async fn update_key_event(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateKeyEventRequest>,
+        ) -> std::result::Result<tonic::Response<super::KeyEvent>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1beta.AnalyticsAdminService/UpdateKeyEvent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1beta.AnalyticsAdminService",
+                        "UpdateKeyEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieve a single Key Event.
+        pub async fn get_key_event(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetKeyEventRequest>,
+        ) -> std::result::Result<tonic::Response<super::KeyEvent>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1beta.AnalyticsAdminService/GetKeyEvent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1beta.AnalyticsAdminService",
+                        "GetKeyEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a Key Event.
+        pub async fn delete_key_event(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteKeyEventRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1beta.AnalyticsAdminService/DeleteKeyEvent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1beta.AnalyticsAdminService",
+                        "DeleteKeyEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns a list of Key Events in the specified parent property.
+        /// Returns an empty list if no Key Events are found.
+        pub async fn list_key_events(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListKeyEventsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListKeyEventsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1beta.AnalyticsAdminService/ListKeyEvents",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1beta.AnalyticsAdminService",
+                        "ListKeyEvents",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -4315,8 +4689,10 @@ pub mod analytics_admin_service_client {
         /// records of each time a user reads Google Analytics reporting data. Access
         /// records are retained for up to 2 years.
         ///
-        /// Data Access Reports can be requested for a property. The property must be
-        /// in Google Analytics 360. This method is only available to Administrators.
+        /// Data Access Reports can be requested for a property. Reports may be
+        /// requested for any property, but dimensions that aren't related to quota can
+        /// only be requested on Google Analytics 360 properties. This method is only
+        /// available to Administrators.
         ///
         /// These data access records include GA4 UI Reporting, GA4 UI Explorations,
         /// GA4 Data API, and other products like Firebase & Admob that can retrieve

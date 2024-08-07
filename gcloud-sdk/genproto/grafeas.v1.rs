@@ -354,7 +354,7 @@ pub struct Recipe {
 /// Indicates that the builder claims certain fields in this message to be
 /// complete.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Completeness {
     /// If true, the builder claims that recipe.arguments is complete, meaning that
     /// all external inputs are properly captured in the recipe.
@@ -489,7 +489,7 @@ pub mod slsa_provenance {
     /// Indicates that the builder claims certain fields in this message to be
     /// complete.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SlsaCompleteness {
         /// If true, the builder claims that recipe.arguments is complete, meaning
         /// that all external inputs are properly captured in the recipe.
@@ -630,7 +630,7 @@ pub mod slsa_provenance_zero_two {
     /// Indicates that the builder claims certain fields in this message to be
     /// complete.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SlsaCompleteness {
         #[prost(bool, tag = "1")]
         pub parameters: bool,
@@ -1210,7 +1210,7 @@ pub struct ComplianceNote {
 pub mod compliance_note {
     /// A compliance check that is a CIS benchmark.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CisBenchmark {
         #[prost(int32, tag = "1")]
         pub profile_level: i32,
@@ -1218,7 +1218,7 @@ pub mod compliance_note {
         pub severity: i32,
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ComplianceType {
         #[prost(message, tag = "6")]
         CisBenchmark(CisBenchmark),
@@ -1258,6 +1258,9 @@ pub struct ComplianceOccurrence {
     pub non_compliant_files: ::prost::alloc::vec::Vec<NonCompliantFile>,
     #[prost(string, tag = "3")]
     pub non_compliance_reason: ::prost::alloc::string::String,
+    /// The OS and config version the benchmark was run on.
+    #[prost(message, optional, tag = "4")]
+    pub version: ::core::option::Option<ComplianceVersion>,
 }
 /// Details about files that caused a compliance check to fail.
 ///
@@ -1280,7 +1283,7 @@ pub struct NonCompliantFile {
 /// Common Vulnerability Scoring System version 3.
 /// For details, see <https://www.first.org/cvss/specification-document>
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CvsSv3 {
     /// The base score is a function of the base metric scores.
     #[prost(float, tag = "1")]
@@ -1563,7 +1566,7 @@ pub mod cvs_sv3 {
 /// This is a message we will try to use for storing various versions of CVSS
 /// rather than making a separate proto for storing a specific version.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Cvss {
     /// The base score is a function of the base metric scores.
     #[prost(float, tag = "1")]
@@ -2013,7 +2016,7 @@ pub mod deployment_occurrence {
 /// exists in a provider's project. A `Discovery` occurrence is created in a
 /// consumer's project at the start of analysis.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DiscoveryNote {
     /// Required. Immutable. The kind of analysis that is handled by this
     /// discovery.
@@ -2055,6 +2058,11 @@ pub struct DiscoveryOccurrence {
     /// The status of an SBOM generation.
     #[prost(message, optional, tag = "9")]
     pub sbom_status: ::core::option::Option<discovery_occurrence::SbomStatus>,
+    /// The status of an vulnerability attestation generation.
+    #[prost(message, optional, tag = "10")]
+    pub vulnerability_attestation: ::core::option::Option<
+        discovery_occurrence::VulnerabilityAttestation,
+    >,
 }
 /// Nested message and enum types in `DiscoveryOccurrence`.
 pub mod discovery_occurrence {
@@ -2119,6 +2127,73 @@ pub mod discovery_occurrence {
                     "SBOM_STATE_UNSPECIFIED" => Some(Self::Unspecified),
                     "PENDING" => Some(Self::Pending),
                     "COMPLETE" => Some(Self::Complete),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// The status of an vulnerability attestation generation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct VulnerabilityAttestation {
+        /// The last time we attempted to generate an attestation.
+        #[prost(message, optional, tag = "1")]
+        pub last_attempt_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// The success/failure state of the latest attestation attempt.
+        #[prost(
+            enumeration = "vulnerability_attestation::VulnerabilityAttestationState",
+            tag = "2"
+        )]
+        pub state: i32,
+        /// If failure, the error reason for why the attestation generation failed.
+        #[prost(string, tag = "3")]
+        pub error: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `VulnerabilityAttestation`.
+    pub mod vulnerability_attestation {
+        /// An enum indicating the state of the attestation generation.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum VulnerabilityAttestationState {
+            /// Default unknown state.
+            Unspecified = 0,
+            /// Attestation was successfully generated and stored.
+            Success = 1,
+            /// Attestation was unsuccessfully generated and stored.
+            Failure = 2,
+        }
+        impl VulnerabilityAttestationState {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    VulnerabilityAttestationState::Unspecified => {
+                        "VULNERABILITY_ATTESTATION_STATE_UNSPECIFIED"
+                    }
+                    VulnerabilityAttestationState::Success => "SUCCESS",
+                    VulnerabilityAttestationState::Failure => "FAILURE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "VULNERABILITY_ATTESTATION_STATE_UNSPECIFIED" => {
+                        Some(Self::Unspecified)
+                    }
+                    "SUCCESS" => Some(Self::Success),
+                    "FAILURE" => Some(Self::Failure),
                     _ => None,
                 }
             }

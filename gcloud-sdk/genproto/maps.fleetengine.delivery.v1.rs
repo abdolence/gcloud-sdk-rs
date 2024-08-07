@@ -44,7 +44,7 @@ pub mod delivery_vehicle_attribute {
 }
 /// The location, speed, and heading of a vehicle at a point in time.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeliveryVehicleLocation {
     /// The location of the vehicle.
     /// When it is sent to Fleet Engine, the vehicle's location is a GPS location.
@@ -157,7 +157,7 @@ pub struct DeliveryVehicleLocation {
 }
 /// A time range.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeWindow {
     /// Required. The start time of the time window (inclusive).
     #[prost(message, optional, tag = "1")]
@@ -478,7 +478,7 @@ pub mod delivery_vehicle {
 }
 /// A location with any additional identifiers.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LocationInfo {
     /// The location's coordinates.
     #[prost(message, optional, tag = "1")]
@@ -1103,7 +1103,7 @@ pub mod task {
 /// The configuration message that defines when a data element of a Task should
 /// be visible to the end users.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TaskTrackingViewConfig {
     /// The field that specifies when route polyline points can be visible. If this
     /// field is not specified, the project level default visibility configuration
@@ -1153,7 +1153,7 @@ pub mod task_tracking_view_config {
     /// The option message that defines when a data element should be visible to
     /// the end users.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct VisibilityOption {
         /// The specific visibility option chosen.
         #[prost(oneof = "visibility_option::VisibilityOption", tags = "1, 2, 3, 4, 5")]
@@ -1165,7 +1165,7 @@ pub mod task_tracking_view_config {
     pub mod visibility_option {
         /// The specific visibility option chosen.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum VisibilityOption {
             /// This data element is visible to the end users if the remaining stop
             /// count <= remaining_stop_count_threshold.
@@ -1280,6 +1280,7 @@ pub struct CreateDeliveryVehicleRequest {
     /// Required. The `DeliveryVehicle` entity to create. When creating a new
     /// delivery vehicle, you may set the following optional fields:
     ///
+    /// * type
     /// * last_location
     /// * attributes
     ///
@@ -1725,9 +1726,9 @@ pub mod delivery_service_client {
         }
         /// Writes updated `DeliveryVehicle` data to Fleet Engine, and assigns
         /// `Tasks` to the `DeliveryVehicle`. You cannot update the name of the
-        /// `DeliveryVehicle`. You *can* update `remaining_vehicle_journey_segments`
-        /// though, but it must contain all of the `VehicleJourneySegment`s currently
-        /// on the `DeliveryVehicle`. The `task_id`s are retrieved from
+        /// `DeliveryVehicle`. You *can* update `remaining_vehicle_journey_segments`,
+        /// but it must contain all of the `VehicleJourneySegment`s to be persisted on
+        /// the `DeliveryVehicle`. The `task_id`s are retrieved from
         /// `remaining_vehicle_journey_segments`, and their corresponding `Tasks` are
         /// assigned to the `DeliveryVehicle` if they have not yet been assigned.
         pub async fn update_delivery_vehicle(

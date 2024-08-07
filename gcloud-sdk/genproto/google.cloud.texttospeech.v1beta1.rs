@@ -583,11 +583,11 @@ pub struct SynthesizeLongAudioRequest {
 }
 /// The message returned to the client by the `SynthesizeLongAudio` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SynthesizeLongAudioResponse {}
 /// Metadata for response returned by the `SynthesizeLongAudio` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SynthesizeLongAudioMetadata {
     /// Time when the request was received.
     #[prost(message, optional, tag = "1")]

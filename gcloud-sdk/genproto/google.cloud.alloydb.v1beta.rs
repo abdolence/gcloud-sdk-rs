@@ -143,7 +143,7 @@ pub mod encryption_info {
 }
 /// SSL configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SslConfig {
     /// Optional. SSL mode. Specifies client-server SSL/TLS connection behavior.
     #[prost(enumeration = "ssl_config::SslMode", tag = "1")]
@@ -352,7 +352,7 @@ pub mod automated_backup_policy {
     /// A time based retention policy specifies that all backups within a certain
     /// time period should be retained.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TimeBasedRetention {
         /// The retention period.
         #[prost(message, optional, tag = "1")]
@@ -361,7 +361,7 @@ pub mod automated_backup_policy {
     /// A quantity based policy specifies that a certain number of the most recent
     /// successful backups should be retained.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct QuantityBasedRetention {
         /// The number of backups to retain.
         #[prost(int32, tag = "1")]
@@ -391,7 +391,7 @@ pub mod automated_backup_policy {
     ///
     /// If no retention policy is set, a default of 14 days is used.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Retention {
         /// Time-based Backup retention policy.
         #[prost(message, tag = "4")]
@@ -937,7 +937,7 @@ pub struct Instance {
 pub mod instance {
     /// MachineConfig describes the configuration of a machine.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MachineConfig {
         /// The number of CPU's in the VM instance.
         #[prost(int32, tag = "1")]
@@ -967,7 +967,7 @@ pub mod instance {
     }
     /// QueryInsights Instance specific configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct QueryInsightsInstanceConfig {
         /// Record application tags for an instance.
         /// This flag is turned "on" by default.
@@ -989,7 +989,7 @@ pub mod instance {
     }
     /// Configuration for a read pool instance.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ReadPoolConfig {
         /// Read capacity, i.e. number of nodes in a read pool instance.
         #[prost(int32, tag = "1")]
@@ -997,7 +997,7 @@ pub mod instance {
     }
     /// Policy to be used while updating the instance.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UpdatePolicy {
         /// Mode for updating the instance.
         #[prost(enumeration = "update_policy::Mode", tag = "1")]
@@ -1052,7 +1052,7 @@ pub mod instance {
     }
     /// Client connection configuration
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ClientConnectionConfig {
         /// Optional. Configuration to enforce connectors only (ex: AuthProxy)
         /// connections to the database.
@@ -1473,7 +1473,7 @@ pub mod backup {
     /// Safe: backup_5 (1, 3), backup_4, (2, 3), backup_3 (3, 3).
     /// Awaiting garbage collection: backup_2 (4, 3), backup_1 (5, 3)
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct QuantityBasedExpiry {
         /// Output only. The backup's position among its backups with the same source
         /// cluster and type, by descending chronological order create time(i.e.
@@ -1636,7 +1636,7 @@ pub mod supported_database_flag {
     }
     /// Restrictions on INTEGER type values.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct IntegerRestrictions {
         /// The minimum value that can be specified, if applicable.
         #[prost(message, optional, tag = "1")]

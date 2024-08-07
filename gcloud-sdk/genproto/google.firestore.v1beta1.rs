@@ -14,7 +14,7 @@ pub struct DocumentMask {
 }
 /// A precondition on a document, used for conditional operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Precondition {
     /// The type of precondition.
     #[prost(oneof = "precondition::ConditionType", tags = "1, 2")]
@@ -24,7 +24,7 @@ pub struct Precondition {
 pub mod precondition {
     /// The type of precondition.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ConditionType {
         /// When set to `true`, the target document must exist.
         /// When set to `false`, the target document must not exist.
@@ -56,7 +56,7 @@ pub mod transaction_options {
     }
     /// Options for a transaction that can only be used to read documents.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ReadOnly {
         /// The consistency mode for this transaction. If not set, defaults to strong
         /// consistency.
@@ -68,7 +68,7 @@ pub mod transaction_options {
         /// The consistency mode for this transaction. If not set, defaults to strong
         /// consistency.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum ConsistencySelector {
             /// Reads documents at the given time.
             /// This may not be older than 60 seconds.
@@ -953,7 +953,7 @@ pub struct DocumentRemove {
 }
 /// A digest of all the documents that match a given target.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExistenceFilter {
     /// The target ID to which this filter applies.
     #[prost(int32, tag = "1")]

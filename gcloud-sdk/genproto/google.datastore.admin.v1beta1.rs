@@ -94,7 +94,7 @@ pub mod common_metadata {
 }
 /// Measures the progress of a particular metric.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Progress {
     /// The amount of work that has been completed. Note that this may be greater
     /// than work_estimated.

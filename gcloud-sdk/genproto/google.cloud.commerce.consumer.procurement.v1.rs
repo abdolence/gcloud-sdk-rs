@@ -160,7 +160,7 @@ pub mod parameter {
 }
 /// Subscription information.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Subscription {
     /// The timestamp when the subscription begins, if applicable.
     #[prost(message, optional, tag = "3")]
@@ -352,7 +352,7 @@ pub struct PlaceOrderRequest {
 /// Message stored in the metadata field of the Operation returned by
 /// [ConsumerProcurementService.PlaceOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.PlaceOrder].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PlaceOrderMetadata {}
 /// Request message for
 /// [ConsumerProcurementService.GetOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.GetOrder]

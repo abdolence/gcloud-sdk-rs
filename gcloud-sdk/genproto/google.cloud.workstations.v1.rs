@@ -392,7 +392,7 @@ pub mod workstation_config {
         pub mod gce_instance {
             /// A set of Compute Engine Shielded instance options.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct GceShieldedInstanceConfig {
                 /// Optional. Whether the instance has Secure Boot enabled.
                 #[prost(bool, tag = "1")]
@@ -406,7 +406,7 @@ pub mod workstation_config {
             }
             /// A set of Compute Engine Confidential VM instance options.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct GceConfidentialInstanceConfig {
                 /// Optional. Whether the instance has confidential compute enabled.
                 #[prost(bool, tag = "1")]
@@ -1135,7 +1135,7 @@ pub struct GenerateAccessTokenRequest {
 pub mod generate_access_token_request {
     /// Desired expiration or lifetime of the access token.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Expiration {
         /// Desired expiration time of the access token. This value must
         /// be at most 24 hours in the future. If a value is not specified, the

@@ -29,6 +29,9 @@ pub struct Instance {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. Private settings for private instance.
+    #[prost(message, optional, tag = "13")]
+    pub private_config: ::core::option::Option<instance::PrivateConfig>,
     /// Output only. Current state of the instance.
     #[prost(enumeration = "instance::State", tag = "5")]
     pub state: i32,
@@ -64,6 +67,26 @@ pub mod instance {
         #[prost(string, tag = "4")]
         pub git_ssh: ::prost::alloc::string::String,
     }
+    /// PrivateConfig includes settings for private instance.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PrivateConfig {
+        /// Required. Immutable. Indicate if it's private instance.
+        #[prost(bool, tag = "1")]
+        pub is_private: bool,
+        /// Required. Immutable. CA pool resource, resource must in the format of
+        /// `projects/{project}/locations/{location}/caPools/{ca_pool}`.
+        #[prost(string, tag = "2")]
+        pub ca_pool: ::prost::alloc::string::String,
+        /// Output only. Service Attachment for HTTP, resource is in the format of
+        /// `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
+        #[prost(string, tag = "3")]
+        pub http_service_attachment: ::prost::alloc::string::String,
+        /// Output only. Service Attachment for SSH, resource is in the format of
+        /// `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
+        #[prost(string, tag = "4")]
+        pub ssh_service_attachment: ::prost::alloc::string::String,
+    }
     /// Secure Source Manager instance state.
     #[derive(
         Clone,
@@ -88,6 +111,8 @@ pub mod instance {
         Deleting = 3,
         /// Instance is paused.
         Paused = 4,
+        /// Instance is unknown, we are not sure if it's functioning.
+        Unknown = 6,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -101,6 +126,7 @@ pub mod instance {
                 State::Active => "ACTIVE",
                 State::Deleting => "DELETING",
                 State::Paused => "PAUSED",
+                State::Unknown => "UNKNOWN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -111,6 +137,7 @@ pub mod instance {
                 "ACTIVE" => Some(Self::Active),
                 "DELETING" => Some(Self::Deleting),
                 "PAUSED" => Some(Self::Paused),
+                "UNKNOWN" => Some(Self::Unknown),
                 _ => None,
             }
         }
@@ -173,9 +200,11 @@ pub struct Repository {
     /// characters.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
-    /// Output only. The name of the instance in which the repository is hosted,
+    /// Optional. The name of the instance in which the repository is hosted,
     /// formatted as
     /// `projects/{project_number}/locations/{location_id}/instances/{instance_id}`
+    /// For data plane CreateRepository requests, this field is output only.
+    /// For control plane CreateRepository requests, this field is used as input.
     #[prost(string, tag = "3")]
     pub instance: ::prost::alloc::string::String,
     /// Output only. Unique identifier of the repository.

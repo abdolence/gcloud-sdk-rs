@@ -486,7 +486,7 @@ pub mod concurrency {
     /// Concurrency mode set for read-only transactions, exactly one mode below
     /// should be set.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ConcurrencyMode {
         /// Indicates a read at a consistent timestamp that is specified relative to
         /// now. That is, if the caller has specified an exact staleness of s
@@ -537,7 +537,7 @@ pub struct ColumnMetadata {
 }
 /// Options for executing the transaction.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TransactionExecutionOptions {
     /// Whether optimistic concurrency should be used to execute this transaction.
     #[prost(bool, tag = "1")]
@@ -545,7 +545,7 @@ pub struct TransactionExecutionOptions {
 }
 /// FinishTransactionAction defines an action of finishing a transaction.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FinishTransactionAction {
     /// Defines how exactly the transaction should be completed, e.g. with
     /// commit or abortion.
@@ -1341,7 +1341,7 @@ pub mod start_batch_transaction_action {
 /// When a transaction is cleaned up, it becomes globally invalid. Cleaning up is
 /// optional, but recommended.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CloseBatchTransactionAction {
     /// Indicates whether the transaction needs to be cleaned up.
     #[prost(bool, tag = "1")]
@@ -1789,7 +1789,7 @@ pub mod child_partitions_record {
 }
 /// ChangeStream heartbeat record.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HeartbeatRecord {
     /// Timestamp for this heartbeat check.
     #[prost(message, optional, tag = "1")]
@@ -1797,7 +1797,7 @@ pub struct HeartbeatRecord {
 }
 /// Options for Cloud Spanner Service.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SpannerOptions {
     /// Options for configuring the session pool
     #[prost(message, optional, tag = "1")]
@@ -1805,7 +1805,7 @@ pub struct SpannerOptions {
 }
 /// Options for the session pool used by the DatabaseClient.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SessionPoolOptions {
     /// passing this as true, will make applicable RPCs use multiplexed sessions
     /// instead of regular sessions

@@ -237,11 +237,11 @@ pub mod actions {
     pub mod engagement {
         /// Defines push notification settings that this engagement supports.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct PushNotification {}
         /// Defines daily update settings that this engagement supports.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct DailyUpdate {}
         /// Indicates whether sharing links is enabled for this action and the
         /// corresponding settings. Action links are used to deep link a user into a
@@ -266,7 +266,7 @@ pub mod actions {
         }
         /// Recurring update settings that this engagement supports.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum RecurringUpdate {
             /// Daily update settings that this engagement supports.
             #[prost(message, tag = "3")]
@@ -475,7 +475,7 @@ pub struct SurfaceRequirements {
 }
 /// Represents a requirement about the availability of a given capability.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CapabilityRequirement {
     /// The type of capability.
     #[prost(enumeration = "capability_requirement::SurfaceCapability", tag = "1")]
@@ -1207,7 +1207,7 @@ pub struct WritePreviewRequest {
 pub mod write_preview_request {
     /// Indicates the preview content will be coming from the Draft.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ContentFromDraft {}
     /// Indicates the preview content will be coming from an exiting version.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1220,7 +1220,7 @@ pub mod write_preview_request {
     }
     /// Settings for updating the preview.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PreviewSettings {
         /// Indicates whether or not to run certain operations, such as transactions,
         /// in sandbox mode. By default, preview requests run these operations in
@@ -2095,21 +2095,21 @@ pub struct SlotRequested {
 /// Event which happens after webhook validation was finished for slot(s):
 /// <https://developers.google.com/assistant/conversational/scenes#slot_filling>
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SlotValidated {}
 /// Event which happens when form is fully filled:
 /// <https://developers.google.com/assistant/conversational/scenes#slot_filling>
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FormFilled {}
 /// Event which happens when system needs user input:
 /// <https://developers.google.com/assistant/conversational/scenes#input>
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WaitingForUserInput {}
 /// Event which informs that conversation with agent was ended.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EndConversation {}
 /// Request for playing a round of the conversation.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2381,7 +2381,7 @@ pub struct MatchIntentsResponse {
 }
 /// Request for setting Web & App Activity preferences.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SetWebAndAppActivityControlRequest {
     /// Whether the setting should be set to an enabled or disabled state.
     #[prost(bool, tag = "1")]

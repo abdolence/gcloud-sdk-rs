@@ -193,13 +193,51 @@ pub mod expr {
     /// messages `has(m.x)` is defined as 'defined, but not set`. For proto3, the
     /// macro tests whether the property is set to its default. For map and struct
     /// types, the macro tests whether the property `x` is defined on `m`.
+    ///
+    /// Comprehensions for the standard environment macros evaluation can be best
+    /// visualized as the following pseudocode:
+    ///
+    /// ```
+    /// let `accu_var` = `accu_init`
+    /// for (let `iter_var` in `iter_range`) {
+    ///    if (!`loop_condition`) {
+    ///      break
+    ///    }
+    ///    `accu_var` = `loop_step`
+    /// }
+    /// return `result`
+    /// ```
+    ///
+    /// Comprehensions for the optional V2 macros which support map-to-map
+    /// translation differ slightly from the standard environment macros in that
+    /// they expose both the key or index in addition to the value for each list
+    /// or map entry:
+    ///
+    /// ```
+    /// let `accu_var` = `accu_init`
+    /// for (let `iter_var`, `iter_var2` in `iter_range`) {
+    ///    if (!`loop_condition`) {
+    ///      break
+    ///    }
+    ///    `accu_var` = `loop_step`
+    /// }
+    /// return `result`
+    /// ```
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Comprehension {
-        /// The name of the iteration variable.
+        /// The name of the first iteration variable.
+        /// When the iter_range is a list, this variable is the list element.
+        /// When the iter_range is a map, this variable is the map entry key.
         #[prost(string, tag = "1")]
         pub iter_var: ::prost::alloc::string::String,
-        /// The range over which var iterates.
+        /// The name of the second iteration variable, empty if not set.
+        /// When the iter_range is a list, this variable is the integer index.
+        /// When the iter_range is a map, this variable is the map entry value.
+        /// This field is only set for comprehension v2 macros.
+        #[prost(string, tag = "8")]
+        pub iter_var2: ::prost::alloc::string::String,
+        /// The range over which the comprehension iterates.
         #[prost(message, optional, boxed, tag = "2")]
         pub iter_range: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
         /// The name of the variable used for accumulation of the result.
@@ -208,7 +246,7 @@ pub mod expr {
         /// The initial value of the accumulator.
         #[prost(message, optional, boxed, tag = "4")]
         pub accu_init: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
-        /// An expression which can contain iter_var and accu_var.
+        /// An expression which can contain iter_var, iter_var2, and accu_var.
         ///
         /// Returns false when the result has been computed and may be used as
         /// a hint to short-circuit the remainder of the comprehension.
@@ -216,7 +254,7 @@ pub mod expr {
         pub loop_condition: ::core::option::Option<
             ::prost::alloc::boxed::Box<super::Expr>,
         >,
-        /// An expression which can contain iter_var and accu_var.
+        /// An expression which can contain iter_var, iter_var2, and accu_var.
         ///
         /// Computes the next value of accu_var.
         #[prost(message, optional, boxed, tag = "6")]
@@ -384,7 +422,7 @@ pub mod source_info {
     pub mod extension {
         /// Version
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Version {
             /// Major version changes indicate different required support level from
             /// the required components.
@@ -1018,7 +1056,7 @@ pub struct EvalState {
 pub mod eval_state {
     /// A single evalution result.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Result {
         /// The id of the expression this result if for.
         #[prost(int64, tag = "1")]
@@ -1134,7 +1172,7 @@ pub struct Explain {
 pub mod explain {
     /// ID and value index of one step.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ExprStep {
         /// ID of corresponding Expr node.
         #[prost(int64, tag = "1")]

@@ -165,7 +165,7 @@ pub mod logged_backup_plan {
     /// 2. A plan level minimum Backup retain days which blocks deletion
     /// 3. Lock to disallow any policy updates
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RetentionPolicy {
         /// Number of days during which deletion of a Backup created under this
         /// BackupPlan will be blocked.

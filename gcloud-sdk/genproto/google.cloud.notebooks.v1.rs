@@ -331,7 +331,7 @@ pub mod execution_template {
     /// Compute Engine](<https://cloud.google.com/compute/docs/gpus>) to find a valid
     /// combination. TPUs are not supported.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SchedulerAcceleratorConfig {
         /// Type of this accelerator.
         #[prost(enumeration = "SchedulerAcceleratorType", tag = "1")]
@@ -927,7 +927,7 @@ pub mod instance {
     /// Engine](<https://cloud.google.com/compute/docs/gpus/#gpus-list>) to find a
     /// valid combination. TPUs are not supported.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AcceleratorConfig {
         /// Type of this accelerator.
         #[prost(enumeration = "AcceleratorType", tag = "1")]
@@ -1037,7 +1037,7 @@ pub mod instance {
     /// features](<https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>).
     /// Not all combinations are valid.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ShieldedInstanceConfig {
         /// Defines whether the instance has Secure Boot enabled.
         ///
@@ -1693,7 +1693,7 @@ pub mod runtime {
 /// * `nvidia-tesla-t4`
 /// * `nvidia-tesla-a100`
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RuntimeAcceleratorConfig {
     /// Accelerator model.
     #[prost(enumeration = "runtime_accelerator_config::AcceleratorType", tag = "1")]
@@ -2178,7 +2178,7 @@ pub struct RuntimeMetrics {
 /// features](<https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>).
 /// Not all combinations are valid.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RuntimeShieldedInstanceConfig {
     /// Defines whether the instance has Secure Boot enabled.
     ///
@@ -2345,7 +2345,7 @@ pub mod virtual_machine_config {
     /// Definition of the boot image used by the Runtime.
     /// Used to facilitate runtime upgradeability.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BootImage {}
     /// The type of vNIC driver.
     /// Default should be UNSPECIFIED_NIC_TYPE.

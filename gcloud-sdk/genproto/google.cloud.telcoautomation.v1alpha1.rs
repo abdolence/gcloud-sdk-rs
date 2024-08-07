@@ -956,7 +956,7 @@ pub struct DiscardBlueprintChangesRequest {
 }
 /// Response object for `DiscardBlueprintChanges`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DiscardBlueprintChangesResponse {}
 /// Request object for `ListPublicBlueprints`.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1159,7 +1159,7 @@ pub struct DiscardDeploymentChangesRequest {
 }
 /// Response object for `DiscardDeploymentChanges`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DiscardDeploymentChangesResponse {}
 /// Request object for `ApplyDeployment`. The resources in given deployment
 /// gets applied to Orchestration Cluster. A new revision is created when a

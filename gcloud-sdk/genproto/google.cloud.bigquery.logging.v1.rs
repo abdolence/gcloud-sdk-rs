@@ -126,7 +126,7 @@ pub struct TableUpdateResponse {
 }
 /// Dataset list request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DatasetListRequest {
     /// Whether to list all datasets, including hidden ones.
     #[prost(bool, tag = "1")]
@@ -213,7 +213,7 @@ pub struct JobQueryResponse {
 }
 /// Job getQueryResults request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct JobGetQueryResultsRequest {
     /// Maximum number of results to return.
     #[prost(uint32, tag = "1")]
@@ -271,7 +271,7 @@ pub struct TableDataReadEvent {
 }
 /// Table data-list request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TableDataListRequest {
     /// Starting row offset.
     #[prost(uint64, tag = "1")]

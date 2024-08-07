@@ -498,7 +498,7 @@ pub struct Vrf {
 pub mod vrf {
     /// QOS policy parameters.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct QosPolicy {
         /// The bandwidth permitted by the QOS policy, in gbps.
         #[prost(double, tag = "1")]
@@ -836,7 +836,7 @@ pub struct Volume {
 pub mod volume {
     /// Details about snapshot space reservation and usage on the storage volume.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SnapshotReservationDetail {
         /// The space on this storage volume reserved for snapshots, shown in GiB.
         #[prost(int64, tag = "1")]
@@ -1423,7 +1423,7 @@ pub struct StartInstanceRequest {
 }
 /// Response message from starting a server.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StartInstanceResponse {}
 /// Message requesting to stop a server.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1435,7 +1435,7 @@ pub struct StopInstanceRequest {
 }
 /// Response message from stopping a server.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StopInstanceResponse {}
 /// Message for enabling the interactive serial console on an instance.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1447,7 +1447,7 @@ pub struct EnableInteractiveSerialConsoleRequest {
 }
 /// Message for response of EnableInteractiveSerialConsole.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EnableInteractiveSerialConsoleResponse {}
 /// Message for disabling the interactive serial console on an instance.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1459,7 +1459,7 @@ pub struct DisableInteractiveSerialConsoleRequest {
 }
 /// Message for response of DisableInteractiveSerialConsole.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DisableInteractiveSerialConsoleResponse {}
 /// Message for detach specific LUN from an Instance.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2149,7 +2149,7 @@ pub mod provisioning_quota {
     }
     /// Available quantity based on asset type.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Availability {
         /// Server count.
         #[prost(int64, tag = "7")]
@@ -2358,7 +2358,7 @@ pub struct VolumeConfig {
 pub mod volume_config {
     /// A LUN(Logical Unit Number) range.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LunRange {
         /// Number of LUNs to create.
         #[prost(int32, tag = "1")]
@@ -3033,7 +3033,7 @@ pub struct OperationMetadata {
 }
 /// Response message from resetting a server.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ResetInstanceResponse {}
 /// Generated client implementations.
 pub mod bare_metal_solution_client {

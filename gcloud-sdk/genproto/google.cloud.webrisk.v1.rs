@@ -328,7 +328,7 @@ pub struct ThreatInfo {
 pub mod threat_info {
     /// Confidence that a URI is unsafe.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Confidence {
         #[prost(oneof = "confidence::Value", tags = "1, 2")]
         pub value: ::core::option::Option<confidence::Value>,
@@ -383,7 +383,7 @@ pub mod threat_info {
             }
         }
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Value {
             /// A decimal representation of confidence in the range of 0
             /// to 1 where 0 indicates no confidence and 1 indicates
@@ -607,7 +607,7 @@ pub struct SubmitUriRequest {
 /// Metadata for the Submit URI long-running operation.
 /// option (google.api.message_visibility).restriction = "TRUSTED_TESTER";
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SubmitUriMetadata {
     /// The state of the operation.
     #[prost(enumeration = "submit_uri_metadata::State", tag = "1")]

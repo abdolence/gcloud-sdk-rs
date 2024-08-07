@@ -353,7 +353,7 @@ pub struct WriteLogEntriesRequest {
 }
 /// Result returned from WriteLogEntries.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WriteLogEntriesResponse {}
 /// Error details for WriteLogEntries with partial success.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -584,7 +584,7 @@ pub struct TailLogEntriesResponse {
 pub mod tail_log_entries_response {
     /// Information about entries that were omitted from the session.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SuppressionInfo {
         /// The reason that entries were omitted from the session.
         #[prost(enumeration = "suppression_info::Reason", tag = "1")]
@@ -1216,7 +1216,7 @@ pub mod log_sink {
     }
     /// Destination dependent options.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Options {
         /// Optional. Options that affect sinks exporting data to BigQuery.
         #[prost(message, tag = "12")]
@@ -1275,7 +1275,7 @@ pub struct Link {
 }
 /// Options that change functionality of a sink exporting data to BigQuery.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BigQueryOptions {
     /// Optional. Whether to use [BigQuery's partition
     /// tables](<https://cloud.google.com/bigquery/docs/partitioned-tables>). By
@@ -2298,7 +2298,7 @@ pub struct CopyLogEntriesMetadata {
 }
 /// Response type for CopyLogEntries long running operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CopyLogEntriesResponse {
     /// Number of log entries copied.
     #[prost(int64, tag = "1")]
@@ -2364,7 +2364,7 @@ pub mod link_metadata {
 }
 /// Cloud Logging specific location metadata.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {
     /// Indicates whether or not Log Analytics features are supported in the given
     /// location.

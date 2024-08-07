@@ -445,7 +445,7 @@ pub mod instance {
 }
 /// Configuration of the persistence functionality.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PersistenceConfig {
     /// Optional. Controls whether Persistence features are enabled.
     /// If not provided, the existing value will be used.
@@ -658,7 +658,7 @@ pub struct MaintenancePolicy {
 /// Time window in which disruptive maintenance updates occur. Non-disruptive
 /// updates can occur inside or outside this window.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WeeklyMaintenanceWindow {
     /// Required. The day of week that maintenance updates occur.
     #[prost(enumeration = "super::super::super::r#type::DayOfWeek", tag = "1")]
@@ -673,7 +673,7 @@ pub struct WeeklyMaintenanceWindow {
 /// Upcoming maintenance schedule. If no maintenance is scheduled, fields are not
 /// populated.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MaintenanceSchedule {
     /// Output only. The start time of any upcoming scheduled maintenance for this instance.
     #[prost(message, optional, tag = "1")]
@@ -997,7 +997,7 @@ pub struct LocationMetadata {
 /// Defines specific information for a particular zone. Currently empty and
 /// reserved for future use only.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ZoneMetadata {}
 /// TlsCertificate Resource
 #[allow(clippy::derive_partial_eq_without_eq)]

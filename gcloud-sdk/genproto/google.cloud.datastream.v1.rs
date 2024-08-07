@@ -78,13 +78,13 @@ pub struct GcsProfile {
 }
 /// BigQuery warehouse profile.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BigQueryProfile {}
 /// Static IP address connectivity. Used when the source database is configured
 /// to allow incoming connections from the Datastream public IP addresses
 /// for the region specified in the connection profile.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StaticServiceIpConnectivity {}
 /// Forward SSH Tunnel connectivity.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -451,15 +451,15 @@ pub struct OracleSourceConfig {
 pub mod oracle_source_config {
     /// Configuration to drop large object values.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DropLargeObjects {}
     /// Configuration to stream large object values.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct StreamLargeObjects {}
     /// The configuration for handle Oracle large objects.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum LargeObjectsHandling {
         /// Drop large object values.
         #[prost(message, tag = "100")]
@@ -670,11 +670,11 @@ pub mod source_config {
 }
 /// AVRO file format configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AvroFileFormat {}
 /// JSON file format configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct JsonFileFormat {
     /// The schema file format along JSON data files.
     #[prost(enumeration = "json_file_format::SchemaFileFormat", tag = "1")]
@@ -795,7 +795,7 @@ pub struct GcsDestinationConfig {
 pub mod gcs_destination_config {
     /// File Format that the data should be written in.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum FileFormat {
         /// AVRO file format configuration.
         #[prost(message, tag = "100")]
@@ -987,7 +987,7 @@ pub mod stream {
     }
     /// Backfill strategy to disable automatic backfill for the Stream's objects.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BackfillNoneStrategy {}
     /// Stream state.
     #[derive(
@@ -1498,7 +1498,7 @@ pub mod discover_connection_profile_request {
     }
     /// The depth of the retrieved hierarchy of data objects.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Hierarchy {
         /// Whether to retrieve the full hierarchy of data objects (TRUE) or only the
         /// current level (FALSE).

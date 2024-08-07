@@ -620,7 +620,7 @@ pub mod live_config {
 }
 /// The configuration for prefetch ads.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PrefetchConfig {
     /// Required. Indicates whether the option to prefetch ad requests is enabled.
     #[prost(bool, tag = "1")]
@@ -789,7 +789,7 @@ pub struct VodSessionAd {
 }
 /// Metadata for the entire stitched content in a VOD session.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VodSessionContent {
     /// The total duration in seconds of the content including the ads stitched
     /// in.

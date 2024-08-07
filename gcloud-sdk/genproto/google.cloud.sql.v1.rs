@@ -183,7 +183,7 @@ pub mod api_warning {
 /// We currently only support backup retention by specifying the number
 /// of backups we will retain.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BackupRetentionSettings {
     /// The unit that 'retained_backups' represents.
     #[prost(enumeration = "backup_retention_settings::RetentionUnit", tag = "1")]
@@ -348,7 +348,7 @@ pub mod backup_configuration {
 }
 /// Perform disk shrink context.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PerformDiskShrinkContext {
     /// The target disk shrink size in GigaBytes.
     #[prost(int64, tag = "1")]
@@ -607,12 +607,17 @@ pub mod export_context {
         /// Optional. Whether or not the export should be parallel.
         #[prost(message, optional, tag = "5")]
         pub parallel: ::core::option::Option<bool>,
+        /// Optional. Options for exporting from a Cloud SQL for PostgreSQL instance.
+        #[prost(message, optional, tag = "6")]
+        pub postgres_export_options: ::core::option::Option<
+            sql_export_options::PostgresExportOptions,
+        >,
     }
     /// Nested message and enum types in `SqlExportOptions`.
     pub mod sql_export_options {
         /// Options for exporting from MySQL.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct MysqlExportOptions {
             /// Option to include SQL statement required to set up replication. If set
             /// to `1`, the dump file includes a CHANGE MASTER TO statement with the
@@ -623,10 +628,24 @@ pub mod export_context {
             #[prost(message, optional, tag = "1")]
             pub master_data: ::core::option::Option<i32>,
         }
+        /// Options for exporting from a Cloud SQL for PostgreSQL instance.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct PostgresExportOptions {
+            /// Optional. Use this option to include DROP <object> SQL statements.
+            /// These statements are used to delete database objects before running the
+            /// import operation.
+            #[prost(message, optional, tag = "1")]
+            pub clean: ::core::option::Option<bool>,
+            /// Optional. Option to include an IF EXISTS SQL statement with each DROP
+            /// statement produced by clean.
+            #[prost(message, optional, tag = "2")]
+            pub if_exists: ::core::option::Option<bool>,
+        }
     }
     /// Options for exporting BAK files (SQL Server-only)
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SqlBakExportOptions {
         /// Whether or not the export should be striped.
         #[prost(message, optional, tag = "1")]
@@ -688,7 +707,7 @@ pub struct ImportContext {
 /// Nested message and enum types in `ImportContext`.
 pub mod import_context {
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SqlImportOptions {
         /// Optional. The number of threads to use for parallel import.
         #[prost(message, optional, tag = "1")]
@@ -696,6 +715,26 @@ pub mod import_context {
         /// Optional. Whether or not the import should be parallel.
         #[prost(message, optional, tag = "2")]
         pub parallel: ::core::option::Option<bool>,
+        /// Optional. Options for importing from a Cloud SQL for PostgreSQL instance.
+        #[prost(message, optional, tag = "3")]
+        pub postgres_import_options: ::core::option::Option<
+            sql_import_options::PostgresImportOptions,
+        >,
+    }
+    /// Nested message and enum types in `SqlImportOptions`.
+    pub mod sql_import_options {
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct PostgresImportOptions {
+            /// Optional. The --clean flag for the pg_restore utility. This flag
+            /// applies only if you enabled Cloud SQL to import files in parallel.
+            #[prost(message, optional, tag = "1")]
+            pub clean: ::core::option::Option<bool>,
+            /// Optional. The --if-exists flag for the pg_restore utility. This flag
+            /// applies only if you enabled Cloud SQL to import files in parallel.
+            #[prost(message, optional, tag = "2")]
+            pub if_exists: ::core::option::Option<bool>,
+        }
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -979,15 +1018,17 @@ pub struct LocationPreference {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaintenanceWindow {
-    /// hour of day - 0 to 23.
+    /// Hour of day - 0 to 23. Specify in the UTC time zone.
     #[prost(message, optional, tag = "1")]
     pub hour: ::core::option::Option<i32>,
-    /// day of week (1-7), starting on Monday.
+    /// Day of week - `MONDAY`, `TUESDAY`, `WEDNESDAY`, `THURSDAY`, `FRIDAY`,
+    /// `SATURDAY`, or `SUNDAY`. Specify in the UTC time zone.
+    /// Returned in output as an integer, 1 to 7, where `1` equals Monday.
     #[prost(message, optional, tag = "2")]
     pub day: ::core::option::Option<i32>,
-    /// Maintenance timing setting: `canary` (Earlier) or `stable` (Later).
-    /// [Learn
-    /// more](<https://cloud.google.com/sql/docs/mysql/instance-settings#maintenance-timing-2ndgen>).
+    /// Maintenance timing settings: `canary`, `stable`, or `week5`.
+    /// For more information, see [About maintenance on Cloud SQL
+    /// instances](<https://cloud.google.com/sql/docs/mysql/maintenance>).
     #[prost(enumeration = "SqlUpdateTrack", tag = "3")]
     pub update_track: i32,
     /// This is always `sql#maintenanceWindow`.
@@ -1019,7 +1060,7 @@ pub struct DenyMaintenancePeriod {
 /// Insights configuration. This specifies when Cloud SQL Insights feature is
 /// enabled and optional configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InsightsConfig {
     /// Whether Query Insights feature is enabled.
     #[prost(bool, tag = "1")]
@@ -1512,7 +1553,7 @@ pub struct OperationErrors {
 }
 /// Database instance local user password validation policy
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PasswordValidationPolicy {
     /// Minimum number of characters allowed.
     #[prost(message, optional, tag = "1")]
@@ -1584,7 +1625,7 @@ pub mod password_validation_policy {
 }
 /// Data cache configurations.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DataCacheConfig {
     /// Whether data cache is enabled for the instance.
     #[prost(bool, tag = "1")]
@@ -1894,7 +1935,7 @@ pub mod settings {
 }
 /// Specifies options for controlling advanced machine features.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AdvancedMachineFeatures {
     /// The number of threads per physical core.
     #[prost(int32, tag = "1")]
@@ -2490,18 +2531,19 @@ impl SqlAvailabilityType {
 pub enum SqlUpdateTrack {
     /// This is an unknown maintenance timing preference.
     Unspecified = 0,
-    /// For instance update that requires a restart, this update track indicates
-    /// your instance prefer to restart for new version early in maintenance
-    /// window.
+    /// For an instance with a scheduled maintenance window, this maintenance
+    /// timing indicates that the maintenance update is scheduled 7 to 14 days
+    /// after the notification is sent out. Also referred to as `Week 1` (Console)
+    /// and `preview` (gcloud CLI).
     Canary = 1,
-    /// For instance update that requires a restart, this update track indicates
-    /// your instance prefer to let Cloud SQL choose the timing of restart (within
-    /// its Maintenance window, if applicable).
+    /// For an instance with a scheduled maintenance window, this maintenance
+    /// timing indicates that the maintenance update is scheduled 15 to 21 days
+    /// after the notification is sent out. Also referred to as `Week 2` (Console)
+    /// and `production` (gcloud CLI).
     Stable = 2,
-    /// For instance update that requires a restart, this update track indicates
-    /// your instance prefer to let Cloud SQL choose the timing of restart (within
-    /// its Maintenance window, if applicable) to be at least 5 weeks after the
-    /// notification.
+    /// For instance with a scheduled maintenance window, this maintenance
+    /// timing indicates that the maintenance update is scheduled 35 to 42 days
+    /// after the notification is sent out.
     Week5 = 3,
 }
 impl SqlUpdateTrack {
@@ -4423,7 +4465,7 @@ pub struct SqlInstancesReencryptRequest {
 }
 /// Database Instance reencrypt request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InstancesReencryptRequest {
     /// Configuration specific to backup re-encryption
     #[prost(message, optional, tag = "1")]
@@ -4431,7 +4473,7 @@ pub struct InstancesReencryptRequest {
 }
 /// Backup Reencryption Config
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BackupReencryptionConfig {
     /// Backup re-encryption limit
     #[prost(int32, optional, tag = "1")]
@@ -5151,7 +5193,7 @@ pub mod database_instance {
     }
     /// Any scheduled maintenance for this instance.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SqlScheduledMaintenance {
         /// The start time of any upcoming scheduled maintenance for this instance.
         #[prost(message, optional, tag = "1")]
@@ -5168,7 +5210,7 @@ pub mod database_instance {
     }
     /// This message wraps up the information written by out-of-disk detection job.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SqlOutOfDiskReport {
         /// This field represents the state generated by the proactive database
         /// wellness job for OutOfDisk issues.
@@ -5352,7 +5394,7 @@ pub mod database_instance {
 }
 /// Gemini instance configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GeminiInstanceConfig {
     /// Output only. Whether Gemini is enabled.
     #[prost(bool, optional, tag = "1")]
@@ -5419,7 +5461,7 @@ pub struct AvailableDatabaseVersion {
 }
 /// Reschedule options for maintenance windows.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SqlInstancesRescheduleMaintenanceRequestBody {
     /// Required. The type of the reschedule the user wants.
     #[prost(message, optional, tag = "3")]
@@ -5430,7 +5472,7 @@ pub struct SqlInstancesRescheduleMaintenanceRequestBody {
 /// Nested message and enum types in `SqlInstancesRescheduleMaintenanceRequestBody`.
 pub mod sql_instances_reschedule_maintenance_request_body {
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Reschedule {
         /// Required. The type of the reschedule.
         #[prost(enumeration = "RescheduleType", tag = "1")]
@@ -5725,6 +5767,11 @@ pub mod sql_external_sync_setting_error {
         /// The error message indicates that pg_cron flags are enabled on the
         /// destination which is not supported during the migration.
         PgCronFlagEnabledInReplica = 47,
+        /// This error message indicates that the specified extensions are not
+        /// enabled on destination instance. For example, before you can migrate
+        /// data to the destination instance, you must enable the PGAudit extension
+        /// on the instance.
+        ExtensionsNotEnabledInReplica = 48,
     }
     impl SqlExternalSyncSettingErrorType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -5867,6 +5914,9 @@ pub mod sql_external_sync_setting_error {
                 SqlExternalSyncSettingErrorType::PgCronFlagEnabledInReplica => {
                     "PG_CRON_FLAG_ENABLED_IN_REPLICA"
                 }
+                SqlExternalSyncSettingErrorType::ExtensionsNotEnabledInReplica => {
+                    "EXTENSIONS_NOT_ENABLED_IN_REPLICA"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5945,6 +5995,9 @@ pub mod sql_external_sync_setting_error {
                 "EXTENSIONS_NOT_MIGRATED" => Some(Self::ExtensionsNotMigrated),
                 "PG_CRON_FLAG_ENABLED_IN_REPLICA" => {
                     Some(Self::PgCronFlagEnabledInReplica)
+                }
+                "EXTENSIONS_NOT_ENABLED_IN_REPLICA" => {
+                    Some(Self::ExtensionsNotEnabledInReplica)
                 }
                 _ => None,
             }
@@ -8082,7 +8135,7 @@ pub struct SqlUsersUpdateRequest {
 }
 /// User level password validation policy.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UserPasswordValidationPolicy {
     /// Number of failed login attempts allowed before user get locked.
     #[prost(int32, tag = "1")]
@@ -8103,7 +8156,7 @@ pub struct UserPasswordValidationPolicy {
 }
 /// Read-only password status.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PasswordStatus {
     /// If true, user does not have login privileges.
     #[prost(bool, tag = "1")]

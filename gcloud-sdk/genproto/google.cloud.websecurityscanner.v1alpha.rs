@@ -263,7 +263,7 @@ pub mod finding {
 /// A FindingTypeStats resource represents stats regarding a specific FindingType
 /// of Findings under a given ScanRun.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FindingTypeStats {
     /// The finding type associated with the stats.
     #[prost(enumeration = "finding::FindingType", tag = "1")]
@@ -513,7 +513,7 @@ pub mod scan_config {
     }
     /// Scan schedule configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Schedule {
         /// A timestamp indicates when the next run will be scheduled. The value is
         /// refreshed by the server after each run. If unspecified, it will default

@@ -69,7 +69,7 @@ impl ManagingSystem {
 }
 /// Timestamps about this resource according to a particular system.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SystemTimestamps {
     /// The creation time of the resource within the given system.
     #[prost(message, optional, tag = "1")]
@@ -352,7 +352,7 @@ impl TableSourceType {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tag {
-    /// The resource name of the tag in URL format. Example:
+    /// Identifier. The resource name of the tag in URL format. Example:
     ///
     /// * projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}
     ///
@@ -466,7 +466,7 @@ pub mod tag_field {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TagTemplate {
-    /// The resource name of the tag template in URL format. Example:
+    /// Identifier. The resource name of the tag template in URL format. Example:
     ///
     /// * projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
     ///
@@ -490,13 +490,64 @@ pub struct TagTemplate {
         ::prost::alloc::string::String,
         TagTemplateField,
     >,
+    /// Output only. Transfer status of the TagTemplate
+    #[prost(enumeration = "tag_template::DataplexTransferStatus", tag = "7")]
+    pub dataplex_transfer_status: i32,
+}
+/// Nested message and enum types in `TagTemplate`.
+pub mod tag_template {
+    /// This enum describes TagTemplate transfer status to Dataplex service.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DataplexTransferStatus {
+        /// Default value. TagTemplate and its tags are only visible and editable in
+        /// DataCatalog.
+        Unspecified = 0,
+        /// TagTemplate and its tags are auto-copied to Dataplex service.
+        /// Visible in both services. Editable in DataCatalog, read-only in Dataplex.
+        /// Deprecated: Individual TagTemplate migration is deprecated in favor of
+        /// organization or project wide TagTemplate migration opt-in.
+        Migrated = 1,
+    }
+    impl DataplexTransferStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DataplexTransferStatus::Unspecified => {
+                    "DATAPLEX_TRANSFER_STATUS_UNSPECIFIED"
+                }
+                DataplexTransferStatus::Migrated => "MIGRATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATAPLEX_TRANSFER_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "MIGRATED" => Some(Self::Migrated),
+                _ => None,
+            }
+        }
+    }
 }
 /// The template for an individual field within a tag template.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TagTemplateField {
-    /// Output only. The resource name of the tag template field in URL format.
-    /// Example:
+    /// Output only. Identifier. The resource name of the tag template field in URL
+    /// format. Example:
     ///
     /// * projects/{project_id}/locations/{location}/tagTemplates/{tag_template}/fields/{field}
     ///
@@ -619,7 +670,7 @@ pub mod field_type {
 /// are not yet counted in usage computation
 /// <https://cloud.google.com/bigquery/docs/querying-wildcard-tables>
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UsageStats {
     /// The number of times that the underlying entry was successfully used.
     #[prost(float, tag = "1")]
@@ -1017,8 +1068,8 @@ pub mod lookup_entry_request {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Entry {
-    /// Output only. The Data Catalog resource name of the entry in URL format.
-    /// Example:
+    /// Output only. Identifier. The Data Catalog resource name of the entry in URL
+    /// format. Example:
     ///
     /// * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
     ///
@@ -1135,7 +1186,7 @@ pub mod entry {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntryGroup {
-    /// The resource name of the entry group in URL format. Example:
+    /// Identifier. The resource name of the entry group in URL format. Example:
     ///
     /// * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
     ///
@@ -3413,7 +3464,7 @@ pub struct ExportTaxonomiesRequest {
 pub mod export_taxonomies_request {
     /// Required. Taxonomies export destination.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Export taxonomies as serialized taxonomies.
         #[prost(bool, tag = "3")]

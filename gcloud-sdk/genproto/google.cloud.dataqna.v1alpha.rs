@@ -47,7 +47,7 @@ pub mod annotated_string {
     /// Semantic markup denotes a substring (by index and length) with markup
     /// information.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SemanticMarkup {
         /// The semantic type of the markup substring.
         #[prost(enumeration = "SemanticMarkupType", tag = "1")]
@@ -201,7 +201,7 @@ pub mod suggestion_info {
     /// }
     /// ```
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MatchInfo {
         /// Unicode character index of the string annotation.
         #[prost(int32, tag = "1")]
@@ -548,7 +548,7 @@ pub mod interpret_error {
     /// Details about a query that was too ambiguous. Currently, the message
     /// has no fields and its presence signals that there was ambiguity.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct InterpretAmbiguityDetails {}
     /// The interpret error code provides an error category why the interpretation
     /// failed.
@@ -878,7 +878,7 @@ pub mod interpretation_structure {
 }
 /// Configuriation of debug flags.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DebugFlags {
     /// Whether to include the original VAQuery.
     #[prost(bool, tag = "1")]

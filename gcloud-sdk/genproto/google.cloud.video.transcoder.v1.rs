@@ -350,7 +350,7 @@ pub struct EditAtom {
 }
 /// Ad break.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AdBreak {
     /// Start time in seconds for the ad break, relative to the output file
     /// timeline. The default is `0s`.
@@ -454,7 +454,7 @@ pub struct Manifest {
 pub mod manifest {
     /// `DASH` manifest configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DashConfig {
         /// The segment reference scheme for a `DASH` manifest. The default is
         /// `SEGMENT_LIST`.
@@ -556,7 +556,7 @@ pub mod manifest {
     }
     /// Specifies the manifest configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ManifestConfig {
         /// `DASH` manifest configuration.
         #[prost(message, tag = "4")]
@@ -649,7 +649,7 @@ pub struct SpriteSheet {
 pub mod sprite_sheet {
     /// Specify either total number of sprites or interval to create sprites.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ExtractionStrategy {
         /// Total number of sprites. Create the specified number of sprites
         /// distributed evenly across the timeline of the output media. The default
@@ -678,7 +678,7 @@ pub struct Overlay {
 pub mod overlay {
     /// 2D normalized coordinates. Default: `{0.0, 0.0}`
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct NormalizedCoordinate {
         /// Normalized x coordinate.
         #[prost(double, tag = "1")]
@@ -708,7 +708,7 @@ pub mod overlay {
     }
     /// Display static overlay object.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AnimationStatic {
         /// Normalized coordinates based on output video resolution. Valid
         /// values: `0.0`–`1.0`. `xy` is the upper-left coordinate of the overlay
@@ -723,7 +723,7 @@ pub mod overlay {
     }
     /// Display overlay object with fade animation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AnimationFade {
         /// Required. Type of fade animation: `FADE_IN` or `FADE_OUT`.
         #[prost(enumeration = "FadeType", tag = "1")]
@@ -747,7 +747,7 @@ pub mod overlay {
     /// overlay object will keep the state of previous animation until the end of
     /// the video.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AnimationEnd {
         /// The time to end overlay object, in seconds. Default: 0
         #[prost(message, optional, tag = "1")]
@@ -755,7 +755,7 @@ pub mod overlay {
     }
     /// Animation types.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Animation {
         /// Animations can be static or fade, or they can end the previous animation.
         #[prost(oneof = "animation::AnimationType", tags = "1, 2, 3")]
@@ -765,7 +765,7 @@ pub mod overlay {
     pub mod animation {
         /// Animations can be static or fade, or they can end the previous animation.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum AnimationType {
             /// Display static overlay object.
             #[prost(message, tag = "1")]
@@ -854,7 +854,7 @@ pub mod preprocessing_config {
     ///
     /// **Note:** This configuration is not supported.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Color {
         /// Control color saturation of the video. Enter a value between -1 and 1,
         /// where -1 is fully desaturated and 1 is maximum saturation. 0 is no
@@ -895,7 +895,7 @@ pub mod preprocessing_config {
     ///
     /// **Note:** This configuration is not supported.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Deblock {
         /// Set strength of the deblocker. Enter a value between 0 and 1. The higher
         /// the value, the stronger the block removal. 0 is no deblocking. The
@@ -908,7 +908,7 @@ pub mod preprocessing_config {
     }
     /// Audio preprocessing configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Audio {
         /// Specify audio loudness normalization in loudness units relative to full
         /// scale (LUFS). Enter a value between -24 and 0 (the default), where:
@@ -937,7 +937,7 @@ pub mod preprocessing_config {
     /// Video cropping configuration for the input video. The cropped input video
     /// is scaled to match the output resolution.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Crop {
         /// The number of pixels to crop from the top. The default is 0.
         #[prost(int32, tag = "1")]
@@ -955,7 +955,7 @@ pub mod preprocessing_config {
     /// Pad filter configuration for the input video. The padded input video
     /// is scaled after padding with black to match the output resolution.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Pad {
         /// The number of pixels to add to the top. The default is 0.
         #[prost(int32, tag = "1")]
@@ -1201,7 +1201,7 @@ pub mod video_stream {
     pub mod h264_codec_settings {
         /// GOP mode can be either by frame count or duration.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum GopMode {
             /// Select the GOP size based on the specified frame count. Must be greater
             /// than zero.
@@ -1363,7 +1363,7 @@ pub mod video_stream {
     pub mod h265_codec_settings {
         /// GOP mode can be either by frame count or duration.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum GopMode {
             /// Select the GOP size based on the specified frame count. Must be greater
             /// than zero.
@@ -1466,7 +1466,7 @@ pub mod video_stream {
     pub mod vp9_codec_settings {
         /// GOP mode can be either by frame count or duration.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum GopMode {
             /// Select the GOP size based on the specified frame count. Must be greater
             /// than zero.
@@ -1627,7 +1627,7 @@ pub mod text_stream {
 }
 /// Segment settings for `ts`, `fmp4` and `vtt`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SegmentSettings {
     /// Duration of the segments in seconds. The default is `6.0s`. Note that
     /// `segmentDuration` must be greater than or equal to
@@ -1661,11 +1661,11 @@ pub struct Encryption {
 pub mod encryption {
     /// Configuration for AES-128 encryption.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Aes128Encryption {}
     /// Configuration for SAMPLE-AES encryption.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SampleAesEncryption {}
     /// Configuration for MPEG Common Encryption (MPEG-CENC).
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1695,23 +1695,23 @@ pub mod encryption {
     }
     /// Widevine configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Widevine {}
     /// Fairplay configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Fairplay {}
     /// Playready configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Playready {}
     /// Clearkey configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Clearkey {}
     /// Defines configuration for DRM systems in use.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DrmSystems {
         /// Widevine configuration.
         #[prost(message, optional, tag = "1")]

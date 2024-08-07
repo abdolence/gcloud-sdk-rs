@@ -199,7 +199,7 @@ pub mod stream_data {
 }
 /// Message signifying that the stream is open
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Okay {}
 /// Message signifying that the stream failed to open
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -211,7 +211,7 @@ pub struct Fail {
 }
 /// Message signifying that the stream closed.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Close {}
 /// TestMatrix captures all details about a test. It contains the environment
 /// configuration, test specification, test executions and overall state and
@@ -390,7 +390,7 @@ pub mod test_specification {
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SystraceSetup {
     /// Systrace duration in seconds.
     /// Should be between 1 and 30 seconds. 0 disables systrace.
@@ -486,7 +486,7 @@ pub struct EnvironmentVariable {
 }
 /// Identifies an account and how to log into it.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Account {
     /// Required. The type of account, based what it's for (e.g. Google) and what
     /// its login mechanism is (e.g. username and password).
@@ -498,7 +498,7 @@ pub mod account {
     /// Required. The type of account, based what it's for (e.g. Google) and what
     /// its login mechanism is (e.g. username and password).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum AccountType {
         /// An automatic google login account.
         #[prost(message, tag = "1")]
@@ -513,7 +513,7 @@ pub mod account {
 /// present on the device. Logging into the device with these generated accounts
 /// allows testing more functionalities.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GoogleAuto {}
 /// An Android package file to install.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -932,7 +932,7 @@ pub mod robo_starting_intent {
 }
 /// Specifies an intent that starts the main launcher activity.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LauncherActivityIntent {}
 /// A starting intent specified by an action, uri, and categories.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -951,7 +951,7 @@ pub struct StartActivityIntent {
 }
 /// Skips the starting activity
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NoActivityIntent {}
 /// The matrix of environments in which the test is to be executed.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1226,7 +1226,7 @@ pub struct TestDetails {
 }
 /// Details behind an invalid request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InvalidRequestDetail {
     /// The reason behind the error.
     #[prost(enumeration = "invalid_request_detail::Reason", tag = "1")]
@@ -1332,7 +1332,7 @@ pub mod sharding_option {
 /// Based on the sharding mechanism AndroidJUnitRunner uses, there is no
 /// guarantee that test cases will be distributed uniformly across all shards.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UniformSharding {
     /// Required. The total number of shards to create. This must always be a
     /// positive number that is no greater than the total number of test cases.
@@ -1373,7 +1373,7 @@ pub struct TestTargetsForShard {
 }
 /// Shards test based on previous test case timing records.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SmartSharding {
     /// The amount of time tests within a shard should take.
     ///
@@ -1478,7 +1478,7 @@ pub struct CancelTestMatrixRequest {
 }
 /// Response containing the current state of the specified test matrix.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CancelTestMatrixResponse {
     /// The current rolled-up state of the test matrix.
     /// If this state is already final, then the cancelation request will
@@ -2629,7 +2629,7 @@ pub mod device_session {
         }
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Expiration {
         /// Optional. The amount of time that a device will be initially allocated
         /// for. This can eventually be extended with the UpdateDeviceSession RPC.
@@ -3230,7 +3230,7 @@ pub struct DirectAccessVersionInfo {
 /// Data about the relative number of devices running a
 /// given configuration of the Android platform.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Distribution {
     /// Output only. The time this distribution was measured.
     #[prost(message, optional, tag = "1")]
@@ -3417,7 +3417,7 @@ pub struct NetworkConfiguration {
 }
 /// Network emulation parameters.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TrafficRule {
     /// Packet delay, must be >= 0.
     #[prost(message, optional, tag = "1")]

@@ -226,7 +226,7 @@ pub struct AccountManagerMerchantInfo {
 }
 /// Reconciliation information for a transaction processed by account manager.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AccountManagerTransactionReconciliationInfo {
     /// Output only. State of reconciliation.
     #[prost(

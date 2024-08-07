@@ -54,7 +54,7 @@ pub mod constraint {
     /// A constraint that allows or disallows a list of string values, which are
     /// configured by an Organization Policy administrator with a policy.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ListConstraint {
         /// Indicates whether values grouped into categories can be used in
         /// `Policy.allowed_values` and `Policy.denied_values`. For example,
@@ -74,7 +74,7 @@ pub mod constraint {
     /// If it is enforced on a VM instance, serial port connections will not be
     /// opened to that instance.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BooleanConstraint {}
     /// Specifies the default behavior in the absence of any policy for the
     /// constraint. This must not be `CONSTRAINT_DEFAULT_UNSPECIFIED`.
@@ -129,7 +129,7 @@ pub mod constraint {
     ///
     /// Immutable after creation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ConstraintType {
         /// Defines this constraint as being a ListConstraint.
         #[prost(message, tag = "5")]

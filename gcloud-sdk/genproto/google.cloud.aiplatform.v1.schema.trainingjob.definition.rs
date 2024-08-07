@@ -118,7 +118,7 @@ pub mod auto_ml_image_classification_inputs {
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlImageClassificationMetadata {
     /// The actual training cost of creating this model, expressed in
     /// milli node hours, i.e. 1,000 value in this field means 1 node hour.
@@ -181,7 +181,7 @@ pub mod auto_ml_image_classification_metadata {
 }
 /// A TrainingJob that trains and uploads an AutoML Image Object Detection Model.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlImageObjectDetection {
     /// The input parameters of this TrainingJob.
     #[prost(message, optional, tag = "1")]
@@ -191,7 +191,7 @@ pub struct AutoMlImageObjectDetection {
     pub metadata: ::core::option::Option<AutoMlImageObjectDetectionMetadata>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlImageObjectDetectionInputs {
     #[prost(enumeration = "auto_ml_image_object_detection_inputs::ModelType", tag = "1")]
     pub model_type: i32,
@@ -291,7 +291,7 @@ pub mod auto_ml_image_object_detection_inputs {
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlImageObjectDetectionMetadata {
     /// The actual training cost of creating this model, expressed in
     /// milli node hours, i.e. 1,000 value in this field means 1 node hour.
@@ -448,7 +448,7 @@ pub mod auto_ml_image_segmentation_inputs {
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlImageSegmentationMetadata {
     /// The actual training cost of creating this model, expressed in
     /// milli node hours, i.e. 1,000 value in this field means 1 node hour.
@@ -816,7 +816,7 @@ pub mod auto_ml_tables_inputs {
     /// `maximize-precision-at-recall` and `maximize-recall-at-precision`,
     /// otherwise unused.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum AdditionalOptimizationObjectiveConfig {
         /// Required when optimization_objective is "maximize-precision-at-recall".
         /// Must be between 0 and 1, inclusive.
@@ -830,7 +830,7 @@ pub mod auto_ml_tables_inputs {
 }
 /// Model metadata specific to AutoML Tables.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlTablesMetadata {
     /// Output only. The actual training cost of the model, expressed in milli
     /// node hours, i.e. 1,000 value in this field means 1 node hour. Guaranteed
@@ -840,39 +840,39 @@ pub struct AutoMlTablesMetadata {
 }
 /// A TrainingJob that trains and uploads an AutoML Text Classification Model.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlTextClassification {
     /// The input parameters of this TrainingJob.
     #[prost(message, optional, tag = "1")]
     pub inputs: ::core::option::Option<AutoMlTextClassificationInputs>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlTextClassificationInputs {
     #[prost(bool, tag = "1")]
     pub multi_label: bool,
 }
 /// A TrainingJob that trains and uploads an AutoML Text Extraction Model.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlTextExtraction {
     /// The input parameters of this TrainingJob.
     #[prost(message, optional, tag = "1")]
     pub inputs: ::core::option::Option<AutoMlTextExtractionInputs>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlTextExtractionInputs {}
 /// A TrainingJob that trains and uploads an AutoML Text Sentiment Model.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlTextSentiment {
     /// The input parameters of this TrainingJob.
     #[prost(message, optional, tag = "1")]
     pub inputs: ::core::option::Option<AutoMlTextSentimentInputs>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlTextSentimentInputs {
     /// A sentiment is expressed as an integer ordinal, where higher value
     /// means a more positive sentiment. The range of sentiments that will be used
@@ -887,14 +887,14 @@ pub struct AutoMlTextSentimentInputs {
 /// A TrainingJob that trains and uploads an AutoML Video Action Recognition
 /// Model.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlVideoActionRecognition {
     /// The input parameters of this TrainingJob.
     #[prost(message, optional, tag = "1")]
     pub inputs: ::core::option::Option<AutoMlVideoActionRecognitionInputs>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlVideoActionRecognitionInputs {
     #[prost(
         enumeration = "auto_ml_video_action_recognition_inputs::ModelType",
@@ -964,14 +964,14 @@ pub mod auto_ml_video_action_recognition_inputs {
 }
 /// A TrainingJob that trains and uploads an AutoML Video Classification Model.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlVideoClassification {
     /// The input parameters of this TrainingJob.
     #[prost(message, optional, tag = "1")]
     pub inputs: ::core::option::Option<AutoMlVideoClassificationInputs>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlVideoClassificationInputs {
     #[prost(enumeration = "auto_ml_video_classification_inputs::ModelType", tag = "1")]
     pub model_type: i32,
@@ -1032,14 +1032,14 @@ pub mod auto_ml_video_classification_inputs {
 }
 /// A TrainingJob that trains and uploads an AutoML Video ObjectTracking Model.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlVideoObjectTracking {
     /// The input parameters of this TrainingJob.
     #[prost(message, optional, tag = "1")]
     pub inputs: ::core::option::Option<AutoMlVideoObjectTrackingInputs>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutoMlVideoObjectTrackingInputs {
     #[prost(enumeration = "auto_ml_video_object_tracking_inputs::ModelType", tag = "1")]
     pub model_type: i32,

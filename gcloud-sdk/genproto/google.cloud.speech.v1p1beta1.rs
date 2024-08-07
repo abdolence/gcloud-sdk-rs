@@ -300,7 +300,7 @@ pub struct StreamingRecognitionConfig {
 pub mod streaming_recognition_config {
     /// Events that a timeout can be set on for voice activity.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct VoiceActivityTimeout {
         /// Duration to timeout the stream if no speech begins.
         #[prost(message, optional, tag = "1")]
@@ -653,7 +653,7 @@ pub mod recognition_config {
 }
 /// Config to enable speaker diarization.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SpeakerDiarizationConfig {
     /// If 'true', enables speaker detection for each recognized word in
     /// the top alternative of the recognition result using a speaker_tag provided

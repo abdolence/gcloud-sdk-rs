@@ -108,7 +108,7 @@ pub struct ExportAnalyticsMetricsRequest {
 /// Metadata related to the progress of the Export operation. This is
 /// returned by the google.longrunning.Operation.metadata field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -367,7 +367,7 @@ pub mod condition {
     /// Used for time-dependent conditions.
     /// Example: Want to have rule applied for week long sale.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TimeRange {
         /// Start of time range. Range is inclusive.
         #[prost(message, optional, tag = "1")]
@@ -895,7 +895,7 @@ pub struct Image {
 }
 /// A floating point interval.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Interval {
     /// The lower bound of the interval. If neither of the min fields are set, then
     /// the lower bound is negative infinity.
@@ -920,7 +920,7 @@ pub mod interval {
     /// This field must not be larger than max.
     /// Otherwise, an INVALID_ARGUMENT error is returned.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Min {
         /// Inclusive lower bound.
         #[prost(double, tag = "1")]
@@ -935,7 +935,7 @@ pub mod interval {
     /// This field must be not smaller than min.
     /// Otherwise, an INVALID_ARGUMENT error is returned.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Max {
         /// Inclusive upper bound.
         #[prost(double, tag = "3")]
@@ -1041,7 +1041,7 @@ pub mod price_info {
     /// [Product][google.cloud.retail.v2beta.Product] having the same
     /// [Product.primary_product_id][google.cloud.retail.v2beta.Product.primary_product_id].
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PriceRange {
         /// The inclusive
         /// [Product.pricing_info.price][google.cloud.retail.v2beta.PriceInfo.price]
@@ -1952,7 +1952,7 @@ pub mod product {
         }
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Expiration {
         /// Note that this field is applied in the following ways:
         ///
@@ -2445,7 +2445,7 @@ pub mod big_query_source {
     /// BigQuery table partition info. Leave this empty if the BigQuery table
     /// is not partitioned.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Partition {
         /// BigQuery time partitioned table's _PARTITIONDATE in YYYY-MM-DD format.
         ///
@@ -2781,7 +2781,7 @@ pub struct ImportUserEventsResponse {
 /// A summary of import result. The UserEventImportSummary summarizes
 /// the import status for user events.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UserEventImportSummary {
     /// Count of user events imported with complete existing catalog information.
     #[prost(int64, tag = "1")]
@@ -5243,7 +5243,7 @@ pub mod search_request {
     }
     /// The specifications of dynamically generated facets.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DynamicFacetSpec {
         /// Mode of the DynamicFacet feature.
         /// Defaults to
@@ -5363,7 +5363,7 @@ pub mod search_request {
     /// Specification to determine under which conditions query expansion should
     /// occur.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct QueryExpansionSpec {
         /// The condition under which query expansion should occur. Default to
         /// [Condition.DISABLED][google.cloud.retail.v2beta.SearchRequest.QueryExpansionSpec.Condition.DISABLED].
@@ -5427,7 +5427,7 @@ pub mod search_request {
     }
     /// The specification for personalization.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PersonalizationSpec {
         /// Defaults to
         /// [Mode.AUTO][google.cloud.retail.v2beta.SearchRequest.PersonalizationSpec.Mode.AUTO].
@@ -5484,7 +5484,7 @@ pub mod search_request {
     }
     /// The specification for query spell correction.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SpellCorrectionSpec {
         /// The mode under which spell correction should take effect to
         /// replace the original search query. Default to
@@ -5838,7 +5838,7 @@ pub mod search_response {
     /// Information describing query expansion including whether expansion has
     /// occurred.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct QueryExpansionInfo {
         /// Bool describing whether query expansion has occurred.
         #[prost(bool, tag = "1")]
@@ -6560,7 +6560,7 @@ pub mod model {
     }
     /// Additional configs for the frequently-bought-together model type.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct FrequentlyBoughtTogetherFeaturesConfig {
         /// Optional. Specifies the context of the model when it is used in predict
         /// requests. Can only be set for the `frequently-bought-together` type. If
@@ -6571,7 +6571,7 @@ pub mod model {
     }
     /// Additional model features config.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ModelFeaturesConfig {
         #[prost(oneof = "model_features_config::TypeDedicatedConfig", tags = "1")]
         pub type_dedicated_config: ::core::option::Option<
@@ -6581,7 +6581,7 @@ pub mod model {
     /// Nested message and enum types in `ModelFeaturesConfig`.
     pub mod model_features_config {
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum TypeDedicatedConfig {
             /// Additional configs for frequently-bought-together models.
             #[prost(message, tag = "1")]
@@ -6966,7 +6966,7 @@ pub struct TuneModelMetadata {
 }
 /// Response associated with a tune operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TuneModelResponse {}
 /// Generated client implementations.
 pub mod model_service_client {
@@ -7618,12 +7618,12 @@ pub mod prediction_service_client {
 /// Metadata related to the progress of the Purge operation.
 /// This will be returned by the google.longrunning.Operation.metadata field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PurgeMetadata {}
 /// Metadata related to the progress of the PurgeProducts operation.
 /// This will be returned by the google.longrunning.Operation.metadata field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PurgeProductsMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -7756,7 +7756,7 @@ pub struct PurgeUserEventsRequest {
 /// successfully done, then this message is returned by the
 /// google.longrunning.Operations.response field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PurgeUserEventsResponse {
     /// The total count of events purged as a result of the operation.
     #[prost(int64, tag = "1")]
@@ -8078,14 +8078,14 @@ pub struct SetInventoryRequest {
 /// [ProductService.SetInventory][google.cloud.retail.v2beta.ProductService.SetInventory]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SetInventoryMetadata {}
 /// Response of the SetInventoryRequest.  Currently empty because
 /// there is no meaningful response populated from the
 /// [ProductService.SetInventory][google.cloud.retail.v2beta.ProductService.SetInventory]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SetInventoryResponse {}
 /// Request message for
 /// [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.AddFulfillmentPlaces]
@@ -8160,14 +8160,14 @@ pub struct AddFulfillmentPlacesRequest {
 /// [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.AddFulfillmentPlaces]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddFulfillmentPlacesMetadata {}
 /// Response of the AddFulfillmentPlacesRequest.  Currently empty because
 /// there is no meaningful response populated from the
 /// [ProductService.AddFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.AddFulfillmentPlaces]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddFulfillmentPlacesResponse {}
 /// Request message for
 /// [ProductService.AddLocalInventories][google.cloud.retail.v2beta.ProductService.AddLocalInventories]
@@ -8225,7 +8225,7 @@ pub struct AddLocalInventoriesRequest {
 /// [ProductService.AddLocalInventories][google.cloud.retail.v2beta.ProductService.AddLocalInventories]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddLocalInventoriesMetadata {}
 /// Response of the
 /// [ProductService.AddLocalInventories][google.cloud.retail.v2beta.ProductService.AddLocalInventories]
@@ -8234,7 +8234,7 @@ pub struct AddLocalInventoriesMetadata {}
 /// [ProductService.AddLocalInventories][google.cloud.retail.v2beta.ProductService.AddLocalInventories]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddLocalInventoriesResponse {}
 /// Request message for
 /// [ProductService.RemoveLocalInventories][google.cloud.retail.v2beta.ProductService.RemoveLocalInventories]
@@ -8274,7 +8274,7 @@ pub struct RemoveLocalInventoriesRequest {
 /// [ProductService.RemoveLocalInventories][google.cloud.retail.v2beta.ProductService.RemoveLocalInventories]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RemoveLocalInventoriesMetadata {}
 /// Response of the
 /// [ProductService.RemoveLocalInventories][google.cloud.retail.v2beta.ProductService.RemoveLocalInventories]
@@ -8283,7 +8283,7 @@ pub struct RemoveLocalInventoriesMetadata {}
 /// [ProductService.RemoveLocalInventories][google.cloud.retail.v2beta.ProductService.RemoveLocalInventories]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RemoveLocalInventoriesResponse {}
 /// Request message for
 /// [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.RemoveFulfillmentPlaces]
@@ -8353,14 +8353,14 @@ pub struct RemoveFulfillmentPlacesRequest {
 /// [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.RemoveFulfillmentPlaces]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RemoveFulfillmentPlacesMetadata {}
 /// Response of the RemoveFulfillmentPlacesRequest. Currently empty because there
 /// is no meaningful response populated from the
 /// [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.RemoveFulfillmentPlaces]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RemoveFulfillmentPlacesResponse {}
 /// Generated client implementations.
 pub mod product_service_client {
@@ -9835,7 +9835,7 @@ pub mod rejoin_user_events_request {
 }
 /// Response message for `RejoinUserEvents` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RejoinUserEventsResponse {
     /// Number of user events that were joined with latest product catalog.
     #[prost(int64, tag = "1")]
@@ -9843,7 +9843,7 @@ pub struct RejoinUserEventsResponse {
 }
 /// Metadata for `RejoinUserEvents` method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RejoinUserEventsMetadata {}
 /// Generated client implementations.
 pub mod user_event_service_client {

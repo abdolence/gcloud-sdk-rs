@@ -102,7 +102,7 @@ pub struct ReportRequest {
 /// Response message for the Report method.
 /// If the request contains any invalid data, the server returns an RPC error.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReportResponse {}
 /// Message containing resource details in a batch mode.
 #[allow(clippy::derive_partial_eq_without_eq)]

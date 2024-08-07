@@ -31,7 +31,7 @@ pub struct PubSubMessage {
 }
 /// A cursor that describes the position of a message within a topic partition.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Cursor {
     /// The offset of a message within a topic partition. Must be greater than or
     /// equal 0.
@@ -98,7 +98,7 @@ pub struct Topic {
 pub mod topic {
     /// The settings for a topic's partitions.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PartitionConfig {
         /// The number of partitions in the topic. Must be at least 1.
         ///
@@ -116,7 +116,7 @@ pub mod topic {
     pub mod partition_config {
         /// The throughput capacity configuration for each partition.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Capacity {
             /// Publish throughput capacity per partition in MiB/s.
             /// Must be >= 4 and <= 16.
@@ -129,7 +129,7 @@ pub mod topic {
         }
         /// The throughput dimension of this topic.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Dimension {
             /// DEPRECATED: Use capacity instead which can express a superset of
             /// configurations.
@@ -148,7 +148,7 @@ pub mod topic {
     }
     /// The settings for a topic's message retention.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RetentionConfig {
         /// The provisioned storage, in bytes, per partition. If the number of bytes
         /// stored in any of the topic's partitions grows beyond this value, older
@@ -199,7 +199,7 @@ pub struct Subscription {
 pub mod subscription {
     /// The settings for a subscription's message delivery.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DeliveryConfig {
         /// The DeliveryRequirement for this subscription.
         #[prost(enumeration = "delivery_config::DeliveryRequirement", tag = "3")]
@@ -363,7 +363,7 @@ pub mod export_config {
 /// A target publish or event time. Can be used for seeking to or retrieving the
 /// corresponding cursor.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeTarget {
     /// The type of message time to query.
     #[prost(oneof = "time_target::Time", tags = "1, 2")]
@@ -373,7 +373,7 @@ pub struct TimeTarget {
 pub mod time_target {
     /// The type of message time to query.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Time {
         /// Request the cursor of the first message with publish time greater than or
         /// equal to `publish_time`. All messages thereafter are guaranteed to have
@@ -426,7 +426,7 @@ pub struct GetTopicPartitionsRequest {
 }
 /// Response for GetTopicPartitions.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TopicPartitions {
     /// The number of partitions in the topic.
     #[prost(int64, tag = "1")]
@@ -663,7 +663,7 @@ pub mod seek_subscription_request {
     }
     /// The target to seek to. Must be set.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Target {
         /// Seek to a named position with respect to the message backlog.
         #[prost(enumeration = "NamedTarget", tag = "2")]
@@ -677,7 +677,7 @@ pub mod seek_subscription_request {
 }
 /// Response for SeekSubscription long running operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SeekSubscriptionResponse {}
 /// Metadata for long running operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1496,12 +1496,12 @@ pub struct InitialCommitCursorRequest {
 }
 /// Response to an InitialCommitCursorRequest.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InitialCommitCursorResponse {}
 /// Streaming request to update the committed cursor. Subsequent
 /// SequencedCommitCursorRequests override outstanding ones.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SequencedCommitCursorRequest {
     /// The new value for the committed cursor.
     #[prost(message, optional, tag = "1")]
@@ -1509,7 +1509,7 @@ pub struct SequencedCommitCursorRequest {
 }
 /// Response to a SequencedCommitCursorRequest.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SequencedCommitCursorResponse {
     /// The number of outstanding SequencedCommitCursorRequests acknowledged by
     /// this response. Note that SequencedCommitCursorRequests are acknowledged in
@@ -1541,7 +1541,7 @@ pub mod streaming_commit_cursor_request {
 }
 /// Response to a StreamingCommitCursorRequest.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StreamingCommitCursorResponse {
     /// The type of request this is.
     #[prost(oneof = "streaming_commit_cursor_response::Request", tags = "1, 2")]
@@ -1551,7 +1551,7 @@ pub struct StreamingCommitCursorResponse {
 pub mod streaming_commit_cursor_response {
     /// The type of request this is.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Request {
         /// Initial response on the stream.
         #[prost(message, tag = "1")]
@@ -1578,7 +1578,7 @@ pub struct CommitCursorRequest {
 }
 /// Response for CommitCursor.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CommitCursorResponse {}
 /// Request for ListPartitionCursors.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1604,7 +1604,7 @@ pub struct ListPartitionCursorsRequest {
 }
 /// A pair of a Cursor and the partition it is for.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PartitionCursor {
     /// The partition this is for.
     #[prost(int64, tag = "1")]
@@ -1836,7 +1836,7 @@ pub struct InitialPublishRequest {
 }
 /// Response to an InitialPublishRequest.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InitialPublishResponse {}
 /// Request to publish messages to the topic.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1882,7 +1882,7 @@ pub struct MessagePublishResponse {
 pub mod message_publish_response {
     /// Cursors for a subrange of published messages.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CursorRange {
         /// The cursor of the message at the start index. The cursors for remaining
         /// messages up to the end index (exclusive) are sequential.
@@ -2089,7 +2089,7 @@ pub struct InitialSubscribeRequest {
 }
 /// Response to an InitialSubscribeRequest.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InitialSubscribeResponse {
     /// The cursor from which the subscriber will start receiving messages once
     /// flow control tokens become available.
@@ -2103,7 +2103,7 @@ pub struct InitialSubscribeResponse {
 /// SeekRequests may not be sent while another SeekRequest is outstanding (i.e.,
 /// has not received a SeekResponse) on the same stream.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SeekRequest {
     /// The target to seek to. Must be set.
     #[prost(oneof = "seek_request::Target", tags = "1, 2")]
@@ -2158,7 +2158,7 @@ pub mod seek_request {
     }
     /// The target to seek to. Must be set.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Target {
         /// A named target.
         #[prost(enumeration = "NamedTarget", tag = "1")]
@@ -2171,7 +2171,7 @@ pub mod seek_request {
 }
 /// Response to a SeekRequest.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SeekResponse {
     /// The new delivery cursor for the current stream.
     #[prost(message, optional, tag = "1")]
@@ -2180,7 +2180,7 @@ pub struct SeekResponse {
 /// Request to grant tokens to the server, requesting delivery of messages when
 /// they become available.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FlowControlRequest {
     /// The number of message tokens to grant. Must be greater than or equal to 0.
     #[prost(int64, tag = "1")]
@@ -2289,7 +2289,7 @@ pub struct PartitionAssignment {
 /// client is known to be inactive, after which time the server will break the
 /// stream.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PartitionAssignmentAck {}
 /// A request on the PartitionAssignment stream.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2584,7 +2584,7 @@ pub struct ComputeMessageStatsRequest {
 }
 /// Response containing stats for messages in the requested topic and partition.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ComputeMessageStatsResponse {
     /// The count of messages.
     #[prost(int64, tag = "1")]
@@ -2616,7 +2616,7 @@ pub struct ComputeHeadCursorRequest {
 }
 /// Response containing the head cursor for the requested topic and partition.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ComputeHeadCursorResponse {
     /// The head cursor.
     #[prost(message, optional, tag = "1")]
@@ -2641,7 +2641,7 @@ pub struct ComputeTimeCursorRequest {
 /// Response containing the cursor corresponding to a publish or event time in a
 /// topic partition.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ComputeTimeCursorResponse {
     /// If present, the cursor references the first message with time greater than
     /// or equal to the specified target time. If such a message cannot be found,

@@ -51,7 +51,7 @@ pub struct DataExchange {
 /// Sharing environment is a behavior model for sharing data within a
 /// data exchange. This option is configurable for a data exchange.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SharingEnvironmentConfig {
     #[prost(oneof = "sharing_environment_config::Environment", tags = "1, 2")]
     pub environment: ::core::option::Option<sharing_environment_config::Environment>,
@@ -60,11 +60,11 @@ pub struct SharingEnvironmentConfig {
 pub mod sharing_environment_config {
     /// Default Analytics Hub data exchange, used for secured data sharing.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DefaultExchangeConfig {}
     /// Data Clean Room (DCR), used for privacy-safe and secured data sharing.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DcrExchangeConfig {
         /// Output only. If True, this DCR restricts the contributors to sharing
         /// only a single resource in a Listing. And no two resources should have the
@@ -83,7 +83,7 @@ pub mod sharing_environment_config {
         pub single_linked_dataset_per_cleanroom: ::core::option::Option<bool>,
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Environment {
         /// Default Analytics Hub data exchange, used for secured data sharing.
         #[prost(message, tag = "1")]
@@ -282,7 +282,7 @@ pub mod listing {
         /// Restricted export policy used to configure restricted export on linked
         /// dataset.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct RestrictedExportPolicy {
             /// Optional. If true, enable restricted export.
             #[prost(message, optional, tag = "1")]
@@ -300,7 +300,7 @@ pub mod listing {
     /// Restricted export config, used to configure restricted export on linked
     /// dataset.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RestrictedExportConfig {
         /// Optional. If true, enable restricted export.
         #[prost(bool, tag = "3")]
@@ -946,7 +946,7 @@ pub struct RevokeSubscriptionRequest {
 }
 /// Message for response when you revoke a subscription.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RevokeSubscriptionResponse {}
 /// Message for deleting a subscription.
 #[allow(clippy::derive_partial_eq_without_eq)]

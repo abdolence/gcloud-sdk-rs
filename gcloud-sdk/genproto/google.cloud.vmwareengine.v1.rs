@@ -36,7 +36,7 @@ pub struct NetworkConfig {
 }
 /// Information about the type and number of nodes associated with the cluster.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NodeTypeConfig {
     /// Required. The number of nodes of this type in the cluster
     #[prost(int32, tag = "1")]
@@ -291,6 +291,9 @@ pub struct Cluster {
     /// and it has to be the first one.
     #[prost(bool, tag = "7")]
     pub management: bool,
+    /// Optional. Configuration of the autoscaling applied to this cluster.
+    #[prost(message, optional, tag = "18")]
+    pub autoscaling_settings: ::core::option::Option<AutoscalingSettings>,
     /// Output only. System-generated unique identifier for the resource.
     #[prost(string, tag = "14")]
     pub uid: ::prost::alloc::string::String,
@@ -894,6 +897,12 @@ pub mod logging_server {
         Udp = 1,
         /// TCP
         Tcp = 2,
+        /// TLS
+        Tls = 3,
+        /// SSL
+        Ssl = 4,
+        /// RELP
+        Relp = 5,
     }
     impl Protocol {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -905,6 +914,9 @@ pub mod logging_server {
                 Protocol::Unspecified => "PROTOCOL_UNSPECIFIED",
                 Protocol::Udp => "UDP",
                 Protocol::Tcp => "TCP",
+                Protocol::Tls => "TLS",
+                Protocol::Ssl => "SSL",
+                Protocol::Relp => "RELP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -913,6 +925,9 @@ pub mod logging_server {
                 "PROTOCOL_UNSPECIFIED" => Some(Self::Unspecified),
                 "UDP" => Some(Self::Udp),
                 "TCP" => Some(Self::Tcp),
+                "TLS" => Some(Self::Tls),
+                "SSL" => Some(Self::Ssl),
+                "RELP" => Some(Self::Relp),
                 _ => None,
             }
         }
@@ -1229,6 +1244,8 @@ pub mod hcx {
         Active = 1,
         /// The appliance is being deployed.
         Creating = 2,
+        /// The appliance is being activated.
+        Activating = 3,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1240,6 +1257,7 @@ pub mod hcx {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Active => "ACTIVE",
                 State::Creating => "CREATING",
+                State::Activating => "ACTIVATING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1248,6 +1266,7 @@ pub mod hcx {
                 "STATE_UNSPECIFIED" => Some(Self::Unspecified),
                 "ACTIVE" => Some(Self::Active),
                 "CREATING" => Some(Self::Creating),
+                "ACTIVATING" => Some(Self::Activating),
                 _ => None,
             }
         }
@@ -1377,6 +1396,92 @@ pub mod vcenter {
                 _ => None,
             }
         }
+    }
+}
+/// Autoscaling settings define the rules used by VMware Engine to
+/// automatically scale-out and scale-in the clusters in a private cloud.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutoscalingSettings {
+    /// Required. The map with autoscaling policies applied to the cluster.
+    /// The key is the identifier of the policy.
+    /// It must meet the following requirements:
+    ///
+    /// * Only contains 1-63 alphanumeric characters and hyphens
+    /// * Begins with an alphabetical character
+    /// * Ends with a non-hyphen character
+    /// * Not formatted as a UUID
+    /// * Complies with [RFC
+    /// 1034](<https://datatracker.ietf.org/doc/html/rfc1034>) (section 3.5)
+    ///
+    /// Currently there map must contain only one element
+    /// that describes the autoscaling policy for compute nodes.
+    #[prost(map = "string, message", tag = "1")]
+    pub autoscaling_policies: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        autoscaling_settings::AutoscalingPolicy,
+    >,
+    /// Optional. Minimum number of nodes of any type in a cluster.
+    /// If not specified the default limits apply.
+    #[prost(int32, tag = "2")]
+    pub min_cluster_node_count: i32,
+    /// Optional. Maximum number of nodes of any type in a cluster.
+    /// If not specified the default limits apply.
+    #[prost(int32, tag = "3")]
+    pub max_cluster_node_count: i32,
+    /// Optional. The minimum duration between consecutive autoscale operations.
+    /// It starts once addition or removal of nodes is fully completed.
+    /// Defaults to 30 minutes if not specified. Cool down period must be in whole
+    /// minutes (for example, 30, 31, 50, 180 minutes).
+    #[prost(message, optional, tag = "4")]
+    pub cool_down_period: ::core::option::Option<::prost_types::Duration>,
+}
+/// Nested message and enum types in `AutoscalingSettings`.
+pub mod autoscaling_settings {
+    /// Thresholds define the utilization of resources triggering
+    /// scale-out and scale-in operations.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct Thresholds {
+        /// Required. The utilization triggering the scale-out operation in percent.
+        #[prost(int32, tag = "1")]
+        pub scale_out: i32,
+        /// Required. The utilization triggering the scale-in operation in percent.
+        #[prost(int32, tag = "2")]
+        pub scale_in: i32,
+    }
+    /// Autoscaling policy describes the behavior of the autoscaling
+    /// with respect to the resource utilization.
+    /// The scale-out operation is initiated if the utilization
+    /// exceeds ANY of the respective thresholds.
+    /// The scale-in operation is initiated if the utilization
+    /// is below ALL of the respective thresholds.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AutoscalingPolicy {
+        /// Required. The canonical identifier of the node type to add or remove.
+        /// Corresponds to the `NodeType`.
+        #[prost(string, tag = "1")]
+        pub node_type_id: ::prost::alloc::string::String,
+        /// Required. Number of nodes to add to a cluster during a scale-out
+        /// operation. Must be divisible by 2 for stretched clusters. During a
+        /// scale-in operation only one node (or 2 for stretched clusters) are
+        /// removed in a single iteration.
+        #[prost(int32, tag = "2")]
+        pub scale_out_size: i32,
+        /// Optional. Utilization thresholds pertaining to CPU utilization.
+        #[prost(message, optional, tag = "11")]
+        pub cpu_thresholds: ::core::option::Option<Thresholds>,
+        /// Optional. Utilization thresholds pertaining to amount of granted memory.
+        #[prost(message, optional, tag = "12")]
+        pub granted_memory_thresholds: ::core::option::Option<Thresholds>,
+        /// Optional. Utilization thresholds pertaining to amount of consumed memory.
+        #[prost(message, optional, tag = "13")]
+        pub consumed_memory_thresholds: ::core::option::Option<Thresholds>,
+        /// Optional. Utilization thresholds pertaining to amount of consumed
+        /// storage.
+        #[prost(message, optional, tag = "14")]
+        pub storage_thresholds: ::core::option::Option<Thresholds>,
     }
 }
 /// DNS forwarding config.
@@ -1590,6 +1695,8 @@ pub mod network_peering {
         ThirdPartyService = 5,
         /// Peering connection used for connecting to Dell PowerScale Filers
         DellPowerscale = 6,
+        /// Peering connection used for connecting to Google Cloud NetApp Volumes.
+        GoogleCloudNetappVolumes = 7,
     }
     impl PeerNetworkType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1605,6 +1712,9 @@ pub mod network_peering {
                 PeerNetworkType::NetappCloudVolumes => "NETAPP_CLOUD_VOLUMES",
                 PeerNetworkType::ThirdPartyService => "THIRD_PARTY_SERVICE",
                 PeerNetworkType::DellPowerscale => "DELL_POWERSCALE",
+                PeerNetworkType::GoogleCloudNetappVolumes => {
+                    "GOOGLE_CLOUD_NETAPP_VOLUMES"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1617,6 +1727,7 @@ pub mod network_peering {
                 "NETAPP_CLOUD_VOLUMES" => Some(Self::NetappCloudVolumes),
                 "THIRD_PARTY_SERVICE" => Some(Self::ThirdPartyService),
                 "DELL_POWERSCALE" => Some(Self::DellPowerscale),
+                "GOOGLE_CLOUD_NETAPP_VOLUMES" => Some(Self::GoogleCloudNetappVolumes),
                 _ => None,
             }
         }
@@ -1810,7 +1921,7 @@ pub mod network_policy {
     /// private clouds governed by a network policy can access or be accessed from
     /// the internet.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct NetworkService {
         /// True if the service is enabled; false otherwise.
         #[prost(bool, tag = "1")]

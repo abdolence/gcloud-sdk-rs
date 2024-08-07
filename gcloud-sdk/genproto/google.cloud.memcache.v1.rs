@@ -92,7 +92,7 @@ pub struct Instance {
 pub mod instance {
     /// Configuration for a Memcached Node.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct NodeConfig {
         /// Required. Number of cpus per Memcached node.
         #[prost(int32, tag = "1")]
@@ -311,7 +311,7 @@ pub struct MaintenancePolicy {
 }
 /// Time window specified for weekly operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WeeklyMaintenanceWindow {
     /// Required. Allows to define schedule that runs specified day of the week.
     #[prost(enumeration = "super::super::super::r#type::DayOfWeek", tag = "1")]
@@ -325,7 +325,7 @@ pub struct WeeklyMaintenanceWindow {
 }
 /// Upcoming maintenance schedule.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MaintenanceSchedule {
     /// Output only. The start time of any upcoming scheduled maintenance for this instance.
     #[prost(message, optional, tag = "1")]
@@ -606,7 +606,7 @@ pub struct LocationMetadata {
     >,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ZoneMetadata {}
 /// Memcached versions supported by our service.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

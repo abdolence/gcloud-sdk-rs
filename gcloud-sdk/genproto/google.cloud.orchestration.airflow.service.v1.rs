@@ -884,7 +884,7 @@ pub struct LoadSnapshotRequest {
 }
 /// Response to LoadSnapshotRequest.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LoadSnapshotResponse {}
 /// Request to trigger database failover (only for highly resilient
 /// environments).
@@ -898,7 +898,7 @@ pub struct DatabaseFailoverRequest {
 }
 /// Response for DatabaseFailoverRequest.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DatabaseFailoverResponse {}
 /// Request to fetch properties of environment's database.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1666,7 +1666,7 @@ pub struct PrivateClusterConfig {
 /// Configuration options for networking connections in the Composer 2
 /// environment.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NetworkingConfig {
     /// Optional. Indicates the user requested specifc connection type between
     /// Tenant and Customer projects. You cannot set networking connection type in
@@ -1807,7 +1807,7 @@ pub struct PrivateEnvironmentConfig {
 /// Cloud Composer environment. Supported for Cloud Composer environments in
 /// versions composer-2.*.*-airflow-*.*.* and newer.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WorkloadsConfig {
     /// Optional. Resources used by Airflow schedulers.
     #[prost(message, optional, tag = "1")]
@@ -1832,7 +1832,7 @@ pub struct WorkloadsConfig {
 pub mod workloads_config {
     /// Configuration for resources used by Airflow schedulers.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SchedulerResource {
         /// Optional. CPU request and limit for a single Airflow scheduler replica.
         #[prost(float, tag = "1")]
@@ -1851,7 +1851,7 @@ pub mod workloads_config {
     }
     /// Configuration for resources used by Airflow web server.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct WebServerResource {
         /// Optional. CPU request and limit for Airflow web server.
         #[prost(float, tag = "1")]
@@ -1865,7 +1865,7 @@ pub mod workloads_config {
     }
     /// Configuration for resources used by Airflow workers.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct WorkerResource {
         /// Optional. CPU request and limit for a single Airflow worker replica.
         #[prost(float, tag = "1")]
@@ -1887,7 +1887,7 @@ pub mod workloads_config {
     }
     /// Configuration for resources used by Airflow triggerers.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TriggererResource {
         /// Optional. The number of triggerers.
         #[prost(int32, tag = "1")]
@@ -1902,7 +1902,7 @@ pub mod workloads_config {
     }
     /// Configuration for resources used by Airflow DAG processors.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DagProcessorResource {
         /// Optional. CPU request and limit for a single Airflow DAG processor
         /// replica.
@@ -1984,7 +1984,7 @@ pub mod master_authorized_networks_config {
 }
 /// Configuration for Cloud Data Lineage integration.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CloudDataLineageIntegration {
     /// Optional. Whether or not Cloud Data Lineage integration is enabled.
     #[prost(bool, tag = "1")]
@@ -2170,7 +2170,7 @@ pub mod check_upgrade_response {
 }
 /// The configuration setting for Airflow database data retention mechanism.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DataRetentionConfig {
     /// Optional. The configuration settings for task logs retention
     #[prost(message, optional, tag = "2")]
@@ -2178,7 +2178,7 @@ pub struct DataRetentionConfig {
 }
 /// The configuration setting for Task Logs.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TaskLogsRetentionConfig {
     /// Optional. The mode of storage for Airflow workers task logs. For details,
     /// see go/composer-store-task-logs-in-cloud-logging-only-design-doc

@@ -467,7 +467,7 @@ impl OsPolicyComplianceState {
 }
 /// An OS policy defines the desired state configuration for an instance.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct OsPolicy {}
 /// Nested message and enum types in `OSPolicy`.
 pub mod os_policy {
@@ -1325,7 +1325,7 @@ pub struct YumSettings {
 }
 /// Googet patching is performed by running `googet update`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GooSettings {}
 /// Zypper patching is performed by running `zypper patch`.
 /// See also <https://en.opensuse.org/SDB:Zypper_manual.>
@@ -1471,7 +1471,7 @@ pub mod windows_update_settings {
 }
 /// The strategy for retrying failed patches during the patch window.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RetryStrategy {
     /// If true, the agent will continue to try and patch until the window has
     /// ended.
@@ -1648,7 +1648,7 @@ pub struct ApplyPatchesTask {
 }
 /// Information reported from the agent about applying patches execution.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ApplyPatchesTaskProgress {
     /// Required. The current state of this patch execution.
     #[prost(enumeration = "apply_patches_task_progress::State", tag = "1")]
@@ -1710,7 +1710,7 @@ pub mod apply_patches_task_progress {
 }
 /// Information reported from the agent about applying patches execution.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ApplyPatchesTaskOutput {
     /// Required. The final state of this task.
     #[prost(enumeration = "apply_patches_task_output::State", tag = "1")]
@@ -1776,7 +1776,7 @@ pub struct ExecStepTask {
 }
 /// Information reported from the agent about the exec step execution.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExecStepTaskProgress {
     /// Required. The current state of this exec step.
     #[prost(enumeration = "exec_step_task_progress::State", tag = "1")]
@@ -1826,7 +1826,7 @@ pub mod exec_step_task_progress {
 }
 /// Information reported from the agent about the exec step execution.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExecStepTaskOutput {
     /// Required. The final state of the exec step.
     #[prost(enumeration = "exec_step_task_output::State", tag = "1")]
@@ -1924,7 +1924,7 @@ pub mod apply_config_task {
 /// Information reported from the agent regarding the progress of the task of
 /// applying desired state configuration.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ApplyConfigTaskProgress {
     /// The current state of this task.
     #[prost(enumeration = "apply_config_task_progress::State", tag = "1")]
@@ -2148,7 +2148,7 @@ pub struct ReceiveTaskNotificationRequest {
 /// The streaming rpc message that will notify the agent when it has a task
 /// it needs to perform on the instance.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReceiveTaskNotificationResponse {}
 /// A request message for signaling the start of a task execution.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2198,7 +2198,7 @@ pub struct ReportTaskProgressRequest {
 pub mod report_task_progress_request {
     /// Intermediate progress of the current task.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Progress {
         /// Details about the progress of the apply patches task.
         #[prost(message, tag = "4")]
@@ -2213,7 +2213,7 @@ pub mod report_task_progress_request {
 }
 /// The response message after the agent reported the current task progress.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReportTaskProgressResponse {
     /// Instructs agent to continue or not.
     #[prost(enumeration = "TaskDirective", tag = "1")]
@@ -2266,7 +2266,7 @@ pub mod report_task_complete_request {
 }
 /// The response message after the agent signaled the current task complete.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReportTaskCompleteResponse {}
 /// The request message for registering the agent.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2304,7 +2304,7 @@ pub struct RegisterAgentRequest {
 }
 /// The response message after the agent registered.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RegisterAgentResponse {}
 /// The request message for having the agent report inventory.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2328,7 +2328,7 @@ pub struct ReportInventoryRequest {
 }
 /// The response message after the agent has reported inventory.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReportInventoryResponse {
     /// If true, the full inventory should be reported back to the server.
     #[prost(bool, tag = "1")]

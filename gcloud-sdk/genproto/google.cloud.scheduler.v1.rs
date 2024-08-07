@@ -602,7 +602,7 @@ pub mod job {
 /// with exponential backoff according to the settings in
 /// [RetryConfig][google.cloud.scheduler.v1.RetryConfig].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RetryConfig {
     /// The number of attempts that the system will make to run a job using the
     /// exponential backoff procedure described by

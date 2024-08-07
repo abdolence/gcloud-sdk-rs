@@ -71,7 +71,7 @@ pub struct WriteRequest {
 }
 /// Response object for ByteStream.Write.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WriteResponse {
     /// The number of bytes that have been processed for the given resource.
     #[prost(int64, tag = "1")]
@@ -87,7 +87,7 @@ pub struct QueryWriteStatusRequest {
 }
 /// Response object for ByteStream.QueryWriteStatus.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct QueryWriteStatusResponse {
     /// The number of bytes that have been processed for the given resource.
     #[prost(int64, tag = "1")]

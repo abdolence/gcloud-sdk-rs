@@ -49,7 +49,7 @@ pub mod playable_location {
 }
 /// A set of options that specifies the separation between playable locations.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SpacingOptions {
     /// Required. The minimum spacing between any two playable locations, measured
     /// in meters. The minimum value is 30. The maximum value is 1000.
@@ -209,7 +209,7 @@ pub struct Criterion {
 }
 /// Specifies the area to search for playable locations.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AreaFilter {
     /// Required. The S2 cell ID of the area you want. This must be between cell
     /// level 11 and 14 (inclusive).

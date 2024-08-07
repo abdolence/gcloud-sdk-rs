@@ -58,7 +58,7 @@ pub struct SecurityCenterService {
 pub mod security_center_service {
     /// The settings for individual modules.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ModuleSettings {
         /// Optional. The intended state of enablement for the module at its level of
         /// the resource hierarchy.
@@ -1444,7 +1444,7 @@ pub mod validate_event_threat_detection_custom_module_response {
     }
     /// A position in the uploaded text version of a module.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Position {
         /// The line position in the text
         #[prost(int32, tag = "1")]

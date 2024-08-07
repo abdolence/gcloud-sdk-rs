@@ -780,7 +780,7 @@ pub mod command_task {
     }
     /// Describes the timeouts associated with this task.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Timeouts {
         /// This specifies the maximum time that the task can run, excluding the
         /// time required to download inputs or upload outputs. That is, the worker
@@ -825,7 +825,7 @@ pub struct CommandOutputs {
 /// Can be used as part of CompleteRequest.metadata, or are part of a more
 /// sophisticated message.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CommandOverhead {
     /// The elapsed time between calling Accept and Complete. The server will also
     /// have its own idea of what this should be, but this excludes the overhead of

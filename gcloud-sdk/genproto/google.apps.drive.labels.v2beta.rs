@@ -18,7 +18,7 @@
 ///    rejected.
 /// * Disabled—When disabled, the configured `DisabledPolicy` takes effect.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Lifecycle {
     /// Output only. The state of the object associated with this lifecycle.
     #[prost(enumeration = "lifecycle::State", tag = "1")]
@@ -37,7 +37,7 @@ pub mod lifecycle {
     /// The policy that governs how to treat a disabled label, field, or selection
     /// choice in different contexts.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DisabledPolicy {
         /// Whether to hide this disabled object in the search menu for Drive items.
         ///
@@ -124,7 +124,7 @@ pub struct UserInfo {
 }
 /// Badge status of the label.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BadgeConfig {
     /// The color of the badge. When not specified, no badge is rendered.
     /// The background, foreground, and solo (light and dark mode) colors set here
@@ -139,7 +139,7 @@ pub struct BadgeConfig {
 /// The color derived from BadgeConfig and changed to the closest recommended
 /// supported color.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BadgeColors {
     /// Output only. Badge background that pairs with the foreground.
     #[prost(message, optional, tag = "1")]
@@ -158,7 +158,7 @@ pub struct BadgeColors {
 /// Contains information about whether a label component should be considered
 /// locked.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LockStatus {
     /// Output only. Indicates whether this label component is the (direct) target
     /// of a LabelLock.  A label component can be implicitly locked even if it's
@@ -398,7 +398,7 @@ pub mod precondition_failure {
 }
 /// Exception detail.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExceptionDetail {
     /// The type of exception that occurred. Required.
     #[prost(enumeration = "ExceptionType", tag = "1")]
@@ -652,7 +652,7 @@ pub mod field {
     }
     /// UI display hints for rendering a field.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DisplayHints {
         /// Whether the field should be shown as required in the UI.
         #[prost(bool, tag = "1")]
@@ -671,7 +671,7 @@ pub mod field {
     }
     /// The capabilities related to this field when editing the field.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SchemaCapabilities {
         /// Whether the user can change this field.
         #[prost(bool, tag = "1")]
@@ -692,7 +692,7 @@ pub mod field {
     }
     /// The capabilities related to this field on applied metadata.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AppliedCapabilities {
         /// Whether the user can read related applied metadata on items.
         #[prost(bool, tag = "1")]
@@ -706,7 +706,7 @@ pub mod field {
     }
     /// Options for a multi-valued variant of an associated field type.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ListOptions {
         /// Maximum number of entries permitted.
         #[prost(int32, tag = "1")]
@@ -714,7 +714,7 @@ pub mod field {
     }
     /// Options for the Text field type.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TextOptions {
         /// Output only. The minimum valid length of values for the text field.
         #[prost(int32, tag = "1")]
@@ -725,7 +725,7 @@ pub mod field {
     }
     /// Options for the Integer field type.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct IntegerOptions {
         /// Output only. The minimum valid value for the integer field.
         #[prost(int64, tag = "1")]
@@ -905,7 +905,7 @@ pub mod field {
             }
             /// UI display hints for rendering an option.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct DisplayHints {
                 /// Whether the option should be shown in the UI as disabled.
                 #[prost(bool, tag = "1")]
@@ -941,7 +941,7 @@ pub mod field {
             }
             /// The capabilities related to this choice when editing the choice.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct SchemaCapabilities {
                 /// Whether the user can update this choice.
                 #[prost(bool, tag = "1")]
@@ -958,7 +958,7 @@ pub mod field {
             }
             /// The capabilities related to this choice on applied metadata.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct AppliedCapabilities {
                 /// Whether the user can read related applied metadata on items.
                 #[prost(bool, tag = "1")]
@@ -974,7 +974,7 @@ pub mod field {
     }
     /// Options for the user field type.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UserOptions {
         /// When specified, indicates that this field supports a list of values.
         /// Once the field is published, this cannot be changed.
@@ -1106,7 +1106,7 @@ pub mod label {
     }
     /// UI display hints for rendering the label.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DisplayHints {
         /// Whether the label should be shown in the UI as disabled.
         #[prost(bool, tag = "1")]
@@ -1125,7 +1125,7 @@ pub mod label {
     }
     /// The capabilities a user has on this label's applied metadata.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AppliedCapabilities {
         /// Whether the user can read applied metadata related to this label.
         #[prost(bool, tag = "1")]
@@ -1139,7 +1139,7 @@ pub mod label {
     }
     /// The capabilities related to this label when editing the label.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SchemaCapabilities {
         /// Whether the user can change this label.
         #[prost(bool, tag = "1")]
@@ -1160,7 +1160,7 @@ pub mod label {
     }
     /// Behavior of this label when it's applied to Drive items.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AppliedLabelPolicy {
         /// Indicates how the applied label and field values should be copied when
         /// a Drive item is copied.
@@ -1303,7 +1303,7 @@ pub struct LabelLimits {
 /// Field constants governing the structure of a Field; such as, the maximum
 /// title length, minimum and maximum field values or length, etc.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FieldLimits {
     /// Max length for the id.
     #[prost(int32, tag = "1")]
@@ -1336,7 +1336,7 @@ pub struct FieldLimits {
 }
 /// Limits for list-variant of a Field type.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ListLimits {
     /// Maximum number of values allowed for the Field type.
     #[prost(int32, tag = "1")]
@@ -1344,7 +1344,7 @@ pub struct ListLimits {
 }
 /// Limits for text Field type.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TextLimits {
     /// Minimum length allowed for a text Field type.
     #[prost(int32, tag = "1")]
@@ -1355,7 +1355,7 @@ pub struct TextLimits {
 }
 /// Limits for long text Field type.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LongTextLimits {
     /// Minimum length allowed for a long text Field type.
     #[prost(int32, tag = "1")]
@@ -1366,7 +1366,7 @@ pub struct LongTextLimits {
 }
 /// Limits for integer Field type.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct IntegerLimits {
     /// Minimum value for an integer Field type.
     #[prost(int64, tag = "1")]
@@ -1377,7 +1377,7 @@ pub struct IntegerLimits {
 }
 /// Limits for date Field type.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DateLimits {
     /// Minimum value for the date Field type.
     #[prost(message, optional, tag = "1")]
@@ -1388,7 +1388,7 @@ pub struct DateLimits {
 }
 /// Limits for selection Field type.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SelectionLimits {
     /// Limits for list-variant of a Field type.
     #[prost(message, optional, tag = "1")]
@@ -1408,7 +1408,7 @@ pub struct SelectionLimits {
 }
 /// Limits for Field.Type.USER.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UserLimits {
     /// Limits for list-variant of a Field type.
     #[prost(message, optional, tag = "1")]
@@ -1453,7 +1453,7 @@ pub struct LabelLock {
 pub mod label_lock {
     /// A description of a user's capabilities on a LabelLock.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Capabilities {
         /// True if the user is authorized to view the policy.
         #[prost(bool, tag = "1")]
@@ -2036,7 +2036,7 @@ pub mod delta_update_label_response {
     }
     /// Response following update to Label properties.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UpdateLabelPropertiesResponse {}
     /// Response following Field create.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2053,7 +2053,7 @@ pub mod delta_update_label_response {
     }
     /// Response following update to Field properties.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UpdateFieldPropertiesResponse {
         /// The priority of the updated field. The priority may change from what
         /// was specified to assure contiguous priorities between fields (1-n).
@@ -2062,19 +2062,19 @@ pub mod delta_update_label_response {
     }
     /// Response following update to Field type.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UpdateFieldTypeResponse {}
     /// Response following Field enable.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct EnableFieldResponse {}
     /// Response following Field disable.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DisableFieldResponse {}
     /// Response following Field delete.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DeleteFieldResponse {}
     /// Response following Selection Choice create.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2089,7 +2089,7 @@ pub mod delta_update_label_response {
     }
     /// Response following update to Selection Choice properties.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UpdateSelectionChoicePropertiesResponse {
         /// The priority of the updated choice. The priority may change from what
         /// was specified to assure contiguous priorities between choices (1-n).
@@ -2098,15 +2098,15 @@ pub mod delta_update_label_response {
     }
     /// Response following Choice enable.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct EnableSelectionChoiceResponse {}
     /// Response following Choice disable.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DisableSelectionChoiceResponse {}
     /// Response following Choice delete.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DeleteSelectionChoiceResponse {}
 }
 /// Request to update the `CopyMode` of the given Label. Changes to this policy
@@ -2183,7 +2183,7 @@ pub struct ListLabelsRequest {
 /// Nested message and enum types in `ListLabelsRequest`.
 pub mod list_labels_request {
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Access {
         /// Set to `true` in order to use the user's admin credentials. This will
         /// return all Labels within the customer.

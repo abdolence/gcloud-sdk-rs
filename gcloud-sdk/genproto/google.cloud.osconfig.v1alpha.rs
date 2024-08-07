@@ -2021,7 +2021,7 @@ pub mod os_policy_assignment_report {
 /// Message encapsulating a value that can be either absolute ("fixed") or
 /// relative ("percent") to a value.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FixedOrPercent {
     /// Type of the value.
     #[prost(oneof = "fixed_or_percent::Mode", tags = "1, 2")]
@@ -2031,7 +2031,7 @@ pub struct FixedOrPercent {
 pub mod fixed_or_percent {
     /// Type of the value.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Mode {
         /// Specifies a fixed value.
         #[prost(int32, tag = "1")]
@@ -2201,7 +2201,7 @@ pub mod os_policy_assignment {
     /// Message to configure the rollout at the zonal level for the OS policy
     /// assignment.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Rollout {
         /// Required. The maximum number (or percentage) of VMs per zone to disrupt at
         /// any given moment.
@@ -2697,7 +2697,7 @@ pub struct ListVulnerabilityReportsResponse {
 /// Common Vulnerability Scoring System version 3.
 /// For details, see <https://www.first.org/cvss/specification-document>
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CvsSv3 {
     /// The base score is a function of the base metric scores.
     /// <https://www.first.org/cvss/specification-document#Base-Metrics>

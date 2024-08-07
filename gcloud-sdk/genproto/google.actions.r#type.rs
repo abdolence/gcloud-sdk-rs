@@ -45,7 +45,7 @@
 /// The semantics of start and end are the same as those of [google.type.Date][google.type.Date],
 /// except that year must always be non-zero in DateRange.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DateRange {
     /// Date at which the date range begins. If unset, the date range has no
     /// beginning bound.

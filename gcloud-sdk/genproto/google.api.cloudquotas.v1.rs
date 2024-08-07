@@ -120,7 +120,7 @@ pub mod quota_info {
 }
 /// Eligibility information regarding requesting increase adjustment of a quota.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct QuotaIncreaseEligibility {
     /// Whether a higher quota value can be requested for the quota.
     #[prost(bool, tag = "1")]
@@ -360,7 +360,7 @@ pub struct DimensionsInfo {
 }
 /// The quota details for a map of dimensions.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct QuotaDetails {
     /// The value currently in effect and being enforced.
     #[prost(int64, tag = "1")]
@@ -373,7 +373,7 @@ pub struct QuotaDetails {
 }
 /// \[Output only\] Rollout information of a quota.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RolloutInfo {
     /// Whether there is an ongoing rollout for a quota or not.
     #[prost(bool, tag = "1")]

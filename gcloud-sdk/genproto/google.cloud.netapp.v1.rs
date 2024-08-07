@@ -52,7 +52,10 @@ pub struct CreateActiveDirectoryRequest {
     /// Required. Fields of the to be created active directory.
     #[prost(message, optional, tag = "2")]
     pub active_directory: ::core::option::Option<ActiveDirectory>,
-    /// Required. ID of the active directory to create.
+    /// Required. ID of the active directory to create. Must be unique within the
+    /// parent resource. Must contain only letters, numbers, underscore and hyphen,
+    /// with the first character a letter or underscore, the last a letter or
+    /// underscore or a number, and a 63 character maximum.
     #[prost(string, tag = "3")]
     pub active_directory_id: ::prost::alloc::string::String,
 }
@@ -125,6 +128,9 @@ pub struct ActiveDirectory {
     /// directory group.
     #[prost(string, repeated, tag = "12")]
     pub backup_operators: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Users to be added to the Built-in Admininstrators group.
+    #[prost(string, repeated, tag = "22")]
+    pub administrators: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. Domain users to be given the SeSecurityPrivilege.
     #[prost(string, repeated, tag = "13")]
     pub security_operators: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -448,10 +454,9 @@ pub struct CreateBackupRequest {
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID to use for the backup.
     /// The ID must be unique within the specified backupVault.
-    /// This value must start with a lowercase letter followed by up to 62
-    /// lowercase letters, numbers, or hyphens, and cannot end with a hyphen.
-    /// Values that do not match this pattern will trigger an INVALID_ARGUMENT
-    /// error.
+    /// Must contain only letters, numbers, underscore and hyphen, with the first
+    /// character a letter or underscore, the last a letter or underscore or a
+    /// number, and a 63 character maximum.
     #[prost(string, tag = "2")]
     pub backup_id: ::prost::alloc::string::String,
     /// Required. A backup resource
@@ -597,8 +602,9 @@ pub struct CreateBackupPolicyRequest {
     pub backup_policy: ::core::option::Option<BackupPolicy>,
     /// Required. The ID to use for the backup policy.
     /// The ID must be unique within the specified location.
-    /// This value must start with a lowercase letter followed by up to 62
-    /// lowercase letters, numbers, or hyphens, and cannot end with a hyphen.
+    /// Must contain only letters, numbers, underscore and hyphen, with the first
+    /// character a letter or underscore, the last a letter or underscore or a
+    /// number, and a 63 character maximum.
     #[prost(string, tag = "3")]
     pub backup_policy_id: ::prost::alloc::string::String,
 }
@@ -810,11 +816,9 @@ pub struct CreateBackupVaultRequest {
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID to use for the backupVault.
     /// The ID must be unique within the specified location.
-    /// The max supported length is 63 characters.
-    /// This value must start with a lowercase letter followed by up to 62
-    /// lowercase letters, numbers, or hyphens, and cannot end with a hyphen.
-    /// Values that do not match this pattern will trigger an INVALID_ARGUMENT
-    /// error.
+    /// Must contain only letters, numbers, underscore and hyphen, with the first
+    /// character a letter or underscore, the last a letter or underscore or a
+    /// number, and a 63 character maximum.
     #[prost(string, tag = "2")]
     pub backup_vault_id: ::prost::alloc::string::String,
     /// Required. A backupVault resource
@@ -895,9 +899,10 @@ pub struct CreateKmsConfigRequest {
     /// Required. Value for parent.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Id of the requesting KmsConfig
-    /// If auto-generating Id server-side, remove this field and
-    /// id from the method_signature of Create RPC
+    /// Required. Id of the requesting KmsConfig. Must be unique within the parent
+    /// resource. Must contain only letters, numbers, underscore and hyphen, with
+    /// the first character a letter or underscore, the last a letter or underscore
+    /// or a number, and a 63 character maximum.
     #[prost(string, tag = "2")]
     pub kms_config_id: ::prost::alloc::string::String,
     /// Required. The required parameters to create a new KmsConfig.
@@ -1086,10 +1091,11 @@ pub mod kms_config {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferStats {
-    /// bytes trasferred so far in current transfer.
+    /// Cumulative bytes trasferred so far for the replication relatinonship.
     #[prost(int64, optional, tag = "1")]
     pub transfer_bytes: ::core::option::Option<i64>,
-    /// Total time taken during transfer.
+    /// Cumulative time taken across all transfers for the replication
+    /// relationship.
     #[prost(message, optional, tag = "2")]
     pub total_transfer_duration: ::core::option::Option<::prost_types::Duration>,
     /// Last transfer size in bytes.
@@ -1349,7 +1355,7 @@ pub mod replication {
         Mirrored = 2,
         /// Destination volume is not receiving replication transfers.
         Stopped = 3,
-        /// Replication is in progress.
+        /// Incremental replication is in progress.
         Transferring = 4,
     }
     impl MirrorState {
@@ -1459,9 +1465,10 @@ pub struct CreateReplicationRequest {
     /// Required. A replication resource
     #[prost(message, optional, tag = "2")]
     pub replication: ::core::option::Option<Replication>,
-    /// Required. ID of the replication to create.
-    /// This value must start with a lowercase letter followed by up to 62
-    /// lowercase letters, numbers, or hyphens, and cannot end with a hyphen.
+    /// Required. ID of the replication to create. Must be unique within the parent
+    /// resource. Must contain only letters, numbers, underscore and hyphen, with
+    /// the first character a letter or underscore, the last a letter or underscore
+    /// or a number, and a 63 character maximum.
     #[prost(string, tag = "3")]
     pub replication_id: ::prost::alloc::string::String,
 }
@@ -1580,9 +1587,10 @@ pub struct CreateSnapshotRequest {
     /// Required. A snapshot resource
     #[prost(message, optional, tag = "2")]
     pub snapshot: ::core::option::Option<Snapshot>,
-    /// Required. ID of the snapshot to create.
-    /// This value must start with a lowercase letter followed by up to 62
-    /// lowercase letters, numbers, or hyphens, and cannot end with a hyphen.
+    /// Required. ID of the snapshot to create. Must be unique within the parent
+    /// resource. Must contain only letters, numbers, underscore and hyphen, with
+    /// the first character a letter or underscore, the last a letter or underscore
+    /// or a number, and a 63 character maximum.
     #[prost(string, tag = "3")]
     pub snapshot_id: ::prost::alloc::string::String,
 }
@@ -1835,9 +1843,10 @@ pub struct CreateStoragePoolRequest {
     /// Required. Value for parent.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Id of the requesting storage pool
-    /// If auto-generating Id server-side, remove this field and
-    /// id from the method_signature of Create RPC
+    /// Required. Id of the requesting storage pool. Must be unique within the
+    /// parent resource. Must contain only letters, numbers, underscore and hyphen,
+    /// with the first character a letter or underscore, the last a letter or
+    /// underscore or a number, and a 63 character maximum.
     #[prost(string, tag = "2")]
     pub storage_pool_id: ::prost::alloc::string::String,
     /// Required. The required parameters to create a new storage pool.
@@ -1932,6 +1941,12 @@ pub struct StoragePool {
     #[deprecated]
     #[prost(bool, optional, tag = "17")]
     pub global_access_allowed: ::core::option::Option<bool>,
+    /// Optional. Specifies the replica zone for regional storagePool.
+    #[prost(string, tag = "20")]
+    pub replica_zone: ::prost::alloc::string::String,
+    /// Optional. Specifies the active zone for regional storagePool.
+    #[prost(string, tag = "21")]
+    pub zone: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `StoragePool`.
 pub mod storage_pool {
@@ -2049,9 +2064,10 @@ pub struct CreateVolumeRequest {
     /// Required. Value for parent.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Id of the requesting volume
-    /// If auto-generating Id server-side, remove this field and
-    /// Id from the method_signature of Create RPC
+    /// Required. Id of the requesting volume. Must be unique within the parent
+    /// resource. Must contain only letters, numbers, underscore and hyphen, with
+    /// the first character a letter or underscore, the last a letter or underscore
+    /// or a number, and a 63 character maximum.
     #[prost(string, tag = "2")]
     pub volume_id: ::prost::alloc::string::String,
     /// Required. The volume being created.
@@ -2209,9 +2225,24 @@ pub struct Volume {
     /// Optional. List of actions that are restricted on this volume.
     #[prost(enumeration = "RestrictedAction", repeated, packed = "false", tag = "31")]
     pub restricted_actions: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. Flag indicating if the volume will be a large capacity volume or
+    /// a regular volume.
+    #[prost(bool, tag = "32")]
+    pub large_capacity: bool,
+    /// Optional. Flag indicating if the volume will have an IP address per node
+    /// for volumes supporting multiple IP endpoints. Only the volume with
+    /// large_capacity will be allowed to have multiple endpoints.
+    #[prost(bool, tag = "33")]
+    pub multiple_endpoints: bool,
     /// Tiering policy for the volume.
     #[prost(message, optional, tag = "34")]
     pub tiering_policy: ::core::option::Option<TieringPolicy>,
+    /// Output only. Specifies the replica zone for regional volume.
+    #[prost(string, tag = "36")]
+    pub replica_zone: ::prost::alloc::string::String,
+    /// Output only. Specifies the active zone for regional volume.
+    #[prost(string, tag = "37")]
+    pub zone: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Volume`.
 pub mod volume {
@@ -2363,7 +2394,7 @@ pub struct SnapshotPolicy {
 }
 /// Make a snapshot every hour e.g. at 04:00, 05:00, 06:00.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HourlySchedule {
     /// The maximum number of Snapshots to keep for the hourly schedule
     #[prost(double, optional, tag = "1")]
@@ -2375,7 +2406,7 @@ pub struct HourlySchedule {
 }
 /// Make a snapshot every day e.g. at 04:00, 05:20, 23:50
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DailySchedule {
     /// The maximum number of Snapshots to keep for the hourly schedule
     #[prost(double, optional, tag = "1")]
@@ -2494,7 +2525,7 @@ pub struct BackupConfig {
 }
 /// Defines tiering policy for the volume.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TieringPolicy {
     /// Optional. Flag indicating if the volume has tiering policy enable/pause.
     /// Default is PAUSED.

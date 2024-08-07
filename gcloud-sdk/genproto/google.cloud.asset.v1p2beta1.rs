@@ -16,7 +16,7 @@ pub struct TemporalAsset {
 }
 /// A time window specified by its `start_time` and `end_time`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeWindow {
     /// Start time of the time window (exclusive).
     #[prost(message, optional, tag = "1")]

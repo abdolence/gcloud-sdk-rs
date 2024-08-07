@@ -102,7 +102,7 @@ pub struct Blob {
 /// harm categories and the probability of the harm classification is included
 /// here.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SafetyRating {
     /// Required. The category for this rating.
     #[prost(enumeration = "HarmCategory", tag = "3")]
@@ -176,7 +176,7 @@ pub mod safety_rating {
 /// Passing a safety setting for a category changes the allowed probability that
 /// content is blocked.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SafetySetting {
     /// Required. The category for this setting.
     #[prost(enumeration = "HarmCategory", tag = "3")]
@@ -491,7 +491,7 @@ pub mod generate_content_response {
     }
     /// Metadata on the generation request's token usage.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UsageMetadata {
         /// Number of tokens in the prompt.
         #[prost(int32, tag = "1")]
@@ -697,7 +697,7 @@ pub struct CountTokensRequest {
 ///
 /// It returns the model's `token_count` for the `prompt`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CountTokensResponse {
     /// The number of tokens that the `model` tokenizes the `prompt` into.
     ///

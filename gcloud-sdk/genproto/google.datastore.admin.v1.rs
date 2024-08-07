@@ -199,7 +199,7 @@ pub mod index {
 /// Cloud Firestore in Datastore
 /// mode](<https://cloud.google.com/datastore/docs/upgrade-to-firestore>).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MigrationStateEvent {
     /// The new state of the migration.
     #[prost(enumeration = "MigrationState", tag = "1")]
@@ -209,7 +209,7 @@ pub struct MigrationStateEvent {
 /// Datastore to Cloud Firestore in Datastore
 /// mode](<https://cloud.google.com/datastore/docs/upgrade-to-firestore>).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MigrationProgressEvent {
     /// The step that is starting.
     ///
@@ -225,7 +225,7 @@ pub struct MigrationProgressEvent {
 pub mod migration_progress_event {
     /// Details for the `PREPARE` step.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PrepareStepDetails {
         /// The concurrency mode this database will use when it reaches the
         /// `REDIRECT_WRITES` step.
@@ -234,7 +234,7 @@ pub mod migration_progress_event {
     }
     /// Details for the `REDIRECT_WRITES` step.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RedirectWritesStepDetails {
         /// Ths concurrency mode for this database.
         #[prost(enumeration = "ConcurrencyMode", tag = "1")]
@@ -291,7 +291,7 @@ pub mod migration_progress_event {
     }
     /// Details about this step.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum StepDetails {
         /// Details for the `PREPARE` step.
         #[prost(message, tag = "2")]
@@ -495,7 +495,7 @@ pub mod common_metadata {
 }
 /// Measures the progress of a particular metric.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Progress {
     /// The amount of work that has been completed. Note that this may be greater
     /// than work_estimated.
@@ -765,7 +765,7 @@ pub struct IndexOperationMetadata {
 /// This singleton resource can be accessed at:
 /// "projects/{project_id}/operations/datastore-firestore-migration"
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DatastoreFirestoreMigrationMetadata {
     /// The current state of migration from Cloud Datastore to Cloud Firestore in
     /// Datastore mode.

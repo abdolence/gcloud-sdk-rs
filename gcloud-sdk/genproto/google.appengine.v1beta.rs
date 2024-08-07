@@ -600,7 +600,7 @@ pub mod application {
     /// The feature specific settings to be used in the application. These define
     /// behaviors that are user configurable.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct FeatureSettings {
         /// Boolean value indicating if split health checks should be used instead
         /// of the legacy health checks. At an app.yaml level, this means defaulting
@@ -835,7 +835,7 @@ pub struct CertificateRawData {
 }
 /// A certificate managed by App Engine.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ManagedCertificate {
     /// Time at which the certificate was last renewed. The renewal process is
     /// fully managed. Certificate renewal will automatically occur before the
@@ -1248,7 +1248,7 @@ pub struct Instance {
 pub mod instance {
     /// Wrapper for LivenessState enum.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Liveness {}
     /// Nested message and enum types in `Liveness`.
     pub mod liveness {
@@ -1463,7 +1463,7 @@ pub struct ZipInfo {
 /// A NetworkSettings resource is a container for ingress settings for a version
 /// or service.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NetworkSettings {
     /// The ingress settings for version or service.
     #[prost(enumeration = "network_settings::IngressTrafficAllowed", tag = "1")]
@@ -1912,7 +1912,7 @@ pub struct AutomaticScaling {
 /// idle. Basic scaling is ideal for work that is intermittent or driven by
 /// user activity.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BasicScaling {
     /// Duration of time after the last request that an instance must wait before
     /// the instance is shut down.
@@ -1925,7 +1925,7 @@ pub struct BasicScaling {
 /// A service with manual scaling runs continuously, allowing you to perform
 /// complex initialization and rely on the state of its memory over time.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ManualScaling {
     /// Number of instances to assign to the service at the start. This number
     /// can later be altered by using the
@@ -1936,7 +1936,7 @@ pub struct ManualScaling {
 }
 /// Target scaling by CPU usage.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CpuUtilization {
     /// Period of time over which CPU utilization is calculated.
     #[prost(message, optional, tag = "1")]
@@ -1949,7 +1949,7 @@ pub struct CpuUtilization {
 /// Target scaling by request utilization.
 /// Only applicable in the App Engine flexible environment.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RequestUtilization {
     /// Target requests per second.
     #[prost(int32, tag = "1")]
@@ -1961,7 +1961,7 @@ pub struct RequestUtilization {
 /// Target scaling by disk usage.
 /// Only applicable in the App Engine flexible environment.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DiskUtilization {
     /// Target bytes written per second.
     #[prost(int32, tag = "14")]
@@ -1979,7 +1979,7 @@ pub struct DiskUtilization {
 /// Target scaling by network usage.
 /// Only applicable in the App Engine flexible environment.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NetworkUtilization {
     /// Target bytes sent per second.
     #[prost(int32, tag = "1")]
@@ -2016,7 +2016,7 @@ pub struct CustomMetric {
 pub mod custom_metric {
     /// The target spec.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum TargetSpec {
         /// The target value for the metric.
         #[prost(double, tag = "3")]
@@ -2032,7 +2032,7 @@ pub mod custom_metric {
 }
 /// Scheduler settings for standard environment.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StandardSchedulerSettings {
     /// Target CPU utilization ratio to maintain when scaling.
     #[prost(double, tag = "1")]
@@ -4846,7 +4846,7 @@ pub struct CreateVersionMethod {
 }
 /// Metadata for the given [google.cloud.location.Location][google.cloud.location.Location].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {
     /// App Engine standard environment is available in the given location.
     ///

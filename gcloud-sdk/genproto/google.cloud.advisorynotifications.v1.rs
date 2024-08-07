@@ -212,7 +212,7 @@ pub struct Settings {
 }
 /// Settings for each NotificationType.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NotificationSettings {
     /// Whether the associated NotificationType is enabled.
     #[prost(bool, tag = "1")]

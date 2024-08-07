@@ -236,7 +236,7 @@ pub struct BigQueryDestination {
 }
 /// Specifications of BigQuery partitioned table as export destination.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PartitionSpec {
     /// The partition key for BigQuery partitioned table.
     #[prost(enumeration = "partition_spec::PartitionKey", tag = "1")]

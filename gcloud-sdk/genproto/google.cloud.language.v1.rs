@@ -281,7 +281,7 @@ pub struct Token {
 /// Represents the feeling associated with the entire text or entities in
 /// the text.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Sentiment {
     /// A non-negative number in the [0, +inf) range, which represents
     /// the absolute magnitude of sentiment regardless of score (positive or
@@ -297,7 +297,7 @@ pub struct Sentiment {
 /// are as defined in
 /// <http://www.lrec-conf.org/proceedings/lrec2012/pdf/274_Paper.pdf>
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PartOfSpeech {
     /// The part of speech tag.
     #[prost(enumeration = "part_of_speech::Tag", tag = "1")]
@@ -1050,7 +1050,7 @@ pub mod part_of_speech {
 /// information on dependency labels, see
 /// <http://www.aclweb.org/anthology/P13-2017>
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DependencyEdge {
     /// Represents the head of this token in the dependency tree.
     /// This is the index of the token which has an arc going to this token.
@@ -1521,7 +1521,7 @@ pub struct ClassificationCategory {
 }
 /// Model options available for classification requests.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ClassificationModelOptions {
     /// If this field is not set, then the `v1_model` will be used by default.
     #[prost(oneof = "classification_model_options::ModelType", tags = "1, 2")]
@@ -1531,11 +1531,11 @@ pub struct ClassificationModelOptions {
 pub mod classification_model_options {
     /// Options for the V1 model.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct V1Model {}
     /// Options for the V2 model.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct V2Model {
         /// The content categories used for classification.
         #[prost(enumeration = "v2_model::ContentCategoriesVersion", tag = "1")]
@@ -1592,7 +1592,7 @@ pub mod classification_model_options {
     }
     /// If this field is not set, then the `v1_model` will be used by default.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ModelType {
         /// Setting this field will use the V1 model and V1 content categories
         /// version. The V1 model is a legacy model; support for this will be
@@ -1767,7 +1767,7 @@ pub mod annotate_text_request {
     /// All available features for sentiment, syntax, and semantic analysis.
     /// Setting each one to true will enable that specific analysis for the input.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Features {
         /// Extract syntax information.
         #[prost(bool, tag = "1")]

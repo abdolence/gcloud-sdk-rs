@@ -16,14 +16,14 @@ pub struct StreamActivityLogEntry {
 pub mod stream_activity_log_entry {
     /// Payload for a change in the state of a stream.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct StreamStateChange {
         /// Output only. The new stream state.
         #[prost(enumeration = "super::super::super::v1::stream::State", tag = "1")]
         pub new_state: i32,
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum EventPayload {
         /// A payload for a change in the state of a stream.
         #[prost(message, tag = "100")]

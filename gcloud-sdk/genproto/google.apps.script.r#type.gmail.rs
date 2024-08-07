@@ -148,7 +148,7 @@ pub mod contextual_trigger {
     /// The type of trigger determines the conditions Gmail uses to show the
     /// add-on.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Trigger {
         /// UnconditionalTriggers are executed when any mail message is opened.
         #[prost(message, tag = "1")]
@@ -157,5 +157,5 @@ pub mod contextual_trigger {
 }
 /// A trigger that fires when any email message is opened.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UnconditionalTrigger {}

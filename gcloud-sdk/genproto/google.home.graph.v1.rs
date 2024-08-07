@@ -128,7 +128,7 @@ pub struct RequestSyncDevicesRequest {
 /// Intentionally empty upon success. An HTTP response code is returned
 /// with more details upon failure.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RequestSyncDevicesResponse {}
 /// Request type for the
 /// [`ReportStateAndNotification`](#google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification)

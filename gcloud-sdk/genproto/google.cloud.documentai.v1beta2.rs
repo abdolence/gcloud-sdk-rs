@@ -48,7 +48,7 @@ pub struct Barcode {
 /// A vertex represents a 2D point in the image.
 /// NOTE: the vertex coordinates are in the same scale as the original image.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Vertex {
     /// X coordinate.
     #[prost(int32, tag = "1")]
@@ -61,7 +61,7 @@ pub struct Vertex {
 /// NOTE: the normalized vertex coordinates are relative to the original image
 /// and range from 0 to 1.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NormalizedVertex {
     /// X coordinate.
     #[prost(float, tag = "1")]
@@ -142,7 +142,7 @@ pub mod document {
     /// document shards. Each document shard contains this field to detail which
     /// shard it is.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ShardInfo {
         /// The 0-based index of this shard.
         #[prost(int64, tag = "1")]
@@ -532,7 +532,7 @@ pub mod document {
             /// Detected break at the end of a
             /// [Token][google.cloud.documentai.v1beta2.Document.Page.Token].
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct DetectedBreak {
                 /// Detected break type.
                 #[prost(enumeration = "detected_break::Type", tag = "1")]
@@ -996,7 +996,7 @@ pub mod document {
         /// another document shard for large sharded documents. See
         /// [ShardInfo.text_offset][google.cloud.documentai.v1beta2.Document.ShardInfo.text_offset]
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct TextSegment {
             /// [TextSegment][google.cloud.documentai.v1beta2.Document.TextAnchor.TextSegment]
             /// start UTF-8 char index in the
@@ -1162,7 +1162,7 @@ pub mod document {
         /// The parent element the current element is based on. Used for
         /// referencing/aligning, removal and replacement operations.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Parent {
             /// The index of the index into current revision's parent_ids list.
             #[prost(int32, tag = "1")]

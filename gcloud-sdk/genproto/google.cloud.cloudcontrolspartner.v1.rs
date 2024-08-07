@@ -367,7 +367,7 @@ pub struct WorkloadOnboardingState {
 }
 /// Container for workload onboarding information.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WorkloadOnboardingStep {
     /// The onboarding step.
     #[prost(enumeration = "workload_onboarding_step::Step", tag = "1")]
@@ -507,7 +507,7 @@ pub struct CustomerOnboardingState {
 }
 /// Container for customer onboarding information
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomerOnboardingStep {
     /// The onboarding step
     #[prost(enumeration = "customer_onboarding_step::Step", tag = "1")]

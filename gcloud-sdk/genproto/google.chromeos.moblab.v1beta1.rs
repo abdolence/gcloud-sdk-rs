@@ -382,7 +382,7 @@ pub struct StageBuildResponse {
 /// Metadata message for staging a build artifact.
 /// -- NEXT_TAG: 4 --
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StageBuildMetadata {
     /// Approximate percentage of progress, e.g. "50" means 50%.
     #[prost(float, tag = "1")]

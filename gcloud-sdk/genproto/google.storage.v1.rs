@@ -151,7 +151,7 @@ pub struct Bucket {
 pub mod bucket {
     /// Billing properties of a bucket.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Billing {
         /// When set to true, Requester Pays is enabled for this bucket.
         #[prost(bool, tag = "1")]
@@ -196,7 +196,7 @@ pub mod bucket {
     }
     /// Bucket restriction options currently enforced on the bucket.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct IamConfiguration {
         #[prost(message, optional, tag = "1")]
         pub uniform_bucket_level_access: ::core::option::Option<
@@ -209,7 +209,7 @@ pub mod bucket {
     /// Nested message and enum types in `IamConfiguration`.
     pub mod iam_configuration {
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct UniformBucketLevelAccess {
             /// If set, access checks only use bucket-level IAM policies or above.
             #[prost(bool, tag = "1")]
@@ -399,7 +399,7 @@ pub mod bucket {
     }
     /// Retention policy properties of a bucket.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RetentionPolicy {
         /// Server-determined value that indicates the time from which policy was
         /// enforced and effective. This value is in
@@ -420,7 +420,7 @@ pub mod bucket {
     /// For more on GCS versioning, see
     /// <https://cloud.google.com/storage/docs/object-versioning.>
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Versioning {
         /// While set to true, versioning is fully enabled for this bucket.
         #[prost(bool, tag = "1")]
@@ -448,7 +448,7 @@ pub mod bucket {
     }
     /// Configuration for a bucket's Autoclass feature.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Autoclass {
         /// Enables Autoclass.
         #[prost(bool, tag = "1")]
@@ -621,7 +621,7 @@ pub struct ObjectChecksums {
 }
 /// A collection of enums used in multiple places throughout the API.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CommonEnums {}
 /// Nested message and enum types in `CommonEnums`.
 pub mod common_enums {
@@ -809,7 +809,7 @@ pub mod common_enums {
 }
 /// Specifies a requested range of bytes to download.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ContentRange {
     /// The starting offset of the object data.
     #[prost(int64, tag = "1")]
@@ -1940,7 +1940,7 @@ pub mod compose_object_request {
     pub mod source_objects {
         /// Preconditions for a source object of a composition request.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct ObjectPreconditions {
             /// Only perform the composition if the generation of the source object
             /// that would be used matches this value.  If this value and a generation

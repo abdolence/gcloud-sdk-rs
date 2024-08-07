@@ -234,10 +234,10 @@ pub struct HarmfulContentEvent {
 }
 /// Information about the reinstatement issued on the monitored resource.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReinstatementEvent {}
 /// Information about the escalation of enforcement action on the monitored
 /// resource. Eg: Used for repeat offenders.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DecisionEscalationEvent {}

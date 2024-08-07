@@ -31,7 +31,7 @@ pub struct ErrorDetail {
 }
 /// Holds information about where the error is located.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ErrorLocation {
     /// Optional. If applicable, denotes the line where the error occurred. A zero
     /// value means that there is no line information.
@@ -102,7 +102,7 @@ pub struct Point {
 /// If the start time is the same as the end time, then the interval
 /// represents a single point in time.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeInterval {
     /// Optional. The beginning of the time interval.  The default value
     /// for the start time is the end time. The start time must not be
@@ -163,6 +163,12 @@ pub struct TranslationConfigDetails {
     /// The indicator to show translation request initiator.
     #[prost(string, tag = "8")]
     pub request_source: ::prost::alloc::string::String,
+    /// The types of output to generate, e.g. sql, metadata etc. If not specified,
+    /// a default set of targets will be generated. Some additional target types
+    /// may be slower to generate. See the documentation for the set of available
+    /// target types.
+    #[prost(string, repeated, tag = "9")]
+    pub target_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The chosen path where the source for input files will be found.
     #[prost(oneof = "translation_config_details::SourceLocation", tags = "1")]
     pub source_location: ::core::option::Option<
@@ -210,12 +216,12 @@ pub mod translation_config_details {
 }
 /// The possible dialect options for translation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Dialect {
     /// The possible dialect options that this message represents.
     #[prost(
         oneof = "dialect::DialectValue",
-        tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14"
+        tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17"
     )]
     pub dialect_value: ::core::option::Option<dialect::DialectValue>,
 }
@@ -223,7 +229,7 @@ pub struct Dialect {
 pub mod dialect {
     /// The possible dialect options that this message represents.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum DialectValue {
         /// The BigQuery dialect
         #[prost(message, tag = "1")]
@@ -267,23 +273,32 @@ pub mod dialect {
         /// The MySQL dialect
         #[prost(message, tag = "14")]
         MysqlDialect(super::MySqlDialect),
+        /// DB2 dialect
+        #[prost(message, tag = "15")]
+        Db2Dialect(super::Db2Dialect),
+        /// SQLite dialect
+        #[prost(message, tag = "16")]
+        SqliteDialect(super::SqLiteDialect),
+        /// Greenplum dialect
+        #[prost(message, tag = "17")]
+        GreenplumDialect(super::GreenplumDialect),
     }
 }
 /// The dialect definition for BigQuery.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BigQueryDialect {}
 /// The dialect definition for HiveQL.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HiveQlDialect {}
 /// The dialect definition for Redshift.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RedshiftDialect {}
 /// The dialect definition for Teradata.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TeradataDialect {
     /// Which Teradata sub-dialect mode the user specifies.
     #[prost(enumeration = "teradata_dialect::Mode", tag = "1")]
@@ -337,44 +352,56 @@ pub mod teradata_dialect {
 }
 /// The dialect definition for Oracle.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct OracleDialect {}
 /// The dialect definition for SparkSQL.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SparkSqlDialect {}
 /// The dialect definition for Snowflake.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SnowflakeDialect {}
 /// The dialect definition for Netezza.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NetezzaDialect {}
 /// The dialect definition for Azure Synapse.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AzureSynapseDialect {}
 /// The dialect definition for Vertica.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VerticaDialect {}
 /// The dialect definition for SQL Server.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SqlServerDialect {}
 /// The dialect definition for Postgresql.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PostgresqlDialect {}
 /// The dialect definition for Presto.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PrestoDialect {}
 /// The dialect definition for MySQL.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MySqlDialect {}
+/// The dialect definition for DB2.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct Db2Dialect {}
+/// The dialect definition for SQLite.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct SqLiteDialect {}
+/// The dialect definition for Greenplum.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct GreenplumDialect {}
 /// Represents a map of name mappings using a list of key:value proto messages of
 /// existing name to desired output name.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -519,14 +546,180 @@ pub struct SourceEnv {
     /// translation engine will search through this list to find the value.
     #[prost(string, repeated, tag = "2")]
     pub schema_search_path: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Expects a valid BigQuery dataset ID that exists, e.g.,
+    /// project-123.metadata_store_123.  If specified, translation will search and
+    /// read the required schema information from a metadata store in this dataset.
+    /// If metadata store doesn't exist, translation will parse the metadata file
+    /// and upload the schema info to a temp table in the dataset to speed up
+    /// future translation jobs.
+    #[prost(string, tag = "3")]
+    pub metadata_store_dataset: ::prost::alloc::string::String,
+}
+/// The translation details to capture the necessary settings for a translation
+/// job.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TranslationDetails {
+    /// The mapping from source to target SQL.
+    #[prost(message, repeated, tag = "1")]
+    pub source_target_mapping: ::prost::alloc::vec::Vec<SourceTargetMapping>,
+    /// The base URI for all writes to persistent storage.
+    #[prost(string, tag = "2")]
+    pub target_base_uri: ::prost::alloc::string::String,
+    /// The default source environment values for the translation.
+    #[prost(message, optional, tag = "3")]
+    pub source_environment: ::core::option::Option<SourceEnvironment>,
+    /// The list of literal targets that will be directly returned to the response.
+    /// Each entry consists of the constructed path, EXCLUDING the base path. Not
+    /// providing a target_base_uri will prevent writing to persistent storage.
+    #[prost(string, repeated, tag = "4")]
+    pub target_return_literals: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The types of output to generate, e.g. sql, metadata,
+    /// lineage_from_sql_scripts, etc. If not specified, a default set of
+    /// targets will be generated. Some additional target types may be slower to
+    /// generate. See the documentation for the set of available target types.
+    #[prost(string, repeated, tag = "5")]
+    pub target_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Represents one mapping from a source SQL to a target SQL.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SourceTargetMapping {
+    /// The source SQL or the path to it.
+    #[prost(message, optional, tag = "1")]
+    pub source_spec: ::core::option::Option<SourceSpec>,
+    /// The target SQL or the path for it.
+    #[prost(message, optional, tag = "2")]
+    pub target_spec: ::core::option::Option<TargetSpec>,
+}
+/// Represents one path to the location that holds source data.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SourceSpec {
+    /// Optional. The optional field to specify the encoding of the sql bytes.
+    #[prost(string, tag = "3")]
+    pub encoding: ::prost::alloc::string::String,
+    /// The specific source SQL.
+    #[prost(oneof = "source_spec::Source", tags = "1, 2")]
+    pub source: ::core::option::Option<source_spec::Source>,
+}
+/// Nested message and enum types in `SourceSpec`.
+pub mod source_spec {
+    /// The specific source SQL.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// The base URI for all files to be read in as sources for translation.
+        #[prost(string, tag = "1")]
+        BaseUri(::prost::alloc::string::String),
+        /// Source literal.
+        #[prost(message, tag = "2")]
+        Literal(super::Literal),
+    }
+}
+/// Represents one path to the location that holds target data.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetSpec {
+    /// The relative path for the target data. Given source file
+    /// `base_uri/input/sql`, the output would be
+    /// `target_base_uri/sql/relative_path/input.sql`.
+    #[prost(string, tag = "1")]
+    pub relative_path: ::prost::alloc::string::String,
+}
+/// Literal data.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Literal {
+    /// Required. The identifier of the literal entry.
+    #[prost(string, tag = "1")]
+    pub relative_path: ::prost::alloc::string::String,
+    /// The literal SQL contents.
+    #[prost(oneof = "literal::LiteralData", tags = "2, 3")]
+    pub literal_data: ::core::option::Option<literal::LiteralData>,
+}
+/// Nested message and enum types in `Literal`.
+pub mod literal {
+    /// The literal SQL contents.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum LiteralData {
+        /// Literal string data.
+        #[prost(string, tag = "2")]
+        LiteralString(::prost::alloc::string::String),
+        /// Literal byte data.
+        #[prost(bytes, tag = "3")]
+        LiteralBytes(::prost::alloc::vec::Vec<u8>),
+    }
+}
+/// Represents the default source environment values for the translation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SourceEnvironment {
+    /// The default database name to fully qualify SQL objects when their database
+    /// name is missing.
+    #[prost(string, tag = "1")]
+    pub default_database: ::prost::alloc::string::String,
+    /// The schema search path. When SQL objects are missing schema name,
+    /// translation engine will search through this list to find the value.
+    #[prost(string, repeated, tag = "2")]
+    pub schema_search_path: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Expects a validQ BigQuery dataset ID that exists, e.g.,
+    /// project-123.metadata_store_123.  If specified, translation will search and
+    /// read the required schema information from a metadata store in this dataset.
+    /// If metadata store doesn't exist, translation will parse the metadata file
+    /// and upload the schema info to a temp table in the dataset to speed up
+    /// future translation jobs.
+    #[prost(string, tag = "3")]
+    pub metadata_store_dataset: ::prost::alloc::string::String,
+}
+/// A record in the aggregate CSV report for a migration workflow
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GcsReportLogMessage {
+    /// Severity of the translation record.
+    #[prost(string, tag = "1")]
+    pub severity: ::prost::alloc::string::String,
+    /// Category of the error/warning. Example: SyntaxError
+    #[prost(string, tag = "2")]
+    pub category: ::prost::alloc::string::String,
+    /// The file path in which the error occurred
+    #[prost(string, tag = "3")]
+    pub file_path: ::prost::alloc::string::String,
+    /// The file name in which the error occurred
+    #[prost(string, tag = "4")]
+    pub filename: ::prost::alloc::string::String,
+    /// Specifies the row from the source text where the error occurred (0 based,
+    /// -1 for messages without line location). Example: 2
+    #[prost(int32, tag = "5")]
+    pub source_script_line: i32,
+    /// Specifies the column from the source texts where the error occurred. (0
+    /// based, -1 for messages without column location) example: 6
+    #[prost(int32, tag = "6")]
+    pub source_script_column: i32,
+    /// Detailed message of the record.
+    #[prost(string, tag = "7")]
+    pub message: ::prost::alloc::string::String,
+    /// The script context (obfuscated) in which the error occurred
+    #[prost(string, tag = "8")]
+    pub script_context: ::prost::alloc::string::String,
+    /// Category of the error/warning. Example: SyntaxError
+    #[prost(string, tag = "9")]
+    pub action: ::prost::alloc::string::String,
+    /// Effect of the error/warning. Example: COMPATIBILITY
+    #[prost(string, tag = "10")]
+    pub effect: ::prost::alloc::string::String,
+    /// Name of the affected object in the log message.
+    #[prost(string, tag = "11")]
+    pub object_name: ::prost::alloc::string::String,
 }
 /// A migration workflow which specifies what needs to be done for an EDW
 /// migration.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationWorkflow {
-    /// Output only. Immutable. The unique identifier for the migration workflow.
-    /// The ID is server-generated.
+    /// Output only. Immutable. Identifier. The unique identifier for the migration
+    /// workflow. The ID is server-generated.
     ///
     /// Example: `projects/123/locations/us/workflows/345`
     #[prost(string, tag = "1")]
@@ -626,7 +819,7 @@ pub struct MigrationTask {
     /// Translation_Snowflake2BQ, Translation_Netezza2BQ,
     /// Translation_AzureSynapse2BQ, Translation_Vertica2BQ,
     /// Translation_SQLServer2BQ, Translation_Presto2BQ, Translation_MySQL2BQ,
-    /// Translation_Postgresql2BQ.
+    /// Translation_Postgresql2BQ, Translation_SQLite2BQ, Translation_Greenplum2BQ.
     #[prost(string, tag = "2")]
     pub r#type: ::prost::alloc::string::String,
     /// Output only. The current state of the task.
@@ -644,8 +837,31 @@ pub struct MigrationTask {
     /// Time when the task was last updated.
     #[prost(message, optional, tag = "7")]
     pub last_update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Provides details to errors and issues encountered while
+    /// processing the task. Presence of error details does not mean that the task
+    /// failed.
+    #[prost(message, repeated, tag = "17")]
+    pub resource_error_details: ::prost::alloc::vec::Vec<ResourceErrorDetail>,
+    /// The number or resources with errors. Note: This is not the total
+    /// number of errors as each resource can have more than one error.
+    /// This is used to indicate truncation by having a `resource_error_count`
+    /// that is higher than the size of `resource_error_details`.
+    #[prost(int32, tag = "18")]
+    pub resource_error_count: i32,
+    /// The metrics for the task.
+    #[prost(message, repeated, tag = "19")]
+    pub metrics: ::prost::alloc::vec::Vec<TimeSeries>,
+    /// Output only. The result of the task.
+    #[prost(message, optional, tag = "20")]
+    pub task_result: ::core::option::Option<MigrationTaskResult>,
+    /// Count of all the processing errors in this task and its subtasks.
+    #[prost(int32, tag = "21")]
+    pub total_processing_error_count: i32,
+    /// Count of all the resource errors in this task and its subtasks.
+    #[prost(int32, tag = "22")]
+    pub total_resource_error_count: i32,
     /// The details of the task.
-    #[prost(oneof = "migration_task::TaskDetails", tags = "14")]
+    #[prost(oneof = "migration_task::TaskDetails", tags = "14, 16")]
     pub task_details: ::core::option::Option<migration_task::TaskDetails>,
 }
 /// Nested message and enum types in `MigrationTask`.
@@ -714,9 +930,12 @@ pub mod migration_task {
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TaskDetails {
-        /// Task configuration for Batch SQL Translation.
+        /// Task configuration for CW Batch/Offline SQL Translation.
         #[prost(message, tag = "14")]
         TranslationConfigDetails(super::TranslationConfigDetails),
+        /// Task details for unified SQL Translation.
+        #[prost(message, tag = "16")]
+        TranslationDetails(super::TranslationDetails),
     }
 }
 /// A subtask for a migration which carries details about the configuration of
@@ -833,6 +1052,36 @@ pub mod migration_subtask {
             }
         }
     }
+}
+/// The migration task result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MigrationTaskResult {
+    /// Details specific to the task type.
+    #[prost(oneof = "migration_task_result::Details", tags = "2")]
+    pub details: ::core::option::Option<migration_task_result::Details>,
+}
+/// Nested message and enum types in `MigrationTaskResult`.
+pub mod migration_task_result {
+    /// Details specific to the task type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Details {
+        /// Details specific to translation task types.
+        #[prost(message, tag = "2")]
+        TranslationTaskResult(super::TranslationTaskResult),
+    }
+}
+/// Translation specific result details from the migration task.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TranslationTaskResult {
+    /// The list of the translated literals.
+    #[prost(message, repeated, tag = "1")]
+    pub translated_literals: ::prost::alloc::vec::Vec<Literal>,
+    /// The records from the aggregate CSV report for a migration workflow.
+    #[prost(message, repeated, tag = "2")]
+    pub report_log_messages: ::prost::alloc::vec::Vec<GcsReportLogMessage>,
 }
 /// Request to create a migration workflow resource.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1262,6 +1511,79 @@ pub mod migration_service_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Details about a record.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TranslationReportRecord {
+    /// Severity of the translation record.
+    #[prost(enumeration = "translation_report_record::Severity", tag = "1")]
+    pub severity: i32,
+    /// Specifies the row from the source text where the error occurred (0 based).
+    /// Example: 2
+    #[prost(int32, tag = "2")]
+    pub script_line: i32,
+    /// Specifies the column from the source texts where the error occurred. (0
+    /// based) example: 6
+    #[prost(int32, tag = "3")]
+    pub script_column: i32,
+    /// Category of the error/warning. Example: SyntaxError
+    #[prost(string, tag = "4")]
+    pub category: ::prost::alloc::string::String,
+    /// Detailed message of the record.
+    #[prost(string, tag = "5")]
+    pub message: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `TranslationReportRecord`.
+pub mod translation_report_record {
+    /// The severity type of the record.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Severity {
+        /// SeverityType not specified.
+        Unspecified = 0,
+        /// INFO type.
+        Info = 1,
+        /// WARNING type. The translated query may still provide useful information
+        /// if all the report records are WARNING.
+        Warning = 2,
+        /// ERROR type. Translation failed.
+        Error = 3,
+    }
+    impl Severity {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Severity::Unspecified => "SEVERITY_UNSPECIFIED",
+                Severity::Info => "INFO",
+                Severity::Warning => "WARNING",
+                Severity::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "INFO" => Some(Self::Info),
+                "WARNING" => Some(Self::Warning),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
         }
     }
 }

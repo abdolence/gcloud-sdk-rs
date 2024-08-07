@@ -5,7 +5,9 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ElementaryStream {
-    /// A unique key for this elementary stream.
+    /// A unique key for this elementary stream. The key must be 1-63
+    /// characters in length. The key must begin and end with a letter (regardless
+    /// of case) or a number, but can contain dashes or underscores in between.
     #[prost(string, tag = "4")]
     pub key: ::prost::alloc::string::String,
     /// Required. Encoding of an audio, video, or text track.
@@ -33,7 +35,9 @@ pub mod elementary_stream {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MuxStream {
-    /// A unique key for this multiplexed stream.
+    /// A unique key for this multiplexed stream. The key must be 1-63
+    /// characters in length. The key must begin and end with a letter (regardless
+    /// of case) or a number, but can contain dashes or underscores in between.
     #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
     /// The container format. The default is `fmp4`.
@@ -95,6 +99,12 @@ pub struct Manifest {
     /// errors while accessing segments which are listed in the manifest that the
     /// player has, but were already deleted from the output Google Cloud Storage
     /// bucket. Default value is `60s`.
+    ///
+    /// If both segment_keep_duration and
+    /// [RetentionConfig.retention_window_duration][google.cloud.video.livestream.v1.RetentionConfig.retention_window_duration]
+    /// are set,
+    /// [RetentionConfig.retention_window_duration][google.cloud.video.livestream.v1.RetentionConfig.retention_window_duration]
+    /// is used and segment_keep_duration is ignored.
     #[prost(message, optional, tag = "5")]
     pub segment_keep_duration: ::core::option::Option<::prost_types::Duration>,
     /// Whether to use the timecode, as specified in timecode config, when setting:
@@ -106,6 +116,9 @@ pub struct Manifest {
     /// when the manifest is first generated. This is the default behavior.
     #[prost(bool, tag = "6")]
     pub use_timecode_as_timeline: bool,
+    /// Optional. A unique key for this manifest.
+    #[prost(string, tag = "7")]
+    pub key: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Manifest`.
 pub mod manifest {
@@ -199,7 +212,7 @@ pub struct SpriteSheet {
 }
 /// Preprocessing configurations.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PreprocessingConfig {
     /// Audio preprocessing configuration.
     #[prost(message, optional, tag = "1")]
@@ -215,7 +228,7 @@ pub struct PreprocessingConfig {
 pub mod preprocessing_config {
     /// Audio preprocessing configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Audio {
         /// Specify audio loudness normalization in loudness units relative to full
         /// scale (LUFS). Enter a value between -24 and 0 according to the following:
@@ -234,7 +247,7 @@ pub mod preprocessing_config {
     /// Video cropping configuration for the input video. The cropped input video
     /// is scaled to match the output resolution.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Crop {
         /// The number of pixels to crop from the top. The default is 0.
         #[prost(int32, tag = "1")]
@@ -252,7 +265,7 @@ pub mod preprocessing_config {
     /// Pad filter configuration for the input video. The padded input video
     /// is scaled after padding with black to match the output resolution.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Pad {
         /// The number of pixels to add to the top. The default is 0.
         #[prost(int32, tag = "1")]
@@ -374,7 +387,7 @@ pub mod video_stream {
     pub mod h264_codec_settings {
         /// GOP mode can be either by frame count or duration.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum GopMode {
             /// Select the GOP size based on the specified frame count.
             /// If GOP frame count is set instead of GOP duration, GOP duration will be
@@ -496,7 +509,7 @@ pub struct TextStream {
 }
 /// Segment settings for `fmp4` and `ts`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SegmentSettings {
     /// Duration of the segments in seconds. The default is `6s`. Note that
     /// `segmentDuration` must be greater than or equal to
@@ -815,6 +828,13 @@ pub struct Channel {
     /// [input_attachments][google.cloud.video.livestream.v1.Channel.input_attachments].
     #[prost(message, optional, tag = "25")]
     pub input_config: ::core::option::Option<InputConfig>,
+    /// Optional. Configuration for retention of output files for this channel.
+    #[prost(message, optional, tag = "26")]
+    pub retention_config: ::core::option::Option<RetentionConfig>,
+    /// Optional. List of static overlay images. Those images display over the
+    /// output content for the whole duration of the live stream.
+    #[prost(message, repeated, tag = "27")]
+    pub static_overlays: ::prost::alloc::vec::Vec<StaticOverlay>,
 }
 /// Nested message and enum types in `Channel`.
 pub mod channel {
@@ -895,9 +915,59 @@ pub mod channel {
         }
     }
 }
-/// Configuration for the input sources of a channel.
+/// 2D normalized coordinates.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct NormalizedCoordinate {
+    /// Optional. Normalized x coordinate. Valid range is \[0.0, 1.0\]. Default is 0.
+    #[prost(double, tag = "1")]
+    pub x: f64,
+    /// Optional. Normalized y coordinate. Valid range is \[0.0, 1.0\]. Default is 0.
+    #[prost(double, tag = "2")]
+    pub y: f64,
+}
+/// Normalized resolution.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct NormalizedResolution {
+    /// Optional. Normalized width. Valid range is \[0.0, 1.0\]. Default is 0.
+    #[prost(double, tag = "1")]
+    pub w: f64,
+    /// Optional. Normalized height. Valid range is \[0.0, 1.0\]. Default is 0.
+    #[prost(double, tag = "2")]
+    pub h: f64,
+}
+/// Configuration for the static overlay.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StaticOverlay {
+    /// Required. Asset to use for the overlaid image.
+    /// The asset must be represented in the form of:
+    /// `projects/{project}/locations/{location}/assets/{assetId}`.
+    /// The asset's resource type must be image.
+    #[prost(string, tag = "1")]
+    pub asset: ::prost::alloc::string::String,
+    /// Optional. Normalized image resolution, based on output video resolution.
+    /// Valid values are \[0.0, 1.0\]. To respect the original image aspect ratio,
+    /// set either `w` or `h` to 0. To use the original image resolution, set both
+    /// `w` and `h` to 0. The default is {0, 0}.
+    #[prost(message, optional, tag = "2")]
+    pub resolution: ::core::option::Option<NormalizedResolution>,
+    /// Optional. Position of the image in terms of normalized coordinates of the
+    /// upper-left corner of the image, based on output video resolution. For
+    /// example, use the x and y coordinates {0, 0} to position the top-left corner
+    /// of the overlay animation in the top-left corner of the output video.
+    #[prost(message, optional, tag = "3")]
+    pub position: ::core::option::Option<NormalizedCoordinate>,
+    /// Optional. Target image opacity. Valid values are from `1.0` (solid,
+    /// default) to `0.0` (transparent), exclusive. Set this to a value greater
+    /// than `0.0`.
+    #[prost(double, tag = "4")]
+    pub opacity: f64,
+}
+/// Configuration for the input sources of a channel.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InputConfig {
     /// Input switch mode. Default mode is `FAILOVER_PREFER_PRIMARY`.
     #[prost(enumeration = "input_config::InputSwitchMode", tag = "1")]
@@ -962,7 +1032,7 @@ pub mod input_config {
 /// logs](<https://cloud.google.com/logging/docs/api/platform-logs#managing-logs>)
 /// for more information about how to view platform logs through Cloud Logging.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LogConfig {
     /// The severity level of platform logging for this resource.
     #[prost(enumeration = "log_config::LogSeverity", tag = "1")]
@@ -1032,6 +1102,30 @@ pub mod log_config {
             }
         }
     }
+}
+/// Configuration for retention of output files.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RetentionConfig {
+    /// The minimum duration for which the output files from the channel will
+    /// remain in the output bucket. After this duration, output files are
+    /// deleted asynchronously.
+    ///
+    /// When the channel is deleted, all output files are deleted from the output
+    /// bucket asynchronously.
+    ///
+    /// If omitted or set to zero, output files will remain in the output bucket
+    /// based on
+    /// [Manifest.segment_keep_duration][google.cloud.video.livestream.v1.Manifest.segment_keep_duration],
+    /// which defaults to 60s.
+    ///
+    /// If both retention_window_duration and
+    /// [Manifest.segment_keep_duration][google.cloud.video.livestream.v1.Manifest.segment_keep_duration]
+    /// are set, retention_window_duration is used and
+    /// [Manifest.segment_keep_duration][google.cloud.video.livestream.v1.Manifest.segment_keep_duration]
+    /// is ignored.
+    #[prost(message, optional, tag = "1")]
+    pub retention_window_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Properties of the input stream.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1105,7 +1199,9 @@ pub struct AudioFormat {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputAttachment {
-    /// A unique key for this input attachment.
+    /// A unique key for this input attachment. The key must be 1-63
+    /// characters in length. The key must begin and end with a letter (regardless
+    /// of case) or a number, but can contain dashes or underscores in between.
     #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
     /// The resource name of an existing input, in the form of:
@@ -1192,7 +1288,7 @@ pub mod event {
     }
     /// Inserts a new ad opportunity.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AdBreakTask {
         /// Duration of an ad opportunity. Must be greater than 0.
         #[prost(message, optional, tag = "1")]
@@ -1207,7 +1303,7 @@ pub mod event {
         #[prost(message, optional, tag = "1")]
         pub duration: ::core::option::Option<::prost_types::Duration>,
         /// Slate asset to use for the duration. If its duration is less than the
-        /// duration of the SlateTask, then it will be looped. The slate must be
+        /// duration of the SlateTask, then the slate loops. The slate must be
         /// represented in the form of:
         /// `projects/{project}/locations/{location}/assets/{assetId}`.
         #[prost(string, tag = "2")]
@@ -1216,21 +1312,20 @@ pub mod event {
     /// Stops any events which are currently running. This only applies to events
     /// with a duration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ReturnToProgramTask {}
     /// Mutes the stream.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MuteTask {
         /// Duration for which the stream should be muted. If omitted, the stream
         /// will be muted until an UnmuteTask event is sent.
         #[prost(message, optional, tag = "1")]
         pub duration: ::core::option::Option<::prost_types::Duration>,
     }
-    /// Unmutes the stream. The task will fail if the stream is not
-    /// currently muted.
+    /// Unmutes the stream. The task fails if the stream is not currently muted.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UnmuteTask {}
     /// State of the event
     #[derive(
@@ -1315,6 +1410,167 @@ pub mod event {
         Unmute(UnmuteTask),
     }
 }
+/// Clip is a sub-resource under channel. Each clip represents a clipping
+/// operation that generates a VOD playlist from its channel given a set of
+/// timestamp ranges.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Clip {
+    /// The resource name of the clip, in the following format:
+    /// `projects/{project}/locations/{location}/channels/{c}/clips/{clipId}`.
+    /// `{clipId}` is a user-specified resource id that conforms to the following
+    /// criteria:
+    ///
+    /// 1. 1 character minimum, 63 characters maximum
+    /// 2. Only contains letters, digits, underscores, and hyphens
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The creation timestamp of the clip resource.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp when the clip request starts to be processed.
+    #[prost(message, optional, tag = "3")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The update timestamp of the clip resource.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The labels associated with this resource. Each label is a key-value pair.
+    #[prost(map = "string, string", tag = "5")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The state of the clip.
+    #[prost(enumeration = "clip::State", tag = "6")]
+    pub state: i32,
+    /// Specify the `output_uri` to determine where to place the clip segments and
+    /// clip manifest files in Cloud Storage. The manifests specified in
+    /// `clip_manifests` fields will be placed under this URI. The exact URI of the
+    /// generated manifests will be provided in `clip_manifests.output_uri` for
+    /// each manifest.
+    /// Example:
+    /// "output_uri": "gs://my-bucket/clip-outputs"
+    /// "clip_manifests.output_uri": "gs://my-bucket/clip-outputs/main.m3u8"
+    #[prost(string, tag = "7")]
+    pub output_uri: ::prost::alloc::string::String,
+    /// Output only. An error object that describes the reason for the failure.
+    /// This property only presents when `state` is `FAILED`.
+    #[prost(message, optional, tag = "9")]
+    pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
+    /// The specified ranges of segments to generate a clip.
+    #[prost(message, repeated, tag = "10")]
+    pub slices: ::prost::alloc::vec::Vec<clip::Slice>,
+    /// Required. A list of clip manifests. Currently only one clip manifest is
+    /// allowed.
+    #[prost(message, repeated, tag = "12")]
+    pub clip_manifests: ::prost::alloc::vec::Vec<clip::ClipManifest>,
+}
+/// Nested message and enum types in `Clip`.
+pub mod clip {
+    /// TimeSlice represents a tuple of Unix epoch timestamps that specifies a time
+    /// range.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct TimeSlice {
+        /// The mark-in Unix epoch time in the original live stream manifest.
+        #[prost(message, optional, tag = "1")]
+        pub markin_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// The mark-out Unix epoch time in the original live stream manifest.
+        #[prost(message, optional, tag = "2")]
+        pub markout_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// Slice represents a slice of the requested clip.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct Slice {
+        /// The allowlist forms of a slice.
+        #[prost(oneof = "slice::Kind", tags = "1")]
+        pub kind: ::core::option::Option<slice::Kind>,
+    }
+    /// Nested message and enum types in `Slice`.
+    pub mod slice {
+        /// The allowlist forms of a slice.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum Kind {
+            /// A slice in form of a tuple of Unix epoch time.
+            #[prost(message, tag = "1")]
+            TimeSlice(super::TimeSlice),
+        }
+    }
+    /// ClipManifest identifies a source manifest for the generated clip manifest.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ClipManifest {
+        /// Required. A unique key that identifies a manifest config in the parent
+        /// channel. This key is the same as `channel.manifests.key` for the selected
+        /// manifest.
+        #[prost(string, tag = "1")]
+        pub manifest_key: ::prost::alloc::string::String,
+        /// Output only. The output URI of the generated clip manifest. This field
+        /// will be populated when the CreateClip request is accepted. Current output
+        /// format is provided below but may change in the future. Please read this
+        /// field to get the uri to the generated clip manifest. Format:
+        /// {clip.output_uri}/{channel.manifest.fileName} Example:
+        /// gs://my-bucket/clip-outputs/main.m3u8
+        #[prost(string, tag = "2")]
+        pub output_uri: ::prost::alloc::string::String,
+    }
+    /// State of clipping operation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// State is not specified.
+        Unspecified = 0,
+        /// The operation is pending to be picked up by the server.
+        Pending = 1,
+        /// The server admitted this create clip request, and
+        /// outputs are under processing.
+        Creating = 2,
+        /// Outputs are available in the specified Cloud Storage bucket. For
+        /// additional information, see the `outputs` field.
+        Succeeded = 3,
+        /// The operation has failed. For additional information, see the `error`
+        /// field.
+        Failed = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Pending => "PENDING",
+                State::Creating => "CREATING",
+                State::Succeeded => "SUCCEEDED",
+                State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "CREATING" => Some(Self::Creating),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
 /// An asset represents a video or an image.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1340,10 +1596,12 @@ pub struct Asset {
     /// resource](<https://cloud.google.com/storage/docs/json_api/v1/objects>).
     /// If crc32c is omitted or left empty when the asset is created, this field is
     /// filled by the crc32c checksum of the Cloud Storage object indicated by
-    /// \[VideoAsset.uri\] or \[ImageAsset.uri\].
-    /// If crc32c is set, the asset can't be created if the crc32c value does not
+    /// [VideoAsset.uri][google.cloud.video.livestream.v1.Asset.VideoAsset.uri] or
+    /// [ImageAsset.uri][google.cloud.video.livestream.v1.Asset.ImageAsset.uri]. If
+    /// crc32c is set, the asset can't be created if the crc32c value does not
     /// match with the crc32c checksum of the Cloud Storage object indicated by
-    /// \[VideoAsset.uri\] or \[ImageAsset.uri\].
+    /// [VideoAsset.uri][google.cloud.video.livestream.v1.Asset.VideoAsset.uri] or
+    /// [ImageAsset.uri][google.cloud.video.livestream.v1.Asset.ImageAsset.uri].
     #[prost(string, tag = "7")]
     pub crc32c: ::prost::alloc::string::String,
     /// Output only. The state of the asset resource.
@@ -1370,7 +1628,7 @@ pub mod asset {
         #[prost(string, tag = "1")]
         pub uri: ::prost::alloc::string::String,
     }
-    /// Image represents an image. The supported format is JPEG.
+    /// Image represents an image. The supported formats are JPEG, PNG.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ImageAsset {
@@ -1446,7 +1704,10 @@ pub mod asset {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Encryption {
-    /// Required. Identifier for this set of encryption options.
+    /// Required. Identifier for this set of encryption options. The ID must be
+    /// 1-63 characters in length. The ID must begin and end with a letter
+    /// (regardless of case) or a number, but can contain dashes or underscores in
+    /// between.
     #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// Required. Configuration for DRM systems.
@@ -1472,24 +1733,24 @@ pub mod encryption {
     }
     /// Widevine configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Widevine {}
     /// Fairplay configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Fairplay {}
     /// Playready configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Playready {}
     /// Clearkey configuration.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Clearkey {}
     /// Defines configuration for DRM systems in use. If a field is omitted,
     /// that DRM system will be considered to be disabled.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DrmSystems {
         /// Widevine configuration.
         #[prost(message, optional, tag = "1")]
@@ -1506,11 +1767,11 @@ pub mod encryption {
     }
     /// Configuration for HLS AES-128 encryption.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Aes128Encryption {}
     /// Configuration for HLS SAMPLE-AES encryption.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SampleAesEncryption {}
     /// Configuration for MPEG-Dash Common Encryption (MPEG-CENC).
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2146,8 +2407,109 @@ pub struct DeleteEventRequest {
 }
 /// Response message for Start/Stop Channel long-running operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ChannelOperationResponse {}
+/// Request message for "LivestreamService.ListClips".
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListClipsRequest {
+    /// Required. Parent value for ListClipsRequest
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Requested page size. Server may return fewer items than requested.
+    /// If unspecified, server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Filtering results
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Hint for how to order the results
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for "LivestreamService.ListClips".
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListClipsResponse {
+    /// The list of Clip
+    #[prost(message, repeated, tag = "1")]
+    pub clips: ::prost::alloc::vec::Vec<Clip>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for "LivestreamService.GetClip".
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetClipRequest {
+    /// Required. Name of the resource, in the following form:
+    /// `projects/{project}/locations/{location}/channels/{channel}/clips/{clip}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for "LivestreamService.CreateClip".
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateClipRequest {
+    /// Required. The parent resource name, in the following form:
+    /// `projects/{project}/locations/{location}/channels/{channel}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Id of the requesting object in the following form:
+    ///
+    /// 1. 1 character minimum, 63 characters maximum
+    /// 2. Only contains letters, digits, underscores, and hyphens
+    #[prost(string, tag = "2")]
+    pub clip_id: ::prost::alloc::string::String,
+    /// Required. The resource being created
+    #[prost(message, optional, tag = "3")]
+    pub clip: ::core::option::Option<Clip>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for "LivestreamService.DeleteClip".
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteClipRequest {
+    /// Required. The name of the clip resource, in the form of:
+    /// `projects/{project}/locations/{location}/channels/{channelId}/clips/{clipId}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request ID,
+    /// the server can check if original operation with the same request ID was
+    /// received, and if so, will ignore the second request. This prevents clients
+    /// from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported `(00000000-0000-0000-0000-000000000000)`.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
 /// Represents the metadata of the long-running operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2786,6 +3148,128 @@ pub mod livestream_service_client {
                     GrpcMethod::new(
                         "google.cloud.video.livestream.v1.LivestreamService",
                         "DeleteEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns a list of all clips in the specified channel.
+        pub async fn list_clips(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListClipsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListClipsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.video.livestream.v1.LivestreamService/ListClips",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.video.livestream.v1.LivestreamService",
+                        "ListClips",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the specified clip.
+        pub async fn get_clip(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetClipRequest>,
+        ) -> std::result::Result<tonic::Response<super::Clip>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.video.livestream.v1.LivestreamService/GetClip",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.video.livestream.v1.LivestreamService",
+                        "GetClip",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a clip with the provided clip ID in the specified channel.
+        pub async fn create_clip(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateClipRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.video.livestream.v1.LivestreamService/CreateClip",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.video.livestream.v1.LivestreamService",
+                        "CreateClip",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the specified clip job resource. This method only deletes the clip
+        /// job and does not delete the VOD clip stored in the GCS.
+        pub async fn delete_clip(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteClipRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.video.livestream.v1.LivestreamService/DeleteClip",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.video.livestream.v1.LivestreamService",
+                        "DeleteClip",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -245,7 +245,7 @@ pub struct UpdateFolderRequest {
 /// A status object which is used as the `metadata` field for the Operation
 /// returned by UpdateFolder.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpdateFolderMetadata {}
 /// The MoveFolder request message.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -287,7 +287,7 @@ pub struct DeleteFolderRequest {
 /// A status object which is used as the `metadata` field for the `Operation`
 /// returned by `DeleteFolder`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteFolderMetadata {}
 /// The UndeleteFolder request message.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -301,7 +301,7 @@ pub struct UndeleteFolderRequest {
 /// A status object which is used as the `metadata` field for the `Operation`
 /// returned by `UndeleteFolder`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UndeleteFolderMetadata {}
 /// Generated client implementations.
 pub mod folders_client {
@@ -1010,12 +1010,12 @@ pub struct SearchOrganizationsResponse {
 /// A status object which is used as the `metadata` field for the operation
 /// returned by DeleteOrganization.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteOrganizationMetadata {}
 /// A status object which is used as the `metadata` field for the Operation
 /// returned by UndeleteOrganization.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UndeleteOrganizationMetadata {}
 /// Generated client implementations.
 pub mod organizations_client {
@@ -1577,7 +1577,7 @@ pub struct CreateProjectRequest {
 /// returned by CreateProject. It provides insight for when significant phases of
 /// Project creation have completed.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateProjectMetadata {
     /// Creation time of the project creation workflow.
     #[prost(message, optional, tag = "1")]
@@ -1611,7 +1611,7 @@ pub struct UpdateProjectRequest {
 /// A status object which is used as the `metadata` field for the Operation
 /// returned by UpdateProject.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpdateProjectMetadata {}
 /// The request sent to
 /// [MoveProject][google.cloud.resourcemanager.v3.Projects.MoveProject]
@@ -1629,7 +1629,7 @@ pub struct MoveProjectRequest {
 /// A status object which is used as the `metadata` field for the Operation
 /// returned by MoveProject.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MoveProjectMetadata {}
 /// [DeleteProject][google.cloud.resourcemanager.v3.Projects.DeleteProject]
 /// method.
@@ -1643,7 +1643,7 @@ pub struct DeleteProjectRequest {
 /// A status object which is used as the `metadata` field for the Operation
 /// returned by `DeleteProject`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteProjectMetadata {}
 /// The request sent to the \[UndeleteProject\]
 /// \[google.cloud.resourcemanager.v3.Projects.UndeleteProject\]
@@ -1660,7 +1660,7 @@ pub struct UndeleteProjectRequest {
 /// A status object which is used as the `metadata` field for the Operation
 /// returned by `UndeleteProject`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UndeleteProjectMetadata {}
 /// Generated client implementations.
 pub mod projects_client {
@@ -2252,7 +2252,7 @@ pub struct TagBinding {
 }
 /// Runtime operation information for creating a TagValue.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateTagBindingMetadata {}
 /// The request message to create a TagBinding.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2268,7 +2268,7 @@ pub struct CreateTagBindingRequest {
 }
 /// Runtime operation information for deleting a TagBinding.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteTagBindingMetadata {}
 /// The request message to delete a TagBinding.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2670,7 +2670,7 @@ pub struct CreateTagHoldRequest {
 /// (-- The metadata is currently empty, but may include information in the
 /// future. --)
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateTagHoldMetadata {}
 /// The request message to delete a TagHold.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2689,7 +2689,7 @@ pub struct DeleteTagHoldRequest {
 /// (-- The metadata is currently empty, but may include information in the
 /// future. --)
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteTagHoldMetadata {}
 /// The request message for listing the TagHolds under a TagValue.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3058,7 +3058,7 @@ pub struct CreateTagKeyRequest {
 }
 /// Runtime operation information for creating a TagKey.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateTagKeyMetadata {}
 /// The request message for updating a TagKey.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3082,7 +3082,7 @@ pub struct UpdateTagKeyRequest {
 }
 /// Runtime operation information for updating a TagKey.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpdateTagKeyMetadata {}
 /// The request message for deleting a TagKey.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3104,7 +3104,7 @@ pub struct DeleteTagKeyRequest {
 }
 /// Runtime operation information for deleting a TagKey.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteTagKeyMetadata {}
 /// A purpose for each policy engine requiring such an integration. A single
 /// policy engine may have multiple purposes defined, however a TagKey may only
@@ -3656,7 +3656,7 @@ pub struct CreateTagValueRequest {
 }
 /// Runtime operation information for creating a TagValue.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateTagValueMetadata {}
 /// The request message for updating a TagValue.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3678,7 +3678,7 @@ pub struct UpdateTagValueRequest {
 }
 /// Runtime operation information for updating a TagValue.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpdateTagValueMetadata {}
 /// The request message for deleting a TagValue.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3699,7 +3699,7 @@ pub struct DeleteTagValueRequest {
 }
 /// Runtime operation information for deleting a TagValue.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteTagValueMetadata {}
 /// Generated client implementations.
 pub mod tag_values_client {

@@ -237,6 +237,13 @@ pub mod answer {
                     /// populate chunk info.
                     #[prost(message, repeated, tag = "5")]
                     pub chunk_info: ::prost::alloc::vec::Vec<search_result::ChunkInfo>,
+                    /// Data representation.
+                    /// The structured JSON data for the document.
+                    /// It's populated from the struct data from the Document (code
+                    /// pointer: <http://shortn/_objzAfIiHq>), or the Chunk in search result
+                    /// (code pointer: <http://shortn/_Ipo6KFFGBL>).
+                    #[prost(message, optional, tag = "6")]
+                    pub struct_data: ::core::option::Option<::prost_types::Struct>,
                 }
                 /// Nested message and enum types in `SearchResult`.
                 pub mod search_result {
@@ -338,7 +345,7 @@ pub mod answer {
     pub mod query_understanding_info {
         /// Query classification information.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct QueryClassificationInfo {
             /// Query classification type.
             #[prost(enumeration = "query_classification_info::Type", tag = "1")]
@@ -470,6 +477,11 @@ pub mod answer {
         /// Google skips the answer if there is a potential policy violation
         /// detected. This includes content that may be violent or toxic.
         PotentialPolicyViolation = 4,
+        /// The no relevant content case.
+        ///
+        /// Google skips the answer if there is no relevant content in the
+        /// retrieved search results.
+        NoRelevantContent = 5,
     }
     impl AnswerSkippedReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -491,6 +503,7 @@ pub mod answer {
                 AnswerSkippedReason::PotentialPolicyViolation => {
                     "POTENTIAL_POLICY_VIOLATION"
                 }
+                AnswerSkippedReason::NoRelevantContent => "NO_RELEVANT_CONTENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -503,14 +516,107 @@ pub mod answer {
                 }
                 "OUT_OF_DOMAIN_QUERY_IGNORED" => Some(Self::OutOfDomainQueryIgnored),
                 "POTENTIAL_POLICY_VIOLATION" => Some(Self::PotentialPolicyViolation),
+                "NO_RELEVANT_CONTENT" => Some(Self::NoRelevantContent),
                 _ => None,
             }
         }
     }
 }
-/// A floating point interval.
+/// Chunk captures all raw metadata information of items to be recommended or
+/// searched in the chunk mode.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Chunk {
+    /// The full resource name of the chunk.
+    /// Format:
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document_id}/chunks/{chunk_id}`.
+    ///
+    /// This field must be a UTF-8 encoded string with a length limit of 1024
+    /// characters.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Unique chunk ID of the current chunk.
+    #[prost(string, tag = "2")]
+    pub id: ::prost::alloc::string::String,
+    /// Content is a string from a document (parsed content).
+    #[prost(string, tag = "3")]
+    pub content: ::prost::alloc::string::String,
+    /// Output only. Represents the relevance score based on similarity.
+    /// Higher score indicates higher chunk relevance.
+    /// The score is in range \[-1.0, 1.0\].
+    /// Only populated on [SearchService.SearchResponse][].
+    #[prost(double, optional, tag = "8")]
+    pub relevance_score: ::core::option::Option<f64>,
+    /// Metadata of the document from the current chunk.
+    #[prost(message, optional, tag = "5")]
+    pub document_metadata: ::core::option::Option<chunk::DocumentMetadata>,
+    /// Output only. This field is OUTPUT_ONLY.
+    /// It contains derived data that are not in the original input document.
+    #[prost(message, optional, tag = "4")]
+    pub derived_struct_data: ::core::option::Option<::prost_types::Struct>,
+    /// Page span of the chunk.
+    #[prost(message, optional, tag = "6")]
+    pub page_span: ::core::option::Option<chunk::PageSpan>,
+    /// Output only. Metadata of the current chunk.
+    #[prost(message, optional, tag = "7")]
+    pub chunk_metadata: ::core::option::Option<chunk::ChunkMetadata>,
+}
+/// Nested message and enum types in `Chunk`.
+pub mod chunk {
+    /// Document metadata contains the information of the document of the current
+    /// chunk.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DocumentMetadata {
+        /// Uri of the document.
+        #[prost(string, tag = "1")]
+        pub uri: ::prost::alloc::string::String,
+        /// Title of the document.
+        #[prost(string, tag = "2")]
+        pub title: ::prost::alloc::string::String,
+        /// Data representation.
+        /// The structured JSON data for the document. It should conform to the
+        /// registered [Schema][google.cloud.discoveryengine.v1.Schema] or an
+        /// `INVALID_ARGUMENT` error is thrown.
+        #[prost(message, optional, tag = "3")]
+        pub struct_data: ::core::option::Option<::prost_types::Struct>,
+    }
+    /// Page span of the chunk.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct PageSpan {
+        /// The start page of the chunk.
+        #[prost(int32, tag = "1")]
+        pub page_start: i32,
+        /// The end page of the chunk.
+        #[prost(int32, tag = "2")]
+        pub page_end: i32,
+    }
+    /// Metadata of the current chunk. This field is only populated on
+    /// [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search]
+    /// API.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ChunkMetadata {
+        /// The previous chunks of the current chunk. The number is controlled by
+        /// [SearchRequest.ContentSearchSpec.ChunkSpec.num_previous_chunks][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.ChunkSpec.num_previous_chunks].
+        /// This field is only populated on
+        /// [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search]
+        /// API.
+        #[prost(message, repeated, tag = "1")]
+        pub previous_chunks: ::prost::alloc::vec::Vec<super::Chunk>,
+        /// The next chunks of the current chunk. The number is controlled by
+        /// [SearchRequest.ContentSearchSpec.ChunkSpec.num_next_chunks][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.ChunkSpec.num_next_chunks].
+        /// This field is only populated on
+        /// [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search]
+        /// API.
+        #[prost(message, repeated, tag = "2")]
+        pub next_chunks: ::prost::alloc::vec::Vec<super::Chunk>,
+    }
+}
+/// A floating point interval.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Interval {
     /// The lower bound of the interval. If neither of the min fields are
     /// set, then the lower bound is negative infinity.
@@ -535,7 +641,7 @@ pub mod interval {
     /// This field must be not larger than max.
     /// Otherwise, an `INVALID_ARGUMENT` error is returned.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Min {
         /// Inclusive lower bound.
         #[prost(double, tag = "1")]
@@ -550,7 +656,7 @@ pub mod interval {
     /// This field must be not smaller than min.
     /// Otherwise, an `INVALID_ARGUMENT` error is returned.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Max {
         /// Inclusive upper bound.
         #[prost(double, tag = "3")]
@@ -862,6 +968,47 @@ pub mod suggestion_deny_list_entry {
         }
     }
 }
+/// Autocomplete suggestions that are imported from Customer.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CompletionSuggestion {
+    /// Required. The suggestion text.
+    #[prost(string, tag = "1")]
+    pub suggestion: ::prost::alloc::string::String,
+    /// BCP-47 language code of this suggestion.
+    #[prost(string, tag = "4")]
+    pub language_code: ::prost::alloc::string::String,
+    /// If two suggestions have the same groupId, they will not be
+    /// returned together. Instead the one ranked higher will be returned. This can
+    /// be used to deduplicate semantically identical suggestions.
+    #[prost(string, tag = "5")]
+    pub group_id: ::prost::alloc::string::String,
+    /// The score of this suggestion within its group.
+    #[prost(double, tag = "6")]
+    pub group_score: f64,
+    /// Alternative matching phrases for this suggestion.
+    #[prost(string, repeated, tag = "7")]
+    pub alternative_phrases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Ranking metrics of this suggestion.
+    #[prost(oneof = "completion_suggestion::RankingInfo", tags = "2, 3")]
+    pub ranking_info: ::core::option::Option<completion_suggestion::RankingInfo>,
+}
+/// Nested message and enum types in `CompletionSuggestion`.
+pub mod completion_suggestion {
+    /// Ranking metrics of this suggestion.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum RankingInfo {
+        /// Global score of this suggestion. Control how this suggestion would be
+        /// scored / ranked.
+        #[prost(double, tag = "2")]
+        GlobalScore(f64),
+        /// Frequency of this suggestion. Will be used to rank suggestions when score
+        /// is not available.
+        #[prost(int64, tag = "3")]
+        Frequency(i64),
+    }
+}
 /// Document captures all raw metadata information of items to be recommended or
 /// searched.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -951,7 +1098,7 @@ pub mod document {
             RawBytes(::prost::alloc::vec::Vec<u8>),
             /// The URI of the content. Only Cloud Storage URIs (e.g.
             /// `gs://bucket-name/path/to/file`) are supported. The maximum file size
-            /// is 2.5 MB for text-based formats, 100 MB for other formats.
+            /// is 2.5 MB for text-based formats, 200 MB for other formats.
             #[prost(string, tag = "3")]
             Uri(::prost::alloc::string::String),
         }
@@ -1452,7 +1599,7 @@ pub struct PanelInfo {
 }
 /// Media-specific user event information.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MediaInfo {
     /// The media progress time in seconds, if applicable.
     /// For example, if the end user has finished 90 seconds of a playback video,
@@ -1565,7 +1712,7 @@ pub mod big_query_source {
     /// BigQuery table partition info. Leave this empty if the BigQuery table
     /// is not partitioned.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Partition {
         /// BigQuery time partitioned table's _PARTITIONDATE in YYYY-MM-DD format.
         #[prost(message, tag = "5")]
@@ -1857,6 +2004,40 @@ pub struct CloudSqlSource {
     #[prost(bool, tag = "6")]
     pub offload: bool,
 }
+/// AlloyDB source import data from.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AlloyDbSource {
+    /// The project ID that the AlloyDB source is in
+    /// with a length limit of 128 characters. If not specified, inherits the
+    /// project ID from the parent request.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. The AlloyDB location to copy the data from with a length limit of
+    /// 256 characters.
+    #[prost(string, tag = "2")]
+    pub location_id: ::prost::alloc::string::String,
+    /// Required. The AlloyDB cluster to copy the data from with a length limit of
+    /// 256 characters.
+    #[prost(string, tag = "3")]
+    pub cluster_id: ::prost::alloc::string::String,
+    /// Required. The AlloyDB database to copy the data from with a length limit of
+    /// 256 characters.
+    #[prost(string, tag = "4")]
+    pub database_id: ::prost::alloc::string::String,
+    /// Required. The AlloyDB table to copy the data from with a length limit of
+    /// 256 characters.
+    #[prost(string, tag = "5")]
+    pub table_id: ::prost::alloc::string::String,
+    /// Intermediate Cloud Storage directory used for the import with a length
+    /// limit of 2,000 characters. Can be specified if one wants to have the
+    /// AlloyDB export to a specific Cloud Storage directory.
+    ///
+    /// Ensure that the AlloyDB service account has the necessary Cloud
+    /// Storage Admin permissions to access the specified Cloud Storage directory.
+    #[prost(string, tag = "6")]
+    pub gcs_staging_dir: ::prost::alloc::string::String,
+}
 /// Firestore source import data from.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1970,7 +2151,7 @@ pub struct ImportUserEventsResponse {
 /// Metadata related to the progress of the Import operation. This is
 /// returned by the google.longrunning.Operation.metadata field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportUserEventsMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -1989,7 +2170,7 @@ pub struct ImportUserEventsMetadata {
 /// Metadata related to the progress of the ImportDocuments operation. This is
 /// returned by the google.longrunning.Operation.metadata field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -2095,7 +2276,7 @@ pub struct ImportDocumentsRequest {
     /// Required. The source of the input.
     #[prost(
         oneof = "import_documents_request::Source",
-        tags = "2, 3, 4, 10, 11, 12, 13, 15"
+        tags = "2, 3, 4, 10, 11, 12, 13, 14, 15"
     )]
     pub source: ::core::option::Option<import_documents_request::Source>,
 }
@@ -2181,6 +2362,9 @@ pub mod import_documents_request {
         /// Firestore input source.
         #[prost(message, tag = "13")]
         FirestoreSource(super::FirestoreSource),
+        /// AlloyDB input source.
+        #[prost(message, tag = "14")]
+        AlloyDbSource(super::AlloyDbSource),
         /// Cloud Bigtable input source.
         #[prost(message, tag = "15")]
         BigtableSource(super::BigtableSource),
@@ -2268,7 +2452,7 @@ pub struct ImportSuggestionDenyListEntriesResponse {
 /// operation. This is returned by the google.longrunning.Operation.metadata
 /// field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportSuggestionDenyListEntriesMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -2277,6 +2461,89 @@ pub struct ImportSuggestionDenyListEntriesMetadata {
     /// finish time.
     #[prost(message, optional, tag = "2")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for
+/// [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.ImportCompletionSuggestions]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportCompletionSuggestionsRequest {
+    /// Required. The parent data store resource name for which to import customer
+    /// autocomplete suggestions.
+    ///
+    /// Follows pattern `projects/*/locations/*/collections/*/dataStores/*`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The desired location of errors incurred during the Import.
+    #[prost(message, optional, tag = "5")]
+    pub error_config: ::core::option::Option<ImportErrorConfig>,
+    /// The source of the autocomplete suggestions.
+    #[prost(oneof = "import_completion_suggestions_request::Source", tags = "2, 3, 4")]
+    pub source: ::core::option::Option<import_completion_suggestions_request::Source>,
+}
+/// Nested message and enum types in `ImportCompletionSuggestionsRequest`.
+pub mod import_completion_suggestions_request {
+    /// The inline source for CompletionSuggestions.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InlineSource {
+        /// Required. A list of all denylist entries to import. Max of 1000 items.
+        #[prost(message, repeated, tag = "1")]
+        pub suggestions: ::prost::alloc::vec::Vec<super::CompletionSuggestion>,
+    }
+    /// The source of the autocomplete suggestions.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// The Inline source for suggestion entries.
+        #[prost(message, tag = "2")]
+        InlineSource(InlineSource),
+        /// Cloud Storage location for the input content.
+        #[prost(message, tag = "3")]
+        GcsSource(super::GcsSource),
+        /// BigQuery input source.
+        #[prost(message, tag = "4")]
+        BigquerySource(super::BigQuerySource),
+    }
+}
+/// Response of the
+/// [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.ImportCompletionSuggestions]
+/// method. If the long running operation is done, this message is returned by
+/// the google.longrunning.Operations.response field if the operation is
+/// successful.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportCompletionSuggestionsResponse {
+    /// A sample of errors encountered while processing the request.
+    #[prost(message, repeated, tag = "1")]
+    pub error_samples: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+    /// The desired location of errors incurred during the Import.
+    #[prost(message, optional, tag = "2")]
+    pub error_config: ::core::option::Option<ImportErrorConfig>,
+}
+/// Metadata related to the progress of the ImportCompletionSuggestions
+/// operation. This will be returned by the google.longrunning.Operation.metadata
+/// field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ImportCompletionSuggestionsMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Count of
+    /// [CompletionSuggestion][google.cloud.discoveryengine.v1.CompletionSuggestion]s
+    /// successfully imported.
+    #[prost(int64, tag = "3")]
+    pub success_count: i64,
+    /// Count of
+    /// [CompletionSuggestion][google.cloud.discoveryengine.v1.CompletionSuggestion]s
+    /// that failed to be imported.
+    #[prost(int64, tag = "4")]
+    pub failure_count: i64,
 }
 /// Request message for
 /// [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1.DocumentService.PurgeDocuments]
@@ -2317,7 +2584,7 @@ pub struct PurgeDocumentsResponse {
 /// Metadata related to the progress of the PurgeDocuments operation.
 /// This will be returned by the google.longrunning.Operation.metadata field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PurgeDocumentsMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -2364,8 +2631,47 @@ pub struct PurgeSuggestionDenyListEntriesResponse {
 /// operation. This is returned by the google.longrunning.Operation.metadata
 /// field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PurgeSuggestionDenyListEntriesMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for
+/// [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.PurgeCompletionSuggestions]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PurgeCompletionSuggestionsRequest {
+    /// Required. The parent data store resource name for which to purge completion
+    /// suggestions. Follows pattern
+    /// projects/*/locations/*/collections/*/dataStores/*.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.PurgeCompletionSuggestions]
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PurgeCompletionSuggestionsResponse {
+    /// Whether the completion suggestions were successfully purged.
+    #[prost(bool, tag = "1")]
+    pub purge_succeeded: bool,
+    /// A sample of errors encountered while processing the request.
+    #[prost(message, repeated, tag = "2")]
+    pub error_samples: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+}
+/// Metadata related to the progress of the PurgeCompletionSuggestions
+/// operation. This is returned by the google.longrunning.Operation.metadata
+/// field.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct PurgeCompletionSuggestionsMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -2656,6 +2962,72 @@ pub mod completion_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Imports
+        /// [CompletionSuggestion][google.cloud.discoveryengine.v1.CompletionSuggestion]s
+        /// for a DataStore.
+        pub async fn import_completion_suggestions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ImportCompletionSuggestionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.CompletionService/ImportCompletionSuggestions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.CompletionService",
+                        "ImportCompletionSuggestions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Permanently deletes all
+        /// [CompletionSuggestion][google.cloud.discoveryengine.v1.CompletionSuggestion]s
+        /// for a DataStore.
+        pub async fn purge_completion_suggestions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PurgeCompletionSuggestionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.CompletionService/PurgeCompletionSuggestions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.CompletionService",
+                        "PurgeCompletionSuggestions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Defines circumstances to be checked before allowing a behavior
@@ -2694,7 +3066,7 @@ pub mod condition {
     }
     /// Used for time-dependent conditions.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TimeRange {
         /// Start of time range.
         ///
@@ -3304,6 +3676,13 @@ pub struct SearchRequest {
     /// is used to deduce `device_type` for analytics.
     #[prost(message, optional, tag = "21")]
     pub user_info: ::core::option::Option<UserInfo>,
+    /// The BCP-47 language code, such as "en-US" or "sr-Latn". For more
+    /// information, see [Standard
+    /// fields](<https://cloud.google.com/apis/design/standard_fields>). This field
+    /// helps to better interpret the query. If a value isn't specified, the query
+    /// language code is automatically detected, which may not be accurate.
+    #[prost(string, tag = "35")]
+    pub language_code: ::prost::alloc::string::String,
     /// Facet specifications for faceted search. If empty, no facets are returned.
     ///
     /// A maximum of 100 values are allowed. Otherwise, an  `INVALID_ARGUMENT`
@@ -3390,6 +3769,46 @@ pub struct SearchRequest {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Search as you type configuration. Only supported for the
+    /// [IndustryVertical.MEDIA][google.cloud.discoveryengine.v1.IndustryVertical.MEDIA]
+    /// vertical.
+    #[prost(message, optional, tag = "31")]
+    pub search_as_you_type_spec: ::core::option::Option<
+        search_request::SearchAsYouTypeSpec,
+    >,
+    /// The session resource name. Optional.
+    ///
+    /// Session allows users to do multi-turn /search API calls or coordination
+    /// between /search API calls and /answer API calls.
+    ///
+    /// Example #1 (multi-turn /search API calls):
+    ///    1. Call /search API with the auto-session mode (see below).
+    ///    2. Call /search API with the session ID generated in the first call.
+    ///       Here, the previous search query gets considered in query
+    ///       standing. I.e., if the first query is "How did Alphabet do in 2022?"
+    ///       and the current query is "How about 2023?", the current query will
+    ///       be interpreted as "How did Alphabet do in 2023?".
+    ///
+    /// Example #2 (coordination between /search API calls and /answer API calls):
+    ///    1. Call /search API with the auto-session mode (see below).
+    ///    2. Call /answer API with the session ID generated in the first call.
+    ///       Here, the answer generation happens in the context of the search
+    ///       results from the first search call.
+    ///
+    /// Auto-session mode: when `projects/.../sessions/-` is used, a new session
+    /// gets automatically created. Otherwise, users can use the create-session API
+    /// to create a session manually.
+    ///
+    /// Multi-turn Search feature is currently at private GA stage. Please use
+    /// v1alpha or v1beta version instead before we launch this feature to public
+    /// GA. Or ask for allowlisting through Google Support team.
+    #[prost(string, tag = "41")]
+    pub session: ::prost::alloc::string::String,
+    /// Session specification.
+    ///
+    /// Can be used only when `session` is set.
+    #[prost(message, optional, tag = "42")]
+    pub session_spec: ::core::option::Option<search_request::SessionSpec>,
 }
 /// Nested message and enum types in `SearchRequest`.
 pub mod search_request {
@@ -3412,8 +3831,8 @@ pub mod search_request {
         }
     }
     /// A struct to define data stores to filter on in a search call and
-    /// configurations for those data stores. A maximum of 1 DataStoreSpec per
-    /// data_store is allowed. Otherwise, an `INVALID_ARGUMENT` error is returned.
+    /// configurations for those data stores. Otherwise, an `INVALID_ARGUMENT`
+    /// error is returned.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DataStoreSpec {
@@ -3433,6 +3852,9 @@ pub mod search_request {
         /// Maximum facet values that are returned for this facet. If
         /// unspecified, defaults to 20. The maximum allowed value is 300. Values
         /// above 300 are coerced to 300.
+        /// For aggregation in healthcare search, when the \[FacetKey.key\] is
+        /// "healthcare_aggregation_key", the limit will be overridden to
+        /// 10,000 internally, regardless of the value set here.
         ///
         /// If this field is negative, an  `INVALID_ARGUMENT`  is returned.
         #[prost(int32, tag = "2")]
@@ -3622,7 +4044,7 @@ pub mod search_request {
     /// Specification to determine under which conditions query expansion should
     /// occur.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct QueryExpansionSpec {
         /// The condition under which query expansion should occur. Default to
         /// [Condition.DISABLED][google.cloud.discoveryengine.v1.SearchRequest.QueryExpansionSpec.Condition.DISABLED].
@@ -3686,7 +4108,7 @@ pub mod search_request {
     }
     /// The specification for query spell correction.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SpellCorrectionSpec {
         /// The mode under which spell correction
         /// replaces the original search query. Defaults to
@@ -3764,12 +4186,27 @@ pub mod search_request {
         pub extractive_content_spec: ::core::option::Option<
             content_search_spec::ExtractiveContentSpec,
         >,
+        /// Specifies the search result mode. If unspecified, the
+        /// search result mode is based on
+        /// [DataStore.DocumentProcessingConfig.chunking_config][]:
+        /// * If [DataStore.DocumentProcessingConfig.chunking_config][] is specified,
+        ///    it defaults to `CHUNKS`.
+        /// * Otherwise, it defaults to `DOCUMENTS`.
+        #[prost(enumeration = "content_search_spec::SearchResultMode", tag = "4")]
+        pub search_result_mode: i32,
+        /// Specifies the chunk spec to be returned from the search response.
+        /// Only available if the
+        /// [SearchRequest.ContentSearchSpec.search_result_mode][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.search_result_mode]
+        /// is set to
+        /// [CHUNKS][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SearchResultMode.CHUNKS]
+        #[prost(message, optional, tag = "5")]
+        pub chunk_spec: ::core::option::Option<content_search_spec::ChunkSpec>,
     }
     /// Nested message and enum types in `ContentSearchSpec`.
     pub mod content_search_spec {
         /// A specification for configuring snippets in a search response.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct SnippetSpec {
             /// \[DEPRECATED\] This field is deprecated. To control snippet return, use
             /// `return_snippet` field. For backwards compatibility, we will return
@@ -3799,8 +4236,9 @@ pub mod search_request {
             ///
             /// At most 10 results for documents mode, or 50 for chunks mode, can be
             /// used to generate a summary. The chunks mode is used when
-            /// [SearchRequest.ContentSearchSpec.search_result_mode][] is set to
-            /// [CHUNKS][SearchRequest.ContentSearchSpec.SearchResultMode.CHUNKS].
+            /// [SearchRequest.ContentSearchSpec.search_result_mode][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.search_result_mode]
+            /// is set to
+            /// [CHUNKS][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SearchResultMode.CHUNKS].
             #[prost(int32, tag = "1")]
             pub summary_result_count: i32,
             /// Specifies whether to include citations in the summary. The default
@@ -3903,7 +4341,7 @@ pub mod search_request {
         /// A specification for configuring the extractive content in a search
         /// response.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct ExtractiveContentSpec {
             /// The maximum number of extractive answers returned in each search
             /// result.
@@ -3956,6 +4394,176 @@ pub mod search_request {
             #[prost(int32, tag = "5")]
             pub num_next_segments: i32,
         }
+        /// Specifies the chunk spec to be returned from the search response.
+        /// Only available if the
+        /// [SearchRequest.ContentSearchSpec.search_result_mode][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.search_result_mode]
+        /// is set to
+        /// [CHUNKS][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SearchResultMode.CHUNKS]
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct ChunkSpec {
+            /// The number of previous chunks to be returned of the current chunk. The
+            /// maximum allowed value is 3.
+            /// If not specified, no previous chunks will be returned.
+            #[prost(int32, tag = "1")]
+            pub num_previous_chunks: i32,
+            /// The number of next chunks to be returned of the current chunk. The
+            /// maximum allowed value is 3.
+            /// If not specified, no next chunks will be returned.
+            #[prost(int32, tag = "2")]
+            pub num_next_chunks: i32,
+        }
+        /// Specifies the search result mode. If unspecified, the
+        /// search result mode is based on
+        /// [DataStore.DocumentProcessingConfig.chunking_config][]:
+        /// * If [DataStore.DocumentProcessingConfig.chunking_config][] is specified,
+        ///    it defaults to `CHUNKS`.
+        /// * Otherwise, it defaults to `DOCUMENTS`.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum SearchResultMode {
+            /// Default value.
+            Unspecified = 0,
+            /// Returns documents in the search result.
+            Documents = 1,
+            /// Returns chunks in the search result. Only available if the
+            /// [DataStore.DocumentProcessingConfig.chunking_config][] is specified.
+            Chunks = 2,
+        }
+        impl SearchResultMode {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    SearchResultMode::Unspecified => "SEARCH_RESULT_MODE_UNSPECIFIED",
+                    SearchResultMode::Documents => "DOCUMENTS",
+                    SearchResultMode::Chunks => "CHUNKS",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SEARCH_RESULT_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DOCUMENTS" => Some(Self::Documents),
+                    "CHUNKS" => Some(Self::Chunks),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Specification for search as you type in search requests.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct SearchAsYouTypeSpec {
+        /// The condition under which search as you type should occur.
+        /// Default to
+        /// [Condition.DISABLED][google.cloud.discoveryengine.v1.SearchRequest.SearchAsYouTypeSpec.Condition.DISABLED].
+        #[prost(enumeration = "search_as_you_type_spec::Condition", tag = "1")]
+        pub condition: i32,
+    }
+    /// Nested message and enum types in `SearchAsYouTypeSpec`.
+    pub mod search_as_you_type_spec {
+        /// Enum describing under which condition search as you type should occur.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Condition {
+            /// Server behavior defaults to
+            /// [Condition.DISABLED][google.cloud.discoveryengine.v1.SearchRequest.SearchAsYouTypeSpec.Condition.DISABLED].
+            Unspecified = 0,
+            /// Disables Search As You Type.
+            Disabled = 1,
+            /// Enables Search As You Type.
+            Enabled = 2,
+        }
+        impl Condition {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Condition::Unspecified => "CONDITION_UNSPECIFIED",
+                    Condition::Disabled => "DISABLED",
+                    Condition::Enabled => "ENABLED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "CONDITION_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DISABLED" => Some(Self::Disabled),
+                    "ENABLED" => Some(Self::Enabled),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Session specification.
+    ///
+    /// Multi-turn Search feature is currently at private GA stage. Please use
+    /// v1alpha or v1beta version instead before we launch this feature to public
+    /// GA. Or ask for allowlisting through Google Support team.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SessionSpec {
+        /// If set, the search result gets stored to the "turn" specified by this
+        /// query ID.
+        ///
+        /// Example: Let's say the session looks like this:
+        ///    session {
+        ///      name: ".../sessions/xxx"
+        ///      turns {
+        ///        query { text: "What is foo?" query_id: ".../questions/yyy" }
+        ///        answer: "Foo is ..."
+        ///      }
+        ///      turns {
+        ///        query { text: "How about bar then?" query_id: ".../questions/zzz" }
+        ///      }
+        ///    }
+        ///
+        /// The user can call /search API with a request like this:
+        ///
+        ///     session: ".../sessions/xxx"
+        ///     session_spec { query_id: ".../questions/zzz" }
+        ///
+        /// Then, the API stores the search result, associated with the last turn.
+        /// The stored search result can be used by a subsequent /answer API call
+        /// (with the session ID and the query ID specified). Also, it is possible
+        /// to call /search and /answer in parallel with the same session ID & query
+        /// ID.
+        #[prost(string, tag = "1")]
+        pub query_id: ::prost::alloc::string::String,
+        /// The number of top search results to persist. The persisted search results
+        /// can be used for the subsequent /answer api call.
+        ///
+        /// This field is simliar to the `summary_result_count` field in
+        /// [SearchRequest.ContentSearchSpec.SummarySpec.summary_result_count][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SummarySpec.summary_result_count].
+        ///
+        /// At most 10 results for documents mode, or 50 for chunks mode.
+        #[prost(int32, optional, tag = "2")]
+        pub search_result_persistence_count: ::core::option::Option<i32>,
     }
 }
 /// Response message for
@@ -4013,6 +4621,13 @@ pub struct SearchResponse {
     pub query_expansion_info: ::core::option::Option<
         search_response::QueryExpansionInfo,
     >,
+    /// Session information.
+    ///
+    /// Only set if
+    /// [SearchRequest.session][google.cloud.discoveryengine.v1.SearchRequest.session]
+    /// is provided. See its description for more details.
+    #[prost(message, optional, tag = "19")]
+    pub session_info: ::core::option::Option<search_response::SessionInfo>,
 }
 /// Nested message and enum types in `SearchResponse`.
 pub mod search_response {
@@ -4028,6 +4643,12 @@ pub mod search_response {
         /// marked as `retrievable` are populated.
         #[prost(message, optional, tag = "2")]
         pub document: ::core::option::Option<super::Document>,
+        /// The chunk data in the search response if the
+        /// [SearchRequest.ContentSearchSpec.search_result_mode][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.search_result_mode]
+        /// is set to
+        /// [CHUNKS][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SearchResultMode.CHUNKS].
+        #[prost(message, optional, tag = "18")]
+        pub chunk: ::core::option::Option<super::Chunk>,
     }
     /// A facet result.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -4132,7 +4753,7 @@ pub mod search_response {
         }
         /// Citation source.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct CitationSource {
             /// Document reference index from SummaryWithMetadata.references.
             /// It is 0-indexed and the value will be zero if the reference_index is
@@ -4276,7 +4897,7 @@ pub mod search_response {
     /// Information describing query expansion including whether expansion has
     /// occurred.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct QueryExpansionInfo {
         /// Bool describing whether query expansion has occurred.
         #[prost(bool, tag = "1")]
@@ -4287,6 +4908,25 @@ pub mod search_response {
         /// is set to true.
         #[prost(int64, tag = "2")]
         pub pinned_result_count: i64,
+    }
+    /// Information about the session.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SessionInfo {
+        /// Name of the session.
+        /// If the auto-session mode is used (when
+        /// [SearchRequest.session][google.cloud.discoveryengine.v1.SearchRequest.session]
+        /// ends with "-"), this field holds the newly generated session name.
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Query ID that corresponds to this search API call.
+        /// One session can have multiple turns, each with a unique query ID.
+        ///
+        /// By specifying the session name and this query ID in the Answer API call,
+        /// the answer generation happens in the context of the search results from
+        /// this search call.
+        #[prost(string, tag = "2")]
+        pub query_id: ::prost::alloc::string::String,
     }
 }
 /// Generated client implementations.
@@ -4894,12 +5534,34 @@ pub struct AnswerQueryRequest {
     /// characters. Otherwise, an  `INVALID_ARGUMENT`  error is returned.
     #[prost(string, tag = "12")]
     pub user_pseudo_id: ::prost::alloc::string::String,
+    /// The user labels applied to a resource must meet the following requirements:
+    ///
+    /// * Each resource can have multiple labels, up to a maximum of 64.
+    /// * Each label must be a key-value pair.
+    /// * Keys have a minimum length of 1 character and a maximum length of 63
+    ///    characters and cannot be empty. Values can be empty and have a maximum
+    ///    length of 63 characters.
+    /// * Keys and values can contain only lowercase letters, numeric characters,
+    ///    underscores, and dashes. All characters must use UTF-8 encoding, and
+    ///    international characters are allowed.
+    /// * The key portion of a label must be unique. However, you can use the same
+    ///    key with multiple resources.
+    /// * Keys must start with a lowercase letter or international character.
+    ///
+    /// See [Google Cloud
+    /// Document](<https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>)
+    /// for more details.
+    #[prost(map = "string, string", tag = "13")]
+    pub user_labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Nested message and enum types in `AnswerQueryRequest`.
 pub mod answer_query_request {
     /// Safety specification.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SafetySpec {
         /// Enable the safety filtering on the answer response. It is false by
         /// default.
@@ -4908,7 +5570,7 @@ pub mod answer_query_request {
     }
     /// Related questions specification.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RelatedQuestionsSpec {
         /// Enable related questions feature if true.
         #[prost(bool, tag = "1")]
@@ -5037,6 +5699,20 @@ pub mod answer_query_request {
             /// If this field is unrecognizable, an `INVALID_ARGUMENT` is returned.
             #[prost(string, tag = "4")]
             pub order_by: ::prost::alloc::string::String,
+            /// Specifies the search result mode. If unspecified, the
+            /// search result mode is based on
+            /// [DataStore.DocumentProcessingConfig.chunking_config][]:
+            /// * If [DataStore.DocumentProcessingConfig.chunking_config][] is
+            /// specified,
+            ///    it defaults to `CHUNKS`.
+            /// * Otherwise, it defaults to `DOCUMENTS`.
+            /// See [parse and chunk
+            /// documents](<https://cloud.google.com/generative-ai-app-builder/docs/parse-chunk-documents>)
+            #[prost(
+                enumeration = "super::super::search_request::content_search_spec::SearchResultMode",
+                tag = "5"
+            )]
+            pub search_result_mode: i32,
             /// Specs defining dataStores to filter on in a search call and
             /// configurations for those dataStores. This is only considered for
             /// engines with multiple dataStores use case. For single dataStore within
@@ -5249,11 +5925,16 @@ pub mod answer_query_request {
         }
         /// Query rephraser specification.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct QueryRephraserSpec {
             /// Disable query rephraser.
             #[prost(bool, tag = "1")]
             pub disable: bool,
+            /// Max rephrase steps.
+            /// The max number is 5 steps.
+            /// If not set or set to < 1, it will be set to 1 by default.
+            #[prost(int32, tag = "2")]
+            pub max_rephrase_steps: i32,
         }
     }
 }
@@ -5887,6 +6568,11 @@ pub struct DocumentProcessingConfig {
     /// `projects/*/locations/*/collections/*/dataStores/*/documentProcessingConfig`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Whether chunking mode is enabled.
+    #[prost(message, optional, tag = "3")]
+    pub chunking_config: ::core::option::Option<
+        document_processing_config::ChunkingConfig,
+    >,
     /// Configurations for default Document parser.
     /// If not specified, we will configure it as default DigitalParsingConfig, and
     /// the default parsing config will be applied to all file types for Document
@@ -5901,9 +6587,11 @@ pub struct DocumentProcessingConfig {
     /// * `pdf`: Override parsing config for PDF files, either digital parsing, ocr
     /// parsing or layout parsing is supported.
     /// * `html`: Override parsing config for HTML files, only digital parsing and
-    /// or layout parsing are supported.
+    /// layout parsing are supported.
     /// * `docx`: Override parsing config for DOCX files, only digital parsing and
-    /// or layout parsing are supported.
+    /// layout parsing are supported.
+    /// * `pptx`: Override parsing config for PPTX files, only digital parsing and
+    /// layout parsing are supported.
     #[prost(map = "string, message", tag = "5")]
     pub parsing_config_overrides: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -5912,12 +6600,48 @@ pub struct DocumentProcessingConfig {
 }
 /// Nested message and enum types in `DocumentProcessingConfig`.
 pub mod document_processing_config {
+    /// Configuration for chunking config.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ChunkingConfig {
+        /// Additional configs that defines the behavior of the chunking.
+        #[prost(oneof = "chunking_config::ChunkMode", tags = "1")]
+        pub chunk_mode: ::core::option::Option<chunking_config::ChunkMode>,
+    }
+    /// Nested message and enum types in `ChunkingConfig`.
+    pub mod chunking_config {
+        /// Configuration for the layout based chunking.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct LayoutBasedChunkingConfig {
+            /// The token size limit for each chunk.
+            ///
+            /// Supported values: 100-500 (inclusive).
+            /// Default value: 500.
+            #[prost(int32, tag = "1")]
+            pub chunk_size: i32,
+            /// Whether to include appending different levels of headings to chunks
+            /// from the middle of the document to prevent context loss.
+            ///
+            /// Default value: False.
+            #[prost(bool, tag = "2")]
+            pub include_ancestor_headings: bool,
+        }
+        /// Additional configs that defines the behavior of the chunking.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum ChunkMode {
+            /// Configuration for the layout based chunking.
+            #[prost(message, tag = "1")]
+            LayoutBasedChunkingConfig(LayoutBasedChunkingConfig),
+        }
+    }
     /// Related configurations applied to a specific type of document parser.
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ParsingConfig {
         /// Configs for document processing types.
-        #[prost(oneof = "parsing_config::TypeDedicatedConfig", tags = "1, 2")]
+        #[prost(oneof = "parsing_config::TypeDedicatedConfig", tags = "1, 2, 3")]
         pub type_dedicated_config: ::core::option::Option<
             parsing_config::TypeDedicatedConfig,
         >,
@@ -5926,7 +6650,7 @@ pub mod document_processing_config {
     pub mod parsing_config {
         /// The digital parsing configurations for documents.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct DigitalParsingConfig {}
         /// The OCR parsing configurations for documents.
         #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5944,6 +6668,10 @@ pub mod document_processing_config {
             #[prost(bool, tag = "2")]
             pub use_native_text: bool,
         }
+        /// The layout parsing configurations for documents.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct LayoutParsingConfig {}
         /// Configs for document processing types.
         #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -5955,6 +6683,9 @@ pub mod document_processing_config {
             /// PDFs.
             #[prost(message, tag = "2")]
             OcrParsingConfig(OcrParsingConfig),
+            /// Configurations applied to layout parser.
+            #[prost(message, tag = "3")]
+            LayoutParsingConfig(LayoutParsingConfig),
         }
     }
 }
@@ -6164,7 +6895,7 @@ pub struct GetDataStoreRequest {
 /// operation. This will be returned by the google.longrunning.Operation.metadata
 /// field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateDataStoreMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -6278,7 +7009,7 @@ pub struct UpdateDataStoreRequest {
 /// operation. This will be returned by the google.longrunning.Operation.metadata
 /// field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteDataStoreMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -7236,7 +7967,7 @@ pub struct CreateEngineRequest {
 /// operation. This will be returned by the google.longrunning.Operation.metadata
 /// field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateEngineMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -7270,7 +8001,7 @@ pub struct DeleteEngineRequest {
 /// operation. This will be returned by the google.longrunning.Operation.metadata
 /// field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteEngineMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -7630,7 +8361,7 @@ pub struct FactChunk {
 }
 /// Specification for the grounding check.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CheckGroundingSpec {
     /// The threshold (in \[0,1\]) used for determining whether a fact must be
     /// cited for a claim in the answer candidate. Choosing a higher threshold
@@ -7996,7 +8727,7 @@ pub struct ProvisionProjectRequest {
 }
 /// Metadata associated with a project provision operation.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ProvisionProjectMetadata {}
 /// Generated client implementations.
 pub mod project_service_client {
@@ -8740,7 +9471,7 @@ pub struct DeleteSchemaRequest {
 }
 /// Metadata for Create Schema LRO.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateSchemaMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -8752,7 +9483,7 @@ pub struct CreateSchemaMetadata {
 }
 /// Metadata for UpdateSchema LRO.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpdateSchemaMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -8764,7 +9495,7 @@ pub struct UpdateSchemaMetadata {
 }
 /// Metadata for DeleteSchema LRO.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteSchemaMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -9072,7 +9803,7 @@ pub struct TargetSite {
 pub mod target_site {
     /// Site search indexing failure reasons.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct FailureReason {
         /// Failure reason.
         #[prost(oneof = "failure_reason::Failure", tags = "1")]
@@ -9082,7 +9813,7 @@ pub mod target_site {
     pub mod failure_reason {
         /// Failed due to insufficient quota.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct QuotaFailure {
             /// This number is an estimation on how much total quota this project needs
             /// to successfully complete indexing.
@@ -9091,7 +9822,7 @@ pub mod target_site {
         }
         /// Failure reason.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Failure {
             /// Failed due to insufficient quota.
             #[prost(message, tag = "1")]
@@ -9200,7 +9931,7 @@ pub mod target_site {
 }
 /// Verification information for target sites in advanced site search.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SiteVerificationInfo {
     /// Site verification state indicating the ownership and validity.
     #[prost(enumeration = "site_verification_info::SiteVerificationState", tag = "1")]
@@ -9299,7 +10030,7 @@ pub struct CreateTargetSiteRequest {
 /// operation. This will be returned by the google.longrunning.Operation.metadata
 /// field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateTargetSiteMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -9366,7 +10097,7 @@ pub struct UpdateTargetSiteRequest {
 /// operation. This will be returned by the google.longrunning.Operation.metadata
 /// field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpdateTargetSiteMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -9400,7 +10131,7 @@ pub struct DeleteTargetSiteRequest {
 /// operation. This will be returned by the google.longrunning.Operation.metadata
 /// field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteTargetSiteMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -9463,7 +10194,7 @@ pub struct ListTargetSitesResponse {
 /// operation. This will be returned by the google.longrunning.Operation.metadata
 /// field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BatchCreateTargetSiteMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -9500,14 +10231,14 @@ pub struct EnableAdvancedSiteSearchRequest {
 /// [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1.SiteSearchEngineService.EnableAdvancedSiteSearch]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EnableAdvancedSiteSearchResponse {}
 /// Metadata related to the progress of the
 /// [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1.SiteSearchEngineService.EnableAdvancedSiteSearch]
 /// operation. This will be returned by the google.longrunning.Operation.metadata
 /// field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EnableAdvancedSiteSearchMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -9534,14 +10265,14 @@ pub struct DisableAdvancedSiteSearchRequest {
 /// [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1.SiteSearchEngineService.DisableAdvancedSiteSearch]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DisableAdvancedSiteSearchResponse {}
 /// Metadata related to the progress of the
 /// [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1.SiteSearchEngineService.DisableAdvancedSiteSearch]
 /// operation. This will be returned by the google.longrunning.Operation.metadata
 /// field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DisableAdvancedSiteSearchMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]
@@ -9706,14 +10437,14 @@ pub struct BatchVerifyTargetSitesRequest {
 /// [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1.SiteSearchEngineService.BatchVerifyTargetSites]
 /// method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BatchVerifyTargetSitesResponse {}
 /// Metadata related to the progress of the
 /// [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1.SiteSearchEngineService.BatchVerifyTargetSites]
 /// operation. This will be returned by the google.longrunning.Operation.metadata
 /// field.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BatchVerifyTargetSitesMetadata {
     /// Operation create time.
     #[prost(message, optional, tag = "1")]

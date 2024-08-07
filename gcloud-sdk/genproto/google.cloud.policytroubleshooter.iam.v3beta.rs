@@ -207,7 +207,7 @@ pub mod condition_context {
     /// request is not an HTTP request, the runtime system should try to map
     /// the actual request to an equivalent HTTP request.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Request {
         /// Optional. The timestamp when the destination service receives the first
         /// byte of the request.
@@ -405,7 +405,7 @@ pub struct AllowBindingExplanation {
 pub mod allow_binding_explanation {
     /// Details about whether the role binding includes the principal.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AnnotatedAllowMembership {
         /// Indicates whether the role binding includes the principal.
         #[prost(enumeration = "super::MembershipMatchingState", tag = "1")]
@@ -629,7 +629,7 @@ pub mod deny_rule_explanation {
     /// Details about whether the permission in the request is denied by the
     /// deny rule.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AnnotatedPermissionMatching {
         /// Indicates whether the permission in the request is denied by the deny
         /// rule.
@@ -644,7 +644,7 @@ pub mod deny_rule_explanation {
     /// principal in the deny rule, either directly or through membership in a
     /// principal set.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AnnotatedDenyPrincipalMatching {
         /// Indicates whether the principal is listed as a denied principal in the
         /// deny rule, either directly or through membership in a principal set.

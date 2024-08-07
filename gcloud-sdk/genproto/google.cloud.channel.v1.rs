@@ -804,7 +804,7 @@ pub struct PriceTier {
 }
 /// Represents period in days/months/years.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Period {
     /// Total duration of Period Type defined.
     #[prost(int32, tag = "1")]
@@ -1250,7 +1250,7 @@ pub struct ProvisionedService {
 }
 /// Commitment settings for commitment-based offers.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CommitmentSettings {
     /// Output only. Commitment start timestamp.
     #[prost(message, optional, tag = "1")]
@@ -1264,7 +1264,7 @@ pub struct CommitmentSettings {
 }
 /// Renewal settings for renewable Offers.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RenewalSettings {
     /// If false, the plan will be completed at the end date.
     #[prost(bool, tag = "1")]
@@ -1283,7 +1283,7 @@ pub struct RenewalSettings {
 }
 /// Settings for trial offers.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TrialSettings {
     /// Determines if the entitlement is in a trial or not:
     ///
@@ -1705,7 +1705,7 @@ pub mod entitlement_change {
 /// Provides contextual information about a
 /// [google.longrunning.Operation][google.longrunning.Operation].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The RPC that initiated this Long Running Operation.
     #[prost(enumeration = "operation_metadata::OperationType", tag = "1")]
@@ -2152,7 +2152,7 @@ pub mod report_value {
 }
 /// Status of a report generation process.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReportStatus {
     /// The current state of the report generation process.
     #[prost(enumeration = "report_status::State", tag = "1")]
@@ -2559,7 +2559,7 @@ pub mod repricing_config {
     /// [RepricingConfig.EntitlementGranularity][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity]
     /// instead.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ChannelPartnerGranularity {}
     /// Required. Defines the granularity for repricing.
     #[allow(clippy::derive_partial_eq_without_eq)]

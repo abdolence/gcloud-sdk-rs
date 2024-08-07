@@ -251,7 +251,7 @@ pub mod policy {
     /// Used in `policy_type` to specify how `boolean_policy` will behave at this
     /// resource.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BooleanPolicy {
         /// If `true`, then the `Policy` is enforced. If `false`, then any
         /// configuration is acceptable.
@@ -313,7 +313,7 @@ pub mod policy {
     /// enforcement of the `Constraint` for only those projects, allowing those
     /// projects to have all services activated.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RestoreDefault {}
     /// The field to populate is based on the `constraint_type` value in the
     /// `Constraint`.

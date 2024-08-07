@@ -136,7 +136,7 @@ pub mod span {
         }
         /// An event describing a message sent/received between Spans.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct MessageEvent {
             /// Type of MessageEvent. Indicates whether the message was sent or
             /// received.

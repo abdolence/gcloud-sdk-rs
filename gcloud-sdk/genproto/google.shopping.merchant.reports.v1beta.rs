@@ -1169,7 +1169,7 @@ pub struct BestSellersBrandView {
 /// Values are only set for fields requested explicitly in the request's search
 /// query.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NonProductPerformanceView {
     /// Date in the merchant timezone to which metrics apply. Segment.
     ///
@@ -1417,7 +1417,7 @@ pub struct CompetitiveVisibilityBenchmarkView {
 /// Marketing method used to promote your products on Google (organic versus
 /// ads).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MarketingMethod {}
 /// Nested message and enum types in `MarketingMethod`.
 pub mod marketing_method {
@@ -1468,7 +1468,7 @@ pub mod marketing_method {
 /// Granularity of the Best sellers report. Best sellers reports are computed
 /// over a week and a month timeframe.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReportGranularity {}
 /// Nested message and enum types in `ReportGranularity`.
 pub mod report_granularity {
@@ -1520,7 +1520,7 @@ pub mod report_granularity {
 }
 /// Relative demand of a product cluster or brand in the Best sellers report.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RelativeDemand {}
 /// Nested message and enum types in `RelativeDemand`.
 pub mod relative_demand {
@@ -1588,7 +1588,7 @@ pub mod relative_demand {
 /// Relative demand of a product cluster or brand in the Best sellers report
 /// compared to the previous time period.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RelativeDemandChangeType {}
 /// Nested message and enum types in `RelativeDemandChangeType`.
 pub mod relative_demand_change_type {
@@ -1644,7 +1644,7 @@ pub mod relative_demand_change_type {
 }
 /// Traffic source of impressions in the Competitive visibility report.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TrafficSource {}
 /// Nested message and enum types in `TrafficSource`.
 pub mod traffic_source {

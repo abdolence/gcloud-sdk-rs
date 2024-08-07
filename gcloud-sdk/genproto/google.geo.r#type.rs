@@ -35,7 +35,7 @@
 ///      }
 /// }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Viewport {
     /// Required. The low point of the viewport.
     #[prost(message, optional, tag = "1")]

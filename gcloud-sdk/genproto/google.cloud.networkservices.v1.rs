@@ -1796,7 +1796,7 @@ pub mod grpc_route {
     /// destination service. Similarly requests from clients can be aborted by for
     /// a percentage of requests.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct FaultInjectionPolicy {
         /// The specification for injecting delay to client requests.
         #[prost(message, optional, tag = "1")]
@@ -1810,7 +1810,7 @@ pub mod grpc_route {
         /// Specification of how client requests are delayed as part of fault
         /// injection before being sent to a destination.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Delay {
             /// Specify a fixed delay before forwarding the request.
             #[prost(message, optional, tag = "1")]
@@ -1824,7 +1824,7 @@ pub mod grpc_route {
         /// Specification of how client requests are aborted as part of fault
         /// injection before being sent to a destination.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Abort {
             /// The HTTP status code used to abort the request.
             ///
@@ -2086,7 +2086,7 @@ pub mod http_route {
     pub mod header_match {
         /// Represents an integer value range.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct IntegerRange {
             /// Start of the range (inclusive)
             #[prost(int32, tag = "1")]
@@ -2341,7 +2341,7 @@ pub mod http_route {
     /// requests to the destination service. Similarly requests can be aborted by
     /// client proxy for a percentage of requests.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct FaultInjectionPolicy {
         /// The specification for injecting delay to client requests.
         #[prost(message, optional, tag = "1")]
@@ -2355,7 +2355,7 @@ pub mod http_route {
         /// Specification of how client requests are delayed as part of fault
         /// injection before being sent to a destination.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Delay {
             /// Specify a fixed delay before forwarding the request.
             #[prost(message, optional, tag = "1")]
@@ -2369,7 +2369,7 @@ pub mod http_route {
         /// Specification of how client requests are aborted as part of fault
         /// injection before being sent to a destination.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Abort {
             /// The HTTP status code used to abort the request.
             ///

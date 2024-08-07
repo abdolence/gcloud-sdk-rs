@@ -866,7 +866,7 @@ pub struct Image {
 /// "divider": {}
 /// ```
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Divider {}
 /// A widget that displays text with optional decorations such as a label above
 /// or below the text, an icon in front of the text, a selection widget, or a
@@ -1350,7 +1350,7 @@ pub mod selection_input {
     ///
     /// [Google Chat apps](<https://developers.google.com/workspace/chat>):
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PlatformDataSource {
         /// The data source.
         #[prost(oneof = "platform_data_source::DataSource", tags = "1")]
@@ -1404,7 +1404,7 @@ pub mod selection_input {
         }
         /// The data source.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum DataSource {
             /// A data source shared by all Google Workspace applications, such as
             /// users in a Google Workspace organization.
@@ -1828,7 +1828,7 @@ pub struct MaterialIcon {
 /// }
 /// ```
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImageCropStyle {
     /// The crop type.
     #[prost(enumeration = "image_crop_style::ImageCropType", tag = "1")]
@@ -1910,7 +1910,7 @@ pub mod image_crop_style {
 /// [Google Workspace Add-ons and Chat
 /// apps](<https://developers.google.com/workspace/extend>):
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BorderStyle {
     /// The border type.
     #[prost(enumeration = "border_style::BorderType", tag = "1")]

@@ -120,7 +120,7 @@ pub struct TableReference {
 }
 /// All fields in this message optional.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TableModifiers {
     /// The snapshot time of the table. If not set, interpreted as now.
     #[prost(message, optional, tag = "1")]
@@ -241,7 +241,7 @@ pub struct ReadRowsRequest {
 }
 /// Progress information for a given Stream.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StreamStatus {
     /// Number of estimated rows in the current stream. May change over time as
     /// different readers in the stream progress at rates which are relatively fast
@@ -269,7 +269,7 @@ pub struct StreamStatus {
     pub is_splittable: bool,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Progress {
     /// The fraction of rows assigned to the stream that have been processed by the
     /// server so far, not including the rows in the current response message.
@@ -291,7 +291,7 @@ pub struct Progress {
 }
 /// Information on if the current connection is being throttled.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ThrottleStatus {
     /// How much this connection is being throttled.
     /// 0 is no throttling, 100 is completely throttled.

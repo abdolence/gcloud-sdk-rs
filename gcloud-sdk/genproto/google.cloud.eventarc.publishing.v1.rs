@@ -21,7 +21,7 @@ pub struct PublishChannelConnectionEventsRequest {
 }
 /// The response message for the PublishChannelConnectionEvents method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PublishChannelConnectionEventsResponse {}
 /// The request message for the PublishEvents method.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -45,7 +45,7 @@ pub struct PublishEventsRequest {
 }
 /// The response message for the PublishEvents method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PublishEventsResponse {}
 /// Generated client implementations.
 pub mod publisher_client {

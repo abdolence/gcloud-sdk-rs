@@ -3,7 +3,7 @@
 /// is set, then it means the server used a different routing mode from your
 /// preferred mode as fallback.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FallbackInfo {
     /// Routing mode used for the response. If fallback was triggered, the mode
     /// may be different from routing preference set in the original client
@@ -152,7 +152,7 @@ pub struct LocalizedTime {
 }
 /// Encapsulates a location (a geographic point, and an optional heading).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Location {
     /// The waypoint's geographic coordinates.
     #[prost(message, optional, tag = "1")]
@@ -480,7 +480,7 @@ impl RouteTravelMode {
 /// `SpeedReadingInterval` defines an interval and describes its traffic using
 /// the following categories.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SpeedReadingInterval {
     /// The starting index of this interval in the polyline.
     #[prost(int32, optional, tag = "1")]
@@ -541,7 +541,7 @@ pub mod speed_reading_interval {
         }
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum SpeedType {
         /// Traffic speed in this interval.
         #[prost(enumeration = "Speed", tag = "3")]
@@ -1688,7 +1688,7 @@ impl VehicleEmissionType {
 }
 /// Contains the vehicle information, such as the vehicle emission type.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VehicleInfo {
     /// Describes the vehicle's emission type.
     /// Applies only to the `DRIVE`

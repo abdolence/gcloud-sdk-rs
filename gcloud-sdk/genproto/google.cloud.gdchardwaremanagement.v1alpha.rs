@@ -858,7 +858,7 @@ pub struct SkuInstance {
 }
 /// Physical properties of a hardware.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HardwarePhysicalInfo {
     /// Required. The power receptacle type.
     #[prost(enumeration = "hardware_physical_info::PowerReceptacleType", tag = "1")]
@@ -1180,7 +1180,7 @@ pub struct TimePeriod {
 }
 /// Represents the dimensions of an object.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Dimensions {
     /// Required. Width in inches.
     #[prost(float, tag = "1")]
@@ -1194,7 +1194,7 @@ pub struct Dimensions {
 }
 /// Represents contiguous space in a rack.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RackSpace {
     /// Required. First rack unit of the rack space (inclusive).
     #[prost(int32, tag = "1")]

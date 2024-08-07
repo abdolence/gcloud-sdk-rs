@@ -88,7 +88,7 @@ pub mod execution {
         /// element such as line number, column number and length of the code block
         /// in bytes.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Position {
             /// The source code line number the current instruction was generated from.
             #[prost(int64, tag = "1")]

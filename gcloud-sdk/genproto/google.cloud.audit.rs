@@ -2097,7 +2097,7 @@ pub mod big_query_audit_metadata {
         }
         /// Load job statistics.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Load {
             /// Total bytes loaded by the import job.
             #[prost(int64, tag = "1")]
@@ -2105,7 +2105,7 @@ pub mod big_query_audit_metadata {
         }
         /// Extract job statistics.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Extract {
             /// Total bytes exported by the extract job.
             #[prost(int64, tag = "1")]

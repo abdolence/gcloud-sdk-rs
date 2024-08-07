@@ -634,7 +634,7 @@ pub mod batch_optimize_tours_request {
 /// Response to a `BatchOptimizeToursRequest`. This is returned in
 /// the LRO Operation after the operation is complete.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BatchOptimizeToursResponse {}
 /// A shipment model contains a set of shipments which must be performed by a
 /// set of vehicles, while minimizing the overall cost, which is the sum of:
@@ -887,7 +887,7 @@ pub mod shipment_model {
     /// Furthermore, precedences only apply when both shipments are performed and
     /// are otherwise ignored.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PrecedenceRule {
         /// Shipment index of the "first" event. This field must be specified.
         #[prost(int32, optional, tag = "1")]
@@ -939,7 +939,7 @@ pub mod shipment_model {
         /// (`earliest_start_time` / `latest_start_time`) may overlap, but they must
         /// be compatible with the order (this is checked).
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct BreakRequest {
             /// Required. Lower bound (inclusive) on the start of the break.
             #[prost(message, optional, tag = "1")]
@@ -985,7 +985,7 @@ pub mod shipment_model {
         ///    23:59 vehicle end
         /// ```
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct FrequencyConstraint {
             /// Required. Minimum break duration for this constraint. Nonnegative.
             /// See description of `FrequencyConstraint`.
@@ -1245,7 +1245,7 @@ pub mod shipment {
     /// defines such amount. See
     /// [load_demands][google.cloud.optimization.v1.Shipment.load_demands].
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Load {
         /// The amount by which the load of the vehicle performing the corresponding
         /// visit will vary. Since it is an integer, users are advised to choose an
@@ -1429,7 +1429,7 @@ pub mod shipment_type_requirement {
 /// Platform API; see:
 /// <https://developers.google.com/maps/documentation/routes/reference/rest/v2/RouteModifiers.>
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RouteModifiers {
     /// Specifies whether to avoid toll roads where reasonable. Preference will be
     /// given to routes not containing toll roads. Applies only to motorized travel
@@ -1687,7 +1687,7 @@ pub mod vehicle {
     /// carry up to 3500 kg". See
     /// [load_limits][google.cloud.optimization.v1.Vehicle.load_limits].
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LoadLimit {
         /// The maximum acceptable amount of load.
         #[prost(int64, optional, tag = "1")]
@@ -1717,7 +1717,7 @@ pub mod vehicle {
     pub mod load_limit {
         /// Interval of acceptable load amounts.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Interval {
             /// A minimum acceptable load. Must be ≥ 0.
             /// If they're both specified,
@@ -1742,7 +1742,7 @@ pub mod vehicle {
     /// When a soft limit field is defined, both the soft max threshold and its
     /// associated cost must be defined together.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DurationLimit {
         /// A hard limit constraining the duration to be at most max_duration.
         #[prost(message, optional, tag = "1")]
@@ -1909,7 +1909,7 @@ pub mod vehicle {
 ///    0 <= `start_time` <= `soft_end_time` <= `end_time`.
 /// ```
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeWindow {
     /// The hard time window start time. If unspecified it will be set to
     /// `ShipmentModel.global_start_time`.
@@ -1982,7 +1982,7 @@ pub struct CapacityQuantityInterval {
 /// If a soft limit is defined, both `soft_max_meters` and
 /// `cost_per_kilometer_above_soft_max` must be defined and be nonnegative.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DistanceLimit {
     /// A hard limit constraining the distance to be at most max_meters. The limit
     /// must be nonnegative.
@@ -2105,7 +2105,7 @@ pub mod waypoint {
 }
 /// Encapsulates a location (a geographic point, and an optional heading).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Location {
     /// The waypoint's geographic coordinates.
     #[prost(message, optional, tag = "1")]
@@ -2146,7 +2146,7 @@ pub mod break_rule {
     /// (`earliest_start_time` / `latest_start_time`) may overlap, but they must
     /// be compatible with the order (this is checked).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BreakRequest {
         /// Required. Lower bound (inclusive) on the start of the break.
         #[prost(message, optional, tag = "1")]
@@ -2192,7 +2192,7 @@ pub mod break_rule {
     ///    23:59 vehicle end
     /// ```
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct FrequencyConstraint {
         /// Required. Minimum break duration for this constraint. Nonnegative.
         /// See description of `FrequencyConstraint`.
@@ -2410,7 +2410,7 @@ pub mod shipment_route {
     /// instead. Time interval spent on the route resulting from a
     /// [TransitionAttributes.delay][google.cloud.optimization.v1.TransitionAttributes.delay].
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Delay {
         /// Start of the delay.
         #[prost(message, optional, tag = "1")]
@@ -2587,7 +2587,7 @@ pub mod shipment_route {
     /// for a given type (see
     /// [Transition.vehicle_loads][google.cloud.optimization.v1.ShipmentRoute.Transition.vehicle_loads]).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct VehicleLoad {
         /// The amount of load on the vehicle, for the given type. The unit of load
         /// is usually indicated by the type. See
@@ -2608,7 +2608,7 @@ pub mod shipment_route {
     }
     /// Data representing the execution of a break.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Break {
         /// Start time of a break.
         #[prost(message, optional, tag = "1")]
@@ -2979,7 +2979,7 @@ pub mod injected_solution_constraint {
         /// vehicle start or end does not satisfy the conditions of any
         /// relaxation the time is fixed, unless the vehicle is empty.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Relaxation {
             /// The constraint relaxation level that applies when the conditions
             /// at or after `threshold_time` AND at least `threshold_visit_count` are

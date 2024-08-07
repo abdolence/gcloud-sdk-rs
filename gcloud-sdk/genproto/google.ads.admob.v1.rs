@@ -128,7 +128,7 @@ pub mod network_report_spec {
     }
     /// Sorting direction to be applied on a dimension or a metric.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SortCondition {
         /// Sorting order of the dimension or metric.
         #[prost(enumeration = "super::SortOrder", tag = "3")]
@@ -141,7 +141,7 @@ pub mod network_report_spec {
     pub mod sort_condition {
         /// Identifies which values to sort on.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum SortOn {
             /// Sort by the specified dimension.
             #[prost(enumeration = "super::Dimension", tag = "1")]
@@ -435,7 +435,7 @@ pub mod mediation_report_spec {
     }
     /// Sorting direction to be applied on a dimension or a metric.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SortCondition {
         /// Sorting order of the dimension or metric.
         #[prost(enumeration = "super::SortOrder", tag = "3")]
@@ -448,7 +448,7 @@ pub mod mediation_report_spec {
     pub mod sort_condition {
         /// Identifies which values to sort on.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum SortOn {
             /// Sort by the specified dimension.
             #[prost(enumeration = "super::Dimension", tag = "1")]
@@ -674,7 +674,7 @@ pub mod report_row {
     }
     /// Representation of a metric value.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MetricValue {
         /// Metric value in the format specified in the report's spec Metric enum
         /// name.
@@ -686,7 +686,7 @@ pub mod report_row {
         /// Metric value in the format specified in the report's spec Metric enum
         /// name.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Value {
             /// Metric integer value.
             #[prost(int64, tag = "1")]
@@ -821,7 +821,7 @@ pub struct ReportFooter {
 }
 /// Specification of a single date range. Both dates are inclusive.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DateRange {
     /// Start date of the date range, inclusive. Must be less than or equal to the
     /// end date.

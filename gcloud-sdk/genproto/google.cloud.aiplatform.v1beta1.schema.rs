@@ -20,7 +20,7 @@ pub struct AnnotationSpecColor {
 /// NOTE: the normalized vertex coordinates are relative to the original image
 /// and range from 0 to 1.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Vertex {
     /// X coordinate.
     #[prost(double, tag = "1")]
@@ -208,7 +208,7 @@ pub struct VideoClassificationAnnotation {
 }
 /// A time period inside of a DataItem that has a time dimension (e.g. video).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeSegment {
     /// Start of the time segment (inclusive), represented as the duration since
     /// the start of the DataItem.

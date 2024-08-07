@@ -108,7 +108,7 @@ pub struct ExplicitContentDetectionConfig {
 }
 /// Video segment.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VideoSegment {
     /// Time-offset, relative to the beginning of the video,
     /// corresponding to the start of the segment (inclusive).
@@ -121,7 +121,7 @@ pub struct VideoSegment {
 }
 /// Video segment level annotation results for label detection.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LabelSegment {
     /// Video segment where a label was detected.
     #[prost(message, optional, tag = "1")]
@@ -132,7 +132,7 @@ pub struct LabelSegment {
 }
 /// Video frame level annotation results for label detection.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LabelFrame {
     /// Time-offset, relative to the beginning of the video, corresponding to the
     /// video frame for this location.
@@ -180,7 +180,7 @@ pub struct LabelAnnotation {
 }
 /// Video frame level annotation results for explicit content.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExplicitContentFrame {
     /// Time-offset, relative to the beginning of the video, corresponding to the
     /// video frame for this location.

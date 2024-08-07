@@ -3002,7 +3002,7 @@ pub mod reachability_details {
 }
 /// Latency percentile rank and value.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LatencyPercentile {
     /// Percentage of samples this data point applies to.
     #[prost(int32, tag = "1")]

@@ -219,7 +219,7 @@ pub mod index_operation_metadata {
 }
 /// Measures the progress of a particular metric.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Progress {
     /// An estimate of how much work has been completed. Note that this may be
     /// greater than `work_estimated`.
@@ -785,5 +785,5 @@ pub mod firestore_admin_client {
 }
 /// The metadata message for [google.cloud.location.Location.metadata][google.cloud.location.Location.metadata].
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {}

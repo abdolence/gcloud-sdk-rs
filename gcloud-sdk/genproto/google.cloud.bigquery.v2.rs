@@ -118,7 +118,7 @@ pub struct Clustering {
 }
 /// Options for data format adjustments.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DataFormatOptions {
     /// Optional. Output timestamp as usec int64. Default is false.
     #[prost(bool, tag = "1")]
@@ -181,7 +181,7 @@ pub struct ExternalDatasetReference {
     pub connection: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RestrictionConfig {
     /// Output only. Specifies the type of dataset/table restriction.
     #[prost(enumeration = "restriction_config::RestrictionType", tag = "1")]
@@ -282,7 +282,7 @@ pub struct TableSchema {
 /// Metadata about the foreign data type definition such as the system
 /// in which the type is defined.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ForeignTypeInfo {
     /// Required. Specifies the system which defines the foreign data type.
     #[prost(enumeration = "foreign_type_info::TypeSystem", tag = "1")]
@@ -930,7 +930,7 @@ pub struct LinkedDatasetSource {
 }
 /// Metadata about the Linked Dataset.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LinkedDatasetMetadata {
     /// Output only. Specifies whether Linked Dataset is currently in a linked
     /// state or not.
@@ -1793,7 +1793,7 @@ impl MapTargetType {
 }
 /// Options for external data sources.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AvroOptions {
     /// Optional. If sourceFormat is set to "AVRO", indicates whether to interpret
     /// logical types as the corresponding BigQuery data type (for example,
@@ -1803,7 +1803,7 @@ pub struct AvroOptions {
 }
 /// Parquet Options for load and make external tables.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ParquetOptions {
     /// Optional. Indicates whether to infer Parquet ENUM logical type as STRING
     /// instead of BYTES by default.
@@ -2946,7 +2946,7 @@ pub struct JobConfigurationQuery {
 }
 /// Options related to script execution.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ScriptOptions {
     /// Timeout period for each statement in a script.
     #[prost(message, optional, tag = "1")]
@@ -3542,7 +3542,7 @@ pub struct JobConfigurationExtract {
 pub mod job_configuration_extract {
     /// Options related to model extraction.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ModelExtractOptions {
         /// The 1-based ID of the trial to be exported from a hyperparameter tuning
         /// model. If not specified, the trial with id =
@@ -3619,7 +3619,7 @@ pub struct JobConfiguration {
 ///
 /// This feature is not yet available. Jobs will always be created.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct JobCreationReason {
     /// Output only. Specifies the high level reason why a Job was created.
     #[prost(enumeration = "job_creation_reason::Code", tag = "1")]
@@ -3926,7 +3926,7 @@ pub struct Model {
 pub mod model {
     /// Enums for seasonal period.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SeasonalPeriod {}
     /// Nested message and enum types in `SeasonalPeriod`.
     pub mod seasonal_period {
@@ -3992,7 +3992,7 @@ pub mod model {
     }
     /// Enums for kmeans model type.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct KmeansEnums {}
     /// Nested message and enum types in `KmeansEnums`.
     pub mod kmeans_enums {
@@ -4050,7 +4050,7 @@ pub mod model {
     }
     /// Enums for XGBoost model type.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BoostedTreeOptionEnums {}
     /// Nested message and enum types in `BoostedTreeOptionEnums`.
     pub mod boosted_tree_option_enums {
@@ -4197,7 +4197,7 @@ pub mod model {
     }
     /// Enums for hyperparameter tuning.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct HparamTuningEnums {}
     /// Nested message and enum types in `HparamTuningEnums`.
     pub mod hparam_tuning_enums {
@@ -4326,7 +4326,7 @@ pub mod model {
     /// Evaluation metrics for regression and explicit feedback type matrix
     /// factorization models.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RegressionMetrics {
         /// Mean absolute error.
         #[prost(message, optional, tag = "1")]
@@ -4351,7 +4351,7 @@ pub mod model {
     /// metric is calculated globally by counting the total number of correctly
     /// predicted rows.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AggregateClassificationMetrics {
         /// Precision is the fraction of actual positive predictions that had
         /// positive actual labels. For multiclass this is a macro-averaged
@@ -4409,7 +4409,7 @@ pub mod model {
     pub mod binary_classification_metrics {
         /// Confusion matrix for binary classification models.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct BinaryConfusionMatrix {
             /// Threshold value used when computing each of the following metric.
             #[prost(message, optional, tag = "1")]
@@ -4590,7 +4590,7 @@ pub mod model {
     /// Evaluation metrics used by weighted-ALS models specified by
     /// feedback_type=implicit.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RankingMetrics {
         /// Calculates a precision per user for all the items by ranking them and
         /// then averages all the precisions across all the users.
@@ -4678,7 +4678,7 @@ pub mod model {
     }
     /// Model evaluation metrics for dimensionality reduction models.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DimensionalityReductionMetrics {
         /// Total percentage of variance explained by the selected principal
         /// components.
@@ -4743,7 +4743,7 @@ pub mod model {
     }
     /// Arima order, can be used for both non-seasonal and seasonal parts.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ArimaOrder {
         /// Order of the autoregressive part.
         #[prost(message, optional, tag = "1")]
@@ -4757,7 +4757,7 @@ pub mod model {
     }
     /// ARIMA model fitting metrics.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ArimaFittingMetrics {
         /// Log-likelihood.
         #[prost(message, optional, tag = "1")]
@@ -4802,7 +4802,7 @@ pub mod model {
     }
     /// Encoding methods for categorical features.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CategoryEncodingMethod {}
     /// Nested message and enum types in `CategoryEncodingMethod`.
     pub mod category_encoding_method {
@@ -4856,7 +4856,7 @@ pub mod model {
     }
     /// PCA solver options.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PcaSolverOptionEnums {}
     /// Nested message and enum types in `PcaSolverOptionEnums`.
     pub mod pca_solver_option_enums {
@@ -4910,7 +4910,7 @@ pub mod model {
     }
     /// Model registry options.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ModelRegistryOptionEnums {}
     /// Nested message and enum types in `ModelRegistryOptionEnums`.
     pub mod model_registry_option_enums {
@@ -5395,7 +5395,7 @@ pub mod model {
         pub mod iteration_result {
             /// Information about a single cluster for clustering model.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct ClusterInfo {
                 /// Centroid id.
                 #[prost(int64, tag = "1")]
@@ -5507,7 +5507,7 @@ pub mod model {
             /// models, e.g., PCA. Ordered by explained_variance in the descending
             /// order.
             #[allow(clippy::derive_partial_eq_without_eq)]
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct PrincipalComponentInfo {
                 /// Id of the principal component.
                 #[prost(message, optional, tag = "1")]
@@ -5540,7 +5540,7 @@ pub mod model {
     pub mod double_hparam_search_space {
         /// Range of a double hyperparameter.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct DoubleRange {
             /// Min value of the double parameter.
             #[prost(message, optional, tag = "1")]
@@ -5581,7 +5581,7 @@ pub mod model {
     pub mod int_hparam_search_space {
         /// Range of an int hyperparameter.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct IntRange {
             /// Min value of the int parameter.
             #[prost(message, optional, tag = "1")]
@@ -7127,7 +7127,7 @@ pub mod explain_query_stage {
 }
 /// Summary of the state of query execution at a given time.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct QueryTimelineSample {
     /// Milliseconds elapsed since the start of query execution.
     #[prost(message, optional, tag = "1")]
@@ -7187,7 +7187,7 @@ pub struct ExternalServiceCost {
 /// Statistics for the EXPORT DATA statement as part of Query Job. EXTRACT
 /// JOB statistics are populated in JobStatistics4.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportDataStatistics {
     /// Number of destination files generated in case of EXPORT DATA
     /// statement only.
@@ -7726,7 +7726,7 @@ pub struct QueryInfo {
 }
 /// Statistics for a LOAD query.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LoadQueryStatistics {
     /// Output only. Number of source files in a LOAD query.
     #[prost(message, optional, tag = "1")]
@@ -8080,7 +8080,7 @@ pub struct JobStatistics4 {
 }
 /// Statistics for a copy job.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CopyJobStatistics {
     /// Output only. Number of rows copied to the destination table.
     #[prost(message, optional, tag = "1")]
@@ -8263,7 +8263,7 @@ pub mod script_statistics {
 }
 /// Statistics for row-level security.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RowLevelSecurityStatistics {
     /// Whether any accessed data was protected by row access policies.
     #[prost(bool, tag = "1")]
@@ -8271,7 +8271,7 @@ pub struct RowLevelSecurityStatistics {
 }
 /// Statistics for data-masking.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DataMaskingStatistics {
     /// Whether any accessed data was protected by the data masking.
     #[prost(bool, tag = "1")]
@@ -8374,7 +8374,7 @@ pub mod job_statistics {
 }
 /// Detailed statistics for DML statements
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DmlStats {
     /// Output only. Number of inserted Rows. Populated by DML INSERT and MERGE
     /// statements
@@ -8414,7 +8414,7 @@ pub struct PerformanceInsights {
 /// Performance insights compared to the previous executions for a specific
 /// stage.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StagePerformanceChangeInsight {
     /// Output only. The stage id that the insight mapped to.
     #[prost(int64, tag = "1")]
@@ -8425,7 +8425,7 @@ pub struct StagePerformanceChangeInsight {
 }
 /// Details about the input data change insight.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InputDataChange {
     /// Output only. Records read difference percentage compared to a previous run.
     #[prost(float, tag = "1")]
@@ -8457,7 +8457,7 @@ pub struct StagePerformanceStandaloneInsight {
 }
 /// High cardinality join detailed information.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct HighCardinalityJoin {
     /// Output only. Count of left input rows.
     #[prost(int64, tag = "1")]
@@ -8484,7 +8484,7 @@ pub struct PartitionSkew {
 pub mod partition_skew {
     /// Details about source stages which produce skewed data.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SkewSource {
         /// Output only. Stage id of the skew source stage.
         #[prost(int64, tag = "1")]
@@ -11597,7 +11597,7 @@ pub struct CloneDefinition {
     pub clone_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Streamingbuffer {
     /// Output only. A lower-bound estimate of the number of bytes currently in
     /// the streaming buffer.

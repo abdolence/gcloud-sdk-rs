@@ -229,7 +229,7 @@ pub struct Distribution {
 pub mod distribution {
     /// Describing buckets with constant width.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct LinearBuckets {
         /// The number of finite buckets. With the underflow and overflow buckets,
         /// the total number of buckets is `num_finite_buckets` + 2.
@@ -250,7 +250,7 @@ pub mod distribution {
     }
     /// Describing buckets with exponentially growing width.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ExponentialBuckets {
         /// The number of finite buckets. With the underflow and overflow buckets,
         /// the total number of buckets is `num_finite_buckets` + 2.
@@ -1184,7 +1184,7 @@ pub mod check_response {
     }
     /// `ConsumerInfo` provides information about the consumer.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ConsumerInfo {
         /// The Google cloud project number, e.g. 1234567890. A value of 0 indicates
         /// no project number is found.

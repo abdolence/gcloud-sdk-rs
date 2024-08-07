@@ -262,7 +262,7 @@ pub mod subscription {
     /// method to extend its expiration date. For details, see [Update or renew a
     /// subscription](<https://developers.google.com/workspace/events/guides/update-subscription>).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Expiration {
         /// Non-empty default. The timestamp in UTC when the subscription expires.
         /// Always displayed on output, regardless of what was used on input.
@@ -480,19 +480,19 @@ pub struct ListSubscriptionsResponse {
 }
 /// Metadata for UpdateSubscription LRO.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpdateSubscriptionMetadata {}
 /// Metadata for CreateSubscription LRO.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateSubscriptionMetadata {}
 /// Metadata for DeleteSubscription LRO.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteSubscriptionMetadata {}
 /// Metadata for ReactivateSubscription LRO.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReactivateSubscriptionMetadata {}
 /// Generated client implementations.
 pub mod subscriptions_service_client {

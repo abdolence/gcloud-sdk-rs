@@ -1014,7 +1014,7 @@ pub mod artifacts {
 }
 /// Start and end times for a build execution phase.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeSpan {
     /// Start of time span.
     #[prost(message, optional, tag = "1")]
@@ -1374,7 +1374,7 @@ pub mod build_approval {
 }
 /// ApprovalConfig describes configuration for manual approval of a build.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ApprovalConfig {
     /// Whether or not approval is needed. If this is set on a build, it will
     /// become pending when created, and will need to be explicitly approved
@@ -2643,7 +2643,7 @@ pub struct ReceiveTriggerWebhookRequest {
 /// ReceiveTriggerWebhookResponse \[Experimental\] is the response object for the
 /// ReceiveTriggerWebhook method.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReceiveTriggerWebhookResponse {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

@@ -12,7 +12,7 @@ pub struct AlertChart {
 /// A widget that groups the other widgets. All widgets that are within
 /// the area spanned by the grouping widget are considered member widgets.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CollapsibleGroup {
     /// The collapsed state of the widget on first page load.
     #[prost(bool, tag = "1")]
@@ -466,7 +466,7 @@ pub mod aggregation {
 /// and `num_time_series` is 3, then the 3 times series with the lowest mean
 /// values will pass through the filter.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PickTimeSeriesFilter {
     /// `ranking_method` is applied to each time series independently to produce
     /// the value which will be used to compare the time series to other time
@@ -590,7 +590,7 @@ pub mod pick_time_series_filter {
 /// streams in a request.
 /// Note: This field is deprecated and completely ignored by the API.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StatisticalTimeSeriesFilter {
     /// `rankingMethod` is applied to a set of time series, and then the produced
     /// value for each individual time series is used to compare a given time
@@ -864,7 +864,7 @@ pub struct TimeSeriesFilter {
 pub mod time_series_filter {
     /// Selects an optional time series filter.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum OutputFilter {
         /// Ranking based time series filter.
         #[prost(message, tag = "4")]
@@ -916,7 +916,7 @@ pub mod time_series_filter_ratio {
     /// Selects an optional filter that is applied to the time series after
     /// computing the ratio.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum OutputFilter {
         /// Ranking based time series filter.
         #[prost(message, tag = "4")]
@@ -1264,7 +1264,7 @@ pub mod scorecard {
     /// range. The upper and lower bounds should define the possible range of
     /// values for the scorecard's query (inclusive).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct GaugeView {
         /// The lower bound for this gauge chart. The value of the chart should
         /// always be greater than or equal to this.
@@ -1280,7 +1280,7 @@ pub mod scorecard {
     /// to show up on a Scorecard, showing recent trends of the scorecard's
     /// timeseries.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SparkChartView {
         /// Required. The type of sparkchart to show in this chartView.
         #[prost(enumeration = "super::SparkChartType", tag = "1")]
@@ -1296,7 +1296,7 @@ pub mod scorecard {
     /// Defines the optional additional chart shown on the scorecard. If
     /// neither is included - then a default scorecard is shown.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum DataView {
         /// Will cause the scorecard to show a gauge chart.
         #[prost(message, tag = "4")]
@@ -1326,7 +1326,7 @@ pub struct SectionHeader {
 /// that are within the area spanned by the grouping widget are considered
 /// member widgets.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SingleViewGroup {}
 /// Table display options that can be reused.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2040,7 +2040,7 @@ pub mod xy_chart {
 }
 /// Options to control visual rendering of a chart.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ChartOptions {
     /// The chart mode.
     #[prost(enumeration = "chart_options::Mode", tag = "1")]

@@ -799,7 +799,7 @@ pub struct ReportAssetFramesRequest {
 }
 /// A response to a call to `ReportAssetFrame`.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReportAssetFramesResponse {}
 /// A request to aggregate one or more values.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2393,7 +2393,7 @@ pub mod disk_entry {
     }
     /// Additional details for specific platforms.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum PlatformSpecific {
         /// VMware disk details.
         #[prost(message, tag = "20")]
@@ -2436,7 +2436,7 @@ pub struct DiskPartition {
 }
 /// VMware disk config details.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VmwareDiskConfig {
     /// VMDK backing type.
     #[prost(enumeration = "vmware_disk_config::BackingType", tag = "1")]
@@ -3225,7 +3225,7 @@ pub struct PhysicalPlatformDetails {
 }
 /// Memory usage sample.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct MemoryUsageSample {
     /// Percentage of system memory utilized. Must be in the interval \[0, 100\].
     #[prost(float, tag = "1")]
@@ -3233,7 +3233,7 @@ pub struct MemoryUsageSample {
 }
 /// CPU usage sample.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CpuUsageSample {
     /// Percentage of total CPU capacity utilized. Must be in the interval [0,
     /// 100]. On most systems can be calculated using 100 - idle percentage.
@@ -3242,7 +3242,7 @@ pub struct CpuUsageSample {
 }
 /// Network usage sample. Values are across all network interfaces.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NetworkUsageSample {
     /// Average network ingress in B/s sampled over a short window.
     /// Must be non-negative.
@@ -3255,7 +3255,7 @@ pub struct NetworkUsageSample {
 }
 /// Disk usage sample. Values are across all disks.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DiskUsageSample {
     /// Average IOPS sampled over a short window. Must be non-negative.
     #[prost(float, tag = "1")]
@@ -3263,7 +3263,7 @@ pub struct DiskUsageSample {
 }
 /// Performance data sample.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PerformanceSample {
     /// Time the sample was collected.
     /// If omitted, the frame report time will be used.
@@ -3296,7 +3296,7 @@ pub struct AssetPerformanceData {
 }
 /// Usage data aggregation for a single day.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DailyResourceUsageAggregation {
     /// Aggregation date. Day boundaries are at midnight UTC.
     #[prost(message, optional, tag = "1")]
@@ -3318,7 +3318,7 @@ pub struct DailyResourceUsageAggregation {
 pub mod daily_resource_usage_aggregation {
     /// Statistical aggregation of samples for a single resource usage.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Stats {
         /// Average usage value.
         #[prost(float, tag = "1")]
@@ -3335,7 +3335,7 @@ pub mod daily_resource_usage_aggregation {
     }
     /// Statistical aggregation of CPU usage.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Cpu {
         /// CPU utilization percentage.
         #[prost(message, optional, tag = "1")]
@@ -3343,7 +3343,7 @@ pub mod daily_resource_usage_aggregation {
     }
     /// Statistical aggregation of memory usage.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Memory {
         /// Memory utilization percentage.
         #[prost(message, optional, tag = "1")]
@@ -3351,7 +3351,7 @@ pub mod daily_resource_usage_aggregation {
     }
     /// Statistical aggregation of network usage.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Network {
         /// Network ingress in B/s.
         #[prost(message, optional, tag = "1")]
@@ -3362,7 +3362,7 @@ pub mod daily_resource_usage_aggregation {
     }
     /// Statistical aggregation of disk usage.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Disk {
         /// Disk I/O operations per second.
         #[prost(message, optional, tag = "1")]
@@ -3475,7 +3475,7 @@ pub struct ComputeEngineShapeDescriptor {
 }
 /// Compute Engine storage option descriptor.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ComputeStorageDescriptor {
     /// Disk type backing the storage.
     #[prost(enumeration = "PersistentDiskType", tag = "1")]
@@ -3486,7 +3486,7 @@ pub struct ComputeStorageDescriptor {
 }
 /// Describes the fit level of an asset for migration to a specific target.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FitDescriptor {
     /// Fit level.
     #[prost(enumeration = "fit_descriptor::FitLevel", tag = "1")]
@@ -3557,11 +3557,11 @@ pub struct Aggregation {
 pub mod aggregation {
     /// Object count.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Count {}
     /// Sum of field values.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Sum {}
     /// Histogram of bucketed assets counts by field value.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3581,7 +3581,7 @@ pub mod aggregation {
     }
     /// Frequency distribution of all field values.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Frequency {}
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -3613,14 +3613,14 @@ pub struct AggregationResult {
 pub mod aggregation_result {
     /// The result of a count aggregation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Count {
         #[prost(int64, tag = "1")]
         pub value: i64,
     }
     /// The result of a sum aggregation.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Sum {
         #[prost(double, tag = "1")]
         pub value: f64,
@@ -3644,7 +3644,7 @@ pub mod aggregation_result {
         /// The lower bound is inclusive and the upper bound is exclusive.
         /// Lower bound may be -infinity and upper bound may be infinity.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Bucket {
             /// Lower bound - inclusive.
             #[prost(double, tag = "1")]
@@ -3911,7 +3911,7 @@ pub struct MachineSeries {
 }
 /// The user preferences relating to Google Cloud VMware Engine target platform.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VmwareEnginePreferences {
     /// CPU overcommit ratio.
     /// Acceptable values are between 1.0 and 8.0, with 0.1 increment.
@@ -4212,7 +4212,7 @@ pub mod report_summary {
     /// Utilization Chart is a specific type of visualization which displays
     /// a metric classified into "Used" and "Free" buckets.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UtilizationChartData {
         /// Aggregate value which falls into the "Used" bucket.
         #[prost(int64, tag = "1")]
@@ -4241,7 +4241,7 @@ pub mod report_summary {
         /// The lower bound is inclusive and the upper bound is exclusive.
         /// Lower bound may be -infinity and upper bound may be infinity.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Bucket {
             /// Lower bound - inclusive.
             #[prost(int64, tag = "1")]

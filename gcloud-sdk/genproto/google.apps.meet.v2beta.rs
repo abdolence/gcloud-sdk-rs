@@ -37,7 +37,7 @@ pub struct ActiveConference {
 }
 /// The configuration pertaining to a meeting space.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SpaceConfig {
     /// Access type of the meeting space that determines who can join without
     /// knocking. Default: The user's default access settings.  Controlled by the

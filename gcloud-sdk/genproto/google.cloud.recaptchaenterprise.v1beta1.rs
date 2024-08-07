@@ -384,7 +384,7 @@ pub mod annotate_assessment_request {
 }
 /// Empty response for AnnotateAssessment.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AnnotateAssessmentResponse {}
 /// Password leak verification info.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -848,7 +848,7 @@ pub mod token_properties {
 }
 /// Assessment for Fraud Prevention.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FraudPreventionAssessment {
     /// Probability (0-1) of this transaction being fraudulent. Summarizes the
     /// combined risk of attack vectors below.
@@ -876,7 +876,7 @@ pub mod fraud_prevention_assessment {
     /// Information about stolen instrument fraud, where the user is not the
     /// legitimate owner of the instrument being used for the purchase.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct StolenInstrumentVerdict {
         /// Probability (0-1) of this transaction being executed with a stolen
         /// instrument.
@@ -886,7 +886,7 @@ pub mod fraud_prevention_assessment {
     /// Information about card testing fraud, where an adversary is testing
     /// fraudulently obtained cards or brute forcing their details.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CardTestingVerdict {
         /// Probability (0-1) of this transaction attempt being part of a card
         /// testing attack.
@@ -895,7 +895,7 @@ pub mod fraud_prevention_assessment {
     }
     /// Information about behavioral trust of the transaction.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct BehavioralTrustVerdict {
         /// Probability (0-1) of this transaction attempt being executed in a
         /// behaviorally trustworthy way.

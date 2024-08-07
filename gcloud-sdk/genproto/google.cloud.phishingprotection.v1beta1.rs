@@ -13,7 +13,7 @@ pub struct ReportPhishingRequest {
 }
 /// The ReportPhishing (empty) response message.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReportPhishingResponse {}
 /// Generated client implementations.
 pub mod phishing_protection_service_v1_beta1_client {

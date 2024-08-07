@@ -173,7 +173,7 @@ pub mod assist_config {
 /// [best
 /// practices](<https://developers.google.com/assistant/sdk/guides/service/python/best-practices/audio>).
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AudioInConfig {
     /// *Required* Encoding of audio data sent in all `audio_in` messages.
     #[prost(enumeration = "audio_in_config::Encoding", tag = "1")]
@@ -243,7 +243,7 @@ pub mod audio_in_config {
 /// Specifies the desired format for the server to use when it returns
 /// `audio_out` messages.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AudioOutConfig {
     /// *Required* The encoding of audio data to be returned in all `audio_out`
     /// messages.
@@ -315,7 +315,7 @@ pub mod audio_out_config {
 /// Specifies the desired format for the server to use when it returns
 /// `screen_out` response.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ScreenOutConfig {
     /// Current visual screen-mode for the device while issuing the query.
     #[prost(enumeration = "screen_out_config::ScreenMode", tag = "1")]
@@ -616,7 +616,7 @@ pub mod dialog_state_out {
 }
 /// Debugging parameters for the current request.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DebugConfig {
     /// When this field is set to true, the `debug_info` field in `AssistResponse`
     /// may be populated. However it will significantly increase latency of
@@ -633,7 +633,7 @@ pub struct DebugConfig {
 /// 3. Inferred location based on IP address. This is used only if neither of the
 ///     above are specified.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeviceLocation {
     #[prost(oneof = "device_location::Type", tags = "1")]
     pub r#type: ::core::option::Option<device_location::Type>,
@@ -641,7 +641,7 @@ pub struct DeviceLocation {
 /// Nested message and enum types in `DeviceLocation`.
 pub mod device_location {
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// Latitude and longitude of device.
         #[prost(message, tag = "1")]

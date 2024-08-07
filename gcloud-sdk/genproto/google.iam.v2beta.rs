@@ -285,7 +285,7 @@ pub struct DeletePolicyRequest {
 }
 /// Metadata for long-running `Policy` operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PolicyOperationMetadata {
     /// Timestamp when the `google.longrunning.Operation` was created.
     #[prost(message, optional, tag = "1")]

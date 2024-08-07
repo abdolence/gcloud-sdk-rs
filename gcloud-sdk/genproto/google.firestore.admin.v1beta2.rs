@@ -139,7 +139,7 @@ pub mod index {
         }
         /// How the field value is indexed.
         #[allow(clippy::derive_partial_eq_without_eq)]
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum ValueMode {
             /// Indicates that this field supports ordering by the specified order or
             /// comparing using =, <, <=, >, >=.
@@ -1070,7 +1070,7 @@ pub struct ExportDocumentsResponse {
 /// Unit of work is generic and must be interpreted based on where [Progress][google.firestore.admin.v1beta2.Progress]
 /// is used.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Progress {
     /// The amount of work estimated.
     #[prost(int64, tag = "1")]

@@ -546,7 +546,7 @@ pub mod subscribe_listing_request {
 }
 /// Message for response when you subscribe to a listing.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SubscribeListingResponse {}
 /// Generated client implementations.
 pub mod analytics_hub_service_client {

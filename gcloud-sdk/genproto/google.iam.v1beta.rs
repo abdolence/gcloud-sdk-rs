@@ -488,11 +488,11 @@ pub struct UndeleteWorkloadIdentityPoolProviderRequest {
 }
 /// Metadata for long-running WorkloadIdentityPool operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WorkloadIdentityPoolOperationMetadata {}
 /// Metadata for long-running WorkloadIdentityPoolProvider operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WorkloadIdentityPoolProviderOperationMetadata {}
 /// Generated client implementations.
 pub mod workload_identity_pools_client {

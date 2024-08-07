@@ -2,7 +2,7 @@
 /// Represents preferences for sending email notifications for transfer run
 /// events.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EmailPreferences {
     /// If true, email notifications will be sent on transfer run failures.
     #[prost(bool, tag = "1")]
@@ -10,7 +10,7 @@ pub struct EmailPreferences {
 }
 /// Options customizing the data transfer schedule.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ScheduleOptions {
     /// If true, automatic scheduling of data transfer runs for this configuration
     /// will be disabled. The runs can be started on ad-hoc basis using
@@ -1068,7 +1068,7 @@ pub struct CheckValidCredsRequest {
 }
 /// A response indicating whether the credentials exist and are valid.
 #[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CheckValidCredsResponse {
     /// If set to `true`, the credentials exist and are valid.
     #[prost(bool, tag = "1")]
@@ -1119,7 +1119,7 @@ pub mod start_manual_transfer_runs_request {
     /// A specification for a time range, this will request transfer runs with
     /// run_time between start_time (inclusive) and end_time (exclusive).
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TimeRange {
         /// Start time of the range of transfer runs. For example,
         /// `"2017-05-25T00:00:00+00:00"`. The start_time must be strictly less than
@@ -1137,7 +1137,7 @@ pub mod start_manual_transfer_runs_request {
     /// The requested time specification - this can be a time range or a specific
     /// run_time.
     #[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Time {
         /// A time_range start and end timestamp for historical data files or reports
         /// that are scheduled to be transferred by the scheduled transfer run.
