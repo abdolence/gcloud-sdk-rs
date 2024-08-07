@@ -12,9 +12,12 @@ pub async fn storage_objects_insert_ext_stream<S>(
 ) -> Result<
     crate::google_rest_apis::storage_v1::models::Object,
     Error<StoragePeriodObjectsPeriodInsertError>,
-> where S: futures::stream::TryStream + Send + Sync + 'static,
-        S::Error: Into<Box<dyn std::error::Error + Send + Sync>>,
-        Bytes: From<S::Ok> {
+>
+where
+    S: futures::stream::TryStream + Send + Sync + 'static,
+    S::Error: Into<Box<dyn std::error::Error + Send + Sync>>,
+    Bytes: From<S::Ok>,
+{
     let local_var_configuration = configuration;
 
     // unbox the parameters
