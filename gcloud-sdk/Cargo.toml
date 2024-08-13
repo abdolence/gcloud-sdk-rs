@@ -431,7 +431,7 @@ google-rest-compute-v1 = ["rest"]
 
 [dependencies]
 tonic = { version = "0.12", features = ["tls"] }
-tower = "0.4"
+tower = "0.5"
 tower-layer = "0.3"
 tower-util = "0.3"
 futures = "0.3"
