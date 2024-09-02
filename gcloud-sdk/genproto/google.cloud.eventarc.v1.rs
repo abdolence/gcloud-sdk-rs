@@ -3,7 +3,6 @@
 /// A Channel is a resource on which event providers publish their events.
 /// The published events are delivered through the transport associated with the
 /// channel. Note that a channel is associated with exactly one event provider.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Channel {
     /// Required. The resource name of the channel. Must be unique within the
@@ -107,7 +106,6 @@ pub mod channel {
             }
         }
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Transport {
         /// Output only. The name of the Pub/Sub topic created and managed by
@@ -121,7 +119,6 @@ pub mod channel {
 /// A ChannelConnection is a resource which event providers create during the
 /// activation process to establish a connection between the provider and the
 /// subscriber channel.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChannelConnection {
     /// Required. The name of the connection.
@@ -150,7 +147,6 @@ pub struct ChannelConnection {
     pub activation_token: ::prost::alloc::string::String,
 }
 /// A representation of the Provider resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Provider {
     /// Output only. In `projects/{project}/locations/{location}/providers/{provider_id}`
@@ -165,7 +161,6 @@ pub struct Provider {
     pub event_types: ::prost::alloc::vec::Vec<EventType>,
 }
 /// A representation of the event type resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventType {
     /// Output only. The full name of the event type (for example,
@@ -191,7 +186,6 @@ pub struct EventType {
 }
 /// A representation of the FilteringAttribute resource.
 /// Filtering attributes are per event type.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FilteringAttribute {
     /// Output only. Attribute used for filtering the event type.
@@ -214,7 +208,6 @@ pub struct FilteringAttribute {
 /// Once configured, first-party event data will be protected
 /// using the specified custom managed encryption key instead of Google-managed
 /// encryption keys.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleChannelConfig {
     /// Required. The resource name of the config. Must be in the format of,
@@ -233,7 +226,6 @@ pub struct GoogleChannelConfig {
     pub crypto_key_name: ::prost::alloc::string::String,
 }
 /// A representation of the trigger resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Trigger {
     /// Required. The resource name of the trigger. Must be unique within the location of the
@@ -304,7 +296,6 @@ pub struct Trigger {
     pub etag: ::prost::alloc::string::String,
 }
 /// Filters events based on exact matches on the CloudEvents attributes.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventFilter {
     /// Required. The name of a CloudEvents attribute. Currently, only a subset of attributes
@@ -324,7 +315,6 @@ pub struct EventFilter {
     pub operator: ::prost::alloc::string::String,
 }
 /// A condition that is part of the trigger state computation.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StateCondition {
     /// The canonical code of the condition.
@@ -335,7 +325,6 @@ pub struct StateCondition {
     pub message: ::prost::alloc::string::String,
 }
 /// Represents a target of an invocation over HTTP.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Destination {
     #[prost(oneof = "destination::Descriptor", tags = "1, 2, 3, 4")]
@@ -343,7 +332,6 @@ pub struct Destination {
 }
 /// Nested message and enum types in `Destination`.
 pub mod destination {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Descriptor {
         /// Cloud Run fully-managed resource that receives the events. The resource
@@ -368,7 +356,6 @@ pub mod destination {
 }
 /// Represents the transport intermediaries created for the trigger to
 /// deliver events.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Transport {
     #[prost(oneof = "transport::Intermediary", tags = "1")]
@@ -376,7 +363,6 @@ pub struct Transport {
 }
 /// Nested message and enum types in `Transport`.
 pub mod transport {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Intermediary {
         /// The Pub/Sub topic and subscription used by Eventarc as a transport
@@ -386,7 +372,6 @@ pub mod transport {
     }
 }
 /// Represents a Cloud Run destination.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudRun {
     /// Required. The name of the Cloud Run service being addressed. See
@@ -407,7 +392,6 @@ pub struct CloudRun {
     pub region: ::prost::alloc::string::String,
 }
 /// Represents a GKE destination.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Gke {
     /// Required. The name of the cluster the GKE service is running in. The cluster must be
@@ -433,7 +417,6 @@ pub struct Gke {
     pub path: ::prost::alloc::string::String,
 }
 /// Represents a Pub/Sub transport.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Pubsub {
     /// Optional. The name of the Pub/Sub topic created and managed by Eventarc as
@@ -452,7 +435,6 @@ pub struct Pubsub {
     pub subscription: ::prost::alloc::string::String,
 }
 /// The request message for the GetTrigger method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTriggerRequest {
     /// Required. The name of the trigger to get.
@@ -460,7 +442,6 @@ pub struct GetTriggerRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListTriggers method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTriggersRequest {
     /// Required. The parent collection to list triggers on.
@@ -491,7 +472,6 @@ pub struct ListTriggersRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The response message for the `ListTriggers` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTriggersResponse {
     /// The requested triggers, up to the number specified in `page_size`.
@@ -506,7 +486,6 @@ pub struct ListTriggersResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the CreateTrigger method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTriggerRequest {
     /// Required. The parent collection in which to add this trigger.
@@ -524,7 +503,6 @@ pub struct CreateTriggerRequest {
     pub validate_only: bool,
 }
 /// The request message for the UpdateTrigger method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTriggerRequest {
     /// The trigger to be updated.
@@ -545,7 +523,6 @@ pub struct UpdateTriggerRequest {
     pub validate_only: bool,
 }
 /// The request message for the DeleteTrigger method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTriggerRequest {
     /// Required. The name of the trigger to be deleted.
@@ -565,7 +542,6 @@ pub struct DeleteTriggerRequest {
     pub validate_only: bool,
 }
 /// The request message for the GetChannel method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetChannelRequest {
     /// Required. The name of the channel to get.
@@ -573,7 +549,6 @@ pub struct GetChannelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListChannels method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListChannelsRequest {
     /// Required. The parent collection to list channels on.
@@ -599,7 +574,6 @@ pub struct ListChannelsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response message for the `ListChannels` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListChannelsResponse {
     /// The requested channels, up to the number specified in `page_size`.
@@ -614,7 +588,6 @@ pub struct ListChannelsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the CreateChannel method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateChannelRequest {
     /// Required. The parent collection in which to add this channel.
@@ -632,7 +605,6 @@ pub struct CreateChannelRequest {
     pub validate_only: bool,
 }
 /// The request message for the UpdateChannel method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateChannelRequest {
     /// The channel to be updated.
@@ -649,7 +621,6 @@ pub struct UpdateChannelRequest {
     pub validate_only: bool,
 }
 /// The request message for the DeleteChannel method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteChannelRequest {
     /// Required. The name of the channel to be deleted.
@@ -661,7 +632,6 @@ pub struct DeleteChannelRequest {
     pub validate_only: bool,
 }
 /// The request message for the GetProvider method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProviderRequest {
     /// Required. The name of the provider to get.
@@ -669,7 +639,6 @@ pub struct GetProviderRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListProviders method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProvidersRequest {
     /// Required. The parent of the provider to get.
@@ -696,7 +665,6 @@ pub struct ListProvidersRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The response message for the `ListProviders` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProvidersResponse {
     /// The requested providers, up to the number specified in `page_size`.
@@ -711,7 +679,6 @@ pub struct ListProvidersResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the GetChannelConnection method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetChannelConnectionRequest {
     /// Required. The name of the channel connection to get.
@@ -719,7 +686,6 @@ pub struct GetChannelConnectionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListChannelConnections method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListChannelConnectionsRequest {
     /// Required. The parent collection from which to list channel connections.
@@ -739,7 +705,6 @@ pub struct ListChannelConnectionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for the `ListChannelConnections` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListChannelConnectionsResponse {
     /// The requested channel connections, up to the number specified in
@@ -756,7 +721,6 @@ pub struct ListChannelConnectionsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the CreateChannelConnection method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateChannelConnectionRequest {
     /// Required. The parent collection in which to add this channel connection.
@@ -770,7 +734,6 @@ pub struct CreateChannelConnectionRequest {
     pub channel_connection_id: ::prost::alloc::string::String,
 }
 /// The request message for the DeleteChannelConnection method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteChannelConnectionRequest {
     /// Required. The name of the channel connection to delete.
@@ -778,7 +741,6 @@ pub struct DeleteChannelConnectionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the UpdateGoogleChannelConfig method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateGoogleChannelConfigRequest {
     /// Required. The config to be updated.
@@ -791,7 +753,6 @@ pub struct UpdateGoogleChannelConfigRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for the GetGoogleChannelConfig method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGoogleChannelConfigRequest {
     /// Required. The name of the config to get.
@@ -799,7 +760,6 @@ pub struct GetGoogleChannelConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
@@ -853,8 +813,8 @@ pub mod eventarc_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -879,7 +839,7 @@ pub mod eventarc_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             EventarcClient::new(InterceptedService::new(inner, interceptor))
         }

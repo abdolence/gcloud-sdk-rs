@@ -3,7 +3,6 @@
 /// stream resources. Internally, these logs represent events happening in
 /// the control plane as result of API invocations against the stream resource
 /// entities.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationEventLog {
     /// Enum for type of event being logged.
@@ -21,7 +20,6 @@ pub struct OperationEventLog {
 }
 /// OperationArtifact contains the information about the artifact created as
 /// result of the operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationArtifact {
     /// Type of the artifact.
@@ -35,7 +33,6 @@ pub struct OperationArtifact {
 /// to serve the end consumer. Internally, these logs represent events in the
 /// data plane streamer instance as a result of end consumer interacting with the
 /// stream resources.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionEventLog {
     /// Enum for type of event being logged.

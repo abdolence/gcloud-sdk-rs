@@ -2,7 +2,6 @@
 /// An individual endpoint that provides a
 /// [service][google.cloud.servicedirectory.v1beta1.Service]. The service must
 /// already exist to create an endpoint.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Endpoint {
     /// Immutable. The resource name for the endpoint in the format
@@ -73,7 +72,6 @@ pub struct Endpoint {
 /// A service must exist before
 /// [endpoints][google.cloud.servicedirectory.v1beta1.Endpoint] can be
 /// added to it.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Service {
     /// Immutable. The resource name for the service in the format
@@ -127,7 +125,6 @@ pub struct Service {
 /// The request message for
 /// [LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService].
 /// Looks up a service by its name, returns the service and its endpoints.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveServiceRequest {
     /// Required. The name of the service to resolve.
@@ -179,7 +176,6 @@ pub struct ResolveServiceRequest {
 }
 /// The response message for
 /// [LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveServiceResponse {
     #[prost(message, optional, tag = "1")]
@@ -210,8 +206,8 @@ pub mod lookup_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -236,7 +232,7 @@ pub mod lookup_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             LookupServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -309,7 +305,6 @@ pub mod lookup_service_client {
 /// A container for [services][google.cloud.servicedirectory.v1beta1.Service].
 /// Namespaces allow administrators to group services together and define
 /// permissions for a collection of services.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Namespace {
     /// Immutable. The resource name for the namespace in the format
@@ -337,7 +332,6 @@ pub struct Namespace {
 }
 /// The request message for
 /// [RegistrationService.CreateNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateNamespace].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNamespaceRequest {
     /// Required. The resource name of the project and location the namespace
@@ -359,7 +353,6 @@ pub struct CreateNamespaceRequest {
 }
 /// The request message for
 /// [RegistrationService.ListNamespaces][google.cloud.servicedirectory.v1beta1.RegistrationService.ListNamespaces].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNamespacesRequest {
     /// Required. The resource name of the project and location whose namespaces
@@ -420,7 +413,6 @@ pub struct ListNamespacesRequest {
 }
 /// The response message for
 /// [RegistrationService.ListNamespaces][google.cloud.servicedirectory.v1beta1.RegistrationService.ListNamespaces].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNamespacesResponse {
     /// The list of namespaces.
@@ -433,7 +425,6 @@ pub struct ListNamespacesResponse {
 }
 /// The request message for
 /// [RegistrationService.GetNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.GetNamespace].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNamespaceRequest {
     /// Required. The name of the namespace to retrieve.
@@ -442,7 +433,6 @@ pub struct GetNamespaceRequest {
 }
 /// The request message for
 /// [RegistrationService.UpdateNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateNamespace].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNamespaceRequest {
     /// Required. The updated namespace.
@@ -454,7 +444,6 @@ pub struct UpdateNamespaceRequest {
 }
 /// The request message for
 /// [RegistrationService.DeleteNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteNamespace].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNamespaceRequest {
     /// Required. The name of the namespace to delete.
@@ -463,7 +452,6 @@ pub struct DeleteNamespaceRequest {
 }
 /// The request message for
 /// [RegistrationService.CreateService][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateService].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceRequest {
     /// Required. The resource name of the namespace this service will belong to.
@@ -484,7 +472,6 @@ pub struct CreateServiceRequest {
 }
 /// The request message for
 /// [RegistrationService.ListServices][google.cloud.servicedirectory.v1beta1.RegistrationService.ListServices].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Required. The resource name of the namespace whose services you'd
@@ -548,7 +535,6 @@ pub struct ListServicesRequest {
 }
 /// The response message for
 /// [RegistrationService.ListServices][google.cloud.servicedirectory.v1beta1.RegistrationService.ListServices].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The list of services.
@@ -563,7 +549,6 @@ pub struct ListServicesResponse {
 /// [RegistrationService.GetService][google.cloud.servicedirectory.v1beta1.RegistrationService.GetService].
 /// This should not be used for looking up a service. Instead, use the `resolve`
 /// method as it contains all endpoints and associated metadata.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Required. The name of the service to get.
@@ -572,7 +557,6 @@ pub struct GetServiceRequest {
 }
 /// The request message for
 /// [RegistrationService.UpdateService][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateService].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateServiceRequest {
     /// Required. The updated service.
@@ -584,7 +568,6 @@ pub struct UpdateServiceRequest {
 }
 /// The request message for
 /// [RegistrationService.DeleteService][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteService].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceRequest {
     /// Required. The name of the service to delete.
@@ -593,7 +576,6 @@ pub struct DeleteServiceRequest {
 }
 /// The request message for
 /// [RegistrationService.CreateEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateEndpoint].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEndpointRequest {
     /// Required. The resource name of the service that this endpoint provides.
@@ -614,7 +596,6 @@ pub struct CreateEndpointRequest {
 }
 /// The request message for
 /// [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointsRequest {
     /// Required. The resource name of the service whose endpoints you'd like to
@@ -680,7 +661,6 @@ pub struct ListEndpointsRequest {
 }
 /// The response message for
 /// [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointsResponse {
     /// The list of endpoints.
@@ -695,7 +675,6 @@ pub struct ListEndpointsResponse {
 /// [RegistrationService.GetEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.GetEndpoint].
 /// This should not be used to lookup endpoints at runtime. Instead, use
 /// the `resolve` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEndpointRequest {
     /// Required. The name of the endpoint to get.
@@ -704,7 +683,6 @@ pub struct GetEndpointRequest {
 }
 /// The request message for
 /// [RegistrationService.UpdateEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateEndpoint].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEndpointRequest {
     /// Required. The updated endpoint.
@@ -716,7 +694,6 @@ pub struct UpdateEndpointRequest {
 }
 /// The request message for
 /// [RegistrationService.DeleteEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteEndpoint].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEndpointRequest {
     /// Required. The name of the endpoint to delete.
@@ -762,8 +739,8 @@ pub mod registration_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -788,7 +765,7 @@ pub mod registration_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             RegistrationServiceClient::new(InterceptedService::new(inner, interceptor))
         }

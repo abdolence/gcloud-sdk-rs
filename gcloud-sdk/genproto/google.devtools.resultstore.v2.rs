@@ -2,7 +2,6 @@
 /// Describes the status of a resource in both enum and string form.
 /// Only use description when conveying additional info not captured in the enum
 /// name.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StatusAttributes {
     /// Enum representation of the status.
@@ -13,7 +12,6 @@ pub struct StatusAttributes {
     pub description: ::prost::alloc::string::String,
 }
 /// A generic key-value property definition.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Property {
     /// The key.
@@ -25,7 +23,6 @@ pub struct Property {
 }
 /// The timing of a particular Invocation, Action, etc. The start_time is
 /// specified, stop time can be calculated by adding duration to start_time.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Timing {
     /// The time the resource started running. This is in UTC Epoch time.
@@ -37,7 +34,6 @@ pub struct Timing {
 }
 /// Represents a dependency of a resource on another resource. This can be used
 /// to define a graph or a workflow paradigm through resources.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dependency {
     /// The ID of the resource depended upon, matching resource name above.
@@ -59,7 +55,6 @@ pub mod dependency {
     /// ConfiguredTarget, or Action, with the appropriate components filled in.
     /// Invocation ID is elided, as this must point to a resource under this
     /// Invocation.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Id {
         /// The unencoded Target ID of the Target, ConfiguredTarget, or Action.
@@ -74,7 +69,6 @@ pub mod dependency {
     }
     /// The resource depended upon. It may be a Target, ConfiguredTarget, or
     /// Action.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Resource {
         /// Output only. The name of a target.  Its format must be:
@@ -331,7 +325,6 @@ impl UploadStatus {
     }
 }
 /// Describes line coverage for a file
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LineCoverage {
     /// Which source lines in the file represent the start of a statement that was
@@ -358,7 +351,6 @@ pub struct LineCoverage {
     pub executed_lines: ::prost::alloc::vec::Vec<u8>,
 }
 /// Describes branch coverage for a file
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BranchCoverage {
     /// The field branch_present denotes the lines containing at least one branch.
@@ -396,7 +388,6 @@ pub struct BranchCoverage {
     pub taken: ::prost::alloc::vec::Vec<u8>,
 }
 /// Describes code coverage for a particular file under test.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileCoverage {
     /// Path of source file within the SourceContext of this Invocation.
@@ -411,7 +402,6 @@ pub struct FileCoverage {
 }
 /// Describes code coverage for a build or test Action. This is used to store
 /// baseline coverage for build Actions and test coverage for test Actions.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActionCoverage {
     /// List of coverage info for all source files that the TestResult covers.
@@ -421,7 +411,6 @@ pub struct ActionCoverage {
 /// Describes aggregate code coverage for a collection of build or test Actions.
 /// A line or branch is covered if and only if it is covered in any of the build
 /// or test actions.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregateCoverage {
     /// Aggregated coverage info for all source files that the actions cover.
@@ -429,7 +418,6 @@ pub struct AggregateCoverage {
     pub file_coverages: ::prost::alloc::vec::Vec<FileCoverage>,
 }
 /// The metadata for a file or an archive file entry.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct File {
     /// The identifier of the file or archive entry.
@@ -531,7 +519,6 @@ pub mod file {
     }
 }
 /// Information specific to an entry in an archive.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArchiveEntry {
     /// The relative path of the entry within the archive.
@@ -548,7 +535,6 @@ pub struct ArchiveEntry {
     pub content_type: ::prost::alloc::string::String,
 }
 /// Stores errors reading or parsing a file during post-processing.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileProcessingErrors {
     /// The uid of the File being read or parsed.
@@ -559,7 +545,6 @@ pub struct FileProcessingErrors {
     pub file_processing_errors: ::prost::alloc::vec::Vec<FileProcessingError>,
 }
 /// Stores an error reading or parsing a file during post-processing.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileProcessingError {
     /// The type of error that occurred.
@@ -630,7 +615,6 @@ impl FileProcessingErrorType {
 }
 /// The result of running a test suite, as reported in a <testsuite> element of
 /// an XML log.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestSuite {
     /// The full name of this suite, as reported in the name attribute. For Java
@@ -667,7 +651,6 @@ pub struct TestSuite {
 }
 /// The result of running a test case or test suite. JUnit3 TestDecorators are
 /// represented as a TestSuite with a single test.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Test {
     /// Either a TestCase of a TestSuite
@@ -677,7 +660,6 @@ pub struct Test {
 /// Nested message and enum types in `Test`.
 pub mod test {
     /// Either a TestCase of a TestSuite
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TestType {
         /// When this contains just a single TestCase
@@ -690,7 +672,6 @@ pub mod test {
 }
 /// The result of running a test case, as reported in a <testcase> element of
 /// an XML log.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestCase {
     /// The name of the test case, as reported in the name attribute. For Java,
@@ -811,7 +792,6 @@ pub mod test_case {
 /// <testcase>. Some languages allow assertions to be made without stopping the
 /// test case when they're violated, leading to multiple TestFailures. For Java,
 /// multiple TestFailures are used to represent a chained exception.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestFailure {
     /// The exception message reported in the message attribute. Typically short,
@@ -847,7 +827,6 @@ pub struct TestFailure {
 /// Represents an exception that prevented a test case from completing, as
 /// reported in an <error> element within a <testcase>. For Java, multiple
 /// TestErrors are used to represent a chained exception.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestError {
     /// The exception message, as reported in the message attribute. Typically
@@ -876,7 +855,6 @@ pub struct TestError {
 /// least one build action should be created to represent the build result, and
 /// at least one test action should be created to represent the test result, if
 /// any.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Action {
     /// The resource name.  Its format must be:
@@ -965,7 +943,6 @@ pub struct Action {
 /// Nested message and enum types in `Action`.
 pub mod action {
     /// The resource ID components that identify the Action.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Id {
         /// The Invocation ID.
@@ -987,7 +964,6 @@ pub mod action {
     /// populated in later methods or post-processing. A generic "untyped" action
     /// can be created by not setting any of these fields. An untyped action will
     /// be untyped for the lifetime of the invocation.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ActionType {
         /// Used only when this action represents a build action.
@@ -999,7 +975,6 @@ pub mod action {
     }
 }
 /// A build action, such as building a java library.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildAction {
     /// The type of the action.  This is intended to be a clue as to how the output
@@ -1019,7 +994,6 @@ pub struct BuildAction {
     pub primary_output_path: ::prost::alloc::string::String,
 }
 /// A test action, such as running a JUnit4 test binary.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestAction {
     /// Timing data for execution of the test action.
@@ -1058,7 +1032,6 @@ pub struct TestAction {
     pub estimated_memory_bytes: i64,
 }
 /// General attributes of an action
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActionAttributes {
     /// Strategy used for executing the action.
@@ -1077,7 +1050,6 @@ pub struct ActionAttributes {
     pub input_file_info: ::core::option::Option<InputFileInfo>,
 }
 /// File count and size information for the input files to a configured target.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InputFileInfo {
     /// The number of input files (counting every file, even if a duplicate).
@@ -1098,7 +1070,6 @@ pub struct InputFileInfo {
     pub distinct_byte_limit: i64,
 }
 /// Timing data for tests executed locally on the machine running the build.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LocalTestTiming {
     /// Time taken by the test process, typically surrounded by a small wrapper
@@ -1107,7 +1078,6 @@ pub struct LocalTestTiming {
     pub test_process_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Timing data for one attempt to execute a test action remotely.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RemoteTestAttemptTiming {
     /// Idle period before the test process is invoked on the remote machine.
@@ -1136,7 +1106,6 @@ pub struct RemoteTestAttemptTiming {
     pub download_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Timing data for the part of the test execution that is done remotely.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoteTestTiming {
     /// Time taken locally to determine what to do.
@@ -1149,7 +1118,6 @@ pub struct RemoteTestTiming {
 }
 /// Timing data for execution of a test action. The action may be performed
 /// locally, on the machine running the build, or remotely.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestTiming {
     /// The amount of CPU time spent by the test process executing system calls
@@ -1175,7 +1143,6 @@ pub struct TestTiming {
 /// Nested message and enum types in `TestTiming`.
 pub mod test_timing {
     /// Test timing for either a local or remote execution.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Location {
         /// Used for local test actions.
@@ -1187,7 +1154,6 @@ pub mod test_timing {
     }
 }
 /// A warning from a test execution.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestWarning {
     /// Contains the message detailing the warning.
@@ -1277,7 +1243,6 @@ impl TestCaching {
 /// Represents a configuration within an Invocation associated with one or more
 /// ConfiguredTargets. It captures the environment and other settings that
 /// were used.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Configuration {
     /// The format of this Configuration resource name must be:
@@ -1310,7 +1275,6 @@ pub struct Configuration {
 /// Nested message and enum types in `Configuration`.
 pub mod configuration {
     /// The resource ID components that identify the Configuration.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Id {
         /// The Invocation ID.
@@ -1322,7 +1286,6 @@ pub mod configuration {
     }
 }
 /// Attributes that apply only to the configuration.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConfigurationAttributes {
     /// The type of cpu. (e.g. "x86", "powerpc")
@@ -1334,7 +1297,6 @@ pub struct ConfigurationAttributes {
 /// Every ConfiguredTarget should have at least one Action as a child resource
 /// before the invocation is finalized. Refer to the Action's documentation for
 /// more info on this.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConfiguredTarget {
     /// The resource name.  Its format must be:
@@ -1372,7 +1334,6 @@ pub struct ConfiguredTarget {
 /// Nested message and enum types in `ConfiguredTarget`.
 pub mod configured_target {
     /// The resource ID components that identify the ConfiguredTarget.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Id {
         /// The Invocation ID.
@@ -1387,7 +1348,6 @@ pub mod configured_target {
     }
 }
 /// Attributes that apply only to test actions under this configured target.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ConfiguredTestAttributes {
     /// Total number of test runs. For example, in bazel this is specified with
@@ -1402,7 +1362,6 @@ pub struct ConfiguredTestAttributes {
     pub timeout_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Summary of line coverage
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LineCoverageSummary {
     /// Number of lines instrumented for coverage.
@@ -1417,7 +1376,6 @@ pub struct LineCoverageSummary {
 ///   * not executed.  Counted only in total.
 ///   * executed but not taken.  Appears in total and executed.
 ///   * executed and taken.  Appears in all three fields.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BranchCoverageSummary {
     /// The number of branches present in the file.
@@ -1435,7 +1393,6 @@ pub struct BranchCoverageSummary {
     pub taken_branch_count: i32,
 }
 /// Summary of coverage in each language
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LanguageCoverageSummary {
     /// This summary is for all files written in this programming language.
@@ -1449,7 +1406,6 @@ pub struct LanguageCoverageSummary {
     pub branch_summary: ::core::option::Option<BranchCoverageSummary>,
 }
 /// The download metadata for an invocation
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DownloadMetadata {
     /// The name of the download metadata.  Its format will be:
@@ -1489,7 +1445,6 @@ pub struct DownloadMetadata {
 /// Clients should prefer using Files directly under resources. Clients should
 /// not use FileSets unless their usecase requires a directed acyclic graph of
 /// Files.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileSet {
     /// The format of this FileSet resource name must be:
@@ -1513,7 +1468,6 @@ pub struct FileSet {
 /// Nested message and enum types in `FileSet`.
 pub mod file_set {
     /// The resource ID components that identify the FileSet.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Id {
         /// The Invocation ID.
@@ -1527,7 +1481,6 @@ pub mod file_set {
 /// An Invocation typically represents the result of running a tool. Each has a
 /// unique ID, typically generated by the server. Target resources under each
 /// Invocation contain the bulk of the data.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Invocation {
     /// The resource name.  Its format must be:
@@ -1592,7 +1545,6 @@ pub struct Invocation {
 /// Nested message and enum types in `Invocation`.
 pub mod invocation {
     /// The resource ID components that identify the Invocation.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Id {
         /// The Invocation ID.
@@ -1601,13 +1553,11 @@ pub mod invocation {
     }
 }
 /// If known, represents the state of the user/build-system workspace.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WorkspaceContext {}
 /// Describes the workspace under which the tool was invoked, this includes
 /// information that was fed into the command, the source code referenced, and
 /// the tool itself.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkspaceInfo {
     /// Data about the workspace that might be useful for debugging.
@@ -1629,7 +1579,6 @@ pub struct WorkspaceInfo {
     pub command_lines: ::prost::alloc::vec::Vec<CommandLine>,
 }
 /// The command and arguments that produced this Invocation.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommandLine {
     /// A label describing this command line.
@@ -1649,7 +1598,6 @@ pub struct CommandLine {
     pub command: ::prost::alloc::string::String,
 }
 /// Attributes that apply to all invocations.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InvocationAttributes {
     /// Immutable. The Cloud Project that owns this invocation (this is different
@@ -1692,7 +1640,6 @@ pub struct InvocationAttributes {
     pub exit_code: i32,
 }
 /// Describes the invocation context which includes a display name and URL.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InvocationContext {
     /// A human readable name for the context under which this Invocation was run.
@@ -1705,7 +1652,6 @@ pub struct InvocationContext {
 /// Each Target represents data for a given target in a given Invocation.
 /// ConfiguredTarget and Action resources under each Target contain the bulk of
 /// the data.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Target {
     /// The resource name.  Its format must be:
@@ -1750,7 +1696,6 @@ pub struct Target {
 /// Nested message and enum types in `Target`.
 pub mod target {
     /// The resource ID components that identify the Target.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Id {
         /// The Invocation ID.
@@ -1762,7 +1707,6 @@ pub mod target {
     }
 }
 /// Attributes that apply to all targets.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetAttributes {
     /// If known, indicates the type of this target.  In bazel this corresponds
@@ -1780,7 +1724,6 @@ pub struct TargetAttributes {
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Attributes that apply only to test actions under this target.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TestAttributes {
     /// Indicates how big the user indicated the test action was.
@@ -1878,7 +1821,6 @@ impl TestSize {
     }
 }
 /// Request passed into GetInvocation
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInvocationRequest {
     /// Required. The name of the invocation to retrieve. It must match this
@@ -1888,7 +1830,6 @@ pub struct GetInvocationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request passed into SearchInvocations
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchInvocationsRequest {
     /// The maximum number of items to return. Zero means all, but may be capped by
@@ -1937,7 +1878,6 @@ pub struct SearchInvocationsRequest {
 /// Nested message and enum types in `SearchInvocationsRequest`.
 pub mod search_invocations_request {
     /// Options for pagination.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PageStart {
         /// The next_page_token value returned from a previous Search request, if
@@ -1950,7 +1890,6 @@ pub mod search_invocations_request {
     }
 }
 /// Response from calling SearchInvocations
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchInvocationsResponse {
     /// Invocations matching the search, possibly capped at request.page_size or a
@@ -1963,7 +1902,6 @@ pub struct SearchInvocationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed into ExportInvocationRequest
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportInvocationRequest {
     /// Required. The name of the invocation to retrieve. It must match this
@@ -2000,7 +1938,6 @@ pub struct ExportInvocationRequest {
 /// Nested message and enum types in `ExportInvocationRequest`.
 pub mod export_invocation_request {
     /// Options for pagination.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PageStart {
         /// The next_page_token value returned from a previous export request, if
@@ -2014,7 +1951,6 @@ pub mod export_invocation_request {
 }
 /// Response from calling ExportInvocationResponse.
 /// Possibly capped at request.page_size or a server limit.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportInvocationResponse {
     /// Parent Invocation resource.
@@ -2045,7 +1981,6 @@ pub struct ExportInvocationResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed into GetInvocationDownloadMetadata
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInvocationDownloadMetadataRequest {
     /// Required. The name of the download metadata to retrieve. It must match this
@@ -2055,7 +1990,6 @@ pub struct GetInvocationDownloadMetadataRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request passed into GetConfiguration
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConfigurationRequest {
     /// Required. The name of the configuration to retrieve. It must match this
@@ -2064,7 +1998,6 @@ pub struct GetConfigurationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request passed into ListConfigurations
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConfigurationsRequest {
     /// Required. The invocation name of the configurations to retrieve.
@@ -2087,7 +2020,6 @@ pub struct ListConfigurationsRequest {
 /// Nested message and enum types in `ListConfigurationsRequest`.
 pub mod list_configurations_request {
     /// Options for pagination.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PageStart {
         /// The next_page_token value returned from a previous List request, if any.
@@ -2099,7 +2031,6 @@ pub mod list_configurations_request {
     }
 }
 /// Response from calling ListConfigurations
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConfigurationsResponse {
     /// Configurations matching the request invocation,
@@ -2112,7 +2043,6 @@ pub struct ListConfigurationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed into GetTarget
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTargetRequest {
     /// Required. The name of the target to retrieve. It must match this format:
@@ -2121,7 +2051,6 @@ pub struct GetTargetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request passed into ListTargets
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTargetsRequest {
     /// Required. The invocation name of the targets to retrieve. It must match
@@ -2144,7 +2073,6 @@ pub struct ListTargetsRequest {
 /// Nested message and enum types in `ListTargetsRequest`.
 pub mod list_targets_request {
     /// Options for pagination.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PageStart {
         /// The next_page_token value returned from a previous List request, if any.
@@ -2156,7 +2084,6 @@ pub mod list_targets_request {
     }
 }
 /// Response from calling ListTargetsResponse
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTargetsResponse {
     /// Targets matching the request invocation,
@@ -2169,7 +2096,6 @@ pub struct ListTargetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed into GetConfiguredTarget
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConfiguredTargetRequest {
     /// Required. The name of the configured target to retrieve. It must match this
@@ -2179,7 +2105,6 @@ pub struct GetConfiguredTargetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request passed into ListConfiguredTargets
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConfiguredTargetsRequest {
     /// Required. The invocation and target name of the configured targets to
@@ -2204,7 +2129,6 @@ pub struct ListConfiguredTargetsRequest {
 /// Nested message and enum types in `ListConfiguredTargetsRequest`.
 pub mod list_configured_targets_request {
     /// Options for pagination.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PageStart {
         /// The next_page_token value returned from a previous List request, if any.
@@ -2216,7 +2140,6 @@ pub mod list_configured_targets_request {
     }
 }
 /// Response from calling ListConfiguredTargets
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConfiguredTargetsResponse {
     /// ConfiguredTargets matching the request,
@@ -2229,7 +2152,6 @@ pub struct ListConfiguredTargetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed into SearchConfiguredTargets
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchConfiguredTargetsRequest {
     /// Required. Must be set to invocations/-/targets/-
@@ -2293,7 +2215,6 @@ pub struct SearchConfiguredTargetsRequest {
 /// Nested message and enum types in `SearchConfiguredTargetsRequest`.
 pub mod search_configured_targets_request {
     /// Options for pagination.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PageStart {
         /// The next_page_token value returned from a previous Search request, if
@@ -2306,7 +2227,6 @@ pub mod search_configured_targets_request {
     }
 }
 /// Response from calling SearchConfiguredTargets
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchConfiguredTargetsResponse {
     /// ConfiguredTargets matching the search, possibly capped at request.page_size
@@ -2319,7 +2239,6 @@ pub struct SearchConfiguredTargetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed into GetAction
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetActionRequest {
     /// Required. The name of the action to retrieve. It must match this format:
@@ -2328,7 +2247,6 @@ pub struct GetActionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request passed into ListActions
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListActionsRequest {
     /// Required. The invocation, target, and configuration name of the action to
@@ -2356,7 +2274,6 @@ pub struct ListActionsRequest {
 /// Nested message and enum types in `ListActionsRequest`.
 pub mod list_actions_request {
     /// Options for pagination.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PageStart {
         /// The next_page_token value returned from a previous List request, if any.
@@ -2368,7 +2285,6 @@ pub mod list_actions_request {
     }
 }
 /// Response from calling ListActions
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListActionsResponse {
     /// Actions matching the request,
@@ -2381,7 +2297,6 @@ pub struct ListActionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed into BatchListActionsRequest
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchListActionsRequest {
     /// Required. The invocation name of the actions to retrieve. It must match
@@ -2409,7 +2324,6 @@ pub struct BatchListActionsRequest {
 /// Nested message and enum types in `BatchListActionsRequest`.
 pub mod batch_list_actions_request {
     /// Options for pagination.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PageStart {
         /// The next_page_token value returned from a previous List request, if any.
@@ -2427,7 +2341,6 @@ pub mod batch_list_actions_request {
     }
 }
 /// Response from calling BatchListActionsResponse
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchListActionsResponse {
     /// Actions matching the request,
@@ -2443,7 +2356,6 @@ pub struct BatchListActionsResponse {
     pub not_found: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request passed into GetFileSet
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFileSetRequest {
     /// Required. The name of the file set to retrieve. It must match this format:
@@ -2452,7 +2364,6 @@ pub struct GetFileSetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request passed into ListFileSets
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFileSetsRequest {
     /// Required. The invocation name of the file sets to retrieve.
@@ -2475,7 +2386,6 @@ pub struct ListFileSetsRequest {
 /// Nested message and enum types in `ListFileSetsRequest`.
 pub mod list_file_sets_request {
     /// Options for pagination.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PageStart {
         /// The next_page_token value returned from a previous List request, if any.
@@ -2487,7 +2397,6 @@ pub mod list_file_sets_request {
     }
 }
 /// Response from calling ListFileSets
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFileSetsResponse {
     /// File sets matching the request,
@@ -2500,7 +2409,6 @@ pub struct ListFileSetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed into TraverseFileSets
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TraverseFileSetsRequest {
     /// Required. The name of the resource to traverse.
@@ -2527,7 +2435,6 @@ pub struct TraverseFileSetsRequest {
 /// Nested message and enum types in `TraverseFileSetsRequest`.
 pub mod traverse_file_sets_request {
     /// Options for pagination.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PageStart {
         /// The next_page_token value returned from a previous List request, if any.
@@ -2545,7 +2452,6 @@ pub mod traverse_file_sets_request {
     }
 }
 /// Response from calling TraverseFileSets
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TraverseFileSetsResponse {
     /// File sets matching the request.
@@ -2588,8 +2494,8 @@ pub mod result_store_download_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -2614,7 +2520,7 @@ pub mod result_store_download_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ResultStoreDownloadClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -3304,7 +3210,6 @@ pub mod result_store_download_client {
     }
 }
 /// Request object for GetFile
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFileRequest {
     /// This corresponds to the uri field in the File message: for an obfuscated
@@ -3337,7 +3242,6 @@ pub struct GetFileRequest {
     pub archive_entry: ::prost::alloc::string::String,
 }
 /// Response object for GetFile
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFileResponse {
     /// The file data.
@@ -3345,7 +3249,6 @@ pub struct GetFileResponse {
     pub data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request object for GetFileTail
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFileTailRequest {
     /// This corresponds to the uri field in the File message: for an obfuscated
@@ -3376,7 +3279,6 @@ pub struct GetFileTailRequest {
     pub archive_entry: ::prost::alloc::string::String,
 }
 /// Response object for GetFileTail
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFileTailResponse {
     /// The file data, encoded with UTF-8.
@@ -3409,8 +3311,8 @@ pub mod result_store_file_download_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -3435,7 +3337,7 @@ pub mod result_store_file_download_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ResultStoreFileDownloadClient::new(
                 InterceptedService::new(inner, interceptor),
@@ -3546,7 +3448,6 @@ pub mod result_store_file_download_client {
     }
 }
 /// The upload metadata for an invocation
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadMetadata {
     /// The name of the upload metadata.  Its format will be:
@@ -3565,7 +3466,6 @@ pub struct UploadMetadata {
     pub uploader_state: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request passed into CreateInvocation
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInvocationRequest {
     /// A unique identifier for this request. Must be set to a different value for
@@ -3641,7 +3541,6 @@ pub struct CreateInvocationRequest {
     pub uploader_state: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request passed into UpdateInvocation
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInvocationRequest {
     /// Contains the name and the fields of the invocation to be updated.  The
@@ -3657,7 +3556,6 @@ pub struct UpdateInvocationRequest {
     pub authorization_token: ::prost::alloc::string::String,
 }
 /// Request passed into MergeInvocation
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MergeInvocationRequest {
     /// A unique identifier for this request. Must be set to a different value for
@@ -3680,7 +3578,6 @@ pub struct MergeInvocationRequest {
     pub authorization_token: ::prost::alloc::string::String,
 }
 /// Request passed into TouchInvocation
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TouchInvocationRequest {
     /// Required. The name of the invocation.  Its format must be:
@@ -3693,7 +3590,6 @@ pub struct TouchInvocationRequest {
     pub authorization_token: ::prost::alloc::string::String,
 }
 /// Response returned from TouchInvocation
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TouchInvocationResponse {
     /// The name of the invocation.  Its format will be:
@@ -3705,7 +3601,6 @@ pub struct TouchInvocationResponse {
     pub id: ::core::option::Option<invocation::Id>,
 }
 /// Request passed into DeleteInvocation
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInvocationRequest {
     /// Required. The name of the invocation.  Its format must be:
@@ -3714,7 +3609,6 @@ pub struct DeleteInvocationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request passed into FinalizeInvocation
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeInvocationRequest {
     /// Required. The name of the invocation.  Its format must be:
@@ -3727,7 +3621,6 @@ pub struct FinalizeInvocationRequest {
     pub authorization_token: ::prost::alloc::string::String,
 }
 /// Response returned from FinalizeInvocation
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeInvocationResponse {
     /// The name of the invocation.  Its format will be:
@@ -3739,7 +3632,6 @@ pub struct FinalizeInvocationResponse {
     pub id: ::core::option::Option<invocation::Id>,
 }
 /// Request passed into CreateTarget
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTargetRequest {
     /// A unique identifier for this request. Must be set to a different value for
@@ -3767,7 +3659,6 @@ pub struct CreateTargetRequest {
     pub authorization_token: ::prost::alloc::string::String,
 }
 /// Request passed into UpdateTarget
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTargetRequest {
     /// Contains the name and the fields of the target to be updated.  The name
@@ -3788,7 +3679,6 @@ pub struct UpdateTargetRequest {
     pub create_if_not_found: bool,
 }
 /// Request passed into MergeTarget
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MergeTargetRequest {
     /// A unique identifier for this request. Must be set to a different value for
@@ -3816,7 +3706,6 @@ pub struct MergeTargetRequest {
     pub create_if_not_found: bool,
 }
 /// Request passed into FinalizeTarget
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeTargetRequest {
     /// Required. The name of the target.  Its format must be:
@@ -3829,7 +3718,6 @@ pub struct FinalizeTargetRequest {
     pub authorization_token: ::prost::alloc::string::String,
 }
 /// Response returned from FinalizeTarget
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeTargetResponse {
     /// The name of the target.  Its format will be:
@@ -3841,7 +3729,6 @@ pub struct FinalizeTargetResponse {
     pub id: ::core::option::Option<target::Id>,
 }
 /// Request passed into CreateConfiguredTarget
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConfiguredTargetRequest {
     /// A unique identifier for this request. Must be set to a different value for
@@ -3871,7 +3758,6 @@ pub struct CreateConfiguredTargetRequest {
     pub authorization_token: ::prost::alloc::string::String,
 }
 /// Request passed into UpdateConfiguredTarget
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConfiguredTargetRequest {
     /// Contains the name and the fields of the configured target to be updated.
@@ -3892,7 +3778,6 @@ pub struct UpdateConfiguredTargetRequest {
     pub create_if_not_found: bool,
 }
 /// Request passed into MergeConfiguredTarget
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MergeConfiguredTargetRequest {
     /// A unique identifier for this request. Must be set to a different value for
@@ -3920,7 +3805,6 @@ pub struct MergeConfiguredTargetRequest {
     pub create_if_not_found: bool,
 }
 /// Request passed into FinalizeConfiguredTarget
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeConfiguredTargetRequest {
     /// Required. The name of the configured target. Its format must be:
@@ -3933,7 +3817,6 @@ pub struct FinalizeConfiguredTargetRequest {
     pub authorization_token: ::prost::alloc::string::String,
 }
 /// Response returned from FinalizeConfiguredTarget
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeConfiguredTargetResponse {
     /// The name of the configured target. Its format must be:
@@ -3945,7 +3828,6 @@ pub struct FinalizeConfiguredTargetResponse {
     pub id: ::core::option::Option<configured_target::Id>,
 }
 /// Request passed into CreateAction
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateActionRequest {
     /// A unique identifier for this request. Must be set to a different value for
@@ -3982,7 +3864,6 @@ pub struct CreateActionRequest {
     pub authorization_token: ::prost::alloc::string::String,
 }
 /// Request passed into UpdateAction
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateActionRequest {
     /// Contains the name and the fields of the action to be updated.  The
@@ -4003,7 +3884,6 @@ pub struct UpdateActionRequest {
     pub create_if_not_found: bool,
 }
 /// Request passed into MergeAction
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MergeActionRequest {
     /// A unique identifier for this request. Must be set to a different value for
@@ -4031,7 +3911,6 @@ pub struct MergeActionRequest {
     pub create_if_not_found: bool,
 }
 /// Request passed into CreateConfiguration
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConfigurationRequest {
     /// A unique identifier for this request. Must be set to a different value for
@@ -4062,7 +3941,6 @@ pub struct CreateConfigurationRequest {
     pub authorization_token: ::prost::alloc::string::String,
 }
 /// Request passed into UpdateConfiguration
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConfigurationRequest {
     /// Contains the name and fields of the configuration to be updated. The name
@@ -4083,7 +3961,6 @@ pub struct UpdateConfigurationRequest {
     pub create_if_not_found: bool,
 }
 /// Request passed into CreateFileSet
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFileSetRequest {
     /// A unique identifier for this request. Must be set to a different value for
@@ -4111,7 +3988,6 @@ pub struct CreateFileSetRequest {
     pub authorization_token: ::prost::alloc::string::String,
 }
 /// Request passed into UpdateFileSet
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFileSetRequest {
     /// Contains the name and fields of the file set to be updated. The name format
@@ -4131,7 +4007,6 @@ pub struct UpdateFileSetRequest {
     pub create_if_not_found: bool,
 }
 /// Request passed into MergeFileSet
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MergeFileSetRequest {
     /// A unique identifier for this request. Must be set to a different value for
@@ -4159,7 +4034,6 @@ pub struct MergeFileSetRequest {
     pub create_if_not_found: bool,
 }
 /// Request passed into UploadBatch
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadBatchRequest {
     /// Required. The name of the invocation being modified.
@@ -4206,11 +4080,9 @@ pub struct UploadBatchRequest {
     pub upload_requests: ::prost::alloc::vec::Vec<UploadRequest>,
 }
 /// Response for UploadBatch
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UploadBatchResponse {}
 /// The individual upload requests for this batch.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadRequest {
     /// The resource ID components that identify the resource being uploaded.
@@ -4256,7 +4128,6 @@ pub struct UploadRequest {
 /// Nested message and enum types in `UploadRequest`.
 pub mod upload_request {
     /// The resource ID components that identify the resource being uploaded.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Id {
         /// Required for Target, ConfiguredTarget, or Action.
@@ -4340,7 +4211,6 @@ pub mod upload_request {
         }
     }
     /// The proto of the resource being uploaded.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Resource {
         /// The Invocation Resource
@@ -4364,7 +4234,6 @@ pub mod upload_request {
     }
 }
 /// Request passed into GetInvocationUploadMetadata
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInvocationUploadMetadataRequest {
     /// Required. The name of the UploadMetadata being requested.
@@ -4408,8 +4277,8 @@ pub mod result_store_upload_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -4434,7 +4303,7 @@ pub mod result_store_upload_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ResultStoreUploadClient::new(InterceptedService::new(inner, interceptor))
         }

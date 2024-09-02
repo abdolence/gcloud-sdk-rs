@@ -25,8 +25,8 @@ pub mod sql_available_database_versions_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -51,7 +51,7 @@ pub mod sql_available_database_versions_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SqlAvailableDatabaseVersionsServiceClient::new(
                 InterceptedService::new(inner, interceptor),
@@ -91,7 +91,6 @@ pub mod sql_available_database_versions_service_client {
     }
 }
 /// An entry for an Access Control list.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AclEntry {
     /// The allowlisted value for the access control list.
@@ -110,7 +109,6 @@ pub struct AclEntry {
     pub kind: ::prost::alloc::string::String,
 }
 /// An Admin API warning message.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApiWarning {
     /// Code to uniquely identify the warning type.
@@ -182,7 +180,6 @@ pub mod api_warning {
 }
 /// We currently only support backup retention by specifying the number
 /// of backups we will retain.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BackupRetentionSettings {
     /// The unit that 'retained_backups' represents.
@@ -237,7 +234,6 @@ pub mod backup_retention_settings {
     }
 }
 /// Database instance backup configuration.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupConfiguration {
     /// Start time for the daily backup configuration in UTC timezone in the 24
@@ -347,7 +343,6 @@ pub mod backup_configuration {
     }
 }
 /// Perform disk shrink context.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PerformDiskShrinkContext {
     /// The target disk shrink size in GigaBytes.
@@ -355,7 +350,6 @@ pub struct PerformDiskShrinkContext {
     pub target_size_gb: i64,
 }
 /// Backup context.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupContext {
     /// The identifier of the backup.
@@ -366,7 +360,6 @@ pub struct BackupContext {
     pub kind: ::prost::alloc::string::String,
 }
 /// Represents a SQL database on the Cloud SQL instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Database {
     /// This is always `sql#database`.
@@ -401,7 +394,6 @@ pub struct Database {
 }
 /// Nested message and enum types in `Database`.
 pub mod database {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DatabaseDetails {
         #[prost(message, tag = "9")]
@@ -409,7 +401,6 @@ pub mod database {
     }
 }
 /// Represents a Sql Server database on the Cloud SQL instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlServerDatabaseDetails {
     /// The version of SQL Server with which the database is to be made compatible
@@ -420,7 +411,6 @@ pub struct SqlServerDatabaseDetails {
     pub recovery_model: ::prost::alloc::string::String,
 }
 /// Database flags for Cloud SQL instances.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabaseFlags {
     /// The name of the flag. These flags are passed at instance startup, so
@@ -437,7 +427,6 @@ pub struct DatabaseFlags {
     pub value: ::prost::alloc::string::String,
 }
 /// MySQL-specific external server sync settings.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MySqlSyncConfig {
     /// Flags to use for the initial dump.
@@ -446,7 +435,6 @@ pub struct MySqlSyncConfig {
 }
 /// Initial sync flags for certain Cloud SQL APIs.
 /// Currently used for the MySQL external server initial dump.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SyncFlags {
     /// The name of the flag.
@@ -458,7 +446,6 @@ pub struct SyncFlags {
     pub value: ::prost::alloc::string::String,
 }
 /// Reference to another Cloud SQL instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceReference {
     /// The name of the Cloud SQL instance being referenced.
@@ -475,7 +462,6 @@ pub struct InstanceReference {
 }
 /// Read-replica configuration for connecting to the on-premises primary
 /// instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DemoteMasterConfiguration {
     /// This is always `sql#demoteMasterConfiguration`.
@@ -493,7 +479,6 @@ pub struct DemoteMasterConfiguration {
     >,
 }
 /// Read-replica configuration specific to MySQL databases.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DemoteMasterMySqlReplicaConfiguration {
     /// This is always `sql#demoteMasterMysqlReplicaConfiguration`.
@@ -518,7 +503,6 @@ pub struct DemoteMasterMySqlReplicaConfiguration {
     pub ca_certificate: ::prost::alloc::string::String,
 }
 /// Database instance export context.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportContext {
     /// The path to the file in Google Cloud Storage where the export will be
@@ -564,7 +548,6 @@ pub struct ExportContext {
 }
 /// Nested message and enum types in `ExportContext`.
 pub mod export_context {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SqlCsvExportOptions {
         /// The select query used to extract the data.
@@ -586,7 +569,6 @@ pub mod export_context {
         #[prost(string, tag = "6")]
         pub lines_terminated_by: ::prost::alloc::string::String,
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SqlExportOptions {
         /// Tables to export, or that were exported, from the specified database. If
@@ -616,7 +598,6 @@ pub mod export_context {
     /// Nested message and enum types in `SqlExportOptions`.
     pub mod sql_export_options {
         /// Options for exporting from MySQL.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct MysqlExportOptions {
             /// Option to include SQL statement required to set up replication. If set
@@ -629,7 +610,6 @@ pub mod export_context {
             pub master_data: ::core::option::Option<i32>,
         }
         /// Options for exporting from a Cloud SQL for PostgreSQL instance.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct PostgresExportOptions {
             /// Optional. Use this option to include DROP <object> SQL statements.
@@ -644,7 +624,6 @@ pub mod export_context {
         }
     }
     /// Options for exporting BAK files (SQL Server-only)
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SqlBakExportOptions {
         /// Whether or not the export should be striped.
@@ -669,7 +648,6 @@ pub mod export_context {
     }
 }
 /// Database instance import context.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportContext {
     /// Path to the import file in Cloud Storage, in the form
@@ -706,7 +684,6 @@ pub struct ImportContext {
 }
 /// Nested message and enum types in `ImportContext`.
 pub mod import_context {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SqlImportOptions {
         /// Optional. The number of threads to use for parallel import.
@@ -723,7 +700,6 @@ pub mod import_context {
     }
     /// Nested message and enum types in `SqlImportOptions`.
     pub mod sql_import_options {
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct PostgresImportOptions {
             /// Optional. The --clean flag for the pg_restore utility. This flag
@@ -736,7 +712,6 @@ pub mod import_context {
             pub if_exists: ::core::option::Option<bool>,
         }
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SqlCsvImportOptions {
         /// The table to which CSV data is imported.
@@ -762,7 +737,6 @@ pub mod import_context {
         #[prost(string, tag = "8")]
         pub lines_terminated_by: ::prost::alloc::string::String,
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SqlBakImportOptions {
         #[prost(message, optional, tag = "1")]
@@ -801,7 +775,6 @@ pub mod import_context {
     }
     /// Nested message and enum types in `SqlBakImportOptions`.
     pub mod sql_bak_import_options {
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct EncryptionOptions {
             /// Path to the Certificate (.cer) in Cloud Storage, in the form
@@ -821,7 +794,6 @@ pub mod import_context {
     }
 }
 /// IP Management configuration.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IpConfiguration {
     /// Whether the instance is assigned a public IP address or not.
@@ -888,6 +860,9 @@ pub struct IpConfiguration {
     /// PSC settings for this instance.
     #[prost(message, optional, tag = "9")]
     pub psc_config: ::core::option::Option<PscConfig>,
+    /// Specify what type of CA is used for the server certificate.
+    #[prost(enumeration = "ip_configuration::CaMode", optional, tag = "10")]
+    pub server_ca_mode: ::core::option::Option<i32>,
 }
 /// Nested message and enum types in `IpConfiguration`.
 pub mod ip_configuration {
@@ -969,9 +944,52 @@ pub mod ip_configuration {
             }
         }
     }
+    /// Various Certificate Authority (CA) modes for certificate signing.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CaMode {
+        /// CA mode is unknown.
+        Unspecified = 0,
+        /// Google-managed self-signed internal CA.
+        GoogleManagedInternalCa = 1,
+        /// Google-managed regional CA part of root CA hierarchy hosted on Google
+        /// Cloud's Certificate Authority Service (CAS).
+        GoogleManagedCasCa = 2,
+    }
+    impl CaMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                CaMode::Unspecified => "CA_MODE_UNSPECIFIED",
+                CaMode::GoogleManagedInternalCa => "GOOGLE_MANAGED_INTERNAL_CA",
+                CaMode::GoogleManagedCasCa => "GOOGLE_MANAGED_CAS_CA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CA_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOOGLE_MANAGED_INTERNAL_CA" => Some(Self::GoogleManagedInternalCa),
+                "GOOGLE_MANAGED_CAS_CA" => Some(Self::GoogleManagedCasCa),
+                _ => None,
+            }
+        }
+    }
 }
 /// PSC settings for a Cloud SQL instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PscConfig {
     /// Whether PSC connectivity is enabled for this instance.
@@ -992,7 +1010,6 @@ pub struct PscConfig {
 /// Note that if the preferred location is not available, the instance will be
 /// located as close as possible within the region. Only one location may be
 /// specified.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationPreference {
     /// The App Engine application to follow, it must be in the same region as the
@@ -1015,7 +1032,6 @@ pub struct LocationPreference {
 }
 /// Maintenance window. This specifies when a Cloud SQL instance is
 /// restarted for system maintenance purposes.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaintenanceWindow {
     /// Hour of day - 0 to 23. Specify in the UTC time zone.
@@ -1037,7 +1053,6 @@ pub struct MaintenanceWindow {
 }
 /// Deny maintenance Periods. This specifies a date range during when all CSA
 /// rollout will be denied.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DenyMaintenancePeriod {
     /// "deny maintenance period" start date. If the year of the start date is
@@ -1059,7 +1074,6 @@ pub struct DenyMaintenancePeriod {
 }
 /// Insights configuration. This specifies when Cloud SQL Insights feature is
 /// enabled and optional configuration.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InsightsConfig {
     /// Whether Query Insights feature is enabled.
@@ -1084,7 +1098,6 @@ pub struct InsightsConfig {
     pub query_plans_per_minute: ::core::option::Option<i32>,
 }
 /// Read-replica configuration specific to MySQL databases.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MySqlReplicaConfiguration {
     /// Path to a SQL dump file in Google Cloud Storage from which the replica
@@ -1129,7 +1142,6 @@ pub struct MySqlReplicaConfiguration {
     pub kind: ::prost::alloc::string::String,
 }
 /// Disk encryption configuration for an instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskEncryptionConfiguration {
     /// Resource name of KMS key for disk encryption
@@ -1140,7 +1152,6 @@ pub struct DiskEncryptionConfiguration {
     pub kind: ::prost::alloc::string::String,
 }
 /// Disk encryption status for an instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskEncryptionStatus {
     /// KMS key version used to encrypt the Cloud SQL instance resource
@@ -1151,7 +1162,6 @@ pub struct DiskEncryptionStatus {
     pub kind: ::prost::alloc::string::String,
 }
 /// Database instance IP mapping
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IpMapping {
     /// The type of this IP address. A `PRIMARY` address is a public address that
@@ -1173,7 +1183,6 @@ pub struct IpMapping {
 /// An Operation resource.&nbsp;For successful operations that return an
 /// Operation resource, only the fields relevant to the operation are populated
 /// in the resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Operation {
     /// This is always `sql#operation`.
@@ -1371,6 +1380,8 @@ pub mod operation {
         /// Switches a primary instance to a replica. This operation runs as part of
         /// a switchover operation to the original primary instance.
         SwitchoverToReplica = 47,
+        /// Updates the major version of a Cloud SQL instance.
+        MajorVersionUpgrade = 48,
     }
     impl SqlOperationType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1424,6 +1435,7 @@ pub mod operation {
                 SqlOperationType::ClusterMaintenance => "CLUSTER_MAINTENANCE",
                 SqlOperationType::SelfServiceMaintenance => "SELF_SERVICE_MAINTENANCE",
                 SqlOperationType::SwitchoverToReplica => "SWITCHOVER_TO_REPLICA",
+                SqlOperationType::MajorVersionUpgrade => "MAJOR_VERSION_UPGRADE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1474,6 +1486,7 @@ pub mod operation {
                 "CLUSTER_MAINTENANCE" => Some(Self::ClusterMaintenance),
                 "SELF_SERVICE_MAINTENANCE" => Some(Self::SelfServiceMaintenance),
                 "SWITCHOVER_TO_REPLICA" => Some(Self::SwitchoverToReplica),
+                "MAJOR_VERSION_UPGRADE" => Some(Self::MajorVersionUpgrade),
                 _ => None,
             }
         }
@@ -1527,7 +1540,6 @@ pub mod operation {
     }
 }
 /// Database instance operation error.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationError {
     /// This is always `sql#operationError`.
@@ -1541,7 +1553,6 @@ pub struct OperationError {
     pub message: ::prost::alloc::string::String,
 }
 /// Database instance operation errors list wrapper.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationErrors {
     /// This is always `sql#operationErrors`.
@@ -1552,7 +1563,6 @@ pub struct OperationErrors {
     pub errors: ::prost::alloc::vec::Vec<OperationError>,
 }
 /// Database instance local user password validation policy
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PasswordValidationPolicy {
     /// Minimum number of characters allowed.
@@ -1624,7 +1634,6 @@ pub mod password_validation_policy {
     }
 }
 /// Data cache configurations.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DataCacheConfig {
     /// Whether data cache is enabled for the instance.
@@ -1632,7 +1641,6 @@ pub struct DataCacheConfig {
     pub data_cache_enabled: bool,
 }
 /// Database instance settings.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Settings {
     /// The version of instance settings. This is a required field for update
@@ -1934,7 +1942,6 @@ pub mod settings {
     }
 }
 /// Specifies options for controlling advanced machine features.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AdvancedMachineFeatures {
     /// The number of threads per physical core.
@@ -1942,7 +1949,6 @@ pub struct AdvancedMachineFeatures {
     pub threads_per_core: i32,
 }
 /// SslCerts Resource
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCert {
     /// This is always `sql#sslCert`.
@@ -1978,7 +1984,6 @@ pub struct SslCert {
     pub self_link: ::prost::alloc::string::String,
 }
 /// SslCertDetail.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertDetail {
     /// The public information about the cert.
@@ -1990,7 +1995,6 @@ pub struct SslCertDetail {
     pub cert_private_key: ::prost::alloc::string::String,
 }
 /// Active Directory configuration, relevant only for Cloud SQL for SQL Server.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlActiveDirectoryConfig {
     /// This is always sql#activeDirectoryConfig.
@@ -2001,7 +2005,6 @@ pub struct SqlActiveDirectoryConfig {
     pub domain: ::prost::alloc::string::String,
 }
 /// SQL Server specific audit configuration.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlServerAuditConfig {
     /// This is always sql#sqlServerAuditConfig
@@ -2018,7 +2021,6 @@ pub struct SqlServerAuditConfig {
     pub upload_interval: ::core::option::Option<::prost_types::Duration>,
 }
 /// Acquire SSRS lease context.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcquireSsrsLeaseContext {
     /// The username to be used as the setup login to connect to the database
@@ -2571,7 +2573,6 @@ impl SqlUpdateTrack {
     }
 }
 /// Backup runs delete request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlBackupRunsDeleteRequest {
     /// The ID of the backup run to delete. To find a backup run ID, use the
@@ -2587,7 +2588,6 @@ pub struct SqlBackupRunsDeleteRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Backup runs get request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlBackupRunsGetRequest {
     /// The ID of this backup run.
@@ -2601,7 +2601,6 @@ pub struct SqlBackupRunsGetRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Backup runs insert request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlBackupRunsInsertRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2614,7 +2613,6 @@ pub struct SqlBackupRunsInsertRequest {
     pub body: ::core::option::Option<BackupRun>,
 }
 /// Backup runs list request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlBackupRunsListRequest {
     /// Cloud SQL instance ID, or "-" for all instances. This does not include
@@ -2633,7 +2631,6 @@ pub struct SqlBackupRunsListRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A BackupRun resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupRun {
     /// This is always `sql#backupRun`.
@@ -2702,9 +2699,11 @@ pub struct BackupRun {
     /// a different time zone. Now relevant only for SQL Server.
     #[prost(string, tag = "23")]
     pub time_zone: ::prost::alloc::string::String,
+    /// Output only. The maximum chargeable bytes for the backup.
+    #[prost(int64, optional, tag = "24")]
+    pub max_chargeable_bytes: ::core::option::Option<i64>,
 }
 /// Backup run list results.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupRunsListResponse {
     /// This is always `sql#backupRunsList`.
@@ -2873,8 +2872,8 @@ pub mod sql_backup_runs_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -2899,7 +2898,7 @@ pub mod sql_backup_runs_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SqlBackupRunsServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -3042,7 +3041,6 @@ pub mod sql_backup_runs_service_client {
     }
 }
 /// Connect settings retrieval request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConnectSettingsRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -3057,7 +3055,6 @@ pub struct GetConnectSettingsRequest {
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Connect settings retrieval response.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectSettings {
     /// This is always `sql#connectSettings`.
@@ -3098,9 +3095,58 @@ pub struct ConnectSettings {
     /// The dns name of the instance.
     #[prost(string, tag = "34")]
     pub dns_name: ::prost::alloc::string::String,
+    /// Specify what type of CA is used for the server certificate.
+    #[prost(enumeration = "connect_settings::CaMode", tag = "35")]
+    pub server_ca_mode: i32,
+}
+/// Nested message and enum types in `ConnectSettings`.
+pub mod connect_settings {
+    /// Various Certificate Authority (CA) modes for certificate signing.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CaMode {
+        /// CA mode is unknown.
+        Unspecified = 0,
+        /// Google-managed self-signed internal CA.
+        GoogleManagedInternalCa = 1,
+        /// Google-managed regional CA part of root CA hierarchy hosted on Google
+        /// Cloud's Certificate Authority Service (CAS).
+        GoogleManagedCasCa = 2,
+    }
+    impl CaMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                CaMode::Unspecified => "CA_MODE_UNSPECIFIED",
+                CaMode::GoogleManagedInternalCa => "GOOGLE_MANAGED_INTERNAL_CA",
+                CaMode::GoogleManagedCasCa => "GOOGLE_MANAGED_CAS_CA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CA_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOOGLE_MANAGED_INTERNAL_CA" => Some(Self::GoogleManagedInternalCa),
+                "GOOGLE_MANAGED_CAS_CA" => Some(Self::GoogleManagedCasCa),
+                _ => None,
+            }
+        }
+    }
 }
 /// Ephemeral certificate creation request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateEphemeralCertRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -3124,7 +3170,6 @@ pub struct GenerateEphemeralCertRequest {
     pub valid_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Ephemeral certificate creation request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateEphemeralCertResponse {
     /// Generated cert
@@ -3156,8 +3201,8 @@ pub mod sql_connect_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -3182,7 +3227,7 @@ pub mod sql_connect_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SqlConnectServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -3285,7 +3330,6 @@ pub mod sql_connect_service_client {
     }
 }
 /// Database delete request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlDatabasesDeleteRequest {
     /// Name of the database to be deleted in the instance.
@@ -3299,7 +3343,6 @@ pub struct SqlDatabasesDeleteRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Database get request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlDatabasesGetRequest {
     /// Name of the database in the instance.
@@ -3313,7 +3356,6 @@ pub struct SqlDatabasesGetRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Database insert request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlDatabasesInsertRequest {
     /// Database instance ID. This does not include the project ID.
@@ -3326,7 +3368,6 @@ pub struct SqlDatabasesInsertRequest {
     pub body: ::core::option::Option<Database>,
 }
 /// Database list request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlDatabasesListRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -3337,7 +3378,6 @@ pub struct SqlDatabasesListRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Database update request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlDatabasesUpdateRequest {
     /// Name of the database to be updated in the instance.
@@ -3353,7 +3393,6 @@ pub struct SqlDatabasesUpdateRequest {
     pub body: ::core::option::Option<Database>,
 }
 /// Database list response.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabasesListResponse {
     /// This is always `sql#databasesList`.
@@ -3388,8 +3427,8 @@ pub mod sql_databases_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -3414,7 +3453,7 @@ pub mod sql_databases_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SqlDatabasesServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -3636,8 +3675,8 @@ pub mod sql_events_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -3662,7 +3701,7 @@ pub mod sql_events_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SqlEventsServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -3700,7 +3739,6 @@ pub mod sql_events_service_client {
     }
 }
 /// Flags list request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlFlagsListRequest {
     /// Database type and version you want to retrieve flags for. By default, this
@@ -3709,7 +3747,6 @@ pub struct SqlFlagsListRequest {
     pub database_version: ::prost::alloc::string::String,
 }
 /// Flags list response.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FlagsListResponse {
     /// This is always `sql#flagsList`.
@@ -3720,7 +3757,6 @@ pub struct FlagsListResponse {
     pub items: ::prost::alloc::vec::Vec<Flag>,
 }
 /// A flag resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Flag {
     /// This is the name of the flag. Flag names always use underscores, not
@@ -3846,8 +3882,8 @@ pub mod sql_flags_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -3872,7 +3908,7 @@ pub mod sql_flags_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SqlFlagsServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -3960,8 +3996,8 @@ pub mod sql_iam_policies_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -3986,7 +4022,7 @@ pub mod sql_iam_policies_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SqlIamPoliciesServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -4048,8 +4084,8 @@ pub mod sql_instance_names_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -4074,7 +4110,7 @@ pub mod sql_instance_names_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SqlInstanceNamesServiceClient::new(
                 InterceptedService::new(inner, interceptor),
@@ -4114,7 +4150,6 @@ pub mod sql_instance_names_service_client {
     }
 }
 /// Instance add server CA request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesAddServerCaRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4125,7 +4160,6 @@ pub struct SqlInstancesAddServerCaRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance clone request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesCloneRequest {
     /// The ID of the Cloud SQL instance to be cloned (source). This does not
@@ -4139,7 +4173,6 @@ pub struct SqlInstancesCloneRequest {
     pub body: ::core::option::Option<InstancesCloneRequest>,
 }
 /// Instance delete request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesDeleteRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4150,7 +4183,6 @@ pub struct SqlInstancesDeleteRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance demote master request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesDemoteMasterRequest {
     /// Cloud SQL instance name.
@@ -4163,7 +4195,6 @@ pub struct SqlInstancesDemoteMasterRequest {
     pub body: ::core::option::Option<InstancesDemoteMasterRequest>,
 }
 /// Instance demote request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesDemoteRequest {
     /// Required. Cloud SQL instance name.
@@ -4177,7 +4208,6 @@ pub struct SqlInstancesDemoteRequest {
     pub body: ::core::option::Option<InstancesDemoteRequest>,
 }
 /// Instance export request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesExportRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4190,7 +4220,6 @@ pub struct SqlInstancesExportRequest {
     pub body: ::core::option::Option<InstancesExportRequest>,
 }
 /// Instance failover request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesFailoverRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4203,7 +4232,6 @@ pub struct SqlInstancesFailoverRequest {
     pub body: ::core::option::Option<InstancesFailoverRequest>,
 }
 /// Instance get request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesGetRequest {
     /// Database instance ID. This does not include the project ID.
@@ -4214,7 +4242,6 @@ pub struct SqlInstancesGetRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance import request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesImportRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4227,7 +4254,6 @@ pub struct SqlInstancesImportRequest {
     pub body: ::core::option::Option<InstancesImportRequest>,
 }
 /// Instance insert request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesInsertRequest {
     /// Project ID of the project to which the newly created Cloud SQL instances
@@ -4238,7 +4264,6 @@ pub struct SqlInstancesInsertRequest {
     pub body: ::core::option::Option<DatabaseInstance>,
 }
 /// Instance list request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesListRequest {
     /// A filter expression that filters resources listed in the response.
@@ -4267,7 +4292,6 @@ pub struct SqlInstancesListRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance list server CAs request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesListServerCasRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4278,7 +4302,6 @@ pub struct SqlInstancesListServerCasRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance patch request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesPatchRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4291,7 +4314,6 @@ pub struct SqlInstancesPatchRequest {
     pub body: ::core::option::Option<DatabaseInstance>,
 }
 /// Instance promote replica request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesPromoteReplicaRequest {
     /// Cloud SQL read replica instance name.
@@ -4311,7 +4333,6 @@ pub struct SqlInstancesPromoteReplicaRequest {
     pub failover: bool,
 }
 /// Instance switchover request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesSwitchoverRequest {
     /// Cloud SQL read replica instance name.
@@ -4327,7 +4348,6 @@ pub struct SqlInstancesSwitchoverRequest {
     pub db_timeout: ::core::option::Option<::prost_types::Duration>,
 }
 /// Instance reset SSL config request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesResetSslConfigRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4338,7 +4358,6 @@ pub struct SqlInstancesResetSslConfigRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance restart request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesRestartRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4349,7 +4368,6 @@ pub struct SqlInstancesRestartRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance restore backup request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesRestoreBackupRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4362,7 +4380,6 @@ pub struct SqlInstancesRestoreBackupRequest {
     pub body: ::core::option::Option<InstancesRestoreBackupRequest>,
 }
 /// Instance rotate server CA request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesRotateServerCaRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4375,7 +4392,6 @@ pub struct SqlInstancesRotateServerCaRequest {
     pub body: ::core::option::Option<InstancesRotateServerCaRequest>,
 }
 /// Instance start replica request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesStartReplicaRequest {
     /// Cloud SQL read replica instance name.
@@ -4386,7 +4402,6 @@ pub struct SqlInstancesStartReplicaRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance stop replica request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesStopReplicaRequest {
     /// Cloud SQL read replica instance name.
@@ -4397,7 +4412,6 @@ pub struct SqlInstancesStopReplicaRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance truncate log request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesTruncateLogRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4410,7 +4424,6 @@ pub struct SqlInstancesTruncateLogRequest {
     pub body: ::core::option::Option<InstancesTruncateLogRequest>,
 }
 /// Instance perform disk shrink request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesPerformDiskShrinkRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4424,7 +4437,6 @@ pub struct SqlInstancesPerformDiskShrinkRequest {
     pub body: ::core::option::Option<PerformDiskShrinkContext>,
 }
 /// Instance update request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesUpdateRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4437,7 +4449,6 @@ pub struct SqlInstancesUpdateRequest {
     pub body: ::core::option::Option<DatabaseInstance>,
 }
 /// Instance reschedule maintenance request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesRescheduleMaintenanceRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4450,7 +4461,6 @@ pub struct SqlInstancesRescheduleMaintenanceRequest {
     pub body: ::core::option::Option<SqlInstancesRescheduleMaintenanceRequestBody>,
 }
 /// Instance reencrypt request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesReencryptRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4464,7 +4474,6 @@ pub struct SqlInstancesReencryptRequest {
     pub body: ::core::option::Option<InstancesReencryptRequest>,
 }
 /// Database Instance reencrypt request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct InstancesReencryptRequest {
     /// Configuration specific to backup re-encryption
@@ -4472,7 +4481,6 @@ pub struct InstancesReencryptRequest {
     pub backup_reencryption_config: ::core::option::Option<BackupReencryptionConfig>,
 }
 /// Backup Reencryption Config
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BackupReencryptionConfig {
     /// Backup re-encryption limit
@@ -4529,7 +4537,6 @@ pub mod backup_reencryption_config {
     }
 }
 /// Instance get disk shrink config request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesGetDiskShrinkConfigRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4540,7 +4547,6 @@ pub struct SqlInstancesGetDiskShrinkConfigRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance verify external sync settings request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesVerifyExternalSyncSettingsRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4671,7 +4677,6 @@ pub mod sql_instances_verify_external_sync_settings_request {
             }
         }
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SyncConfig {
         /// Optional. MySQL-specific settings for start external sync.
@@ -4680,7 +4685,6 @@ pub mod sql_instances_verify_external_sync_settings_request {
     }
 }
 /// Instance start external sync request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesStartExternalSyncRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4717,7 +4721,6 @@ pub struct SqlInstancesStartExternalSyncRequest {
 }
 /// Nested message and enum types in `SqlInstancesStartExternalSyncRequest`.
 pub mod sql_instances_start_external_sync_request {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SyncConfig {
         /// MySQL-specific settings for start external sync.
@@ -4726,7 +4729,6 @@ pub mod sql_instances_start_external_sync_request {
     }
 }
 /// Instance reset replica size request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesResetReplicaSizeRequest {
     /// Cloud SQL read replica instance name.
@@ -4737,7 +4739,6 @@ pub struct SqlInstancesResetReplicaSizeRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance create ephemeral certificate request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesCreateEphemeralCertRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4750,7 +4751,6 @@ pub struct SqlInstancesCreateEphemeralCertRequest {
     pub body: ::core::option::Option<SslCertsCreateEphemeralRequest>,
 }
 /// Database instance clone request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesCloneRequest {
     /// Contains details about the clone operation.
@@ -4758,7 +4758,6 @@ pub struct InstancesCloneRequest {
     pub clone_context: ::core::option::Option<CloneContext>,
 }
 /// Database demote primary instance request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesDemoteMasterRequest {
     /// Contains details about the demoteMaster operation.
@@ -4767,7 +4766,6 @@ pub struct InstancesDemoteMasterRequest {
 }
 /// This request is used to demote an existing standalone instance to be a
 /// Cloud SQL read replica for an external database server.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesDemoteRequest {
     /// Required. Contains details about the demote operation.
@@ -4775,7 +4773,6 @@ pub struct InstancesDemoteRequest {
     pub demote_context: ::core::option::Option<DemoteContext>,
 }
 /// Database instance export request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesExportRequest {
     /// Contains details about the export operation.
@@ -4783,7 +4780,6 @@ pub struct InstancesExportRequest {
     pub export_context: ::core::option::Option<ExportContext>,
 }
 /// Instance failover request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesFailoverRequest {
     /// Failover Context.
@@ -4791,7 +4787,6 @@ pub struct InstancesFailoverRequest {
     pub failover_context: ::core::option::Option<FailoverContext>,
 }
 /// SslCerts create ephemeral certificate request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertsCreateEphemeralRequest {
     /// PEM encoded public key to include in the signed certificate.
@@ -4802,7 +4797,6 @@ pub struct SslCertsCreateEphemeralRequest {
     pub access_token: ::prost::alloc::string::String,
 }
 /// Database instance import request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesImportRequest {
     /// Contains details about the import operation.
@@ -4810,7 +4804,6 @@ pub struct InstancesImportRequest {
     pub import_context: ::core::option::Option<ImportContext>,
 }
 /// Database instances list response.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesListResponse {
     /// This is always `sql#instancesList`.
@@ -4828,7 +4821,6 @@ pub struct InstancesListResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Instances ListServerCas response.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesListServerCasResponse {
     /// List of server CA certificates for the instance.
@@ -4841,7 +4833,6 @@ pub struct InstancesListServerCasResponse {
     pub kind: ::prost::alloc::string::String,
 }
 /// Database instance restore backup request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesRestoreBackupRequest {
     /// Parameters required to perform the restore backup operation.
@@ -4849,7 +4840,6 @@ pub struct InstancesRestoreBackupRequest {
     pub restore_backup_context: ::core::option::Option<RestoreBackupContext>,
 }
 /// Rotate server CA request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesRotateServerCaRequest {
     /// Contains details about the rotate server CA operation.
@@ -4857,7 +4847,6 @@ pub struct InstancesRotateServerCaRequest {
     pub rotate_server_ca_context: ::core::option::Option<RotateServerCaContext>,
 }
 /// Instance truncate log request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesTruncateLogRequest {
     /// Contains details about the truncate log operation.
@@ -4865,7 +4854,6 @@ pub struct InstancesTruncateLogRequest {
     pub truncate_log_context: ::core::option::Option<TruncateLogContext>,
 }
 /// Request to acquire a lease for SSRS.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesAcquireSsrsLeaseRequest {
     /// Contains details about the acquire SSRS lease operation.
@@ -4873,7 +4861,6 @@ pub struct InstancesAcquireSsrsLeaseRequest {
     pub acquire_ssrs_lease_context: ::core::option::Option<AcquireSsrsLeaseContext>,
 }
 /// Instance verify external sync settings response.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesVerifyExternalSyncSettingsResponse {
     /// This is always `sql#migrationSettingErrorList`.
@@ -4887,7 +4874,6 @@ pub struct SqlInstancesVerifyExternalSyncSettingsResponse {
     pub warnings: ::prost::alloc::vec::Vec<SqlExternalSyncSettingError>,
 }
 /// Instance get disk shrink config response.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesGetDiskShrinkConfigResponse {
     /// This is always `sql#getDiskShrinkConfig`.
@@ -4901,7 +4887,6 @@ pub struct SqlInstancesGetDiskShrinkConfigResponse {
     pub message: ::prost::alloc::string::String,
 }
 /// Instance get latest recovery time request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesGetLatestRecoveryTimeRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4912,7 +4897,6 @@ pub struct SqlInstancesGetLatestRecoveryTimeRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance get latest recovery time response.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesGetLatestRecoveryTimeResponse {
     /// This is always `sql#getLatestRecoveryTime`.
@@ -4923,7 +4907,6 @@ pub struct SqlInstancesGetLatestRecoveryTimeResponse {
     pub latest_recovery_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Database instance clone context.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloneContext {
     /// This is always `sql#cloneContext`.
@@ -4964,7 +4947,6 @@ pub struct CloneContext {
     pub preferred_zone: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Binary log coordinates.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BinLogCoordinates {
     /// Name of the binary log file for a Cloud SQL instance.
@@ -4978,7 +4960,6 @@ pub struct BinLogCoordinates {
     pub kind: ::prost::alloc::string::String,
 }
 /// A Cloud SQL instance resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabaseInstance {
     /// This is always `sql#instance`.
@@ -5174,10 +5155,18 @@ pub struct DatabaseInstance {
     /// Gemini instance configuration.
     #[prost(message, optional, tag = "55")]
     pub gemini_config: ::core::option::Option<GeminiInstanceConfig>,
+    /// Output only. This status indicates whether the instance satisfies PZI.
+    ///
+    /// The status is reserved for future use.
+    #[prost(message, optional, tag = "56")]
+    pub satisfies_pzi: ::core::option::Option<bool>,
+    /// Input only. Whether Cloud SQL is enabled to switch storing point-in-time
+    /// recovery log files from a data disk to Cloud Storage.
+    #[prost(message, optional, tag = "57")]
+    pub switch_transaction_logs_to_cloud_storage_enabled: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `DatabaseInstance`.
 pub mod database_instance {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SqlFailoverReplica {
         /// The name of the failover replica. If specified at instance creation, a
@@ -5192,7 +5181,6 @@ pub mod database_instance {
         pub available: ::core::option::Option<bool>,
     }
     /// Any scheduled maintenance for this instance.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SqlScheduledMaintenance {
         /// The start time of any upcoming scheduled maintenance for this instance.
@@ -5209,7 +5197,6 @@ pub mod database_instance {
         pub schedule_deadline_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// This message wraps up the information written by out-of-disk detection job.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SqlOutOfDiskReport {
         /// This field represents the state generated by the proactive database
@@ -5393,7 +5380,6 @@ pub mod database_instance {
     }
 }
 /// Gemini instance configuration.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GeminiInstanceConfig {
     /// Output only. Whether Gemini is enabled.
@@ -5419,7 +5405,6 @@ pub struct GeminiInstanceConfig {
 /// A DR replica is a cross-region replica that you designate for failover in
 /// the event that the primary instance experiences regional failure.
 /// Only applicable to MySQL.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplicationCluster {
     /// Output only. If set, it indicates this instance has a private service
@@ -5445,7 +5430,6 @@ pub struct ReplicationCluster {
     pub dr_replica: bool,
 }
 /// An available database version. It can be a major or a minor version.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvailableDatabaseVersion {
     /// The version's major version name.
@@ -5460,7 +5444,6 @@ pub struct AvailableDatabaseVersion {
     pub display_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Reschedule options for maintenance windows.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SqlInstancesRescheduleMaintenanceRequestBody {
     /// Required. The type of the reschedule the user wants.
@@ -5471,7 +5454,6 @@ pub struct SqlInstancesRescheduleMaintenanceRequestBody {
 }
 /// Nested message and enum types in `SqlInstancesRescheduleMaintenanceRequestBody`.
 pub mod sql_instances_reschedule_maintenance_request_body {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Reschedule {
         /// Required. The type of the reschedule.
@@ -5532,7 +5514,6 @@ pub mod sql_instances_reschedule_maintenance_request_body {
     }
 }
 /// Database instance demote primary instance context.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DemoteMasterContext {
     /// This is always `sql#demoteMasterContext`.
@@ -5561,7 +5542,6 @@ pub struct DemoteMasterContext {
 }
 /// This context is used to demote an existing standalone instance to be
 /// a Cloud SQL read replica for an external database server.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DemoteContext {
     /// This is always `sql#demoteContext`.
@@ -5573,7 +5553,6 @@ pub struct DemoteContext {
     pub source_representative_instance_name: ::prost::alloc::string::String,
 }
 /// Database instance failover context.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FailoverContext {
     /// The current settings version of this instance. Request will be rejected if
@@ -5586,7 +5565,6 @@ pub struct FailoverContext {
 }
 /// Database instance restore from backup context.
 /// Backup context contains source instance id and project id.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreBackupContext {
     /// This is always `sql#restoreBackupContext`.
@@ -5603,7 +5581,6 @@ pub struct RestoreBackupContext {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance rotate server CA context.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RotateServerCaContext {
     /// This is always `sql#rotateServerCaContext`.
@@ -5615,7 +5592,6 @@ pub struct RotateServerCaContext {
     pub next_version: ::prost::alloc::string::String,
 }
 /// Database Instance truncate log context.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TruncateLogContext {
     /// This is always `sql#truncateLogContext`.
@@ -5627,7 +5603,6 @@ pub struct TruncateLogContext {
     pub log_type: ::prost::alloc::string::String,
 }
 /// External primary instance migration setting error/warning.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlExternalSyncSettingError {
     /// Can be `sql#externalSyncSettingError` or
@@ -5772,6 +5747,9 @@ pub mod sql_external_sync_setting_error {
         /// data to the destination instance, you must enable the PGAudit extension
         /// on the instance.
         ExtensionsNotEnabledInReplica = 48,
+        /// The source database has generated columns that can't be migrated. Please
+        /// change them to regular columns before migration.
+        UnsupportedColumns = 49,
     }
     impl SqlExternalSyncSettingErrorType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -5917,6 +5895,9 @@ pub mod sql_external_sync_setting_error {
                 SqlExternalSyncSettingErrorType::ExtensionsNotEnabledInReplica => {
                     "EXTENSIONS_NOT_ENABLED_IN_REPLICA"
                 }
+                SqlExternalSyncSettingErrorType::UnsupportedColumns => {
+                    "UNSUPPORTED_COLUMNS"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5999,13 +5980,13 @@ pub mod sql_external_sync_setting_error {
                 "EXTENSIONS_NOT_ENABLED_IN_REPLICA" => {
                     Some(Self::ExtensionsNotEnabledInReplica)
                 }
+                "UNSUPPORTED_COLUMNS" => Some(Self::UnsupportedColumns),
                 _ => None,
             }
         }
     }
 }
 /// On-premises instance configuration.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OnPremisesConfiguration {
     /// The host and port of the on-premises instance in host:port format
@@ -6038,7 +6019,6 @@ pub struct OnPremisesConfiguration {
     pub source_instance: ::core::option::Option<InstanceReference>,
 }
 /// Read-replica configuration for connecting to the primary instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplicaConfiguration {
     /// This is always `sql#replicaConfiguration`.
@@ -6066,7 +6046,6 @@ pub struct ReplicaConfiguration {
     pub cascadable_replica: ::core::option::Option<bool>,
 }
 /// Request to acquire a lease for SSRS.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesAcquireSsrsLeaseRequest {
     /// Required. Cloud SQL instance ID. This doesn't include the project ID. It's
@@ -6084,7 +6063,6 @@ pub struct SqlInstancesAcquireSsrsLeaseRequest {
     pub body: ::core::option::Option<InstancesAcquireSsrsLeaseRequest>,
 }
 /// Response for the acquire SSRS lease request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesAcquireSsrsLeaseResponse {
     /// The unique identifier for this operation.
@@ -6092,7 +6070,6 @@ pub struct SqlInstancesAcquireSsrsLeaseResponse {
     pub operation_id: ::prost::alloc::string::String,
 }
 /// Request to release a lease for SSRS.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesReleaseSsrsLeaseRequest {
     /// Required. The Cloud SQL instance ID. This doesn't include the project ID.
@@ -6106,7 +6083,6 @@ pub struct SqlInstancesReleaseSsrsLeaseRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Response for the release SSRS lease request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesReleaseSsrsLeaseResponse {
     /// The unique identifier for this operation.
@@ -6259,8 +6235,8 @@ pub mod sql_instances_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -6285,7 +6261,7 @@ pub mod sql_instances_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SqlInstancesServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -6324,7 +6300,9 @@ pub mod sql_instances_service_client {
         /// instance. Required to prepare for a certificate rotation. If a CA version
         /// was previously added but never used in a certificate rotation, this
         /// operation replaces that version. There cannot be more than one CA version
-        /// waiting to be rotated in.
+        /// waiting to be rotated in. For instances that have enabled Certificate
+        /// Authority Service (CAS) based server CA, please use AddServerCertificate to
+        /// add a new server certificate.
         pub async fn add_server_ca(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesAddServerCaRequest>,
@@ -6858,7 +6836,9 @@ pub mod sql_instances_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Rotates the server certificate to one signed by the Certificate Authority
-        /// (CA) version previously added with the addServerCA method.
+        /// (CA) version previously added with the addServerCA method. For instances
+        /// that have enabled Certificate Authority Service (CAS) based server CA,
+        /// please use RotateServerCertificate to rotate the server certificate.
         pub async fn rotate_server_ca(
             &mut self,
             request: impl tonic::IntoRequest<super::SqlInstancesRotateServerCaRequest>,
@@ -7308,7 +7288,6 @@ pub mod sql_instances_service_client {
     }
 }
 /// Operations get request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlOperationsGetRequest {
     /// Instance operation ID.
@@ -7319,7 +7298,6 @@ pub struct SqlOperationsGetRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Operations list request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlOperationsListRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -7337,7 +7315,6 @@ pub struct SqlOperationsListRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Operations list response.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationsListResponse {
     /// This is always `sql#operationsList`.
@@ -7352,7 +7329,6 @@ pub struct OperationsListResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Operations cancel request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlOperationsCancelRequest {
     /// Instance operation ID.
@@ -7387,8 +7363,8 @@ pub mod sql_operations_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -7413,7 +7389,7 @@ pub mod sql_operations_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SqlOperationsServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -7555,8 +7531,8 @@ pub mod sql_regions_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -7581,7 +7557,7 @@ pub mod sql_regions_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SqlRegionsServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -7618,7 +7594,6 @@ pub mod sql_regions_service_client {
         }
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlSslCertsDeleteRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -7631,7 +7606,6 @@ pub struct SqlSslCertsDeleteRequest {
     #[prost(string, tag = "3")]
     pub sha1_fingerprint: ::prost::alloc::string::String,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlSslCertsGetRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -7644,7 +7618,6 @@ pub struct SqlSslCertsGetRequest {
     #[prost(string, tag = "3")]
     pub sha1_fingerprint: ::prost::alloc::string::String,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlSslCertsInsertRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -7656,7 +7629,6 @@ pub struct SqlSslCertsInsertRequest {
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<SslCertsInsertRequest>,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlSslCertsListRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -7667,7 +7639,6 @@ pub struct SqlSslCertsListRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// SslCerts insert request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertsInsertRequest {
     /// User supplied name.  Must be a distinct name from the other certificates
@@ -7676,7 +7647,6 @@ pub struct SslCertsInsertRequest {
     pub common_name: ::prost::alloc::string::String,
 }
 /// SslCert insert response.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertsInsertResponse {
     /// This is always `sql#sslCertsInsert`.
@@ -7695,7 +7665,6 @@ pub struct SslCertsInsertResponse {
     pub client_cert: ::core::option::Option<SslCertDetail>,
 }
 /// SslCerts list response.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertsListResponse {
     /// This is always `sql#sslCertsList`.
@@ -7730,8 +7699,8 @@ pub mod sql_ssl_certs_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -7756,7 +7725,7 @@ pub mod sql_ssl_certs_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SqlSslCertsServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -7905,7 +7874,6 @@ pub mod sql_ssl_certs_service_client {
     }
 }
 /// Tiers list request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlTiersListRequest {
     /// Project ID of the project for which to list tiers.
@@ -7913,7 +7881,6 @@ pub struct SqlTiersListRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Tiers list response.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TiersListResponse {
     /// This is always `sql#tiersList`.
@@ -7924,7 +7891,6 @@ pub struct TiersListResponse {
     pub items: ::prost::alloc::vec::Vec<Tier>,
 }
 /// A Google Cloud SQL service tier resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tier {
     /// An identifier for the machine type, for example, `db-custom-1-3840`. For
@@ -7969,8 +7935,8 @@ pub mod sql_tiers_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -7995,7 +7961,7 @@ pub mod sql_tiers_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SqlTiersServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -8060,7 +8026,6 @@ pub mod sql_tiers_service_client {
         }
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlUsersDeleteRequest {
     /// Host of the user in the instance.
@@ -8077,7 +8042,6 @@ pub struct SqlUsersDeleteRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Request message for Users Get RPC
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlUsersGetRequest {
     /// Database instance ID. This does not include the project ID.
@@ -8093,7 +8057,6 @@ pub struct SqlUsersGetRequest {
     #[prost(string, tag = "4")]
     pub host: ::prost::alloc::string::String,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlUsersInsertRequest {
     /// Database instance ID. This does not include the project ID.
@@ -8105,7 +8068,6 @@ pub struct SqlUsersInsertRequest {
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<User>,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlUsersListRequest {
     /// Database instance ID. This does not include the project ID.
@@ -8115,7 +8077,6 @@ pub struct SqlUsersListRequest {
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlUsersUpdateRequest {
     /// Optional. Host of the user in the instance.
@@ -8134,7 +8095,6 @@ pub struct SqlUsersUpdateRequest {
     pub body: ::core::option::Option<User>,
 }
 /// User level password validation policy.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UserPasswordValidationPolicy {
     /// Number of failed login attempts allowed before user get locked.
@@ -8155,7 +8115,6 @@ pub struct UserPasswordValidationPolicy {
     pub enable_password_verification: bool,
 }
 /// Read-only password status.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PasswordStatus {
     /// If true, user does not have login privileges.
@@ -8166,7 +8125,6 @@ pub struct PasswordStatus {
     pub password_expiration_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A Cloud SQL user resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct User {
     /// This is always `sql#user`.
@@ -8323,7 +8281,6 @@ pub mod user {
         }
     }
     /// User details for specific database type
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum UserDetails {
         #[prost(message, tag = "9")]
@@ -8331,7 +8288,6 @@ pub mod user {
     }
 }
 /// Represents a Sql Server user on the Cloud SQL instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlServerUserDetails {
     /// If the user has been disabled
@@ -8342,7 +8298,6 @@ pub struct SqlServerUserDetails {
     pub server_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// User list response.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UsersListResponse {
     /// This is always `sql#usersList`.
@@ -8381,8 +8336,8 @@ pub mod sql_users_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -8407,7 +8362,7 @@ pub mod sql_users_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SqlUsersServiceClient::new(InterceptedService::new(inner, interceptor))
         }

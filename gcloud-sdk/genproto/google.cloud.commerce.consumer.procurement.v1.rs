@@ -9,7 +9,6 @@
 ///
 /// Customers typically choose a price plan for each Product purchased when
 /// they create an order and can change their plan later, if the product allows.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Order {
     /// Output only. The resource name of the order.
@@ -37,7 +36,6 @@ pub struct Order {
     pub etag: ::prost::alloc::string::String,
 }
 /// A single item within an order.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LineItem {
     /// Output only. Line item ID.
@@ -60,7 +58,6 @@ pub struct LineItem {
     pub change_history: ::prost::alloc::vec::Vec<LineItemChange>,
 }
 /// A change made on a line item.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LineItemChange {
     /// Output only. Change ID.
@@ -105,7 +102,6 @@ pub struct LineItemChange {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Line item information.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LineItemInfo {
     /// Optional. The name of the offer can have either of these formats:
@@ -121,7 +117,6 @@ pub struct LineItemInfo {
     pub subscription: ::core::option::Option<Subscription>,
 }
 /// User-provided Parameters.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Parameter {
     /// Name of the parameter.
@@ -133,7 +128,6 @@ pub struct Parameter {
 }
 /// Nested message and enum types in `Parameter`.
 pub mod parameter {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Value {
         /// The kind of value.
@@ -143,7 +137,6 @@ pub mod parameter {
     /// Nested message and enum types in `Value`.
     pub mod value {
         /// The kind of value.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Kind {
             /// Represents an int64 value.
@@ -159,7 +152,6 @@ pub mod parameter {
     }
 }
 /// Subscription information.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Subscription {
     /// The timestamp when the subscription begins, if applicable.
@@ -326,7 +318,6 @@ impl LineItemChangeStateReasonType {
 }
 /// Request message for
 /// [ConsumerProcurementService.PlaceOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.PlaceOrder].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlaceOrderRequest {
     /// Required. The resource name of the parent resource.
@@ -351,12 +342,10 @@ pub struct PlaceOrderRequest {
 }
 /// Message stored in the metadata field of the Operation returned by
 /// [ConsumerProcurementService.PlaceOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.PlaceOrder].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PlaceOrderMetadata {}
 /// Request message for
 /// [ConsumerProcurementService.GetOrder][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.GetOrder]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOrderRequest {
     /// Required. The name of the order to retrieve.
@@ -365,7 +354,6 @@ pub struct GetOrderRequest {
 }
 /// Request message for
 /// [ConsumerProcurementService.ListOrders][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.ListOrders].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrdersRequest {
     /// Required. The parent resource to query for orders.
@@ -400,7 +388,6 @@ pub struct ListOrdersRequest {
 }
 /// Response message for
 /// [ConsumerProcurementService.ListOrders][google.cloud.commerce.consumer.procurement.v1.ConsumerProcurementService.ListOrders].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrdersResponse {
     /// The list of orders in this response.
@@ -444,8 +431,8 @@ pub mod consumer_procurement_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -470,7 +457,7 @@ pub mod consumer_procurement_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ConsumerProcurementServiceClient::new(
                 InterceptedService::new(inner, interceptor),

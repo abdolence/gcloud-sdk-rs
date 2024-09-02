@@ -5,7 +5,6 @@
 /// <https://arrow.apache.org/docs/format/Columnar.html#serialization-and-interprocess-communication-ipc>
 ///
 /// See code samples on how this message can be deserialized.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArrowSchema {
     /// IPC serialized Arrow schema.
@@ -13,7 +12,6 @@ pub struct ArrowSchema {
     pub serialized_schema: ::prost::alloc::vec::Vec<u8>,
 }
 /// Arrow RecordBatch.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArrowRecordBatch {
     /// IPC-serialized Arrow RecordBatch.
@@ -21,7 +19,6 @@ pub struct ArrowRecordBatch {
     pub serialized_record_batch: ::prost::alloc::vec::Vec<u8>,
 }
 /// Contains options specific to Arrow Serialization.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ArrowSerializationOptions {
     /// The Arrow IPC format to use.
@@ -75,7 +72,6 @@ pub mod arrow_serialization_options {
     }
 }
 /// Avro schema.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvroSchema {
     /// Json serialized schema, as described at
@@ -84,7 +80,6 @@ pub struct AvroSchema {
     pub schema: ::prost::alloc::string::String,
 }
 /// Avro rows.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvroRows {
     /// Binary serialized rows in a block.
@@ -92,7 +87,6 @@ pub struct AvroRows {
     pub serialized_binary_rows: ::prost::alloc::vec::Vec<u8>,
 }
 /// ProtoSchema describes the schema of the serialized protocol buffer data rows.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProtoSchema {
     /// Descriptor for input message. The descriptor has to be self contained,
@@ -101,7 +95,6 @@ pub struct ProtoSchema {
     #[prost(message, optional, tag = "1")]
     pub proto_descriptor: ::core::option::Option<::prost_types::DescriptorProto>,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProtoRows {
     /// A sequence of rows serialized as a Protocol Buffer.
@@ -112,7 +105,6 @@ pub struct ProtoRows {
     pub serialized_rows: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
 }
 /// Schema of a table
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableSchema {
     /// Describes the fields in a table.
@@ -120,7 +112,6 @@ pub struct TableSchema {
     pub fields: ::prost::alloc::vec::Vec<TableFieldSchema>,
 }
 /// A field in TableSchema
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableFieldSchema {
     /// Required. The field name. The name must contain only letters (a-z, A-Z),
@@ -282,7 +273,6 @@ pub mod table_field_schema {
     }
 }
 /// Information about the ReadSession.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadSession {
     /// Output only. Unique identifier for the session, in the form
@@ -324,7 +314,6 @@ pub struct ReadSession {
 /// Nested message and enum types in `ReadSession`.
 pub mod read_session {
     /// Additional attributes when reading a table.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct TableModifiers {
         /// The snapshot time of the table. If not set, interpreted as now.
@@ -332,7 +321,6 @@ pub mod read_session {
         pub snapshot_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Options dictating how we read a table.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableReadOptions {
         /// Names of the fields in the table that should be read. If empty, all
@@ -362,7 +350,6 @@ pub mod read_session {
     /// The schema for the read. If read_options.selected_fields is set, the
     /// schema may be different from the table schema as it will only contain
     /// the selected fields.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Schema {
         /// Output only. Avro schema.
@@ -376,7 +363,6 @@ pub mod read_session {
 /// Information about a single stream that gets data out of the storage system.
 /// Most of the information about `ReadStream` instances is aggregated, making
 /// `ReadStream` lightweight.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadStream {
     /// Output only. Name of the stream, in the form
@@ -385,7 +371,6 @@ pub struct ReadStream {
     pub name: ::prost::alloc::string::String,
 }
 /// Information about a single stream that gets data inside the storage system.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteStream {
     /// Output only. Name of the stream, in the form
@@ -498,7 +483,6 @@ impl DataFormat {
     }
 }
 /// Request message for `CreateReadSession`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateReadSessionRequest {
     /// Required. The request project that owns the session, in the form of
@@ -520,7 +504,6 @@ pub struct CreateReadSessionRequest {
     pub max_stream_count: i32,
 }
 /// Request message for `ReadRows`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadRowsRequest {
     /// Required. Stream to read rows from.
@@ -533,7 +516,6 @@ pub struct ReadRowsRequest {
     pub offset: i64,
 }
 /// Information on if the current connection is being throttled.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ThrottleState {
     /// How much this connection is being throttled. Zero means no throttling,
@@ -542,7 +524,6 @@ pub struct ThrottleState {
     pub throttle_percent: i32,
 }
 /// Estimated stream statistics for a given Stream.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StreamStats {
     /// Represents the progress of the current stream.
@@ -551,7 +532,6 @@ pub struct StreamStats {
 }
 /// Nested message and enum types in `StreamStats`.
 pub mod stream_stats {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Progress {
         /// The fraction of rows assigned to the stream that have been processed by
@@ -576,7 +556,6 @@ pub mod stream_stats {
 }
 /// Response from calling `ReadRows` may include row data, progress and
 /// throttling information.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadRowsResponse {
     /// Number of serialized rows in the rows block.
@@ -603,7 +582,6 @@ pub struct ReadRowsResponse {
 /// Nested message and enum types in `ReadRowsResponse`.
 pub mod read_rows_response {
     /// Row data is returned in format specified during session creation.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Rows {
         /// Serialized row data in AVRO format.
@@ -618,7 +596,6 @@ pub mod read_rows_response {
     /// the selected fields. This schema is equivalent to the one returned by
     /// CreateSession. This field is only populated in the first ReadRowsResponse
     /// RPC.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Schema {
         /// Output only. Avro schema.
@@ -630,7 +607,6 @@ pub mod read_rows_response {
     }
 }
 /// Request message for `SplitReadStream`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitReadStreamRequest {
     /// Required. Name of the stream to split.
@@ -646,7 +622,6 @@ pub struct SplitReadStreamRequest {
     #[prost(double, tag = "2")]
     pub fraction: f64,
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitReadStreamResponse {
     /// Primary stream, which contains the beginning portion of
@@ -660,7 +635,6 @@ pub struct SplitReadStreamResponse {
     pub remainder_stream: ::core::option::Option<ReadStream>,
 }
 /// Request message for `CreateWriteStream`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWriteStreamRequest {
     /// Required. Reference to the table to which the stream belongs, in the format
@@ -672,7 +646,6 @@ pub struct CreateWriteStreamRequest {
     pub write_stream: ::core::option::Option<WriteStream>,
 }
 /// Request message for `AppendRows`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppendRowsRequest {
     /// Required. The stream that is the target of the append operation. This value
@@ -702,7 +675,6 @@ pub struct AppendRowsRequest {
 /// Nested message and enum types in `AppendRowsRequest`.
 pub mod append_rows_request {
     /// Proto schema and data.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ProtoData {
         /// Proto schema used to serialize the data.
@@ -716,7 +688,6 @@ pub mod append_rows_request {
     /// request and currently, it will be ignored if specified in following
     /// requests. Following requests must have data in the same format as the
     /// initial request.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Rows {
         /// Rows in proto format.
@@ -725,7 +696,6 @@ pub mod append_rows_request {
     }
 }
 /// Response message for `AppendRows`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppendRowsResponse {
     /// If backend detects a schema update, pass it to user so that user can
@@ -739,7 +709,6 @@ pub struct AppendRowsResponse {
 /// Nested message and enum types in `AppendRowsResponse`.
 pub mod append_rows_response {
     /// AppendResult is returned for successful append requests.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AppendResult {
         /// The row offset at which the last append occurred. The offset will not be
@@ -747,7 +716,6 @@ pub mod append_rows_response {
         #[prost(message, optional, tag = "1")]
         pub offset: ::core::option::Option<i64>,
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Response {
         /// Result if the append is successful.
@@ -778,7 +746,6 @@ pub mod append_rows_response {
     }
 }
 /// Request message for `GetWriteStreamRequest`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWriteStreamRequest {
     /// Required. Name of the stream to get, in the form of
@@ -787,7 +754,6 @@ pub struct GetWriteStreamRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `BatchCommitWriteStreams`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCommitWriteStreamsRequest {
     /// Required. Parent table that all the streams should belong to, in the form
@@ -799,7 +765,6 @@ pub struct BatchCommitWriteStreamsRequest {
     pub write_streams: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for `BatchCommitWriteStreams`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCommitWriteStreamsResponse {
     /// The time at which streams were committed in microseconds granularity.
@@ -816,7 +781,6 @@ pub struct BatchCommitWriteStreamsResponse {
     pub stream_errors: ::prost::alloc::vec::Vec<StorageError>,
 }
 /// Request message for invoking `FinalizeWriteStream`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeWriteStreamRequest {
     /// Required. Name of the stream to finalize, in the form of
@@ -825,7 +789,6 @@ pub struct FinalizeWriteStreamRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for `FinalizeWriteStream`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FinalizeWriteStreamResponse {
     /// Number of rows in the finalized stream.
@@ -833,7 +796,6 @@ pub struct FinalizeWriteStreamResponse {
     pub row_count: i64,
 }
 /// Request message for `FlushRows`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FlushRowsRequest {
     /// Required. The stream that is the target of the flush operation.
@@ -845,7 +807,6 @@ pub struct FlushRowsRequest {
     pub offset: ::core::option::Option<i64>,
 }
 /// Respond message for `FlushRows`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FlushRowsResponse {
     /// The rows before this offset (including this offset) are flushed.
@@ -856,7 +817,6 @@ pub struct FlushRowsResponse {
 /// as error details in the returned rpc Status. In particular, the use of error
 /// codes allows more structured error handling, and reduces the need to evaluate
 /// unstructured error text strings.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StorageError {
     /// BigQuery Storage specific error code.
@@ -964,8 +924,8 @@ pub mod big_query_read_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -990,7 +950,7 @@ pub mod big_query_read_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             BigQueryReadClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -1184,8 +1144,8 @@ pub mod big_query_write_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -1210,7 +1170,7 @@ pub mod big_query_write_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             BigQueryWriteClient::new(InterceptedService::new(inner, interceptor))
         }

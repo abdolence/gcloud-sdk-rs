@@ -2,7 +2,6 @@
 /// Represents a set of declarations about what (if any) ad partners
 /// are associated with a given creative. This can be set at the network level,
 /// as a default for all creatives, or overridden for a particular creative.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdPartnerDeclaration {
     /// They type of declaration.
@@ -15,7 +14,6 @@ pub struct AdPartnerDeclaration {
 }
 /// Wrapper message for
 /// [DeclarationTypeEnum][google.ads.admanager.v1.DeclarationTypeEnum].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeclarationTypeEnum {}
 /// Nested message and enum types in `DeclarationTypeEnum`.
@@ -65,7 +63,6 @@ pub mod declaration_type_enum {
     }
 }
 /// The AdPartner resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdPartner {
     /// Identifier. The resource name of the AdPartner.
@@ -74,7 +71,6 @@ pub struct AdPartner {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for GetAdPartner method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdPartnerRequest {
     /// Required. The resource name of the AdPartner.
@@ -83,7 +79,6 @@ pub struct GetAdPartnerRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for ListAdPartners method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAdPartnersRequest {
     /// Required. The parent, which owns this collection of AdPartners.
@@ -119,7 +114,6 @@ pub struct ListAdPartnersRequest {
 }
 /// Response object for ListAdPartnersRequest containing matching AdPartner
 /// resources.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAdPartnersResponse {
     /// The AdPartner from the specified network.
@@ -168,8 +162,8 @@ pub mod ad_partner_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -194,7 +188,7 @@ pub mod ad_partner_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             AdPartnerServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -292,7 +286,6 @@ pub mod ad_partner_service_client {
 }
 /// Wrapper message for
 /// [AppliedAdsenseEnabled][google.ads.admanager.v1.AppliedAdsenseEnabledEnum.AppliedAdsenseEnabled]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AppliedAdsenseEnabledEnum {}
 /// Nested message and enum types in `AppliedAdsenseEnabledEnum`.
@@ -346,7 +339,6 @@ pub mod applied_adsense_enabled_enum {
 }
 /// Wrapper message for
 /// [EnvironmentType][google.ads.admanager.v1.EnvironmentTypeEnum.EnvironmentType].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EnvironmentTypeEnum {}
 /// Nested message and enum types in `EnvironmentTypeEnum`.
@@ -396,7 +388,6 @@ pub mod environment_type_enum {
     }
 }
 /// Represents the dimensions of an AdUnit, LineItem, or Creative.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Size {
     /// Required. The width of the [Creative](google.ads.admanager.v1.Creative),
@@ -418,7 +409,6 @@ pub struct Size {
 }
 /// Wrapper message for
 /// [SizeType][google.ads.admanager.v1.SizeTypeEnum.SizeType].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SizeTypeEnum {}
 /// Nested message and enum types in `SizeTypeEnum`.
@@ -494,7 +484,6 @@ pub mod size_type_enum {
     }
 }
 /// Represents the size, environment, and companions of an ad in an ad unit.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdUnitSize {
     /// Required. The Size of the AdUnit.
@@ -510,7 +499,6 @@ pub struct AdUnitSize {
     pub companions: ::prost::alloc::vec::Vec<Size>,
 }
 /// Represents a Label that can be applied to an entity.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppliedLabel {
     /// Required. The label to be applied.
@@ -522,7 +510,6 @@ pub struct AppliedLabel {
     pub negated: bool,
 }
 /// Represents a Frequency Cap that can be applied to an entity.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FrequencyCap {
     /// The maximum number of impressions for this frequency cap.
@@ -536,7 +523,6 @@ pub struct FrequencyCap {
     pub time_unit: ::core::option::Option<i32>,
 }
 /// Wrapper message for TimeUnit.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TimeUnitEnum {}
 /// Nested message and enum types in `TimeUnitEnum`.
@@ -611,7 +597,6 @@ pub mod time_unit_enum {
     }
 }
 /// The AdUnit resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdUnit {
     /// Identifier. The resource name of the AdUnit.
@@ -775,7 +760,6 @@ pub mod ad_unit {
     }
 }
 /// The summary of a parent AdUnit.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdUnitParent {
     /// Output only. The parent of the current AdUnit
@@ -792,7 +776,6 @@ pub struct AdUnitParent {
 }
 /// Wrapper message for
 /// [TargetWindow][google.ads.admanager.v1.TargetWindowEnum.TargetWindow].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TargetWindowEnum {}
 /// Nested message and enum types in `TargetWindowEnum`.
@@ -843,7 +826,6 @@ pub mod target_window_enum {
     }
 }
 /// Frequency cap using a label.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelFrequencyCap {
     /// The label to used for frequency capping.
@@ -856,7 +838,6 @@ pub struct LabelFrequencyCap {
 }
 /// Wrapper message for
 /// [SmartSizeMode][google.ads.admanager.v1.SmartSizeModeEnum.SmartSizeMode].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SmartSizeModeEnum {}
 /// Nested message and enum types in `SmartSizeModeEnum`.
@@ -911,7 +892,6 @@ pub mod smart_size_mode_enum {
     }
 }
 /// Request object for GetAdUnit method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdUnitRequest {
     /// Required. The resource name of the AdUnit.
@@ -920,7 +900,6 @@ pub struct GetAdUnitRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for ListAdUnits method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAdUnitsRequest {
     /// Required. The parent, which owns this collection of AdUnits.
@@ -955,7 +934,6 @@ pub struct ListAdUnitsRequest {
     pub skip: i32,
 }
 /// Response object for ListAdUnitsRequest containing matching AdUnit resources.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAdUnitsResponse {
     /// The AdUnit from the specified network.
@@ -1004,8 +982,8 @@ pub mod ad_unit_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -1030,7 +1008,7 @@ pub mod ad_unit_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             AdUnitServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -1128,7 +1106,6 @@ pub mod ad_unit_service_client {
 /// /
 /// / At least one AdManagerError should be included in all error messages sent
 /// to / the client.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdManagerError {
     /// The unique identifying string for this error.
@@ -1152,7 +1129,6 @@ pub struct AdManagerError {
 }
 /// Wrapper message for
 /// [CompanyCreditStatus][google.ads.admanager.v1.CompanyCreditStatusEnum.CompanyCreditStatus]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CompanyCreditStatusEnum {}
 /// Nested message and enum types in `CompanyCreditStatusEnum`.
@@ -1262,7 +1238,6 @@ pub mod company_credit_status_enum {
 }
 /// Wrapper message for
 /// [CompanyType][google.ads.admanager.v1.CompanyTypeEnum.CompanyType]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CompanyTypeEnum {}
 /// Nested message and enum types in `CompanyTypeEnum`.
@@ -1329,7 +1304,6 @@ pub mod company_type_enum {
     }
 }
 /// The `Company` resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Company {
     /// Identifier. The resource name of the `Company`.
@@ -1396,7 +1370,6 @@ pub struct Company {
     pub applied_teams: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request object for `GetCompany` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCompanyRequest {
     /// Required. The resource name of the Company.
@@ -1405,7 +1378,6 @@ pub struct GetCompanyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for `ListCompanies` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCompaniesRequest {
     /// Required. The parent, which owns this collection of Companies.
@@ -1441,7 +1413,6 @@ pub struct ListCompaniesRequest {
 }
 /// Response object for `ListCompaniesRequest` containing matching `Company`
 /// resources.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCompaniesResponse {
     /// The `Company` from the specified network.
@@ -1490,8 +1461,8 @@ pub mod company_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -1516,7 +1487,7 @@ pub mod company_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             CompanyServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -1614,7 +1585,6 @@ pub mod company_service_client {
 }
 /// Wrapper message for
 /// [ComputedStatus][google.ads.admanager.v1.ComputedStatusEnum.ComputedStatus].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ComputedStatusEnum {}
 /// Nested message and enum types in `ComputedStatusEnum`.
@@ -1705,7 +1675,6 @@ pub mod computed_status_enum {
     }
 }
 /// The Contact resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Contact {
     /// Identifier. The resource name of the Contact.
@@ -1717,7 +1686,6 @@ pub struct Contact {
     pub contact_id: i64,
 }
 /// Request object for GetContact method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetContactRequest {
     /// Required. The resource name of the Contact.
@@ -1726,7 +1694,6 @@ pub struct GetContactRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for ListContacts method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListContactsRequest {
     /// Required. The parent, which owns this collection of Contacts.
@@ -1762,7 +1729,6 @@ pub struct ListContactsRequest {
 }
 /// Response object for ListContactsRequest containing matching Contact
 /// resources.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListContactsResponse {
     /// The Contact from the specified network.
@@ -1811,8 +1777,8 @@ pub mod contact_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -1837,7 +1803,7 @@ pub mod contact_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ContactServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -1936,7 +1902,6 @@ pub mod contact_service_client {
 /// Describes a slot that a creative is expected to fill. This is used in
 /// forecasting and to validate that the correct creatives are associated with
 /// the line item.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreativePlaceholder {
     /// Required. The size that the creative is expected to have.
@@ -1969,7 +1934,6 @@ pub struct CreativePlaceholder {
     pub creative_targeting_display_name: ::prost::alloc::string::String,
 }
 /// The Creative resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Creative {
     /// Identifier. The resource name of the Creative.
@@ -2006,7 +1970,6 @@ pub struct Creative {
     pub ad_partner_declaration: ::core::option::Option<AdPartnerDeclaration>,
 }
 /// Request object for GetCreative method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCreativeRequest {
     /// Required. The resource name of the Creative.
@@ -2015,7 +1978,6 @@ pub struct GetCreativeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for ListCreatives method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCreativesRequest {
     /// Required. The parent, which owns this collection of Creatives.
@@ -2051,7 +2013,6 @@ pub struct ListCreativesRequest {
 }
 /// Response object for ListCreativesRequest containing matching Creative
 /// resources.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCreativesResponse {
     /// The Creative from the specified network.
@@ -2100,8 +2061,8 @@ pub mod creative_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -2126,7 +2087,7 @@ pub mod creative_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             CreativeServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -2224,7 +2185,6 @@ pub mod creative_service_client {
 }
 /// Wrapper message for
 /// [CustomFieldDataType][google.ads.admanager.v1.CustomFieldDataTypeEnum.CustomFieldDataType]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomFieldDataTypeEnum {}
 /// Nested message and enum types in `CustomFieldDataTypeEnum`.
@@ -2285,7 +2245,6 @@ pub mod custom_field_data_type_enum {
 }
 /// Wrapper message for
 /// [CustomFieldEntityType][google.ads.admanager.v1.CustomFieldEntityTypeEnum.CustomFieldEntityType]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomFieldEntityTypeEnum {}
 /// Nested message and enum types in `CustomFieldEntityTypeEnum`.
@@ -2350,7 +2309,6 @@ pub mod custom_field_entity_type_enum {
 }
 /// Wrapper message for
 /// [CustomFieldStatus][google.ads.admanager.v1.CustomFieldStatusEnum.CustomFieldStatus]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomFieldStatusEnum {}
 /// Nested message and enum types in `CustomFieldStatusEnum`.
@@ -2401,7 +2359,6 @@ pub mod custom_field_status_enum {
 }
 /// Wrapper message for
 /// [CustomFieldVisibility][google.ads.admanager.v1.CustomFieldVisibilityEnum.CustomFieldVisibility]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomFieldVisibilityEnum {}
 /// Nested message and enum types in `CustomFieldVisibilityEnum`.
@@ -2458,7 +2415,6 @@ pub mod custom_field_visibility_enum {
     }
 }
 /// The `CustomField` resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomField {
     /// Identifier. The resource name of the `CustomField`.
@@ -2503,7 +2459,6 @@ pub struct CustomField {
     pub options: ::prost::alloc::vec::Vec<CustomFieldOption>,
 }
 /// An option for a drop-down `CustomField`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomFieldOption {
     /// Output only. `CustomFieldOption` ID.
@@ -2516,7 +2471,6 @@ pub struct CustomFieldOption {
     pub display_name: ::prost::alloc::string::String,
 }
 /// Request object for `GetCustomField` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomFieldRequest {
     /// Required. The resource name of the CustomField.
@@ -2525,7 +2479,6 @@ pub struct GetCustomFieldRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for `ListCustomFields` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomFieldsRequest {
     /// Required. The parent, which owns this collection of CustomFields.
@@ -2559,7 +2512,6 @@ pub struct ListCustomFieldsRequest {
 }
 /// Response object for `ListCustomFieldsRequest` containing matching
 /// `CustomField` objects.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomFieldsResponse {
     /// The `CustomField` objects from the specified network.
@@ -2608,8 +2560,8 @@ pub mod custom_field_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -2634,7 +2586,7 @@ pub mod custom_field_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             CustomFieldServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -2732,7 +2684,6 @@ pub mod custom_field_service_client {
 }
 /// Wrapper message for
 /// [CustomTargetingKeyStatus][google.ads.admanager.v1.CustomTargetingKeyStatusEnum.CustomTargetingKeyStatus]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomTargetingKeyStatusEnum {}
 /// Nested message and enum types in `CustomTargetingKeyStatusEnum`.
@@ -2785,7 +2736,6 @@ pub mod custom_targeting_key_status_enum {
 }
 /// Wrapper message for
 /// [CustomTargetingKeyType][google.ads.admanager.v1.CustomTargetingKeyTypeEnum.CustomTargetingKeyType]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomTargetingKeyTypeEnum {}
 /// Nested message and enum types in `CustomTargetingKeyTypeEnum`.
@@ -2838,7 +2788,6 @@ pub mod custom_targeting_key_type_enum {
 }
 /// Wrapper message for
 /// [CustomTargetingKeyReportableType][google.ads.admanager.v1.CustomTargetingKeyReportableTypeEnum.CustomTargetingKeyReportableType]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomTargetingKeyReportableTypeEnum {}
 /// Nested message and enum types in `CustomTargetingKeyReportableTypeEnum`.
@@ -2896,7 +2845,6 @@ pub mod custom_targeting_key_reportable_type_enum {
     }
 }
 /// The `CustomTargetingKey` resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomTargetingKey {
     /// Identifier. The resource name of the `CustomTargetingKey`.
@@ -2937,7 +2885,6 @@ pub struct CustomTargetingKey {
     pub reportable_type: i32,
 }
 /// Request object for `GetCustomTargetingKey` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomTargetingKeyRequest {
     /// Required. The resource name of the CustomTargetingKey.
@@ -2947,7 +2894,6 @@ pub struct GetCustomTargetingKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for `ListCustomTargetingKeys` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomTargetingKeysRequest {
     /// Required. The parent, which owns this collection of CustomTargetingKeys.
@@ -2983,7 +2929,6 @@ pub struct ListCustomTargetingKeysRequest {
 }
 /// Response object for `ListCustomTargetingKeysRequest` containing matching
 /// `CustomTargetingKey` objects.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomTargetingKeysResponse {
     /// The `CustomTargetingKey` objects from the specified network.
@@ -3032,8 +2977,8 @@ pub mod custom_targeting_key_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -3058,7 +3003,7 @@ pub mod custom_targeting_key_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             CustomTargetingKeyServiceClient::new(
                 InterceptedService::new(inner, interceptor),
@@ -3161,7 +3106,6 @@ pub mod custom_targeting_key_service_client {
 }
 /// Wrapper message for
 /// [CustomTargetingValueStatus][google.ads.admanager.v1.CustomTargetingValueStatusEnum.CustomTargetingValueStatus]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomTargetingValueStatusEnum {}
 /// Nested message and enum types in `CustomTargetingValueStatusEnum`.
@@ -3214,7 +3158,6 @@ pub mod custom_targeting_value_status_enum {
 }
 /// Wrapper message for
 /// [CustomTargetingValueMatchType][google.ads.admanager.v1.CustomTargetingValueMatchTypeEnum.CustomTargetingValueMatchType]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CustomTargetingValueMatchTypeEnum {}
 /// Nested message and enum types in `CustomTargetingValueMatchTypeEnum`.
@@ -3305,7 +3248,6 @@ pub mod custom_targeting_value_match_type_enum {
     }
 }
 /// The `CustomTargetingValue` resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomTargetingValue {
     /// Identifier. The resource name of the `CustomTargetingValue`.
@@ -3338,7 +3280,6 @@ pub struct CustomTargetingValue {
     pub status: i32,
 }
 /// Request object for `GetCustomTargetingValue` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomTargetingValueRequest {
     /// Required. The resource name of the CustomTargetingValue.
@@ -3348,7 +3289,6 @@ pub struct GetCustomTargetingValueRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for `ListCustomTargetingValues` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomTargetingValuesRequest {
     /// Required. The parent, which owns this collection of CustomTargetingValues.
@@ -3387,7 +3327,6 @@ pub struct ListCustomTargetingValuesRequest {
 }
 /// Response object for `ListCustomTargetingValuesRequest` containing matching
 /// `CustomTargetingValue` objects.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomTargetingValuesResponse {
     /// The `CustomTargetingValue` objects from the specified network.
@@ -3436,8 +3375,8 @@ pub mod custom_targeting_value_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -3462,7 +3401,7 @@ pub mod custom_targeting_value_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             CustomTargetingValueServiceClient::new(
                 InterceptedService::new(inner, interceptor),
@@ -3566,7 +3505,6 @@ pub mod custom_targeting_value_service_client {
 /// Defines the criteria a [LineItem][google.ads.admanager.v1.LineItem] needs to
 /// satisfy to meet its delivery
 ///   goal.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Goal {
     /// The type of the goal for the LineItem. It defines the period over which the
@@ -3598,7 +3536,6 @@ pub struct Goal {
 }
 /// Wrapper message for
 /// [GoalType][google.ads.admanager.v1.GoalTypeEnum.GoalType].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GoalTypeEnum {}
 /// Nested message and enum types in `GoalTypeEnum`.
@@ -3681,7 +3618,6 @@ pub mod goal_type_enum {
 }
 /// Wrapper message for
 /// [UnitType][google.ads.admanager.v1.UnitTypeEnum.UnitType].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UnitTypeEnum {}
 /// Nested message and enum types in `UnitTypeEnum`.
@@ -3779,7 +3715,6 @@ pub mod unit_type_enum {
     }
 }
 /// The Label resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Label {
     /// Identifier. The resource name of the Label.
@@ -3788,7 +3723,6 @@ pub struct Label {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for GetLabel method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLabelRequest {
     /// Required. The resource name of the Label.
@@ -3797,7 +3731,6 @@ pub struct GetLabelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for ListLabels method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLabelsRequest {
     /// Required. The parent, which owns this collection of Labels.
@@ -3832,7 +3765,6 @@ pub struct ListLabelsRequest {
 }
 /// Response object for ListLabelsRequest containing matching Label
 /// resources.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLabelsResponse {
     /// The Label from the specified network.
@@ -3881,8 +3813,8 @@ pub mod label_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -3907,7 +3839,7 @@ pub mod label_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             LabelServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -3999,7 +3931,6 @@ pub mod label_service_client {
 }
 /// Wrapper message for
 /// [LineItemCostType][google.ads.admanager.v1.LineItemCostTypeEnum.LineItemCostType].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LineItemCostTypeEnum {}
 /// Nested message and enum types in `LineItemCostTypeEnum`.
@@ -4106,7 +4037,6 @@ pub mod line_item_cost_type_enum {
 }
 /// Wrapper message for
 /// [CreativeRotationType][google.ads.admanager.v1.CreativeRotationTypeEnum.CreativeRotationType].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreativeRotationTypeEnum {}
 /// Nested message and enum types in `CreativeRotationTypeEnum`.
@@ -4170,7 +4100,6 @@ pub mod creative_rotation_type_enum {
 }
 /// Wrapper message for
 /// [DeliveryRateType][google.ads.admanager.v1.DeliveryRateTypeEnum.DeliveryRateType].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeliveryRateTypeEnum {}
 /// Nested message and enum types in `DeliveryRateTypeEnum`.
@@ -4232,7 +4161,6 @@ pub mod delivery_rate_type_enum {
 }
 /// Wrapper message for
 /// [LineItemDiscountType][google.ads.admanager.v1.LineItemDiscountTypeEnum.LineItemDiscountType].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LineItemDiscountTypeEnum {}
 /// Nested message and enum types in `LineItemDiscountTypeEnum`.
@@ -4285,7 +4213,6 @@ pub mod line_item_discount_type_enum {
 }
 /// Wrapper message for
 /// [LineItemType][google.ads.admanager.v1.LineItemTypeEnum.LineItemType].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LineItemTypeEnum {}
 /// Nested message and enum types in `LineItemTypeEnum`.
@@ -4395,7 +4322,6 @@ pub mod line_item_type_enum {
 }
 /// Wrapper message for
 /// [ReservationStatus][google.ads.admanager.v1.ReservationStatusEnum.ReservationStatus].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReservationStatusEnum {}
 /// Nested message and enum types in `ReservationStatusEnum`.
@@ -4445,7 +4371,6 @@ pub mod reservation_status_enum {
     }
 }
 /// The LineItem resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LineItem {
     /// Identifier. The resource name of the LineItem.
@@ -4640,7 +4565,6 @@ pub struct LineItem {
     pub impression_limit: ::core::option::Option<Goal>,
 }
 /// Request object for GetLineItem method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLineItemRequest {
     /// Required. The resource name of the LineItem.
@@ -4650,7 +4574,6 @@ pub struct GetLineItemRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for ListLineItems method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLineItemsRequest {
     /// Required. The parent, which owns this collection of LineItems.
@@ -4686,7 +4609,6 @@ pub struct ListLineItemsRequest {
 }
 /// Response object for ListLineItemsRequest containing matching LineItem
 /// resources.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLineItemsResponse {
     /// The LineItem from the specified network.
@@ -4735,8 +4657,8 @@ pub mod line_item_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -4761,7 +4683,7 @@ pub mod line_item_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             LineItemServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -4858,7 +4780,6 @@ pub mod line_item_service_client {
     }
 }
 /// The Network resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Network {
     /// Identifier. The resource name of the Network.
@@ -4900,7 +4821,6 @@ pub struct Network {
     pub network_id: i64,
 }
 /// Request to get Network
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNetworkRequest {
     /// Required. Resource name of Network.
@@ -4933,8 +4853,8 @@ pub mod network_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -4959,7 +4879,7 @@ pub mod network_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             NetworkServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -5025,7 +4945,6 @@ pub mod network_service_client {
     }
 }
 /// The `Order` resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Order {
     /// Identifier. The resource name of the `Order`.
@@ -5208,7 +5127,6 @@ pub mod order {
     }
 }
 /// Request object for `GetOrder` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOrderRequest {
     /// Required. The resource name of the Order.
@@ -5217,7 +5135,6 @@ pub struct GetOrderRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for `ListOrders` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrdersRequest {
     /// Required. The parent, which owns this collection of Orders.
@@ -5253,7 +5170,6 @@ pub struct ListOrdersRequest {
 }
 /// Response object for `ListOrdersRequest` containing matching `Order`
 /// resources.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrdersResponse {
     /// The `Order` from the specified network.
@@ -5302,8 +5218,8 @@ pub mod order_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -5328,7 +5244,7 @@ pub mod order_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             OrderServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -5425,7 +5341,6 @@ pub mod order_service_client {
 }
 /// Wrapper message for
 /// [PlacementStatus][google.ads.admanager.v1.PlacementStatusEnum.PlacementStatus]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PlacementStatusEnum {}
 /// Nested message and enum types in `PlacementStatusEnum`.
@@ -5479,7 +5394,6 @@ pub mod placement_status_enum {
     }
 }
 /// The `Placement` resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Placement {
     /// Identifier. The resource name of the `Placement`.
@@ -5514,7 +5428,6 @@ pub struct Placement {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request object for `GetPlacement` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPlacementRequest {
     /// Required. The resource name of the Placement.
@@ -5523,7 +5436,6 @@ pub struct GetPlacementRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for `ListPlacements` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPlacementsRequest {
     /// Required. The parent, which owns this collection of Placements.
@@ -5559,7 +5471,6 @@ pub struct ListPlacementsRequest {
 }
 /// Response object for `ListPlacementsRequest` containing matching `Placement`
 /// objects.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPlacementsResponse {
     /// The `Placement` objects from the specified network.
@@ -5608,8 +5519,8 @@ pub mod placement_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -5634,7 +5545,7 @@ pub mod placement_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             PlacementServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -5731,7 +5642,6 @@ pub mod placement_service_client {
     }
 }
 /// The Report resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Report {
     /// Identifier. The resource name of the Report.
@@ -5741,7 +5651,6 @@ pub struct Report {
     pub name: ::prost::alloc::string::String,
 }
 /// Request proto for the configuration of a report run.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportSavedReportRequest {
     /// The name of a particular saved report resource.
@@ -5829,7 +5738,6 @@ pub mod export_saved_report_request {
 }
 /// The message stored in the google.longrunning.Operation.metadata field.
 /// Contains metadata regarding this execution.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportSavedReportMetadata {
     /// The result generated in this report run.
@@ -5838,7 +5746,6 @@ pub struct ExportSavedReportMetadata {
 }
 /// Message included in the longrunning Operation result.response field when
 /// the report completes successfully.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportSavedReportResponse {
     /// The link to the exported file.
@@ -5870,8 +5777,8 @@ pub mod report_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -5896,7 +5803,7 @@ pub mod report_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ReportServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -5970,7 +5877,6 @@ pub mod report_service_client {
     }
 }
 /// The Role resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Role {
     /// Identifier. The resource name of the Role.
@@ -5979,7 +5885,6 @@ pub struct Role {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for GetRole method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRoleRequest {
     /// Required. The resource name of the Role.
@@ -5988,7 +5893,6 @@ pub struct GetRoleRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for ListRoles method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRolesRequest {
     /// Required. The parent, which owns this collection of Roles.
@@ -6023,7 +5927,6 @@ pub struct ListRolesRequest {
 }
 /// Response object for ListRolesRequest containing matching Role
 /// resources.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRolesResponse {
     /// The Role from the specified network.
@@ -6072,8 +5975,8 @@ pub mod role_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -6098,7 +6001,7 @@ pub mod role_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             RoleServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -6189,7 +6092,6 @@ pub mod role_service_client {
     }
 }
 /// The Team resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Team {
     /// Identifier. The resource name of the Team.
@@ -6198,7 +6100,6 @@ pub struct Team {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for GetTeam method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTeamRequest {
     /// Required. The resource name of the Team.
@@ -6207,7 +6108,6 @@ pub struct GetTeamRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for ListTeams method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTeamsRequest {
     /// Required. The parent, which owns this collection of Teams.
@@ -6242,7 +6142,6 @@ pub struct ListTeamsRequest {
 }
 /// Response object for ListTeamsRequest containing matching Team
 /// resources.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTeamsResponse {
     /// The Team from the specified network.
@@ -6291,8 +6190,8 @@ pub mod team_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -6317,7 +6216,7 @@ pub mod team_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             TeamServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -6408,7 +6307,6 @@ pub mod team_service_client {
     }
 }
 /// The User resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct User {
     /// Identifier. The resource name of the User.
@@ -6450,7 +6348,6 @@ pub struct User {
     pub orders_ui_local_time_zone: ::prost::alloc::string::String,
 }
 /// Request object for GetUser method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetUserRequest {
     /// Required. The resource name of the User.
@@ -6459,7 +6356,6 @@ pub struct GetUserRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request object for ListUsers method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUsersRequest {
     /// Required. The parent, which owns this collection of Users.
@@ -6493,7 +6389,6 @@ pub struct ListUsersRequest {
     pub skip: i32,
 }
 /// Response object for ListUsersRequest containing matching User resources.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUsersResponse {
     /// The User from the specified network.
@@ -6542,8 +6437,8 @@ pub mod user_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -6568,7 +6463,7 @@ pub mod user_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             UserServiceClient::new(InterceptedService::new(inner, interceptor))
         }

@@ -2,7 +2,6 @@
 /// A subscription to receive events about a Google Workspace resource. To learn
 /// more about subscriptions, see the [Google Workspace Events API
 /// overview](<https://developers.google.com/workspace/events>).
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subscription {
     /// Optional. Immutable. Identifier. Resource name of the subscription.
@@ -261,7 +260,6 @@ pub mod subscription {
     /// [`UpdateSubscription`][google.apps.events.subscriptions.v1.SubscriptionsService.UpdateSubscription]
     /// method to extend its expiration date. For details, see [Update or renew a
     /// subscription](<https://developers.google.com/workspace/events/guides/update-subscription>).
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Expiration {
         /// Non-empty default. The timestamp in UTC when the subscription expires.
@@ -276,7 +274,6 @@ pub mod subscription {
 }
 /// Options about what data to include in the event payload. Only supported for
 /// Google Chat events.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PayloadOptions {
     /// Optional. Whether the event payload includes data about the resource that
@@ -299,7 +296,6 @@ pub struct PayloadOptions {
     pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The endpoint where the subscription delivers events.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationEndpoint {
     #[prost(oneof = "notification_endpoint::Endpoint", tags = "1")]
@@ -307,7 +303,6 @@ pub struct NotificationEndpoint {
 }
 /// Nested message and enum types in `NotificationEndpoint`.
 pub mod notification_endpoint {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Endpoint {
         /// Immutable. The Cloud Pub/Sub topic that receives events for the
@@ -328,7 +323,6 @@ pub mod notification_endpoint {
 }
 /// The request message for
 /// [SubscriptionsService.CreateSubscription][google.apps.events.subscriptions.v1.SubscriptionsService.CreateSubscription].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSubscriptionRequest {
     /// Required. The subscription resource to create.
@@ -341,7 +335,6 @@ pub struct CreateSubscriptionRequest {
 }
 /// The request message for
 /// [SubscriptionsService.DeleteSubscription][google.apps.events.subscriptions.v1.SubscriptionsService.DeleteSubscription].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSubscriptionRequest {
     /// Required. Resource name of the subscription to delete.
@@ -366,7 +359,6 @@ pub struct DeleteSubscriptionRequest {
 }
 /// The request message for
 /// [SubscriptionsService.GetSubscription][google.apps.events.subscriptions.v1.SubscriptionsService.GetSubscription].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSubscriptionRequest {
     /// Required. Resource name of the subscription.
@@ -377,7 +369,6 @@ pub struct GetSubscriptionRequest {
 }
 /// The request message for
 /// [SubscriptionsService.UpdateSubscription][google.apps.events.subscriptions.v1.SubscriptionsService.UpdateSubscription].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSubscriptionRequest {
     /// Required. The subscription to update.
@@ -404,7 +395,6 @@ pub struct UpdateSubscriptionRequest {
 }
 /// The request message for
 /// [SubscriptionsService.ReactivateSubscription][google.apps.events.subscriptions.v1.SubscriptionsService.ReactivateSubscription].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReactivateSubscriptionRequest {
     /// Required. Resource name of the subscription.
@@ -415,7 +405,6 @@ pub struct ReactivateSubscriptionRequest {
 }
 /// The request message for
 /// [SubscriptionsService.ListSubscriptions][google.apps.events.subscriptions.v1.SubscriptionsService.ListSubscriptions].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubscriptionsRequest {
     /// Optional. The maximum number of subscriptions to return. The service might
@@ -467,7 +456,6 @@ pub struct ListSubscriptionsRequest {
 }
 /// The response message for
 /// [SubscriptionsService.ListSubscriptions][google.apps.events.subscriptions.v1.SubscriptionsService.ListSubscriptions].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubscriptionsResponse {
     /// List of subscriptions.
@@ -479,19 +467,15 @@ pub struct ListSubscriptionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Metadata for UpdateSubscription LRO.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpdateSubscriptionMetadata {}
 /// Metadata for CreateSubscription LRO.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateSubscriptionMetadata {}
 /// Metadata for DeleteSubscription LRO.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteSubscriptionMetadata {}
 /// Metadata for ReactivateSubscription LRO.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReactivateSubscriptionMetadata {}
 /// Generated client implementations.
@@ -519,8 +503,8 @@ pub mod subscriptions_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -545,7 +529,7 @@ pub mod subscriptions_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SubscriptionsServiceClient::new(InterceptedService::new(inner, interceptor))
         }

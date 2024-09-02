@@ -79,7 +79,6 @@ impl AcceleratorType {
 }
 /// References an API call. It contains more information about long running
 /// operation and Jobs that are triggered by the API call.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserActionReference {
     /// The method name of the API RPC call. For example,
@@ -91,7 +90,6 @@ pub struct UserActionReference {
 }
 /// Nested message and enum types in `UserActionReference`.
 pub mod user_action_reference {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Reference {
         /// For API calls that return a long running operation.
@@ -110,7 +108,6 @@ pub mod user_action_reference {
 }
 /// Used to assign specific AnnotationSpec to a particular area of a DataItem or
 /// the whole part of the DataItem.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Annotation {
     /// Output only. Resource name of the Annotation.
@@ -171,7 +168,6 @@ pub struct Annotation {
     >,
 }
 /// Identifies a concept with which DataItems may be annotated with.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotationSpec {
     /// Output only. Resource name of the AnnotationSpec.
@@ -194,7 +190,6 @@ pub struct AnnotationSpec {
     pub etag: ::prost::alloc::string::String,
 }
 /// Instance of a general artifact.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Artifact {
     /// Output only. The resource name of the Artifact.
@@ -309,7 +304,6 @@ pub mod artifact {
 }
 /// Success and error statistics of processing multiple entities
 /// (for example, DataItems or structured data rows) in batch.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CompletionStats {
     /// Output only. The number of entities that had been processed successfully.
@@ -333,7 +327,6 @@ pub struct CompletionStats {
 }
 /// Represents a customer-managed encryption key spec that can be applied to
 /// a top-level resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptionSpec {
     /// Required. The Cloud KMS resource identifier of the customer managed
@@ -345,7 +338,6 @@ pub struct EncryptionSpec {
     pub kms_key_name: ::prost::alloc::string::String,
 }
 /// Metadata describing the Model's input and output for explanation.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplanationMetadata {
     /// Required. Map from feature names to feature input metadata. Keys are the
@@ -405,7 +397,6 @@ pub mod explanation_metadata {
     /// [InputMetadata.input_baselines][google.cloud.aiplatform.v1.ExplanationMetadata.InputMetadata.input_baselines]
     /// are applicable only for Models that are using Vertex AI-provided images for
     /// Tensorflow.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InputMetadata {
         /// Baseline inputs for this feature.
@@ -506,7 +497,6 @@ pub mod explanation_metadata {
         /// stddev = 1 values, then original_mean, and original_stddev refer to the
         /// mean and stddev of the original feature (e.g. image tensor) from which
         /// input feature (with mean = 0 and stddev = 1) was obtained.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct FeatureValueDomain {
             /// The minimum permissible value for this feature.
@@ -527,7 +517,6 @@ pub mod explanation_metadata {
             pub original_stddev: f32,
         }
         /// Visualization configurations for image explanation.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Visualization {
             /// Type of the image visualization. Only applicable to
@@ -887,7 +876,6 @@ pub mod explanation_metadata {
         }
     }
     /// Metadata of the prediction output to be explained.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct OutputMetadata {
         /// Name of the output tensor. Required and is only applicable to Vertex
@@ -917,7 +905,6 @@ pub mod explanation_metadata {
         /// If neither of the fields are specified,
         /// [Attribution.output_display_name][google.cloud.aiplatform.v1.Attribution.output_display_name]
         /// will not be populated.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum DisplayNameMapping {
             /// Static mapping between the index and display name.
@@ -950,7 +937,6 @@ pub mod explanation_metadata {
     }
 }
 /// The storage details for Avro input content.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvroSource {
     /// Required. Google Cloud Storage location.
@@ -958,7 +944,6 @@ pub struct AvroSource {
     pub gcs_source: ::core::option::Option<GcsSource>,
 }
 /// The storage details for CSV input content.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CsvSource {
     /// Required. Google Cloud Storage location.
@@ -966,7 +951,6 @@ pub struct CsvSource {
     pub gcs_source: ::core::option::Option<GcsSource>,
 }
 /// The Google Cloud Storage location for the input content.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
     /// Required. Google Cloud Storage URI(-s) to the input file(s). May contain
@@ -976,7 +960,6 @@ pub struct GcsSource {
     pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The Google Cloud Storage location where the output is to be written to.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestination {
     /// Required. Google Cloud Storage URI to output directory. If the uri doesn't
@@ -987,7 +970,6 @@ pub struct GcsDestination {
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
 /// The BigQuery location for the input content.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQuerySource {
     /// Required. BigQuery URI to a table, up to 2000 characters long.
@@ -998,7 +980,6 @@ pub struct BigQuerySource {
     pub input_uri: ::prost::alloc::string::String,
 }
 /// The BigQuery location for the output content.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryDestination {
     /// Required. BigQuery URI to a project or table, up to 2000 characters long.
@@ -1016,7 +997,6 @@ pub struct BigQueryDestination {
     pub output_uri: ::prost::alloc::string::String,
 }
 /// The storage details for CSV output content.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CsvDestination {
     /// Required. Google Cloud Storage location.
@@ -1024,7 +1004,6 @@ pub struct CsvDestination {
     pub gcs_destination: ::core::option::Option<GcsDestination>,
 }
 /// The storage details for TFRecord output content.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TfRecordDestination {
     /// Required. Google Cloud Storage location.
@@ -1032,7 +1011,6 @@ pub struct TfRecordDestination {
     pub gcs_destination: ::core::option::Option<GcsDestination>,
 }
 /// The Container Registry location for the container image.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContainerRegistryDestination {
     /// Required. Container Registry URI of a container image.
@@ -1053,7 +1031,6 @@ pub struct ContainerRegistryDestination {
 /// [PredictResponse.predictions][google.cloud.aiplatform.v1.PredictResponse.predictions])
 /// produced by the Model on a given
 /// [instance][google.cloud.aiplatform.v1.ExplainRequest.instances].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Explanation {
     /// Output only. Feature attributions grouped by predicted outputs.
@@ -1093,7 +1070,6 @@ pub struct Explanation {
     pub neighbors: ::prost::alloc::vec::Vec<Neighbor>,
 }
 /// Aggregated explanation metrics for a Model over a set of instances.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelExplanation {
     /// Output only. Aggregated attributions explaining the Model's prediction
@@ -1122,7 +1098,6 @@ pub struct ModelExplanation {
     pub mean_attributions: ::prost::alloc::vec::Vec<Attribution>,
 }
 /// Attribution that explains a particular prediction output.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Attribution {
     /// Output only. Model predicted output if the input instance is constructed
@@ -1232,7 +1207,6 @@ pub struct Attribution {
     pub output_name: ::prost::alloc::string::String,
 }
 /// Neighbors for example-based explanations.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Neighbor {
     /// Output only. The neighbor id.
@@ -1243,7 +1217,6 @@ pub struct Neighbor {
     pub neighbor_distance: f64,
 }
 /// Specification of Model explanation.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplanationSpec {
     /// Required. Parameters that configure explaining of the Model's predictions.
@@ -1254,7 +1227,6 @@ pub struct ExplanationSpec {
     pub metadata: ::core::option::Option<ExplanationMetadata>,
 }
 /// Parameters to configure explaining for Model's predictions.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplanationParameters {
     /// If populated, returns attributions for top K indices of outputs
@@ -1282,7 +1254,6 @@ pub struct ExplanationParameters {
 }
 /// Nested message and enum types in `ExplanationParameters`.
 pub mod explanation_parameters {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Method {
         /// An attribution method that approximates Shapley values for features that
@@ -1316,7 +1287,6 @@ pub mod explanation_parameters {
 /// An attribution method that approximates Shapley values for features that
 /// contribute to the label being predicted. A sampling strategy is used to
 /// approximate the value rather than considering all subsets of features.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SampledShapleyAttribution {
     /// Required. The number of feature permutations to consider when approximating
@@ -1329,7 +1299,6 @@ pub struct SampledShapleyAttribution {
 /// An attribution method that computes the Aumann-Shapley value taking advantage
 /// of the model's fully differentiable structure. Refer to this paper for
 /// more details: <https://arxiv.org/abs/1703.01365>
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IntegratedGradientsAttribution {
     /// Required. The number of steps for approximating the path integral.
@@ -1362,7 +1331,6 @@ pub struct IntegratedGradientsAttribution {
 /// <https://arxiv.org/abs/1906.02825>
 ///
 /// Supported only by image Models.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct XraiAttribution {
     /// Required. The number of steps for approximating the path integral.
@@ -1395,7 +1363,6 @@ pub struct XraiAttribution {
 /// noisy samples in the vicinity of the inputs. Adding noise can help improve
 /// the computed gradients. Refer to this paper for more details:
 /// <https://arxiv.org/pdf/1706.03825.pdf>
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SmoothGradConfig {
     /// The number of gradient samples to use for
@@ -1417,7 +1384,6 @@ pub mod smooth_grad_config {
     /// Represents the standard deviation of the gaussian kernel
     /// that will be used to add noise to the interpolated inputs
     /// prior to computing gradients.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum GradientNoiseSigma {
         /// This is a single float value and will be used to add noise to all the
@@ -1450,7 +1416,6 @@ pub mod smooth_grad_config {
 /// Noise sigma by features. Noise sigma represents the standard deviation of the
 /// gaussian kernel that will be used to add noise to interpolated inputs prior
 /// to computing gradients.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureNoiseSigma {
     /// Noise sigma per feature. No noise is added to features that are not set.
@@ -1460,7 +1425,6 @@ pub struct FeatureNoiseSigma {
 /// Nested message and enum types in `FeatureNoiseSigma`.
 pub mod feature_noise_sigma {
     /// Noise sigma for a single feature.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NoiseSigmaForFeature {
         /// The name of the input feature for which noise sigma is provided. The
@@ -1483,7 +1447,6 @@ pub mod feature_noise_sigma {
 /// image is created. Using a blurred baseline instead of zero (black image) is
 /// motivated by the BlurIG approach explained here:
 /// <https://arxiv.org/abs/2004.03383>
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BlurBaselineConfig {
     /// The standard deviation of the blur kernel for the blurred baseline. The
@@ -1495,7 +1458,6 @@ pub struct BlurBaselineConfig {
 }
 /// Example-based explainability that returns the nearest neighbors from the
 /// provided dataset.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Examples {
     /// The number of neighbors to return when querying for examples.
@@ -1509,7 +1471,6 @@ pub struct Examples {
 /// Nested message and enum types in `Examples`.
 pub mod examples {
     /// The Cloud Storage input instances.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExampleGcsSource {
         /// The format in which instances are given, if not specified, assume it's
@@ -1562,14 +1523,12 @@ pub mod examples {
             }
         }
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The Cloud Storage input instances.
         #[prost(message, tag = "5")]
         ExampleGcsSource(ExampleGcsSource),
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Config {
         /// The full configuration for the generated index, the semantics are the
@@ -1585,7 +1544,6 @@ pub mod examples {
     }
 }
 /// Preset configuration for example-based explanations
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Presets {
     /// Preset option controlling parameters for speed-precision trade-off when
@@ -1691,7 +1649,6 @@ pub mod presets {
 /// The [ExplanationSpec][google.cloud.aiplatform.v1.ExplanationSpec] entries
 /// that can be overridden at [online
 /// explanation][google.cloud.aiplatform.v1.PredictionService.Explain] time.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplanationSpecOverride {
     /// The parameters to be overridden. Note that the
@@ -1709,7 +1666,6 @@ pub struct ExplanationSpecOverride {
 /// The [ExplanationMetadata][google.cloud.aiplatform.v1.ExplanationMetadata]
 /// entries that can be overridden at [online
 /// explanation][google.cloud.aiplatform.v1.PredictionService.Explain] time.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplanationMetadataOverride {
     /// Required. Overrides the [input
@@ -1729,7 +1685,6 @@ pub mod explanation_metadata_override {
     /// The [input
     /// metadata][google.cloud.aiplatform.v1.ExplanationMetadata.InputMetadata]
     /// entries to be overridden.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InputMetadataOverride {
         /// Baseline inputs for this feature.
@@ -1743,7 +1698,6 @@ pub mod explanation_metadata_override {
     }
 }
 /// Overrides for example-based explanations.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExamplesOverride {
     /// The number of neighbors to return.
@@ -1809,7 +1763,6 @@ pub mod examples_override {
     }
 }
 /// Restrictions namespace for example-based explanations overrides.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExamplesRestrictionsNamespace {
     /// The namespace name.
@@ -1896,7 +1849,6 @@ impl JobState {
 /// A ReservationAffinity can be used to configure a Vertex AI resource (e.g., a
 /// DeployedModel) to draw its Compute Engine resources from a Shared
 /// Reservation, or exclusively from on-demand capacity.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationAffinity {
     /// Required. Specifies the reservation affinity type.
@@ -1965,7 +1917,6 @@ pub mod reservation_affinity {
     }
 }
 /// Specification of a single machine.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MachineSpec {
     /// Immutable. The type of the machine.
@@ -2002,7 +1953,6 @@ pub struct MachineSpec {
 }
 /// A description of resources that are dedicated to a DeployedModel, and
 /// that need a higher degree of manual configuration.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DedicatedResources {
     /// Required. Immutable. The specification of a single machine used by the
@@ -2067,7 +2017,6 @@ pub struct DedicatedResources {
 /// A description of resources that to large degree are decided by Vertex AI,
 /// and require only a modest additional configuration.
 /// Each Model supporting these resources documents its specific guidelines.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutomaticResources {
     /// Immutable. The minimum number of replicas this DeployedModel will be always
@@ -2092,7 +2041,6 @@ pub struct AutomaticResources {
 }
 /// A description of resources that are used for performing batch operations, are
 /// dedicated to a Model, and need manual configuration.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDedicatedResources {
     /// Required. Immutable. The specification of a single machine.
@@ -2109,7 +2057,6 @@ pub struct BatchDedicatedResources {
     pub max_replica_count: i32,
 }
 /// Statistics information about resource consumption.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ResourcesConsumed {
     /// Output only. The number of replica hours used. Note that many replicas may
@@ -2119,7 +2066,6 @@ pub struct ResourcesConsumed {
     pub replica_hours: f64,
 }
 /// Represents the spec of disk options.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskSpec {
     /// Type of the boot disk (default is "pd-ssd").
@@ -2133,7 +2079,6 @@ pub struct DiskSpec {
 }
 /// Represents the spec of [persistent
 /// disk][<https://cloud.google.com/compute/docs/disks/persistent-disks]> options.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PersistentDiskSpec {
     /// Type of the disk (default is "pd-standard").
@@ -2148,7 +2093,6 @@ pub struct PersistentDiskSpec {
     pub disk_size_gb: i64,
 }
 /// Represents a mount configuration for Network File System (NFS) to mount.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NfsMount {
     /// Required. IP address of the NFS server.
@@ -2167,7 +2111,6 @@ pub struct NfsMount {
 /// The metric specification that defines the target resource utilization
 /// (CPU utilization, accelerator's duty cycle, and so on) for calculating the
 /// desired replica count.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingMetricSpec {
     /// Required. The resource metric name.
@@ -2188,7 +2131,6 @@ pub struct AutoscalingMetricSpec {
 /// A set of Shielded Instance options.
 /// See [Images using supported Shielded VM
 /// features](<https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>).
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ShieldedVmConfig {
     /// Defines whether the instance has [Secure
@@ -2202,7 +2144,6 @@ pub struct ShieldedVmConfig {
     pub enable_secure_boot: bool,
 }
 /// Manual batch tuning parameters.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ManualBatchTuningParameters {
     /// Immutable. The number of the records (e.g. instances) of the operation
@@ -2216,7 +2157,6 @@ pub struct ManualBatchTuningParameters {
     pub batch_size: i32,
 }
 /// Points to a DeployedModel.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployedModelRef {
     /// Immutable. A resource name of an Endpoint.
@@ -2227,7 +2167,6 @@ pub struct DeployedModelRef {
     pub deployed_model_id: ::prost::alloc::string::String,
 }
 /// Represents an environment variable present in a Container or Python Module.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnvVar {
     /// Required. Name of the environment variable. Must be a valid C identifier.
@@ -2244,7 +2183,6 @@ pub struct EnvVar {
     pub value: ::prost::alloc::string::String,
 }
 /// A trained machine learning Model.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Model {
     /// The resource name of the Model.
@@ -2547,7 +2485,6 @@ pub struct Model {
 pub mod model {
     /// Represents export format supported by the Model.
     /// All formats export to Google Cloud Storage.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExportFormat {
         /// Output only. The ID of the export format.
@@ -2636,7 +2573,6 @@ pub mod model {
         }
     }
     /// Stats of data used for train or evaluate the Model.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DataStats {
         /// Number of DataItems that were used for training this Model.
@@ -2667,7 +2603,6 @@ pub mod model {
         pub test_annotations_count: i64,
     }
     /// Contains information about the original Model if this Model is a copy.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct OriginalModelInfo {
         /// Output only. The resource name of the Model this Model is a copy of,
@@ -2678,7 +2613,6 @@ pub mod model {
     }
     /// User input field to specify the base model source. Currently it only
     /// supports specifing the Model Garden models and Genie models.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BaseModelSource {
         #[prost(oneof = "base_model_source::Source", tags = "1, 2")]
@@ -2686,7 +2620,6 @@ pub mod model {
     }
     /// Nested message and enum types in `BaseModelSource`.
     pub mod base_model_source {
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Source {
             /// Source information of Model Garden models.
@@ -2755,7 +2688,6 @@ pub mod model {
     }
 }
 /// Contains information about the Large Model.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LargeModelReference {
     /// Required. The unique name of the large Foundation or pre-built model. Like
@@ -2766,7 +2698,6 @@ pub struct LargeModelReference {
 }
 /// Contains information about the source of the models generated from Model
 /// Garden.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelGardenSource {
     /// Required. The model garden source model resource name.
@@ -2775,7 +2706,6 @@ pub struct ModelGardenSource {
 }
 /// Contains information about the source of the models generated from Generative
 /// AI Studio.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenieSource {
     /// Required. The public base model URI.
@@ -2786,7 +2716,6 @@ pub struct GenieSource {
 /// [PredictionService.Predict][google.cloud.aiplatform.v1.PredictionService.Predict],
 /// [PredictionService.Explain][google.cloud.aiplatform.v1.PredictionService.Explain]
 /// and [BatchPredictionJob][google.cloud.aiplatform.v1.BatchPredictionJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PredictSchemata {
     /// Immutable. Points to a YAML file stored on Google Cloud Storage describing
@@ -2837,7 +2766,6 @@ pub struct PredictSchemata {
 /// Specification of a container for serving predictions. Some fields in this
 /// message correspond to fields in the [Kubernetes Container v1 core
 /// specification](<https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#container-v1-core>).
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelContainerSpec {
     /// Required. Immutable. URI of the Docker image to be used as the custom
@@ -3078,7 +3006,6 @@ pub struct ModelContainerSpec {
     pub health_probe: ::core::option::Option<Probe>,
 }
 /// Represents a network port in a container.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Port {
     /// The number of the port to expose on the pod's IP address.
@@ -3087,7 +3014,6 @@ pub struct Port {
     pub container_port: i32,
 }
 /// Detail description of the source information of the model.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ModelSourceInfo {
     /// Type of the model source.
@@ -3171,7 +3097,6 @@ pub mod model_source_info {
 }
 /// Probe describes a health check to be performed against a container to
 /// determine whether it is alive or ready to receive traffic.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Probe {
     /// How often (in seconds) to perform the probe. Default to 10 seconds.
@@ -3192,7 +3117,6 @@ pub struct Probe {
 /// Nested message and enum types in `Probe`.
 pub mod probe {
     /// ExecAction specifies a command to execute.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExecAction {
         /// Command is the command line to execute inside the container, the working
@@ -3204,7 +3128,6 @@ pub mod probe {
         #[prost(string, repeated, tag = "1")]
         pub command: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ProbeType {
         /// ExecAction probes the health of a container by executing a command.
@@ -3214,7 +3137,6 @@ pub mod probe {
 }
 /// Contains model information necessary to perform batch prediction without
 /// requiring a full model import.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnmanagedContainerModel {
     /// The path to the directory containing the Model artifact and any of its
@@ -3235,7 +3157,6 @@ pub struct UnmanagedContainerModel {
 /// instances][google.cloud.aiplatform.v1.BatchPredictionJob.input_config]. If
 /// predictions for significant portion of the instances fail, the job may finish
 /// without attempting predictions for all remaining instances.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchPredictionJob {
     /// Output only. Resource name of the BatchPredictionJob.
@@ -3431,6 +3352,12 @@ pub struct BatchPredictionJob {
     /// User can disable container logging by setting this flag to true.
     #[prost(bool, tag = "34")]
     pub disable_container_logging: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "36")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "37")]
+    pub satisfies_pzi: bool,
 }
 /// Nested message and enum types in `BatchPredictionJob`.
 pub mod batch_prediction_job {
@@ -3439,7 +3366,6 @@ pub mod batch_prediction_job {
     /// [Model.supported_input_storage_formats][google.cloud.aiplatform.v1.Model.supported_input_storage_formats]
     /// for Model's supported input formats, and how instances should be expressed
     /// via any of them.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InputConfig {
         /// Required. The format in which instances are given, must be one of the
@@ -3454,7 +3380,6 @@ pub mod batch_prediction_job {
     /// Nested message and enum types in `InputConfig`.
     pub mod input_config {
         /// Required. The source of the input.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Source {
             /// The Cloud Storage location for the input instances.
@@ -3471,7 +3396,6 @@ pub mod batch_prediction_job {
     }
     /// Configuration defining how to transform batch prediction input instances to
     /// the instances that the Model accepts.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InstanceConfig {
         /// The format of the instance that the Model accepts. Vertex AI will
@@ -3574,7 +3498,6 @@ pub mod batch_prediction_job {
     /// [Model.supported_output_storage_formats][google.cloud.aiplatform.v1.Model.supported_output_storage_formats]
     /// for supported output formats, and how predictions are expressed via any of
     /// them.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct OutputConfig {
         /// Required. The format in which Vertex AI gives the predictions, must be
@@ -3589,7 +3512,6 @@ pub mod batch_prediction_job {
     /// Nested message and enum types in `OutputConfig`.
     pub mod output_config {
         /// Required. The destination of the output.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Destination {
             /// The Cloud Storage location of the directory where the output is
@@ -3643,7 +3565,6 @@ pub mod batch_prediction_job {
     /// Further describes this job's output.
     /// Supplements
     /// [output_config][google.cloud.aiplatform.v1.BatchPredictionJob.output_config].
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct OutputInfo {
         /// Output only. The name of the BigQuery table created, in
@@ -3659,7 +3580,6 @@ pub mod batch_prediction_job {
     /// Nested message and enum types in `OutputInfo`.
     pub mod output_info {
         /// The output location into which prediction output is written.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum OutputLocation {
             /// Output only. The full path of the Cloud Storage directory created, into
@@ -3678,7 +3598,6 @@ pub mod batch_prediction_job {
 /// subset of an [OpenAPI 3.0 schema
 /// object](<https://spec.openapis.org/oas/v3.0.3#schema>). More fields may be
 /// added in the future as needed.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schema {
     /// Optional. The type of the data.
@@ -3811,7 +3730,6 @@ impl Type {
 /// knowledge and scope of the model. A Tool object should contain exactly
 /// one type of Tool (e.g FunctionDeclaration, Retrieval or
 /// GoogleSearchRetrieval).
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tool {
     /// Optional. Function tool type.
@@ -3840,7 +3758,6 @@ pub struct Tool {
 /// in this declaration are the function name and parameters. This
 /// FunctionDeclaration is a representation of a block of code that can be used
 /// as a `Tool` by the model and executed by the client.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunctionDeclaration {
     /// Required. The name of the function to call.
@@ -3873,7 +3790,6 @@ pub struct FunctionDeclaration {
 /// A predicted \[FunctionCall\] returned from the model that contains a string
 /// representing the \[FunctionDeclaration.name\] and a structured JSON object
 /// containing the parameters and their values.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunctionCall {
     /// Required. The name of the function to call.
@@ -3889,7 +3805,6 @@ pub struct FunctionCall {
 /// the \[FunctionDeclaration.name\] and a structured JSON object containing any
 /// output from the function is used as context to the model. This should contain
 /// the result of a \[FunctionCall\] made based on model prediction.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunctionResponse {
     /// Required. The name of the function to call.
@@ -3901,7 +3816,6 @@ pub struct FunctionResponse {
     pub response: ::core::option::Option<::prost_types::Struct>,
 }
 /// Defines a retrieval tool that model can call to access external knowledge.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Retrieval {
     /// Optional. Deprecated. This option is no longer supported.
@@ -3915,7 +3829,6 @@ pub struct Retrieval {
 /// Nested message and enum types in `Retrieval`.
 pub mod retrieval {
     /// The source of the retrieval.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Set to use data source powered by Vertex AI Search.
@@ -3925,7 +3838,6 @@ pub mod retrieval {
 }
 /// Retrieve from Vertex AI Search datastore for grounding.
 /// See <https://cloud.google.com/vertex-ai-search-and-conversation>
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VertexAiSearch {
     /// Required. Fully-qualified Vertex AI Search's datastore resource ID.
@@ -3935,11 +3847,9 @@ pub struct VertexAiSearch {
     pub datastore: ::prost::alloc::string::String,
 }
 /// Tool to retrieve public web data for grounding, powered by Google.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GoogleSearchRetrieval {}
 /// Tool config. This config is shared for all tools provided in the request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolConfig {
     /// Optional. Function calling config.
@@ -3947,7 +3857,6 @@ pub struct ToolConfig {
     pub function_calling_config: ::core::option::Option<FunctionCallingConfig>,
 }
 /// Function calling config.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunctionCallingConfig {
     /// Optional. Function calling mode.
@@ -3978,7 +3887,7 @@ pub mod function_calling_config {
         /// Unspecified function calling mode. This value should not be used.
         Unspecified = 0,
         /// Default model behavior, model decides to predict either a function call
-        /// or a natural language repspose.
+        /// or a natural language response.
         Auto = 1,
         /// Model is constrained to always predicting a function call only.
         /// If "allowed_function_names" are set, the predicted function call will be
@@ -4019,7 +3928,6 @@ pub mod function_calling_config {
 /// A `Content` includes a `role` field designating the producer of the `Content`
 /// and a `parts` field containing multi-part data that contains the content of
 /// the message turn.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Content {
     /// Optional. The producer of the content. Must be either 'user' or 'model'.
@@ -4040,7 +3948,6 @@ pub struct Content {
 ///
 /// A `Part` must have a fixed IANA MIME type identifying the type and subtype
 /// of the media if `inline_data` or `file_data` field is filled with raw bytes.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Part {
     #[prost(oneof = "part::Data", tags = "1, 2, 3, 5, 6")]
@@ -4050,7 +3957,6 @@ pub struct Part {
 }
 /// Nested message and enum types in `Part`.
 pub mod part {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
         /// Optional. Text part (can be code).
@@ -4074,7 +3980,6 @@ pub mod part {
         #[prost(message, tag = "6")]
         FunctionResponse(super::FunctionResponse),
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Metadata {
         /// Optional. Video metadata. The metadata should only be specified while the
@@ -4087,7 +3992,6 @@ pub mod part {
 ///
 /// It's preferred to send as [text][google.cloud.aiplatform.v1.Part.text]
 /// directly rather than raw bytes.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Blob {
     /// Required. The IANA standard MIME type of the source data.
@@ -4098,7 +4002,6 @@ pub struct Blob {
     pub data: ::prost::alloc::vec::Vec<u8>,
 }
 /// URI based data.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileData {
     /// Required. The IANA standard MIME type of the source data.
@@ -4109,7 +4012,6 @@ pub struct FileData {
     pub file_uri: ::prost::alloc::string::String,
 }
 /// Metadata describes the input video content.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VideoMetadata {
     /// Optional. The start offset of the video.
@@ -4120,7 +4022,6 @@ pub struct VideoMetadata {
     pub end_offset: ::core::option::Option<::prost_types::Duration>,
 }
 /// Generation config.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerationConfig {
     /// Optional. Controls the randomness of predictions.
@@ -4147,6 +4048,9 @@ pub struct GenerationConfig {
     /// Optional. Frequency penalties.
     #[prost(float, optional, tag = "9")]
     pub frequency_penalty: ::core::option::Option<f32>,
+    /// Optional. Seed.
+    #[prost(int32, optional, tag = "12")]
+    pub seed: ::core::option::Option<i32>,
     /// Optional. Output response mimetype of the generated candidate text.
     /// Supported mimetype:
     /// - `text/plain`: (default) Text output.
@@ -4165,9 +4069,105 @@ pub struct GenerationConfig {
     /// `application/json`: Schema for JSON response.
     #[prost(message, optional, tag = "16")]
     pub response_schema: ::core::option::Option<Schema>,
+    /// Optional. Routing configuration.
+    #[prost(message, optional, tag = "17")]
+    pub routing_config: ::core::option::Option<generation_config::RoutingConfig>,
+}
+/// Nested message and enum types in `GenerationConfig`.
+pub mod generation_config {
+    /// The configuration for routing the request to a specific model.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RoutingConfig {
+        /// Routing mode.
+        #[prost(oneof = "routing_config::RoutingConfig", tags = "1, 2")]
+        pub routing_config: ::core::option::Option<routing_config::RoutingConfig>,
+    }
+    /// Nested message and enum types in `RoutingConfig`.
+    pub mod routing_config {
+        /// When automated routing is specified, the routing will be determined by
+        /// the pretrained routing model and customer provided model routing
+        /// preference.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct AutoRoutingMode {
+            /// The model routing preference.
+            #[prost(
+                enumeration = "auto_routing_mode::ModelRoutingPreference",
+                optional,
+                tag = "1"
+            )]
+            pub model_routing_preference: ::core::option::Option<i32>,
+        }
+        /// Nested message and enum types in `AutoRoutingMode`.
+        pub mod auto_routing_mode {
+            /// The model routing preference.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum ModelRoutingPreference {
+                /// Unspecified model routing preference.
+                Unknown = 0,
+                /// Prefer higher quality over low cost.
+                PrioritizeQuality = 1,
+                /// Balanced model routing preference.
+                Balanced = 2,
+                /// Prefer lower cost over higher quality.
+                PrioritizeCost = 3,
+            }
+            impl ModelRoutingPreference {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        ModelRoutingPreference::Unknown => "UNKNOWN",
+                        ModelRoutingPreference::PrioritizeQuality => "PRIORITIZE_QUALITY",
+                        ModelRoutingPreference::Balanced => "BALANCED",
+                        ModelRoutingPreference::PrioritizeCost => "PRIORITIZE_COST",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "UNKNOWN" => Some(Self::Unknown),
+                        "PRIORITIZE_QUALITY" => Some(Self::PrioritizeQuality),
+                        "BALANCED" => Some(Self::Balanced),
+                        "PRIORITIZE_COST" => Some(Self::PrioritizeCost),
+                        _ => None,
+                    }
+                }
+            }
+        }
+        /// When manual routing is set, the specified model will be used directly.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ManualRoutingMode {
+            /// The model name to use. Only the public LLM models are accepted. e.g.
+            /// 'gemini-1.5-pro-001'.
+            #[prost(string, optional, tag = "1")]
+            pub model_name: ::core::option::Option<::prost::alloc::string::String>,
+        }
+        /// Routing mode.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum RoutingConfig {
+            /// Automated routing.
+            #[prost(message, tag = "1")]
+            AutoMode(AutoRoutingMode),
+            /// Manual routing.
+            #[prost(message, tag = "2")]
+            ManualMode(ManualRoutingMode),
+        }
+    }
 }
 /// Safety settings.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SafetySetting {
     /// Required. Harm category.
@@ -4279,7 +4279,6 @@ pub mod safety_setting {
     }
 }
 /// Safety rating corresponding to the generated content.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SafetyRating {
     /// Output only. Harm category.
@@ -4408,7 +4407,6 @@ pub mod safety_rating {
     }
 }
 /// A collection of source attributions for a piece of content.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CitationMetadata {
     /// Output only. List of citations.
@@ -4416,7 +4414,6 @@ pub struct CitationMetadata {
     pub citations: ::prost::alloc::vec::Vec<Citation>,
 }
 /// Source attributions for content.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Citation {
     /// Output only. Start index into the content.
@@ -4439,7 +4436,6 @@ pub struct Citation {
     pub publication_date: ::core::option::Option<super::super::super::r#type::Date>,
 }
 /// A response candidate generated from the model.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Candidate {
     /// Output only. Index of the candidate.
@@ -4451,6 +4447,9 @@ pub struct Candidate {
     /// Output only. Confidence score of the candidate.
     #[prost(double, tag = "8")]
     pub score: f64,
+    /// Output only. Average log probability score of the candidate.
+    #[prost(double, tag = "9")]
+    pub avg_logprobs: f64,
     /// Output only. The reason why the model stopped generating tokens.
     /// If empty, the model has not stopped generating the tokens.
     #[prost(enumeration = "candidate::FinishReason", tag = "3")]
@@ -4490,27 +4489,27 @@ pub mod candidate {
     pub enum FinishReason {
         /// The finish reason is unspecified.
         Unspecified = 0,
-        /// Natural stop point of the model or provided stop sequence.
+        /// Token generation reached a natural stopping point or a configured stop
+        /// sequence.
         Stop = 1,
-        /// The maximum number of tokens as specified in the request was reached.
+        /// Token generation reached the configured maximum output tokens.
         MaxTokens = 2,
-        /// The token generation was stopped as the response was flagged for safety
-        /// reasons. NOTE: When streaming the Candidate.content will be empty if
-        /// content filters blocked the output.
+        /// Token generation stopped because the content potentially contains safety
+        /// violations. NOTE: When streaming,
+        /// [content][google.cloud.aiplatform.v1.Candidate.content] is empty if
+        /// content filters blocks the output.
         Safety = 3,
-        /// The token generation was stopped as the response was flagged for
-        /// unauthorized citations.
+        /// Token generation stopped because the content potentially contains
+        /// copyright violations.
         Recitation = 4,
-        /// All other reasons that stopped the token generation
+        /// All other reasons that stopped the token generation.
         Other = 5,
-        /// The token generation was stopped as the response was flagged for the
-        /// terms which are included from the terminology blocklist.
+        /// Token generation stopped because the content contains forbidden terms.
         Blocklist = 6,
-        /// The token generation was stopped as the response was flagged for
-        /// the prohibited contents.
+        /// Token generation stopped for potentially containing prohibited content.
         ProhibitedContent = 7,
-        /// The token generation was stopped as the response was flagged for
-        /// Sensitive Personally Identifiable Information (SPII) contents.
+        /// Token generation stopped because the content potentially contains
+        /// Sensitive Personally Identifiable Information (SPII).
         Spii = 8,
         /// The function call generated by the model is invalid.
         MalformedFunctionCall = 9,
@@ -4553,7 +4552,6 @@ pub mod candidate {
     }
 }
 /// Segment of the content.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Segment {
     /// Output only. The index of a Part object within its parent Content object.
@@ -4572,7 +4570,6 @@ pub struct Segment {
     pub text: ::prost::alloc::string::String,
 }
 /// Grounding chunk.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroundingChunk {
     /// Chunk type.
@@ -4582,7 +4579,6 @@ pub struct GroundingChunk {
 /// Nested message and enum types in `GroundingChunk`.
 pub mod grounding_chunk {
     /// Chunk from the web.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Web {
         /// URI reference of the chunk.
@@ -4593,7 +4589,6 @@ pub mod grounding_chunk {
         pub title: ::core::option::Option<::prost::alloc::string::String>,
     }
     /// Chunk from context retrieved by the retrieval tools.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RetrievedContext {
         /// URI reference of the attribution.
@@ -4604,7 +4599,6 @@ pub mod grounding_chunk {
         pub title: ::core::option::Option<::prost::alloc::string::String>,
     }
     /// Chunk type.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ChunkType {
         /// Grounding chunk from the web.
@@ -4616,7 +4610,6 @@ pub mod grounding_chunk {
     }
 }
 /// Grounding support.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroundingSupport {
     /// Segment of the content this support belongs to.
@@ -4635,7 +4628,6 @@ pub struct GroundingSupport {
     pub confidence_scores: ::prost::alloc::vec::Vec<f32>,
 }
 /// Metadata returned to client when grounding is enabled.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroundingMetadata {
     /// Optional. Web search queries for the following-up web search.
@@ -4652,7 +4644,6 @@ pub struct GroundingMetadata {
     pub grounding_supports: ::prost::alloc::vec::Vec<GroundingSupport>,
 }
 /// Google search entry point.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchEntryPoint {
     /// Optional. Web content snippet that can be embedded in a web page or an app
@@ -4706,7 +4697,6 @@ impl HarmCategory {
     }
 }
 /// Instance of a general context.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Context {
     /// Immutable. The resource name of the Context.
@@ -4769,7 +4759,6 @@ pub struct Context {
 /// Python package. A CustomJob can have multiple worker pools and each worker
 /// pool can have its own machine and input spec. A CustomJob will be cleaned up
 /// once the job enters terminal state (failed or succeeded).
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomJob {
     /// Output only. Resource name of a CustomJob.
@@ -4838,9 +4827,14 @@ pub struct CustomJob {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "18")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "19")]
+    pub satisfies_pzi: bool,
 }
 /// Represents the spec of a CustomJob.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomJobSpec {
     /// Optional. The ID of the PersistentResource in the same Project and Location
@@ -4979,7 +4973,6 @@ pub struct CustomJobSpec {
     pub models: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents the spec of a worker pool in a job.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkerPoolSpec {
     /// Optional. Immutable. The specification of a single machine.
@@ -5001,7 +4994,6 @@ pub struct WorkerPoolSpec {
 /// Nested message and enum types in `WorkerPoolSpec`.
 pub mod worker_pool_spec {
     /// The custom task to be executed in this worker pool.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Task {
         /// The custom container task.
@@ -5013,7 +5005,6 @@ pub mod worker_pool_spec {
     }
 }
 /// The spec of a Container.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContainerSpec {
     /// Required. The URI of a container image in the Container Registry that is to
@@ -5033,7 +5024,6 @@ pub struct ContainerSpec {
     pub env: ::prost::alloc::vec::Vec<EnvVar>,
 }
 /// The spec of a Python packaged code.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PythonPackageSpec {
     /// Required. The URI of a container image in Artifact Registry that will run
@@ -5061,7 +5051,6 @@ pub struct PythonPackageSpec {
     pub env: ::prost::alloc::vec::Vec<EnvVar>,
 }
 /// All parameters related to queuing and scheduling of custom jobs.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Scheduling {
     /// The maximum job running time. The default is 7 days.
@@ -5080,12 +5069,18 @@ pub struct Scheduling {
     /// `Scheduling.restart_job_on_worker_restart` to false.
     #[prost(bool, tag = "5")]
     pub disable_retries: bool,
+    /// Optional. This is the maximum duration that a job will wait for the
+    /// requested resources to be provisioned if the scheduling strategy is set to
+    /// \[Strategy.DWS_FLEX_START\].
+    /// If set to 0, the job will wait indefinitely. The default is 24 hours.
+    #[prost(message, optional, tag = "6")]
+    pub max_wait_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Nested message and enum types in `Scheduling`.
 pub mod scheduling {
     /// Optional. This determines which type of scheduling strategy to use. Right
-    /// now users have two options such as ON_DEMAND which will use regular on
-    /// demand resources to schedule the job, the other is LOW_COST which would
+    /// now users have two options such as STANDARD which will use regular on
+    /// demand resources to schedule the job, the other is SPOT which would
     /// leverage spot resources alongwith regular resources to schedule
     /// the job.
     #[derive(
@@ -5101,7 +5096,7 @@ pub mod scheduling {
     )]
     #[repr(i32)]
     pub enum Strategy {
-        /// Strategy will default to ON_DEMAND.
+        /// Strategy will default to STANDARD.
         Unspecified = 0,
         /// Regular on-demand provisioning strategy.
         OnDemand = 1,
@@ -5141,7 +5136,6 @@ pub mod scheduling {
 }
 /// A piece of data in a Dataset. Could be an image, a video, a document or plain
 /// text.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataItem {
     /// Output only. The resource name of the DataItem.
@@ -5179,10 +5173,15 @@ pub struct DataItem {
     /// a blind "overwrite" update happens.
     #[prost(string, tag = "7")]
     pub etag: ::prost::alloc::string::String,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "10")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "11")]
+    pub satisfies_pzi: bool,
 }
 /// DataLabelingJob is used to trigger a human labeling job on unlabeled data
 /// from the following Dataset:
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataLabelingJob {
     /// Output only. Resource name of the DataLabelingJob.
@@ -5288,7 +5287,6 @@ pub struct DataLabelingJob {
 /// Parameters that configure the active learning pipeline. Active learning will
 ///   label the data incrementally by several iterations. For every iteration, it
 ///   will select a batch of data based on the sampling strategy.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ActiveLearningConfig {
     /// Active learning data sampling config. For every active learning labeling
@@ -5311,7 +5309,6 @@ pub struct ActiveLearningConfig {
 pub mod active_learning_config {
     /// Required. Max human labeling DataItems. The rest part will be labeled by
     /// machine.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum HumanLabelingBudget {
         /// Max number of human labeled DataItems.
@@ -5324,7 +5321,6 @@ pub mod active_learning_config {
 }
 /// Active learning data sampling config. For every active learning labeling
 /// iteration, it will select a batch of data based on the sampling strategy.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SampleConfig {
     /// Field to choose sampling strategy. Sampling strategy will decide which data
@@ -5388,7 +5384,6 @@ pub mod sample_config {
     }
     /// Decides sample size for the initial batch. initial_batch_sample_percentage
     /// is used by default.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum InitialBatchSampleSize {
         /// The percentage of data needed to be labeled in the first batch.
@@ -5397,7 +5392,6 @@ pub mod sample_config {
     }
     /// Decides sample size for the following batches.
     /// following_batch_sample_percentage is used by default.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum FollowingBatchSampleSize {
         /// The percentage of data needed to be labeled in each following batch
@@ -5409,7 +5403,6 @@ pub mod sample_config {
 /// CMLE training config. For every active learning labeling iteration, system
 /// will train a machine learning model on CMLE. The trained model will be used
 /// by data sampling algorithm to select DataItems.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TrainingConfig {
     /// The timeout hours for the CMLE training job, expressed in milli hours
@@ -5419,7 +5412,6 @@ pub struct TrainingConfig {
 }
 /// A SavedQuery is a view of the dataset. It references a subset of annotations
 /// by problem type and filters.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SavedQuery {
     /// Output only. Resource name of the SavedQuery.
@@ -5470,7 +5462,6 @@ pub struct SavedQuery {
     pub support_automl_training: bool,
 }
 /// A collection of DataItems and Annotations on them.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dataset {
     /// Output only. Identifier. The resource name of the Dataset.
@@ -5551,10 +5542,15 @@ pub struct Dataset {
     /// set for prompt datasets.
     #[prost(string, tag = "18")]
     pub model_reference: ::prost::alloc::string::String,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "19")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "20")]
+    pub satisfies_pzi: bool,
 }
 /// Describes the location from where we import data into a Dataset, together
 /// with the labels that will be applied to the DataItems and the Annotations.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDataConfig {
     /// Labels that will be applied to newly imported DataItems. If an identical
@@ -5603,7 +5599,6 @@ pub struct ImportDataConfig {
 /// Nested message and enum types in `ImportDataConfig`.
 pub mod import_data_config {
     /// The source of the input.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The Google Cloud Storage location for the input content.
@@ -5613,7 +5608,6 @@ pub mod import_data_config {
 }
 /// Describes what part of the Dataset is to be exported, the destination of
 /// the export and how to export.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataConfig {
     /// An expression for filtering what part of the Dataset is to be exported.
@@ -5723,7 +5717,6 @@ pub mod export_data_config {
         }
     }
     /// The destination of the output.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// The Google Cloud Storage location where the output is to be written to.
@@ -5740,7 +5733,6 @@ pub mod export_data_config {
     }
     /// The instructions how the export data should be split between the
     /// training, validation and test sets.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Split {
         /// Split based on fractions defining the size of each set.
@@ -5757,7 +5749,6 @@ pub mod export_data_config {
 /// provided ones sum to less than 1, the remainder is assigned to sets as
 /// decided by Vertex AI. If none of the fractions are set, by default roughly
 /// 80% of data is used for training, 10% for validation, and 10% for test.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportFractionSplit {
     /// The fraction of the input data that is to be used to train the Model.
@@ -5777,7 +5768,6 @@ pub struct ExportFractionSplit {
 /// set as '-' (the minus sign).
 ///
 /// Supported only for unstructured Datasets.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportFilterSplit {
     /// Required. A filter on DataItems of the Dataset. DataItems that match
@@ -5809,7 +5799,6 @@ pub struct ExportFilterSplit {
     pub test_filter: ::prost::alloc::string::String,
 }
 /// Describes the dataset version.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatasetVersion {
     /// Output only. Identifier. The resource name of the DatasetVersion.
@@ -5840,9 +5829,14 @@ pub struct DatasetVersion {
     /// version. Only set for prompt dataset versions.
     #[prost(string, tag = "9")]
     pub model_reference: ::prost::alloc::string::String,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "10")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "11")]
+    pub satisfies_pzi: bool,
 }
 /// Generic Metadata shared by all operations.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenericOperationMetadata {
     /// Output only. Partial failures encountered.
@@ -5861,7 +5855,6 @@ pub struct GenericOperationMetadata {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Details of operations that perform deletes of any entities.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteOperationMetadata {
     /// The common part of the operation metadata.
@@ -5870,7 +5863,6 @@ pub struct DeleteOperationMetadata {
 }
 /// Request message for
 /// [DatasetService.CreateDataset][google.cloud.aiplatform.v1.DatasetService.CreateDataset].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatasetRequest {
     /// Required. The resource name of the Location to create the Dataset in.
@@ -5883,7 +5875,6 @@ pub struct CreateDatasetRequest {
 }
 /// Runtime operation information for
 /// [DatasetService.CreateDataset][google.cloud.aiplatform.v1.DatasetService.CreateDataset].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatasetOperationMetadata {
     /// The operation generic information.
@@ -5892,7 +5883,6 @@ pub struct CreateDatasetOperationMetadata {
 }
 /// Request message for
 /// [DatasetService.GetDataset][google.cloud.aiplatform.v1.DatasetService.GetDataset].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatasetRequest {
     /// Required. The name of the Dataset resource.
@@ -5904,7 +5894,6 @@ pub struct GetDatasetRequest {
 }
 /// Request message for
 /// [DatasetService.UpdateDataset][google.cloud.aiplatform.v1.DatasetService.UpdateDataset].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatasetRequest {
     /// Required. The Dataset which replaces the resource on the server.
@@ -5922,7 +5911,6 @@ pub struct UpdateDatasetRequest {
 }
 /// Request message for
 /// [DatasetService.UpdateDatasetVersion][google.cloud.aiplatform.v1.DatasetService.UpdateDatasetVersion].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatasetVersionRequest {
     /// Required. The DatasetVersion which replaces the resource on the server.
@@ -5938,7 +5926,6 @@ pub struct UpdateDatasetVersionRequest {
 }
 /// Request message for
 /// [DatasetService.ListDatasets][google.cloud.aiplatform.v1.DatasetService.ListDatasets].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsRequest {
     /// Required. The name of the Dataset's parent resource.
@@ -5982,7 +5969,6 @@ pub struct ListDatasetsRequest {
 }
 /// Response message for
 /// [DatasetService.ListDatasets][google.cloud.aiplatform.v1.DatasetService.ListDatasets].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsResponse {
     /// A list of Datasets that matches the specified filter in the request.
@@ -5994,7 +5980,6 @@ pub struct ListDatasetsResponse {
 }
 /// Request message for
 /// [DatasetService.DeleteDataset][google.cloud.aiplatform.v1.DatasetService.DeleteDataset].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDatasetRequest {
     /// Required. The resource name of the Dataset to delete.
@@ -6005,7 +5990,6 @@ pub struct DeleteDatasetRequest {
 }
 /// Request message for
 /// [DatasetService.ImportData][google.cloud.aiplatform.v1.DatasetService.ImportData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDataRequest {
     /// Required. The name of the Dataset resource.
@@ -6020,12 +6004,10 @@ pub struct ImportDataRequest {
 }
 /// Response message for
 /// [DatasetService.ImportData][google.cloud.aiplatform.v1.DatasetService.ImportData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportDataResponse {}
 /// Runtime operation information for
 /// [DatasetService.ImportData][google.cloud.aiplatform.v1.DatasetService.ImportData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDataOperationMetadata {
     /// The common part of the operation metadata.
@@ -6034,7 +6016,6 @@ pub struct ImportDataOperationMetadata {
 }
 /// Request message for
 /// [DatasetService.ExportData][google.cloud.aiplatform.v1.DatasetService.ExportData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataRequest {
     /// Required. The name of the Dataset resource.
@@ -6048,7 +6029,6 @@ pub struct ExportDataRequest {
 }
 /// Response message for
 /// [DatasetService.ExportData][google.cloud.aiplatform.v1.DatasetService.ExportData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataResponse {
     /// All of the files that are exported in this export operation. For custom
@@ -6065,7 +6045,6 @@ pub struct ExportDataResponse {
 }
 /// Runtime operation information for
 /// [DatasetService.ExportData][google.cloud.aiplatform.v1.DatasetService.ExportData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataOperationMetadata {
     /// The common part of the operation metadata.
@@ -6078,7 +6057,6 @@ pub struct ExportDataOperationMetadata {
 }
 /// Request message for
 /// [DatasetService.CreateDatasetVersion][google.cloud.aiplatform.v1.DatasetService.CreateDatasetVersion].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatasetVersionRequest {
     /// Required. The name of the Dataset resource.
@@ -6094,7 +6072,6 @@ pub struct CreateDatasetVersionRequest {
 }
 /// Runtime operation information for
 /// [DatasetService.CreateDatasetVersion][google.cloud.aiplatform.v1.DatasetService.CreateDatasetVersion].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatasetVersionOperationMetadata {
     /// The common part of the operation metadata.
@@ -6103,7 +6080,6 @@ pub struct CreateDatasetVersionOperationMetadata {
 }
 /// Request message for
 /// [DatasetService.DeleteDatasetVersion][google.cloud.aiplatform.v1.DatasetService.DeleteDatasetVersion].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDatasetVersionRequest {
     /// Required. The resource name of the Dataset version to delete.
@@ -6114,7 +6090,6 @@ pub struct DeleteDatasetVersionRequest {
 }
 /// Request message for
 /// [DatasetService.GetDatasetVersion][google.cloud.aiplatform.v1.DatasetService.GetDatasetVersion].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatasetVersionRequest {
     /// Required. The resource name of the Dataset version to delete.
@@ -6128,7 +6103,6 @@ pub struct GetDatasetVersionRequest {
 }
 /// Request message for
 /// [DatasetService.ListDatasetVersions][google.cloud.aiplatform.v1.DatasetService.ListDatasetVersions].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetVersionsRequest {
     /// Required. The resource name of the Dataset to list DatasetVersions from.
@@ -6155,7 +6129,6 @@ pub struct ListDatasetVersionsRequest {
 }
 /// Response message for
 /// [DatasetService.ListDatasetVersions][google.cloud.aiplatform.v1.DatasetService.ListDatasetVersions].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetVersionsResponse {
     /// A list of DatasetVersions that matches the specified filter in the request.
@@ -6167,7 +6140,6 @@ pub struct ListDatasetVersionsResponse {
 }
 /// Request message for
 /// [DatasetService.RestoreDatasetVersion][google.cloud.aiplatform.v1.DatasetService.RestoreDatasetVersion].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreDatasetVersionRequest {
     /// Required. The name of the DatasetVersion resource.
@@ -6178,7 +6150,6 @@ pub struct RestoreDatasetVersionRequest {
 }
 /// Runtime operation information for
 /// [DatasetService.RestoreDatasetVersion][google.cloud.aiplatform.v1.DatasetService.RestoreDatasetVersion].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreDatasetVersionOperationMetadata {
     /// The common part of the operation metadata.
@@ -6187,7 +6158,6 @@ pub struct RestoreDatasetVersionOperationMetadata {
 }
 /// Request message for
 /// [DatasetService.ListDataItems][google.cloud.aiplatform.v1.DatasetService.ListDataItems].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataItemsRequest {
     /// Required. The resource name of the Dataset to list DataItems from.
@@ -6214,7 +6184,6 @@ pub struct ListDataItemsRequest {
 }
 /// Response message for
 /// [DatasetService.ListDataItems][google.cloud.aiplatform.v1.DatasetService.ListDataItems].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataItemsResponse {
     /// A list of DataItems that matches the specified filter in the request.
@@ -6226,7 +6195,6 @@ pub struct ListDataItemsResponse {
 }
 /// Request message for
 /// [DatasetService.SearchDataItems][google.cloud.aiplatform.v1.DatasetService.SearchDataItems].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchDataItemsRequest {
     /// Required. The resource name of the Dataset from which to search DataItems.
@@ -6307,7 +6275,6 @@ pub struct SearchDataItemsRequest {
 /// Nested message and enum types in `SearchDataItemsRequest`.
 pub mod search_data_items_request {
     /// Expression that allows ranking results based on annotation's property.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct OrderByAnnotation {
         /// Required. Saved query of the Annotation. Only Annotations belong to this
@@ -6320,7 +6287,6 @@ pub mod search_data_items_request {
         #[prost(string, tag = "2")]
         pub order_by: ::prost::alloc::string::String,
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Order {
         /// A comma-separated list of data item fields to order by, sorted in
@@ -6334,7 +6300,6 @@ pub mod search_data_items_request {
 }
 /// Response message for
 /// [DatasetService.SearchDataItems][google.cloud.aiplatform.v1.DatasetService.SearchDataItems].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchDataItemsResponse {
     /// The DataItemViews read.
@@ -6348,7 +6313,6 @@ pub struct SearchDataItemsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// A container for a single DataItem and Annotations on it.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataItemView {
     /// The DataItem.
@@ -6370,7 +6334,6 @@ pub struct DataItemView {
 }
 /// Request message for
 /// [DatasetService.ListSavedQueries][google.cloud.aiplatform.v1.DatasetService.ListSavedQueries].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSavedQueriesRequest {
     /// Required. The resource name of the Dataset to list SavedQueries from.
@@ -6397,7 +6360,6 @@ pub struct ListSavedQueriesRequest {
 }
 /// Response message for
 /// [DatasetService.ListSavedQueries][google.cloud.aiplatform.v1.DatasetService.ListSavedQueries].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSavedQueriesResponse {
     /// A list of SavedQueries that match the specified filter in the request.
@@ -6409,7 +6371,6 @@ pub struct ListSavedQueriesResponse {
 }
 /// Request message for
 /// [DatasetService.DeleteSavedQuery][google.cloud.aiplatform.v1.DatasetService.DeleteSavedQuery].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSavedQueryRequest {
     /// Required. The resource name of the SavedQuery to delete.
@@ -6420,7 +6381,6 @@ pub struct DeleteSavedQueryRequest {
 }
 /// Request message for
 /// [DatasetService.GetAnnotationSpec][google.cloud.aiplatform.v1.DatasetService.GetAnnotationSpec].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAnnotationSpecRequest {
     /// Required. The name of the AnnotationSpec resource.
@@ -6434,7 +6394,6 @@ pub struct GetAnnotationSpecRequest {
 }
 /// Request message for
 /// [DatasetService.ListAnnotations][google.cloud.aiplatform.v1.DatasetService.ListAnnotations].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAnnotationsRequest {
     /// Required. The resource name of the DataItem to list Annotations from.
@@ -6461,7 +6420,6 @@ pub struct ListAnnotationsRequest {
 }
 /// Response message for
 /// [DatasetService.ListAnnotations][google.cloud.aiplatform.v1.DatasetService.ListAnnotations].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAnnotationsResponse {
     /// A list of Annotations that matches the specified filter in the request.
@@ -6496,8 +6454,8 @@ pub mod dataset_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -6522,7 +6480,7 @@ pub mod dataset_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             DatasetServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -7134,7 +7092,6 @@ pub mod dataset_service_client {
     }
 }
 /// Points to a DeployedIndex.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployedIndexRef {
     /// Immutable. A resource name of the IndexEndpoint.
@@ -7149,7 +7106,6 @@ pub struct DeployedIndexRef {
 }
 /// A description of resources that can be shared by multiple DeployedModels,
 /// whose underlying specification consists of a DedicatedResources.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeploymentResourcePool {
     /// Immutable. The resource name of the DeploymentResourcePool.
@@ -7187,9 +7143,14 @@ pub struct DeploymentResourcePool {
     /// Output only. Timestamp when this DeploymentResourcePool was created.
     #[prost(message, optional, tag = "4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "8")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "9")]
+    pub satisfies_pzi: bool,
 }
 /// Represents configuration for private service connect.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrivateServiceConnectConfig {
     /// Required. If true, expose the IndexEndpoint via private service connect.
@@ -7199,10 +7160,14 @@ pub struct PrivateServiceConnectConfig {
     /// attachment.
     #[prost(string, repeated, tag = "2")]
     pub project_allowlist: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The name of the generated service attachment resource.
+    /// This is only populated if the endpoint is deployed with
+    /// PrivateServiceConnect.
+    #[prost(string, tag = "5")]
+    pub service_attachment: ::prost::alloc::string::String,
 }
 /// PscAutomatedEndpoints defines the output of the forwarding rule
 /// automatically created by each PscAutomationConfig.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PscAutomatedEndpoints {
     /// Corresponding project_id in pscAutomationConfigs
@@ -7217,7 +7182,6 @@ pub struct PscAutomatedEndpoints {
 }
 /// Models are deployed into it, and afterwards Endpoint is called to obtain
 /// predictions and explanations.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Endpoint {
     /// Output only. The resource name of the Endpoint.
@@ -7347,7 +7311,6 @@ pub struct Endpoint {
     pub satisfies_pzi: bool,
 }
 /// A deployment of a Model. Endpoints contain one or more DeployedModels.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployedModel {
     /// Immutable. The ID of the DeployedModel. If not provided upon deployment,
@@ -7457,7 +7420,6 @@ pub mod deployed_model {
     /// Not all Models support all resources types. See
     /// [Model.supported_deployment_resources_types][google.cloud.aiplatform.v1.Model.supported_deployment_resources_types].
     /// Required except for Large Model Deploy use cases.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PredictionResources {
         /// A description of resources that are dedicated to the DeployedModel, and
@@ -7480,7 +7442,6 @@ pub mod deployed_model {
 /// To send request via private service access, use predict_http_uri,
 /// explain_http_uri or health_http_uri. To send request via private service
 /// connect, use service_attachment.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrivateEndpoints {
     /// Output only. Http(s) path to send prediction requests.
@@ -7498,7 +7459,6 @@ pub struct PrivateEndpoints {
     pub service_attachment: ::prost::alloc::string::String,
 }
 /// Configuration for logging request-response to a BigQuery table.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PredictRequestResponseLoggingConfig {
     /// If logging is enabled or not.
@@ -7518,7 +7478,6 @@ pub struct PredictRequestResponseLoggingConfig {
     pub bigquery_destination: ::core::option::Option<BigQueryDestination>,
 }
 /// Request message for CreateDeploymentResourcePool method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDeploymentResourcePoolRequest {
     /// Required. The parent location resource where this DeploymentResourcePool
@@ -7538,7 +7497,6 @@ pub struct CreateDeploymentResourcePoolRequest {
     pub deployment_resource_pool_id: ::prost::alloc::string::String,
 }
 /// Runtime operation information for CreateDeploymentResourcePool method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDeploymentResourcePoolOperationMetadata {
     /// The operation generic information.
@@ -7546,7 +7504,6 @@ pub struct CreateDeploymentResourcePoolOperationMetadata {
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Request message for GetDeploymentResourcePool method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDeploymentResourcePoolRequest {
     /// Required. The name of the DeploymentResourcePool to retrieve.
@@ -7556,7 +7513,6 @@ pub struct GetDeploymentResourcePoolRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListDeploymentResourcePools method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeploymentResourcePoolsRequest {
     /// Required. The parent Location which owns this collection of
@@ -7577,7 +7533,6 @@ pub struct ListDeploymentResourcePoolsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListDeploymentResourcePools method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeploymentResourcePoolsResponse {
     /// The DeploymentResourcePools from the specified location.
@@ -7589,7 +7544,6 @@ pub struct ListDeploymentResourcePoolsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for UpdateDeploymentResourcePool method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDeploymentResourcePoolRequest {
     /// Required. The DeploymentResourcePool to update.
@@ -7605,7 +7559,6 @@ pub struct UpdateDeploymentResourcePoolRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Runtime operation information for UpdateDeploymentResourcePool method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDeploymentResourcePoolOperationMetadata {
     /// The operation generic information.
@@ -7613,7 +7566,6 @@ pub struct UpdateDeploymentResourcePoolOperationMetadata {
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Request message for DeleteDeploymentResourcePool method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDeploymentResourcePoolRequest {
     /// Required. The name of the DeploymentResourcePool to delete.
@@ -7623,7 +7575,6 @@ pub struct DeleteDeploymentResourcePoolRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for QueryDeployedModels method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryDeployedModelsRequest {
     /// Required. The name of the target DeploymentResourcePool to query.
@@ -7645,7 +7596,6 @@ pub struct QueryDeployedModelsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for QueryDeployedModels method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryDeployedModelsResponse {
     /// DEPRECATED Use deployed_model_refs instead.
@@ -7693,8 +7643,8 @@ pub mod deployment_resource_pool_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -7719,7 +7669,7 @@ pub mod deployment_resource_pool_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             DeploymentResourcePoolServiceClient::new(
                 InterceptedService::new(inner, interceptor),
@@ -7946,7 +7896,6 @@ pub mod deployment_resource_pool_service_client {
 }
 /// Request message for
 /// [EndpointService.CreateEndpoint][google.cloud.aiplatform.v1.EndpointService.CreateEndpoint].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEndpointRequest {
     /// Required. The resource name of the Location to create the Endpoint in.
@@ -7975,7 +7924,6 @@ pub struct CreateEndpointRequest {
 }
 /// Runtime operation information for
 /// [EndpointService.CreateEndpoint][google.cloud.aiplatform.v1.EndpointService.CreateEndpoint].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEndpointOperationMetadata {
     /// The operation generic information.
@@ -7984,7 +7932,6 @@ pub struct CreateEndpointOperationMetadata {
 }
 /// Request message for
 /// [EndpointService.GetEndpoint][google.cloud.aiplatform.v1.EndpointService.GetEndpoint]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEndpointRequest {
     /// Required. The name of the Endpoint resource.
@@ -7995,7 +7942,6 @@ pub struct GetEndpointRequest {
 }
 /// Request message for
 /// [EndpointService.ListEndpoints][google.cloud.aiplatform.v1.EndpointService.ListEndpoints].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointsRequest {
     /// Required. The resource name of the Location from which to list the
@@ -8051,7 +7997,6 @@ pub struct ListEndpointsRequest {
 }
 /// Response message for
 /// [EndpointService.ListEndpoints][google.cloud.aiplatform.v1.EndpointService.ListEndpoints].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointsResponse {
     /// List of Endpoints in the requested page.
@@ -8066,7 +8011,6 @@ pub struct ListEndpointsResponse {
 }
 /// Request message for
 /// [EndpointService.UpdateEndpoint][google.cloud.aiplatform.v1.EndpointService.UpdateEndpoint].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEndpointRequest {
     /// Required. The Endpoint which replaces the resource on the server.
@@ -8079,7 +8023,6 @@ pub struct UpdateEndpointRequest {
 }
 /// Request message for
 /// [EndpointService.DeleteEndpoint][google.cloud.aiplatform.v1.EndpointService.DeleteEndpoint].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEndpointRequest {
     /// Required. The name of the Endpoint resource to be deleted.
@@ -8090,7 +8033,6 @@ pub struct DeleteEndpointRequest {
 }
 /// Request message for
 /// [EndpointService.DeployModel][google.cloud.aiplatform.v1.EndpointService.DeployModel].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployModelRequest {
     /// Required. The name of the Endpoint resource into which to deploy a Model.
@@ -8123,7 +8065,6 @@ pub struct DeployModelRequest {
 }
 /// Response message for
 /// [EndpointService.DeployModel][google.cloud.aiplatform.v1.EndpointService.DeployModel].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployModelResponse {
     /// The DeployedModel that had been deployed in the Endpoint.
@@ -8132,7 +8073,6 @@ pub struct DeployModelResponse {
 }
 /// Runtime operation information for
 /// [EndpointService.DeployModel][google.cloud.aiplatform.v1.EndpointService.DeployModel].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployModelOperationMetadata {
     /// The operation generic information.
@@ -8141,7 +8081,6 @@ pub struct DeployModelOperationMetadata {
 }
 /// Request message for
 /// [EndpointService.UndeployModel][google.cloud.aiplatform.v1.EndpointService.UndeployModel].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeployModelRequest {
     /// Required. The name of the Endpoint resource from which to undeploy a Model.
@@ -8164,12 +8103,10 @@ pub struct UndeployModelRequest {
 }
 /// Response message for
 /// [EndpointService.UndeployModel][google.cloud.aiplatform.v1.EndpointService.UndeployModel].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UndeployModelResponse {}
 /// Runtime operation information for
 /// [EndpointService.UndeployModel][google.cloud.aiplatform.v1.EndpointService.UndeployModel].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeployModelOperationMetadata {
     /// The operation generic information.
@@ -8178,7 +8115,6 @@ pub struct UndeployModelOperationMetadata {
 }
 /// Request message for
 /// [EndpointService.MutateDeployedModel][google.cloud.aiplatform.v1.EndpointService.MutateDeployedModel].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateDeployedModelRequest {
     /// Required. The name of the Endpoint resource into which to mutate a
@@ -8207,7 +8143,6 @@ pub struct MutateDeployedModelRequest {
 }
 /// Response message for
 /// [EndpointService.MutateDeployedModel][google.cloud.aiplatform.v1.EndpointService.MutateDeployedModel].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateDeployedModelResponse {
     /// The DeployedModel that's being mutated.
@@ -8216,7 +8151,6 @@ pub struct MutateDeployedModelResponse {
 }
 /// Runtime operation information for
 /// [EndpointService.MutateDeployedModel][google.cloud.aiplatform.v1.EndpointService.MutateDeployedModel].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateDeployedModelOperationMetadata {
     /// The operation generic information.
@@ -8248,8 +8182,8 @@ pub mod endpoint_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -8274,7 +8208,7 @@ pub mod endpoint_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             EndpointServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -8558,7 +8492,6 @@ pub mod endpoint_service_client {
     }
 }
 /// Configuration of how features in Featurestore are monitored.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FeaturestoreMonitoringConfig {
     /// The config for Snapshot Analysis Based Feature Monitoring.
@@ -8596,7 +8529,6 @@ pub mod featurestore_monitoring_config {
     /// This type of analysis generates statistics for each Feature based on a
     /// snapshot of the latest feature value of each entities every
     /// monitoring_interval.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SnapshotAnalysis {
         /// The monitoring schedule for snapshot analysis.
@@ -8627,7 +8559,6 @@ pub mod featurestore_monitoring_config {
     /// Feature imported by every
     /// [ImportFeatureValues][google.cloud.aiplatform.v1.FeaturestoreService.ImportFeatureValues]
     /// operation.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ImportFeaturesAnalysis {
         /// Whether to enable / disable / inherite default hebavior for import
@@ -8757,7 +8688,6 @@ pub mod featurestore_monitoring_config {
         }
     }
     /// The config for Featurestore Monitoring threshold.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ThresholdConfig {
         #[prost(oneof = "threshold_config::Threshold", tags = "1")]
@@ -8765,7 +8695,6 @@ pub mod featurestore_monitoring_config {
     }
     /// Nested message and enum types in `ThresholdConfig`.
     pub mod threshold_config {
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Threshold {
             /// Specify a threshold value that can trigger the alert.
@@ -8783,7 +8712,6 @@ pub mod featurestore_monitoring_config {
 /// An entity type is a type of object in a system that needs to be modeled and
 /// have stored information about. For example, driver is an entity type, and
 /// driver0 is an instance of an entity type driver.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityType {
     /// Immutable. Name of the EntityType.
@@ -8844,12 +8772,17 @@ pub struct EntityType {
     /// time. If unset (or explicitly set to 0), default to 4000 days TTL.
     #[prost(int32, tag = "10")]
     pub offline_storage_ttl_days: i32,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "11")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "12")]
+    pub satisfies_pzi: bool,
 }
 /// True positive, false positive, or false negative.
 ///
 /// EvaluatedAnnotation is only available under ModelEvaluationSlice with slice
 /// of `annotationSpec` dimension.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluatedAnnotation {
     /// Output only. Type of the EvaluatedAnnotation.
@@ -8976,7 +8909,6 @@ pub mod evaluated_annotation {
     }
 }
 /// Explanation result of the prediction produced by the Model.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluatedAnnotationExplanation {
     /// Explanation type.
@@ -8992,7 +8924,6 @@ pub struct EvaluatedAnnotationExplanation {
     pub explanation: ::core::option::Option<Explanation>,
 }
 /// Model error analysis for each annotation.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorAnalysisAnnotation {
     /// Attributed items for a given annotation, typically representing neighbors
@@ -9016,7 +8947,6 @@ pub struct ErrorAnalysisAnnotation {
 pub mod error_analysis_annotation {
     /// Attributed items for a given annotation, typically representing neighbors
     /// from the training sets constrained by the query type.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AttributedItem {
         /// The unique ID for each annotation. Used by FE to allocate the annotation
@@ -9076,7 +9006,6 @@ pub mod error_analysis_annotation {
     }
 }
 /// Request message for EvaluationService.EvaluateInstances.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluateInstancesRequest {
     /// Required. The resource name of the Location to evaluate the instances.
@@ -9093,7 +9022,6 @@ pub struct EvaluateInstancesRequest {
 /// Nested message and enum types in `EvaluateInstancesRequest`.
 pub mod evaluate_instances_request {
     /// Instances and specs for evaluation
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum MetricInputs {
         /// Auto metric instances.
@@ -9176,7 +9104,6 @@ pub mod evaluate_instances_request {
     }
 }
 /// Response message for EvaluationService.EvaluateInstances.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluateInstancesResponse {
     /// Evaluation results will be served in the same order as presented in
@@ -9193,7 +9120,6 @@ pub struct EvaluateInstancesResponse {
 pub mod evaluate_instances_response {
     /// Evaluation results will be served in the same order as presented in
     /// EvaluationRequest.instances.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum EvaluationResults {
         /// Auto metric evaluation results.
@@ -9277,7 +9203,6 @@ pub mod evaluate_instances_response {
     }
 }
 /// Input for exact match metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExactMatchInput {
     /// Required. Spec for exact match metric.
@@ -9288,7 +9213,6 @@ pub struct ExactMatchInput {
     pub instances: ::prost::alloc::vec::Vec<ExactMatchInstance>,
 }
 /// Spec for exact match instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExactMatchInstance {
     /// Required. Output of the evaluated model.
@@ -9300,11 +9224,9 @@ pub struct ExactMatchInstance {
 }
 /// Spec for exact match metric - returns 1 if prediction and reference exactly
 /// matches, otherwise 0.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExactMatchSpec {}
 /// Results for exact match metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExactMatchResults {
     /// Output only. Exact match metric values.
@@ -9312,7 +9234,6 @@ pub struct ExactMatchResults {
     pub exact_match_metric_values: ::prost::alloc::vec::Vec<ExactMatchMetricValue>,
 }
 /// Exact match metric value for an instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExactMatchMetricValue {
     /// Output only. Exact match score.
@@ -9320,7 +9241,6 @@ pub struct ExactMatchMetricValue {
     pub score: ::core::option::Option<f32>,
 }
 /// Input for bleu metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BleuInput {
     /// Required. Spec for bleu score metric.
@@ -9331,7 +9251,6 @@ pub struct BleuInput {
     pub instances: ::prost::alloc::vec::Vec<BleuInstance>,
 }
 /// Spec for bleu instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BleuInstance {
     /// Required. Output of the evaluated model.
@@ -9343,7 +9262,6 @@ pub struct BleuInstance {
 }
 /// Spec for bleu score metric - calculates the precision of n-grams in the
 /// prediction as compared to reference - returns a score ranging between 0 to 1.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BleuSpec {
     /// Optional. Whether to use_effective_order to compute bleu score.
@@ -9351,7 +9269,6 @@ pub struct BleuSpec {
     pub use_effective_order: bool,
 }
 /// Results for bleu metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BleuResults {
     /// Output only. Bleu metric values.
@@ -9359,7 +9276,6 @@ pub struct BleuResults {
     pub bleu_metric_values: ::prost::alloc::vec::Vec<BleuMetricValue>,
 }
 /// Bleu metric value for an instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BleuMetricValue {
     /// Output only. Bleu score.
@@ -9367,7 +9283,6 @@ pub struct BleuMetricValue {
     pub score: ::core::option::Option<f32>,
 }
 /// Input for rouge metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RougeInput {
     /// Required. Spec for rouge score metric.
@@ -9378,7 +9293,6 @@ pub struct RougeInput {
     pub instances: ::prost::alloc::vec::Vec<RougeInstance>,
 }
 /// Spec for rouge instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RougeInstance {
     /// Required. Output of the evaluated model.
@@ -9390,7 +9304,6 @@ pub struct RougeInstance {
 }
 /// Spec for rouge score metric - calculates the recall of n-grams in prediction
 /// as compared to reference - returns a score ranging between 0 and 1.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RougeSpec {
     /// Optional. Supported rouge types are rougen\[1-9\], rougeL, and rougeLsum.
@@ -9404,7 +9317,6 @@ pub struct RougeSpec {
     pub split_summaries: bool,
 }
 /// Results for rouge metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RougeResults {
     /// Output only. Rouge metric values.
@@ -9412,7 +9324,6 @@ pub struct RougeResults {
     pub rouge_metric_values: ::prost::alloc::vec::Vec<RougeMetricValue>,
 }
 /// Rouge metric value for an instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RougeMetricValue {
     /// Output only. Rouge score.
@@ -9420,7 +9331,6 @@ pub struct RougeMetricValue {
     pub score: ::core::option::Option<f32>,
 }
 /// Input for coherence metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CoherenceInput {
     /// Required. Spec for coherence score metric.
@@ -9431,7 +9341,6 @@ pub struct CoherenceInput {
     pub instance: ::core::option::Option<CoherenceInstance>,
 }
 /// Spec for coherence instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CoherenceInstance {
     /// Required. Output of the evaluated model.
@@ -9439,7 +9348,6 @@ pub struct CoherenceInstance {
     pub prediction: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for coherence score metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CoherenceSpec {
     /// Optional. Which version to use for evaluation.
@@ -9447,7 +9355,6 @@ pub struct CoherenceSpec {
     pub version: i32,
 }
 /// Spec for coherence result.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CoherenceResult {
     /// Output only. Coherence score.
@@ -9461,7 +9368,6 @@ pub struct CoherenceResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Input for fluency metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FluencyInput {
     /// Required. Spec for fluency score metric.
@@ -9472,7 +9378,6 @@ pub struct FluencyInput {
     pub instance: ::core::option::Option<FluencyInstance>,
 }
 /// Spec for fluency instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FluencyInstance {
     /// Required. Output of the evaluated model.
@@ -9480,7 +9385,6 @@ pub struct FluencyInstance {
     pub prediction: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for fluency score metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FluencySpec {
     /// Optional. Which version to use for evaluation.
@@ -9488,7 +9392,6 @@ pub struct FluencySpec {
     pub version: i32,
 }
 /// Spec for fluency result.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FluencyResult {
     /// Output only. Fluency score.
@@ -9502,7 +9405,6 @@ pub struct FluencyResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Input for safety metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SafetyInput {
     /// Required. Spec for safety metric.
@@ -9513,7 +9415,6 @@ pub struct SafetyInput {
     pub instance: ::core::option::Option<SafetyInstance>,
 }
 /// Spec for safety instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SafetyInstance {
     /// Required. Output of the evaluated model.
@@ -9521,7 +9422,6 @@ pub struct SafetyInstance {
     pub prediction: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for safety metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SafetySpec {
     /// Optional. Which version to use for evaluation.
@@ -9529,7 +9429,6 @@ pub struct SafetySpec {
     pub version: i32,
 }
 /// Spec for safety result.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SafetyResult {
     /// Output only. Safety score.
@@ -9543,7 +9442,6 @@ pub struct SafetyResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Input for groundedness metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroundednessInput {
     /// Required. Spec for groundedness metric.
@@ -9554,7 +9452,6 @@ pub struct GroundednessInput {
     pub instance: ::core::option::Option<GroundednessInstance>,
 }
 /// Spec for groundedness instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroundednessInstance {
     /// Required. Output of the evaluated model.
@@ -9566,7 +9463,6 @@ pub struct GroundednessInstance {
     pub context: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for groundedness metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct GroundednessSpec {
     /// Optional. Which version to use for evaluation.
@@ -9574,7 +9470,6 @@ pub struct GroundednessSpec {
     pub version: i32,
 }
 /// Spec for groundedness result.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroundednessResult {
     /// Output only. Groundedness score.
@@ -9588,7 +9483,6 @@ pub struct GroundednessResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Input for fulfillment metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FulfillmentInput {
     /// Required. Spec for fulfillment score metric.
@@ -9599,7 +9493,6 @@ pub struct FulfillmentInput {
     pub instance: ::core::option::Option<FulfillmentInstance>,
 }
 /// Spec for fulfillment instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FulfillmentInstance {
     /// Required. Output of the evaluated model.
@@ -9610,7 +9503,6 @@ pub struct FulfillmentInstance {
     pub instruction: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for fulfillment metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FulfillmentSpec {
     /// Optional. Which version to use for evaluation.
@@ -9618,7 +9510,6 @@ pub struct FulfillmentSpec {
     pub version: i32,
 }
 /// Spec for fulfillment result.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FulfillmentResult {
     /// Output only. Fulfillment score.
@@ -9632,7 +9523,6 @@ pub struct FulfillmentResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Input for summarization quality metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SummarizationQualityInput {
     /// Required. Spec for summarization quality score metric.
@@ -9643,7 +9533,6 @@ pub struct SummarizationQualityInput {
     pub instance: ::core::option::Option<SummarizationQualityInstance>,
 }
 /// Spec for summarization quality instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SummarizationQualityInstance {
     /// Required. Output of the evaluated model.
@@ -9660,7 +9549,6 @@ pub struct SummarizationQualityInstance {
     pub instruction: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for summarization quality score metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SummarizationQualitySpec {
     /// Optional. Whether to use instance.reference to compute summarization
@@ -9672,7 +9560,6 @@ pub struct SummarizationQualitySpec {
     pub version: i32,
 }
 /// Spec for summarization quality result.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SummarizationQualityResult {
     /// Output only. Summarization Quality score.
@@ -9686,7 +9573,6 @@ pub struct SummarizationQualityResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Input for pairwise summarization quality metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PairwiseSummarizationQualityInput {
     /// Required. Spec for pairwise summarization quality score metric.
@@ -9697,7 +9583,6 @@ pub struct PairwiseSummarizationQualityInput {
     pub instance: ::core::option::Option<PairwiseSummarizationQualityInstance>,
 }
 /// Spec for pairwise summarization quality instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PairwiseSummarizationQualityInstance {
     /// Required. Output of the candidate model.
@@ -9717,7 +9602,6 @@ pub struct PairwiseSummarizationQualityInstance {
     pub instruction: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for pairwise summarization quality score metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PairwiseSummarizationQualitySpec {
     /// Optional. Whether to use instance.reference to compute pairwise
@@ -9729,7 +9613,6 @@ pub struct PairwiseSummarizationQualitySpec {
     pub version: i32,
 }
 /// Spec for pairwise summarization quality result.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PairwiseSummarizationQualityResult {
     /// Output only. Pairwise summarization prediction choice.
@@ -9743,7 +9626,6 @@ pub struct PairwiseSummarizationQualityResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Input for summarization helpfulness metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SummarizationHelpfulnessInput {
     /// Required. Spec for summarization helpfulness score metric.
@@ -9754,7 +9636,6 @@ pub struct SummarizationHelpfulnessInput {
     pub instance: ::core::option::Option<SummarizationHelpfulnessInstance>,
 }
 /// Spec for summarization helpfulness instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SummarizationHelpfulnessInstance {
     /// Required. Output of the evaluated model.
@@ -9771,7 +9652,6 @@ pub struct SummarizationHelpfulnessInstance {
     pub instruction: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for summarization helpfulness score metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SummarizationHelpfulnessSpec {
     /// Optional. Whether to use instance.reference to compute summarization
@@ -9783,7 +9663,6 @@ pub struct SummarizationHelpfulnessSpec {
     pub version: i32,
 }
 /// Spec for summarization helpfulness result.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SummarizationHelpfulnessResult {
     /// Output only. Summarization Helpfulness score.
@@ -9797,7 +9676,6 @@ pub struct SummarizationHelpfulnessResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Input for summarization verbosity metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SummarizationVerbosityInput {
     /// Required. Spec for summarization verbosity score metric.
@@ -9808,7 +9686,6 @@ pub struct SummarizationVerbosityInput {
     pub instance: ::core::option::Option<SummarizationVerbosityInstance>,
 }
 /// Spec for summarization verbosity instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SummarizationVerbosityInstance {
     /// Required. Output of the evaluated model.
@@ -9825,7 +9702,6 @@ pub struct SummarizationVerbosityInstance {
     pub instruction: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for summarization verbosity score metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SummarizationVerbositySpec {
     /// Optional. Whether to use instance.reference to compute summarization
@@ -9837,7 +9713,6 @@ pub struct SummarizationVerbositySpec {
     pub version: i32,
 }
 /// Spec for summarization verbosity result.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SummarizationVerbosityResult {
     /// Output only. Summarization Verbosity score.
@@ -9851,7 +9726,6 @@ pub struct SummarizationVerbosityResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Input for question answering quality metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuestionAnsweringQualityInput {
     /// Required. Spec for question answering quality score metric.
@@ -9862,7 +9736,6 @@ pub struct QuestionAnsweringQualityInput {
     pub instance: ::core::option::Option<QuestionAnsweringQualityInstance>,
 }
 /// Spec for question answering quality instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuestionAnsweringQualityInstance {
     /// Required. Output of the evaluated model.
@@ -9879,7 +9752,6 @@ pub struct QuestionAnsweringQualityInstance {
     pub instruction: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for question answering quality score metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct QuestionAnsweringQualitySpec {
     /// Optional. Whether to use instance.reference to compute question answering
@@ -9891,7 +9763,6 @@ pub struct QuestionAnsweringQualitySpec {
     pub version: i32,
 }
 /// Spec for question answering quality result.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuestionAnsweringQualityResult {
     /// Output only. Question Answering Quality score.
@@ -9905,7 +9776,6 @@ pub struct QuestionAnsweringQualityResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Input for pairwise question answering quality metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PairwiseQuestionAnsweringQualityInput {
     /// Required. Spec for pairwise question answering quality score metric.
@@ -9916,7 +9786,6 @@ pub struct PairwiseQuestionAnsweringQualityInput {
     pub instance: ::core::option::Option<PairwiseQuestionAnsweringQualityInstance>,
 }
 /// Spec for pairwise question answering quality instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PairwiseQuestionAnsweringQualityInstance {
     /// Required. Output of the candidate model.
@@ -9936,7 +9805,6 @@ pub struct PairwiseQuestionAnsweringQualityInstance {
     pub instruction: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for pairwise question answering quality score metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct PairwiseQuestionAnsweringQualitySpec {
     /// Optional. Whether to use instance.reference to compute question answering
@@ -9948,7 +9816,6 @@ pub struct PairwiseQuestionAnsweringQualitySpec {
     pub version: i32,
 }
 /// Spec for pairwise question answering quality result.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PairwiseQuestionAnsweringQualityResult {
     /// Output only. Pairwise question answering prediction choice.
@@ -9962,7 +9829,6 @@ pub struct PairwiseQuestionAnsweringQualityResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Input for question answering relevance metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuestionAnsweringRelevanceInput {
     /// Required. Spec for question answering relevance score metric.
@@ -9973,7 +9839,6 @@ pub struct QuestionAnsweringRelevanceInput {
     pub instance: ::core::option::Option<QuestionAnsweringRelevanceInstance>,
 }
 /// Spec for question answering relevance instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuestionAnsweringRelevanceInstance {
     /// Required. Output of the evaluated model.
@@ -9990,7 +9855,6 @@ pub struct QuestionAnsweringRelevanceInstance {
     pub instruction: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for question answering relevance metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct QuestionAnsweringRelevanceSpec {
     /// Optional. Whether to use instance.reference to compute question answering
@@ -10002,7 +9866,6 @@ pub struct QuestionAnsweringRelevanceSpec {
     pub version: i32,
 }
 /// Spec for question answering relevance result.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuestionAnsweringRelevanceResult {
     /// Output only. Question Answering Relevance score.
@@ -10016,7 +9879,6 @@ pub struct QuestionAnsweringRelevanceResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Input for question answering helpfulness metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuestionAnsweringHelpfulnessInput {
     /// Required. Spec for question answering helpfulness score metric.
@@ -10027,7 +9889,6 @@ pub struct QuestionAnsweringHelpfulnessInput {
     pub instance: ::core::option::Option<QuestionAnsweringHelpfulnessInstance>,
 }
 /// Spec for question answering helpfulness instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuestionAnsweringHelpfulnessInstance {
     /// Required. Output of the evaluated model.
@@ -10044,7 +9905,6 @@ pub struct QuestionAnsweringHelpfulnessInstance {
     pub instruction: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for question answering helpfulness metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct QuestionAnsweringHelpfulnessSpec {
     /// Optional. Whether to use instance.reference to compute question answering
@@ -10056,7 +9916,6 @@ pub struct QuestionAnsweringHelpfulnessSpec {
     pub version: i32,
 }
 /// Spec for question answering helpfulness result.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuestionAnsweringHelpfulnessResult {
     /// Output only. Question Answering Helpfulness score.
@@ -10070,7 +9929,6 @@ pub struct QuestionAnsweringHelpfulnessResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Input for question answering correctness metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuestionAnsweringCorrectnessInput {
     /// Required. Spec for question answering correctness score metric.
@@ -10081,7 +9939,6 @@ pub struct QuestionAnsweringCorrectnessInput {
     pub instance: ::core::option::Option<QuestionAnsweringCorrectnessInstance>,
 }
 /// Spec for question answering correctness instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuestionAnsweringCorrectnessInstance {
     /// Required. Output of the evaluated model.
@@ -10098,7 +9955,6 @@ pub struct QuestionAnsweringCorrectnessInstance {
     pub instruction: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for question answering correctness metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct QuestionAnsweringCorrectnessSpec {
     /// Optional. Whether to use instance.reference to compute question answering
@@ -10110,7 +9966,6 @@ pub struct QuestionAnsweringCorrectnessSpec {
     pub version: i32,
 }
 /// Spec for question answering correctness result.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuestionAnsweringCorrectnessResult {
     /// Output only. Question Answering Correctness score.
@@ -10124,7 +9979,6 @@ pub struct QuestionAnsweringCorrectnessResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Input for pointwise metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PointwiseMetricInput {
     /// Required. Spec for pointwise metric.
@@ -10136,7 +9990,6 @@ pub struct PointwiseMetricInput {
 }
 /// Pointwise metric instance. Usually one instance corresponds to one row in an
 /// evaluation dataset.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PointwiseMetricInstance {
     /// Instance for pointwise metric.
@@ -10146,7 +9999,6 @@ pub struct PointwiseMetricInstance {
 /// Nested message and enum types in `PointwiseMetricInstance`.
 pub mod pointwise_metric_instance {
     /// Instance for pointwise metric.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Instance {
         /// Instance specified as a json string. String key-value pairs are expected
@@ -10157,7 +10009,6 @@ pub mod pointwise_metric_instance {
     }
 }
 /// Spec for pointwise metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PointwiseMetricSpec {
     /// Required. Metric prompt template for pointwise metric.
@@ -10165,7 +10016,6 @@ pub struct PointwiseMetricSpec {
     pub metric_prompt_template: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for pointwise metric result.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PointwiseMetricResult {
     /// Output only. Pointwise metric score.
@@ -10176,7 +10026,6 @@ pub struct PointwiseMetricResult {
     pub explanation: ::prost::alloc::string::String,
 }
 /// Input for pairwise metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PairwiseMetricInput {
     /// Required. Spec for pairwise metric.
@@ -10188,7 +10037,6 @@ pub struct PairwiseMetricInput {
 }
 /// Pairwise metric instance. Usually one instance corresponds to one row in an
 /// evaluation dataset.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PairwiseMetricInstance {
     /// Instance for pairwise metric.
@@ -10198,7 +10046,6 @@ pub struct PairwiseMetricInstance {
 /// Nested message and enum types in `PairwiseMetricInstance`.
 pub mod pairwise_metric_instance {
     /// Instance for pairwise metric.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Instance {
         /// Instance specified as a json string. String key-value pairs are expected
@@ -10209,7 +10056,6 @@ pub mod pairwise_metric_instance {
     }
 }
 /// Spec for pairwise metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PairwiseMetricSpec {
     /// Required. Metric prompt template for pairwise metric.
@@ -10217,7 +10063,6 @@ pub struct PairwiseMetricSpec {
     pub metric_prompt_template: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for pairwise metric result.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PairwiseMetricResult {
     /// Output only. Pairwise metric choice.
@@ -10228,7 +10073,6 @@ pub struct PairwiseMetricResult {
     pub explanation: ::prost::alloc::string::String,
 }
 /// Input for tool call valid metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolCallValidInput {
     /// Required. Spec for tool call valid metric.
@@ -10239,11 +10083,9 @@ pub struct ToolCallValidInput {
     pub instances: ::prost::alloc::vec::Vec<ToolCallValidInstance>,
 }
 /// Spec for tool call valid metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ToolCallValidSpec {}
 /// Spec for tool call valid instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolCallValidInstance {
     /// Required. Output of the evaluated model.
@@ -10254,7 +10096,6 @@ pub struct ToolCallValidInstance {
     pub reference: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Results for tool call valid metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolCallValidResults {
     /// Output only. Tool call valid metric values.
@@ -10264,7 +10105,6 @@ pub struct ToolCallValidResults {
     >,
 }
 /// Tool call valid metric value for an instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ToolCallValidMetricValue {
     /// Output only. Tool call valid score.
@@ -10272,7 +10112,6 @@ pub struct ToolCallValidMetricValue {
     pub score: ::core::option::Option<f32>,
 }
 /// Input for tool name match metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolNameMatchInput {
     /// Required. Spec for tool name match metric.
@@ -10283,11 +10122,9 @@ pub struct ToolNameMatchInput {
     pub instances: ::prost::alloc::vec::Vec<ToolNameMatchInstance>,
 }
 /// Spec for tool name match metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ToolNameMatchSpec {}
 /// Spec for tool name match instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolNameMatchInstance {
     /// Required. Output of the evaluated model.
@@ -10298,7 +10135,6 @@ pub struct ToolNameMatchInstance {
     pub reference: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Results for tool name match metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolNameMatchResults {
     /// Output only. Tool name match metric values.
@@ -10308,7 +10144,6 @@ pub struct ToolNameMatchResults {
     >,
 }
 /// Tool name match metric value for an instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ToolNameMatchMetricValue {
     /// Output only. Tool name match score.
@@ -10316,7 +10151,6 @@ pub struct ToolNameMatchMetricValue {
     pub score: ::core::option::Option<f32>,
 }
 /// Input for tool parameter key match metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolParameterKeyMatchInput {
     /// Required. Spec for tool parameter key match metric.
@@ -10327,11 +10161,9 @@ pub struct ToolParameterKeyMatchInput {
     pub instances: ::prost::alloc::vec::Vec<ToolParameterKeyMatchInstance>,
 }
 /// Spec for tool parameter key match metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ToolParameterKeyMatchSpec {}
 /// Spec for tool parameter key match instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolParameterKeyMatchInstance {
     /// Required. Output of the evaluated model.
@@ -10342,7 +10174,6 @@ pub struct ToolParameterKeyMatchInstance {
     pub reference: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Results for tool parameter key match metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolParameterKeyMatchResults {
     /// Output only. Tool parameter key match metric values.
@@ -10352,7 +10183,6 @@ pub struct ToolParameterKeyMatchResults {
     >,
 }
 /// Tool parameter key match metric value for an instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ToolParameterKeyMatchMetricValue {
     /// Output only. Tool parameter key match score.
@@ -10360,7 +10190,6 @@ pub struct ToolParameterKeyMatchMetricValue {
     pub score: ::core::option::Option<f32>,
 }
 /// Input for tool parameter key value match metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolParameterKvMatchInput {
     /// Required. Spec for tool parameter key value match metric.
@@ -10371,7 +10200,6 @@ pub struct ToolParameterKvMatchInput {
     pub instances: ::prost::alloc::vec::Vec<ToolParameterKvMatchInstance>,
 }
 /// Spec for tool parameter key value match metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ToolParameterKvMatchSpec {
     /// Optional. Whether to use STRCIT string match on parameter values.
@@ -10379,7 +10207,6 @@ pub struct ToolParameterKvMatchSpec {
     pub use_strict_string_match: bool,
 }
 /// Spec for tool parameter key value match instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolParameterKvMatchInstance {
     /// Required. Output of the evaluated model.
@@ -10390,7 +10217,6 @@ pub struct ToolParameterKvMatchInstance {
     pub reference: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Results for tool parameter key value match metric.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolParameterKvMatchResults {
     /// Output only. Tool parameter key value match metric values.
@@ -10400,7 +10226,6 @@ pub struct ToolParameterKvMatchResults {
     >,
 }
 /// Tool parameter key value match metric value for an instance.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ToolParameterKvMatchMetricValue {
     /// Output only. Tool parameter key value match score.
@@ -10469,8 +10294,8 @@ pub mod evaluation_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -10495,7 +10320,7 @@ pub mod evaluation_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             EvaluationServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -10565,7 +10390,6 @@ pub mod evaluation_service_client {
 }
 /// An edge describing the relationship between an Artifact and an Execution in
 /// a lineage graph.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Event {
     /// Required. The relative resource name of the Artifact in the Event.
@@ -10644,7 +10468,6 @@ pub mod event {
     }
 }
 /// Instance of a general execution.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Execution {
     /// Output only. The resource name of the Execution.
@@ -10776,7 +10599,6 @@ pub mod execution {
 /// anomaly_uri in the tensorflow defined protos. Field data_stats contains
 /// almost identical information with the raw stats in Vertex AI
 /// defined proto, for UI to display.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureStatsAnomaly {
     /// Feature importance score, only populated when cross-feature monitoring is
@@ -10831,7 +10653,6 @@ pub struct FeatureStatsAnomaly {
 }
 /// Feature Metadata information.
 /// For example, color is a feature that describes an apple.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Feature {
     /// Immutable. Name of the Feature.
@@ -10916,7 +10737,6 @@ pub mod feature {
     /// stats requested by user, sorted by
     /// [FeatureStatsAnomaly.start_time][google.cloud.aiplatform.v1.FeatureStatsAnomaly.start_time]
     /// descending.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MonitoringStatsAnomaly {
         /// Output only. The objective for each stats.
@@ -11053,7 +10873,6 @@ pub mod feature {
     }
 }
 /// Vertex AI Feature Group.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureGroup {
     /// Identifier. Name of the FeatureGroup. Format:
@@ -11095,7 +10914,6 @@ pub struct FeatureGroup {
 /// Nested message and enum types in `FeatureGroup`.
 pub mod feature_group {
     /// Input source type for BigQuery Tables and Views.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BigQuery {
         /// Required. Immutable. The BigQuery source URI that points to either a
@@ -11106,8 +10924,26 @@ pub mod feature_group {
         /// If not provided defaults to `entity_id`.
         #[prost(string, repeated, tag = "2")]
         pub entity_id_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. If the source is a time-series source, this can be set to
+        /// control how downstream sources (ex:
+        /// [FeatureView][google.cloud.aiplatform.v1.FeatureView] ) will treat
+        /// time-series sources. If not set, will treat the source as a time-series
+        /// source with `feature_timestamp` as timestamp column and no scan boundary.
+        #[prost(message, optional, tag = "4")]
+        pub time_series: ::core::option::Option<big_query::TimeSeries>,
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
+    /// Nested message and enum types in `BigQuery`.
+    pub mod big_query {
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct TimeSeries {
+            /// Optional. Column hosting timestamp values for a time-series source.
+            /// Will be used to determine the latest `feature_values` for each entity.
+            /// Optional. If not provided, column named `feature_timestamp` of
+            /// type `TIMESTAMP` will be used.
+            #[prost(string, tag = "1")]
+            pub timestamp_column: ::prost::alloc::string::String,
+        }
+    }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Indicates that features for this group come from BigQuery Table/View.
@@ -11121,7 +10957,6 @@ pub mod feature_group {
 /// Vertex AI Feature Online Store provides a centralized repository for serving
 /// ML features and embedding indexes at low latency. The Feature Online Store is
 /// a top-level container.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureOnlineStore {
     /// Identifier. Name of the FeatureOnlineStore. Format:
@@ -11167,12 +11002,17 @@ pub struct FeatureOnlineStore {
     /// online store will be secured by this key.
     #[prost(message, optional, tag = "13")]
     pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "15")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "16")]
+    pub satisfies_pzi: bool,
     #[prost(oneof = "feature_online_store::StorageType", tags = "8, 12")]
     pub storage_type: ::core::option::Option<feature_online_store::StorageType>,
 }
 /// Nested message and enum types in `FeatureOnlineStore`.
 pub mod feature_online_store {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Bigtable {
         /// Required. Autoscaling config applied to Bigtable Instance.
@@ -11181,7 +11021,6 @@ pub mod feature_online_store {
     }
     /// Nested message and enum types in `Bigtable`.
     pub mod bigtable {
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct AutoScaling {
             /// Required. The minimum number of nodes to scale down to. Must be greater
@@ -11203,13 +11042,11 @@ pub mod feature_online_store {
         }
     }
     /// Optimized storage type
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Optimized {}
     /// The dedicated serving endpoint for this FeatureOnlineStore. Only need to
     /// set when you choose Optimized storage type. Public endpoint is provisioned
     /// by default.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DedicatedServingEndpoint {
         /// Output only. This field will be populated with the domain name to use for
@@ -11279,7 +11116,6 @@ pub mod feature_online_store {
             }
         }
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum StorageType {
         /// Contains settings for the Cloud Bigtable instance that will be created
@@ -11298,7 +11134,6 @@ pub mod feature_online_store {
 }
 /// FeatureView is representation of values that the FeatureOnlineStore will
 /// serve based on its syncConfig.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureView {
     /// Identifier. Name of the FeatureView. Format:
@@ -11342,12 +11177,17 @@ pub struct FeatureView {
     /// performed during online serving.
     #[prost(message, optional, tag = "15")]
     pub index_config: ::core::option::Option<feature_view::IndexConfig>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "19")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "20")]
+    pub satisfies_pzi: bool,
     #[prost(oneof = "feature_view::Source", tags = "6, 9")]
     pub source: ::core::option::Option<feature_view::Source>,
 }
 /// Nested message and enum types in `FeatureView`.
 pub mod feature_view {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BigQuerySource {
         /// Required. The BigQuery view URI that will be materialized on each sync
@@ -11359,7 +11199,6 @@ pub mod feature_view {
         pub entity_id_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Configuration for Sync. Only one option is set.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SyncConfig {
         /// Cron schedule (<https://en.wikipedia.org/wiki/Cron>) to launch scheduled
@@ -11372,7 +11211,6 @@ pub mod feature_view {
         pub cron: ::prost::alloc::string::String,
     }
     /// Configuration for vector indexing.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndexConfig {
         /// Optional. Column of embedding. This column contains the source data to
@@ -11409,11 +11247,9 @@ pub mod feature_view {
     /// Nested message and enum types in `IndexConfig`.
     pub mod index_config {
         /// Configuration options for using brute force search.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct BruteForceConfig {}
         /// Configuration options for the tree-AH algorithm.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct TreeAhConfig {
             /// Optional. Number of embeddings on each leaf node. The default value is
@@ -11478,7 +11314,6 @@ pub mod feature_view {
         }
         /// The configuration with regard to the algorithms used for efficient
         /// search.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum AlgorithmConfig {
             /// Optional. Configuration options for the tree-AH algorithm (Shallow tree
@@ -11496,7 +11331,6 @@ pub mod feature_view {
     }
     /// A Feature Registry source for features that need to be synced to Online
     /// Store.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FeatureRegistrySource {
         /// Required. List of features that need to be synced to Online Store.
@@ -11512,7 +11346,6 @@ pub mod feature_view {
     pub mod feature_registry_source {
         /// Features belonging to a single feature group that will be
         /// synced to Online Store.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct FeatureGroup {
             /// Required. Identifier of the feature group.
@@ -11523,7 +11356,6 @@ pub mod feature_view {
             pub feature_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Optional. Configures how data is supposed to be extracted from a BigQuery
@@ -11538,7 +11370,6 @@ pub mod feature_view {
 }
 /// FeatureViewSync is a representation of sync operation which copies data from
 /// data source to Feature View in Online Store.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureViewSync {
     /// Identifier. Name of the FeatureViewSync. Format:
@@ -11559,12 +11390,17 @@ pub struct FeatureViewSync {
     /// Output only. Summary of the sync job.
     #[prost(message, optional, tag = "6")]
     pub sync_summary: ::core::option::Option<feature_view_sync::SyncSummary>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "7")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "8")]
+    pub satisfies_pzi: bool,
 }
 /// Nested message and enum types in `FeatureViewSync`.
 pub mod feature_view_sync {
     /// Summary from the Sync job. For continuous syncs, the summary is updated
     /// periodically. For batch syncs, it gets updated on completion of the sync.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SyncSummary {
         /// Output only. Total number of rows synced.
@@ -11577,7 +11413,6 @@ pub mod feature_view_sync {
 }
 /// Request message for
 /// [FeatureOnlineStoreAdminService.CreateFeatureOnlineStore][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.CreateFeatureOnlineStore].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeatureOnlineStoreRequest {
     /// Required. The resource name of the Location to create FeatureOnlineStores.
@@ -11600,7 +11435,6 @@ pub struct CreateFeatureOnlineStoreRequest {
 }
 /// Request message for
 /// [FeatureOnlineStoreAdminService.GetFeatureOnlineStore][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.GetFeatureOnlineStore].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeatureOnlineStoreRequest {
     /// Required. The name of the FeatureOnlineStore resource.
@@ -11609,7 +11443,6 @@ pub struct GetFeatureOnlineStoreRequest {
 }
 /// Request message for
 /// [FeatureOnlineStoreAdminService.ListFeatureOnlineStores][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureOnlineStores].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeatureOnlineStoresRequest {
     /// Required. The resource name of the Location to list FeatureOnlineStores.
@@ -11662,7 +11495,6 @@ pub struct ListFeatureOnlineStoresRequest {
 }
 /// Response message for
 /// [FeatureOnlineStoreAdminService.ListFeatureOnlineStores][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureOnlineStores].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeatureOnlineStoresResponse {
     /// The FeatureOnlineStores matching the request.
@@ -11677,7 +11509,6 @@ pub struct ListFeatureOnlineStoresResponse {
 }
 /// Request message for
 /// [FeatureOnlineStoreAdminService.UpdateFeatureOnlineStore][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.UpdateFeatureOnlineStore].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeatureOnlineStoreRequest {
     /// Required. The FeatureOnlineStore's `name` field is used to identify the
@@ -11705,7 +11536,6 @@ pub struct UpdateFeatureOnlineStoreRequest {
 }
 /// Request message for
 /// [FeatureOnlineStoreAdminService.DeleteFeatureOnlineStore][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.DeleteFeatureOnlineStore].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFeatureOnlineStoreRequest {
     /// Required. The name of the FeatureOnlineStore to be deleted.
@@ -11721,7 +11551,6 @@ pub struct DeleteFeatureOnlineStoreRequest {
 }
 /// Request message for
 /// [FeatureOnlineStoreAdminService.CreateFeatureView][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.CreateFeatureView].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeatureViewRequest {
     /// Required. The resource name of the FeatureOnlineStore to create
@@ -11750,7 +11579,6 @@ pub struct CreateFeatureViewRequest {
 }
 /// Request message for
 /// [FeatureOnlineStoreAdminService.GetFeatureView][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.GetFeatureView].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeatureViewRequest {
     /// Required. The name of the FeatureView resource.
@@ -11761,7 +11589,6 @@ pub struct GetFeatureViewRequest {
 }
 /// Request message for
 /// [FeatureOnlineStoreAdminService.ListFeatureViews][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureViews].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeatureViewsRequest {
     /// Required. The resource name of the FeatureOnlineStore to list FeatureViews.
@@ -11817,7 +11644,6 @@ pub struct ListFeatureViewsRequest {
 }
 /// Response message for
 /// [FeatureOnlineStoreAdminService.ListFeatureViews][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureViews].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeatureViewsResponse {
     /// The FeatureViews matching the request.
@@ -11832,7 +11658,6 @@ pub struct ListFeatureViewsResponse {
 }
 /// Request message for
 /// [FeatureOnlineStoreAdminService.UpdateFeatureView][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.UpdateFeatureView].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeatureViewRequest {
     /// Required. The FeatureView's `name` field is used to identify the
@@ -11863,7 +11688,6 @@ pub struct UpdateFeatureViewRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for [FeatureOnlineStoreAdminService.DeleteFeatureViews][].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFeatureViewRequest {
     /// Required. The name of the FeatureView to be deleted.
@@ -11873,7 +11697,6 @@ pub struct DeleteFeatureViewRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Details of operations that perform create FeatureOnlineStore.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeatureOnlineStoreOperationMetadata {
     /// Operation metadata for FeatureOnlineStore.
@@ -11881,7 +11704,6 @@ pub struct CreateFeatureOnlineStoreOperationMetadata {
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Details of operations that perform update FeatureOnlineStore.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeatureOnlineStoreOperationMetadata {
     /// Operation metadata for FeatureOnlineStore.
@@ -11889,7 +11711,6 @@ pub struct UpdateFeatureOnlineStoreOperationMetadata {
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Details of operations that perform create FeatureView.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeatureViewOperationMetadata {
     /// Operation metadata for FeatureView Create.
@@ -11897,7 +11718,6 @@ pub struct CreateFeatureViewOperationMetadata {
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Details of operations that perform update FeatureView.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeatureViewOperationMetadata {
     /// Operation metadata for FeatureView Update.
@@ -11906,7 +11726,6 @@ pub struct UpdateFeatureViewOperationMetadata {
 }
 /// Request message for
 /// [FeatureOnlineStoreAdminService.SyncFeatureView][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.SyncFeatureView].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SyncFeatureViewRequest {
     /// Required. Format:
@@ -11916,7 +11735,6 @@ pub struct SyncFeatureViewRequest {
 }
 /// Respose message for
 /// [FeatureOnlineStoreAdminService.SyncFeatureView][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.SyncFeatureView].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SyncFeatureViewResponse {
     /// Format:
@@ -11926,7 +11744,6 @@ pub struct SyncFeatureViewResponse {
 }
 /// Request message for
 /// [FeatureOnlineStoreAdminService.GetFeatureViewSync][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.GetFeatureViewSync].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeatureViewSyncRequest {
     /// Required. The name of the FeatureViewSync resource.
@@ -11937,7 +11754,6 @@ pub struct GetFeatureViewSyncRequest {
 }
 /// Request message for
 /// [FeatureOnlineStoreAdminService.ListFeatureViewSyncs][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureViewSyncs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeatureViewSyncsRequest {
     /// Required. The resource name of the FeatureView to list FeatureViewSyncs.
@@ -11983,7 +11799,6 @@ pub struct ListFeatureViewSyncsRequest {
 }
 /// Response message for
 /// [FeatureOnlineStoreAdminService.ListFeatureViewSyncs][google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService.ListFeatureViewSyncs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeatureViewSyncsResponse {
     /// The FeatureViewSyncs matching the request.
@@ -12022,8 +11837,8 @@ pub mod feature_online_store_admin_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -12048,7 +11863,7 @@ pub mod feature_online_store_admin_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FeatureOnlineStoreAdminServiceClient::new(
                 InterceptedService::new(inner, interceptor),
@@ -12489,7 +12304,6 @@ pub mod feature_online_store_admin_service_client {
     }
 }
 /// Matcher for Features of an EntityType by Feature ID.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IdMatcher {
     /// Required. The following are accepted as `ids`:
@@ -12502,7 +12316,6 @@ pub struct IdMatcher {
     pub ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Selector for Features of an EntityType.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureSelector {
     /// Required. Matches Features based on ID.
@@ -12510,7 +12323,6 @@ pub struct FeatureSelector {
     pub id_matcher: ::core::option::Option<IdMatcher>,
 }
 /// A list of boolean values.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BoolArray {
     /// A list of bool values.
@@ -12518,7 +12330,6 @@ pub struct BoolArray {
     pub values: ::prost::alloc::vec::Vec<bool>,
 }
 /// A list of double values.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DoubleArray {
     /// A list of double values.
@@ -12526,7 +12337,6 @@ pub struct DoubleArray {
     pub values: ::prost::alloc::vec::Vec<f64>,
 }
 /// A list of int64 values.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Int64Array {
     /// A list of int64 values.
@@ -12534,7 +12344,6 @@ pub struct Int64Array {
     pub values: ::prost::alloc::vec::Vec<i64>,
 }
 /// A list of string values.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StringArray {
     /// A list of string values.
@@ -12542,7 +12351,6 @@ pub struct StringArray {
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A tensor value type.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tensor {
     /// The data type of tensor.
@@ -12676,7 +12484,6 @@ pub mod tensor {
 }
 /// Request message for
 /// [FeaturestoreOnlineServingService.WriteFeatureValues][google.cloud.aiplatform.v1.FeaturestoreOnlineServingService.WriteFeatureValues].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteFeatureValuesRequest {
     /// Required. The resource name of the EntityType for the entities being
@@ -12693,7 +12500,6 @@ pub struct WriteFeatureValuesRequest {
     pub payloads: ::prost::alloc::vec::Vec<WriteFeatureValuesPayload>,
 }
 /// Contains Feature values to be written for a specific entity.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteFeatureValuesPayload {
     /// Required. The ID of the entity.
@@ -12711,12 +12517,10 @@ pub struct WriteFeatureValuesPayload {
 }
 /// Response message for
 /// [FeaturestoreOnlineServingService.WriteFeatureValues][google.cloud.aiplatform.v1.FeaturestoreOnlineServingService.WriteFeatureValues].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WriteFeatureValuesResponse {}
 /// Request message for
 /// [FeaturestoreOnlineServingService.ReadFeatureValues][google.cloud.aiplatform.v1.FeaturestoreOnlineServingService.ReadFeatureValues].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadFeatureValuesRequest {
     /// Required. The resource name of the EntityType for the entity being read.
@@ -12737,7 +12541,6 @@ pub struct ReadFeatureValuesRequest {
 }
 /// Response message for
 /// [FeaturestoreOnlineServingService.ReadFeatureValues][google.cloud.aiplatform.v1.FeaturestoreOnlineServingService.ReadFeatureValues].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadFeatureValuesResponse {
     /// Response header.
@@ -12753,7 +12556,6 @@ pub struct ReadFeatureValuesResponse {
 /// Nested message and enum types in `ReadFeatureValuesResponse`.
 pub mod read_feature_values_response {
     /// Metadata for requested Features.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FeatureDescriptor {
         /// Feature ID.
@@ -12763,7 +12565,6 @@ pub mod read_feature_values_response {
     /// Response header with metadata for the requested
     /// [ReadFeatureValuesRequest.entity_type][google.cloud.aiplatform.v1.ReadFeatureValuesRequest.entity_type]
     /// and Features.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Header {
         /// The resource name of the EntityType from the
@@ -12778,7 +12579,6 @@ pub mod read_feature_values_response {
         pub feature_descriptors: ::prost::alloc::vec::Vec<FeatureDescriptor>,
     }
     /// Entity view with Feature values.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EntityView {
         /// ID of the requested entity.
@@ -12797,7 +12597,6 @@ pub mod read_feature_values_response {
     pub mod entity_view {
         /// Container to hold value(s), successive in time, for one Feature from the
         /// request.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Data {
             #[prost(oneof = "data::Data", tags = "1, 2")]
@@ -12805,7 +12604,6 @@ pub mod read_feature_values_response {
         }
         /// Nested message and enum types in `Data`.
         pub mod data {
-            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum Data {
                 /// Feature value if a single value is requested.
@@ -12823,7 +12621,6 @@ pub mod read_feature_values_response {
 }
 /// Request message for
 /// [FeaturestoreOnlineServingService.StreamingFeatureValuesRead][].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingReadFeatureValuesRequest {
     /// Required. The resource name of the entities' type.
@@ -12845,7 +12642,6 @@ pub struct StreamingReadFeatureValuesRequest {
     pub feature_selector: ::core::option::Option<FeatureSelector>,
 }
 /// Value for a feature.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureValue {
     /// Metadata of feature value.
@@ -12858,7 +12654,6 @@ pub struct FeatureValue {
 /// Nested message and enum types in `FeatureValue`.
 pub mod feature_value {
     /// Metadata of feature value.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Metadata {
         /// Feature generation timestamp. Typically, it is provided by user at
@@ -12871,7 +12666,6 @@ pub mod feature_value {
         pub generate_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Value for the feature.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// Bool type feature value.
@@ -12907,7 +12701,6 @@ pub mod feature_value {
     }
 }
 /// Struct (or object) type feature value.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StructValue {
     /// A list of field values.
@@ -12915,7 +12708,6 @@ pub struct StructValue {
     pub values: ::prost::alloc::vec::Vec<StructFieldValue>,
 }
 /// One field of a Struct (or object) type feature value.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StructFieldValue {
     /// Name of the field in the struct feature.
@@ -12926,7 +12718,6 @@ pub struct StructFieldValue {
     pub value: ::core::option::Option<FeatureValue>,
 }
 /// Container for list of values.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureValueList {
     /// A list of feature values. All of them should be the same data type.
@@ -12958,8 +12749,8 @@ pub mod featurestore_online_serving_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -12984,7 +12775,7 @@ pub mod featurestore_online_serving_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FeaturestoreOnlineServingServiceClient::new(
                 InterceptedService::new(inner, interceptor),
@@ -13125,7 +12916,6 @@ pub mod featurestore_online_serving_service_client {
     }
 }
 /// Lookup key for a feature view.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureViewDataKey {
     #[prost(oneof = "feature_view_data_key::KeyOneof", tags = "1, 2")]
@@ -13134,7 +12924,6 @@ pub struct FeatureViewDataKey {
 /// Nested message and enum types in `FeatureViewDataKey`.
 pub mod feature_view_data_key {
     /// ID that is comprised from several parts (columns).
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CompositeKey {
         /// Parts to construct Entity ID. Should match with the same ID columns as
@@ -13142,7 +12931,6 @@ pub mod feature_view_data_key {
         #[prost(string, repeated, tag = "1")]
         pub parts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum KeyOneof {
         /// String key to use for lookup.
@@ -13157,7 +12945,6 @@ pub mod feature_view_data_key {
 /// Request message for
 /// [FeatureOnlineStoreService.FetchFeatureValues][google.cloud.aiplatform.v1.FeatureOnlineStoreService.FetchFeatureValues].
 /// All the features under the requested feature view will be returned.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchFeatureValuesRequest {
     /// Required. FeatureView resource format
@@ -13175,7 +12962,6 @@ pub struct FetchFeatureValuesRequest {
 }
 /// Response message for
 /// [FeatureOnlineStoreService.FetchFeatureValues][google.cloud.aiplatform.v1.FeatureOnlineStoreService.FetchFeatureValues]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchFeatureValuesResponse {
     /// The data key associated with this response.
@@ -13190,7 +12976,6 @@ pub struct FetchFeatureValuesResponse {
 pub mod fetch_feature_values_response {
     /// Response structure in the format of key (feature name) and (feature) value
     /// pair.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FeatureNameValuePairList {
         /// List of feature names and values.
@@ -13202,7 +12987,6 @@ pub mod fetch_feature_values_response {
     /// Nested message and enum types in `FeatureNameValuePairList`.
     pub mod feature_name_value_pair_list {
         /// Feature name & value pair.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct FeatureNameValuePair {
             /// Feature short name.
@@ -13213,7 +12997,6 @@ pub mod fetch_feature_values_response {
         }
         /// Nested message and enum types in `FeatureNameValuePair`.
         pub mod feature_name_value_pair {
-            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum Data {
                 /// Feature value.
@@ -13222,7 +13005,6 @@ pub mod fetch_feature_values_response {
             }
         }
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Format {
         /// Feature values in KeyValue format.
@@ -13234,7 +13016,6 @@ pub mod fetch_feature_values_response {
     }
 }
 /// A query to find a number of similar entities.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NearestNeighborQuery {
     /// Optional. The number of similar entities to be retrieved from feature view
@@ -13262,7 +13043,6 @@ pub struct NearestNeighborQuery {
 /// Nested message and enum types in `NearestNeighborQuery`.
 pub mod nearest_neighbor_query {
     /// The embedding vector.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Embedding {
         /// Optional. Individual value in the embedding.
@@ -13277,7 +13057,6 @@ pub mod nearest_neighbor_query {
     /// points are also purple, then they will be excluded even if they are
     /// red/blue. Only string filter is supported for now, numeric filter will be
     /// supported in the near future.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StringFilter {
         /// Required. Column names in BigQuery that used as filters.
@@ -13298,7 +13077,6 @@ pub mod nearest_neighbor_query {
     /// Database Point 2: {name: “a” value_int: -1} {name: “b” value_float: 3.0}
     /// Query: {name: “a” value_int: 12 operator: LESS}    // Matches Point 1, 2
     /// {name: “b” value_float: 2.0 operator: EQUAL} // Matches Point 1
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NumericFilter {
         /// Required. Column name in BigQuery that used as filters.
@@ -13377,7 +13155,6 @@ pub mod nearest_neighbor_query {
         }
         /// The type of Value must be consistent for all datapoints with a given
         /// name.  This is verified at runtime.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Value {
             /// int value type.
@@ -13393,7 +13170,6 @@ pub mod nearest_neighbor_query {
     }
     /// Parameters that can be overrided in each query to tune query latency and
     /// recall.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Parameters {
         /// Optional. The number of neighbors to find via approximate search before
@@ -13408,7 +13184,6 @@ pub mod nearest_neighbor_query {
         #[prost(double, tag = "2")]
         pub leaf_nodes_search_fraction: f64,
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Instance {
         /// Optional. The entity id whose similar entities should be searched for.
@@ -13423,7 +13198,6 @@ pub mod nearest_neighbor_query {
 }
 /// The request message for
 /// [FeatureOnlineStoreService.SearchNearestEntities][google.cloud.aiplatform.v1.FeatureOnlineStoreService.SearchNearestEntities].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchNearestEntitiesRequest {
     /// Required. FeatureView resource format
@@ -13441,7 +13215,6 @@ pub struct SearchNearestEntitiesRequest {
     pub return_full_entity: bool,
 }
 /// Nearest neighbors for one query.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NearestNeighbors {
     /// All its neighbors.
@@ -13451,7 +13224,6 @@ pub struct NearestNeighbors {
 /// Nested message and enum types in `NearestNeighbors`.
 pub mod nearest_neighbors {
     /// A neighbor of the query vector.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Neighbor {
         /// The id of the similar entity.
@@ -13470,7 +13242,6 @@ pub mod nearest_neighbors {
 }
 /// Response message for
 /// [FeatureOnlineStoreService.SearchNearestEntities][google.cloud.aiplatform.v1.FeatureOnlineStoreService.SearchNearestEntities]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchNearestEntitiesResponse {
     /// The nearest neighbors of the query entity.
@@ -13535,8 +13306,8 @@ pub mod feature_online_store_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -13561,7 +13332,7 @@ pub mod feature_online_store_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FeatureOnlineStoreServiceClient::new(
                 InterceptedService::new(inner, interceptor),
@@ -13667,7 +13438,6 @@ pub mod feature_online_store_service_client {
 /// Vertex AI Feature Store provides a centralized repository for organizing,
 /// storing, and serving ML features. The Featurestore is a top-level container
 /// for your features and their values.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Featurestore {
     /// Output only. Name of the Featurestore. Format:
@@ -13722,12 +13492,17 @@ pub struct Featurestore {
     /// both of the online and offline data storage will be secured by this key.
     #[prost(message, optional, tag = "10")]
     pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "14")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "15")]
+    pub satisfies_pzi: bool,
 }
 /// Nested message and enum types in `Featurestore`.
 pub mod featurestore {
     /// OnlineServingConfig specifies the details for provisioning online serving
     /// resources.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct OnlineServingConfig {
         /// The number of nodes for the online store. The number of nodes doesn't
@@ -13747,7 +13522,6 @@ pub mod featurestore {
         /// Online serving scaling configuration. If min_node_count and
         /// max_node_count are set to the same value, the cluster will be configured
         /// with the fixed number of node (no auto-scaling).
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Scaling {
             /// Required. The minimum number of nodes to scale down to. Must be greater
@@ -13826,7 +13600,6 @@ pub mod featurestore {
 }
 /// Request message for
 /// [FeaturestoreService.CreateFeaturestore][google.cloud.aiplatform.v1.FeaturestoreService.CreateFeaturestore].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeaturestoreRequest {
     /// Required. The resource name of the Location to create Featurestores.
@@ -13849,7 +13622,6 @@ pub struct CreateFeaturestoreRequest {
 }
 /// Request message for
 /// [FeaturestoreService.GetFeaturestore][google.cloud.aiplatform.v1.FeaturestoreService.GetFeaturestore].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeaturestoreRequest {
     /// Required. The name of the Featurestore resource.
@@ -13858,7 +13630,6 @@ pub struct GetFeaturestoreRequest {
 }
 /// Request message for
 /// [FeaturestoreService.ListFeaturestores][google.cloud.aiplatform.v1.FeaturestoreService.ListFeaturestores].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeaturestoresRequest {
     /// Required. The resource name of the Location to list Featurestores.
@@ -13917,7 +13688,6 @@ pub struct ListFeaturestoresRequest {
 }
 /// Response message for
 /// [FeaturestoreService.ListFeaturestores][google.cloud.aiplatform.v1.FeaturestoreService.ListFeaturestores].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeaturestoresResponse {
     /// The Featurestores matching the request.
@@ -13932,7 +13702,6 @@ pub struct ListFeaturestoresResponse {
 }
 /// Request message for
 /// [FeaturestoreService.UpdateFeaturestore][google.cloud.aiplatform.v1.FeaturestoreService.UpdateFeaturestore].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeaturestoreRequest {
     /// Required. The Featurestore's `name` field is used to identify the
@@ -13959,7 +13728,6 @@ pub struct UpdateFeaturestoreRequest {
 }
 /// Request message for
 /// [FeaturestoreService.DeleteFeaturestore][google.cloud.aiplatform.v1.FeaturestoreService.DeleteFeaturestore].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFeaturestoreRequest {
     /// Required. The name of the Featurestore to be deleted.
@@ -13975,7 +13743,6 @@ pub struct DeleteFeaturestoreRequest {
 }
 /// Request message for
 /// [FeaturestoreService.ImportFeatureValues][google.cloud.aiplatform.v1.FeaturestoreService.ImportFeatureValues].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportFeatureValuesRequest {
     /// Required. The resource name of the EntityType grouping the Features for
@@ -14024,7 +13791,6 @@ pub struct ImportFeatureValuesRequest {
 /// Nested message and enum types in `ImportFeatureValuesRequest`.
 pub mod import_feature_values_request {
     /// Defines the Feature value(s) to import.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FeatureSpec {
         /// Required. ID of the Feature to import values of. This Feature must exist
@@ -14038,7 +13804,6 @@ pub mod import_feature_values_request {
     }
     /// Details about the source data, including the location of the storage and
     /// the format.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         #[prost(message, tag = "2")]
@@ -14050,7 +13815,6 @@ pub mod import_feature_values_request {
     }
     /// Source of Feature timestamp for all Feature values of each entity.
     /// Timestamps must be millisecond-aligned.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FeatureTimeSource {
         /// Source column that holds the Feature timestamp for all Feature
@@ -14065,7 +13829,6 @@ pub mod import_feature_values_request {
 }
 /// Response message for
 /// [FeaturestoreService.ImportFeatureValues][google.cloud.aiplatform.v1.FeaturestoreService.ImportFeatureValues].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportFeatureValuesResponse {
     /// Number of entities that have been imported by the operation.
@@ -14088,7 +13851,6 @@ pub struct ImportFeatureValuesResponse {
 }
 /// Request message for
 /// [FeaturestoreService.BatchReadFeatureValues][google.cloud.aiplatform.v1.FeaturestoreService.BatchReadFeatureValues].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchReadFeatureValuesRequest {
     /// Required. The resource name of the Featurestore from which to query Feature
@@ -14129,7 +13891,6 @@ pub struct BatchReadFeatureValuesRequest {
 /// Nested message and enum types in `BatchReadFeatureValuesRequest`.
 pub mod batch_read_feature_values_request {
     /// Describe pass-through fields in read_instance source.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PassThroughField {
         /// Required. The name of the field in the CSV header or the name of the
@@ -14140,7 +13901,6 @@ pub mod batch_read_feature_values_request {
     }
     /// Selects Features of an EntityType to read values of and specifies read
     /// settings.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EntityTypeSpec {
         /// Required. ID of the EntityType to select Features. The EntityType id is
@@ -14157,7 +13917,6 @@ pub mod batch_read_feature_values_request {
         #[prost(message, repeated, tag = "3")]
         pub settings: ::prost::alloc::vec::Vec<super::DestinationFeatureSetting>,
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ReadOption {
         /// Each read instance consists of exactly one read timestamp and one or more
@@ -14193,7 +13952,6 @@ pub mod batch_read_feature_values_request {
 }
 /// Request message for
 /// [FeaturestoreService.ExportFeatureValues][google.cloud.aiplatform.v1.FeaturestoreService.ExportFeatureValues].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportFeatureValuesRequest {
     /// Required. The resource name of the EntityType from which to export Feature
@@ -14218,7 +13976,6 @@ pub struct ExportFeatureValuesRequest {
 pub mod export_feature_values_request {
     /// Describes exporting the latest Feature values of all entities of the
     /// EntityType between \[start_time, snapshot_time\].
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SnapshotExport {
         /// Exports Feature values as of this timestamp. If not set,
@@ -14234,7 +13991,6 @@ pub mod export_feature_values_request {
     }
     /// Describes exporting all historical Feature values of all entities of the
     /// EntityType between \[start_time, end_time\].
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct FullExport {
         /// Excludes Feature values with feature generation timestamp before this
@@ -14249,7 +14005,6 @@ pub mod export_feature_values_request {
         pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Required. The mode in which Feature values are exported.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Mode {
         /// Exports the latest Feature values of all entities of the EntityType
@@ -14262,7 +14017,6 @@ pub mod export_feature_values_request {
         FullExport(FullExport),
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DestinationFeatureSetting {
     /// Required. The ID of the Feature to apply the setting to.
@@ -14274,7 +14028,6 @@ pub struct DestinationFeatureSetting {
     pub destination_field: ::prost::alloc::string::String,
 }
 /// A destination location for Feature values and format.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureValueDestination {
     #[prost(oneof = "feature_value_destination::Destination", tags = "1, 2, 3")]
@@ -14282,7 +14035,6 @@ pub struct FeatureValueDestination {
 }
 /// Nested message and enum types in `FeatureValueDestination`.
 pub mod feature_value_destination {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Output in BigQuery format.
@@ -14313,17 +14065,14 @@ pub mod feature_value_destination {
 }
 /// Response message for
 /// [FeaturestoreService.ExportFeatureValues][google.cloud.aiplatform.v1.FeaturestoreService.ExportFeatureValues].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportFeatureValuesResponse {}
 /// Response message for
 /// [FeaturestoreService.BatchReadFeatureValues][google.cloud.aiplatform.v1.FeaturestoreService.BatchReadFeatureValues].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BatchReadFeatureValuesResponse {}
 /// Request message for
 /// [FeaturestoreService.CreateEntityType][google.cloud.aiplatform.v1.FeaturestoreService.CreateEntityType].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntityTypeRequest {
     /// Required. The resource name of the Featurestore to create EntityTypes.
@@ -14346,7 +14095,6 @@ pub struct CreateEntityTypeRequest {
 }
 /// Request message for
 /// [FeaturestoreService.GetEntityType][google.cloud.aiplatform.v1.FeaturestoreService.GetEntityType].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEntityTypeRequest {
     /// Required. The name of the EntityType resource.
@@ -14357,7 +14105,6 @@ pub struct GetEntityTypeRequest {
 }
 /// Request message for
 /// [FeaturestoreService.ListEntityTypes][google.cloud.aiplatform.v1.FeaturestoreService.ListEntityTypes].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntityTypesRequest {
     /// Required. The resource name of the Featurestore to list EntityTypes.
@@ -14416,7 +14163,6 @@ pub struct ListEntityTypesRequest {
 }
 /// Response message for
 /// [FeaturestoreService.ListEntityTypes][google.cloud.aiplatform.v1.FeaturestoreService.ListEntityTypes].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntityTypesResponse {
     /// The EntityTypes matching the request.
@@ -14431,7 +14177,6 @@ pub struct ListEntityTypesResponse {
 }
 /// Request message for
 /// [FeaturestoreService.UpdateEntityType][google.cloud.aiplatform.v1.FeaturestoreService.UpdateEntityType].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEntityTypeRequest {
     /// Required. The EntityType's `name` field is used to identify the EntityType
@@ -14463,7 +14208,6 @@ pub struct UpdateEntityTypeRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for [FeaturestoreService.DeleteEntityTypes][].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEntityTypeRequest {
     /// Required. The name of the EntityType to be deleted.
@@ -14480,7 +14224,6 @@ pub struct DeleteEntityTypeRequest {
 /// [FeaturestoreService.CreateFeature][google.cloud.aiplatform.v1.FeaturestoreService.CreateFeature].
 /// Request message for
 /// [FeatureRegistryService.CreateFeature][google.cloud.aiplatform.v1.FeatureRegistryService.CreateFeature].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeatureRequest {
     /// Required. The resource name of the EntityType or FeatureGroup to create a
@@ -14505,7 +14248,6 @@ pub struct CreateFeatureRequest {
 }
 /// Request message for
 /// [FeaturestoreService.BatchCreateFeatures][google.cloud.aiplatform.v1.FeaturestoreService.BatchCreateFeatures].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateFeaturesRequest {
     /// Required. The resource name of the EntityType to create the batch of
@@ -14523,7 +14265,6 @@ pub struct BatchCreateFeaturesRequest {
 }
 /// Response message for
 /// [FeaturestoreService.BatchCreateFeatures][google.cloud.aiplatform.v1.FeaturestoreService.BatchCreateFeatures].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateFeaturesResponse {
     /// The Features created.
@@ -14534,7 +14275,6 @@ pub struct BatchCreateFeaturesResponse {
 /// [FeaturestoreService.GetFeature][google.cloud.aiplatform.v1.FeaturestoreService.GetFeature].
 /// Request message for
 /// [FeatureRegistryService.GetFeature][google.cloud.aiplatform.v1.FeatureRegistryService.GetFeature].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeatureRequest {
     /// Required. The name of the Feature resource.
@@ -14549,7 +14289,6 @@ pub struct GetFeatureRequest {
 /// [FeaturestoreService.ListFeatures][google.cloud.aiplatform.v1.FeaturestoreService.ListFeatures].
 /// Request message for
 /// [FeatureRegistryService.ListFeatures][google.cloud.aiplatform.v1.FeatureRegistryService.ListFeatures].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeaturesRequest {
     /// Required. The resource name of the Location to list Features.
@@ -14627,7 +14366,6 @@ pub struct ListFeaturesRequest {
 /// [FeaturestoreService.ListFeatures][google.cloud.aiplatform.v1.FeaturestoreService.ListFeatures].
 /// Response message for
 /// [FeatureRegistryService.ListFeatures][google.cloud.aiplatform.v1.FeatureRegistryService.ListFeatures].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeaturesResponse {
     /// The Features matching the request.
@@ -14642,7 +14380,6 @@ pub struct ListFeaturesResponse {
 }
 /// Request message for
 /// [FeaturestoreService.SearchFeatures][google.cloud.aiplatform.v1.FeaturestoreService.SearchFeatures].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchFeaturesRequest {
     /// Required. The resource name of the Location to search Features.
@@ -14730,7 +14467,6 @@ pub struct SearchFeaturesRequest {
 }
 /// Response message for
 /// [FeaturestoreService.SearchFeatures][google.cloud.aiplatform.v1.FeaturestoreService.SearchFeatures].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchFeaturesResponse {
     /// The Features matching the request.
@@ -14755,7 +14491,6 @@ pub struct SearchFeaturesResponse {
 /// [FeaturestoreService.UpdateFeature][google.cloud.aiplatform.v1.FeaturestoreService.UpdateFeature].
 /// Request message for
 /// [FeatureRegistryService.UpdateFeature][google.cloud.aiplatform.v1.FeatureRegistryService.UpdateFeature].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeatureRequest {
     /// Required. The Feature's `name` field is used to identify the Feature to be
@@ -14786,7 +14521,6 @@ pub struct UpdateFeatureRequest {
 /// [FeaturestoreService.DeleteFeature][google.cloud.aiplatform.v1.FeaturestoreService.DeleteFeature].
 /// Request message for
 /// [FeatureRegistryService.DeleteFeature][google.cloud.aiplatform.v1.FeatureRegistryService.DeleteFeature].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFeatureRequest {
     /// Required. The name of the Features to be deleted.
@@ -14797,7 +14531,6 @@ pub struct DeleteFeatureRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Details of operations that perform create Featurestore.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeaturestoreOperationMetadata {
     /// Operation metadata for Featurestore.
@@ -14805,7 +14538,6 @@ pub struct CreateFeaturestoreOperationMetadata {
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Details of operations that perform update Featurestore.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeaturestoreOperationMetadata {
     /// Operation metadata for Featurestore.
@@ -14813,7 +14545,6 @@ pub struct UpdateFeaturestoreOperationMetadata {
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Details of operations that perform import Feature values.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportFeatureValuesOperationMetadata {
     /// Operation metadata for Featurestore import Feature values.
@@ -14845,7 +14576,6 @@ pub struct ImportFeatureValuesOperationMetadata {
     pub blocking_operation_ids: ::prost::alloc::vec::Vec<i64>,
 }
 /// Details of operations that exports Features values.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportFeatureValuesOperationMetadata {
     /// Operation metadata for Featurestore export Feature values.
@@ -14853,7 +14583,6 @@ pub struct ExportFeatureValuesOperationMetadata {
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Details of operations that batch reads Feature values.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchReadFeatureValuesOperationMetadata {
     /// Operation metadata for Featurestore batch read Features values.
@@ -14861,7 +14590,6 @@ pub struct BatchReadFeatureValuesOperationMetadata {
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Details of operations that delete Feature values.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFeatureValuesOperationMetadata {
     /// Operation metadata for Featurestore delete Features values.
@@ -14869,7 +14597,6 @@ pub struct DeleteFeatureValuesOperationMetadata {
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Details of operations that perform create EntityType.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntityTypeOperationMetadata {
     /// Operation metadata for EntityType.
@@ -14877,7 +14604,6 @@ pub struct CreateEntityTypeOperationMetadata {
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Details of operations that perform create Feature.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeatureOperationMetadata {
     /// Operation metadata for Feature.
@@ -14885,7 +14611,6 @@ pub struct CreateFeatureOperationMetadata {
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Details of operations that perform batch create Features.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateFeaturesOperationMetadata {
     /// Operation metadata for Feature.
@@ -14894,7 +14619,6 @@ pub struct BatchCreateFeaturesOperationMetadata {
 }
 /// Request message for
 /// [FeaturestoreService.DeleteFeatureValues][google.cloud.aiplatform.v1.FeaturestoreService.DeleteFeatureValues].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFeatureValuesRequest {
     /// Required. The resource name of the EntityType grouping the Features for
@@ -14913,7 +14637,6 @@ pub mod delete_feature_values_request {
     /// Message to select entity.
     /// If an entity id is selected, all the feature values corresponding to the
     /// entity id will be deleted, including the entityId.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SelectEntity {
         /// Required. Selectors choosing feature values of which entity id to be
@@ -14927,7 +14650,6 @@ pub mod delete_feature_values_request {
     /// from the specified feature IDs within the specified time range.
     /// This might include data from the online storage. If you want to retain
     /// any deleted historical data in the online storage, you must re-ingest it.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SelectTimeRangeAndFeature {
         /// Required. Select feature generated within a half-inclusive time range.
@@ -14947,7 +14669,6 @@ pub mod delete_feature_values_request {
         pub skip_online_storage_delete: bool,
     }
     /// Defines options to select feature values to be deleted.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DeleteOption {
         /// Select feature values to be deleted by specifying entities.
@@ -14961,7 +14682,6 @@ pub mod delete_feature_values_request {
 }
 /// Response message for
 /// [FeaturestoreService.DeleteFeatureValues][google.cloud.aiplatform.v1.FeaturestoreService.DeleteFeatureValues].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteFeatureValuesResponse {
     /// Response based on which delete option is specified in the
@@ -14972,7 +14692,6 @@ pub struct DeleteFeatureValuesResponse {
 /// Nested message and enum types in `DeleteFeatureValuesResponse`.
 pub mod delete_feature_values_response {
     /// Response message if the request uses the SelectEntity option.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SelectEntity {
         /// The count of deleted entity rows in the offline storage.
@@ -14986,7 +14705,6 @@ pub mod delete_feature_values_response {
         pub online_storage_deleted_entity_count: i64,
     }
     /// Response message if the request uses the SelectTimeRangeAndFeature option.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SelectTimeRangeAndFeature {
         /// The count of the features or columns impacted.
@@ -15009,7 +14727,6 @@ pub mod delete_feature_values_response {
     }
     /// Response based on which delete option is specified in the
     /// request
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Response {
         /// Response for request specifying the entities to delete
@@ -15021,7 +14738,6 @@ pub mod delete_feature_values_response {
     }
 }
 /// Selector for entityId. Getting ids from the given source.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityIdSelector {
     /// Source column that holds entity IDs. If not provided, entity IDs are
@@ -15037,7 +14753,6 @@ pub struct EntityIdSelector {
 pub mod entity_id_selector {
     /// Details about the source data, including the location of the storage and
     /// the format.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum EntityIdsSource {
         /// Source of Csv
@@ -15070,8 +14785,8 @@ pub mod featurestore_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -15096,7 +14811,7 @@ pub mod featurestore_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FeaturestoreServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -15806,7 +15521,6 @@ pub mod featurestore_service_client {
 }
 /// Request message for
 /// [FeatureRegistryService.CreateFeatureGroup][google.cloud.aiplatform.v1.FeatureRegistryService.CreateFeatureGroup].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeatureGroupRequest {
     /// Required. The resource name of the Location to create FeatureGroups.
@@ -15829,7 +15543,6 @@ pub struct CreateFeatureGroupRequest {
 }
 /// Request message for
 /// [FeatureRegistryService.GetFeatureGroup][google.cloud.aiplatform.v1.FeatureRegistryService.GetFeatureGroup].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeatureGroupRequest {
     /// Required. The name of the FeatureGroup resource.
@@ -15838,7 +15551,6 @@ pub struct GetFeatureGroupRequest {
 }
 /// Request message for
 /// [FeatureRegistryService.ListFeatureGroups][google.cloud.aiplatform.v1.FeatureRegistryService.ListFeatureGroups].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeatureGroupsRequest {
     /// Required. The resource name of the Location to list FeatureGroups.
@@ -15891,7 +15603,6 @@ pub struct ListFeatureGroupsRequest {
 }
 /// Response message for
 /// [FeatureRegistryService.ListFeatureGroups][google.cloud.aiplatform.v1.FeatureRegistryService.ListFeatureGroups].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeatureGroupsResponse {
     /// The FeatureGroups matching the request.
@@ -15906,7 +15617,6 @@ pub struct ListFeatureGroupsResponse {
 }
 /// Request message for
 /// [FeatureRegistryService.UpdateFeatureGroup][google.cloud.aiplatform.v1.FeatureRegistryService.UpdateFeatureGroup].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeatureGroupRequest {
     /// Required. The FeatureGroup's `name` field is used to identify the
@@ -15933,7 +15643,6 @@ pub struct UpdateFeatureGroupRequest {
 }
 /// Request message for
 /// [FeatureRegistryService.DeleteFeatureGroup][google.cloud.aiplatform.v1.FeatureRegistryService.DeleteFeatureGroup].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFeatureGroupRequest {
     /// Required. The name of the FeatureGroup to be deleted.
@@ -15948,7 +15657,6 @@ pub struct DeleteFeatureGroupRequest {
     pub force: bool,
 }
 /// Details of operations that perform create FeatureGroup.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeatureGroupOperationMetadata {
     /// Operation metadata for FeatureGroup.
@@ -15956,7 +15664,6 @@ pub struct CreateFeatureGroupOperationMetadata {
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Details of operations that perform update FeatureGroup.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeatureGroupOperationMetadata {
     /// Operation metadata for FeatureGroup.
@@ -15964,7 +15671,6 @@ pub struct UpdateFeatureGroupOperationMetadata {
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Details of operations that perform create FeatureGroup.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRegistryFeatureOperationMetadata {
     /// Operation metadata for Feature.
@@ -15972,7 +15678,6 @@ pub struct CreateRegistryFeatureOperationMetadata {
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Details of operations that perform update Feature.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeatureOperationMetadata {
     /// Operation metadata for Feature Update.
@@ -16005,8 +15710,8 @@ pub mod feature_registry_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -16031,7 +15736,7 @@ pub mod feature_registry_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FeatureRegistryServiceClient::new(
                 InterceptedService::new(inner, interceptor),
@@ -16375,7 +16080,6 @@ pub mod feature_registry_service_client {
     }
 }
 /// Represents a TuningJob that runs with Google owned models.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TuningJob {
     /// Output only. Identifier. Resource name of a TuningJob. Format:
@@ -16456,14 +16160,12 @@ pub struct TuningJob {
 }
 /// Nested message and enum types in `TuningJob`.
 pub mod tuning_job {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceModel {
         /// The base model that is being tuned, e.g., "gemini-1.0-pro-002".
         #[prost(string, tag = "4")]
         BaseModel(::prost::alloc::string::String),
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TuningSpec {
         /// Tuning Spec for Supervised Fine Tuning.
@@ -16473,7 +16175,6 @@ pub mod tuning_job {
 }
 /// The Model Registry Model and Online Prediction Endpoint assiociated with
 /// this [TuningJob][google.cloud.aiplatform.v1.TuningJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TunedModel {
     /// Output only. The resource name of the TunedModel. Format:
@@ -16486,7 +16187,6 @@ pub struct TunedModel {
     pub endpoint: ::prost::alloc::string::String,
 }
 /// Dataset distribution for Supervised Tuning.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SupervisedTuningDatasetDistribution {
     /// Output only. Sum of a given population of values.
@@ -16523,7 +16223,6 @@ pub struct SupervisedTuningDatasetDistribution {
 pub mod supervised_tuning_dataset_distribution {
     /// Dataset bucket used to create a histogram for the distribution given a
     /// population of values.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DatasetBucket {
         /// Output only. Number of values in the bucket.
@@ -16538,7 +16237,6 @@ pub mod supervised_tuning_dataset_distribution {
     }
 }
 /// Tuning data statistics for Supervised Tuning.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SupervisedTuningDataStats {
     /// Output only. Number of examples in the tuning dataset.
@@ -16575,10 +16273,17 @@ pub struct SupervisedTuningDataStats {
     /// Output only. Sample user messages in the training dataset uri.
     #[prost(message, repeated, tag = "8")]
     pub user_dataset_examples: ::prost::alloc::vec::Vec<Content>,
+    /// The number of examples in the dataset that have been truncated by any
+    /// amount.
+    #[prost(int64, tag = "10")]
+    pub total_truncated_example_count: i64,
+    /// A partial sample of the indices (starting from 1) of the truncated
+    /// examples.
+    #[prost(int64, repeated, tag = "11")]
+    pub truncated_example_indices: ::prost::alloc::vec::Vec<i64>,
 }
 /// The tuning data statistic values for
 /// [TuningJob][google.cloud.aiplatform.v1.TuningJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TuningDataStats {
     #[prost(oneof = "tuning_data_stats::TuningDataStats", tags = "1")]
@@ -16586,7 +16291,6 @@ pub struct TuningDataStats {
 }
 /// Nested message and enum types in `TuningDataStats`.
 pub mod tuning_data_stats {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TuningDataStats {
         /// The SFT Tuning data stats.
@@ -16595,7 +16299,6 @@ pub mod tuning_data_stats {
     }
 }
 /// Hyperparameters for SFT.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SupervisedHyperParameters {
     /// Optional. Number of complete passes the model makes over the entire
@@ -16664,7 +16367,6 @@ pub mod supervised_hyper_parameters {
     }
 }
 /// Tuning Spec for Supervised Tuning.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SupervisedTuningSpec {
     /// Required. Cloud Storage path to file containing training dataset for
@@ -16681,7 +16383,6 @@ pub struct SupervisedTuningSpec {
 }
 /// Request message for
 /// [GenAiTuningService.CreateTuningJob][google.cloud.aiplatform.v1.GenAiTuningService.CreateTuningJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTuningJobRequest {
     /// Required. The resource name of the Location to create the TuningJob in.
@@ -16694,7 +16395,6 @@ pub struct CreateTuningJobRequest {
 }
 /// Request message for
 /// [GenAiTuningService.GetTuningJob][google.cloud.aiplatform.v1.GenAiTuningService.GetTuningJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTuningJobRequest {
     /// Required. The name of the TuningJob resource. Format:
@@ -16704,7 +16404,6 @@ pub struct GetTuningJobRequest {
 }
 /// Request message for
 /// [GenAiTuningService.ListTuningJobs][google.cloud.aiplatform.v1.GenAiTuningService.ListTuningJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTuningJobsRequest {
     /// Required. The resource name of the Location to list the TuningJobs from.
@@ -16725,7 +16424,6 @@ pub struct ListTuningJobsRequest {
 }
 /// Response message for
 /// [GenAiTuningService.ListTuningJobs][google.cloud.aiplatform.v1.GenAiTuningService.ListTuningJobs]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTuningJobsResponse {
     /// List of TuningJobs in the requested page.
@@ -16740,7 +16438,6 @@ pub struct ListTuningJobsResponse {
 }
 /// Request message for
 /// [GenAiTuningService.CancelTuningJob][google.cloud.aiplatform.v1.GenAiTuningService.CancelTuningJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelTuningJobRequest {
     /// Required. The name of the TuningJob to cancel. Format:
@@ -16773,8 +16470,8 @@ pub mod gen_ai_tuning_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -16799,7 +16496,7 @@ pub mod gen_ai_tuning_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             GenAiTuningServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -16964,7 +16661,6 @@ pub mod gen_ai_tuning_service_client {
     }
 }
 /// A message representing a Study.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Study {
     /// Output only. The name of a study. The study's globally unique identifier.
@@ -17042,7 +16738,6 @@ pub mod study {
 /// A message representing a Trial. A Trial contains a unique set of Parameters
 /// that has been or will be evaluated, along with the objective metrics got by
 /// running the Trial.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Trial {
     /// Output only. Resource name of the Trial assigned by the service.
@@ -17114,7 +16809,6 @@ pub struct Trial {
 /// Nested message and enum types in `Trial`.
 pub mod trial {
     /// A message representing a parameter to be tuned.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Parameter {
         /// Output only. The ID of the parameter. The parameter should be defined in
@@ -17189,7 +16883,6 @@ pub mod trial {
         }
     }
 }
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrialContext {
     /// A human-readable field which can store a description of this context.
@@ -17209,7 +16902,6 @@ pub struct TrialContext {
     pub parameters: ::prost::alloc::vec::Vec<trial::Parameter>,
 }
 /// Time-based Constraint for Study
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StudyTimeConstraint {
     #[prost(oneof = "study_time_constraint::Constraint", tags = "1, 2")]
@@ -17217,7 +16909,6 @@ pub struct StudyTimeConstraint {
 }
 /// Nested message and enum types in `StudyTimeConstraint`.
 pub mod study_time_constraint {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Constraint {
         /// Counts the wallclock time passed since the creation of this Study.
@@ -17229,7 +16920,6 @@ pub mod study_time_constraint {
     }
 }
 /// Represents specification of a Study.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StudySpec {
     /// Required. Metric specs for the Study.
@@ -17261,7 +16951,6 @@ pub struct StudySpec {
 /// Nested message and enum types in `StudySpec`.
 pub mod study_spec {
     /// Represents a metric to optimize.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MetricSpec {
         /// Required. The ID of the metric. Must not contain whitespaces and must be
@@ -17279,7 +16968,6 @@ pub mod study_spec {
     /// Nested message and enum types in `MetricSpec`.
     pub mod metric_spec {
         /// Used in safe optimization to specify threshold levels and risk tolerance.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct SafetyMetricConfig {
             /// Safety threshold (boundary value between safe and unsafe). NOTE that if
@@ -17340,7 +17028,6 @@ pub mod study_spec {
         }
     }
     /// Represents a single parameter to optimize.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ParameterSpec {
         /// Required. The ID of the parameter. Must not contain whitespaces and must
@@ -17368,7 +17055,6 @@ pub mod study_spec {
     /// Nested message and enum types in `ParameterSpec`.
     pub mod parameter_spec {
         /// Value specification for a parameter in `DOUBLE` type.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct DoubleValueSpec {
             /// Required. Inclusive minimum value of the parameter.
@@ -17387,7 +17073,6 @@ pub mod study_spec {
             pub default_value: ::core::option::Option<f64>,
         }
         /// Value specification for a parameter in `INTEGER` type.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct IntegerValueSpec {
             /// Required. Inclusive minimum value of the parameter.
@@ -17406,7 +17091,6 @@ pub mod study_spec {
             pub default_value: ::core::option::Option<i64>,
         }
         /// Value specification for a parameter in `CATEGORICAL` type.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CategoricalValueSpec {
             /// Required. The list of possible categories.
@@ -17422,7 +17106,6 @@ pub mod study_spec {
             pub default_value: ::core::option::Option<::prost::alloc::string::String>,
         }
         /// Value specification for a parameter in `DISCRETE` type.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct DiscreteValueSpec {
             /// Required. A list of possible values.
@@ -17442,7 +17125,6 @@ pub mod study_spec {
             pub default_value: ::core::option::Option<f64>,
         }
         /// Represents a parameter spec with condition from its parent parameter.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ConditionalParameterSpec {
             /// Required. The spec for a conditional parameter.
@@ -17461,7 +17143,6 @@ pub mod study_spec {
         /// Nested message and enum types in `ConditionalParameterSpec`.
         pub mod conditional_parameter_spec {
             /// Represents the spec to match discrete values from parent parameter.
-            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct DiscreteValueCondition {
                 /// Required. Matches values of the parent parameter of 'DISCRETE' type.
@@ -17472,7 +17153,6 @@ pub mod study_spec {
                 pub values: ::prost::alloc::vec::Vec<f64>,
             }
             /// Represents the spec to match integer values from parent parameter.
-            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct IntValueCondition {
                 /// Required. Matches values of the parent parameter of 'INTEGER' type.
@@ -17481,7 +17161,6 @@ pub mod study_spec {
                 pub values: ::prost::alloc::vec::Vec<i64>,
             }
             /// Represents the spec to match categorical values from parent parameter.
-            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct CategoricalValueCondition {
                 /// Required. Matches values of the parent parameter of 'CATEGORICAL'
@@ -17492,7 +17171,6 @@ pub mod study_spec {
             }
             /// A set of parameter values from the parent ParameterSpec's feasible
             /// space.
-            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum ParentValueCondition {
                 /// The spec for matching values from a parent parameter of
@@ -17560,7 +17238,6 @@ pub mod study_spec {
                 }
             }
         }
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum ParameterValueSpec {
             /// The value spec for a 'DOUBLE' parameter.
@@ -17582,7 +17259,6 @@ pub mod study_spec {
     /// already completed Trials and the intermediate measurements of the current
     /// Trial. Early stopping is requested for the current Trial if there is very
     /// low probability to exceed the optimal value found so far.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DecayCurveAutomatedStoppingSpec {
         /// True if
@@ -17598,7 +17274,6 @@ pub mod study_spec {
     /// completed Trials reported up to the Trial's last measurement.
     /// Currently, 'performance' refers to the running average of the objective
     /// values reported by the Trial in each measurement.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MedianAutomatedStoppingSpec {
         /// True if median automated stopping rule applies on
@@ -17619,7 +17294,6 @@ pub mod study_spec {
     /// trials, this pending trial will be early-stopped, but a last measurement
     /// will be added to the pending trial with max_num_steps and predicted
     /// objective value from the autoregression model.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConvexAutomatedStoppingSpec {
         /// Steps used in predicting the final objective for early stopped trials. In
@@ -17670,7 +17344,6 @@ pub mod study_spec {
     }
     /// The configuration (stopping conditions) for automated stopping of a Study.
     /// Conditions include trial budgets, time budgets, and convergence detection.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct StudyStoppingConfig {
         /// If true, a Study enters STOPPING_ASAP whenever it would normally enters
@@ -17882,7 +17555,6 @@ pub mod study_spec {
             }
         }
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AutomatedStoppingSpec {
         /// The automated early stopping spec using decay curve rule.
@@ -17899,7 +17571,6 @@ pub mod study_spec {
 /// A message representing a Measurement of a Trial. A Measurement contains
 /// the Metrics got by executing a Trial using suggested hyperparameter
 /// values.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Measurement {
     /// Output only. Time that the Trial has been running at the point of this
@@ -17918,7 +17589,6 @@ pub struct Measurement {
 /// Nested message and enum types in `Measurement`.
 pub mod measurement {
     /// A message representing a metric in the measurement.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Metric {
         /// Output only. The ID of the Metric. The Metric should be defined in
@@ -17933,7 +17603,6 @@ pub mod measurement {
 /// Represents a HyperparameterTuningJob. A HyperparameterTuningJob
 /// has a Study specification and multiple CustomJobs with identical
 /// CustomJob specification.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HyperparameterTuningJob {
     /// Output only. Resource name of the HyperparameterTuningJob.
@@ -18007,10 +17676,15 @@ pub struct HyperparameterTuningJob {
     /// will be encrypted with the provided encryption key.
     #[prost(message, optional, tag = "17")]
     pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "19")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "20")]
+    pub satisfies_pzi: bool,
 }
 /// A representation of a collection of database items organized in a way that
 /// allows for approximate nearest neighbor (a.k.a ANN) algorithms search.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Index {
     /// Output only. The resource name of the Index.
@@ -18084,6 +17758,12 @@ pub struct Index {
     /// Index and all sub-resources of this Index will be secured by this key.
     #[prost(message, optional, tag = "17")]
     pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "18")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "19")]
+    pub satisfies_pzi: bool,
 }
 /// Nested message and enum types in `Index`.
 pub mod index {
@@ -18135,7 +17815,6 @@ pub mod index {
     }
 }
 /// A datapoint of Index.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IndexDatapoint {
     /// Required. Unique identifier of the datapoint.
@@ -18168,7 +17847,6 @@ pub struct IndexDatapoint {
 pub mod index_datapoint {
     /// Feature embedding vector for sparse index. An array of numbers whose values
     /// are located in the specified dimensions.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SparseEmbedding {
         /// Required. The list of embedding values of the sparse vector.
@@ -18181,7 +17859,6 @@ pub mod index_datapoint {
     }
     /// Restriction of a datapoint which describe its attributes(tokens) from each
     /// of several attribute categories(namespaces).
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Restriction {
         /// The namespace of this restriction. e.g.: color.
@@ -18196,7 +17873,6 @@ pub mod index_datapoint {
     }
     /// This field allows restricts to be based on numeric comparisons rather
     /// than categorical tokens.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NumericRestriction {
         /// The namespace of this restriction. e.g.: cost.
@@ -18278,7 +17954,6 @@ pub mod index_datapoint {
         }
         /// The type of Value must be consistent for all datapoints with a given
         /// namespace name. This is verified at runtime.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Value {
             /// Represents 64 bit integer.
@@ -18295,7 +17970,6 @@ pub mod index_datapoint {
     /// Crowding tag is a constraint on a neighbor list produced by nearest
     /// neighbor search requiring that no more than some value k' of the k
     /// neighbors returned have the same value of crowding_attribute.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CrowdingTag {
         /// The attribute value used for crowding.  The maximum number of neighbors
@@ -18308,7 +17982,6 @@ pub mod index_datapoint {
     }
 }
 /// Stats of the Index.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct IndexStats {
     /// Output only. The number of dense vectors in the Index.
@@ -18323,7 +17996,6 @@ pub struct IndexStats {
 }
 /// Indexes are deployed into it. An IndexEndpoint can have multiple
 /// DeployedIndexes.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IndexEndpoint {
     /// Output only. The resource name of the IndexEndpoint.
@@ -18416,9 +18088,14 @@ pub struct IndexEndpoint {
     /// secured by this key.
     #[prost(message, optional, tag = "15")]
     pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "17")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "18")]
+    pub satisfies_pzi: bool,
 }
 /// A deployment of an Index. IndexEndpoints contain one or more DeployedIndexes.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployedIndex {
     /// Required. The user specified ID of the DeployedIndex.
@@ -18534,7 +18211,6 @@ pub struct DeployedIndex {
     pub deployment_group: ::prost::alloc::string::String,
 }
 /// Used to set up the auth on the DeployedIndex's private endpoint.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployedIndexAuthConfig {
     /// Defines the authentication provider that the DeployedIndex uses.
@@ -18546,7 +18222,6 @@ pub mod deployed_index_auth_config {
     /// Configuration for an authentication provider, including support for
     /// [JSON Web Token
     /// (JWT)](<https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32>).
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AuthProvider {
         /// The list of JWT
@@ -18568,7 +18243,6 @@ pub mod deployed_index_auth_config {
 /// connect).
 /// To send request via private service access, use match_grpc_address.
 /// To send request via private service connect, use service_attachment.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IndexPrivateEndpoints {
     /// Output only. The ip address used to send match gRPC requests.
@@ -18585,7 +18259,6 @@ pub struct IndexPrivateEndpoints {
 }
 /// Request message for
 /// [IndexEndpointService.CreateIndexEndpoint][google.cloud.aiplatform.v1.IndexEndpointService.CreateIndexEndpoint].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIndexEndpointRequest {
     /// Required. The resource name of the Location to create the IndexEndpoint in.
@@ -18598,7 +18271,6 @@ pub struct CreateIndexEndpointRequest {
 }
 /// Runtime operation information for
 /// [IndexEndpointService.CreateIndexEndpoint][google.cloud.aiplatform.v1.IndexEndpointService.CreateIndexEndpoint].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIndexEndpointOperationMetadata {
     /// The operation generic information.
@@ -18607,7 +18279,6 @@ pub struct CreateIndexEndpointOperationMetadata {
 }
 /// Request message for
 /// [IndexEndpointService.GetIndexEndpoint][google.cloud.aiplatform.v1.IndexEndpointService.GetIndexEndpoint]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIndexEndpointRequest {
     /// Required. The name of the IndexEndpoint resource.
@@ -18618,7 +18289,6 @@ pub struct GetIndexEndpointRequest {
 }
 /// Request message for
 /// [IndexEndpointService.ListIndexEndpoints][google.cloud.aiplatform.v1.IndexEndpointService.ListIndexEndpoints].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexEndpointsRequest {
     /// Required. The resource name of the Location from which to list the
@@ -18662,7 +18332,6 @@ pub struct ListIndexEndpointsRequest {
 }
 /// Response message for
 /// [IndexEndpointService.ListIndexEndpoints][google.cloud.aiplatform.v1.IndexEndpointService.ListIndexEndpoints].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexEndpointsResponse {
     /// List of IndexEndpoints in the requested page.
@@ -18677,7 +18346,6 @@ pub struct ListIndexEndpointsResponse {
 }
 /// Request message for
 /// [IndexEndpointService.UpdateIndexEndpoint][google.cloud.aiplatform.v1.IndexEndpointService.UpdateIndexEndpoint].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateIndexEndpointRequest {
     /// Required. The IndexEndpoint which replaces the resource on the server.
@@ -18690,7 +18358,6 @@ pub struct UpdateIndexEndpointRequest {
 }
 /// Request message for
 /// [IndexEndpointService.DeleteIndexEndpoint][google.cloud.aiplatform.v1.IndexEndpointService.DeleteIndexEndpoint].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteIndexEndpointRequest {
     /// Required. The name of the IndexEndpoint resource to be deleted.
@@ -18701,7 +18368,6 @@ pub struct DeleteIndexEndpointRequest {
 }
 /// Request message for
 /// [IndexEndpointService.DeployIndex][google.cloud.aiplatform.v1.IndexEndpointService.DeployIndex].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployIndexRequest {
     /// Required. The name of the IndexEndpoint resource into which to deploy an
@@ -18715,7 +18381,6 @@ pub struct DeployIndexRequest {
 }
 /// Response message for
 /// [IndexEndpointService.DeployIndex][google.cloud.aiplatform.v1.IndexEndpointService.DeployIndex].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployIndexResponse {
     /// The DeployedIndex that had been deployed in the IndexEndpoint.
@@ -18724,7 +18389,6 @@ pub struct DeployIndexResponse {
 }
 /// Runtime operation information for
 /// [IndexEndpointService.DeployIndex][google.cloud.aiplatform.v1.IndexEndpointService.DeployIndex].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployIndexOperationMetadata {
     /// The operation generic information.
@@ -18736,7 +18400,6 @@ pub struct DeployIndexOperationMetadata {
 }
 /// Request message for
 /// [IndexEndpointService.UndeployIndex][google.cloud.aiplatform.v1.IndexEndpointService.UndeployIndex].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeployIndexRequest {
     /// Required. The name of the IndexEndpoint resource from which to undeploy an
@@ -18751,12 +18414,10 @@ pub struct UndeployIndexRequest {
 }
 /// Response message for
 /// [IndexEndpointService.UndeployIndex][google.cloud.aiplatform.v1.IndexEndpointService.UndeployIndex].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UndeployIndexResponse {}
 /// Runtime operation information for
 /// [IndexEndpointService.UndeployIndex][google.cloud.aiplatform.v1.IndexEndpointService.UndeployIndex].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeployIndexOperationMetadata {
     /// The operation generic information.
@@ -18765,7 +18426,6 @@ pub struct UndeployIndexOperationMetadata {
 }
 /// Request message for
 /// [IndexEndpointService.MutateDeployedIndex][google.cloud.aiplatform.v1.IndexEndpointService.MutateDeployedIndex].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateDeployedIndexRequest {
     /// Required. The name of the IndexEndpoint resource into which to deploy an
@@ -18781,7 +18441,6 @@ pub struct MutateDeployedIndexRequest {
 }
 /// Response message for
 /// [IndexEndpointService.MutateDeployedIndex][google.cloud.aiplatform.v1.IndexEndpointService.MutateDeployedIndex].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateDeployedIndexResponse {
     /// The DeployedIndex that had been updated in the IndexEndpoint.
@@ -18790,7 +18449,6 @@ pub struct MutateDeployedIndexResponse {
 }
 /// Runtime operation information for
 /// [IndexEndpointService.MutateDeployedIndex][google.cloud.aiplatform.v1.IndexEndpointService.MutateDeployedIndex].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateDeployedIndexOperationMetadata {
     /// The operation generic information.
@@ -18825,8 +18483,8 @@ pub mod index_endpoint_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -18851,7 +18509,7 @@ pub mod index_endpoint_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             IndexEndpointServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -19135,7 +18793,6 @@ pub mod index_endpoint_service_client {
 }
 /// Request message for
 /// [IndexService.CreateIndex][google.cloud.aiplatform.v1.IndexService.CreateIndex].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIndexRequest {
     /// Required. The resource name of the Location to create the Index in.
@@ -19148,7 +18805,6 @@ pub struct CreateIndexRequest {
 }
 /// Runtime operation information for
 /// [IndexService.CreateIndex][google.cloud.aiplatform.v1.IndexService.CreateIndex].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIndexOperationMetadata {
     /// The operation generic information.
@@ -19162,7 +18818,6 @@ pub struct CreateIndexOperationMetadata {
 }
 /// Request message for
 /// [IndexService.GetIndex][google.cloud.aiplatform.v1.IndexService.GetIndex]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIndexRequest {
     /// Required. The name of the Index resource.
@@ -19173,7 +18828,6 @@ pub struct GetIndexRequest {
 }
 /// Request message for
 /// [IndexService.ListIndexes][google.cloud.aiplatform.v1.IndexService.ListIndexes].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesRequest {
     /// Required. The resource name of the Location from which to list the Indexes.
@@ -19200,7 +18854,6 @@ pub struct ListIndexesRequest {
 }
 /// Response message for
 /// [IndexService.ListIndexes][google.cloud.aiplatform.v1.IndexService.ListIndexes].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesResponse {
     /// List of indexes in the requested page.
@@ -19215,7 +18868,6 @@ pub struct ListIndexesResponse {
 }
 /// Request message for
 /// [IndexService.UpdateIndex][google.cloud.aiplatform.v1.IndexService.UpdateIndex].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateIndexRequest {
     /// Required. The Index which updates the resource on the server.
@@ -19229,7 +18881,6 @@ pub struct UpdateIndexRequest {
 }
 /// Runtime operation information for
 /// [IndexService.UpdateIndex][google.cloud.aiplatform.v1.IndexService.UpdateIndex].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateIndexOperationMetadata {
     /// The operation generic information.
@@ -19243,7 +18894,6 @@ pub struct UpdateIndexOperationMetadata {
 }
 /// Request message for
 /// [IndexService.DeleteIndex][google.cloud.aiplatform.v1.IndexService.DeleteIndex].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteIndexRequest {
     /// Required. The name of the Index resource to be deleted.
@@ -19254,7 +18904,6 @@ pub struct DeleteIndexRequest {
 }
 /// Request message for
 /// [IndexService.UpsertDatapoints][google.cloud.aiplatform.v1.IndexService.UpsertDatapoints]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpsertDatapointsRequest {
     /// Required. The name of the Index resource to be updated.
@@ -19277,12 +18926,10 @@ pub struct UpsertDatapointsRequest {
 }
 /// Response message for
 /// [IndexService.UpsertDatapoints][google.cloud.aiplatform.v1.IndexService.UpsertDatapoints]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpsertDatapointsResponse {}
 /// Request message for
 /// [IndexService.RemoveDatapoints][google.cloud.aiplatform.v1.IndexService.RemoveDatapoints]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveDatapointsRequest {
     /// Required. The name of the Index resource to be updated.
@@ -19296,11 +18943,9 @@ pub struct RemoveDatapointsRequest {
 }
 /// Response message for
 /// [IndexService.RemoveDatapoints][google.cloud.aiplatform.v1.IndexService.RemoveDatapoints]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RemoveDatapointsResponse {}
 /// Runtime operation metadata with regard to Matching Engine Index.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NearestNeighborSearchOperationMetadata {
     /// The validation stats of the content (per file) to be inserted or
@@ -19319,7 +18964,6 @@ pub struct NearestNeighborSearchOperationMetadata {
 }
 /// Nested message and enum types in `NearestNeighborSearchOperationMetadata`.
 pub mod nearest_neighbor_search_operation_metadata {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RecordError {
         /// The error type of this record.
@@ -19449,7 +19093,6 @@ pub mod nearest_neighbor_search_operation_metadata {
             }
         }
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ContentValidationStats {
         /// Cloud Storage URI pointing to the original file in user's bucket.
@@ -19499,8 +19142,8 @@ pub mod index_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -19525,7 +19168,7 @@ pub mod index_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             IndexServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -19781,7 +19424,6 @@ pub mod index_service_client {
 }
 /// The objective configuration for model monitoring, including the information
 /// needed to detect anomalies for one particular model.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelMonitoringObjectiveConfig {
     /// Training dataset for models. This field has to be set only if
@@ -19809,7 +19451,6 @@ pub struct ModelMonitoringObjectiveConfig {
 /// Nested message and enum types in `ModelMonitoringObjectiveConfig`.
 pub mod model_monitoring_objective_config {
     /// Training Dataset information.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TrainingDataset {
         /// Data format of the dataset, only applicable if the input is from
@@ -19839,7 +19480,6 @@ pub mod model_monitoring_objective_config {
     }
     /// Nested message and enum types in `TrainingDataset`.
     pub mod training_dataset {
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum DataSource {
             /// The resource name of the Dataset used to train this Model.
@@ -19857,7 +19497,6 @@ pub mod model_monitoring_objective_config {
     }
     /// The config for Training & Prediction data skew detection. It specifies the
     /// training dataset sources and the skew detection parameters.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TrainingPredictionSkewDetectionConfig {
         /// Key is the feature name and value is the threshold. If a feature needs to
@@ -19884,7 +19523,6 @@ pub mod model_monitoring_objective_config {
         pub default_skew_threshold: ::core::option::Option<super::ThresholdConfig>,
     }
     /// The config for Prediction data drift detection.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PredictionDriftDetectionConfig {
         /// Key is the feature name and value is the threshold. If a feature needs to
@@ -19911,7 +19549,6 @@ pub mod model_monitoring_objective_config {
     }
     /// The config for integrating with Vertex Explainable AI. Only applicable if
     /// the Model has explanation_spec populated.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExplanationConfig {
         /// If want to analyze the Vertex Explainable AI feature attribute scores or
@@ -19931,7 +19568,6 @@ pub mod model_monitoring_objective_config {
         /// [BatchPredictionJob][google.cloud.aiplatform.v1.BatchPredictionJob] for
         /// Model Monitoring baseline dataset, which can be used to generate baseline
         /// attribution scores.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ExplanationBaseline {
             /// The storage format of the predictions generated BatchPrediction job.
@@ -19989,7 +19625,6 @@ pub mod model_monitoring_objective_config {
             }
             /// The configuration specifying of BatchExplain job output. This can be
             /// used to generate the baseline of feature attribution scores.
-            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum Destination {
                 /// Cloud Storage location for BatchExplain output.
@@ -20003,7 +19638,6 @@ pub mod model_monitoring_objective_config {
     }
 }
 /// The alert config for model monitoring.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelMonitoringAlertConfig {
     /// Dump the anomalies to Cloud Logging. The anomalies will be put to json
@@ -20024,14 +19658,12 @@ pub struct ModelMonitoringAlertConfig {
 /// Nested message and enum types in `ModelMonitoringAlertConfig`.
 pub mod model_monitoring_alert_config {
     /// The config for email alert.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EmailAlertConfig {
         /// The email addresses to send the alert.
         #[prost(string, repeated, tag = "1")]
         pub user_emails: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Alert {
         /// Email alert config.
@@ -20040,7 +19672,6 @@ pub mod model_monitoring_alert_config {
     }
 }
 /// The config for feature monitoring threshold.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ThresholdConfig {
     #[prost(oneof = "threshold_config::Threshold", tags = "1")]
@@ -20048,7 +19679,6 @@ pub struct ThresholdConfig {
 }
 /// Nested message and enum types in `ThresholdConfig`.
 pub mod threshold_config {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Threshold {
         /// Specify a threshold value that can trigger the alert.
@@ -20065,7 +19695,6 @@ pub mod threshold_config {
 }
 /// Sampling Strategy for logging, can be for both training and prediction
 /// dataset.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SamplingStrategy {
     /// Random sample config. Will support more sampling strategies later.
@@ -20077,7 +19706,6 @@ pub struct SamplingStrategy {
 /// Nested message and enum types in `SamplingStrategy`.
 pub mod sampling_strategy {
     /// Requests are randomly selected.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RandomSampleConfig {
         /// Sample rate (0, 1]
@@ -20088,7 +19716,6 @@ pub mod sampling_strategy {
 /// Represents a job that runs periodically to monitor the deployed models in an
 /// endpoint. It will analyze the logged training & prediction data to detect any
 /// abnormal behaviors.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelDeploymentMonitoringJob {
     /// Output only. Resource name of a ModelDeploymentMonitoringJob.
@@ -20224,11 +19851,16 @@ pub struct ModelDeploymentMonitoringJob {
     /// `JOB_STATE_CANCELLED`.
     #[prost(message, optional, tag = "23")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "26")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "27")]
+    pub satisfies_pzi: bool,
 }
 /// Nested message and enum types in `ModelDeploymentMonitoringJob`.
 pub mod model_deployment_monitoring_job {
     /// All metadata of most recent monitoring pipelines.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LatestMonitoringPipelineMetadata {
         /// The time that most recent monitoring pipelines that is related to this
@@ -20291,7 +19923,6 @@ pub mod model_deployment_monitoring_job {
 }
 /// ModelDeploymentMonitoringBigQueryTable specifies the BigQuery table name
 /// as well as some information of the logs stored in this table.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelDeploymentMonitoringBigQueryTable {
     /// The source of log.
@@ -20407,7 +20038,6 @@ pub mod model_deployment_monitoring_big_query_table {
 }
 /// ModelDeploymentMonitoringObjectiveConfig contains the pair of
 /// deployed_model_id to ModelMonitoringObjectiveConfig.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelDeploymentMonitoringObjectiveConfig {
     /// The DeployedModel ID of the objective config.
@@ -20418,7 +20048,6 @@ pub struct ModelDeploymentMonitoringObjectiveConfig {
     pub objective_config: ::core::option::Option<ModelMonitoringObjectiveConfig>,
 }
 /// The config for scheduling monitoring job.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ModelDeploymentMonitoringScheduleConfig {
     /// Required. The model monitoring job scheduling interval. It will be rounded
@@ -20438,7 +20067,6 @@ pub struct ModelDeploymentMonitoringScheduleConfig {
     pub monitor_window: ::core::option::Option<::prost_types::Duration>,
 }
 /// Statistics and anomalies generated by Model Monitoring.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelMonitoringStatsAnomalies {
     /// Model Monitoring Objective those stats and anomalies belonging to.
@@ -20459,7 +20087,6 @@ pub struct ModelMonitoringStatsAnomalies {
 /// Nested message and enum types in `ModelMonitoringStatsAnomalies`.
 pub mod model_monitoring_stats_anomalies {
     /// Historical Stats (and Anomalies) for a specific Feature.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FeatureHistoricStatsAnomalies {
         /// Display Name of the Feature.
@@ -20533,7 +20160,6 @@ impl ModelDeploymentMonitoringObjectiveType {
     }
 }
 /// Represents a Neural Architecture Search (NAS) job.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NasJob {
     /// Output only. Resource name of the NasJob.
@@ -20593,10 +20219,15 @@ pub struct NasJob {
     #[deprecated]
     #[prost(bool, tag = "14")]
     pub enable_restricted_image_training: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "15")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "16")]
+    pub satisfies_pzi: bool,
 }
 /// Represents a NasTrial details along with its parameters. If there is a
 /// corresponding train NasTrial, the train NasTrial is also returned.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NasTrialDetail {
     /// Output only. Resource name of the NasTrialDetail.
@@ -20617,7 +20248,6 @@ pub struct NasTrialDetail {
     pub train_trial: ::core::option::Option<NasTrial>,
 }
 /// Represents the spec of a NasJob.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NasJobSpec {
     /// The ID of the existing NasJob in the same Project and Location
@@ -20636,7 +20266,6 @@ pub struct NasJobSpec {
 /// Nested message and enum types in `NasJobSpec`.
 pub mod nas_job_spec {
     /// The spec of multi-trial Neural Architecture Search (NAS).
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MultiTrialAlgorithmSpec {
         /// The multi-trial Neural Architecture Search (NAS) algorithm
@@ -20666,7 +20295,6 @@ pub mod nas_job_spec {
     /// Nested message and enum types in `MultiTrialAlgorithmSpec`.
     pub mod multi_trial_algorithm_spec {
         /// Represents a metric to optimize.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct MetricSpec {
             /// Required. The ID of the metric. Must not contain whitespaces.
@@ -20723,7 +20351,6 @@ pub mod nas_job_spec {
             }
         }
         /// Represent spec for search trials.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct SearchTrialSpec {
             /// Required. The spec of a search trial job. The same spec applies to
@@ -20748,7 +20375,6 @@ pub mod nas_job_spec {
             pub max_failed_trial_count: i32,
         }
         /// Represent spec for train trials.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TrainTrialSpec {
             /// Required. The spec of a train trial job. The same spec applies to
@@ -20818,7 +20444,6 @@ pub mod nas_job_spec {
         }
     }
     /// The Neural Architecture Search (NAS) algorithm specification.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum NasAlgorithmSpec {
         /// The spec of multi-trial algorithms.
@@ -20827,7 +20452,6 @@ pub mod nas_job_spec {
     }
 }
 /// Represents a uCAIP NasJob output.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NasJobOutput {
     /// The output of this Neural Architecture Search (NAS) job.
@@ -20837,7 +20461,6 @@ pub struct NasJobOutput {
 /// Nested message and enum types in `NasJobOutput`.
 pub mod nas_job_output {
     /// The output of a multi-trial Neural Architecture Search (NAS) jobs.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MultiTrialJobOutput {
         /// Output only. List of NasTrials that were started as part of search stage.
@@ -20848,7 +20471,6 @@ pub mod nas_job_output {
         pub train_trials: ::prost::alloc::vec::Vec<super::NasTrial>,
     }
     /// The output of this Neural Architecture Search (NAS) job.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Output {
         /// Output only. The output of this multi-trial Neural Architecture Search
@@ -20858,7 +20480,6 @@ pub mod nas_job_output {
     }
 }
 /// Represents a uCAIP NasJob trial.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NasTrial {
     /// Output only. The identifier of the NasTrial assigned by the service.
@@ -20941,7 +20562,6 @@ pub mod nas_trial {
 }
 /// Request message for
 /// [JobService.CreateCustomJob][google.cloud.aiplatform.v1.JobService.CreateCustomJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCustomJobRequest {
     /// Required. The resource name of the Location to create the CustomJob in.
@@ -20954,7 +20574,6 @@ pub struct CreateCustomJobRequest {
 }
 /// Request message for
 /// [JobService.GetCustomJob][google.cloud.aiplatform.v1.JobService.GetCustomJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomJobRequest {
     /// Required. The name of the CustomJob resource.
@@ -20965,7 +20584,6 @@ pub struct GetCustomJobRequest {
 }
 /// Request message for
 /// [JobService.ListCustomJobs][google.cloud.aiplatform.v1.JobService.ListCustomJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomJobsRequest {
     /// Required. The resource name of the Location to list the CustomJobs from.
@@ -21011,7 +20629,6 @@ pub struct ListCustomJobsRequest {
 }
 /// Response message for
 /// [JobService.ListCustomJobs][google.cloud.aiplatform.v1.JobService.ListCustomJobs]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomJobsResponse {
     /// List of CustomJobs in the requested page.
@@ -21026,7 +20643,6 @@ pub struct ListCustomJobsResponse {
 }
 /// Request message for
 /// [JobService.DeleteCustomJob][google.cloud.aiplatform.v1.JobService.DeleteCustomJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCustomJobRequest {
     /// Required. The name of the CustomJob resource to be deleted.
@@ -21037,7 +20653,6 @@ pub struct DeleteCustomJobRequest {
 }
 /// Request message for
 /// [JobService.CancelCustomJob][google.cloud.aiplatform.v1.JobService.CancelCustomJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelCustomJobRequest {
     /// Required. The name of the CustomJob to cancel.
@@ -21048,7 +20663,6 @@ pub struct CancelCustomJobRequest {
 }
 /// Request message for
 /// [JobService.CreateDataLabelingJob][google.cloud.aiplatform.v1.JobService.CreateDataLabelingJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDataLabelingJobRequest {
     /// Required. The parent of the DataLabelingJob.
@@ -21061,7 +20675,6 @@ pub struct CreateDataLabelingJobRequest {
 }
 /// Request message for
 /// [JobService.GetDataLabelingJob][google.cloud.aiplatform.v1.JobService.GetDataLabelingJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDataLabelingJobRequest {
     /// Required. The name of the DataLabelingJob.
@@ -21072,7 +20685,6 @@ pub struct GetDataLabelingJobRequest {
 }
 /// Request message for
 /// [JobService.ListDataLabelingJobs][google.cloud.aiplatform.v1.JobService.ListDataLabelingJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataLabelingJobsRequest {
     /// Required. The parent of the DataLabelingJob.
@@ -21121,7 +20733,6 @@ pub struct ListDataLabelingJobsRequest {
 }
 /// Response message for
 /// [JobService.ListDataLabelingJobs][google.cloud.aiplatform.v1.JobService.ListDataLabelingJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataLabelingJobsResponse {
     /// A list of DataLabelingJobs that matches the specified filter in the
@@ -21134,7 +20745,6 @@ pub struct ListDataLabelingJobsResponse {
 }
 /// Request message for
 /// [JobService.DeleteDataLabelingJob][google.cloud.aiplatform.v1.JobService.DeleteDataLabelingJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDataLabelingJobRequest {
     /// Required. The name of the DataLabelingJob to be deleted.
@@ -21145,7 +20755,6 @@ pub struct DeleteDataLabelingJobRequest {
 }
 /// Request message for
 /// [JobService.CancelDataLabelingJob][google.cloud.aiplatform.v1.JobService.CancelDataLabelingJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelDataLabelingJobRequest {
     /// Required. The name of the DataLabelingJob.
@@ -21156,7 +20765,6 @@ pub struct CancelDataLabelingJobRequest {
 }
 /// Request message for
 /// [JobService.CreateHyperparameterTuningJob][google.cloud.aiplatform.v1.JobService.CreateHyperparameterTuningJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateHyperparameterTuningJobRequest {
     /// Required. The resource name of the Location to create the
@@ -21170,7 +20778,6 @@ pub struct CreateHyperparameterTuningJobRequest {
 }
 /// Request message for
 /// [JobService.GetHyperparameterTuningJob][google.cloud.aiplatform.v1.JobService.GetHyperparameterTuningJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHyperparameterTuningJobRequest {
     /// Required. The name of the HyperparameterTuningJob resource.
@@ -21181,7 +20788,6 @@ pub struct GetHyperparameterTuningJobRequest {
 }
 /// Request message for
 /// [JobService.ListHyperparameterTuningJobs][google.cloud.aiplatform.v1.JobService.ListHyperparameterTuningJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHyperparameterTuningJobsRequest {
     /// Required. The resource name of the Location to list the
@@ -21228,7 +20834,6 @@ pub struct ListHyperparameterTuningJobsRequest {
 }
 /// Response message for
 /// [JobService.ListHyperparameterTuningJobs][google.cloud.aiplatform.v1.JobService.ListHyperparameterTuningJobs]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHyperparameterTuningJobsResponse {
     /// List of HyperparameterTuningJobs in the requested page.
@@ -21245,7 +20850,6 @@ pub struct ListHyperparameterTuningJobsResponse {
 }
 /// Request message for
 /// [JobService.DeleteHyperparameterTuningJob][google.cloud.aiplatform.v1.JobService.DeleteHyperparameterTuningJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteHyperparameterTuningJobRequest {
     /// Required. The name of the HyperparameterTuningJob resource to be deleted.
@@ -21256,7 +20860,6 @@ pub struct DeleteHyperparameterTuningJobRequest {
 }
 /// Request message for
 /// [JobService.CancelHyperparameterTuningJob][google.cloud.aiplatform.v1.JobService.CancelHyperparameterTuningJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelHyperparameterTuningJobRequest {
     /// Required. The name of the HyperparameterTuningJob to cancel.
@@ -21267,7 +20870,6 @@ pub struct CancelHyperparameterTuningJobRequest {
 }
 /// Request message for
 /// [JobService.CreateNasJob][google.cloud.aiplatform.v1.JobService.CreateNasJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNasJobRequest {
     /// Required. The resource name of the Location to create the NasJob in.
@@ -21280,7 +20882,6 @@ pub struct CreateNasJobRequest {
 }
 /// Request message for
 /// [JobService.GetNasJob][google.cloud.aiplatform.v1.JobService.GetNasJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNasJobRequest {
     /// Required. The name of the NasJob resource.
@@ -21291,7 +20892,6 @@ pub struct GetNasJobRequest {
 }
 /// Request message for
 /// [JobService.ListNasJobs][google.cloud.aiplatform.v1.JobService.ListNasJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNasJobsRequest {
     /// Required. The resource name of the Location to list the NasJobs
@@ -21337,7 +20937,6 @@ pub struct ListNasJobsRequest {
 }
 /// Response message for
 /// [JobService.ListNasJobs][google.cloud.aiplatform.v1.JobService.ListNasJobs]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNasJobsResponse {
     /// List of NasJobs in the requested page.
@@ -21354,7 +20953,6 @@ pub struct ListNasJobsResponse {
 }
 /// Request message for
 /// [JobService.DeleteNasJob][google.cloud.aiplatform.v1.JobService.DeleteNasJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNasJobRequest {
     /// Required. The name of the NasJob resource to be deleted.
@@ -21365,7 +20963,6 @@ pub struct DeleteNasJobRequest {
 }
 /// Request message for
 /// [JobService.CancelNasJob][google.cloud.aiplatform.v1.JobService.CancelNasJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelNasJobRequest {
     /// Required. The name of the NasJob to cancel.
@@ -21376,7 +20973,6 @@ pub struct CancelNasJobRequest {
 }
 /// Request message for
 /// [JobService.GetNasTrialDetail][google.cloud.aiplatform.v1.JobService.GetNasTrialDetail].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNasTrialDetailRequest {
     /// Required. The name of the NasTrialDetail resource.
@@ -21387,7 +20983,6 @@ pub struct GetNasTrialDetailRequest {
 }
 /// Request message for
 /// [JobService.ListNasTrialDetails][google.cloud.aiplatform.v1.JobService.ListNasTrialDetails].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNasTrialDetailsRequest {
     /// Required. The name of the NasJob resource.
@@ -21409,7 +21004,6 @@ pub struct ListNasTrialDetailsRequest {
 }
 /// Response message for
 /// [JobService.ListNasTrialDetails][google.cloud.aiplatform.v1.JobService.ListNasTrialDetails]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNasTrialDetailsResponse {
     /// List of top NasTrials in the requested page.
@@ -21424,7 +21018,6 @@ pub struct ListNasTrialDetailsResponse {
 }
 /// Request message for
 /// [JobService.CreateBatchPredictionJob][google.cloud.aiplatform.v1.JobService.CreateBatchPredictionJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBatchPredictionJobRequest {
     /// Required. The resource name of the Location to create the
@@ -21437,7 +21030,6 @@ pub struct CreateBatchPredictionJobRequest {
 }
 /// Request message for
 /// [JobService.GetBatchPredictionJob][google.cloud.aiplatform.v1.JobService.GetBatchPredictionJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBatchPredictionJobRequest {
     /// Required. The name of the BatchPredictionJob resource.
@@ -21448,7 +21040,6 @@ pub struct GetBatchPredictionJobRequest {
 }
 /// Request message for
 /// [JobService.ListBatchPredictionJobs][google.cloud.aiplatform.v1.JobService.ListBatchPredictionJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBatchPredictionJobsRequest {
     /// Required. The resource name of the Location to list the BatchPredictionJobs
@@ -21495,7 +21086,6 @@ pub struct ListBatchPredictionJobsRequest {
 }
 /// Response message for
 /// [JobService.ListBatchPredictionJobs][google.cloud.aiplatform.v1.JobService.ListBatchPredictionJobs]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBatchPredictionJobsResponse {
     /// List of BatchPredictionJobs in the requested page.
@@ -21510,7 +21100,6 @@ pub struct ListBatchPredictionJobsResponse {
 }
 /// Request message for
 /// [JobService.DeleteBatchPredictionJob][google.cloud.aiplatform.v1.JobService.DeleteBatchPredictionJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBatchPredictionJobRequest {
     /// Required. The name of the BatchPredictionJob resource to be deleted.
@@ -21521,7 +21110,6 @@ pub struct DeleteBatchPredictionJobRequest {
 }
 /// Request message for
 /// [JobService.CancelBatchPredictionJob][google.cloud.aiplatform.v1.JobService.CancelBatchPredictionJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelBatchPredictionJobRequest {
     /// Required. The name of the BatchPredictionJob to cancel.
@@ -21532,7 +21120,6 @@ pub struct CancelBatchPredictionJobRequest {
 }
 /// Request message for
 /// [JobService.CreateModelDeploymentMonitoringJob][google.cloud.aiplatform.v1.JobService.CreateModelDeploymentMonitoringJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateModelDeploymentMonitoringJobRequest {
     /// Required. The parent of the ModelDeploymentMonitoringJob.
@@ -21547,7 +21134,6 @@ pub struct CreateModelDeploymentMonitoringJobRequest {
 }
 /// Request message for
 /// [JobService.SearchModelDeploymentMonitoringStatsAnomalies][google.cloud.aiplatform.v1.JobService.SearchModelDeploymentMonitoringStatsAnomalies].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchModelDeploymentMonitoringStatsAnomaliesRequest {
     /// Required. ModelDeploymentMonitoring Job resource name.
@@ -21590,7 +21176,6 @@ pub struct SearchModelDeploymentMonitoringStatsAnomaliesRequest {
 /// Nested message and enum types in `SearchModelDeploymentMonitoringStatsAnomaliesRequest`.
 pub mod search_model_deployment_monitoring_stats_anomalies_request {
     /// Stats requested for specific objective.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct StatsAnomaliesObjective {
         #[prost(
@@ -21611,7 +21196,6 @@ pub mod search_model_deployment_monitoring_stats_anomalies_request {
 }
 /// Response message for
 /// [JobService.SearchModelDeploymentMonitoringStatsAnomalies][google.cloud.aiplatform.v1.JobService.SearchModelDeploymentMonitoringStatsAnomalies].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchModelDeploymentMonitoringStatsAnomaliesResponse {
     /// Stats retrieved for requested objectives.
@@ -21628,7 +21212,6 @@ pub struct SearchModelDeploymentMonitoringStatsAnomaliesResponse {
 }
 /// Request message for
 /// [JobService.GetModelDeploymentMonitoringJob][google.cloud.aiplatform.v1.JobService.GetModelDeploymentMonitoringJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetModelDeploymentMonitoringJobRequest {
     /// Required. The resource name of the ModelDeploymentMonitoringJob.
@@ -21639,7 +21222,6 @@ pub struct GetModelDeploymentMonitoringJobRequest {
 }
 /// Request message for
 /// [JobService.ListModelDeploymentMonitoringJobs][google.cloud.aiplatform.v1.JobService.ListModelDeploymentMonitoringJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelDeploymentMonitoringJobsRequest {
     /// Required. The parent of the ModelDeploymentMonitoringJob.
@@ -21680,7 +21262,6 @@ pub struct ListModelDeploymentMonitoringJobsRequest {
 }
 /// Response message for
 /// [JobService.ListModelDeploymentMonitoringJobs][google.cloud.aiplatform.v1.JobService.ListModelDeploymentMonitoringJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelDeploymentMonitoringJobsResponse {
     /// A list of ModelDeploymentMonitoringJobs that matches the specified filter
@@ -21695,7 +21276,6 @@ pub struct ListModelDeploymentMonitoringJobsResponse {
 }
 /// Request message for
 /// [JobService.UpdateModelDeploymentMonitoringJob][google.cloud.aiplatform.v1.JobService.UpdateModelDeploymentMonitoringJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateModelDeploymentMonitoringJobRequest {
     /// Required. The model monitoring configuration which replaces the resource on
@@ -21735,7 +21315,6 @@ pub struct UpdateModelDeploymentMonitoringJobRequest {
 }
 /// Request message for
 /// [JobService.DeleteModelDeploymentMonitoringJob][google.cloud.aiplatform.v1.JobService.DeleteModelDeploymentMonitoringJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteModelDeploymentMonitoringJobRequest {
     /// Required. The resource name of the model monitoring job to delete.
@@ -21746,7 +21325,6 @@ pub struct DeleteModelDeploymentMonitoringJobRequest {
 }
 /// Request message for
 /// [JobService.PauseModelDeploymentMonitoringJob][google.cloud.aiplatform.v1.JobService.PauseModelDeploymentMonitoringJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PauseModelDeploymentMonitoringJobRequest {
     /// Required. The resource name of the ModelDeploymentMonitoringJob to pause.
@@ -21757,7 +21335,6 @@ pub struct PauseModelDeploymentMonitoringJobRequest {
 }
 /// Request message for
 /// [JobService.ResumeModelDeploymentMonitoringJob][google.cloud.aiplatform.v1.JobService.ResumeModelDeploymentMonitoringJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResumeModelDeploymentMonitoringJobRequest {
     /// Required. The resource name of the ModelDeploymentMonitoringJob to resume.
@@ -21768,7 +21345,6 @@ pub struct ResumeModelDeploymentMonitoringJobRequest {
 }
 /// Runtime operation information for
 /// [JobService.UpdateModelDeploymentMonitoringJob][google.cloud.aiplatform.v1.JobService.UpdateModelDeploymentMonitoringJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateModelDeploymentMonitoringJobOperationMetadata {
     /// The operation generic information.
@@ -21800,8 +21376,8 @@ pub mod job_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -21826,7 +21402,7 @@ pub mod job_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             JobServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -22986,7 +22562,6 @@ pub mod job_service_client {
 }
 /// A subgraph of the overall lineage graph. Event edges connect Artifact and
 /// Execution nodes.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LineageSubgraph {
     /// The Artifact nodes in the subgraph.
@@ -23001,7 +22576,6 @@ pub struct LineageSubgraph {
 }
 /// Request message for
 /// [PredictionService.Predict][google.cloud.aiplatform.v1.PredictionService.Predict].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PredictRequest {
     /// Required. The name of the Endpoint requested to serve the prediction.
@@ -23030,7 +22604,6 @@ pub struct PredictRequest {
 }
 /// Response message for
 /// [PredictionService.Predict][google.cloud.aiplatform.v1.PredictionService.Predict].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PredictResponse {
     /// The predictions that are the output of the predictions call.
@@ -23063,7 +22636,6 @@ pub struct PredictResponse {
 }
 /// Request message for
 /// [PredictionService.RawPredict][google.cloud.aiplatform.v1.PredictionService.RawPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RawPredictRequest {
     /// Required. The name of the Endpoint requested to serve the prediction.
@@ -23091,7 +22663,6 @@ pub struct RawPredictRequest {
 }
 /// Request message for
 /// [PredictionService.StreamRawPredict][google.cloud.aiplatform.v1.PredictionService.StreamRawPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamRawPredictRequest {
     /// Required. The name of the Endpoint requested to serve the prediction.
@@ -23105,7 +22676,6 @@ pub struct StreamRawPredictRequest {
 }
 /// Request message for
 /// [PredictionService.DirectPredict][google.cloud.aiplatform.v1.PredictionService.DirectPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DirectPredictRequest {
     /// Required. The name of the Endpoint requested to serve the prediction.
@@ -23122,7 +22692,6 @@ pub struct DirectPredictRequest {
 }
 /// Response message for
 /// [PredictionService.DirectPredict][google.cloud.aiplatform.v1.PredictionService.DirectPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DirectPredictResponse {
     /// The prediction output.
@@ -23134,7 +22703,6 @@ pub struct DirectPredictResponse {
 }
 /// Request message for
 /// [PredictionService.DirectRawPredict][google.cloud.aiplatform.v1.PredictionService.DirectRawPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DirectRawPredictRequest {
     /// Required. The name of the Endpoint requested to serve the prediction.
@@ -23157,7 +22725,6 @@ pub struct DirectRawPredictRequest {
 }
 /// Response message for
 /// [PredictionService.DirectRawPredict][google.cloud.aiplatform.v1.PredictionService.DirectRawPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DirectRawPredictResponse {
     /// The prediction output.
@@ -23171,7 +22738,6 @@ pub struct DirectRawPredictResponse {
 /// [endpoint][google.cloud.aiplatform.v1.StreamDirectPredictRequest.endpoint]
 /// field and optionally [input][]. The subsequent messages must contain
 /// [input][].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamDirectPredictRequest {
     /// Required. The name of the Endpoint requested to serve the prediction.
@@ -23188,7 +22754,6 @@ pub struct StreamDirectPredictRequest {
 }
 /// Response message for
 /// [PredictionService.StreamDirectPredict][google.cloud.aiplatform.v1.PredictionService.StreamDirectPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamDirectPredictResponse {
     /// The prediction output.
@@ -23211,7 +22776,6 @@ pub struct StreamDirectPredictResponse {
 /// [input][google.cloud.aiplatform.v1.StreamDirectRawPredictRequest.input].
 /// [method_name][google.cloud.aiplatform.v1.StreamDirectRawPredictRequest.method_name]
 /// in the subsequent messages have no effect.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamDirectRawPredictRequest {
     /// Required. The name of the Endpoint requested to serve the prediction.
@@ -23234,7 +22798,6 @@ pub struct StreamDirectRawPredictRequest {
 }
 /// Response message for
 /// [PredictionService.StreamDirectRawPredict][google.cloud.aiplatform.v1.PredictionService.StreamDirectRawPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamDirectRawPredictResponse {
     /// The prediction output.
@@ -23247,7 +22810,6 @@ pub struct StreamDirectRawPredictResponse {
 /// The first message must contain
 /// [endpoint][google.cloud.aiplatform.v1.StreamingPredictRequest.endpoint] field
 /// and optionally [input][]. The subsequent messages must contain [input][].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingPredictRequest {
     /// Required. The name of the Endpoint requested to serve the prediction.
@@ -23264,7 +22826,6 @@ pub struct StreamingPredictRequest {
 }
 /// Response message for
 /// [PredictionService.StreamingPredict][google.cloud.aiplatform.v1.PredictionService.StreamingPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingPredictResponse {
     /// The prediction output.
@@ -23287,7 +22848,6 @@ pub struct StreamingPredictResponse {
 /// [input][google.cloud.aiplatform.v1.StreamingRawPredictRequest.input].
 /// [method_name][google.cloud.aiplatform.v1.StreamingRawPredictRequest.method_name]
 /// in the subsequent messages have no effect.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingRawPredictRequest {
     /// Required. The name of the Endpoint requested to serve the prediction.
@@ -23310,7 +22870,6 @@ pub struct StreamingRawPredictRequest {
 }
 /// Response message for
 /// [PredictionService.StreamingRawPredict][google.cloud.aiplatform.v1.PredictionService.StreamingRawPredict].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingRawPredictResponse {
     /// The prediction output.
@@ -23319,7 +22878,6 @@ pub struct StreamingRawPredictResponse {
 }
 /// Request message for
 /// [PredictionService.Explain][google.cloud.aiplatform.v1.PredictionService.Explain].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplainRequest {
     /// Required. The name of the Endpoint requested to serve the explanation.
@@ -23363,7 +22921,6 @@ pub struct ExplainRequest {
 }
 /// Response message for
 /// [PredictionService.Explain][google.cloud.aiplatform.v1.PredictionService.Explain].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplainResponse {
     /// The explanations of the Model's
@@ -23384,7 +22941,6 @@ pub struct ExplainResponse {
     pub predictions: ::prost::alloc::vec::Vec<::prost_types::Value>,
 }
 /// Request message for [PredictionService.CountTokens][].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CountTokensRequest {
     /// Required. The name of the Endpoint requested to perform token counting.
@@ -23419,7 +22975,6 @@ pub struct CountTokensRequest {
     pub tools: ::prost::alloc::vec::Vec<Tool>,
 }
 /// Response message for [PredictionService.CountTokens][].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CountTokensResponse {
     /// The total number of tokens counted across all instances from the request.
@@ -23431,12 +22986,16 @@ pub struct CountTokensResponse {
     pub total_billable_characters: i32,
 }
 /// Request message for \[PredictionService.GenerateContent\].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateContentRequest {
-    /// Required. The name of the publisher model requested to serve the
-    /// prediction. Format:
+    /// Required. The fully qualified name of the publisher model or tuned model
+    /// endpoint to use.
+    ///
+    /// Publisher model format:
     /// `projects/{project}/locations/{location}/publishers/*/models/*`
+    ///
+    /// Tuned model endpoint format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
     #[prost(string, tag = "5")]
     pub model: ::prost::alloc::string::String,
     /// Required. The content of the current conversation with the model.
@@ -23472,7 +23031,6 @@ pub struct GenerateContentRequest {
     pub generation_config: ::core::option::Option<GenerationConfig>,
 }
 /// Response message for \[PredictionService.GenerateContent\].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateContentResponse {
     /// Output only. Generated candidates.
@@ -23492,7 +23050,6 @@ pub struct GenerateContentResponse {
 /// Nested message and enum types in `GenerateContentResponse`.
 pub mod generate_content_response {
     /// Content filter results for a prompt sent in the request.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PromptFeedback {
         /// Output only. Blocked reason.
@@ -23561,7 +23118,6 @@ pub mod generate_content_response {
         }
     }
     /// Usage metadata about response(s).
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct UsageMetadata {
         /// Number of tokens in the request. When `cached_content` is set, this is
@@ -23601,8 +23157,8 @@ pub mod prediction_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -23627,7 +23183,7 @@ pub mod prediction_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             PredictionServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -24106,7 +23662,6 @@ pub mod prediction_service_client {
     }
 }
 /// Request message for ComputeTokens RPC call.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeTokensRequest {
     /// Required. The name of the Endpoint requested to get lists of tokens and
@@ -24128,7 +23683,6 @@ pub struct ComputeTokensRequest {
     pub contents: ::prost::alloc::vec::Vec<Content>,
 }
 /// Tokens info with a list of tokens and the corresponding list of token ids.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TokensInfo {
     /// A list of tokens from the input.
@@ -24142,7 +23696,6 @@ pub struct TokensInfo {
     pub role: ::prost::alloc::string::String,
 }
 /// Response message for ComputeTokens RPC call.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeTokensResponse {
     /// Lists of tokens info from the input. A ComputeTokensRequest could have
@@ -24176,8 +23729,8 @@ pub mod llm_utility_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -24202,7 +23755,7 @@ pub mod llm_utility_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             LlmUtilityServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -24303,7 +23856,6 @@ pub mod llm_utility_service_client {
 }
 /// The request message for
 /// [MatchService.FindNeighbors][google.cloud.aiplatform.v1.MatchService.FindNeighbors].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FindNeighborsRequest {
     /// Required. The name of the index endpoint.
@@ -24333,7 +23885,6 @@ pub struct FindNeighborsRequest {
 pub mod find_neighbors_request {
     /// A query to find a number of the nearest neighbors (most similar vectors)
     /// of a vector.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Query {
         /// Required. The datapoint/vector whose nearest neighbors should be searched
@@ -24371,7 +23922,6 @@ pub mod find_neighbors_request {
     /// Nested message and enum types in `Query`.
     pub mod query {
         /// Parameters for RRF algorithm that combines search results.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct Rrf {
             /// Required. Users can provide an alpha value to give more weight to dense
@@ -24380,7 +23930,6 @@ pub mod find_neighbors_request {
             #[prost(float, tag = "1")]
             pub alpha: f32,
         }
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum Ranking {
             /// Optional. Represents RRF algorithm that combines search results.
@@ -24391,7 +23940,6 @@ pub mod find_neighbors_request {
 }
 /// The response message for
 /// [MatchService.FindNeighbors][google.cloud.aiplatform.v1.MatchService.FindNeighbors].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FindNeighborsResponse {
     /// The nearest neighbors of the query datapoints.
@@ -24403,7 +23951,6 @@ pub struct FindNeighborsResponse {
 /// Nested message and enum types in `FindNeighborsResponse`.
 pub mod find_neighbors_response {
     /// A neighbor of the query vector.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Neighbor {
         /// The datapoint of the neighbor.
@@ -24420,7 +23967,6 @@ pub mod find_neighbors_response {
         pub sparse_distance: f64,
     }
     /// Nearest neighbors for one query.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NearestNeighbors {
         /// The ID of the query datapoint.
@@ -24433,7 +23979,6 @@ pub mod find_neighbors_response {
 }
 /// The request message for
 /// [MatchService.ReadIndexDatapoints][google.cloud.aiplatform.v1.MatchService.ReadIndexDatapoints].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadIndexDatapointsRequest {
     /// Required. The name of the index endpoint.
@@ -24450,7 +23995,6 @@ pub struct ReadIndexDatapointsRequest {
 }
 /// The response message for
 /// [MatchService.ReadIndexDatapoints][google.cloud.aiplatform.v1.MatchService.ReadIndexDatapoints].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadIndexDatapointsResponse {
     /// The result list of datapoints.
@@ -24483,8 +24027,8 @@ pub mod match_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -24509,7 +24053,7 @@ pub mod match_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             MatchServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -24610,7 +24154,6 @@ pub mod match_service_client {
     }
 }
 /// Instance of a general MetadataSchema.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetadataSchema {
     /// Output only. The resource name of the MetadataSchema.
@@ -24693,7 +24236,6 @@ pub mod metadata_schema {
 }
 /// Instance of a metadata store. Contains a set of metadata that can be
 /// queried.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetadataStore {
     /// Output only. The resource name of the MetadataStore instance.
@@ -24723,7 +24265,6 @@ pub struct MetadataStore {
 /// Nested message and enum types in `MetadataStore`.
 pub mod metadata_store {
     /// Represents state information for a MetadataStore.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct MetadataStoreState {
         /// The disk utilization of the MetadataStore in bytes.
@@ -24731,7 +24272,6 @@ pub mod metadata_store {
         pub disk_utilization_bytes: i64,
     }
     /// Represents Dataplex integration settings.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DataplexConfig {
         /// Optional. Whether or not Data Lineage synchronization is enabled for
@@ -24742,7 +24282,6 @@ pub mod metadata_store {
 }
 /// Request message for
 /// [MetadataService.CreateMetadataStore][google.cloud.aiplatform.v1.MetadataService.CreateMetadataStore].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMetadataStoreRequest {
     /// Required. The resource name of the Location where the MetadataStore should
@@ -24766,7 +24305,6 @@ pub struct CreateMetadataStoreRequest {
 }
 /// Details of operations that perform
 /// [MetadataService.CreateMetadataStore][google.cloud.aiplatform.v1.MetadataService.CreateMetadataStore].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMetadataStoreOperationMetadata {
     /// Operation metadata for creating a MetadataStore.
@@ -24775,7 +24313,6 @@ pub struct CreateMetadataStoreOperationMetadata {
 }
 /// Request message for
 /// [MetadataService.GetMetadataStore][google.cloud.aiplatform.v1.MetadataService.GetMetadataStore].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMetadataStoreRequest {
     /// Required. The resource name of the MetadataStore to retrieve.
@@ -24786,7 +24323,6 @@ pub struct GetMetadataStoreRequest {
 }
 /// Request message for
 /// [MetadataService.ListMetadataStores][google.cloud.aiplatform.v1.MetadataService.ListMetadataStores].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetadataStoresRequest {
     /// Required. The Location whose MetadataStores should be listed.
@@ -24811,7 +24347,6 @@ pub struct ListMetadataStoresRequest {
 }
 /// Response message for
 /// [MetadataService.ListMetadataStores][google.cloud.aiplatform.v1.MetadataService.ListMetadataStores].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetadataStoresResponse {
     /// The MetadataStores found for the Location.
@@ -24826,7 +24361,6 @@ pub struct ListMetadataStoresResponse {
 }
 /// Request message for
 /// [MetadataService.DeleteMetadataStore][google.cloud.aiplatform.v1.MetadataService.DeleteMetadataStore].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteMetadataStoreRequest {
     /// Required. The resource name of the MetadataStore to delete.
@@ -24841,7 +24375,6 @@ pub struct DeleteMetadataStoreRequest {
 }
 /// Details of operations that perform
 /// [MetadataService.DeleteMetadataStore][google.cloud.aiplatform.v1.MetadataService.DeleteMetadataStore].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteMetadataStoreOperationMetadata {
     /// Operation metadata for deleting a MetadataStore.
@@ -24850,7 +24383,6 @@ pub struct DeleteMetadataStoreOperationMetadata {
 }
 /// Request message for
 /// [MetadataService.CreateArtifact][google.cloud.aiplatform.v1.MetadataService.CreateArtifact].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateArtifactRequest {
     /// Required. The resource name of the MetadataStore where the Artifact should
@@ -24874,7 +24406,6 @@ pub struct CreateArtifactRequest {
 }
 /// Request message for
 /// [MetadataService.GetArtifact][google.cloud.aiplatform.v1.MetadataService.GetArtifact].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetArtifactRequest {
     /// Required. The resource name of the Artifact to retrieve.
@@ -24885,7 +24416,6 @@ pub struct GetArtifactRequest {
 }
 /// Request message for
 /// [MetadataService.ListArtifacts][google.cloud.aiplatform.v1.MetadataService.ListArtifacts].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListArtifactsRequest {
     /// Required. The MetadataStore whose Artifacts should be listed.
@@ -24950,7 +24480,6 @@ pub struct ListArtifactsRequest {
 }
 /// Response message for
 /// [MetadataService.ListArtifacts][google.cloud.aiplatform.v1.MetadataService.ListArtifacts].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListArtifactsResponse {
     /// The Artifacts retrieved from the MetadataStore.
@@ -24965,7 +24494,6 @@ pub struct ListArtifactsResponse {
 }
 /// Request message for
 /// [MetadataService.UpdateArtifact][google.cloud.aiplatform.v1.MetadataService.UpdateArtifact].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateArtifactRequest {
     /// Required. The Artifact containing updates.
@@ -24985,7 +24513,6 @@ pub struct UpdateArtifactRequest {
 }
 /// Request message for
 /// [MetadataService.DeleteArtifact][google.cloud.aiplatform.v1.MetadataService.DeleteArtifact].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteArtifactRequest {
     /// Required. The resource name of the Artifact to delete.
@@ -25001,7 +24528,6 @@ pub struct DeleteArtifactRequest {
 }
 /// Request message for
 /// [MetadataService.PurgeArtifacts][google.cloud.aiplatform.v1.MetadataService.PurgeArtifacts].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurgeArtifactsRequest {
     /// Required. The metadata store to purge Artifacts from.
@@ -25021,7 +24547,6 @@ pub struct PurgeArtifactsRequest {
 }
 /// Response message for
 /// [MetadataService.PurgeArtifacts][google.cloud.aiplatform.v1.MetadataService.PurgeArtifacts].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurgeArtifactsResponse {
     /// The number of Artifacts that this request deleted (or, if `force` is false,
@@ -25036,7 +24561,6 @@ pub struct PurgeArtifactsResponse {
 }
 /// Details of operations that perform
 /// [MetadataService.PurgeArtifacts][google.cloud.aiplatform.v1.MetadataService.PurgeArtifacts].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurgeArtifactsMetadata {
     /// Operation metadata for purging Artifacts.
@@ -25045,7 +24569,6 @@ pub struct PurgeArtifactsMetadata {
 }
 /// Request message for
 /// [MetadataService.CreateContext][google.cloud.aiplatform.v1.MetadataService.CreateContext].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateContextRequest {
     /// Required. The resource name of the MetadataStore where the Context should
@@ -25068,7 +24591,6 @@ pub struct CreateContextRequest {
 }
 /// Request message for
 /// [MetadataService.GetContext][google.cloud.aiplatform.v1.MetadataService.GetContext].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetContextRequest {
     /// Required. The resource name of the Context to retrieve.
@@ -25079,7 +24601,6 @@ pub struct GetContextRequest {
 }
 /// Request message for
 /// [MetadataService.ListContexts][google.cloud.aiplatform.v1.MetadataService.ListContexts]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListContextsRequest {
     /// Required. The MetadataStore whose Contexts should be listed.
@@ -25148,7 +24669,6 @@ pub struct ListContextsRequest {
 }
 /// Response message for
 /// [MetadataService.ListContexts][google.cloud.aiplatform.v1.MetadataService.ListContexts].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListContextsResponse {
     /// The Contexts retrieved from the MetadataStore.
@@ -25163,7 +24683,6 @@ pub struct ListContextsResponse {
 }
 /// Request message for
 /// [MetadataService.UpdateContext][google.cloud.aiplatform.v1.MetadataService.UpdateContext].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateContextRequest {
     /// Required. The Context containing updates.
@@ -25182,7 +24701,6 @@ pub struct UpdateContextRequest {
 }
 /// Request message for
 /// [MetadataService.DeleteContext][google.cloud.aiplatform.v1.MetadataService.DeleteContext].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteContextRequest {
     /// Required. The resource name of the Context to delete.
@@ -25202,7 +24720,6 @@ pub struct DeleteContextRequest {
 }
 /// Request message for
 /// [MetadataService.PurgeContexts][google.cloud.aiplatform.v1.MetadataService.PurgeContexts].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurgeContextsRequest {
     /// Required. The metadata store to purge Contexts from.
@@ -25222,7 +24739,6 @@ pub struct PurgeContextsRequest {
 }
 /// Response message for
 /// [MetadataService.PurgeContexts][google.cloud.aiplatform.v1.MetadataService.PurgeContexts].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurgeContextsResponse {
     /// The number of Contexts that this request deleted (or, if `force` is false,
@@ -25237,7 +24753,6 @@ pub struct PurgeContextsResponse {
 }
 /// Details of operations that perform
 /// [MetadataService.PurgeContexts][google.cloud.aiplatform.v1.MetadataService.PurgeContexts].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurgeContextsMetadata {
     /// Operation metadata for purging Contexts.
@@ -25246,7 +24761,6 @@ pub struct PurgeContextsMetadata {
 }
 /// Request message for
 /// [MetadataService.AddContextArtifactsAndExecutions][google.cloud.aiplatform.v1.MetadataService.AddContextArtifactsAndExecutions].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddContextArtifactsAndExecutionsRequest {
     /// Required. The resource name of the Context that the Artifacts and
@@ -25270,12 +24784,10 @@ pub struct AddContextArtifactsAndExecutionsRequest {
 }
 /// Response message for
 /// [MetadataService.AddContextArtifactsAndExecutions][google.cloud.aiplatform.v1.MetadataService.AddContextArtifactsAndExecutions].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddContextArtifactsAndExecutionsResponse {}
 /// Request message for
 /// [MetadataService.AddContextChildren][google.cloud.aiplatform.v1.MetadataService.AddContextChildren].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddContextChildrenRequest {
     /// Required. The resource name of the parent Context.
@@ -25290,12 +24802,10 @@ pub struct AddContextChildrenRequest {
 }
 /// Response message for
 /// [MetadataService.AddContextChildren][google.cloud.aiplatform.v1.MetadataService.AddContextChildren].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddContextChildrenResponse {}
 /// Request message for
 /// [MetadataService.DeleteContextChildrenRequest][].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveContextChildrenRequest {
     /// Required. The resource name of the parent Context.
@@ -25310,12 +24820,10 @@ pub struct RemoveContextChildrenRequest {
 }
 /// Response message for
 /// [MetadataService.RemoveContextChildren][google.cloud.aiplatform.v1.MetadataService.RemoveContextChildren].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RemoveContextChildrenResponse {}
 /// Request message for
 /// [MetadataService.QueryContextLineageSubgraph][google.cloud.aiplatform.v1.MetadataService.QueryContextLineageSubgraph].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryContextLineageSubgraphRequest {
     /// Required. The resource name of the Context whose Artifacts and Executions
@@ -25331,7 +24839,6 @@ pub struct QueryContextLineageSubgraphRequest {
 }
 /// Request message for
 /// [MetadataService.CreateExecution][google.cloud.aiplatform.v1.MetadataService.CreateExecution].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateExecutionRequest {
     /// Required. The resource name of the MetadataStore where the Execution should
@@ -25356,7 +24863,6 @@ pub struct CreateExecutionRequest {
 }
 /// Request message for
 /// [MetadataService.GetExecution][google.cloud.aiplatform.v1.MetadataService.GetExecution].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetExecutionRequest {
     /// Required. The resource name of the Execution to retrieve.
@@ -25367,7 +24873,6 @@ pub struct GetExecutionRequest {
 }
 /// Request message for
 /// [MetadataService.ListExecutions][google.cloud.aiplatform.v1.MetadataService.ListExecutions].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExecutionsRequest {
     /// Required. The MetadataStore whose Executions should be listed.
@@ -25432,7 +24937,6 @@ pub struct ListExecutionsRequest {
 }
 /// Response message for
 /// [MetadataService.ListExecutions][google.cloud.aiplatform.v1.MetadataService.ListExecutions].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExecutionsResponse {
     /// The Executions retrieved from the MetadataStore.
@@ -25447,7 +24951,6 @@ pub struct ListExecutionsResponse {
 }
 /// Request message for
 /// [MetadataService.UpdateExecution][google.cloud.aiplatform.v1.MetadataService.UpdateExecution].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateExecutionRequest {
     /// Required. The Execution containing updates.
@@ -25467,7 +24970,6 @@ pub struct UpdateExecutionRequest {
 }
 /// Request message for
 /// [MetadataService.DeleteExecution][google.cloud.aiplatform.v1.MetadataService.DeleteExecution].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteExecutionRequest {
     /// Required. The resource name of the Execution to delete.
@@ -25483,7 +24985,6 @@ pub struct DeleteExecutionRequest {
 }
 /// Request message for
 /// [MetadataService.PurgeExecutions][google.cloud.aiplatform.v1.MetadataService.PurgeExecutions].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurgeExecutionsRequest {
     /// Required. The metadata store to purge Executions from.
@@ -25503,7 +25004,6 @@ pub struct PurgeExecutionsRequest {
 }
 /// Response message for
 /// [MetadataService.PurgeExecutions][google.cloud.aiplatform.v1.MetadataService.PurgeExecutions].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurgeExecutionsResponse {
     /// The number of Executions that this request deleted (or, if `force` is
@@ -25519,7 +25019,6 @@ pub struct PurgeExecutionsResponse {
 }
 /// Details of operations that perform
 /// [MetadataService.PurgeExecutions][google.cloud.aiplatform.v1.MetadataService.PurgeExecutions].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurgeExecutionsMetadata {
     /// Operation metadata for purging Executions.
@@ -25528,7 +25027,6 @@ pub struct PurgeExecutionsMetadata {
 }
 /// Request message for
 /// [MetadataService.AddExecutionEvents][google.cloud.aiplatform.v1.MetadataService.AddExecutionEvents].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddExecutionEventsRequest {
     /// Required. The resource name of the Execution that the Events connect
@@ -25543,12 +25041,10 @@ pub struct AddExecutionEventsRequest {
 }
 /// Response message for
 /// [MetadataService.AddExecutionEvents][google.cloud.aiplatform.v1.MetadataService.AddExecutionEvents].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddExecutionEventsResponse {}
 /// Request message for
 /// [MetadataService.QueryExecutionInputsAndOutputs][google.cloud.aiplatform.v1.MetadataService.QueryExecutionInputsAndOutputs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryExecutionInputsAndOutputsRequest {
     /// Required. The resource name of the Execution whose input and output
@@ -25559,7 +25055,6 @@ pub struct QueryExecutionInputsAndOutputsRequest {
 }
 /// Request message for
 /// [MetadataService.CreateMetadataSchema][google.cloud.aiplatform.v1.MetadataService.CreateMetadataSchema].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMetadataSchemaRequest {
     /// Required. The resource name of the MetadataStore where the MetadataSchema
@@ -25583,7 +25078,6 @@ pub struct CreateMetadataSchemaRequest {
 }
 /// Request message for
 /// [MetadataService.GetMetadataSchema][google.cloud.aiplatform.v1.MetadataService.GetMetadataSchema].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMetadataSchemaRequest {
     /// Required. The resource name of the MetadataSchema to retrieve.
@@ -25594,7 +25088,6 @@ pub struct GetMetadataSchemaRequest {
 }
 /// Request message for
 /// [MetadataService.ListMetadataSchemas][google.cloud.aiplatform.v1.MetadataService.ListMetadataSchemas].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetadataSchemasRequest {
     /// Required. The MetadataStore whose MetadataSchemas should be listed.
@@ -25622,7 +25115,6 @@ pub struct ListMetadataSchemasRequest {
 }
 /// Response message for
 /// [MetadataService.ListMetadataSchemas][google.cloud.aiplatform.v1.MetadataService.ListMetadataSchemas].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetadataSchemasResponse {
     /// The MetadataSchemas found for the MetadataStore.
@@ -25637,7 +25129,6 @@ pub struct ListMetadataSchemasResponse {
 }
 /// Request message for
 /// [MetadataService.QueryArtifactLineageSubgraph][google.cloud.aiplatform.v1.MetadataService.QueryArtifactLineageSubgraph].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryArtifactLineageSubgraphRequest {
     /// Required. The resource name of the Artifact whose Lineage needs to be
@@ -25709,8 +25200,8 @@ pub mod metadata_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -25735,7 +25226,7 @@ pub mod metadata_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             MetadataServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -26750,7 +26241,6 @@ pub mod metadata_service_client {
 }
 /// Represents one resource that exists in automl.googleapis.com,
 /// datalabeling.googleapis.com or ml.googleapis.com.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigratableResource {
     /// Output only. Timestamp when the last migration attempt on this
@@ -26767,7 +26257,6 @@ pub struct MigratableResource {
 /// Nested message and enum types in `MigratableResource`.
 pub mod migratable_resource {
     /// Represents one model Version in ml.googleapis.com.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MlEngineModelVersion {
         /// The ml.googleapis.com endpoint that this model Version currently lives
@@ -26786,7 +26275,6 @@ pub mod migratable_resource {
         pub version: ::prost::alloc::string::String,
     }
     /// Represents one Model in automl.googleapis.com.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AutomlModel {
         /// Full resource name of automl Model.
@@ -26799,7 +26287,6 @@ pub mod migratable_resource {
         pub model_display_name: ::prost::alloc::string::String,
     }
     /// Represents one Dataset in automl.googleapis.com.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AutomlDataset {
         /// Full resource name of automl Dataset.
@@ -26812,7 +26299,6 @@ pub mod migratable_resource {
         pub dataset_display_name: ::prost::alloc::string::String,
     }
     /// Represents one Dataset in datalabeling.googleapis.com.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DataLabelingDataset {
         /// Full resource name of data labeling Dataset.
@@ -26833,7 +26319,6 @@ pub mod migratable_resource {
     /// Nested message and enum types in `DataLabelingDataset`.
     pub mod data_labeling_dataset {
         /// Represents one AnnotatedDataset in datalabeling.googleapis.com.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct DataLabelingAnnotatedDataset {
             /// Full resource name of data labeling AnnotatedDataset.
@@ -26846,7 +26331,6 @@ pub mod migratable_resource {
             pub annotated_dataset_display_name: ::prost::alloc::string::String,
         }
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Resource {
         /// Output only. Represents one Version in ml.googleapis.com.
@@ -26865,7 +26349,6 @@ pub mod migratable_resource {
 }
 /// Request message for
 /// [MigrationService.SearchMigratableResources][google.cloud.aiplatform.v1.MigrationService.SearchMigratableResources].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchMigratableResourcesRequest {
     /// Required. The location that the migratable resources should be searched
@@ -26898,7 +26381,6 @@ pub struct SearchMigratableResourcesRequest {
 }
 /// Response message for
 /// [MigrationService.SearchMigratableResources][google.cloud.aiplatform.v1.MigrationService.SearchMigratableResources].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchMigratableResourcesResponse {
     /// All migratable resources that can be migrated to the
@@ -26913,7 +26395,6 @@ pub struct SearchMigratableResourcesResponse {
 }
 /// Request message for
 /// [MigrationService.BatchMigrateResources][google.cloud.aiplatform.v1.MigrationService.BatchMigrateResources].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchMigrateResourcesRequest {
     /// Required. The location of the migrated resource will live in.
@@ -26928,7 +26409,6 @@ pub struct BatchMigrateResourcesRequest {
 }
 /// Config of migrating one resource from automl.googleapis.com,
 /// datalabeling.googleapis.com and ml.googleapis.com to Vertex AI.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrateResourceRequest {
     #[prost(oneof = "migrate_resource_request::Request", tags = "1, 2, 3, 4")]
@@ -26937,7 +26417,6 @@ pub struct MigrateResourceRequest {
 /// Nested message and enum types in `MigrateResourceRequest`.
 pub mod migrate_resource_request {
     /// Config for migrating version in ml.googleapis.com to Vertex AI's Model.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MigrateMlEngineModelVersionConfig {
         /// Required. The ml.googleapis.com endpoint that this model version should
@@ -26962,7 +26441,6 @@ pub mod migrate_resource_request {
         pub model_display_name: ::prost::alloc::string::String,
     }
     /// Config for migrating Model in automl.googleapis.com to Vertex AI's Model.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MigrateAutomlModelConfig {
         /// Required. Full resource name of automl Model.
@@ -26977,7 +26455,6 @@ pub mod migrate_resource_request {
     }
     /// Config for migrating Dataset in automl.googleapis.com to Vertex AI's
     /// Dataset.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MigrateAutomlDatasetConfig {
         /// Required. Full resource name of automl Dataset.
@@ -26992,7 +26469,6 @@ pub mod migrate_resource_request {
     }
     /// Config for migrating Dataset in datalabeling.googleapis.com to Vertex
     /// AI's Dataset.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MigrateDataLabelingDatasetConfig {
         /// Required. Full resource name of data labeling Dataset.
@@ -27016,7 +26492,6 @@ pub mod migrate_resource_request {
     pub mod migrate_data_labeling_dataset_config {
         /// Config for migrating AnnotatedDataset in datalabeling.googleapis.com to
         /// Vertex AI's SavedQuery.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct MigrateDataLabelingAnnotatedDatasetConfig {
             /// Required. Full resource name of data labeling AnnotatedDataset.
@@ -27026,7 +26501,6 @@ pub mod migrate_resource_request {
             pub annotated_dataset: ::prost::alloc::string::String,
         }
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Request {
         /// Config for migrating Version in ml.googleapis.com to Vertex AI's Model.
@@ -27048,7 +26522,6 @@ pub mod migrate_resource_request {
 }
 /// Response message for
 /// [MigrationService.BatchMigrateResources][google.cloud.aiplatform.v1.MigrationService.BatchMigrateResources].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchMigrateResourcesResponse {
     /// Successfully migrated resources.
@@ -27056,7 +26529,6 @@ pub struct BatchMigrateResourcesResponse {
     pub migrate_resource_responses: ::prost::alloc::vec::Vec<MigrateResourceResponse>,
 }
 /// Describes a successfully migrated resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrateResourceResponse {
     /// Before migration, the identifier in ml.googleapis.com,
@@ -27072,7 +26544,6 @@ pub struct MigrateResourceResponse {
 /// Nested message and enum types in `MigrateResourceResponse`.
 pub mod migrate_resource_response {
     /// After migration, the resource name in Vertex AI.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum MigratedResource {
         /// Migrated Dataset's resource name.
@@ -27085,7 +26556,6 @@ pub mod migrate_resource_response {
 }
 /// Runtime operation information for
 /// [MigrationService.BatchMigrateResources][google.cloud.aiplatform.v1.MigrationService.BatchMigrateResources].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchMigrateResourcesOperationMetadata {
     /// The common part of the operation metadata.
@@ -27101,7 +26571,6 @@ pub struct BatchMigrateResourcesOperationMetadata {
 pub mod batch_migrate_resources_operation_metadata {
     /// Represents a partial result in batch migration operation for one
     /// [MigrateResourceRequest][google.cloud.aiplatform.v1.MigrateResourceRequest].
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PartialResult {
         /// It's the same as the value in
@@ -27119,7 +26588,6 @@ pub mod batch_migrate_resources_operation_metadata {
         /// If the resource's migration is ongoing, none of the result will be set.
         /// If the resource's migration is finished, either error or one of the
         /// migrated resource name will be filled.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Result {
             /// The error result of the migration request in case of failure.
@@ -27160,8 +26628,8 @@ pub mod migration_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -27186,7 +26654,7 @@ pub mod migration_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             MigrationServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -27290,7 +26758,6 @@ pub mod migration_service_client {
 }
 /// A collection of metrics calculated by comparing Model's predictions on all of
 /// the test data against annotations from the test data.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelEvaluation {
     /// Output only. The resource name of the ModelEvaluation.
@@ -27364,7 +26831,6 @@ pub struct ModelEvaluation {
 }
 /// Nested message and enum types in `ModelEvaluation`.
 pub mod model_evaluation {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ModelEvaluationExplanationSpec {
         /// Explanation type.
@@ -27382,7 +26848,6 @@ pub mod model_evaluation {
 }
 /// A collection of metrics calculated by comparing Model's predictions on a
 /// slice of the test data against ground truth annotations.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelEvaluationSlice {
     /// Output only. The resource name of the ModelEvaluationSlice.
@@ -27416,7 +26881,6 @@ pub struct ModelEvaluationSlice {
 /// Nested message and enum types in `ModelEvaluationSlice`.
 pub mod model_evaluation_slice {
     /// Definition of a slice.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Slice {
         /// Output only. The dimension of the slice.
@@ -27440,7 +26904,6 @@ pub mod model_evaluation_slice {
     /// Nested message and enum types in `Slice`.
     pub mod slice {
         /// Specification for how the data should be sliced.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct SliceSpec {
             /// Mapping configuration for this SliceSpec.
@@ -27510,7 +26973,6 @@ pub mod model_evaluation_slice {
             /// 12345 and country "US" will be in one slice, zip_code 12345 and country
             /// "Canada" in another slice, and zip_code 12345 and country "Mexico" in
             /// another slice, totaling 3 slices.
-            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct SliceConfig {
                 #[prost(oneof = "slice_config::Kind", tags = "1, 2, 3")]
@@ -27518,7 +26980,6 @@ pub mod model_evaluation_slice {
             }
             /// Nested message and enum types in `SliceConfig`.
             pub mod slice_config {
-                #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Oneof)]
                 pub enum Kind {
                     /// A unique specific value for a given feature.
@@ -27539,7 +27000,6 @@ pub mod model_evaluation_slice {
             }
             /// A range of values for slice(s).
             /// `low` is inclusive, `high` is exclusive.
-            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct Range {
                 /// Inclusive low value for the range.
@@ -27550,7 +27010,6 @@ pub mod model_evaluation_slice {
                 pub high: f32,
             }
             /// Single value that supports strings and floats.
-            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Value {
                 #[prost(oneof = "value::Kind", tags = "1, 2")]
@@ -27558,7 +27017,6 @@ pub mod model_evaluation_slice {
             }
             /// Nested message and enum types in `Value`.
             pub mod value {
-                #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Oneof)]
                 pub enum Kind {
                     /// String type.
@@ -27573,7 +27031,6 @@ pub mod model_evaluation_slice {
     }
 }
 /// A Model Garden Publisher Model.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublisherModel {
     /// Output only. The resource name of the PublisherModel.
@@ -27614,7 +27071,6 @@ pub struct PublisherModel {
 /// Nested message and enum types in `PublisherModel`.
 pub mod publisher_model {
     /// Reference to a resource.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceReference {
         #[prost(oneof = "resource_reference::Reference", tags = "1, 2, 3, 4")]
@@ -27622,7 +27078,6 @@ pub mod publisher_model {
     }
     /// Nested message and enum types in `ResourceReference`.
     pub mod resource_reference {
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Reference {
             /// The URI of the resource.
@@ -27640,7 +27095,6 @@ pub mod publisher_model {
         }
     }
     /// A named piece of documentation.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Documentation {
         /// Required. E.g., OVERVIEW, USE CASES, DOCUMENTATION, SDK & SAMPLES, JAVA,
@@ -27652,7 +27106,6 @@ pub mod publisher_model {
         pub content: ::prost::alloc::string::String,
     }
     /// Actions could take on this Publisher Model.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CallToAction {
         /// Optional. To view Rest API docs.
@@ -27717,7 +27170,6 @@ pub mod publisher_model {
     pub mod call_to_action {
         /// The regional resource name or the URI. Key is region, e.g.,
         /// us-central1, europe-west2, global, etc..
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct RegionalResourceReferences {
             /// Required.
@@ -27744,7 +27196,6 @@ pub mod publisher_model {
             >,
         }
         /// Rest API docs.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ViewRestApi {
             /// Required.
@@ -27755,7 +27206,6 @@ pub mod publisher_model {
             pub title: ::prost::alloc::string::String,
         }
         /// Open notebooks.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct OpenNotebooks {
             /// Required. Regional resource references to notebooks.
@@ -27763,7 +27213,6 @@ pub mod publisher_model {
             pub notebooks: ::prost::alloc::vec::Vec<RegionalResourceReferences>,
         }
         /// Open fine tuning pipelines.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct OpenFineTuningPipelines {
             /// Required. Regional resource references to fine tuning pipelines.
@@ -27774,7 +27223,6 @@ pub mod publisher_model {
         }
         /// Model metadata that is needed for UploadModel or
         /// DeployModel/CreateEndpoint requests.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Deploy {
             /// Optional. Default model display name.
@@ -27819,7 +27267,6 @@ pub mod publisher_model {
         pub mod deploy {
             /// Metadata information about the deployment for managing deployment
             /// config.
-            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct DeployMetadata {
                 /// Optional. Labels for the deployment. For managing deployment config
@@ -27829,10 +27276,12 @@ pub mod publisher_model {
                     ::prost::alloc::string::String,
                     ::prost::alloc::string::String,
                 >,
+                /// Optional. Sample request for deployed endpoint.
+                #[prost(string, tag = "2")]
+                pub sample_request: ::prost::alloc::string::String,
             }
             /// The prediction (for example, the machine) resources that the
             /// DeployedModel uses.
-            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum PredictionResources {
                 /// A description of resources that are dedicated to the DeployedModel,
@@ -27851,7 +27300,6 @@ pub mod publisher_model {
             }
         }
         /// Configurations for PublisherModel GKE deployment
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct DeployGke {
             /// Optional. GKE deployment configuration in yaml format.
@@ -28031,7 +27479,6 @@ pub mod publisher_model {
 }
 /// Request message for
 /// [ModelGardenService.GetPublisherModel][google.cloud.aiplatform.v1.ModelGardenService.GetPublisherModel]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPublisherModelRequest {
     /// Required. The name of the PublisherModel resource.
@@ -28050,6 +27497,9 @@ pub struct GetPublisherModelRequest {
     /// model.
     #[prost(bool, tag = "5")]
     pub is_hugging_face_model: bool,
+    /// Optional. Token used to access Hugging Face gated models.
+    #[prost(string, tag = "6")]
+    pub hugging_face_token: ::prost::alloc::string::String,
 }
 /// View enumeration of PublisherModel.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -28118,8 +27568,8 @@ pub mod model_garden_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -28144,7 +27594,7 @@ pub mod model_garden_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ModelGardenServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -28211,7 +27661,6 @@ pub mod model_garden_service_client {
 }
 /// Request message for
 /// [ModelService.UploadModel][google.cloud.aiplatform.v1.ModelService.UploadModel].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadModelRequest {
     /// Required. The resource name of the Location into which to upload the Model.
@@ -28245,7 +27694,6 @@ pub struct UploadModelRequest {
 /// Details of
 /// [ModelService.UploadModel][google.cloud.aiplatform.v1.ModelService.UploadModel]
 /// operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadModelOperationMetadata {
     /// The common part of the operation metadata.
@@ -28255,7 +27703,6 @@ pub struct UploadModelOperationMetadata {
 /// Response message of
 /// [ModelService.UploadModel][google.cloud.aiplatform.v1.ModelService.UploadModel]
 /// operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadModelResponse {
     /// The name of the uploaded Model resource.
@@ -28268,7 +27715,6 @@ pub struct UploadModelResponse {
 }
 /// Request message for
 /// [ModelService.GetModel][google.cloud.aiplatform.v1.ModelService.GetModel].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetModelRequest {
     /// Required. The name of the Model resource.
@@ -28288,7 +27734,6 @@ pub struct GetModelRequest {
 }
 /// Request message for
 /// [ModelService.ListModels][google.cloud.aiplatform.v1.ModelService.ListModels].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelsRequest {
     /// Required. The resource name of the Location to list the Models from.
@@ -28344,7 +27789,6 @@ pub struct ListModelsRequest {
 }
 /// Response message for
 /// [ModelService.ListModels][google.cloud.aiplatform.v1.ModelService.ListModels]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelsResponse {
     /// List of Models in the requested page.
@@ -28359,7 +27803,6 @@ pub struct ListModelsResponse {
 }
 /// Request message for
 /// [ModelService.ListModelVersions][google.cloud.aiplatform.v1.ModelService.ListModelVersions].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelVersionsRequest {
     /// Required. The name of the model to list versions for.
@@ -28405,7 +27848,6 @@ pub struct ListModelVersionsRequest {
 }
 /// Response message for
 /// [ModelService.ListModelVersions][google.cloud.aiplatform.v1.ModelService.ListModelVersions]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelVersionsResponse {
     /// List of Model versions in the requested page.
@@ -28422,7 +27864,6 @@ pub struct ListModelVersionsResponse {
 }
 /// Request message for
 /// [ModelService.UpdateModel][google.cloud.aiplatform.v1.ModelService.UpdateModel].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateModelRequest {
     /// Required. The Model which replaces the resource on the server.
@@ -28453,7 +27894,6 @@ pub struct UpdateModelRequest {
 }
 /// Request message for
 /// [ModelService.UpdateExplanationDataset][google.cloud.aiplatform.v1.ModelService.UpdateExplanationDataset].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateExplanationDatasetRequest {
     /// Required. The resource name of the Model to update.
@@ -28466,7 +27906,6 @@ pub struct UpdateExplanationDatasetRequest {
 }
 /// Runtime operation information for
 /// [ModelService.UpdateExplanationDataset][google.cloud.aiplatform.v1.ModelService.UpdateExplanationDataset].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateExplanationDatasetOperationMetadata {
     /// The common part of the operation metadata.
@@ -28475,7 +27914,6 @@ pub struct UpdateExplanationDatasetOperationMetadata {
 }
 /// Request message for
 /// [ModelService.DeleteModel][google.cloud.aiplatform.v1.ModelService.DeleteModel].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteModelRequest {
     /// Required. The name of the Model resource to be deleted.
@@ -28485,7 +27923,6 @@ pub struct DeleteModelRequest {
 }
 /// Request message for
 /// [ModelService.DeleteModelVersion][google.cloud.aiplatform.v1.ModelService.DeleteModelVersion].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteModelVersionRequest {
     /// Required. The name of the model version to be deleted, with a version ID
@@ -28497,7 +27934,6 @@ pub struct DeleteModelVersionRequest {
 }
 /// Request message for
 /// [ModelService.MergeVersionAliases][google.cloud.aiplatform.v1.ModelService.MergeVersionAliases].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MergeVersionAliasesRequest {
     /// Required. The name of the model version to merge aliases, with a version ID
@@ -28523,7 +27959,6 @@ pub struct MergeVersionAliasesRequest {
 }
 /// Request message for
 /// [ModelService.ExportModel][google.cloud.aiplatform.v1.ModelService.ExportModel].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportModelRequest {
     /// Required. The resource name of the Model to export.
@@ -28538,7 +27973,6 @@ pub struct ExportModelRequest {
 /// Nested message and enum types in `ExportModelRequest`.
 pub mod export_model_request {
     /// Output configuration for the Model export.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct OutputConfig {
         /// The ID of the format in which the Model must be exported. Each Model
@@ -28571,7 +28005,6 @@ pub mod export_model_request {
 /// Details of
 /// [ModelService.ExportModel][google.cloud.aiplatform.v1.ModelService.ExportModel]
 /// operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportModelOperationMetadata {
     /// The common part of the operation metadata.
@@ -28586,7 +28019,6 @@ pub struct ExportModelOperationMetadata {
 pub mod export_model_operation_metadata {
     /// Further describes the output of the ExportModel. Supplements
     /// [ExportModelRequest.OutputConfig][google.cloud.aiplatform.v1.ExportModelRequest.OutputConfig].
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct OutputInfo {
         /// Output only. If the Model artifact is being exported to Google Cloud
@@ -28603,18 +28035,15 @@ pub mod export_model_operation_metadata {
 /// Response message of
 /// [ModelService.UpdateExplanationDataset][google.cloud.aiplatform.v1.ModelService.UpdateExplanationDataset]
 /// operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpdateExplanationDatasetResponse {}
 /// Response message of
 /// [ModelService.ExportModel][google.cloud.aiplatform.v1.ModelService.ExportModel]
 /// operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportModelResponse {}
 /// Request message for
 /// [ModelService.CopyModel][google.cloud.aiplatform.v1.ModelService.CopyModel].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CopyModelRequest {
     /// Required. The resource name of the Location into which to copy the Model.
@@ -28637,7 +28066,6 @@ pub struct CopyModelRequest {
 /// Nested message and enum types in `CopyModelRequest`.
 pub mod copy_model_request {
     /// If both fields are unset, a new Model will be created with a generated ID.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DestinationModel {
         /// Optional. Copy source_model into a new Model with this ID. The ID will
@@ -28657,7 +28085,6 @@ pub mod copy_model_request {
 /// Details of
 /// [ModelService.CopyModel][google.cloud.aiplatform.v1.ModelService.CopyModel]
 /// operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CopyModelOperationMetadata {
     /// The common part of the operation metadata.
@@ -28667,7 +28094,6 @@ pub struct CopyModelOperationMetadata {
 /// Response message of
 /// [ModelService.CopyModel][google.cloud.aiplatform.v1.ModelService.CopyModel]
 /// operation.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CopyModelResponse {
     /// The name of the copied Model resource.
@@ -28680,7 +28106,6 @@ pub struct CopyModelResponse {
 }
 /// Request message for
 /// [ModelService.ImportModelEvaluation][google.cloud.aiplatform.v1.ModelService.ImportModelEvaluation]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportModelEvaluationRequest {
     /// Required. The name of the parent model resource.
@@ -28693,7 +28118,6 @@ pub struct ImportModelEvaluationRequest {
 }
 /// Request message for
 /// [ModelService.BatchImportModelEvaluationSlices][google.cloud.aiplatform.v1.ModelService.BatchImportModelEvaluationSlices]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchImportModelEvaluationSlicesRequest {
     /// Required. The name of the parent ModelEvaluation resource.
@@ -28707,7 +28131,6 @@ pub struct BatchImportModelEvaluationSlicesRequest {
 }
 /// Response message for
 /// [ModelService.BatchImportModelEvaluationSlices][google.cloud.aiplatform.v1.ModelService.BatchImportModelEvaluationSlices]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchImportModelEvaluationSlicesResponse {
     /// Output only. List of imported
@@ -28719,7 +28142,6 @@ pub struct BatchImportModelEvaluationSlicesResponse {
 }
 /// Request message for
 /// [ModelService.BatchImportEvaluatedAnnotations][google.cloud.aiplatform.v1.ModelService.BatchImportEvaluatedAnnotations]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchImportEvaluatedAnnotationsRequest {
     /// Required. The name of the parent ModelEvaluationSlice resource.
@@ -28733,7 +28155,6 @@ pub struct BatchImportEvaluatedAnnotationsRequest {
 }
 /// Response message for
 /// [ModelService.BatchImportEvaluatedAnnotations][google.cloud.aiplatform.v1.ModelService.BatchImportEvaluatedAnnotations]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BatchImportEvaluatedAnnotationsResponse {
     /// Output only. Number of EvaluatedAnnotations imported.
@@ -28742,7 +28163,6 @@ pub struct BatchImportEvaluatedAnnotationsResponse {
 }
 /// Request message for
 /// [ModelService.GetModelEvaluation][google.cloud.aiplatform.v1.ModelService.GetModelEvaluation].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetModelEvaluationRequest {
     /// Required. The name of the ModelEvaluation resource.
@@ -28753,7 +28173,6 @@ pub struct GetModelEvaluationRequest {
 }
 /// Request message for
 /// [ModelService.ListModelEvaluations][google.cloud.aiplatform.v1.ModelService.ListModelEvaluations].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelEvaluationsRequest {
     /// Required. The resource name of the Model to list the ModelEvaluations from.
@@ -28780,7 +28199,6 @@ pub struct ListModelEvaluationsRequest {
 }
 /// Response message for
 /// [ModelService.ListModelEvaluations][google.cloud.aiplatform.v1.ModelService.ListModelEvaluations].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelEvaluationsResponse {
     /// List of ModelEvaluations in the requested page.
@@ -28795,7 +28213,6 @@ pub struct ListModelEvaluationsResponse {
 }
 /// Request message for
 /// [ModelService.GetModelEvaluationSlice][google.cloud.aiplatform.v1.ModelService.GetModelEvaluationSlice].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetModelEvaluationSliceRequest {
     /// Required. The name of the ModelEvaluationSlice resource.
@@ -28806,7 +28223,6 @@ pub struct GetModelEvaluationSliceRequest {
 }
 /// Request message for
 /// [ModelService.ListModelEvaluationSlices][google.cloud.aiplatform.v1.ModelService.ListModelEvaluationSlices].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelEvaluationSlicesRequest {
     /// Required. The resource name of the ModelEvaluation to list the
@@ -28836,7 +28252,6 @@ pub struct ListModelEvaluationSlicesRequest {
 }
 /// Response message for
 /// [ModelService.ListModelEvaluationSlices][google.cloud.aiplatform.v1.ModelService.ListModelEvaluationSlices].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelEvaluationSlicesResponse {
     /// List of ModelEvaluations in the requested page.
@@ -28874,8 +28289,8 @@ pub mod model_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -28900,7 +28315,7 @@ pub mod model_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ModelServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -29512,7 +28927,6 @@ pub mod model_service_client {
     }
 }
 /// Network spec.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkSpec {
     /// Whether to enable public internet access. Default false.
@@ -29529,7 +28943,6 @@ pub struct NetworkSpec {
     pub subnetwork: ::prost::alloc::string::String,
 }
 /// The euc configuration of NotebookRuntimeTemplate.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NotebookEucConfig {
     /// Input only. Whether EUC is disabled in this NotebookRuntimeTemplate.
@@ -29548,7 +28961,6 @@ pub struct NotebookEucConfig {
     pub bypass_actas_check: bool,
 }
 /// NotebookExecutionJob represents an instance of a notebook execution.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotebookExecutionJob {
     /// Output only. The resource name of this NotebookExecutionJob. Format:
@@ -29596,6 +29008,11 @@ pub struct NotebookExecutionJob {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Customer-managed encryption key spec for the notebook execution job.
+    /// This field is auto-populated if the
+    /// [NotebookService.NotebookRuntimeTemplate][] has an encryption spec.
+    #[prost(message, optional, tag = "22")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
     /// The input notebook.
     #[prost(oneof = "notebook_execution_job::NotebookSource", tags = "3, 4, 17")]
     pub notebook_source: ::core::option::Option<notebook_execution_job::NotebookSource>,
@@ -29616,7 +29033,6 @@ pub struct NotebookExecutionJob {
 /// Nested message and enum types in `NotebookExecutionJob`.
 pub mod notebook_execution_job {
     /// The Dataform Repository containing the input notebook.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DataformRepositorySource {
         /// The resource name of the Dataform Repository. Format:
@@ -29629,7 +29045,6 @@ pub mod notebook_execution_job {
         pub commit_sha: ::prost::alloc::string::String,
     }
     /// The Cloud Storage uri for the input notebook.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GcsNotebookSource {
         /// The Cloud Storage uri pointing to the ipynb file. Format:
@@ -29643,7 +29058,6 @@ pub mod notebook_execution_job {
         pub generation: ::prost::alloc::string::String,
     }
     /// The content of the input notebook in ipynb format.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DirectNotebookSource {
         /// The base64-encoded contents of the input notebook file.
@@ -29651,7 +29065,6 @@ pub mod notebook_execution_job {
         pub content: ::prost::alloc::vec::Vec<u8>,
     }
     /// The input notebook.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum NotebookSource {
         /// The Dataform Repository pointing to a single file notebook repository.
@@ -29666,7 +29079,6 @@ pub mod notebook_execution_job {
         DirectNotebookSource(DirectNotebookSource),
     }
     /// The compute config to use for an execution job.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum EnvironmentSpec {
         /// The NotebookRuntimeTemplate to source compute configuration from.
@@ -29674,7 +29086,6 @@ pub mod notebook_execution_job {
         NotebookRuntimeTemplateResourceName(::prost::alloc::string::String),
     }
     /// The location to store the notebook execution result.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ExecutionSink {
         /// The Cloud Storage location to upload the result to. Format:
@@ -29683,7 +29094,6 @@ pub mod notebook_execution_job {
         GcsOutputUri(::prost::alloc::string::String),
     }
     /// The identity to run the execution as.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ExecutionIdentity {
         /// The user email to run the execution as. Only supported by Colab runtimes.
@@ -29696,7 +29106,6 @@ pub mod notebook_execution_job {
 }
 /// The idle shutdown configuration of NotebookRuntimeTemplate, which contains
 /// the idle_timeout as required field.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NotebookIdleShutdownConfig {
     /// Required. Duration is accurate to the second. In Notebook, Idle Timeout is
@@ -29709,7 +29118,6 @@ pub struct NotebookIdleShutdownConfig {
     pub idle_shutdown_disabled: bool,
 }
 /// Points to a NotebookRuntimeTemplateRef.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotebookRuntimeTemplateRef {
     /// Immutable. A resource name of the NotebookRuntimeTemplate.
@@ -29719,7 +29127,6 @@ pub struct NotebookRuntimeTemplateRef {
 /// A template that specifies runtime configurations such as machine type,
 /// runtime version, network configurations, etc.
 /// Multiple runtimes can be created from a runtime template.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotebookRuntimeTemplate {
     /// The resource name of the NotebookRuntimeTemplate.
@@ -29805,7 +29212,6 @@ pub struct NotebookRuntimeTemplate {
 /// A runtime is a virtual machine allocated to a particular user for a
 /// particular Notebook file on temporary basis with lifetime limited to 24
 /// hours.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotebookRuntime {
     /// Output only. The resource name of the NotebookRuntime.
@@ -30049,7 +29455,6 @@ impl NotebookRuntimeType {
 }
 /// Request message for
 /// [NotebookService.CreateNotebookRuntimeTemplate][google.cloud.aiplatform.v1.NotebookService.CreateNotebookRuntimeTemplate].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNotebookRuntimeTemplateRequest {
     /// Required. The resource name of the Location to create the
@@ -30065,7 +29470,6 @@ pub struct CreateNotebookRuntimeTemplateRequest {
 }
 /// Metadata information for
 /// [NotebookService.CreateNotebookRuntimeTemplate][google.cloud.aiplatform.v1.NotebookService.CreateNotebookRuntimeTemplate].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNotebookRuntimeTemplateOperationMetadata {
     /// The operation generic information.
@@ -30074,7 +29478,6 @@ pub struct CreateNotebookRuntimeTemplateOperationMetadata {
 }
 /// Request message for
 /// [NotebookService.GetNotebookRuntimeTemplate][google.cloud.aiplatform.v1.NotebookService.GetNotebookRuntimeTemplate]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNotebookRuntimeTemplateRequest {
     /// Required. The name of the NotebookRuntimeTemplate resource.
@@ -30085,7 +29488,6 @@ pub struct GetNotebookRuntimeTemplateRequest {
 }
 /// Request message for
 /// [NotebookService.ListNotebookRuntimeTemplates][google.cloud.aiplatform.v1.NotebookService.ListNotebookRuntimeTemplates].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotebookRuntimeTemplatesRequest {
     /// Required. The resource name of the Location from which to list the
@@ -30143,7 +29545,6 @@ pub struct ListNotebookRuntimeTemplatesRequest {
 }
 /// Response message for
 /// [NotebookService.ListNotebookRuntimeTemplates][google.cloud.aiplatform.v1.NotebookService.ListNotebookRuntimeTemplates].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotebookRuntimeTemplatesResponse {
     /// List of NotebookRuntimeTemplates in the requested page.
@@ -30158,7 +29559,6 @@ pub struct ListNotebookRuntimeTemplatesResponse {
 }
 /// Request message for
 /// [NotebookService.DeleteNotebookRuntimeTemplate][google.cloud.aiplatform.v1.NotebookService.DeleteNotebookRuntimeTemplate].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNotebookRuntimeTemplateRequest {
     /// Required. The name of the NotebookRuntimeTemplate resource to be deleted.
@@ -30169,7 +29569,6 @@ pub struct DeleteNotebookRuntimeTemplateRequest {
 }
 /// Request message for
 /// [NotebookService.UpdateNotebookRuntimeTemplate][google.cloud.aiplatform.v1.NotebookService.UpdateNotebookRuntimeTemplate].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNotebookRuntimeTemplateRequest {
     /// Required. The NotebookRuntimeTemplate to update.
@@ -30186,7 +29585,6 @@ pub struct UpdateNotebookRuntimeTemplateRequest {
 }
 /// Request message for
 /// [NotebookService.AssignNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.AssignNotebookRuntime].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssignNotebookRuntimeRequest {
     /// Required. The resource name of the Location to get the NotebookRuntime
@@ -30207,7 +29605,6 @@ pub struct AssignNotebookRuntimeRequest {
 }
 /// Metadata information for
 /// [NotebookService.AssignNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.AssignNotebookRuntime].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssignNotebookRuntimeOperationMetadata {
     /// The operation generic information.
@@ -30220,7 +29617,6 @@ pub struct AssignNotebookRuntimeOperationMetadata {
 }
 /// Request message for
 /// [NotebookService.GetNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.GetNotebookRuntime]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNotebookRuntimeRequest {
     /// Required. The name of the NotebookRuntime resource.
@@ -30232,7 +29628,6 @@ pub struct GetNotebookRuntimeRequest {
 }
 /// Request message for
 /// [NotebookService.ListNotebookRuntimes][google.cloud.aiplatform.v1.NotebookService.ListNotebookRuntimes].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotebookRuntimesRequest {
     /// Required. The resource name of the Location from which to list the
@@ -30304,7 +29699,6 @@ pub struct ListNotebookRuntimesRequest {
 }
 /// Response message for
 /// [NotebookService.ListNotebookRuntimes][google.cloud.aiplatform.v1.NotebookService.ListNotebookRuntimes].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotebookRuntimesResponse {
     /// List of NotebookRuntimes in the requested page.
@@ -30319,7 +29713,6 @@ pub struct ListNotebookRuntimesResponse {
 }
 /// Request message for
 /// [NotebookService.DeleteNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.DeleteNotebookRuntime].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNotebookRuntimeRequest {
     /// Required. The name of the NotebookRuntime resource to be deleted.
@@ -30331,7 +29724,6 @@ pub struct DeleteNotebookRuntimeRequest {
 }
 /// Request message for
 /// [NotebookService.UpgradeNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.UpgradeNotebookRuntime].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeNotebookRuntimeRequest {
     /// Required. The name of the NotebookRuntime resource to be upgrade.
@@ -30343,7 +29735,6 @@ pub struct UpgradeNotebookRuntimeRequest {
 }
 /// Metadata information for
 /// [NotebookService.UpgradeNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.UpgradeNotebookRuntime].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeNotebookRuntimeOperationMetadata {
     /// The operation generic information.
@@ -30356,12 +29747,10 @@ pub struct UpgradeNotebookRuntimeOperationMetadata {
 }
 /// Response message for
 /// [NotebookService.UpgradeNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.UpgradeNotebookRuntime].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UpgradeNotebookRuntimeResponse {}
 /// Request message for
 /// [NotebookService.StartNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.StartNotebookRuntime].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartNotebookRuntimeRequest {
     /// Required. The name of the NotebookRuntime resource to be started.
@@ -30373,7 +29762,6 @@ pub struct StartNotebookRuntimeRequest {
 }
 /// Metadata information for
 /// [NotebookService.StartNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.StartNotebookRuntime].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartNotebookRuntimeOperationMetadata {
     /// The operation generic information.
@@ -30386,11 +29774,9 @@ pub struct StartNotebookRuntimeOperationMetadata {
 }
 /// Response message for
 /// [NotebookService.StartNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.StartNotebookRuntime].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StartNotebookRuntimeResponse {}
 /// Request message for \[NotebookService.CreateNotebookExecutionJob\]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNotebookExecutionJobRequest {
     /// Required. The resource name of the Location to create the
@@ -30406,7 +29792,6 @@ pub struct CreateNotebookExecutionJobRequest {
 }
 /// Metadata information for
 /// [NotebookService.CreateNotebookExecutionJob][google.cloud.aiplatform.v1.NotebookService.CreateNotebookExecutionJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNotebookExecutionJobOperationMetadata {
     /// The operation generic information.
@@ -30418,7 +29803,6 @@ pub struct CreateNotebookExecutionJobOperationMetadata {
     pub progress_message: ::prost::alloc::string::String,
 }
 /// Request message for \[NotebookService.GetNotebookExecutionJob\]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNotebookExecutionJobRequest {
     /// Required. The name of the NotebookExecutionJob resource.
@@ -30429,7 +29813,6 @@ pub struct GetNotebookExecutionJobRequest {
     pub view: i32,
 }
 /// Request message for \[NotebookService.ListNotebookExecutionJobs\]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotebookExecutionJobsRequest {
     /// Required. The resource name of the Location from which to list the
@@ -30476,7 +29859,6 @@ pub struct ListNotebookExecutionJobsRequest {
     pub view: i32,
 }
 /// Response message for \[NotebookService.CreateNotebookExecutionJob\]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotebookExecutionJobsResponse {
     /// List of NotebookExecutionJobs in the requested page.
@@ -30489,7 +29871,6 @@ pub struct ListNotebookExecutionJobsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for \[NotebookService.DeleteNotebookExecutionJob\]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNotebookExecutionJobRequest {
     /// Required. The name of the NotebookExecutionJob resource to be deleted.
@@ -30556,8 +29937,8 @@ pub mod notebook_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -30582,7 +29963,7 @@ pub mod notebook_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             NotebookServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -31089,7 +30470,6 @@ pub mod notebook_service_client {
 /// workloads.
 /// A PersistentResource can have multiple node pools and each node
 /// pool can have its own machine spec.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PersistentResource {
     /// Immutable. Resource name of a PersistentResource.
@@ -31241,7 +30621,6 @@ pub mod persistent_resource {
 }
 /// Represents the spec of a group of resources of the same type,
 /// for example machine type, disk, and accelerators, in a PersistentResource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePool {
     /// Immutable. The unique ID in a PersistentResource for referring to this
@@ -31269,7 +30648,6 @@ pub struct ResourcePool {
 /// Nested message and enum types in `ResourcePool`.
 pub mod resource_pool {
     /// The min/max number of replicas allowed if enabling autoscaling
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct AutoscalingSpec {
         /// Optional. min replicas in the node pool,
@@ -31293,7 +30671,6 @@ pub mod resource_pool {
 ///
 /// * Service accounts used to run the workloads.
 /// * Whether to make it a dedicated Ray Cluster.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceRuntimeSpec {
     /// Optional. Configure the use of workload identity on the PersistentResource
@@ -31308,7 +30685,6 @@ pub struct ResourceRuntimeSpec {
 /// For experimental launch, Ray cluster creation and Persistent
 /// cluster creation are 1:1 mapping: We will provision all the nodes within the
 /// Persistent cluster as Ray nodes.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RaySpec {
     /// Optional. Default image for user to choose a preferred ML framework
@@ -31347,7 +30723,6 @@ pub struct RaySpec {
     pub ray_logs_spec: ::core::option::Option<RayLogsSpec>,
 }
 /// Persistent Cluster runtime information as output
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceRuntime {
     /// Output only. URIs for user to connect to the Cluster.
@@ -31363,7 +30738,6 @@ pub struct ResourceRuntime {
     >,
 }
 /// Configuration for the use of custom service account to run the workloads.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAccountSpec {
     /// Required. If true, custom user-managed service account is enforced to run
@@ -31387,7 +30761,6 @@ pub struct ServiceAccountSpec {
     pub service_account: ::prost::alloc::string::String,
 }
 /// Configuration for the Ray metrics.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RayMetricSpec {
     /// Optional. Flag to disable the Ray metrics collection.
@@ -31395,7 +30768,6 @@ pub struct RayMetricSpec {
     pub disabled: bool,
 }
 /// Configuration for the Ray OSS Logs.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RayLogsSpec {
     /// Optional. Flag to disable the export of Ray OSS logs to Cloud Logging.
@@ -31404,7 +30776,6 @@ pub struct RayLogsSpec {
 }
 /// Request message for
 /// [PersistentResourceService.CreatePersistentResource][google.cloud.aiplatform.v1.PersistentResourceService.CreatePersistentResource].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePersistentResourceRequest {
     /// Required. The resource name of the Location to create the
@@ -31423,7 +30794,6 @@ pub struct CreatePersistentResourceRequest {
     pub persistent_resource_id: ::prost::alloc::string::String,
 }
 /// Details of operations that perform create PersistentResource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePersistentResourceOperationMetadata {
     /// Operation metadata for PersistentResource.
@@ -31434,7 +30804,6 @@ pub struct CreatePersistentResourceOperationMetadata {
     pub progress_message: ::prost::alloc::string::String,
 }
 /// Details of operations that perform update PersistentResource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePersistentResourceOperationMetadata {
     /// Operation metadata for PersistentResource.
@@ -31445,7 +30814,6 @@ pub struct UpdatePersistentResourceOperationMetadata {
     pub progress_message: ::prost::alloc::string::String,
 }
 /// Details of operations that perform reboot PersistentResource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RebootPersistentResourceOperationMetadata {
     /// Operation metadata for PersistentResource.
@@ -31457,7 +30825,6 @@ pub struct RebootPersistentResourceOperationMetadata {
 }
 /// Request message for
 /// [PersistentResourceService.GetPersistentResource][google.cloud.aiplatform.v1.PersistentResourceService.GetPersistentResource].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPersistentResourceRequest {
     /// Required. The name of the PersistentResource resource.
@@ -31467,7 +30834,6 @@ pub struct GetPersistentResourceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for [PersistentResourceService.ListPersistentResource][].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPersistentResourcesRequest {
     /// Required. The resource name of the Location to list the PersistentResources
@@ -31486,7 +30852,6 @@ pub struct ListPersistentResourcesRequest {
 }
 /// Response message for
 /// [PersistentResourceService.ListPersistentResources][google.cloud.aiplatform.v1.PersistentResourceService.ListPersistentResources]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPersistentResourcesResponse {
     #[prost(message, repeated, tag = "1")]
@@ -31500,7 +30865,6 @@ pub struct ListPersistentResourcesResponse {
 }
 /// Request message for
 /// [PersistentResourceService.DeletePersistentResource][google.cloud.aiplatform.v1.PersistentResourceService.DeletePersistentResource].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePersistentResourceRequest {
     /// Required. The name of the PersistentResource to be deleted.
@@ -31510,7 +30874,6 @@ pub struct DeletePersistentResourceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdatePersistentResource method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePersistentResourceRequest {
     /// Required. The PersistentResource to update.
@@ -31527,7 +30890,6 @@ pub struct UpdatePersistentResourceRequest {
 }
 /// Request message for
 /// [PersistentResourceService.RebootPersistentResource][google.cloud.aiplatform.v1.PersistentResourceService.RebootPersistentResource].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RebootPersistentResourceRequest {
     /// Required. The name of the PersistentResource resource.
@@ -31561,8 +30923,8 @@ pub mod persistent_resource_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -31587,7 +30949,7 @@ pub mod persistent_resource_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             PersistentResourceServiceClient::new(
                 InterceptedService::new(inner, interceptor),
@@ -31913,7 +31275,6 @@ impl PipelineState {
     }
 }
 /// Value is the value of the field.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     #[prost(oneof = "value::Value", tags = "1, 2, 3")]
@@ -31921,7 +31282,6 @@ pub struct Value {
 }
 /// Nested message and enum types in `Value`.
 pub mod value {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// An integer value.
@@ -31936,7 +31296,6 @@ pub mod value {
     }
 }
 /// An instance of a machine learning PipelineJob.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PipelineJob {
     /// Output only. The resource name of the PipelineJob.
@@ -32053,7 +31412,6 @@ pub struct PipelineJob {
 /// Nested message and enum types in `PipelineJob`.
 pub mod pipeline_job {
     /// The runtime config of a PipelineJob.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RuntimeConfig {
         /// Deprecated. Use
@@ -32109,7 +31467,6 @@ pub mod pipeline_job {
     /// Nested message and enum types in `RuntimeConfig`.
     pub mod runtime_config {
         /// The type of an input artifact.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct InputArtifact {
             #[prost(oneof = "input_artifact::Kind", tags = "1")]
@@ -32117,7 +31474,6 @@ pub mod pipeline_job {
         }
         /// Nested message and enum types in `InputArtifact`.
         pub mod input_artifact {
-            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum Kind {
                 /// Artifact resource id from MLMD. Which is the last portion of an
@@ -32135,7 +31491,6 @@ pub mod pipeline_job {
 /// [PipelineJob.template_uri][google.cloud.aiplatform.v1.PipelineJob.template_uri]
 /// is from supported template registry. Currently, the only supported registry
 /// is Artifact Registry.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PipelineTemplateMetadata {
     /// The version_name in artifact registry.
@@ -32149,7 +31504,6 @@ pub struct PipelineTemplateMetadata {
     pub version: ::prost::alloc::string::String,
 }
 /// The runtime detail of PipelineJob.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PipelineJobDetail {
     /// Output only. The context of the pipeline.
@@ -32163,7 +31517,6 @@ pub struct PipelineJobDetail {
     pub task_details: ::prost::alloc::vec::Vec<PipelineTaskDetail>,
 }
 /// The runtime detail of a task execution.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PipelineTaskDetail {
     /// Output only. The system generated ID of the task.
@@ -32221,7 +31574,6 @@ pub struct PipelineTaskDetail {
 /// Nested message and enum types in `PipelineTaskDetail`.
 pub mod pipeline_task_detail {
     /// A single record of the task status.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PipelineTaskStatus {
         /// Output only. Update time of this status.
@@ -32239,7 +31591,6 @@ pub mod pipeline_task_detail {
         pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
     }
     /// A list of artifact metadata.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ArtifactList {
         /// Output only. A list of artifact metadata.
@@ -32322,7 +31673,6 @@ pub mod pipeline_task_detail {
     }
 }
 /// The runtime detail of a pipeline executor.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PipelineTaskExecutorDetail {
     #[prost(oneof = "pipeline_task_executor_detail::Details", tags = "1, 2")]
@@ -32332,7 +31682,6 @@ pub struct PipelineTaskExecutorDetail {
 pub mod pipeline_task_executor_detail {
     /// The detail of a container execution. It contains the job names of the
     /// lifecycle of a container execution.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ContainerDetail {
         /// Output only. The name of the
@@ -32364,7 +31713,6 @@ pub mod pipeline_task_executor_detail {
         >,
     }
     /// The detailed info for a custom job executor.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomJobDetail {
         /// Output only. The name of the
@@ -32377,7 +31725,6 @@ pub mod pipeline_task_executor_detail {
         #[prost(string, repeated, tag = "3")]
         pub failed_jobs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// Output only. The detailed info for a container executor.
@@ -32393,7 +31740,6 @@ pub mod pipeline_task_executor_detail {
 /// export data from Vertex AI's Dataset which becomes the training input,
 /// [upload][google.cloud.aiplatform.v1.ModelService.UploadModel] the Model to
 /// Vertex AI, and evaluate the Model.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrainingPipeline {
     /// Output only. Resource name of the TrainingPipeline.
@@ -32513,7 +31859,6 @@ pub struct TrainingPipeline {
 }
 /// Specifies Vertex AI owned input data to be used for training, and
 /// possibly evaluating, the Model.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputDataConfig {
     /// Required. The ID of the Dataset in the same Project and Location which data
@@ -32618,7 +31963,6 @@ pub mod input_data_config {
     /// If no split type is provided, the
     /// [fraction_split][google.cloud.aiplatform.v1.InputDataConfig.fraction_split]
     /// is used by default.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Split {
         /// Split based on fractions defining the size of each set.
@@ -32658,7 +32002,6 @@ pub mod input_data_config {
     /// * AIP_TRAINING_DATA_URI : Sharded exported training data uris.
     /// * AIP_VALIDATION_DATA_URI : Sharded exported validation data uris.
     /// * AIP_TEST_DATA_URI : Sharded exported test data uris.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// The Cloud Storage location where the training data is to be
@@ -32712,7 +32055,6 @@ pub mod input_data_config {
 /// provided ones sum to less than 1, the remainder is assigned to sets as
 /// decided by Vertex AI. If none of the fractions are set, by default roughly
 /// 80% of data is used for training, 10% for validation, and 10% for test.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FractionSplit {
     /// The fraction of the input data that is to be used to train the Model.
@@ -32733,7 +32075,6 @@ pub struct FractionSplit {
 ///
 /// Supported only for unstructured Datasets.
 ///
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FilterSplit {
     /// Required. A filter on DataItems of the Dataset. DataItems that match
@@ -32768,7 +32109,6 @@ pub struct FilterSplit {
 /// value of a provided key.
 ///
 /// Supported only for tabular Datasets.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PredefinedSplit {
     /// Required. The key is a name of one of the Dataset's data columns.
@@ -32785,7 +32125,6 @@ pub struct PredefinedSplit {
 /// next to validation set, and the oldest to the test set.
 ///
 /// Supported only for tabular Datasets.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimestampSplit {
     /// The fraction of the input data that is to be used to train the Model.
@@ -32822,7 +32161,6 @@ pub struct TimestampSplit {
 /// a specific value, those rows are randomly assigned.
 ///
 /// Supported only for tabular Datasets.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StratifiedSplit {
     /// The fraction of the input data that is to be used to train the Model.
@@ -32841,7 +32179,6 @@ pub struct StratifiedSplit {
 }
 /// Runtime operation information for
 /// [PipelineService.BatchCancelPipelineJobs][google.cloud.aiplatform.v1.PipelineService.BatchCancelPipelineJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCancelPipelineJobsOperationMetadata {
     /// The common part of the operation metadata.
@@ -32850,7 +32187,6 @@ pub struct BatchCancelPipelineJobsOperationMetadata {
 }
 /// Request message for
 /// [PipelineService.CreateTrainingPipeline][google.cloud.aiplatform.v1.PipelineService.CreateTrainingPipeline].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTrainingPipelineRequest {
     /// Required. The resource name of the Location to create the TrainingPipeline
@@ -32863,7 +32199,6 @@ pub struct CreateTrainingPipelineRequest {
 }
 /// Request message for
 /// [PipelineService.GetTrainingPipeline][google.cloud.aiplatform.v1.PipelineService.GetTrainingPipeline].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTrainingPipelineRequest {
     /// Required. The name of the TrainingPipeline resource.
@@ -32874,7 +32209,6 @@ pub struct GetTrainingPipelineRequest {
 }
 /// Request message for
 /// [PipelineService.ListTrainingPipelines][google.cloud.aiplatform.v1.PipelineService.ListTrainingPipelines].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTrainingPipelinesRequest {
     /// Required. The resource name of the Location to list the TrainingPipelines
@@ -32920,7 +32254,6 @@ pub struct ListTrainingPipelinesRequest {
 }
 /// Response message for
 /// [PipelineService.ListTrainingPipelines][google.cloud.aiplatform.v1.PipelineService.ListTrainingPipelines]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTrainingPipelinesResponse {
     /// List of TrainingPipelines in the requested page.
@@ -32935,7 +32268,6 @@ pub struct ListTrainingPipelinesResponse {
 }
 /// Request message for
 /// [PipelineService.DeleteTrainingPipeline][google.cloud.aiplatform.v1.PipelineService.DeleteTrainingPipeline].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTrainingPipelineRequest {
     /// Required. The name of the TrainingPipeline resource to be deleted.
@@ -32946,7 +32278,6 @@ pub struct DeleteTrainingPipelineRequest {
 }
 /// Request message for
 /// [PipelineService.CancelTrainingPipeline][google.cloud.aiplatform.v1.PipelineService.CancelTrainingPipeline].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelTrainingPipelineRequest {
     /// Required. The name of the TrainingPipeline to cancel.
@@ -32957,7 +32288,6 @@ pub struct CancelTrainingPipelineRequest {
 }
 /// Request message for
 /// [PipelineService.CreatePipelineJob][google.cloud.aiplatform.v1.PipelineService.CreatePipelineJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePipelineJobRequest {
     /// Required. The resource name of the Location to create the PipelineJob in.
@@ -32978,7 +32308,6 @@ pub struct CreatePipelineJobRequest {
 }
 /// Request message for
 /// [PipelineService.GetPipelineJob][google.cloud.aiplatform.v1.PipelineService.GetPipelineJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPipelineJobRequest {
     /// Required. The name of the PipelineJob resource.
@@ -32989,7 +32318,6 @@ pub struct GetPipelineJobRequest {
 }
 /// Request message for
 /// [PipelineService.ListPipelineJobs][google.cloud.aiplatform.v1.PipelineService.ListPipelineJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPipelineJobsRequest {
     /// Required. The resource name of the Location to list the PipelineJobs from.
@@ -33064,7 +32392,6 @@ pub struct ListPipelineJobsRequest {
 }
 /// Response message for
 /// [PipelineService.ListPipelineJobs][google.cloud.aiplatform.v1.PipelineService.ListPipelineJobs]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPipelineJobsResponse {
     /// List of PipelineJobs in the requested page.
@@ -33079,7 +32406,6 @@ pub struct ListPipelineJobsResponse {
 }
 /// Request message for
 /// [PipelineService.DeletePipelineJob][google.cloud.aiplatform.v1.PipelineService.DeletePipelineJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePipelineJobRequest {
     /// Required. The name of the PipelineJob resource to be deleted.
@@ -33090,7 +32416,6 @@ pub struct DeletePipelineJobRequest {
 }
 /// Request message for
 /// [PipelineService.BatchDeletePipelineJobs][google.cloud.aiplatform.v1.PipelineService.BatchDeletePipelineJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeletePipelineJobsRequest {
     /// Required. The name of the PipelineJobs' parent resource.
@@ -33106,7 +32431,6 @@ pub struct BatchDeletePipelineJobsRequest {
 }
 /// Response message for
 /// [PipelineService.BatchDeletePipelineJobs][google.cloud.aiplatform.v1.PipelineService.BatchDeletePipelineJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeletePipelineJobsResponse {
     /// PipelineJobs deleted.
@@ -33115,7 +32439,6 @@ pub struct BatchDeletePipelineJobsResponse {
 }
 /// Request message for
 /// [PipelineService.CancelPipelineJob][google.cloud.aiplatform.v1.PipelineService.CancelPipelineJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelPipelineJobRequest {
     /// Required. The name of the PipelineJob to cancel.
@@ -33126,7 +32449,6 @@ pub struct CancelPipelineJobRequest {
 }
 /// Request message for
 /// [PipelineService.BatchCancelPipelineJobs][google.cloud.aiplatform.v1.PipelineService.BatchCancelPipelineJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCancelPipelineJobsRequest {
     /// Required. The name of the PipelineJobs' parent resource.
@@ -33142,7 +32464,6 @@ pub struct BatchCancelPipelineJobsRequest {
 }
 /// Response message for
 /// [PipelineService.BatchCancelPipelineJobs][google.cloud.aiplatform.v1.PipelineService.BatchCancelPipelineJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCancelPipelineJobsResponse {
     /// PipelineJobs cancelled.
@@ -33176,8 +32497,8 @@ pub mod pipeline_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -33202,7 +32523,7 @@ pub mod pipeline_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             PipelineServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -33635,7 +32956,6 @@ pub mod pipeline_service_client {
 }
 /// An instance of a Schedule periodically schedules runs to make API calls based
 /// on user specified time specification and API request type.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schedule {
     /// Immutable. The resource name of the Schedule.
@@ -33719,13 +33039,12 @@ pub struct Schedule {
     /// Required.
     /// The API request template to launch the scheduled runs.
     /// User-specified ID is not supported in the request template.
-    #[prost(oneof = "schedule::Request", tags = "14")]
+    #[prost(oneof = "schedule::Request", tags = "14, 20")]
     pub request: ::core::option::Option<schedule::Request>,
 }
 /// Nested message and enum types in `Schedule`.
 pub mod schedule {
     /// Status of a scheduled run.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RunResponse {
         /// The scheduled run time based on the user-specified schedule.
@@ -33788,7 +33107,6 @@ pub mod schedule {
     }
     /// Required.
     /// The time specification to launch scheduled runs.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TimeSpecification {
         /// Cron schedule (<https://en.wikipedia.org/wiki/Cron>) to launch scheduled
@@ -33803,7 +33121,6 @@ pub mod schedule {
     /// Required.
     /// The API request template to launch the scheduled runs.
     /// User-specified ID is not supported in the request template.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Request {
         /// Request for
@@ -33812,11 +33129,14 @@ pub mod schedule {
         /// projects/{project}/locations/{location}).
         #[prost(message, tag = "14")]
         CreatePipelineJobRequest(super::CreatePipelineJobRequest),
+        /// Request for
+        /// [NotebookService.CreateNotebookExecutionJob][google.cloud.aiplatform.v1.NotebookService.CreateNotebookExecutionJob].
+        #[prost(message, tag = "20")]
+        CreateNotebookExecutionJobRequest(super::CreateNotebookExecutionJobRequest),
     }
 }
 /// Request message for
 /// [ScheduleService.CreateSchedule][google.cloud.aiplatform.v1.ScheduleService.CreateSchedule].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateScheduleRequest {
     /// Required. The resource name of the Location to create the Schedule in.
@@ -33829,7 +33149,6 @@ pub struct CreateScheduleRequest {
 }
 /// Request message for
 /// [ScheduleService.GetSchedule][google.cloud.aiplatform.v1.ScheduleService.GetSchedule].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetScheduleRequest {
     /// Required. The name of the Schedule resource.
@@ -33840,7 +33159,6 @@ pub struct GetScheduleRequest {
 }
 /// Request message for
 /// [ScheduleService.ListSchedules][google.cloud.aiplatform.v1.ScheduleService.ListSchedules].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSchedulesRequest {
     /// Required. The resource name of the Location to list the Schedules from.
@@ -33913,7 +33231,6 @@ pub struct ListSchedulesRequest {
 }
 /// Response message for
 /// [ScheduleService.ListSchedules][google.cloud.aiplatform.v1.ScheduleService.ListSchedules]
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSchedulesResponse {
     /// List of Schedules in the requested page.
@@ -33928,7 +33245,6 @@ pub struct ListSchedulesResponse {
 }
 /// Request message for
 /// [ScheduleService.DeleteSchedule][google.cloud.aiplatform.v1.ScheduleService.DeleteSchedule].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteScheduleRequest {
     /// Required. The name of the Schedule resource to be deleted.
@@ -33939,7 +33255,6 @@ pub struct DeleteScheduleRequest {
 }
 /// Request message for
 /// [ScheduleService.PauseSchedule][google.cloud.aiplatform.v1.ScheduleService.PauseSchedule].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PauseScheduleRequest {
     /// Required. The name of the Schedule resource to be paused.
@@ -33950,7 +33265,6 @@ pub struct PauseScheduleRequest {
 }
 /// Request message for
 /// [ScheduleService.ResumeSchedule][google.cloud.aiplatform.v1.ScheduleService.ResumeSchedule].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResumeScheduleRequest {
     /// Required. The name of the Schedule resource to be resumed.
@@ -33968,7 +33282,6 @@ pub struct ResumeScheduleRequest {
 }
 /// Request message for
 /// [ScheduleService.UpdateSchedule][google.cloud.aiplatform.v1.ScheduleService.UpdateSchedule].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateScheduleRequest {
     /// Required. The Schedule which replaces the resource on the server.
@@ -34010,8 +33323,8 @@ pub mod schedule_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -34036,7 +33349,7 @@ pub mod schedule_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ScheduleServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -34297,7 +33610,6 @@ pub mod schedule_service_client {
 /// customers' data labeling jobs associated with this pool. Customers create
 /// specialist pool as well as start data labeling jobs on Cloud, managers and
 /// workers handle the jobs using CrowdCompute console.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpecialistPool {
     /// Required. The resource name of the SpecialistPool.
@@ -34330,7 +33642,6 @@ pub struct SpecialistPool {
 }
 /// Request message for
 /// [SpecialistPoolService.CreateSpecialistPool][google.cloud.aiplatform.v1.SpecialistPoolService.CreateSpecialistPool].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSpecialistPoolRequest {
     /// Required. The parent Project name for the new SpecialistPool.
@@ -34343,7 +33654,6 @@ pub struct CreateSpecialistPoolRequest {
 }
 /// Runtime operation information for
 /// [SpecialistPoolService.CreateSpecialistPool][google.cloud.aiplatform.v1.SpecialistPoolService.CreateSpecialistPool].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSpecialistPoolOperationMetadata {
     /// The operation generic information.
@@ -34352,7 +33662,6 @@ pub struct CreateSpecialistPoolOperationMetadata {
 }
 /// Request message for
 /// [SpecialistPoolService.GetSpecialistPool][google.cloud.aiplatform.v1.SpecialistPoolService.GetSpecialistPool].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSpecialistPoolRequest {
     /// Required. The name of the SpecialistPool resource.
@@ -34363,7 +33672,6 @@ pub struct GetSpecialistPoolRequest {
 }
 /// Request message for
 /// [SpecialistPoolService.ListSpecialistPools][google.cloud.aiplatform.v1.SpecialistPoolService.ListSpecialistPools].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpecialistPoolsRequest {
     /// Required. The name of the SpecialistPool's parent resource.
@@ -34387,7 +33695,6 @@ pub struct ListSpecialistPoolsRequest {
 }
 /// Response message for
 /// [SpecialistPoolService.ListSpecialistPools][google.cloud.aiplatform.v1.SpecialistPoolService.ListSpecialistPools].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpecialistPoolsResponse {
     /// A list of SpecialistPools that matches the specified filter in the request.
@@ -34399,7 +33706,6 @@ pub struct ListSpecialistPoolsResponse {
 }
 /// Request message for
 /// [SpecialistPoolService.DeleteSpecialistPool][google.cloud.aiplatform.v1.SpecialistPoolService.DeleteSpecialistPool].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSpecialistPoolRequest {
     /// Required. The resource name of the SpecialistPool to delete. Format:
@@ -34414,7 +33720,6 @@ pub struct DeleteSpecialistPoolRequest {
 }
 /// Request message for
 /// [SpecialistPoolService.UpdateSpecialistPool][google.cloud.aiplatform.v1.SpecialistPoolService.UpdateSpecialistPool].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSpecialistPoolRequest {
     /// Required. The SpecialistPool which replaces the resource on the server.
@@ -34426,7 +33731,6 @@ pub struct UpdateSpecialistPoolRequest {
 }
 /// Runtime operation metadata for
 /// [SpecialistPoolService.UpdateSpecialistPool][google.cloud.aiplatform.v1.SpecialistPoolService.UpdateSpecialistPool].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSpecialistPoolOperationMetadata {
     /// Output only. The name of the SpecialistPool to which the specialists are
@@ -34468,8 +33772,8 @@ pub mod specialist_pool_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -34494,7 +33798,7 @@ pub mod specialist_pool_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SpecialistPoolServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -34686,7 +33990,6 @@ pub mod specialist_pool_service_client {
 /// Tensorboard is a physical database that stores users' training metrics.
 /// A default Tensorboard is provided in each region of a Google Cloud project.
 /// If needed users can also create extra Tensorboards in their projects.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tensorboard {
     /// Output only. Name of the Tensorboard.
@@ -34753,7 +34056,6 @@ pub struct Tensorboard {
     pub satisfies_pzi: bool,
 }
 /// TensorboardTimeSeries maps to times series produced in training runs
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TensorboardTimeSeries {
     /// Output only. Name of the TensorboardTimeSeries.
@@ -34795,7 +34097,6 @@ pub struct TensorboardTimeSeries {
 /// Nested message and enum types in `TensorboardTimeSeries`.
 pub mod tensorboard_time_series {
     /// Describes metadata for a TensorboardTimeSeries.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Metadata {
         /// Output only. Max step index of all data points within a
@@ -34863,7 +34164,6 @@ pub mod tensorboard_time_series {
     }
 }
 /// All the data stored in a TensorboardTimeSeries.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeriesData {
     /// Required. The ID of the TensorboardTimeSeries, which will become the final
@@ -34879,7 +34179,6 @@ pub struct TimeSeriesData {
     pub values: ::prost::alloc::vec::Vec<TimeSeriesDataPoint>,
 }
 /// A TensorboardTimeSeries data point.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeriesDataPoint {
     /// Wall clock timestamp when this data point is generated by the end user.
@@ -34895,7 +34194,6 @@ pub struct TimeSeriesDataPoint {
 /// Nested message and enum types in `TimeSeriesDataPoint`.
 pub mod time_series_data_point {
     /// Value of this time series data point.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// A scalar value.
@@ -34910,7 +34208,6 @@ pub mod time_series_data_point {
     }
 }
 /// One point viewable on a scalar metric plot.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Scalar {
     /// Value of the point at this step / timestamp.
@@ -34918,7 +34215,6 @@ pub struct Scalar {
     pub value: f64,
 }
 /// One point viewable on a tensor metric plot.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TensorboardTensor {
     /// Required. Serialized form of
@@ -34932,7 +34228,6 @@ pub struct TensorboardTensor {
 }
 /// One point viewable on a blob metric plot, but mostly just a wrapper message
 /// to work around repeated fields can't be used directly within `oneof` fields.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TensorboardBlobSequence {
     /// List of blobs contained within the sequence.
@@ -34940,7 +34235,6 @@ pub struct TensorboardBlobSequence {
     pub values: ::prost::alloc::vec::Vec<TensorboardBlob>,
 }
 /// One blob (e.g, image, graph) viewable on a blob metric plot.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TensorboardBlob {
     /// Output only. A URI safe key uniquely identifying a blob. Can be used to
@@ -34954,7 +34248,6 @@ pub struct TensorboardBlob {
 }
 /// A TensorboardExperiment is a group of TensorboardRuns, that are typically the
 /// results of a training job run, in a Tensorboard.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TensorboardExperiment {
     /// Output only. Name of the TensorboardExperiment.
@@ -35007,7 +34300,6 @@ pub struct TensorboardExperiment {
 }
 /// TensorboardRun maps to a specific execution of a training job with a given
 /// set of hyperparameter values, model definition, dataset, etc
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TensorboardRun {
     /// Output only. Name of the TensorboardRun.
@@ -35059,7 +34351,6 @@ pub struct TensorboardRun {
 }
 /// Request message for
 /// [TensorboardService.CreateTensorboard][google.cloud.aiplatform.v1.TensorboardService.CreateTensorboard].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTensorboardRequest {
     /// Required. The resource name of the Location to create the Tensorboard in.
@@ -35072,7 +34363,6 @@ pub struct CreateTensorboardRequest {
 }
 /// Request message for
 /// [TensorboardService.GetTensorboard][google.cloud.aiplatform.v1.TensorboardService.GetTensorboard].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTensorboardRequest {
     /// Required. The name of the Tensorboard resource.
@@ -35083,7 +34373,6 @@ pub struct GetTensorboardRequest {
 }
 /// Request message for
 /// [TensorboardService.ListTensorboards][google.cloud.aiplatform.v1.TensorboardService.ListTensorboards].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTensorboardsRequest {
     /// Required. The resource name of the Location to list Tensorboards.
@@ -35118,7 +34407,6 @@ pub struct ListTensorboardsRequest {
 }
 /// Response message for
 /// [TensorboardService.ListTensorboards][google.cloud.aiplatform.v1.TensorboardService.ListTensorboards].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTensorboardsResponse {
     /// The Tensorboards mathching the request.
@@ -35133,7 +34421,6 @@ pub struct ListTensorboardsResponse {
 }
 /// Request message for
 /// [TensorboardService.UpdateTensorboard][google.cloud.aiplatform.v1.TensorboardService.UpdateTensorboard].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTensorboardRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
@@ -35152,7 +34439,6 @@ pub struct UpdateTensorboardRequest {
 }
 /// Request message for
 /// [TensorboardService.DeleteTensorboard][google.cloud.aiplatform.v1.TensorboardService.DeleteTensorboard].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTensorboardRequest {
     /// Required. The name of the Tensorboard to be deleted.
@@ -35163,7 +34449,6 @@ pub struct DeleteTensorboardRequest {
 }
 /// Request message for
 /// [TensorboardService.ReadTensorboardUsage][google.cloud.aiplatform.v1.TensorboardService.ReadTensorboardUsage].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadTensorboardUsageRequest {
     /// Required. The name of the Tensorboard resource.
@@ -35174,7 +34459,6 @@ pub struct ReadTensorboardUsageRequest {
 }
 /// Response message for
 /// [TensorboardService.ReadTensorboardUsage][google.cloud.aiplatform.v1.TensorboardService.ReadTensorboardUsage].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadTensorboardUsageResponse {
     /// Maps year-month (YYYYMM) string to per month usage data.
@@ -35187,7 +34471,6 @@ pub struct ReadTensorboardUsageResponse {
 /// Nested message and enum types in `ReadTensorboardUsageResponse`.
 pub mod read_tensorboard_usage_response {
     /// Per user usage data.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PerUserUsageData {
         /// User's username
@@ -35198,7 +34481,6 @@ pub mod read_tensorboard_usage_response {
         pub view_count: i64,
     }
     /// Per month usage data
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PerMonthUsageData {
         /// Usage data for each user in the given month.
@@ -35208,7 +34490,6 @@ pub mod read_tensorboard_usage_response {
 }
 /// Request message for
 /// [TensorboardService.ReadTensorboardSize][google.cloud.aiplatform.v1.TensorboardService.ReadTensorboardSize].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadTensorboardSizeRequest {
     /// Required. The name of the Tensorboard resource.
@@ -35219,7 +34500,6 @@ pub struct ReadTensorboardSizeRequest {
 }
 /// Response message for
 /// [TensorboardService.ReadTensorboardSize][google.cloud.aiplatform.v1.TensorboardService.ReadTensorboardSize].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReadTensorboardSizeResponse {
     /// Payload storage size for the TensorBoard
@@ -35228,7 +34508,6 @@ pub struct ReadTensorboardSizeResponse {
 }
 /// Request message for
 /// [TensorboardService.CreateTensorboardExperiment][google.cloud.aiplatform.v1.TensorboardService.CreateTensorboardExperiment].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTensorboardExperimentRequest {
     /// Required. The resource name of the Tensorboard to create the
@@ -35249,7 +34528,6 @@ pub struct CreateTensorboardExperimentRequest {
 }
 /// Request message for
 /// [TensorboardService.GetTensorboardExperiment][google.cloud.aiplatform.v1.TensorboardService.GetTensorboardExperiment].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTensorboardExperimentRequest {
     /// Required. The name of the TensorboardExperiment resource.
@@ -35260,7 +34538,6 @@ pub struct GetTensorboardExperimentRequest {
 }
 /// Request message for
 /// [TensorboardService.ListTensorboardExperiments][google.cloud.aiplatform.v1.TensorboardService.ListTensorboardExperiments].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTensorboardExperimentsRequest {
     /// Required. The resource name of the Tensorboard to list
@@ -35295,7 +34572,6 @@ pub struct ListTensorboardExperimentsRequest {
 }
 /// Response message for
 /// [TensorboardService.ListTensorboardExperiments][google.cloud.aiplatform.v1.TensorboardService.ListTensorboardExperiments].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTensorboardExperimentsResponse {
     /// The TensorboardExperiments mathching the request.
@@ -35310,7 +34586,6 @@ pub struct ListTensorboardExperimentsResponse {
 }
 /// Request message for
 /// [TensorboardService.UpdateTensorboardExperiment][google.cloud.aiplatform.v1.TensorboardService.UpdateTensorboardExperiment].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTensorboardExperimentRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
@@ -35329,7 +34604,6 @@ pub struct UpdateTensorboardExperimentRequest {
 }
 /// Request message for
 /// [TensorboardService.DeleteTensorboardExperiment][google.cloud.aiplatform.v1.TensorboardService.DeleteTensorboardExperiment].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTensorboardExperimentRequest {
     /// Required. The name of the TensorboardExperiment to be deleted.
@@ -35340,7 +34614,6 @@ pub struct DeleteTensorboardExperimentRequest {
 }
 /// Request message for
 /// [TensorboardService.BatchCreateTensorboardRuns][google.cloud.aiplatform.v1.TensorboardService.BatchCreateTensorboardRuns].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateTensorboardRunsRequest {
     /// Required. The resource name of the TensorboardExperiment to create the
@@ -35357,7 +34630,6 @@ pub struct BatchCreateTensorboardRunsRequest {
 }
 /// Response message for
 /// [TensorboardService.BatchCreateTensorboardRuns][google.cloud.aiplatform.v1.TensorboardService.BatchCreateTensorboardRuns].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateTensorboardRunsResponse {
     /// The created TensorboardRuns.
@@ -35366,7 +34638,6 @@ pub struct BatchCreateTensorboardRunsResponse {
 }
 /// Request message for
 /// [TensorboardService.CreateTensorboardRun][google.cloud.aiplatform.v1.TensorboardService.CreateTensorboardRun].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTensorboardRunRequest {
     /// Required. The resource name of the TensorboardExperiment to create the
@@ -35387,7 +34658,6 @@ pub struct CreateTensorboardRunRequest {
 }
 /// Request message for
 /// [TensorboardService.GetTensorboardRun][google.cloud.aiplatform.v1.TensorboardService.GetTensorboardRun].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTensorboardRunRequest {
     /// Required. The name of the TensorboardRun resource.
@@ -35398,7 +34668,6 @@ pub struct GetTensorboardRunRequest {
 }
 /// Request message for
 /// [TensorboardService.ReadTensorboardBlobData][google.cloud.aiplatform.v1.TensorboardService.ReadTensorboardBlobData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadTensorboardBlobDataRequest {
     /// Required. The resource name of the TensorboardTimeSeries to list Blobs.
@@ -35412,7 +34681,6 @@ pub struct ReadTensorboardBlobDataRequest {
 }
 /// Response message for
 /// [TensorboardService.ReadTensorboardBlobData][google.cloud.aiplatform.v1.TensorboardService.ReadTensorboardBlobData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadTensorboardBlobDataResponse {
     /// Blob messages containing blob bytes.
@@ -35421,7 +34689,6 @@ pub struct ReadTensorboardBlobDataResponse {
 }
 /// Request message for
 /// [TensorboardService.ListTensorboardRuns][google.cloud.aiplatform.v1.TensorboardService.ListTensorboardRuns].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTensorboardRunsRequest {
     /// Required. The resource name of the TensorboardExperiment to list
@@ -35456,7 +34723,6 @@ pub struct ListTensorboardRunsRequest {
 }
 /// Response message for
 /// [TensorboardService.ListTensorboardRuns][google.cloud.aiplatform.v1.TensorboardService.ListTensorboardRuns].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTensorboardRunsResponse {
     /// The TensorboardRuns mathching the request.
@@ -35471,7 +34737,6 @@ pub struct ListTensorboardRunsResponse {
 }
 /// Request message for
 /// [TensorboardService.UpdateTensorboardRun][google.cloud.aiplatform.v1.TensorboardService.UpdateTensorboardRun].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTensorboardRunRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
@@ -35490,7 +34755,6 @@ pub struct UpdateTensorboardRunRequest {
 }
 /// Request message for
 /// [TensorboardService.DeleteTensorboardRun][google.cloud.aiplatform.v1.TensorboardService.DeleteTensorboardRun].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTensorboardRunRequest {
     /// Required. The name of the TensorboardRun to be deleted.
@@ -35501,7 +34765,6 @@ pub struct DeleteTensorboardRunRequest {
 }
 /// Request message for
 /// [TensorboardService.BatchCreateTensorboardTimeSeries][google.cloud.aiplatform.v1.TensorboardService.BatchCreateTensorboardTimeSeries].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateTensorboardTimeSeriesRequest {
     /// Required. The resource name of the TensorboardExperiment to create the
@@ -35520,7 +34783,6 @@ pub struct BatchCreateTensorboardTimeSeriesRequest {
 }
 /// Response message for
 /// [TensorboardService.BatchCreateTensorboardTimeSeries][google.cloud.aiplatform.v1.TensorboardService.BatchCreateTensorboardTimeSeries].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateTensorboardTimeSeriesResponse {
     /// The created TensorboardTimeSeries.
@@ -35529,7 +34791,6 @@ pub struct BatchCreateTensorboardTimeSeriesResponse {
 }
 /// Request message for
 /// [TensorboardService.CreateTensorboardTimeSeries][google.cloud.aiplatform.v1.TensorboardService.CreateTensorboardTimeSeries].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTensorboardTimeSeriesRequest {
     /// Required. The resource name of the TensorboardRun to create the
@@ -35550,7 +34811,6 @@ pub struct CreateTensorboardTimeSeriesRequest {
 }
 /// Request message for
 /// [TensorboardService.GetTensorboardTimeSeries][google.cloud.aiplatform.v1.TensorboardService.GetTensorboardTimeSeries].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTensorboardTimeSeriesRequest {
     /// Required. The name of the TensorboardTimeSeries resource.
@@ -35561,7 +34821,6 @@ pub struct GetTensorboardTimeSeriesRequest {
 }
 /// Request message for
 /// [TensorboardService.ListTensorboardTimeSeries][google.cloud.aiplatform.v1.TensorboardService.ListTensorboardTimeSeries].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTensorboardTimeSeriesRequest {
     /// Required. The resource name of the TensorboardRun to list
@@ -35596,7 +34855,6 @@ pub struct ListTensorboardTimeSeriesRequest {
 }
 /// Response message for
 /// [TensorboardService.ListTensorboardTimeSeries][google.cloud.aiplatform.v1.TensorboardService.ListTensorboardTimeSeries].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTensorboardTimeSeriesResponse {
     /// The TensorboardTimeSeries mathching the request.
@@ -35611,7 +34869,6 @@ pub struct ListTensorboardTimeSeriesResponse {
 }
 /// Request message for
 /// [TensorboardService.UpdateTensorboardTimeSeries][google.cloud.aiplatform.v1.TensorboardService.UpdateTensorboardTimeSeries].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTensorboardTimeSeriesRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
@@ -35631,7 +34888,6 @@ pub struct UpdateTensorboardTimeSeriesRequest {
 }
 /// Request message for
 /// [TensorboardService.DeleteTensorboardTimeSeries][google.cloud.aiplatform.v1.TensorboardService.DeleteTensorboardTimeSeries].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTensorboardTimeSeriesRequest {
     /// Required. The name of the TensorboardTimeSeries to be deleted.
@@ -35642,7 +34898,6 @@ pub struct DeleteTensorboardTimeSeriesRequest {
 }
 /// Request message for
 /// [TensorboardService.BatchReadTensorboardTimeSeriesData][google.cloud.aiplatform.v1.TensorboardService.BatchReadTensorboardTimeSeriesData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchReadTensorboardTimeSeriesDataRequest {
     /// Required. The resource name of the Tensorboard containing
@@ -35661,7 +34916,6 @@ pub struct BatchReadTensorboardTimeSeriesDataRequest {
 }
 /// Response message for
 /// [TensorboardService.BatchReadTensorboardTimeSeriesData][google.cloud.aiplatform.v1.TensorboardService.BatchReadTensorboardTimeSeriesData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchReadTensorboardTimeSeriesDataResponse {
     /// The returned time series data.
@@ -35670,7 +34924,6 @@ pub struct BatchReadTensorboardTimeSeriesDataResponse {
 }
 /// Request message for
 /// [TensorboardService.ReadTensorboardTimeSeriesData][google.cloud.aiplatform.v1.TensorboardService.ReadTensorboardTimeSeriesData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadTensorboardTimeSeriesDataRequest {
     /// Required. The resource name of the TensorboardTimeSeries to read data from.
@@ -35690,7 +34943,6 @@ pub struct ReadTensorboardTimeSeriesDataRequest {
 }
 /// Response message for
 /// [TensorboardService.ReadTensorboardTimeSeriesData][google.cloud.aiplatform.v1.TensorboardService.ReadTensorboardTimeSeriesData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadTensorboardTimeSeriesDataResponse {
     /// The returned time series data.
@@ -35699,7 +34951,6 @@ pub struct ReadTensorboardTimeSeriesDataResponse {
 }
 /// Request message for
 /// [TensorboardService.WriteTensorboardExperimentData][google.cloud.aiplatform.v1.TensorboardService.WriteTensorboardExperimentData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteTensorboardExperimentDataRequest {
     /// Required. The resource name of the TensorboardExperiment to write data to.
@@ -35715,12 +34966,10 @@ pub struct WriteTensorboardExperimentDataRequest {
 }
 /// Response message for
 /// [TensorboardService.WriteTensorboardExperimentData][google.cloud.aiplatform.v1.TensorboardService.WriteTensorboardExperimentData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WriteTensorboardExperimentDataResponse {}
 /// Request message for
 /// [TensorboardService.WriteTensorboardRunData][google.cloud.aiplatform.v1.TensorboardService.WriteTensorboardRunData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteTensorboardRunDataRequest {
     /// Required. The resource name of the TensorboardRun to write data to.
@@ -35738,12 +34987,10 @@ pub struct WriteTensorboardRunDataRequest {
 }
 /// Response message for
 /// [TensorboardService.WriteTensorboardRunData][google.cloud.aiplatform.v1.TensorboardService.WriteTensorboardRunData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WriteTensorboardRunDataResponse {}
 /// Request message for
 /// [TensorboardService.ExportTensorboardTimeSeriesData][google.cloud.aiplatform.v1.TensorboardService.ExportTensorboardTimeSeriesData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportTensorboardTimeSeriesDataRequest {
     /// Required. The resource name of the TensorboardTimeSeries to export data
@@ -35776,7 +35023,6 @@ pub struct ExportTensorboardTimeSeriesDataRequest {
 }
 /// Response message for
 /// [TensorboardService.ExportTensorboardTimeSeriesData][google.cloud.aiplatform.v1.TensorboardService.ExportTensorboardTimeSeriesData].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportTensorboardTimeSeriesDataResponse {
     /// The returned time series data points.
@@ -35790,7 +35036,6 @@ pub struct ExportTensorboardTimeSeriesDataResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Details of operations that perform create Tensorboard.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTensorboardOperationMetadata {
     /// Operation metadata for Tensorboard.
@@ -35798,7 +35043,6 @@ pub struct CreateTensorboardOperationMetadata {
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
 /// Details of operations that perform update Tensorboard.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTensorboardOperationMetadata {
     /// Operation metadata for Tensorboard.
@@ -35830,8 +35074,8 @@ pub mod tensorboard_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -35856,7 +35100,7 @@ pub mod tensorboard_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             TensorboardServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -36837,7 +36081,6 @@ pub mod tensorboard_service_client {
 }
 /// Request message for
 /// [VizierService.GetStudy][google.cloud.aiplatform.v1.VizierService.GetStudy].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetStudyRequest {
     /// Required. The name of the Study resource.
@@ -36847,7 +36090,6 @@ pub struct GetStudyRequest {
 }
 /// Request message for
 /// [VizierService.CreateStudy][google.cloud.aiplatform.v1.VizierService.CreateStudy].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateStudyRequest {
     /// Required. The resource name of the Location to create the CustomJob in.
@@ -36860,7 +36102,6 @@ pub struct CreateStudyRequest {
 }
 /// Request message for
 /// [VizierService.ListStudies][google.cloud.aiplatform.v1.VizierService.ListStudies].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStudiesRequest {
     /// Required. The resource name of the Location to list the Study from.
@@ -36878,7 +36119,6 @@ pub struct ListStudiesRequest {
 }
 /// Response message for
 /// [VizierService.ListStudies][google.cloud.aiplatform.v1.VizierService.ListStudies].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStudiesResponse {
     /// The studies associated with the project.
@@ -36892,7 +36132,6 @@ pub struct ListStudiesResponse {
 }
 /// Request message for
 /// [VizierService.DeleteStudy][google.cloud.aiplatform.v1.VizierService.DeleteStudy].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteStudyRequest {
     /// Required. The name of the Study resource to be deleted.
@@ -36902,7 +36141,6 @@ pub struct DeleteStudyRequest {
 }
 /// Request message for
 /// [VizierService.LookupStudy][google.cloud.aiplatform.v1.VizierService.LookupStudy].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupStudyRequest {
     /// Required. The resource name of the Location to get the Study from.
@@ -36915,7 +36153,6 @@ pub struct LookupStudyRequest {
 }
 /// Request message for
 /// [VizierService.SuggestTrials][google.cloud.aiplatform.v1.VizierService.SuggestTrials].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestTrialsRequest {
     /// Required. The project and location that the Study belongs to.
@@ -36973,7 +36210,6 @@ pub struct SuggestTrialsRequest {
 }
 /// Response message for
 /// [VizierService.SuggestTrials][google.cloud.aiplatform.v1.VizierService.SuggestTrials].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestTrialsResponse {
     /// A list of Trials.
@@ -36990,7 +36226,6 @@ pub struct SuggestTrialsResponse {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Details of operations that perform Trials suggestion.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestTrialsMetadata {
     /// Operation metadata for suggesting Trials.
@@ -37006,7 +36241,6 @@ pub struct SuggestTrialsMetadata {
 }
 /// Request message for
 /// [VizierService.CreateTrial][google.cloud.aiplatform.v1.VizierService.CreateTrial].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTrialRequest {
     /// Required. The resource name of the Study to create the Trial in.
@@ -37019,7 +36253,6 @@ pub struct CreateTrialRequest {
 }
 /// Request message for
 /// [VizierService.GetTrial][google.cloud.aiplatform.v1.VizierService.GetTrial].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTrialRequest {
     /// Required. The name of the Trial resource.
@@ -37030,7 +36263,6 @@ pub struct GetTrialRequest {
 }
 /// Request message for
 /// [VizierService.ListTrials][google.cloud.aiplatform.v1.VizierService.ListTrials].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTrialsRequest {
     /// Required. The resource name of the Study to list the Trial from.
@@ -37048,7 +36280,6 @@ pub struct ListTrialsRequest {
 }
 /// Response message for
 /// [VizierService.ListTrials][google.cloud.aiplatform.v1.VizierService.ListTrials].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTrialsResponse {
     /// The Trials associated with the Study.
@@ -37062,7 +36293,6 @@ pub struct ListTrialsResponse {
 }
 /// Request message for
 /// [VizierService.AddTrialMeasurement][google.cloud.aiplatform.v1.VizierService.AddTrialMeasurement].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddTrialMeasurementRequest {
     /// Required. The name of the trial to add measurement.
@@ -37076,7 +36306,6 @@ pub struct AddTrialMeasurementRequest {
 }
 /// Request message for
 /// [VizierService.CompleteTrial][google.cloud.aiplatform.v1.VizierService.CompleteTrial].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompleteTrialRequest {
     /// Required. The Trial's name.
@@ -37100,7 +36329,6 @@ pub struct CompleteTrialRequest {
 }
 /// Request message for
 /// [VizierService.DeleteTrial][google.cloud.aiplatform.v1.VizierService.DeleteTrial].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTrialRequest {
     /// Required. The Trial's name.
@@ -37111,7 +36339,6 @@ pub struct DeleteTrialRequest {
 }
 /// Request message for
 /// [VizierService.CheckTrialEarlyStoppingState][google.cloud.aiplatform.v1.VizierService.CheckTrialEarlyStoppingState].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckTrialEarlyStoppingStateRequest {
     /// Required. The Trial's name.
@@ -37122,7 +36349,6 @@ pub struct CheckTrialEarlyStoppingStateRequest {
 }
 /// Response message for
 /// [VizierService.CheckTrialEarlyStoppingState][google.cloud.aiplatform.v1.VizierService.CheckTrialEarlyStoppingState].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CheckTrialEarlyStoppingStateResponse {
     /// True if the Trial should stop.
@@ -37132,7 +36358,6 @@ pub struct CheckTrialEarlyStoppingStateResponse {
 /// This message will be placed in the metadata field of a
 /// google.longrunning.Operation associated with a CheckTrialEarlyStoppingState
 /// request.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckTrialEarlyStoppingStateMetatdata {
     /// Operation metadata for suggesting Trials.
@@ -37147,7 +36372,6 @@ pub struct CheckTrialEarlyStoppingStateMetatdata {
 }
 /// Request message for
 /// [VizierService.StopTrial][google.cloud.aiplatform.v1.VizierService.StopTrial].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopTrialRequest {
     /// Required. The Trial's name.
@@ -37158,7 +36382,6 @@ pub struct StopTrialRequest {
 }
 /// Request message for
 /// [VizierService.ListOptimalTrials][google.cloud.aiplatform.v1.VizierService.ListOptimalTrials].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOptimalTrialsRequest {
     /// Required. The name of the Study that the optimal Trial belongs to.
@@ -37167,7 +36390,6 @@ pub struct ListOptimalTrialsRequest {
 }
 /// Response message for
 /// [VizierService.ListOptimalTrials][google.cloud.aiplatform.v1.VizierService.ListOptimalTrials].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOptimalTrialsResponse {
     /// The pareto-optimal Trials for multiple objective Study or the
@@ -37206,8 +36428,8 @@ pub mod vizier_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -37232,7 +36454,7 @@ pub mod vizier_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             VizierServiceClient::new(InterceptedService::new(inner, interceptor))
         }

@@ -3,7 +3,6 @@
 /// image specifying what is installed on the environment and a home directory
 /// containing the user's data that will remain across sessions. Each user has
 /// at least an environment with the ID "default".
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Environment {
     /// Immutable. Full name of this resource, in the format
@@ -108,7 +107,6 @@ pub mod environment {
 }
 /// Request message for
 /// [GetEnvironment][google.cloud.shell.v1.CloudShellService.GetEnvironment].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEnvironmentRequest {
     /// Required. Name of the requested resource, for example `users/me/environments/default`
@@ -118,17 +116,14 @@ pub struct GetEnvironmentRequest {
 }
 /// Message included in the metadata field of operations returned from
 /// [CreateEnvironment][google.cloud.shell.v1.CloudShellService.CreateEnvironment].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CreateEnvironmentMetadata {}
 /// Message included in the metadata field of operations returned from
 /// [DeleteEnvironment][google.cloud.shell.v1.CloudShellService.DeleteEnvironment].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteEnvironmentMetadata {}
 /// Request message for
 /// [StartEnvironment][google.cloud.shell.v1.CloudShellService.StartEnvironment].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartEnvironmentRequest {
     /// Name of the resource that should be started, for example
@@ -148,7 +143,6 @@ pub struct StartEnvironmentRequest {
 }
 /// Request message for
 /// [AuthorizeEnvironment][google.cloud.shell.v1.CloudShellService.AuthorizeEnvironment].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorizeEnvironmentRequest {
     /// Name of the resource that should receive the credentials, for example
@@ -169,17 +163,14 @@ pub struct AuthorizeEnvironmentRequest {
 }
 /// Response message for
 /// [AuthorizeEnvironment][google.cloud.shell.v1.CloudShellService.AuthorizeEnvironment].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AuthorizeEnvironmentResponse {}
 /// Message included in the metadata field of operations returned from
 /// [AuthorizeEnvironment][google.cloud.shell.v1.CloudShellService.AuthorizeEnvironment].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AuthorizeEnvironmentMetadata {}
 /// Message included in the metadata field of operations returned from
 /// [StartEnvironment][google.cloud.shell.v1.CloudShellService.StartEnvironment].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StartEnvironmentMetadata {
     /// Current state of the environment being started.
@@ -255,7 +246,6 @@ pub mod start_environment_metadata {
 /// Message included in the response field of operations returned from
 /// [StartEnvironment][google.cloud.shell.v1.CloudShellService.StartEnvironment]
 /// once the operation is complete.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartEnvironmentResponse {
     /// Environment that was started.
@@ -264,7 +254,6 @@ pub struct StartEnvironmentResponse {
 }
 /// Request message for
 /// [AddPublicKey][google.cloud.shell.v1.CloudShellService.AddPublicKey].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddPublicKeyRequest {
     /// Environment this key should be added to, e.g.
@@ -282,7 +271,6 @@ pub struct AddPublicKeyRequest {
 }
 /// Response message for
 /// [AddPublicKey][google.cloud.shell.v1.CloudShellService.AddPublicKey].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddPublicKeyResponse {
     /// Key that was added to the environment.
@@ -291,12 +279,10 @@ pub struct AddPublicKeyResponse {
 }
 /// Message included in the metadata field of operations returned from
 /// [AddPublicKey][google.cloud.shell.v1.CloudShellService.AddPublicKey].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddPublicKeyMetadata {}
 /// Request message for
 /// [RemovePublicKey][google.cloud.shell.v1.CloudShellService.RemovePublicKey].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemovePublicKeyRequest {
     /// Environment this key should be removed from, e.g.
@@ -309,17 +295,14 @@ pub struct RemovePublicKeyRequest {
 }
 /// Response message for
 /// [RemovePublicKey][google.cloud.shell.v1.CloudShellService.RemovePublicKey].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RemovePublicKeyResponse {}
 /// Message included in the metadata field of operations returned from
 /// [RemovePublicKey][google.cloud.shell.v1.CloudShellService.RemovePublicKey].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RemovePublicKeyMetadata {}
 /// Cloud-shell specific information that will be included as details in failure
 /// responses.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CloudShellErrorDetails {
     /// Code indicating the specific error the occurred.
@@ -420,8 +403,8 @@ pub mod cloud_shell_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -446,7 +429,7 @@ pub mod cloud_shell_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             CloudShellServiceClient::new(InterceptedService::new(inner, interceptor))
         }

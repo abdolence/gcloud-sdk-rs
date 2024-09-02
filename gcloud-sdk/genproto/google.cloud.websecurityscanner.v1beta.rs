@@ -2,7 +2,6 @@
 /// A CrawledUrl resource represents a URL that was crawled during a ScanRun. Web
 /// Security Scanner Service crawls the web applications, following all links
 /// within the scope of sites, to find the URLs to test against.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CrawledUrl {
     /// The http method of the request that was used to visit the URL, in
@@ -17,7 +16,6 @@ pub struct CrawledUrl {
     pub body: ::prost::alloc::string::String,
 }
 /// ! Information about a vulnerability with an HTML.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Form {
     /// ! The URI where to send the form when it's submitted.
@@ -28,7 +26,6 @@ pub struct Form {
     pub fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Information reported for an outdated library.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutdatedLibrary {
     /// The name of the outdated library.
@@ -43,7 +40,6 @@ pub struct OutdatedLibrary {
 }
 /// Information regarding any resource causing the vulnerability such
 /// as JavaScript sources, image, audio files, etc.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ViolatingResource {
     /// The MIME type of this resource.
@@ -54,7 +50,6 @@ pub struct ViolatingResource {
     pub resource_url: ::prost::alloc::string::String,
 }
 /// Information about vulnerable request parameters.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VulnerableParameters {
     /// The vulnerable parameter names.
@@ -62,7 +57,6 @@ pub struct VulnerableParameters {
     pub parameter_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Information about vulnerable or missing HTTP Headers.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VulnerableHeaders {
     /// List of vulnerable headers.
@@ -75,7 +69,6 @@ pub struct VulnerableHeaders {
 /// Nested message and enum types in `VulnerableHeaders`.
 pub mod vulnerable_headers {
     /// Describes a HTTP Header.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Header {
         /// Header name.
@@ -87,7 +80,6 @@ pub mod vulnerable_headers {
     }
 }
 /// Information reported for an XSS.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Xss {
     /// Stack traces leading to the point where the XSS occurred.
@@ -99,7 +91,6 @@ pub struct Xss {
 }
 /// A Finding resource represents a vulnerability instance identified during a
 /// ScanRun.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Finding {
     /// The resource name of the Finding. The name follows the format of
@@ -165,7 +156,6 @@ pub struct Finding {
 }
 /// A FindingTypeStats resource represents stats regarding a specific FindingType
 /// of Findings under a given ScanRun.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FindingTypeStats {
     /// The finding type associated with the stats.
@@ -179,7 +169,6 @@ pub struct FindingTypeStats {
 /// APIs when scan configuration validation fails. It is also reported as part of
 /// a ScanRunErrorTrace message if scan validation fails due to a scan
 /// configuration error.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScanConfigError {
     /// Indicates the reason code for a configuration failure.
@@ -464,7 +453,6 @@ pub mod scan_config_error {
 }
 /// Output only.
 /// Defines an error trace message for a ScanRun.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScanRunErrorTrace {
     /// Indicates the error reason code.
@@ -553,7 +541,6 @@ pub mod scan_run_error_trace {
 /// Output only.
 /// Defines a warning trace message for ScanRun. Warning traces provide customers
 /// with useful information that helps make the scanning process more effective.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ScanRunWarningTrace {
     /// Indicates the warning code.
@@ -623,7 +610,6 @@ pub mod scan_run_warning_trace {
 }
 /// A ScanRun is a output-only resource representing an actual run of the scan.
 /// Next id: 12
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScanRun {
     /// The resource name of the ScanRun. The name follows the format of
@@ -772,7 +758,6 @@ pub mod scan_run {
     }
 }
 /// A ScanConfig resource contains the configurations to launch a scan.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScanConfig {
     /// The resource name of the ScanConfig. The name follows the format of
@@ -824,7 +809,6 @@ pub struct ScanConfig {
 /// Nested message and enum types in `ScanConfig`.
 pub mod scan_config {
     /// Scan authentication configuration.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Authentication {
         /// Required.
@@ -835,7 +819,6 @@ pub mod scan_config {
     /// Nested message and enum types in `Authentication`.
     pub mod authentication {
         /// Describes authentication configuration that uses a Google account.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct GoogleAccount {
             /// Required. The user name of the Google account.
@@ -847,7 +830,6 @@ pub mod scan_config {
             pub password: ::prost::alloc::string::String,
         }
         /// Describes authentication configuration that uses a custom account.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CustomAccount {
             /// Required. The user name of the custom account.
@@ -863,7 +845,6 @@ pub mod scan_config {
         }
         /// Required.
         /// Authentication configuration
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Authentication {
             /// Authentication using a Google account.
@@ -875,7 +856,6 @@ pub mod scan_config {
         }
     }
     /// Scan schedule configuration.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Schedule {
         /// A timestamp indicates when the next run will be scheduled. The value is
@@ -1074,7 +1054,6 @@ pub mod scan_config {
     }
 }
 /// Request for the `CreateScanConfig` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateScanConfigRequest {
     /// Required. The parent resource name where the scan is created, which should be a
@@ -1086,7 +1065,6 @@ pub struct CreateScanConfigRequest {
     pub scan_config: ::core::option::Option<ScanConfig>,
 }
 /// Request for the `DeleteScanConfig` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteScanConfigRequest {
     /// Required. The resource name of the ScanConfig to be deleted. The name follows the
@@ -1095,7 +1073,6 @@ pub struct DeleteScanConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `GetScanConfig` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetScanConfigRequest {
     /// Required. The resource name of the ScanConfig to be returned. The name follows the
@@ -1104,7 +1081,6 @@ pub struct GetScanConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListScanConfigs` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListScanConfigsRequest {
     /// Required. The parent resource name, which should be a project resource name in the
@@ -1123,7 +1099,6 @@ pub struct ListScanConfigsRequest {
     pub page_size: i32,
 }
 /// Request for the `UpdateScanConfigRequest` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateScanConfigRequest {
     /// Required. The ScanConfig to be updated. The name field must be set to identify the
@@ -1138,7 +1113,6 @@ pub struct UpdateScanConfigRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response for the `ListScanConfigs` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListScanConfigsResponse {
     /// The list of ScanConfigs returned.
@@ -1150,7 +1124,6 @@ pub struct ListScanConfigsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `StartScanRun` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartScanRunRequest {
     /// Required. The resource name of the ScanConfig to be used. The name follows the
@@ -1159,7 +1132,6 @@ pub struct StartScanRunRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `GetScanRun` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetScanRunRequest {
     /// Required. The resource name of the ScanRun to be returned. The name follows the
@@ -1169,7 +1141,6 @@ pub struct GetScanRunRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListScanRuns` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListScanRunsRequest {
     /// Required. The parent resource name, which should be a scan resource name in the
@@ -1188,7 +1159,6 @@ pub struct ListScanRunsRequest {
     pub page_size: i32,
 }
 /// Response for the `ListScanRuns` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListScanRunsResponse {
     /// The list of ScanRuns returned.
@@ -1200,7 +1170,6 @@ pub struct ListScanRunsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `StopScanRun` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopScanRunRequest {
     /// Required. The resource name of the ScanRun to be stopped. The name follows the
@@ -1210,7 +1179,6 @@ pub struct StopScanRunRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListCrawledUrls` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCrawledUrlsRequest {
     /// Required. The parent resource name, which should be a scan run resource name in the
@@ -1230,7 +1198,6 @@ pub struct ListCrawledUrlsRequest {
     pub page_size: i32,
 }
 /// Response for the `ListCrawledUrls` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCrawledUrlsResponse {
     /// The list of CrawledUrls returned.
@@ -1242,7 +1209,6 @@ pub struct ListCrawledUrlsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `GetFinding` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFindingRequest {
     /// Required. The resource name of the Finding to be returned. The name follows the
@@ -1252,7 +1218,6 @@ pub struct GetFindingRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListFindings` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFindingsRequest {
     /// Required. The parent resource name, which should be a scan run resource name in the
@@ -1278,7 +1243,6 @@ pub struct ListFindingsRequest {
     pub page_size: i32,
 }
 /// Response for the `ListFindings` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFindingsResponse {
     /// The list of Findings returned.
@@ -1290,7 +1254,6 @@ pub struct ListFindingsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `ListFindingTypeStats` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFindingTypeStatsRequest {
     /// Required. The parent resource name, which should be a scan run resource name in the
@@ -1300,7 +1263,6 @@ pub struct ListFindingTypeStatsRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// Response for the `ListFindingTypeStats` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFindingTypeStatsResponse {
     /// The list of FindingTypeStats returned.
@@ -1334,8 +1296,8 @@ pub mod web_security_scanner_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -1360,7 +1322,7 @@ pub mod web_security_scanner_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             WebSecurityScannerClient::new(InterceptedService::new(inner, interceptor))
         }
