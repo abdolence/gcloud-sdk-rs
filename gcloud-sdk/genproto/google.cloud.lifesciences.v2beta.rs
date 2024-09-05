@@ -2,7 +2,6 @@
 /// The arguments to the `RunPipeline` method. The requesting user must have
 /// the `iam.serviceAccounts.actAs` permission for the Cloud Life Sciences
 /// service account or the request will fail.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunPipelineRequest {
     /// The project and location that this request should be executed against.
@@ -31,11 +30,9 @@ pub struct RunPipelineRequest {
 }
 /// The response to the RunPipeline method, returned in the operation's result
 /// field on success.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RunPipelineResponse {}
 /// Specifies a series of actions to execute, expressed as Docker containers.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Pipeline {
     /// The list of actions to execute, in the order they are specified.
@@ -71,7 +68,6 @@ pub struct Pipeline {
     pub timeout: ::core::option::Option<::prost_types::Duration>,
 }
 /// Specifies a single action that runs a Docker container.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Action {
     /// An optional name for the container. The container hostname will be set to
@@ -244,7 +240,6 @@ pub struct Action {
 }
 /// Holds encrypted information that is only decrypted and stored in RAM
 /// by the worker VM when running the pipeline.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Secret {
     /// The name of the Cloud KMS key that will be used to decrypt the secret
@@ -258,7 +253,6 @@ pub struct Secret {
     pub cipher_text: ::prost::alloc::string::String,
 }
 /// Carries information about a particular disk mount inside a container.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Mount {
     /// The name of the disk to mount, as specified in the resources section.
@@ -274,7 +268,6 @@ pub struct Mount {
 /// The system resources for the pipeline run.
 ///
 /// At least one zone or region must be specified or the pipeline run will fail.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Resources {
     /// The list of regions allowed for VM allocation. If set, the `zones` field
@@ -290,7 +283,6 @@ pub struct Resources {
     pub virtual_machine: ::core::option::Option<VirtualMachine>,
 }
 /// Carries information about a Compute Engine VM resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VirtualMachine {
     /// Required. The machine type of the virtual machine to create. Must be the
@@ -397,7 +389,6 @@ pub struct VirtualMachine {
     pub reservation: ::prost::alloc::string::String,
 }
 /// Carries information about a Google Cloud service account.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAccount {
     /// Email address of the service account. If not specified, the default
@@ -410,7 +401,6 @@ pub struct ServiceAccount {
     pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Carries information about an accelerator that can be attached to a VM.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Accelerator {
     /// The accelerator type string (for example, "nvidia-tesla-t4").
@@ -428,7 +418,6 @@ pub struct Accelerator {
     pub count: i64,
 }
 /// VM networking options.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Network {
     /// The network name to attach the VM's network interface to. The value will
@@ -465,7 +454,6 @@ pub struct Network {
 ///
 /// Specify either [`Volume`][google.cloud.lifesciences.v2beta.Volume] or
 /// [`Disk`][google.cloud.lifesciences.v2beta.Disk], but not both.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Disk {
     /// A user-supplied name for the disk. Used when mounting the disk into
@@ -493,7 +481,6 @@ pub struct Disk {
 ///
 /// Specify either [`Volume`][google.cloud.lifesciences.v2beta.Volume] or
 /// [`Disk`][google.cloud.lifesciences.v2beta.Disk], but not both.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Volume {
     /// A user-supplied name for the volume. Used when mounting the volume into
@@ -507,7 +494,6 @@ pub struct Volume {
 }
 /// Nested message and enum types in `Volume`.
 pub mod volume {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Storage {
         /// Configuration for a persistent disk.
@@ -525,7 +511,6 @@ pub mod volume {
 ///
 /// See <https://cloud.google.com/compute/docs/disks/performance> for more
 /// information about disk type, size, and performance considerations.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PersistentDisk {
     /// The size, in GB, of the disk to attach. If the size is not
@@ -545,7 +530,6 @@ pub struct PersistentDisk {
     pub source_image: ::prost::alloc::string::String,
 }
 /// Configuration for an existing disk to be attached to the VM.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExistingDisk {
     /// If `disk` contains slashes, the Cloud Life Sciences API assumes that it is
@@ -562,7 +546,6 @@ pub struct ExistingDisk {
     pub disk: ::prost::alloc::string::String,
 }
 /// Configuration for an `NFSMount` to be attached to the VM.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NfsMount {
     /// A target NFS mount. The target must be specified as `address:/mount".
@@ -571,7 +554,6 @@ pub struct NfsMount {
 }
 /// Carries information about the pipeline execution that is returned
 /// in the long running operation's metadata field.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Metadata {
     /// The pipeline this operation represents.
@@ -602,7 +584,6 @@ pub struct Metadata {
     pub pub_sub_topic: ::prost::alloc::string::String,
 }
 /// Carries information about events that occur during pipeline execution.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Event {
     /// The time at which the event occurred.
@@ -620,7 +601,6 @@ pub struct Event {
 /// Nested message and enum types in `Event`.
 pub mod event {
     /// Machine-readable details about the event.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// See
@@ -667,7 +647,6 @@ pub mod event {
 }
 /// An event generated whenever a resource limitation or transient error
 /// delays execution of a pipeline that was otherwise ready to run.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DelayedEvent {
     /// A textual description of the cause of the delay. The string can change
@@ -684,7 +663,6 @@ pub struct DelayedEvent {
 }
 /// An event generated after a worker VM has been assigned to run the
 /// pipeline.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkerAssignedEvent {
     /// The zone the worker is running in.
@@ -699,7 +677,6 @@ pub struct WorkerAssignedEvent {
 }
 /// An event generated when the worker VM that was assigned to the pipeline
 /// has been released (deleted).
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkerReleasedEvent {
     /// The zone the worker was running in.
@@ -710,7 +687,6 @@ pub struct WorkerReleasedEvent {
     pub instance: ::prost::alloc::string::String,
 }
 /// An event generated when the worker starts pulling an image.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PullStartedEvent {
     /// The URI of the image that was pulled.
@@ -718,7 +694,6 @@ pub struct PullStartedEvent {
     pub image_uri: ::prost::alloc::string::String,
 }
 /// An event generated when the worker stops pulling an image.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PullStoppedEvent {
     /// The URI of the image that was pulled.
@@ -726,7 +701,6 @@ pub struct PullStoppedEvent {
     pub image_uri: ::prost::alloc::string::String,
 }
 /// An event generated when a container starts.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContainerStartedEvent {
     /// The numeric ID of the action that started this container.
@@ -745,7 +719,6 @@ pub struct ContainerStartedEvent {
     pub ip_address: ::prost::alloc::string::String,
 }
 /// An event generated when a container exits.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContainerStoppedEvent {
     /// The numeric ID of the action that started this container.
@@ -769,7 +742,6 @@ pub struct ContainerStoppedEvent {
 /// non-zero exit status that was not otherwise ignored. Execution will
 /// continue, but only actions that are flagged as `ALWAYS_RUN` will be
 /// executed. Other actions will be skipped.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UnexpectedExitStatusEvent {
     /// The numeric ID of the action that started the container.
@@ -782,7 +754,6 @@ pub struct UnexpectedExitStatusEvent {
 /// An event generated when a container is forcibly terminated by the
 /// worker. Currently, this only occurs when the container outlives the
 /// timeout specified by the user.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ContainerKilledEvent {
     /// The numeric ID of the action that started the container.
@@ -791,7 +762,6 @@ pub struct ContainerKilledEvent {
 }
 /// An event generated when the execution of a pipeline has failed. Note
 /// that other events can continue to occur after this event.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FailedEvent {
     /// The Google standard error code that best describes this failure.
@@ -827,8 +797,8 @@ pub mod workflows_service_v2_beta_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -853,7 +823,7 @@ pub mod workflows_service_v2_beta_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             WorkflowsServiceV2BetaClient::new(
                 InterceptedService::new(inner, interceptor),

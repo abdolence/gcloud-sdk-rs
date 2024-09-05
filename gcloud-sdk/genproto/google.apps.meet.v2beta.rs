@@ -2,7 +2,6 @@
 /// [Developer Preview](<https://developers.google.com/workspace/preview>).
 /// Virtual place where conferences are held. Only one active conference can be
 /// held in one space at any given time.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Space {
     /// Immutable. Resource name of the space.
@@ -26,7 +25,6 @@ pub struct Space {
     pub active_conference: ::core::option::Option<ActiveConference>,
 }
 /// Active conference.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActiveConference {
     /// Output only. Reference to 'ConferenceRecord' resource.
@@ -36,7 +34,6 @@ pub struct ActiveConference {
     pub conference_record: ::prost::alloc::string::String,
 }
 /// The configuration pertaining to a meeting space.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SpaceConfig {
     /// Access type of the meeting space that determines who can join without
@@ -152,7 +149,6 @@ pub mod space_config {
 }
 /// [Developer Preview](<https://developers.google.com/workspace/preview>).
 /// Single instance of a meeting held in a space.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConferenceRecord {
     /// Identifier. Resource name of the conference record.
@@ -178,7 +174,6 @@ pub struct ConferenceRecord {
 }
 /// [Developer Preview](<https://developers.google.com/workspace/preview>).
 /// User who attended or is attending a conference.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Participant {
     /// Output only. Resource name of the participant.
@@ -198,7 +193,6 @@ pub struct Participant {
 }
 /// Nested message and enum types in `Participant`.
 pub mod participant {
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum User {
         /// Signed-in user.
@@ -218,7 +212,6 @@ pub mod participant {
 /// assigned. That means if a user joins a space multiple times from the same
 /// device, they're assigned different IDs, and are also be treated as different
 /// participant sessions.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParticipantSession {
     /// Identifier. Session id.
@@ -236,7 +229,6 @@ pub struct ParticipantSession {
 /// a) An individual joining from a personal computer, mobile device, or through
 /// companion mode.
 /// b) A robot account used by conference room devices.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignedinUser {
     /// Output only. Unique ID for the user. Interoperable with Admin SDK API and
@@ -250,7 +242,6 @@ pub struct SignedinUser {
     pub display_name: ::prost::alloc::string::String,
 }
 /// User who joins anonymously (meaning not signed into a Google Account).
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnonymousUser {
     /// Output only. User provided name when they join a conference anonymously.
@@ -259,7 +250,6 @@ pub struct AnonymousUser {
 }
 /// User dialing in from a phone where the user's identity is unknown because
 /// they haven't signed in with a Google Account.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhoneUser {
     /// Output only. Partially redacted user's phone number when they call in.
@@ -268,7 +258,6 @@ pub struct PhoneUser {
 }
 /// [Developer Preview](<https://developers.google.com/workspace/preview>).
 /// Metadata about a recording created during a conference.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Recording {
     /// Output only. Resource name of the recording.
@@ -339,7 +328,6 @@ pub mod recording {
             }
         }
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Output only. Recording is saved to Google Drive as an mp4 file. The
@@ -350,7 +338,6 @@ pub mod recording {
     }
 }
 /// Export location where a recording file is saved in Google Drive.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DriveDestination {
     /// Output only. The `fileId` for the underlying MP4 file. For example,
@@ -368,7 +355,6 @@ pub struct DriveDestination {
 /// [Developer Preview](<https://developers.google.com/workspace/preview>).
 /// Metadata for a transcript generated from a conference. It refers to the ASR
 /// (Automatic Speech Recognition) result of user's speech during the conference.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Transcript {
     /// Output only. Resource name of the transcript.
@@ -439,7 +425,6 @@ pub mod transcript {
             }
         }
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Output only. Where the Google Docs transcript is saved.
@@ -448,7 +433,6 @@ pub mod transcript {
     }
 }
 /// Google Docs location where the transcript file is saved.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocsDestination {
     /// Output only. The document ID for the underlying Google Docs transcript
@@ -466,7 +450,6 @@ pub struct DocsDestination {
 }
 /// [Developer Preview](<https://developers.google.com/workspace/preview>).
 /// Single entry for one user’s speech during a transcript session.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranscriptEntry {
     /// Output only. Resource name of the entry. Format:
@@ -492,7 +475,6 @@ pub struct TranscriptEntry {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request to create a space.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSpaceRequest {
     /// Space to be created. As of May 2023, the input space can be empty. Later on
@@ -501,7 +483,6 @@ pub struct CreateSpaceRequest {
     pub space: ::core::option::Option<Space>,
 }
 /// Request to get a space.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSpaceRequest {
     /// Required. Resource name of the space.
@@ -509,7 +490,6 @@ pub struct GetSpaceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to update a space.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSpaceRequest {
     /// Required. Space to be updated.
@@ -523,7 +503,6 @@ pub struct UpdateSpaceRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to end an ongoing conference of a space.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EndActiveConferenceRequest {
     /// Required. Resource name of the space.
@@ -531,7 +510,6 @@ pub struct EndActiveConferenceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to get a conference record.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConferenceRecordRequest {
     /// Required. Resource name of the conference.
@@ -539,7 +517,6 @@ pub struct GetConferenceRecordRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to fetch list of conference records per user.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConferenceRecordsRequest {
     /// Optional. Maximum number of conference records to return. The service might
@@ -564,7 +541,6 @@ pub struct ListConferenceRecordsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response of ListConferenceRecords method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConferenceRecordsResponse {
     /// List of conferences in one page.
@@ -576,7 +552,6 @@ pub struct ListConferenceRecordsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to get a Participant.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetParticipantRequest {
     /// Required. Resource name of the participant.
@@ -584,7 +559,6 @@ pub struct GetParticipantRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to fetch list of participant per conference.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListParticipantsRequest {
     /// Required. Format: `conferenceRecords/{conference_record}`
@@ -612,7 +586,6 @@ pub struct ListParticipantsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response of ListParticipants method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListParticipantsResponse {
     /// List of participants in one page.
@@ -630,7 +603,6 @@ pub struct ListParticipantsResponse {
     pub total_size: i32,
 }
 /// Request to get a participant session.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetParticipantSessionRequest {
     /// Required. Resource name of the participant.
@@ -639,7 +611,6 @@ pub struct GetParticipantSessionRequest {
 }
 /// Request to fetch list of participant sessions per conference record per
 /// participant.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListParticipantSessionsRequest {
     /// Required. Format:
@@ -667,7 +638,6 @@ pub struct ListParticipantSessionsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response of ListParticipants method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListParticipantSessionsResponse {
     /// List of participants in one page.
@@ -679,7 +649,6 @@ pub struct ListParticipantSessionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetRecording method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRecordingRequest {
     /// Required. Resource name of the recording.
@@ -687,7 +656,6 @@ pub struct GetRecordingRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for ListRecordings method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRecordingsRequest {
     /// Required. Format: `conferenceRecords/{conference_record}`
@@ -705,7 +673,6 @@ pub struct ListRecordingsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for ListRecordings method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRecordingsResponse {
     /// List of recordings in one page.
@@ -717,7 +684,6 @@ pub struct ListRecordingsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for GetTranscript method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTranscriptRequest {
     /// Required. Resource name of the transcript.
@@ -725,7 +691,6 @@ pub struct GetTranscriptRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for ListTranscripts method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTranscriptsRequest {
     /// Required. Format: `conferenceRecords/{conference_record}`
@@ -743,7 +708,6 @@ pub struct ListTranscriptsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for ListTranscripts method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTranscriptsResponse {
     /// List of transcripts in one page.
@@ -755,7 +719,6 @@ pub struct ListTranscriptsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for GetTranscriptEntry method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTranscriptEntryRequest {
     /// Required. Resource name of the `TranscriptEntry`.
@@ -763,7 +726,6 @@ pub struct GetTranscriptEntryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for ListTranscriptEntries method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTranscriptEntriesRequest {
     /// Required. Format:
@@ -782,7 +744,6 @@ pub struct ListTranscriptEntriesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for ListTranscriptEntries method
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTranscriptEntriesResponse {
     /// List of TranscriptEntries in one page.
@@ -818,8 +779,8 @@ pub mod spaces_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -844,7 +805,7 @@ pub mod spaces_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SpacesServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -1019,8 +980,8 @@ pub mod conference_records_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -1045,7 +1006,7 @@ pub mod conference_records_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ConferenceRecordsServiceClient::new(
                 InterceptedService::new(inner, interceptor),

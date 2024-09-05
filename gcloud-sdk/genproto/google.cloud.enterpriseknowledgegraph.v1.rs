@@ -61,7 +61,6 @@ impl JobState {
     }
 }
 /// The common metadata for long running operations.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CommonOperationMetadata {
     /// The state of the operation.
@@ -137,7 +136,6 @@ pub mod common_operation_metadata {
     }
 }
 /// The desired input location and metadata.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputConfig {
     /// Set of input BigQuery tables.
@@ -221,7 +219,6 @@ pub mod input_config {
     }
 }
 /// The input config for BigQuery tables.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryInputConfig {
     /// Required. Format is `projects/*/datasets/*/tables/*`.
@@ -232,7 +229,6 @@ pub struct BigQueryInputConfig {
     pub gcs_uri: ::prost::alloc::string::String,
 }
 /// The desired output location and metadata.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputConfig {
     /// Format is “projects/*/datasets/*”.
@@ -240,7 +236,6 @@ pub struct OutputConfig {
     pub bigquery_dataset: ::prost::alloc::string::String,
 }
 /// Recon configs
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReconConfig {
     /// Extra options that affect entity clustering behavior.
@@ -256,7 +251,6 @@ pub struct ReconConfig {
 /// Nested message and enum types in `ReconConfig`.
 pub mod recon_config {
     /// Options for experimental changes on entity clustering behavior.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Options {
         /// If true, separate clusters by their geographic region (from geocoding).
@@ -270,7 +264,6 @@ pub mod recon_config {
         pub enable_geocoding_separation: bool,
     }
     /// Model Configs
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ModelConfig {
         /// Model name. Refer to external documentation for valid names.
@@ -283,7 +276,6 @@ pub mod recon_config {
         pub version_tag: ::prost::alloc::string::String,
     }
     /// Choice of clustering algorithm. Default is ConnectedComponentsConfig.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum ClusteringConfig {
         /// Configs for connected components.
@@ -295,7 +287,6 @@ pub mod recon_config {
     }
 }
 /// Options for connected components.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ConnectedComponentsConfig {
     /// Threshold used for connected components. Default value is 0.85.
@@ -303,7 +294,6 @@ pub struct ConnectedComponentsConfig {
     pub weight_threshold: f32,
 }
 /// Options for affinity clustering.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AffinityClusteringConfig {
     /// Number of iterations to perform. Default value is 1.
@@ -311,7 +301,6 @@ pub struct AffinityClusteringConfig {
     pub compression_round_count: i64,
 }
 /// Details of operations that perform deletes of any entities.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteOperationMetadata {
     /// The common part of the operation metadata.
@@ -319,7 +308,6 @@ pub struct DeleteOperationMetadata {
     pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
 }
 /// Request message for CreateEntityReconciliationJob.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntityReconciliationJobRequest {
     /// Required. The resource name of the Location to create the
@@ -332,7 +320,6 @@ pub struct CreateEntityReconciliationJobRequest {
     pub entity_reconciliation_job: ::core::option::Option<EntityReconciliationJob>,
 }
 /// Request message for GetEntityReconciliationJob.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEntityReconciliationJobRequest {
     /// Required. The name of the EntityReconciliationJob resource.
@@ -343,7 +330,6 @@ pub struct GetEntityReconciliationJobRequest {
 }
 /// Request message for
 /// [EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntityReconciliationJobsRequest {
     /// Required. The name of the EntityReconciliationJob's parent resource.
@@ -363,7 +349,6 @@ pub struct ListEntityReconciliationJobsRequest {
 }
 /// Response message for
 /// [EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntityReconciliationJobsResponse {
     /// A list of EntityReconciliationJobs that matches the specified filter in the
@@ -375,7 +360,6 @@ pub struct ListEntityReconciliationJobsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CancelEntityReconciliationJob.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelEntityReconciliationJobRequest {
     /// Required. The name of the EntityReconciliationJob resource.
@@ -385,7 +369,6 @@ pub struct CancelEntityReconciliationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteEntityReconciliationJob.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEntityReconciliationJobRequest {
     /// Required. The name of the EntityReconciliationJob resource.
@@ -395,7 +378,6 @@ pub struct DeleteEntityReconciliationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Entity reconciliation job message.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityReconciliationJob {
     /// Output only. Resource name of the EntityReconciliationJob.
@@ -432,7 +414,6 @@ pub struct EntityReconciliationJob {
 }
 /// Request message for
 /// [EnterpriseKnowledgeGraphService.Lookup][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupRequest {
     /// Required. The name of the Entity's parent resource.
@@ -450,7 +431,6 @@ pub struct LookupRequest {
 }
 /// Response message for
 /// [EnterpriseKnowledgeGraphService.Lookup][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupResponse {
     /// The local context applicable for the response. See more details at
@@ -466,7 +446,6 @@ pub struct LookupResponse {
 }
 /// Request message for
 /// [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchRequest {
     /// Required. The name of the Entity's parent resource.
@@ -492,7 +471,6 @@ pub struct SearchRequest {
 }
 /// Response message for
 /// [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchResponse {
     /// The local context applicable for the response. See more details at
@@ -508,7 +486,6 @@ pub struct SearchResponse {
 }
 /// Request message for
 /// [EnterpriseKnowledgeGraphService.LookupPublicKg][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupPublicKgRequest {
     /// Required. The name of the Entity's parent resource.
@@ -526,7 +503,6 @@ pub struct LookupPublicKgRequest {
 }
 /// Response message for
 /// [EnterpriseKnowledgeGraphService.LookupPublicKg][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupPublicKgResponse {
     /// The local context applicable for the response. See more details at
@@ -542,7 +518,6 @@ pub struct LookupPublicKgResponse {
 }
 /// Request message for
 /// [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchPublicKgRequest {
     /// Required. The name of the Entity's parent resource.
@@ -568,7 +543,6 @@ pub struct SearchPublicKgRequest {
 }
 /// Response message for
 /// [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchPublicKgResponse {
     /// The local context applicable for the response. See more details at
@@ -607,8 +581,8 @@ pub mod enterprise_knowledge_graph_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -633,7 +607,7 @@ pub mod enterprise_knowledge_graph_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             EnterpriseKnowledgeGraphServiceClient::new(
                 InterceptedService::new(inner, interceptor),

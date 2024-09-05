@@ -2,7 +2,6 @@
 /// The group information for methods in the Merchant API. The quota is shared
 /// between all methods in the group. Even if none of the methods within the
 /// group have usage the information for the group is returned.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaGroup {
     /// Identifier. The resource name of the quota group.
@@ -26,7 +25,6 @@ pub struct QuotaGroup {
     pub method_details: ::prost::alloc::vec::Vec<MethodDetails>,
 }
 /// The method details per method in the Merchant API.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MethodDetails {
     /// Output only. The name of the method for example `products.list`.
@@ -44,7 +42,6 @@ pub struct MethodDetails {
     pub path: ::prost::alloc::string::String,
 }
 /// Request message for the ListQuotaGroups method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListQuotaGroupsRequest {
     /// Required. The merchant account who owns the collection of method quotas
@@ -61,7 +58,6 @@ pub struct ListQuotaGroupsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for the ListMethodGroups method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListQuotaGroupsResponse {
     /// The methods, current quota usage and limits per each group. The quota is
@@ -100,8 +96,8 @@ pub mod quota_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -126,7 +122,7 @@ pub mod quota_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             QuotaServiceClient::new(InterceptedService::new(inner, interceptor))
         }

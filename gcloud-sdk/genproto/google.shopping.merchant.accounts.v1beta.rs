@@ -48,7 +48,6 @@ impl AccessRight {
 /// state, merchant needs to pay tax to all tax authorities associated with
 /// the shipping destination.
 /// Next Id : 8
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TaxRule {
     /// Region code in which this rule is applicable
@@ -77,7 +76,6 @@ pub struct TaxRule {
 /// Nested message and enum types in `TaxRule`.
 pub mod tax_rule {
     /// A range of postal codes that defines the area.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TaxPostalCodeRange {
         /// Required. The start of the postal code range, which is also the smallest
@@ -90,7 +88,6 @@ pub mod tax_rule {
         pub end: ::prost::alloc::string::String,
     }
     /// Describe the location through either postal code range or a criteria id.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Location {
         /// The admin_id or criteria_id of the region in which this rule is
@@ -103,7 +100,6 @@ pub mod tax_rule {
     }
     /// What is the way to calculate tax rate for deliveries to this admin's area.
     /// Can only be set on US states.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum RateCalculation {
         /// Rate that depends on delivery location: if merchant has a nexus in
@@ -118,7 +114,6 @@ pub mod tax_rule {
     }
 }
 /// The tax settings of a merchant account. All methods require the admin role.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountTax {
     /// Identifier. The name of the tax setting.
@@ -136,7 +131,6 @@ pub struct AccountTax {
     pub tax_rules: ::prost::alloc::vec::Vec<TaxRule>,
 }
 /// Request to get tax settings
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAccountTaxRequest {
     /// Required. The name from which tax settings will be retrieved
@@ -144,7 +138,6 @@ pub struct GetAccountTaxRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to update the tax settings
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAccountTaxRequest {
     /// Required. The tax setting that will be updated
@@ -157,7 +150,6 @@ pub struct UpdateAccountTaxRequest {
 /// Request to list all sub-account tax settings only for the requesting merchant
 /// This method can only be called on a multi-client account, otherwise it'll
 /// return an error.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccountTaxRequest {
     /// Required. The parent, which owns this collection of account tax.
@@ -175,7 +167,6 @@ pub struct ListAccountTaxRequest {
 /// Response to account tax list request
 /// This method can only be called on a multi-client account, otherwise it'll
 /// return an error.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccountTaxResponse {
     /// Page of accounttax settings
@@ -214,8 +205,8 @@ pub mod account_tax_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -240,7 +231,7 @@ pub mod account_tax_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             AccountTaxServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -369,7 +360,6 @@ pub mod account_tax_service_client {
 }
 /// An
 /// [`AccountIssue`](<https://support.google.com/merchants/answer/12153802?sjid=17798438912526418908-EU#account>).
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountIssue {
     /// Identifier. The resource name of the account issue.
@@ -398,7 +388,6 @@ pub struct AccountIssue {
 /// Nested message and enum types in `AccountIssue`.
 pub mod account_issue {
     /// The impact of the issue on a destination.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ImpactedDestination {
         /// The impacted reporting context.
@@ -415,7 +404,6 @@ pub mod account_issue {
     /// Nested message and enum types in `ImpactedDestination`.
     pub mod impacted_destination {
         /// The impact of the issue on a region.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Impact {
             /// The [CLDR region code](<https://cldr.unicode.org/>) where this issue
@@ -477,7 +465,6 @@ pub mod account_issue {
     }
 }
 /// Request message for the `ListAccountIssues` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccountIssuesRequest {
     /// Required. The parent, which owns this collection of issues.
@@ -509,7 +496,6 @@ pub struct ListAccountIssuesRequest {
     pub time_zone: ::core::option::Option<super::super::super::super::r#type::TimeZone>,
 }
 /// Response message for the `ListAccountIssues` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccountIssuesResponse {
     /// The issues from the specified account.
@@ -545,8 +531,8 @@ pub mod account_issue_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -571,7 +557,7 @@ pub mod account_issue_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             AccountIssueServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -640,7 +626,6 @@ pub mod account_issue_service_client {
     }
 }
 /// A [user](<https://support.google.com/merchants/answer/12160472>).
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct User {
     /// Identifier. The resource name of the user.
@@ -707,7 +692,6 @@ pub mod user {
     }
 }
 /// Request message for the `GetUser` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetUserRequest {
     /// Required. The name of the user to retrieve.
@@ -720,7 +704,6 @@ pub struct GetUserRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `CreateUser` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateUserRequest {
     /// Required. The resource name of the account for which a user will be
@@ -736,7 +719,6 @@ pub struct CreateUserRequest {
     pub user: ::core::option::Option<User>,
 }
 /// Request message for the `DeleteUser` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteUserRequest {
     /// Required. The name of the user to delete.
@@ -748,7 +730,6 @@ pub struct DeleteUserRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `UpdateUser` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateUserRequest {
     /// Required. The new version of the user.
@@ -762,7 +743,6 @@ pub struct UpdateUserRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the `ListUsers` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUsersRequest {
     /// Required. The parent, which owns this collection of users.
@@ -783,7 +763,6 @@ pub struct ListUsersRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for the `ListUsers` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUsersResponse {
     /// The users from the specified account.
@@ -819,8 +798,8 @@ pub mod user_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -845,7 +824,7 @@ pub mod user_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             UserServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -1029,7 +1008,6 @@ pub mod user_service_client {
     }
 }
 /// An account.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Account {
     /// Identifier. The resource name of the account.
@@ -1066,7 +1044,6 @@ pub struct Account {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Request message for the `GetAccount` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAccountRequest {
     /// Required. The name of the account to retrieve.
@@ -1075,7 +1052,6 @@ pub struct GetAccountRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `CreateAndConfigureAccount` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAndConfigureAccountRequest {
     /// Required. The account to be created.
@@ -1101,7 +1077,6 @@ pub struct CreateAndConfigureAccountRequest {
 /// Nested message and enum types in `CreateAndConfigureAccountRequest`.
 pub mod create_and_configure_account_request {
     /// Reference to a Terms of Service resource.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AcceptTermsOfService {
         /// Required. The resource name of the terms of service version.
@@ -1115,7 +1090,6 @@ pub mod create_and_configure_account_request {
     }
     /// Additional instructions to add account services during creation of the
     /// account.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AddAccountService {
         /// Optional. The provider of the service.
@@ -1133,7 +1107,6 @@ pub mod create_and_configure_account_request {
         /// Currently only supports
         /// [Multi-client](<https://support.google.com/merchants/answer/188487>)
         /// parent account type.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum ServiceType {
             /// The provider is an aggregator for the account.
@@ -1143,7 +1116,6 @@ pub mod create_and_configure_account_request {
     }
 }
 /// Request message for the `DeleteAccount` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAccountRequest {
     /// Required. The name of the account to delete.
@@ -1152,7 +1124,6 @@ pub struct DeleteAccountRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `UpdateAccount` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAccountRequest {
     /// Required. The new version of the account.
@@ -1163,7 +1134,6 @@ pub struct UpdateAccountRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the `ListAccounts` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccountsRequest {
     /// Optional. The maximum number of accounts to return. The service may return
@@ -1186,7 +1156,6 @@ pub struct ListAccountsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for the `ListAccounts` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccountsResponse {
     /// The accounts matching the `ListAccountsRequest`.
@@ -1198,7 +1167,6 @@ pub struct ListAccountsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the `ListSubAccounts` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubAccountsRequest {
     /// Required. The parent account.
@@ -1219,7 +1187,6 @@ pub struct ListSubAccountsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for the `ListSubAccounts` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubAccountsResponse {
     /// The accounts for which the given parent account is an aggregator.
@@ -1255,8 +1222,8 @@ pub mod accounts_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -1281,7 +1248,7 @@ pub mod accounts_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             AccountsServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -1508,7 +1475,6 @@ pub mod accounts_service_client {
 }
 /// Collection of information related to the [identity of a
 /// business](<https://support.google.com/merchants/answer/12564247>).
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BusinessIdentity {
     /// Identifier. The resource name of the business identity.
@@ -1551,7 +1517,6 @@ pub struct BusinessIdentity {
 /// Nested message and enum types in `BusinessIdentity`.
 pub mod business_identity {
     /// All information related to an identity attribute.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct IdentityAttribute {
         /// Required. The declaration of identity for this attribute.
@@ -1656,7 +1621,6 @@ pub mod business_identity {
     }
 }
 /// Request message for the `GetBusinessIdentity` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBusinessIdentityRequest {
     /// Required. The resource name of the business identity.
@@ -1665,7 +1629,6 @@ pub struct GetBusinessIdentityRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `UpdateBusinessIdentity` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBusinessIdentityRequest {
     /// Required. The new version of the business identity.
@@ -1701,8 +1664,8 @@ pub mod business_identity_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -1727,7 +1690,7 @@ pub mod business_identity_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             BusinessIdentityServiceClient::new(
                 InterceptedService::new(inner, interceptor),
@@ -1830,7 +1793,6 @@ pub mod business_identity_service_client {
     }
 }
 /// Customer service information.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerService {
     /// Optional. The URI where customer service may be found.
@@ -1877,7 +1839,6 @@ impl PhoneVerificationState {
     }
 }
 /// Collection of information related to a business.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BusinessInfo {
     /// Identifier. The resource name of the business info.
@@ -1900,7 +1861,6 @@ pub struct BusinessInfo {
     pub customer_service: ::core::option::Option<CustomerService>,
 }
 /// Request message for the `GetBusinessInfo` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBusinessInfoRequest {
     /// Required. The resource name of the business info.
@@ -1909,7 +1869,6 @@ pub struct GetBusinessInfoRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `UpdateBusinessInfo` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBusinessInfoRequest {
     /// Required. The new version of the business info.
@@ -1944,8 +1903,8 @@ pub mod business_info_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -1970,7 +1929,7 @@ pub mod business_info_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             BusinessInfoServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -2067,7 +2026,6 @@ pub mod business_info_service_client {
 /// The categories of notifications the user opted into / opted out of. The email
 /// preferences do not include mandatory announcements as users can't opt out of
 /// them.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EmailPreferences {
     /// Identifier. The name of the EmailPreferences. The endpoint is only
@@ -2131,7 +2089,6 @@ pub mod email_preferences {
     }
 }
 /// Request message for GetEmailPreferences method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEmailPreferencesRequest {
     /// Required. The name of the `EmailPreferences` resource.
@@ -2140,7 +2097,6 @@ pub struct GetEmailPreferencesRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateEmailPreferences method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEmailPreferencesRequest {
     /// Required. Email Preferences to be updated.
@@ -2178,8 +2134,8 @@ pub mod email_preferences_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -2204,7 +2160,7 @@ pub mod email_preferences_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             EmailPreferencesServiceClient::new(
                 InterceptedService::new(inner, interceptor),
@@ -2319,7 +2275,6 @@ pub mod email_preferences_service_client {
     }
 }
 /// A store's homepage.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Homepage {
     /// Identifier. The resource name of the store's homepage.
@@ -2335,7 +2290,6 @@ pub struct Homepage {
     pub claimed: bool,
 }
 /// Request message for the `GetHomepage` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHomepageRequest {
     /// Required. The name of the homepage to retrieve.
@@ -2344,7 +2298,6 @@ pub struct GetHomepageRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `UpdateHomepage` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateHomepageRequest {
     /// Required. The new version of the homepage.
@@ -2355,7 +2308,6 @@ pub struct UpdateHomepageRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the `ClaimHomepage` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClaimHomepageRequest {
     /// Required. The name of the homepage to claim.
@@ -2364,7 +2316,6 @@ pub struct ClaimHomepageRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `UnclaimHomepage` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnclaimHomepageRequest {
     /// Required. The name of the homepage to unclaim.
@@ -2397,8 +2348,8 @@ pub mod homepage_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -2423,7 +2374,7 @@ pub mod homepage_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             HomepageServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -2586,7 +2537,6 @@ pub mod homepage_service_client {
     }
 }
 /// Request message for the `GetOnlineReturnPolicy` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOnlineReturnPolicyRequest {
     /// Required. The name of the return policy to retrieve.
@@ -2595,7 +2545,6 @@ pub struct GetOnlineReturnPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `ListOnlineReturnPolicies` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOnlineReturnPoliciesRequest {
     /// Required. The merchant account for which to list return policies.
@@ -2621,7 +2570,6 @@ pub struct ListOnlineReturnPoliciesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for the `ListOnlineReturnPolicies` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOnlineReturnPoliciesResponse {
     /// The retrieved return policies.
@@ -2635,7 +2583,6 @@ pub struct ListOnlineReturnPoliciesResponse {
 /// [Online return policy](<https://support.google.com/merchants/answer/10220642>)
 /// object. This is currently used to represent return policies for ads and free
 /// listings programs.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OnlineReturnPolicy {
     /// Identifier. The name of the `OnlineReturnPolicy` resource.
@@ -2701,7 +2648,6 @@ pub struct OnlineReturnPolicy {
 pub mod online_return_policy {
     /// The return shipping fee. This can either be a fixed fee or a boolean to
     /// indicate that the customer pays the actual shipping cost.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ReturnShippingFee {
         /// Type of return shipping fee.
@@ -2760,7 +2706,6 @@ pub mod online_return_policy {
         }
     }
     /// The restocking fee. This can be a flat fee or a micro percent.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RestockingFee {
         #[prost(oneof = "restocking_fee::Type", tags = "1, 2")]
@@ -2768,7 +2713,6 @@ pub mod online_return_policy {
     }
     /// Nested message and enum types in `RestockingFee`.
     pub mod restocking_fee {
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// Fixed restocking fee.
@@ -2781,7 +2725,6 @@ pub mod online_return_policy {
         }
     }
     /// The available policies.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Policy {
         /// Policy type.
@@ -2965,8 +2908,8 @@ pub mod online_return_policy_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -2991,7 +2934,7 @@ pub mod online_return_policy_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             OnlineReturnPolicyServiceClient::new(
                 InterceptedService::new(inner, interceptor),
@@ -3099,7 +3042,6 @@ pub mod online_return_policy_service_client {
 /// listings](<https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU>)
 /// program, which enables products from a merchant's store to be shown across
 /// Google for free.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Program {
     /// Identifier. The resource name of the program.
@@ -3129,7 +3071,6 @@ pub struct Program {
 /// Nested message and enum types in `Program`.
 pub mod program {
     /// Defines a requirement specified for participation in the program.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Requirement {
         /// Output only. Name of the requirement.
@@ -3198,7 +3139,6 @@ pub mod program {
     }
 }
 /// Request message for the GetProgram method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProgramRequest {
     /// Required. The name of the program to retrieve.
@@ -3207,7 +3147,6 @@ pub struct GetProgramRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the ListPrograms method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProgramsRequest {
     /// Required. The name of the account for which to retrieve all programs.
@@ -3225,7 +3164,6 @@ pub struct ListProgramsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for the ListPrograms method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProgramsResponse {
     /// The programs for the given account.
@@ -3237,7 +3175,6 @@ pub struct ListProgramsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the EnableProgram method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableProgramRequest {
     /// Required. The name of the program for which to enable participation for the
@@ -3246,7 +3183,6 @@ pub struct EnableProgramRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the DisableProgram method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableProgramRequest {
     /// Required. The name of the program for which to disable participation for
@@ -3289,8 +3225,8 @@ pub mod programs_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -3315,7 +3251,7 @@ pub mod programs_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ProgramsServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -3470,7 +3406,6 @@ pub mod programs_service_client {
     }
 }
 /// Request message for the `GetRegion` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionRequest {
     /// Required. The name of the region to retrieve.
@@ -3479,7 +3414,6 @@ pub struct GetRegionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `CreateRegion` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRegionRequest {
     /// Required. The account to create a region for.
@@ -3495,7 +3429,6 @@ pub struct CreateRegionRequest {
     pub region: ::core::option::Option<Region>,
 }
 /// Request message for the `UpdateRegion` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRegionRequest {
     /// Required. The updated region.
@@ -3508,7 +3441,6 @@ pub struct UpdateRegionRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the `DeleteRegion` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionRequest {
     /// Required. The name of the region to delete.
@@ -3517,7 +3449,6 @@ pub struct DeleteRegionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `ListRegions` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionsRequest {
     /// Required. The account to list regions for.
@@ -3539,7 +3470,6 @@ pub struct ListRegionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for the `ListRegions` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionsResponse {
     /// The regions from the specified merchant.
@@ -3556,7 +3486,6 @@ pub struct ListRegionsResponse {
 /// geotargets. For more information, see [Set up regions
 /// ](<https://support.google.com/merchants/answer/7410946#zippy=%2Ccreate-a-new-region>)
 /// for more information.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Region {
     /// Identifier. The resource name of the region.
@@ -3586,7 +3515,6 @@ pub mod region {
     /// A list of postal codes that defines the region area.
     /// Note: All regions defined using postal codes are accessible through the
     /// account's `ShippingSettings.postalCodeGroups` resource.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PostalCodeArea {
         /// Required. [CLDR territory
@@ -3601,7 +3529,6 @@ pub mod region {
     /// Nested message and enum types in `PostalCodeArea`.
     pub mod postal_code_area {
         /// A range of postal codes that defines the region area.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct PostalCodeRange {
             /// Required. A postal code or a pattern of the form prefix* denoting the
@@ -3622,7 +3549,6 @@ pub mod region {
         }
     }
     /// A list of geotargets that defines the region area.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GeoTargetArea {
         /// Required. A non-empty list of [location
@@ -3661,8 +3587,8 @@ pub mod regions_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -3687,7 +3613,7 @@ pub mod regions_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             RegionsServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -3872,7 +3798,6 @@ pub mod regions_service_client {
 }
 /// The merchant account's [shipping
 /// setting]((<https://support.google.com/merchants/answer/6069284>).
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShippingSettings {
     /// Identifier. The resource name of the shipping setting.
@@ -3907,7 +3832,6 @@ pub struct ShippingSettings {
     pub etag: ::prost::alloc::string::String,
 }
 /// Shipping service.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Service {
     /// Required. Free-form name of the service. Must be unique within target
@@ -3959,7 +3883,6 @@ pub struct Service {
 pub mod service {
     /// A list of stores your products are delivered from.
     /// This is only valid for the local delivery shipment type.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StoreConfig {
         /// Indicates whether all stores, or selected stores, listed by this
@@ -3981,7 +3904,6 @@ pub mod service {
     /// Nested message and enum types in `StoreConfig`.
     pub mod store_config {
         /// Configs related to local delivery ends for the day.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct CutoffConfig {
             /// Time that local delivery ends for the day.
@@ -4007,7 +3929,6 @@ pub mod service {
         /// Nested message and enum types in `CutoffConfig`.
         pub mod cutoff_config {
             /// Time that local delivery ends for the day.
-            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, Copy, PartialEq, ::prost::Message)]
             pub struct LocalCutoffTime {
                 /// Hour local delivery orders must be placed by to process the same
@@ -4069,7 +3990,6 @@ pub mod service {
     }
     /// [Loyalty program](<https://support.google.com/merchants/answer/12922446>)
     /// provided by a merchant.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LoyaltyProgram {
         /// This is the loyalty program label set in your loyalty program settings in
@@ -4086,7 +4006,6 @@ pub mod service {
     /// Nested message and enum types in `LoyaltyProgram`.
     pub mod loyalty_program {
         /// Subset of a merchants loyalty program.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct LoyaltyProgramTiers {
             /// The tier label \[tier_label\] sub-attribute differentiates offer level
@@ -4149,7 +4068,6 @@ pub mod service {
 }
 /// Maximum delivery radius.
 /// This is only required for the local delivery shipment type.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Distance {
     /// Integer value of distance.
@@ -4209,7 +4127,6 @@ pub mod distance {
 }
 /// A fulfillment warehouse, which stores and handles inventory.
 /// Next tag: 7
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Warehouse {
     /// Required. The name of the warehouse. Must be unique within account.
@@ -4236,7 +4153,6 @@ pub struct Warehouse {
 /// The latest time of day that an order can be accepted and begin processing.
 /// Later orders will be processed in the next day. The time is based on the
 /// warehouse postal code.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WarehouseCutoffTime {
     /// Required. Hour of the cutoff time until which an order has to be placed to
@@ -4251,7 +4167,6 @@ pub struct WarehouseCutoffTime {
     pub minute: ::core::option::Option<i32>,
 }
 /// Shipping address of the warehouse.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Address {
     /// Street-level part of the address. For example: `111w 31st Street`.
@@ -4275,7 +4190,6 @@ pub struct Address {
     pub region_code: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Time spent in various aspects from order to the delivery of the product.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeliveryTime {
     /// Minimum number of business days that is spent in transit. 0 means same
@@ -4326,7 +4240,6 @@ pub struct DeliveryTime {
     >,
 }
 /// Business days cutoff time definition.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CutoffTime {
     /// Required. Hour of the cutoff time until which an order has to be placed to
@@ -4344,7 +4257,6 @@ pub struct CutoffTime {
     pub time_zone: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Business days of the warehouse.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BusinessDayConfig {
     /// Required. Regular business days.
@@ -4418,7 +4330,6 @@ pub mod business_day_config {
 /// (shipping origin location) based on the settings of the selected carrier.
 /// When set, no other transit time related field in `delivery_time` should be
 /// set.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WarehouseBasedDeliveryTime {
     /// Required. Carrier, such as `"UPS"` or `"Fedex"`.
@@ -4437,7 +4348,6 @@ pub struct WarehouseBasedDeliveryTime {
 /// empty `applicable_shipping_labels`, which means
 /// "everything else". The other `applicable_shipping_labels` must
 /// not overlap.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RateGroup {
     /// Required. A list of [shipping
@@ -4473,7 +4383,6 @@ pub struct RateGroup {
 }
 /// A table defining the rate group, when `single_value` is not
 /// expressive enough.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Table {
     /// Name of the table. Required for subtables, ignored for the main table.
@@ -4494,7 +4403,6 @@ pub struct Table {
 /// Transit time table, number of business days spent in transit based on row
 /// and column dimensions. Either `min_transit_days`, `max_transit_days` or
 /// `transit_time_table` can be set, but not both.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitTable {
     /// Required. A list of region names
@@ -4527,7 +4435,6 @@ pub mod transit_table {
     /// for that dimension. If there are two dimensions, each row corresponds to a
     /// `postal_code_group_names`, and columns (values) to a
     /// `transit_time_labels`.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TransitTimeRow {
         /// Required. Transit time range (min-max) in business days.
@@ -4537,7 +4444,6 @@ pub mod transit_table {
     /// Nested message and enum types in `TransitTimeRow`.
     pub mod transit_time_row {
         /// Transit time range (min-max) in business days.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
         pub struct TransitTimeValue {
             /// Minimum transit time range in business days. 0 means same
@@ -4551,7 +4457,6 @@ pub mod transit_table {
     }
 }
 /// Table of per store minimum order values for the pickup fulfillment type.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MinimumOrderValueTable {
     /// Required. A list of store code sets sharing the same minimum order value
@@ -4571,7 +4476,6 @@ pub mod minimum_order_value_table {
     /// 'MOV for all other stores'.
     /// Each store code can only appear once across all the sets.
     /// All prices within a service must have the same currency.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StoreCodeSetWithMov {
         /// Optional. A list of unique store codes or empty for the catch all.
@@ -4586,7 +4490,6 @@ pub mod minimum_order_value_table {
 /// Exactly one of `prices`, `weights`,
 /// `num_items`, `postal_code_group_names`, or
 /// `location` must be set.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Headers {
     /// Required. A list of inclusive order price upper bounds. The last price's
@@ -4633,7 +4536,6 @@ pub struct Headers {
 }
 /// A list of location ID sets. Must be non-empty. Can only be set if all
 /// other fields are not set.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationIdSet {
     /// Required. A non-empty list of
@@ -4645,7 +4547,6 @@ pub struct LocationIdSet {
     pub location_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Include a list of cells.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Row {
     /// Required. The list of cells that constitute the row. Must have the same
@@ -4658,7 +4559,6 @@ pub struct Row {
 /// Exactly one of `no_shipping`, `flat_rate`,
 /// `price_percentage`, `carrier_rateName`,
 /// `subtable_name` must be set.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     /// If true, then the product can't be shipped. Must be true when set, can only
@@ -4684,7 +4584,6 @@ pub struct Value {
 }
 /// A list of carrier rates that can be referred to by
 /// `main_table` or `single_value`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CarrierRate {
     /// Required. Name of the carrier rate. Must be unique per rate group.
@@ -4712,7 +4611,6 @@ pub struct CarrierRate {
     pub flat_adjustment: ::core::option::Option<super::super::super::r#type::Price>,
 }
 /// Request message for the `GetShippingSetting` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetShippingSettingsRequest {
     /// Required. The name of the shipping setting to retrieve.
@@ -4721,7 +4619,6 @@ pub struct GetShippingSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `InsertShippingSetting` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertShippingSettingsRequest {
     /// Required. The account where this product will be inserted.
@@ -4758,8 +4655,8 @@ pub mod shipping_settings_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -4784,7 +4681,7 @@ pub mod shipping_settings_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ShippingSettingsServiceClient::new(
                 InterceptedService::new(inner, interceptor),
@@ -4916,7 +4813,6 @@ impl TermsOfServiceKind {
     }
 }
 /// A `TermsOfService`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TermsOfService {
     /// Identifier. The resource name of the terms of service version.
@@ -4944,7 +4840,6 @@ pub struct TermsOfService {
     pub external: bool,
 }
 /// Request message for the `GetTermsOfService` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTermsOfServiceRequest {
     /// Required. The resource name of the terms of service version.
@@ -4953,7 +4848,6 @@ pub struct GetTermsOfServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `RetrieveLatestTermsOfService` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RetrieveLatestTermsOfServiceRequest {
     /// Region code as defined by [CLDR](<https://cldr.unicode.org/>). This is either
@@ -4966,7 +4860,6 @@ pub struct RetrieveLatestTermsOfServiceRequest {
     pub kind: i32,
 }
 /// Request message for the `AcceptTermsOfService` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceptTermsOfServiceRequest {
     /// Required. The resource name of the terms of service version.
@@ -5007,8 +4900,8 @@ pub mod terms_of_service_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -5033,7 +4926,7 @@ pub mod terms_of_service_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             TermsOfServiceServiceClient::new(InterceptedService::new(inner, interceptor))
         }
@@ -5177,7 +5070,6 @@ pub mod terms_of_service_service_client {
 /// [tos_file_uri](Accepted.tos_file_uri). The actual acceptance of the terms of
 /// service is done by calling accept on the [TermsOfService](TermsOfService)
 /// resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TermsOfServiceAgreementState {
     /// Identifier. The resource name of the terms of service version.
@@ -5200,7 +5092,6 @@ pub struct TermsOfServiceAgreementState {
     pub required: ::core::option::Option<Required>,
 }
 /// Describes the accepted terms of service.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Accepted {
     /// The accepted
@@ -5221,7 +5112,6 @@ pub struct Accepted {
     pub valid_until: ::core::option::Option<super::super::super::super::r#type::Date>,
 }
 /// Describes the terms of service which are required to be accepted.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Required {
     /// The
@@ -5236,7 +5126,6 @@ pub struct Required {
     pub tos_file_uri: ::prost::alloc::string::String,
 }
 /// Request message for the `GetTermsOfServiceAgreementState` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTermsOfServiceAgreementStateRequest {
     /// Required. The resource name of the terms of service version.
@@ -5246,7 +5135,6 @@ pub struct GetTermsOfServiceAgreementStateRequest {
 }
 /// Request message for the `RetrieveForApplicationTermsOfServiceAgreementState`
 /// method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RetrieveForApplicationTermsOfServiceAgreementStateRequest {
     /// Required. The account for which to get a TermsOfServiceAgreementState
@@ -5279,8 +5167,8 @@ pub mod terms_of_service_agreement_state_service_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -5305,7 +5193,7 @@ pub mod terms_of_service_agreement_state_service_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             TermsOfServiceAgreementStateServiceClient::new(
                 InterceptedService::new(inner, interceptor),

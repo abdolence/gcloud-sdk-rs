@@ -2,7 +2,6 @@
 /// Information related to how and why a fallback result was used. If this field
 /// is set, then it means the server used a different routing mode from your
 /// preferred mode as fallback.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct FallbackInfo {
     /// Routing mode used for the response. If fallback was triggered, the mode
@@ -93,7 +92,6 @@ impl FallbackRoutingMode {
 /// Contains [`GeocodedWaypoints`][google.maps.routing.v2.GeocodedWaypoint] for
 /// origin, destination and intermediate waypoints. Only populated for address
 /// waypoints.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GeocodingResults {
     /// Origin geocoded waypoint.
@@ -111,7 +109,6 @@ pub struct GeocodingResults {
 /// Details about the locations used as waypoints. Only populated for address
 /// waypoints. Includes details about the geocoding results for the purposes of
 /// determining what the address was geocoded to.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GeocodedWaypoint {
     /// Indicates the status code resulting from the geocoding operation.
@@ -138,7 +135,6 @@ pub struct GeocodedWaypoint {
     pub place_id: ::prost::alloc::string::String,
 }
 /// Localized description of time.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalizedTime {
     /// The time specified as a string in a given time zone.
@@ -151,7 +147,6 @@ pub struct LocalizedTime {
     pub time_zone: ::prost::alloc::string::String,
 }
 /// Encapsulates a location (a geographic point, and an optional heading).
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Location {
     /// The waypoint's geographic coordinates.
@@ -274,7 +269,6 @@ impl Maneuver {
 }
 /// Encapsulates navigation instructions for a
 /// [`RouteLegStep`][google.maps.routing.v2.RouteLegStep].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NavigationInstruction {
     /// Encapsulates the navigation instructions for the current step (for example,
@@ -287,7 +281,6 @@ pub struct NavigationInstruction {
     pub instructions: ::prost::alloc::string::String,
 }
 /// Encapsulates an encoded polyline.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Polyline {
     /// Encapsulates the type of polyline. Defaults to encoded_polyline.
@@ -297,7 +290,6 @@ pub struct Polyline {
 /// Nested message and enum types in `Polyline`.
 pub mod polyline {
     /// Encapsulates the type of polyline. Defaults to encoded_polyline.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PolylineType {
         /// The string encoding of the polyline using the [polyline encoding
@@ -479,7 +471,6 @@ impl RouteTravelMode {
 /// Given a path with points P_0, P_1, ... , P_N (zero-based index), the
 /// `SpeedReadingInterval` defines an interval and describes its traffic using
 /// the following categories.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SpeedReadingInterval {
     /// The starting index of this interval in the polyline.
@@ -540,7 +531,6 @@ pub mod speed_reading_interval {
             }
         }
     }
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum SpeedType {
         /// Traffic speed in this interval.
@@ -550,7 +540,6 @@ pub mod speed_reading_interval {
 }
 /// Encapsulates toll information on a [`Route`][google.maps.routing.v2.Route] or
 /// on a [`RouteLeg`][google.maps.routing.v2.RouteLeg].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TollInfo {
     /// The monetary amount of tolls for the corresponding
@@ -564,7 +553,6 @@ pub struct TollInfo {
     pub estimated_price: ::prost::alloc::vec::Vec<super::super::super::r#type::Money>,
 }
 /// A transit agency that operates a transit line.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitAgency {
     /// The name of this transit agency.
@@ -578,7 +566,6 @@ pub struct TransitAgency {
     pub uri: ::prost::alloc::string::String,
 }
 /// Contains information about the transit line used in this step.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitLine {
     /// The transit agency (or agencies) that operates this transit line.
@@ -610,7 +597,6 @@ pub struct TransitLine {
     pub vehicle: ::core::option::Option<TransitVehicle>,
 }
 /// Information about a transit stop.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitStop {
     /// The name of the transit stop.
@@ -621,7 +607,6 @@ pub struct TransitStop {
     pub location: ::core::option::Option<Location>,
 }
 /// Information about a vehicle used in transit routes.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitVehicle {
     /// The name of this vehicle, capitalized.
@@ -754,7 +739,6 @@ pub mod transit_vehicle {
 }
 /// Contains a route, which consists of a series of connected road segments
 /// that join beginning, ending, and intermediate waypoints.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Route {
     /// Labels for the `Route` that are useful to identify specific properties
@@ -829,7 +813,6 @@ pub struct Route {
 /// Nested message and enum types in `Route`.
 pub mod route {
     /// Text representations of certain properties.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteLocalizedValues {
         /// Travel distance represented in text form.
@@ -859,7 +842,6 @@ pub mod route {
 }
 /// Contains the additional information that the user should be informed
 /// about, such as possible traffic zone restrictions.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteTravelAdvisory {
     /// Contains information about tolls on the route. This field is only populated
@@ -896,7 +878,6 @@ pub struct RouteTravelAdvisory {
 }
 /// Contains the additional information that the user should be informed
 /// about on a leg step, such as possible traffic zone restrictions.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLegTravelAdvisory {
     /// Contains information about tolls on the specific `RouteLeg`.
@@ -922,7 +903,6 @@ pub struct RouteLegTravelAdvisory {
 }
 /// Contains the additional information that the user should be informed
 /// about, such as possible traffic zone restrictions on a leg step.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLegStepTravelAdvisory {
     /// NOTE: This field is not currently populated.
@@ -930,7 +910,6 @@ pub struct RouteLegStepTravelAdvisory {
     pub speed_reading_intervals: ::prost::alloc::vec::Vec<SpeedReadingInterval>,
 }
 /// Contains a segment between non-`via` waypoints.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLeg {
     /// The travel distance of the route leg, in meters.
@@ -980,7 +959,6 @@ pub struct RouteLeg {
 /// Nested message and enum types in `RouteLeg`.
 pub mod route_leg {
     /// Text representations of certain properties.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteLegLocalizedValues {
         /// Travel distance represented in text form.
@@ -1003,7 +981,6 @@ pub mod route_leg {
         >,
     }
     /// Provides overview information about a list of `RouteLegStep`s.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StepsOverview {
         /// Summarized information about different multi-modal segments of
@@ -1021,7 +998,6 @@ pub mod route_leg {
         /// contiguous `RouteLegStep` that have the same `RouteTravelMode`.
         /// This field is not populated if the `RouteLeg` does not contain any
         /// multi-modal segments in the steps.
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct MultiModalSegment {
             /// The corresponding `RouteLegStep` index that is the start of a
@@ -1046,7 +1022,6 @@ pub mod route_leg {
 /// Contains a segment of a [`RouteLeg`][google.maps.routing.v2.RouteLeg]. A
 /// step corresponds to a single navigation instruction. Route legs are made up
 /// of steps.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLegStep {
     /// The travel distance of this step, in meters. In some circumstances, this
@@ -1089,7 +1064,6 @@ pub struct RouteLegStep {
 /// Nested message and enum types in `RouteLegStep`.
 pub mod route_leg_step {
     /// Text representations of certain properties.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteLegStepLocalizedValues {
         /// Travel distance represented in text form.
@@ -1106,7 +1080,6 @@ pub mod route_leg_step {
     }
 }
 /// Additional information for the `RouteLegStep` related to `TRANSIT` routes.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLegStepTransitDetails {
     /// Information about the arrival and departure stops for the step.
@@ -1148,7 +1121,6 @@ pub struct RouteLegStepTransitDetails {
 /// Nested message and enum types in `RouteLegStepTransitDetails`.
 pub mod route_leg_step_transit_details {
     /// Details about the transit stops for the `RouteLegStep`.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TransitStopDetails {
         /// Information about the arrival stop for the step.
@@ -1165,7 +1137,6 @@ pub mod route_leg_step_transit_details {
         pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Localized descriptions of values for `RouteTransitDetails`.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TransitDetailsLocalizedValues {
         /// Time in its formatted text representation with a corresponding time zone.
@@ -1687,7 +1658,6 @@ impl VehicleEmissionType {
     }
 }
 /// Contains the vehicle information, such as the vehicle emission type.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct VehicleInfo {
     /// Describes the vehicle's emission type.
@@ -1698,7 +1668,6 @@ pub struct VehicleInfo {
 }
 /// Encapsulates a set of optional conditions to satisfy when calculating the
 /// routes.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteModifiers {
     /// When set to true, avoids toll roads where reasonable, giving preference to
@@ -1835,7 +1804,6 @@ impl TrafficModel {
 }
 /// Preferences for `TRANSIT` based routes that influence the route that is
 /// returned.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitPreferences {
     /// A set of travel modes to use when getting a `TRANSIT` route. Defaults to
@@ -1989,7 +1957,6 @@ impl Units {
 }
 /// Encapsulates a waypoint. Waypoints mark both the beginning and end of a
 /// route, and include intermediate stops along the route.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Waypoint {
     /// Marks this waypoint as a milestone rather a stopping point. For
@@ -2028,7 +1995,6 @@ pub struct Waypoint {
 /// Nested message and enum types in `Waypoint`.
 pub mod waypoint {
     /// Different ways to represent a location.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum LocationType {
         /// A point specified using geographic coordinates, including an optional
@@ -2045,7 +2011,6 @@ pub mod waypoint {
     }
 }
 /// ComputeRoutes request message.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRoutesRequest {
     /// Required. Origin waypoint.
@@ -2280,7 +2245,6 @@ pub mod compute_routes_request {
     }
 }
 /// ComputeRoutes the response message.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRoutesResponse {
     /// Contains an array of computed routes (up to three) when you specify
@@ -2301,7 +2265,6 @@ pub struct ComputeRoutesResponse {
     pub geocoding_results: ::core::option::Option<GeocodingResults>,
 }
 /// ComputeRouteMatrix request message
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRouteMatrixRequest {
     /// Required. Array of origins, which determines the rows of the response
@@ -2435,7 +2398,6 @@ pub mod compute_route_matrix_request {
     }
 }
 /// A single origin for ComputeRouteMatrixRequest
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteMatrixOrigin {
     /// Required. Origin waypoint
@@ -2446,7 +2408,6 @@ pub struct RouteMatrixOrigin {
     pub route_modifiers: ::core::option::Option<RouteModifiers>,
 }
 /// A single destination for ComputeRouteMatrixRequest
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteMatrixDestination {
     /// Required. Destination waypoint
@@ -2455,7 +2416,6 @@ pub struct RouteMatrixDestination {
 }
 /// Contains route information computed for an origin/destination pair in the
 /// ComputeRouteMatrix API. This proto can be streamed to the client.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteMatrixElement {
     /// Zero-based index of the origin in the request.
@@ -2503,7 +2463,6 @@ pub struct RouteMatrixElement {
 /// Nested message and enum types in `RouteMatrixElement`.
 pub mod route_matrix_element {
     /// Text representations of certain properties.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LocalizedValues {
         /// Travel distance represented in text form.
@@ -2593,8 +2552,8 @@ pub mod routes_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -2619,7 +2578,7 @@ pub mod routes_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             RoutesClient::new(InterceptedService::new(inner, interceptor))
         }

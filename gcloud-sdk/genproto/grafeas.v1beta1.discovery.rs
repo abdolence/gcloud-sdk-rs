@@ -2,7 +2,6 @@
 /// A note that indicates a type of analysis a provider would perform. This note
 /// exists in a provider's project. A `Discovery` occurrence is created in a
 /// consumer's project at the start of analysis.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Discovery {
     /// Required. Immutable. The kind of analysis that is handled by this
@@ -11,7 +10,6 @@ pub struct Discovery {
     pub analysis_kind: i32,
 }
 /// Details of a discovery occurrence.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Details {
     /// Required. Analysis status for the discovered resource.
@@ -19,7 +17,6 @@ pub struct Details {
     pub discovered: ::core::option::Option<Discovered>,
 }
 /// Provides information about the analysis status of a discovered resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Discovered {
     /// Whether the resource is continuously analyzed.

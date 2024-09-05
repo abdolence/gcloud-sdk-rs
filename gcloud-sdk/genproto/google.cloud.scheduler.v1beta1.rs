@@ -6,7 +6,6 @@
 /// response code in the range \[200 - 299\]. A failure to receive a response
 /// constitutes a failed execution. For a redirected request, the response
 /// returned by the redirected request is considered.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpTarget {
     /// Required. The full URI path that the request will be sent to. This string
@@ -65,7 +64,6 @@ pub mod http_target {
     /// If specified, all `Authorization` headers in the
     /// [HttpTarget.headers][google.cloud.scheduler.v1beta1.HttpTarget.headers]
     /// field will be overridden.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AuthorizationHeader {
         /// If specified, an
@@ -98,7 +96,6 @@ pub mod http_target {
 /// will be retried regardless of retry configuration and not counted against
 /// retry counts. Any other response code, or a failure to receive a response
 /// before the deadline, constitutes a failed attempt.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppEngineHttpTarget {
     /// The HTTP method to use for the request. PATCH and OPTIONS are not
@@ -169,7 +166,6 @@ pub struct AppEngineHttpTarget {
 }
 /// Pub/Sub target. The job will be delivered by publishing a message to
 /// the given Pub/Sub topic.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PubsubTarget {
     /// Required. The name of the Cloud Pub/Sub topic to which messages will
@@ -208,7 +204,6 @@ pub struct PubsubTarget {
 /// routing](<https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>),
 /// and [App Engine Flex request
 /// routing](<https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed>).
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppEngineRouting {
     /// App service.
@@ -311,7 +306,6 @@ pub struct AppEngineRouting {
 /// [OAuth token](<https://developers.google.com/identity/protocols/OAuth2>).
 /// This type of authorization should generally only be used when calling Google
 /// APIs hosted on *.googleapis.com.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OAuthToken {
     /// [Service account email](<https://cloud.google.com/iam/docs/service-accounts>)
@@ -332,7 +326,6 @@ pub struct OAuthToken {
 /// This type of authorization can be used for many scenarios, including
 /// calling Cloud Run, or endpoints where you intend to validate the token
 /// yourself.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OidcToken {
     /// [Service account email](<https://cloud.google.com/iam/docs/service-accounts>)
@@ -401,7 +394,6 @@ impl HttpMethod {
 }
 /// Configuration for a job.
 /// The maximum allowed size for a job is 1MB.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Job {
     /// Optionally caller-specified in
@@ -591,7 +583,6 @@ pub mod job {
     /// Required.
     ///
     /// Delivery settings containing destination and parameters.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Target {
         /// Pub/Sub target.
@@ -611,7 +602,6 @@ pub mod job {
 /// an acknowledgement is not received from the handler, then it will be retried
 /// with exponential backoff according to the settings in
 /// [RetryConfig][google.cloud.scheduler.v1beta1.RetryConfig].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RetryConfig {
     /// The number of attempts that the system will make to run a job using the
@@ -682,7 +672,6 @@ pub struct RetryConfig {
 }
 /// Request message for listing jobs using
 /// [ListJobs][google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsRequest {
     /// Required. The location name. For example:
@@ -727,7 +716,6 @@ pub struct ListJobsRequest {
 }
 /// Response message for listing jobs using
 /// [ListJobs][google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsResponse {
     /// The list of jobs.
@@ -746,7 +734,6 @@ pub struct ListJobsResponse {
 }
 /// Request message for
 /// [GetJob][google.cloud.scheduler.v1beta1.CloudScheduler.GetJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetJobRequest {
     /// Required. The job name. For example:
@@ -756,7 +743,6 @@ pub struct GetJobRequest {
 }
 /// Request message for
 /// [CreateJob][google.cloud.scheduler.v1beta1.CloudScheduler.CreateJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateJobRequest {
     /// Required. The location name. For example:
@@ -774,7 +760,6 @@ pub struct CreateJobRequest {
 }
 /// Request message for
 /// [UpdateJob][google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateJobRequest {
     /// Required. The new job properties.
@@ -790,7 +775,6 @@ pub struct UpdateJobRequest {
 }
 /// Request message for deleting a job using
 /// [DeleteJob][google.cloud.scheduler.v1beta1.CloudScheduler.DeleteJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteJobRequest {
     /// Required. The job name. For example:
@@ -805,7 +789,6 @@ pub struct DeleteJobRequest {
 }
 /// Request message for
 /// [PauseJob][google.cloud.scheduler.v1beta1.CloudScheduler.PauseJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PauseJobRequest {
     /// Required. The job name. For example:
@@ -815,7 +798,6 @@ pub struct PauseJobRequest {
 }
 /// Request message for
 /// [ResumeJob][google.cloud.scheduler.v1beta1.CloudScheduler.ResumeJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResumeJobRequest {
     /// Required. The job name. For example:
@@ -825,7 +807,6 @@ pub struct ResumeJobRequest {
 }
 /// Request message for forcing a job to run now using
 /// [RunJob][google.cloud.scheduler.v1beta1.CloudScheduler.RunJob].
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunJobRequest {
     /// Required. The job name. For example:
@@ -864,8 +845,8 @@ pub mod cloud_scheduler_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -890,7 +871,7 @@ pub mod cloud_scheduler_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             CloudSchedulerClient::new(InterceptedService::new(inner, interceptor))
         }

@@ -2,7 +2,6 @@
 /// Backup as stored in Platform log. It's used to log the details of
 /// a createBackup/updateBackup request, so only fields that can be taken
 /// from API calls are included here.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggedBackup {
     /// A set of custom labels supplied by user.
@@ -91,7 +90,6 @@ pub mod logged_backup {
     }
 }
 /// Namespaces, list of namespaces
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Namespaces {
     /// namespaces
@@ -99,7 +97,6 @@ pub struct Namespaces {
     pub namespaces: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// NamespacedName
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NamespacedName {
     /// the namespace of the resource in Kubernetes
@@ -110,7 +107,6 @@ pub struct NamespacedName {
     pub name: ::prost::alloc::string::String,
 }
 /// NamespacedNames
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NamespacedNames {
     /// a list of namespaced names in Kubernetes
@@ -119,7 +115,6 @@ pub struct NamespacedNames {
 }
 /// Encryption key.
 /// This only contains the key metadata, and no key material.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptionKey {
     /// Google KMS encryption key in the format:
@@ -130,7 +125,6 @@ pub struct EncryptionKey {
 /// BackupPlan as stored in Platform log. It's used to log the details of
 /// a createBackupPlan/updateBackupPlan request, so only fields that can be taken
 /// from user input are included here.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggedBackupPlan {
     /// User specified descriptive string for this BackupPlan.
@@ -164,7 +158,6 @@ pub mod logged_backup_plan {
     /// 1. When to automatically delete Backups created under this BackupPlan
     /// 2. A plan level minimum Backup retain days which blocks deletion
     /// 3. Lock to disallow any policy updates
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RetentionPolicy {
         /// Number of days during which deletion of a Backup created under this
@@ -185,7 +178,6 @@ pub mod logged_backup_plan {
         pub locked: bool,
     }
     /// Schedule, an inner message type defines a cron schedule.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Schedule {
         /// A cron style string schedule on which an operation will be executed.
@@ -197,7 +189,6 @@ pub mod logged_backup_plan {
     }
     /// BackupConfig, an inner message type defines the configuration of creating
     /// a backup from this BackupPlan
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BackupConfig {
         /// A boolean flag specifies whether volume data should be backed up
@@ -215,7 +206,6 @@ pub mod logged_backup_plan {
     }
     /// Nested message and enum types in `BackupConfig`.
     pub mod backup_config {
-        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum BackupScope {
             /// If set to true, backup whole cluster
@@ -233,7 +223,6 @@ pub mod logged_backup_plan {
 /// Restore as stored in Platform log. It's used to log the update details of a
 /// updateRestore request, so only mutable and non-output_only fields are
 /// included here..
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggedRestore {
     /// Full name of the Backup resource this Restore resource used to restore
@@ -320,7 +309,6 @@ pub mod logged_restore {
 /// RestorePlan as stored in Platform log. It's used to log the details of
 /// a createRestorePlan/updateRestorePlan request, so only fields that can be
 /// taken from user input are included here.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggedRestorePlan {
     /// User specified descriptive string for this RestorePlan.
@@ -350,7 +338,6 @@ pub struct LoggedRestorePlan {
     >,
 }
 /// Configuration of a restore.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreConfig {
     /// Specifies the mechanism to be used to restore volume data.
@@ -397,7 +384,6 @@ pub mod restore_config {
     /// This is a direct map to the Kubernetes GroupKind type
     /// [GroupKind](<https://godoc.org/k8s.io/apimachinery/pkg/runtime/schema#GroupKind>)
     /// and is used for identifying specific "types" of resources to restore.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GroupKind {
         /// API group string of a Kubernetes resource, e.g.
@@ -411,7 +397,6 @@ pub mod restore_config {
         pub resource_kind: ::prost::alloc::string::String,
     }
     /// Identifies the cluster-scoped resources to restore from the Backup.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClusterResourceRestoreScope {
         /// A list of "types" of cluster-scoped resources to be restored from the
@@ -424,7 +409,6 @@ pub mod restore_config {
     /// A transformation rule to be applied against Kubernetes resources as they
     /// are selected for restoration from a Backup. A rule contains both filtering
     /// logic (which resources are subject to substitution) and substitution logic.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SubstitutionRule {
         /// (Filtering parameter) Any resource subject to substitution must be
@@ -645,7 +629,6 @@ pub mod restore_config {
     /// Specifies the namespaced resources to restore from the Backup.
     /// Only one of the entries may be specified. If not specified, NO namespaced
     /// resources will be restored.
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum NamespacedResourceRestoreScope {
         /// Restore all namespaced resources in the Backup if set to "True".
@@ -666,7 +649,6 @@ pub mod restore_config {
 /// use case 1
 /// A log entry when modification(creation, update, deletion) is made to a
 /// BackupPlan
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupPlanChange {
     /// The full name of the old BackupPlan resource that is being modified.
@@ -691,7 +673,6 @@ pub struct BackupPlanChange {
 /// use case 2
 /// A log entry when modification(creation, update, deletion) is made to a
 /// Backup
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupChange {
     /// The full name of the Backup resource that is being modified.
@@ -720,7 +701,6 @@ pub struct BackupChange {
 /// use case 3
 /// A log entry when modification(creation, update, deletion) is made to a
 /// restorePlan.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestorePlanChange {
     /// The full name of the RestorePlan resource that is being modified.
@@ -745,7 +725,6 @@ pub struct RestorePlanChange {
 /// use case 4
 /// A log entry when modification(creation, update, deletion) is made to a
 /// restore.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreChange {
     /// The full name of the Restore resource that is being modified.

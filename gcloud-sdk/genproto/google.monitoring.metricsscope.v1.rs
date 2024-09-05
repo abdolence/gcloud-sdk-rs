@@ -3,7 +3,6 @@
 /// Scope](<https://cloud.google.com/monitoring/settings#concept-scope>) in Cloud
 /// Monitoring, which specifies one or more Google projects and zero or more AWS
 /// accounts to monitor together.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricsScope {
     /// Immutable. The resource name of the Monitoring Metrics Scope.
@@ -27,7 +26,6 @@ pub struct MetricsScope {
 /// A [project being
 /// monitored](<https://cloud.google.com/monitoring/settings/multiple-projects#create-multi>)
 /// by a `Metrics Scope`.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MonitoredProject {
     /// Immutable. The resource name of the `MonitoredProject`. On input, the resource name
@@ -42,7 +40,6 @@ pub struct MonitoredProject {
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for the `GetMetricsScope` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMetricsScopeRequest {
     /// Required. The resource name of the `Metrics Scope`.
@@ -52,7 +49,6 @@ pub struct GetMetricsScopeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListMetricsScopesByMonitoredProject` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetricsScopesByMonitoredProjectRequest {
     /// Required. The resource name of the `Monitored Project` being requested.
@@ -62,7 +58,6 @@ pub struct ListMetricsScopesByMonitoredProjectRequest {
     pub monitored_resource_container: ::prost::alloc::string::String,
 }
 /// Response for the `ListMetricsScopesByMonitoredProject` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetricsScopesByMonitoredProjectResponse {
     /// A set of all metrics scopes that the specified monitored project has been
@@ -71,7 +66,6 @@ pub struct ListMetricsScopesByMonitoredProjectResponse {
     pub metrics_scopes: ::prost::alloc::vec::Vec<MetricsScope>,
 }
 /// Request for the `CreateMonitoredProject` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMonitoredProjectRequest {
     /// Required. The resource name of the existing `Metrics Scope` that will monitor this
@@ -88,7 +82,6 @@ pub struct CreateMonitoredProjectRequest {
     pub monitored_project: ::core::option::Option<MonitoredProject>,
 }
 /// Request for the `DeleteMonitoredProject` method.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteMonitoredProjectRequest {
     /// Required. The resource name of the `MonitoredProject`.
@@ -103,7 +96,6 @@ pub struct DeleteMonitoredProjectRequest {
 }
 /// Contains metadata for longrunning operation for the edit Metrics Scope
 /// endpoints.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Current state of the batch operation.
@@ -196,8 +188,8 @@ pub mod metrics_scopes_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -222,7 +214,7 @@ pub mod metrics_scopes_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             MetricsScopesClient::new(InterceptedService::new(inner, interceptor))
         }

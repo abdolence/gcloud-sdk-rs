@@ -2,7 +2,6 @@
 /// GeneratePackagesSummaryRequest is the request body for the
 /// GeneratePackagesSummary API method. It just takes a single name argument,
 /// referring to the resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GeneratePackagesSummaryRequest {
     /// Required. The name of the resource to get a packages summary for in the
@@ -11,7 +10,6 @@ pub struct GeneratePackagesSummaryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A summary of the packages found within the given resource.
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PackagesSummaryResponse {
     /// The unique URL of the image or the container for which this summary
@@ -27,7 +25,6 @@ pub struct PackagesSummaryResponse {
 /// Nested message and enum types in `PackagesSummaryResponse`.
 pub mod packages_summary_response {
     /// Per license count
-    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LicensesSummary {
         /// The license of the package. Note that the format of this value is not
@@ -41,7 +38,6 @@ pub mod packages_summary_response {
     }
 }
 /// The request to a call of ExportSBOM
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportSbomRequest {
     /// Required. The name of the resource in the form of
@@ -50,7 +46,6 @@ pub struct ExportSbomRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The response from a call to ExportSBOM
-#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportSbomResponse {
     /// The name of the discovery occurrence in the form
@@ -96,8 +91,8 @@ pub mod container_analysis_v1_beta1_client {
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
@@ -122,7 +117,7 @@ pub mod container_analysis_v1_beta1_client {
             >,
             <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ContainerAnalysisV1Beta1Client::new(
                 InterceptedService::new(inner, interceptor),
