@@ -2397,7 +2397,7 @@ pub async fn storage_objects_insert_ext_stream<S>(
     Error<StoragePeriodObjectsPeriodInsertError>,
 >
 where
-    S: futures::stream::TryStream + Send + Sync + 'static,
+    S: futures::stream::TryStream + Send + 'static,
     S::Error: Into<Box<dyn std::error::Error + Send + Sync>>,
     Bytes: From<S::Ok>,
 {
@@ -2550,7 +2550,7 @@ pub async fn storage_objects_insert_ext_bytes(
 > {
     use futures::StreamExt;
 
-    let bytes_stream: BoxStreamWithSync<
+    let bytes_stream: BoxStreamWithSend<
         'static,
         std::result::Result<bytes::Bytes, Box<(dyn std::error::Error + Send + Sync + 'static)>>,
     > = Box::pin(
