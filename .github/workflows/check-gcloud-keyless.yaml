@@ -7,7 +7,7 @@ env:
 jobs:
   check-gcloud-keyless:
     name: Checking keyless integration with GCloud
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       contents: 'read'
       id-token: 'write'
