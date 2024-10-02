@@ -46,10 +46,10 @@ pub mod disaster_recovery_event {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Severity::Unspecified => "SEVERITY_UNSPECIFIED",
-                Severity::ActionRequired => "ACTION_REQUIRED",
-                Severity::ActionSuggested => "ACTION_SUGGESTED",
-                Severity::Notice => "NOTICE",
+                Self::Unspecified => "SEVERITY_UNSPECIFIED",
+                Self::ActionRequired => "ACTION_REQUIRED",
+                Self::ActionSuggested => "ACTION_SUGGESTED",
+                Self::Notice => "NOTICE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

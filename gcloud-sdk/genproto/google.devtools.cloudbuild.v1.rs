@@ -83,9 +83,9 @@ pub mod storage_source {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SourceFetcher::Unspecified => "SOURCE_FETCHER_UNSPECIFIED",
-                SourceFetcher::Gsutil => "GSUTIL",
-                SourceFetcher::GcsFetcher => "GCS_FETCHER",
+                Self::Unspecified => "SOURCE_FETCHER_UNSPECIFIED",
+                Self::Gsutil => "GSUTIL",
+                Self::GcsFetcher => "GCS_FETCHER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -678,10 +678,10 @@ pub mod build {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Priority::Unspecified => "PRIORITY_UNSPECIFIED",
-                    Priority::Info => "INFO",
-                    Priority::Warning => "WARNING",
-                    Priority::Alert => "ALERT",
+                    Self::Unspecified => "PRIORITY_UNSPECIFIED",
+                    Self::Info => "INFO",
+                    Self::Warning => "WARNING",
+                    Self::Alert => "ALERT",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -745,13 +745,13 @@ pub mod build {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    FailureType::Unspecified => "FAILURE_TYPE_UNSPECIFIED",
-                    FailureType::PushFailed => "PUSH_FAILED",
-                    FailureType::PushImageNotFound => "PUSH_IMAGE_NOT_FOUND",
-                    FailureType::PushNotAuthorized => "PUSH_NOT_AUTHORIZED",
-                    FailureType::LoggingFailure => "LOGGING_FAILURE",
-                    FailureType::UserBuildStep => "USER_BUILD_STEP",
-                    FailureType::FetchSourceFailed => "FETCH_SOURCE_FAILED",
+                    Self::Unspecified => "FAILURE_TYPE_UNSPECIFIED",
+                    Self::PushFailed => "PUSH_FAILED",
+                    Self::PushImageNotFound => "PUSH_IMAGE_NOT_FOUND",
+                    Self::PushNotAuthorized => "PUSH_NOT_AUTHORIZED",
+                    Self::LoggingFailure => "LOGGING_FAILURE",
+                    Self::UserBuildStep => "USER_BUILD_STEP",
+                    Self::FetchSourceFailed => "FETCH_SOURCE_FAILED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -812,16 +812,16 @@ pub mod build {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::Unknown => "STATUS_UNKNOWN",
-                Status::Pending => "PENDING",
-                Status::Queued => "QUEUED",
-                Status::Working => "WORKING",
-                Status::Success => "SUCCESS",
-                Status::Failure => "FAILURE",
-                Status::InternalError => "INTERNAL_ERROR",
-                Status::Timeout => "TIMEOUT",
-                Status::Cancelled => "CANCELLED",
-                Status::Expired => "EXPIRED",
+                Self::Unknown => "STATUS_UNKNOWN",
+                Self::Pending => "PENDING",
+                Self::Queued => "QUEUED",
+                Self::Working => "WORKING",
+                Self::Success => "SUCCESS",
+                Self::Failure => "FAILURE",
+                Self::InternalError => "INTERNAL_ERROR",
+                Self::Timeout => "TIMEOUT",
+                Self::Cancelled => "CANCELLED",
+                Self::Expired => "EXPIRED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1087,10 +1087,10 @@ pub mod hash {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                HashType::None => "NONE",
-                HashType::Sha256 => "SHA256",
-                HashType::Md5 => "MD5",
-                HashType::Sha512 => "SHA512",
+                Self::None => "NONE",
+                Self::Sha256 => "SHA256",
+                Self::Md5 => "MD5",
+                Self::Sha512 => "SHA512",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1311,11 +1311,11 @@ pub mod build_approval {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Pending => "PENDING",
-                State::Approved => "APPROVED",
-                State::Rejected => "REJECTED",
-                State::Cancelled => "CANCELLED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Approved => "APPROVED",
+                Self::Rejected => "REJECTED",
+                Self::Cancelled => "CANCELLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1395,9 +1395,9 @@ pub mod approval_result {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Decision::Unspecified => "DECISION_UNSPECIFIED",
-                Decision::Approved => "APPROVED",
-                Decision::Rejected => "REJECTED",
+                Self::Unspecified => "DECISION_UNSPECIFIED",
+                Self::Approved => "APPROVED",
+                Self::Rejected => "REJECTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1523,11 +1523,11 @@ pub mod git_file_source {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RepoType::Unknown => "UNKNOWN",
-                RepoType::CloudSourceRepositories => "CLOUD_SOURCE_REPOSITORIES",
-                RepoType::Github => "GITHUB",
-                RepoType::BitbucketServer => "BITBUCKET_SERVER",
-                RepoType::Gitlab => "GITLAB",
+                Self::Unknown => "UNKNOWN",
+                Self::CloudSourceRepositories => "CLOUD_SOURCE_REPOSITORIES",
+                Self::Github => "GITHUB",
+                Self::BitbucketServer => "BITBUCKET_SERVER",
+                Self::Gitlab => "GITLAB",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1749,10 +1749,10 @@ pub mod repository_event_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RepositoryType::Unspecified => "REPOSITORY_TYPE_UNSPECIFIED",
-                RepositoryType::Github => "GITHUB",
-                RepositoryType::GithubEnterprise => "GITHUB_ENTERPRISE",
-                RepositoryType::GitlabEnterprise => "GITLAB_ENTERPRISE",
+                Self::Unspecified => "REPOSITORY_TYPE_UNSPECIFIED",
+                Self::Github => "GITHUB",
+                Self::GithubEnterprise => "GITHUB_ENTERPRISE",
+                Self::GitlabEnterprise => "GITLAB_ENTERPRISE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1868,11 +1868,11 @@ pub mod pubsub_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Ok => "OK",
-                State::SubscriptionDeleted => "SUBSCRIPTION_DELETED",
-                State::TopicDeleted => "TOPIC_DELETED",
-                State::SubscriptionMisconfigured => "SUBSCRIPTION_MISCONFIGURED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Ok => "OK",
+                Self::SubscriptionDeleted => "SUBSCRIPTION_DELETED",
+                Self::TopicDeleted => "TOPIC_DELETED",
+                Self::SubscriptionMisconfigured => "SUBSCRIPTION_MISCONFIGURED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1931,9 +1931,9 @@ pub mod webhook_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Ok => "OK",
-                State::SecretDeleted => "SECRET_DELETED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Ok => "OK",
+                Self::SecretDeleted => "SECRET_DELETED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2002,9 +2002,9 @@ pub mod pull_request_filter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CommentControl::CommentsDisabled => "COMMENTS_DISABLED",
-                CommentControl::CommentsEnabled => "COMMENTS_ENABLED",
-                CommentControl::CommentsEnabledForExternalContributorsOnly => {
+                Self::CommentsDisabled => "COMMENTS_DISABLED",
+                Self::CommentsEnabled => "COMMENTS_ENABLED",
+                Self::CommentsEnabledForExternalContributorsOnly => {
                     "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"
                 }
             }
@@ -2290,8 +2290,8 @@ pub mod build_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                VerifyOption::NotVerified => "NOT_VERIFIED",
-                VerifyOption::Verified => "VERIFIED",
+                Self::NotVerified => "NOT_VERIFIED",
+                Self::Verified => "VERIFIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2339,12 +2339,12 @@ pub mod build_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MachineType::Unspecified => "UNSPECIFIED",
-                MachineType::N1Highcpu8 => "N1_HIGHCPU_8",
-                MachineType::N1Highcpu32 => "N1_HIGHCPU_32",
-                MachineType::E2Highcpu8 => "E2_HIGHCPU_8",
-                MachineType::E2Highcpu32 => "E2_HIGHCPU_32",
-                MachineType::E2Medium => "E2_MEDIUM",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::N1Highcpu8 => "N1_HIGHCPU_8",
+                Self::N1Highcpu32 => "N1_HIGHCPU_32",
+                Self::E2Highcpu8 => "E2_HIGHCPU_8",
+                Self::E2Highcpu32 => "E2_HIGHCPU_32",
+                Self::E2Medium => "E2_MEDIUM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2387,8 +2387,8 @@ pub mod build_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SubstitutionOption::MustMatch => "MUST_MATCH",
-                SubstitutionOption::AllowLoose => "ALLOW_LOOSE",
+                Self::MustMatch => "MUST_MATCH",
+                Self::AllowLoose => "ALLOW_LOOSE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2429,9 +2429,9 @@ pub mod build_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LogStreamingOption::StreamDefault => "STREAM_DEFAULT",
-                LogStreamingOption::StreamOn => "STREAM_ON",
-                LogStreamingOption::StreamOff => "STREAM_OFF",
+                Self::StreamDefault => "STREAM_DEFAULT",
+                Self::StreamOn => "STREAM_ON",
+                Self::StreamOff => "STREAM_OFF",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2481,12 +2481,12 @@ pub mod build_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LoggingMode::LoggingUnspecified => "LOGGING_UNSPECIFIED",
-                LoggingMode::Legacy => "LEGACY",
-                LoggingMode::GcsOnly => "GCS_ONLY",
-                LoggingMode::StackdriverOnly => "STACKDRIVER_ONLY",
-                LoggingMode::CloudLoggingOnly => "CLOUD_LOGGING_ONLY",
-                LoggingMode::None => "NONE",
+                Self::LoggingUnspecified => "LOGGING_UNSPECIFIED",
+                Self::Legacy => "LEGACY",
+                Self::GcsOnly => "GCS_ONLY",
+                Self::StackdriverOnly => "STACKDRIVER_ONLY",
+                Self::CloudLoggingOnly => "CLOUD_LOGGING_ONLY",
+                Self::None => "NONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2502,7 +2502,7 @@ pub mod build_options {
             }
         }
     }
-    /// Default GCS log bucket behavior options.
+    /// Default Cloud Storage log bucket behavior options.
     #[derive(
         Clone,
         Copy,
@@ -2520,8 +2520,10 @@ pub mod build_options {
         Unspecified = 0,
         /// Bucket is located in user-owned project in the same region as the
         /// build. The builder service account must have access to create and write
-        /// to GCS buckets in the build project.
+        /// to Cloud Storage buckets in the build project.
         RegionalUserOwnedBucket = 1,
+        /// Bucket is located in a Google-owned project and is not regionalized.
+        LegacyBucket = 2,
     }
     impl DefaultLogsBucketBehavior {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2530,12 +2532,9 @@ pub mod build_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DefaultLogsBucketBehavior::Unspecified => {
-                    "DEFAULT_LOGS_BUCKET_BEHAVIOR_UNSPECIFIED"
-                }
-                DefaultLogsBucketBehavior::RegionalUserOwnedBucket => {
-                    "REGIONAL_USER_OWNED_BUCKET"
-                }
+                Self::Unspecified => "DEFAULT_LOGS_BUCKET_BEHAVIOR_UNSPECIFIED",
+                Self::RegionalUserOwnedBucket => "REGIONAL_USER_OWNED_BUCKET",
+                Self::LegacyBucket => "LEGACY_BUCKET",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2543,6 +2542,7 @@ pub mod build_options {
             match value {
                 "DEFAULT_LOGS_BUCKET_BEHAVIOR_UNSPECIFIED" => Some(Self::Unspecified),
                 "REGIONAL_USER_OWNED_BUCKET" => Some(Self::RegionalUserOwnedBucket),
+                "LEGACY_BUCKET" => Some(Self::LegacyBucket),
                 _ => None,
             }
         }
@@ -2730,12 +2730,12 @@ pub mod worker_pool {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Running => "RUNNING",
-                State::Deleting => "DELETING",
-                State::Deleted => "DELETED",
-                State::Updating => "UPDATING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Running => "RUNNING",
+                Self::Deleting => "DELETING",
+                Self::Deleted => "DELETED",
+                Self::Updating => "UPDATING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2848,9 +2848,9 @@ pub mod private_pool_v1_config {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    EgressOption::Unspecified => "EGRESS_OPTION_UNSPECIFIED",
-                    EgressOption::NoPublicEgress => "NO_PUBLIC_EGRESS",
-                    EgressOption::PublicEgress => "PUBLIC_EGRESS",
+                    Self::Unspecified => "EGRESS_OPTION_UNSPECIFIED",
+                    Self::NoPublicEgress => "NO_PUBLIC_EGRESS",
+                    Self::PublicEgress => "PUBLIC_EGRESS",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3008,7 +3008,13 @@ pub struct DeleteWorkerPoolOperationMetadata {
 }
 /// Generated client implementations.
 pub mod cloud_build_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Creates and manages builds on Google Cloud Platform.
@@ -3115,8 +3121,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3146,8 +3151,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3180,8 +3184,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3208,8 +3211,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3265,8 +3267,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3301,8 +3302,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3331,8 +3331,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3361,8 +3360,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3394,8 +3392,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3424,8 +3421,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3454,8 +3450,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3491,8 +3486,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3523,8 +3517,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3554,8 +3547,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3582,8 +3574,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3613,8 +3604,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3644,8 +3634,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3675,8 +3664,7 @@ pub mod cloud_build_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

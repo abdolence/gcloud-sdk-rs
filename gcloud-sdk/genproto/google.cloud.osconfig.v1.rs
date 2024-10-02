@@ -114,8 +114,8 @@ pub mod inventory {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    OriginType::Unspecified => "ORIGIN_TYPE_UNSPECIFIED",
-                    OriginType::InventoryReport => "INVENTORY_REPORT",
+                    Self::Unspecified => "ORIGIN_TYPE_UNSPECIFIED",
+                    Self::InventoryReport => "INVENTORY_REPORT",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -155,9 +155,9 @@ pub mod inventory {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Type::Unspecified => "TYPE_UNSPECIFIED",
-                    Type::InstalledPackage => "INSTALLED_PACKAGE",
-                    Type::AvailablePackage => "AVAILABLE_PACKAGE",
+                    Self::Unspecified => "TYPE_UNSPECIFIED",
+                    Self::InstalledPackage => "INSTALLED_PACKAGE",
+                    Self::AvailablePackage => "AVAILABLE_PACKAGE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -443,9 +443,9 @@ impl InventoryView {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            InventoryView::Unspecified => "INVENTORY_VIEW_UNSPECIFIED",
-            InventoryView::Basic => "BASIC",
-            InventoryView::Full => "FULL",
+            Self::Unspecified => "INVENTORY_VIEW_UNSPECIFIED",
+            Self::Basic => "BASIC",
+            Self::Full => "FULL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -708,9 +708,9 @@ pub mod os_policy {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        DesiredState::Unspecified => "DESIRED_STATE_UNSPECIFIED",
-                        DesiredState::Installed => "INSTALLED",
-                        DesiredState::Removed => "REMOVED",
+                        Self::Unspecified => "DESIRED_STATE_UNSPECIFIED",
+                        Self::Installed => "INSTALLED",
+                        Self::Removed => "REMOVED",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -811,9 +811,9 @@ pub mod os_policy {
                     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                     pub fn as_str_name(&self) -> &'static str {
                         match self {
-                            ArchiveType::Unspecified => "ARCHIVE_TYPE_UNSPECIFIED",
-                            ArchiveType::Deb => "DEB",
-                            ArchiveType::DebSrc => "DEB_SRC",
+                            Self::Unspecified => "ARCHIVE_TYPE_UNSPECIFIED",
+                            Self::Deb => "DEB",
+                            Self::DebSrc => "DEB_SRC",
                         }
                     }
                     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -998,10 +998,10 @@ pub mod os_policy {
                     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                     pub fn as_str_name(&self) -> &'static str {
                         match self {
-                            Interpreter::Unspecified => "INTERPRETER_UNSPECIFIED",
-                            Interpreter::None => "NONE",
-                            Interpreter::Shell => "SHELL",
-                            Interpreter::Powershell => "POWERSHELL",
+                            Self::Unspecified => "INTERPRETER_UNSPECIFIED",
+                            Self::None => "NONE",
+                            Self::Shell => "SHELL",
+                            Self::Powershell => "POWERSHELL",
                         }
                     }
                     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1089,10 +1089,10 @@ pub mod os_policy {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        DesiredState::Unspecified => "DESIRED_STATE_UNSPECIFIED",
-                        DesiredState::Present => "PRESENT",
-                        DesiredState::Absent => "ABSENT",
-                        DesiredState::ContentsMatch => "CONTENTS_MATCH",
+                        Self::Unspecified => "DESIRED_STATE_UNSPECIFIED",
+                        Self::Present => "PRESENT",
+                        Self::Absent => "ABSENT",
+                        Self::ContentsMatch => "CONTENTS_MATCH",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1196,9 +1196,9 @@ pub mod os_policy {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Mode::Unspecified => "MODE_UNSPECIFIED",
-                Mode::Validation => "VALIDATION",
-                Mode::Enforcement => "ENFORCEMENT",
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::Validation => "VALIDATION",
+                Self::Enforcement => "ENFORCEMENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1450,11 +1450,11 @@ pub mod os_policy_assignment_report {
                     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                     pub fn as_str_name(&self) -> &'static str {
                         match self {
-                            Type::Unspecified => "TYPE_UNSPECIFIED",
-                            Type::Validation => "VALIDATION",
-                            Type::DesiredStateCheck => "DESIRED_STATE_CHECK",
-                            Type::DesiredStateEnforcement => "DESIRED_STATE_ENFORCEMENT",
-                            Type::DesiredStateCheckPostEnforcement => {
+                            Self::Unspecified => "TYPE_UNSPECIFIED",
+                            Self::Validation => "VALIDATION",
+                            Self::DesiredStateCheck => "DESIRED_STATE_CHECK",
+                            Self::DesiredStateEnforcement => "DESIRED_STATE_ENFORCEMENT",
+                            Self::DesiredStateCheckPostEnforcement => {
                                 "DESIRED_STATE_CHECK_POST_ENFORCEMENT"
                             }
                         }
@@ -1515,9 +1515,9 @@ pub mod os_policy_assignment_report {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        ComplianceState::Unknown => "UNKNOWN",
-                        ComplianceState::Compliant => "COMPLIANT",
-                        ComplianceState::NonCompliant => "NON_COMPLIANT",
+                        Self::Unknown => "UNKNOWN",
+                        Self::Compliant => "COMPLIANT",
+                        Self::NonCompliant => "NON_COMPLIANT",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1575,9 +1575,9 @@ pub mod os_policy_assignment_report {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ComplianceState::Unknown => "UNKNOWN",
-                    ComplianceState::Compliant => "COMPLIANT",
-                    ComplianceState::NonCompliant => "NON_COMPLIANT",
+                    Self::Unknown => "UNKNOWN",
+                    Self::Compliant => "COMPLIANT",
+                    Self::NonCompliant => "NON_COMPLIANT",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1809,11 +1809,11 @@ pub mod os_policy_assignment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RolloutState::Unspecified => "ROLLOUT_STATE_UNSPECIFIED",
-                RolloutState::InProgress => "IN_PROGRESS",
-                RolloutState::Cancelling => "CANCELLING",
-                RolloutState::Cancelled => "CANCELLED",
-                RolloutState::Succeeded => "SUCCEEDED",
+                Self::Unspecified => "ROLLOUT_STATE_UNSPECIFIED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Cancelling => "CANCELLING",
+                Self::Cancelled => "CANCELLED",
+                Self::Succeeded => "SUCCEEDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1890,10 +1890,10 @@ pub mod os_policy_assignment_operation_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ApiMethod::Unspecified => "API_METHOD_UNSPECIFIED",
-                ApiMethod::Create => "CREATE",
-                ApiMethod::Update => "UPDATE",
-                ApiMethod::Delete => "DELETE",
+                Self::Unspecified => "API_METHOD_UNSPECIFIED",
+                Self::Create => "CREATE",
+                Self::Update => "UPDATE",
+                Self::Delete => "DELETE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1939,11 +1939,11 @@ pub mod os_policy_assignment_operation_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RolloutState::Unspecified => "ROLLOUT_STATE_UNSPECIFIED",
-                RolloutState::InProgress => "IN_PROGRESS",
-                RolloutState::Cancelling => "CANCELLING",
-                RolloutState::Cancelled => "CANCELLED",
-                RolloutState::Succeeded => "SUCCEEDED",
+                Self::Unspecified => "ROLLOUT_STATE_UNSPECIFIED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Cancelling => "CANCELLING",
+                Self::Cancelled => "CANCELLED",
+                Self::Succeeded => "SUCCEEDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2342,14 +2342,14 @@ pub mod patch_job {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Started => "STARTED",
-                State::InstanceLookup => "INSTANCE_LOOKUP",
-                State::Patching => "PATCHING",
-                State::Succeeded => "SUCCEEDED",
-                State::CompletedWithErrors => "COMPLETED_WITH_ERRORS",
-                State::Canceled => "CANCELED",
-                State::TimedOut => "TIMED_OUT",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Started => "STARTED",
+                Self::InstanceLookup => "INSTANCE_LOOKUP",
+                Self::Patching => "PATCHING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::CompletedWithErrors => "COMPLETED_WITH_ERRORS",
+                Self::Canceled => "CANCELED",
+                Self::TimedOut => "TIMED_OUT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2439,10 +2439,10 @@ pub mod patch_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RebootConfig::Unspecified => "REBOOT_CONFIG_UNSPECIFIED",
-                RebootConfig::Default => "DEFAULT",
-                RebootConfig::Always => "ALWAYS",
-                RebootConfig::Never => "NEVER",
+                Self::Unspecified => "REBOOT_CONFIG_UNSPECIFIED",
+                Self::Default => "DEFAULT",
+                Self::Always => "ALWAYS",
+                Self::Never => "NEVER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2518,22 +2518,22 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PatchState::Unspecified => "PATCH_STATE_UNSPECIFIED",
-                PatchState::Pending => "PENDING",
-                PatchState::Inactive => "INACTIVE",
-                PatchState::Notified => "NOTIFIED",
-                PatchState::Started => "STARTED",
-                PatchState::DownloadingPatches => "DOWNLOADING_PATCHES",
-                PatchState::ApplyingPatches => "APPLYING_PATCHES",
-                PatchState::Rebooting => "REBOOTING",
-                PatchState::Succeeded => "SUCCEEDED",
-                PatchState::SucceededRebootRequired => "SUCCEEDED_REBOOT_REQUIRED",
-                PatchState::Failed => "FAILED",
-                PatchState::Acked => "ACKED",
-                PatchState::TimedOut => "TIMED_OUT",
-                PatchState::RunningPrePatchStep => "RUNNING_PRE_PATCH_STEP",
-                PatchState::RunningPostPatchStep => "RUNNING_POST_PATCH_STEP",
-                PatchState::NoAgentDetected => "NO_AGENT_DETECTED",
+                Self::Unspecified => "PATCH_STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Inactive => "INACTIVE",
+                Self::Notified => "NOTIFIED",
+                Self::Started => "STARTED",
+                Self::DownloadingPatches => "DOWNLOADING_PATCHES",
+                Self::ApplyingPatches => "APPLYING_PATCHES",
+                Self::Rebooting => "REBOOTING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::SucceededRebootRequired => "SUCCEEDED_REBOOT_REQUIRED",
+                Self::Failed => "FAILED",
+                Self::Acked => "ACKED",
+                Self::TimedOut => "TIMED_OUT",
+                Self::RunningPrePatchStep => "RUNNING_PRE_PATCH_STEP",
+                Self::RunningPostPatchStep => "RUNNING_POST_PATCH_STEP",
+                Self::NoAgentDetected => "NO_AGENT_DETECTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2615,9 +2615,9 @@ pub mod apt_settings {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Dist => "DIST",
-                Type::Upgrade => "UPGRADE",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Dist => "DIST",
+                Self::Upgrade => "UPGRADE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2768,16 +2768,16 @@ pub mod windows_update_settings {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Classification::Unspecified => "CLASSIFICATION_UNSPECIFIED",
-                Classification::Critical => "CRITICAL",
-                Classification::Security => "SECURITY",
-                Classification::Definition => "DEFINITION",
-                Classification::Driver => "DRIVER",
-                Classification::FeaturePack => "FEATURE_PACK",
-                Classification::ServicePack => "SERVICE_PACK",
-                Classification::Tool => "TOOL",
-                Classification::UpdateRollup => "UPDATE_ROLLUP",
-                Classification::Update => "UPDATE",
+                Self::Unspecified => "CLASSIFICATION_UNSPECIFIED",
+                Self::Critical => "CRITICAL",
+                Self::Security => "SECURITY",
+                Self::Definition => "DEFINITION",
+                Self::Driver => "DRIVER",
+                Self::FeaturePack => "FEATURE_PACK",
+                Self::ServicePack => "SERVICE_PACK",
+                Self::Tool => "TOOL",
+                Self::UpdateRollup => "UPDATE_ROLLUP",
+                Self::Update => "UPDATE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2859,9 +2859,9 @@ pub mod exec_step_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Interpreter::Unspecified => "INTERPRETER_UNSPECIFIED",
-                Interpreter::Shell => "SHELL",
-                Interpreter::Powershell => "POWERSHELL",
+                Self::Unspecified => "INTERPRETER_UNSPECIFIED",
+                Self::Shell => "SHELL",
+                Self::Powershell => "POWERSHELL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3018,9 +3018,9 @@ pub mod patch_rollout {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Mode::Unspecified => "MODE_UNSPECIFIED",
-                Mode::ZoneByZone => "ZONE_BY_ZONE",
-                Mode::ConcurrentZones => "CONCURRENT_ZONES",
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::ZoneByZone => "ZONE_BY_ZONE",
+                Self::ConcurrentZones => "CONCURRENT_ZONES",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3115,9 +3115,9 @@ pub mod patch_deployment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::Paused => "PAUSED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Paused => "PAUSED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3216,10 +3216,10 @@ pub mod recurring_schedule {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Frequency::Unspecified => "FREQUENCY_UNSPECIFIED",
-                Frequency::Weekly => "WEEKLY",
-                Frequency::Monthly => "MONTHLY",
-                Frequency::Daily => "DAILY",
+                Self::Unspecified => "FREQUENCY_UNSPECIFIED",
+                Self::Weekly => "WEEKLY",
+                Self::Monthly => "MONTHLY",
+                Self::Daily => "DAILY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3388,7 +3388,13 @@ pub struct ResumePatchDeploymentRequest {
 }
 /// Generated client implementations.
 pub mod os_config_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// OS Config API
@@ -3484,8 +3490,7 @@ pub mod os_config_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3513,8 +3518,7 @@ pub mod os_config_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3542,8 +3546,7 @@ pub mod os_config_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3573,8 +3576,7 @@ pub mod os_config_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3604,8 +3606,7 @@ pub mod os_config_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3635,8 +3636,7 @@ pub mod os_config_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3666,8 +3666,7 @@ pub mod os_config_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3697,8 +3696,7 @@ pub mod os_config_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3725,8 +3723,7 @@ pub mod os_config_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3756,8 +3753,7 @@ pub mod os_config_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3788,8 +3784,7 @@ pub mod os_config_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3820,8 +3815,7 @@ pub mod os_config_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4113,11 +4107,11 @@ pub mod cvs_sv3 {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AttackVector::Unspecified => "ATTACK_VECTOR_UNSPECIFIED",
-                AttackVector::Network => "ATTACK_VECTOR_NETWORK",
-                AttackVector::Adjacent => "ATTACK_VECTOR_ADJACENT",
-                AttackVector::Local => "ATTACK_VECTOR_LOCAL",
-                AttackVector::Physical => "ATTACK_VECTOR_PHYSICAL",
+                Self::Unspecified => "ATTACK_VECTOR_UNSPECIFIED",
+                Self::Network => "ATTACK_VECTOR_NETWORK",
+                Self::Adjacent => "ATTACK_VECTOR_ADJACENT",
+                Self::Local => "ATTACK_VECTOR_LOCAL",
+                Self::Physical => "ATTACK_VECTOR_PHYSICAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4167,9 +4161,9 @@ pub mod cvs_sv3 {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AttackComplexity::Unspecified => "ATTACK_COMPLEXITY_UNSPECIFIED",
-                AttackComplexity::Low => "ATTACK_COMPLEXITY_LOW",
-                AttackComplexity::High => "ATTACK_COMPLEXITY_HIGH",
+                Self::Unspecified => "ATTACK_COMPLEXITY_UNSPECIFIED",
+                Self::Low => "ATTACK_COMPLEXITY_LOW",
+                Self::High => "ATTACK_COMPLEXITY_HIGH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4220,10 +4214,10 @@ pub mod cvs_sv3 {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PrivilegesRequired::Unspecified => "PRIVILEGES_REQUIRED_UNSPECIFIED",
-                PrivilegesRequired::None => "PRIVILEGES_REQUIRED_NONE",
-                PrivilegesRequired::Low => "PRIVILEGES_REQUIRED_LOW",
-                PrivilegesRequired::High => "PRIVILEGES_REQUIRED_HIGH",
+                Self::Unspecified => "PRIVILEGES_REQUIRED_UNSPECIFIED",
+                Self::None => "PRIVILEGES_REQUIRED_NONE",
+                Self::Low => "PRIVILEGES_REQUIRED_LOW",
+                Self::High => "PRIVILEGES_REQUIRED_HIGH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4268,9 +4262,9 @@ pub mod cvs_sv3 {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                UserInteraction::Unspecified => "USER_INTERACTION_UNSPECIFIED",
-                UserInteraction::None => "USER_INTERACTION_NONE",
-                UserInteraction::Required => "USER_INTERACTION_REQUIRED",
+                Self::Unspecified => "USER_INTERACTION_UNSPECIFIED",
+                Self::None => "USER_INTERACTION_NONE",
+                Self::Required => "USER_INTERACTION_REQUIRED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4314,9 +4308,9 @@ pub mod cvs_sv3 {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Scope::Unspecified => "SCOPE_UNSPECIFIED",
-                Scope::Unchanged => "SCOPE_UNCHANGED",
-                Scope::Changed => "SCOPE_CHANGED",
+                Self::Unspecified => "SCOPE_UNSPECIFIED",
+                Self::Unchanged => "SCOPE_UNCHANGED",
+                Self::Changed => "SCOPE_CHANGED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4361,10 +4355,10 @@ pub mod cvs_sv3 {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Impact::Unspecified => "IMPACT_UNSPECIFIED",
-                Impact::High => "IMPACT_HIGH",
-                Impact::Low => "IMPACT_LOW",
-                Impact::None => "IMPACT_NONE",
+                Self::Unspecified => "IMPACT_UNSPECIFIED",
+                Self::High => "IMPACT_HIGH",
+                Self::Low => "IMPACT_LOW",
+                Self::None => "IMPACT_NONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4381,7 +4375,13 @@ pub mod cvs_sv3 {
 }
 /// Generated client implementations.
 pub mod os_config_zonal_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Zonal OS Config API
@@ -4488,8 +4488,7 @@ pub mod os_config_zonal_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4527,8 +4526,7 @@ pub mod os_config_zonal_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4562,8 +4560,7 @@ pub mod os_config_zonal_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4595,8 +4592,7 @@ pub mod os_config_zonal_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4628,8 +4624,7 @@ pub mod os_config_zonal_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4670,8 +4665,7 @@ pub mod os_config_zonal_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4702,8 +4696,7 @@ pub mod os_config_zonal_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4734,8 +4727,7 @@ pub mod os_config_zonal_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4763,8 +4755,7 @@ pub mod os_config_zonal_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4794,8 +4785,7 @@ pub mod os_config_zonal_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4826,8 +4816,7 @@ pub mod os_config_zonal_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4857,8 +4846,7 @@ pub mod os_config_zonal_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

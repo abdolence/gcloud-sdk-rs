@@ -159,10 +159,10 @@ pub mod node_taint {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Effect::Unspecified => "EFFECT_UNSPECIFIED",
-                Effect::NoSchedule => "NO_SCHEDULE",
-                Effect::PreferNoSchedule => "PREFER_NO_SCHEDULE",
-                Effect::NoExecute => "NO_EXECUTE",
+                Self::Unspecified => "EFFECT_UNSPECIFIED",
+                Self::NoSchedule => "NO_SCHEDULE",
+                Self::PreferNoSchedule => "PREFER_NO_SCHEDULE",
+                Self::NoExecute => "NO_EXECUTE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -344,8 +344,8 @@ pub mod network_policy {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Provider::Unspecified => "PROVIDER_UNSPECIFIED",
-                Provider::Calico => "CALICO",
+                Self::Unspecified => "PROVIDER_UNSPECIFIED",
+                Self::Calico => "CALICO",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -683,12 +683,12 @@ pub mod cluster {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::Unspecified => "STATUS_UNSPECIFIED",
-                Status::Provisioning => "PROVISIONING",
-                Status::Running => "RUNNING",
-                Status::Reconciling => "RECONCILING",
-                Status::Stopping => "STOPPING",
-                Status::Error => "ERROR",
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Running => "RUNNING",
+                Self::Reconciling => "RECONCILING",
+                Self::Stopping => "STOPPING",
+                Self::Error => "ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -846,11 +846,11 @@ pub mod operation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::Unspecified => "STATUS_UNSPECIFIED",
-                Status::Pending => "PENDING",
-                Status::Running => "RUNNING",
-                Status::Done => "DONE",
-                Status::Aborting => "ABORTING",
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Running => "RUNNING",
+                Self::Done => "DONE",
+                Self::Aborting => "ABORTING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -921,23 +921,23 @@ pub mod operation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::CreateCluster => "CREATE_CLUSTER",
-                Type::DeleteCluster => "DELETE_CLUSTER",
-                Type::UpgradeMaster => "UPGRADE_MASTER",
-                Type::UpgradeNodes => "UPGRADE_NODES",
-                Type::RepairCluster => "REPAIR_CLUSTER",
-                Type::UpdateCluster => "UPDATE_CLUSTER",
-                Type::CreateNodePool => "CREATE_NODE_POOL",
-                Type::DeleteNodePool => "DELETE_NODE_POOL",
-                Type::SetNodePoolManagement => "SET_NODE_POOL_MANAGEMENT",
-                Type::AutoRepairNodes => "AUTO_REPAIR_NODES",
-                Type::AutoUpgradeNodes => "AUTO_UPGRADE_NODES",
-                Type::SetLabels => "SET_LABELS",
-                Type::SetMasterAuth => "SET_MASTER_AUTH",
-                Type::SetNodePoolSize => "SET_NODE_POOL_SIZE",
-                Type::SetNetworkPolicy => "SET_NETWORK_POLICY",
-                Type::SetMaintenancePolicy => "SET_MAINTENANCE_POLICY",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::CreateCluster => "CREATE_CLUSTER",
+                Self::DeleteCluster => "DELETE_CLUSTER",
+                Self::UpgradeMaster => "UPGRADE_MASTER",
+                Self::UpgradeNodes => "UPGRADE_NODES",
+                Self::RepairCluster => "REPAIR_CLUSTER",
+                Self::UpdateCluster => "UPDATE_CLUSTER",
+                Self::CreateNodePool => "CREATE_NODE_POOL",
+                Self::DeleteNodePool => "DELETE_NODE_POOL",
+                Self::SetNodePoolManagement => "SET_NODE_POOL_MANAGEMENT",
+                Self::AutoRepairNodes => "AUTO_REPAIR_NODES",
+                Self::AutoUpgradeNodes => "AUTO_UPGRADE_NODES",
+                Self::SetLabels => "SET_LABELS",
+                Self::SetMasterAuth => "SET_MASTER_AUTH",
+                Self::SetNodePoolSize => "SET_NODE_POOL_SIZE",
+                Self::SetNetworkPolicy => "SET_NETWORK_POLICY",
+                Self::SetMaintenancePolicy => "SET_MAINTENANCE_POLICY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1312,10 +1312,10 @@ pub mod set_master_auth_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Action::Unknown => "UNKNOWN",
-                Action::SetPassword => "SET_PASSWORD",
-                Action::GeneratePassword => "GENERATE_PASSWORD",
-                Action::SetUsername => "SET_USERNAME",
+                Self::Unknown => "UNKNOWN",
+                Self::SetPassword => "SET_PASSWORD",
+                Self::GeneratePassword => "GENERATE_PASSWORD",
+                Self::SetUsername => "SET_USERNAME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1691,13 +1691,13 @@ pub mod node_pool {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::Unspecified => "STATUS_UNSPECIFIED",
-                Status::Provisioning => "PROVISIONING",
-                Status::Running => "RUNNING",
-                Status::RunningWithError => "RUNNING_WITH_ERROR",
-                Status::Reconciling => "RECONCILING",
-                Status::Stopping => "STOPPING",
-                Status::Error => "ERROR",
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Running => "RUNNING",
+                Self::RunningWithError => "RUNNING_WITH_ERROR",
+                Self::Reconciling => "RECONCILING",
+                Self::Stopping => "STOPPING",
+                Self::Error => "ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2075,7 +2075,13 @@ pub struct SetMaintenancePolicyRequest {
 }
 /// Generated client implementations.
 pub mod cluster_manager_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Google Container Engine Cluster Manager v1alpha1
@@ -2172,8 +2178,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2200,8 +2205,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2240,8 +2244,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2268,8 +2271,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2296,8 +2298,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2324,8 +2325,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2352,8 +2352,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2380,8 +2379,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2408,8 +2406,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2436,8 +2433,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2464,8 +2460,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2495,8 +2490,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2531,8 +2525,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2562,8 +2555,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2590,8 +2582,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2618,8 +2609,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2646,8 +2636,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2677,8 +2666,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2705,8 +2693,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2733,8 +2720,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2761,8 +2747,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2790,8 +2775,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2818,8 +2802,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2846,8 +2829,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2874,8 +2856,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2902,8 +2883,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2930,8 +2910,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2958,8 +2937,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2986,8 +2964,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3014,8 +2991,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

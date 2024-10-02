@@ -81,8 +81,8 @@ pub mod event_log {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EventCategory::Unspecified => "EVENT_CATEGORY_UNSPECIFIED",
-                EventCategory::Incident => "INCIDENT",
+                Self::Unspecified => "EVENT_CATEGORY_UNSPECIFIED",
+                Self::Incident => "INCIDENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -124,9 +124,9 @@ pub mod event_log {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::Closed => "CLOSED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Closed => "CLOSED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -177,11 +177,11 @@ pub mod event_log {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DetailedState::Unspecified => "DETAILED_STATE_UNSPECIFIED",
-                DetailedState::Emerging => "EMERGING",
-                DetailedState::Confirmed => "CONFIRMED",
-                DetailedState::Resolved => "RESOLVED",
-                DetailedState::Merged => "MERGED",
+                Self::Unspecified => "DETAILED_STATE_UNSPECIFIED",
+                Self::Emerging => "EMERGING",
+                Self::Confirmed => "CONFIRMED",
+                Self::Resolved => "RESOLVED",
+                Self::Merged => "MERGED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -233,12 +233,12 @@ pub mod event_log {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Relevance::Unspecified => "RELEVANCE_UNSPECIFIED",
-                Relevance::Unknown => "UNKNOWN",
-                Relevance::NotImpacted => "NOT_IMPACTED",
-                Relevance::PartiallyRelated => "PARTIALLY_RELATED",
-                Relevance::Related => "RELATED",
-                Relevance::Impacted => "IMPACTED",
+                Self::Unspecified => "RELEVANCE_UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::NotImpacted => "NOT_IMPACTED",
+                Self::PartiallyRelated => "PARTIALLY_RELATED",
+                Self::Related => "RELATED",
+                Self::Impacted => "IMPACTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

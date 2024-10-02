@@ -77,12 +77,12 @@ pub mod endpoint {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Severity::Unspecified => "SEVERITY_UNSPECIFIED",
-                Severity::Informational => "INFORMATIONAL",
-                Severity::Low => "LOW",
-                Severity::Medium => "MEDIUM",
-                Severity::High => "HIGH",
-                Severity::Critical => "CRITICAL",
+                Self::Unspecified => "SEVERITY_UNSPECIFIED",
+                Self::Informational => "INFORMATIONAL",
+                Self::Low => "LOW",
+                Self::Medium => "MEDIUM",
+                Self::High => "HIGH",
+                Self::Critical => "CRITICAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -128,10 +128,10 @@ pub mod endpoint {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
-                State::Deleting => "DELETING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -274,7 +274,13 @@ pub struct OperationMetadata {
 }
 /// Generated client implementations.
 pub mod ids_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The IDS Service
@@ -370,8 +376,7 @@ pub mod ids_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -393,8 +398,7 @@ pub mod ids_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -419,8 +423,7 @@ pub mod ids_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -445,8 +448,7 @@ pub mod ids_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

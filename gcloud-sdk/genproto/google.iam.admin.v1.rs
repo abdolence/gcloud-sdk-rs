@@ -269,9 +269,9 @@ pub mod list_service_account_keys_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                KeyType::Unspecified => "KEY_TYPE_UNSPECIFIED",
-                KeyType::UserManaged => "USER_MANAGED",
-                KeyType::SystemManaged => "SYSTEM_MANAGED",
+                Self::Unspecified => "KEY_TYPE_UNSPECIFIED",
+                Self::UserManaged => "USER_MANAGED",
+                Self::SystemManaged => "SYSTEM_MANAGED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -628,12 +628,12 @@ pub mod role {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RoleLaunchStage::Alpha => "ALPHA",
-                RoleLaunchStage::Beta => "BETA",
-                RoleLaunchStage::Ga => "GA",
-                RoleLaunchStage::Deprecated => "DEPRECATED",
-                RoleLaunchStage::Disabled => "DISABLED",
-                RoleLaunchStage::Eap => "EAP",
+                Self::Alpha => "ALPHA",
+                Self::Beta => "BETA",
+                Self::Ga => "GA",
+                Self::Deprecated => "DEPRECATED",
+                Self::Disabled => "DISABLED",
+                Self::Eap => "EAP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -984,10 +984,10 @@ pub mod permission {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PermissionLaunchStage::Alpha => "ALPHA",
-                PermissionLaunchStage::Beta => "BETA",
-                PermissionLaunchStage::Ga => "GA",
-                PermissionLaunchStage::Deprecated => "DEPRECATED",
+                Self::Alpha => "ALPHA",
+                Self::Beta => "BETA",
+                Self::Ga => "GA",
+                Self::Deprecated => "DEPRECATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1029,9 +1029,9 @@ pub mod permission {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CustomRolesSupportLevel::Supported => "SUPPORTED",
-                CustomRolesSupportLevel::Testing => "TESTING",
-                CustomRolesSupportLevel::NotSupported => "NOT_SUPPORTED",
+                Self::Supported => "SUPPORTED",
+                Self::Testing => "TESTING",
+                Self::NotSupported => "NOT_SUPPORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1198,8 +1198,8 @@ pub mod lint_result {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Level::Unspecified => "LEVEL_UNSPECIFIED",
-                Level::Condition => "CONDITION",
+                Self::Unspecified => "LEVEL_UNSPECIFIED",
+                Self::Condition => "CONDITION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1260,12 +1260,12 @@ pub mod lint_result {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Severity::Unspecified => "SEVERITY_UNSPECIFIED",
-                Severity::Error => "ERROR",
-                Severity::Warning => "WARNING",
-                Severity::Notice => "NOTICE",
-                Severity::Info => "INFO",
-                Severity::Deprecated => "DEPRECATED",
+                Self::Unspecified => "SEVERITY_UNSPECIFIED",
+                Self::Error => "ERROR",
+                Self::Warning => "WARNING",
+                Self::Notice => "NOTICE",
+                Self::Info => "INFO",
+                Self::Deprecated => "DEPRECATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1308,9 +1308,9 @@ impl ServiceAccountKeyAlgorithm {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ServiceAccountKeyAlgorithm::KeyAlgUnspecified => "KEY_ALG_UNSPECIFIED",
-            ServiceAccountKeyAlgorithm::KeyAlgRsa1024 => "KEY_ALG_RSA_1024",
-            ServiceAccountKeyAlgorithm::KeyAlgRsa2048 => "KEY_ALG_RSA_2048",
+            Self::KeyAlgUnspecified => "KEY_ALG_UNSPECIFIED",
+            Self::KeyAlgRsa1024 => "KEY_ALG_RSA_1024",
+            Self::KeyAlgRsa2048 => "KEY_ALG_RSA_2048",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1343,11 +1343,9 @@ impl ServiceAccountPrivateKeyType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ServiceAccountPrivateKeyType::TypeUnspecified => "TYPE_UNSPECIFIED",
-            ServiceAccountPrivateKeyType::TypePkcs12File => "TYPE_PKCS12_FILE",
-            ServiceAccountPrivateKeyType::TypeGoogleCredentialsFile => {
-                "TYPE_GOOGLE_CREDENTIALS_FILE"
-            }
+            Self::TypeUnspecified => "TYPE_UNSPECIFIED",
+            Self::TypePkcs12File => "TYPE_PKCS12_FILE",
+            Self::TypeGoogleCredentialsFile => "TYPE_GOOGLE_CREDENTIALS_FILE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1378,9 +1376,9 @@ impl ServiceAccountPublicKeyType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ServiceAccountPublicKeyType::TypeNone => "TYPE_NONE",
-            ServiceAccountPublicKeyType::TypeX509PemFile => "TYPE_X509_PEM_FILE",
-            ServiceAccountPublicKeyType::TypeRawPublicKey => "TYPE_RAW_PUBLIC_KEY",
+            Self::TypeNone => "TYPE_NONE",
+            Self::TypeX509PemFile => "TYPE_X509_PEM_FILE",
+            Self::TypeRawPublicKey => "TYPE_RAW_PUBLIC_KEY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1411,9 +1409,9 @@ impl ServiceAccountKeyOrigin {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ServiceAccountKeyOrigin::OriginUnspecified => "ORIGIN_UNSPECIFIED",
-            ServiceAccountKeyOrigin::UserProvided => "USER_PROVIDED",
-            ServiceAccountKeyOrigin::GoogleProvided => "GOOGLE_PROVIDED",
+            Self::OriginUnspecified => "ORIGIN_UNSPECIFIED",
+            Self::UserProvided => "USER_PROVIDED",
+            Self::GoogleProvided => "GOOGLE_PROVIDED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1443,8 +1441,8 @@ impl RoleView {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            RoleView::Basic => "BASIC",
-            RoleView::Full => "FULL",
+            Self::Basic => "BASIC",
+            Self::Full => "FULL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1458,7 +1456,13 @@ impl RoleView {
 }
 /// Generated client implementations.
 pub mod iam_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Creates and manages Identity and Access Management (IAM) resources.
@@ -1582,8 +1586,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1607,8 +1610,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1630,8 +1632,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1660,8 +1661,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1685,8 +1685,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1724,8 +1723,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1759,8 +1757,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1791,8 +1788,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1831,8 +1827,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1859,8 +1854,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1887,8 +1881,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1915,8 +1908,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1947,8 +1939,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1974,8 +1965,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2000,8 +1990,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2028,8 +2017,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2052,6 +2040,7 @@ pub mod iam_client {
         /// instructions.
         ///
         /// Signs a blob using the system-managed private key for a [ServiceAccount][google.iam.admin.v1.ServiceAccount].
+        #[deprecated]
         pub async fn sign_blob(
             &mut self,
             request: impl tonic::IntoRequest<super::SignBlobRequest>,
@@ -2063,8 +2052,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2086,6 +2074,7 @@ pub mod iam_client {
         ///
         /// Signs a JSON Web Token (JWT) using the system-managed private key for a
         /// [ServiceAccount][google.iam.admin.v1.ServiceAccount].
+        #[deprecated]
         pub async fn sign_jwt(
             &mut self,
             request: impl tonic::IntoRequest<super::SignJwtRequest>,
@@ -2097,8 +2086,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2134,8 +2122,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2180,8 +2167,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2209,8 +2195,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2239,8 +2224,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2268,8 +2252,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2291,8 +2274,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2314,8 +2296,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2337,8 +2318,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2376,8 +2356,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2399,8 +2378,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2427,8 +2405,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2462,8 +2439,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2495,8 +2471,7 @@ pub mod iam_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -125,8 +125,8 @@ pub mod hash {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                HashType::Unspecified => "HASH_TYPE_UNSPECIFIED",
-                HashType::Sha256 => "SHA256",
+                Self::Unspecified => "HASH_TYPE_UNSPECIFIED",
+                Self::Sha256 => "SHA256",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

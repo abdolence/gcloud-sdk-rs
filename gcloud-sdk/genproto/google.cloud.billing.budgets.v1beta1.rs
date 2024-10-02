@@ -149,9 +149,9 @@ pub mod threshold_rule {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Basis::Unspecified => "BASIS_UNSPECIFIED",
-                Basis::CurrentSpend => "CURRENT_SPEND",
-                Basis::ForecastedSpend => "FORECASTED_SPEND",
+                Self::Unspecified => "BASIS_UNSPECIFIED",
+                Self::CurrentSpend => "CURRENT_SPEND",
+                Self::ForecastedSpend => "FORECASTED_SPEND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -327,12 +327,10 @@ pub mod filter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CreditTypesTreatment::Unspecified => "CREDIT_TYPES_TREATMENT_UNSPECIFIED",
-                CreditTypesTreatment::IncludeAllCredits => "INCLUDE_ALL_CREDITS",
-                CreditTypesTreatment::ExcludeAllCredits => "EXCLUDE_ALL_CREDITS",
-                CreditTypesTreatment::IncludeSpecifiedCredits => {
-                    "INCLUDE_SPECIFIED_CREDITS"
-                }
+                Self::Unspecified => "CREDIT_TYPES_TREATMENT_UNSPECIFIED",
+                Self::IncludeAllCredits => "INCLUDE_ALL_CREDITS",
+                Self::ExcludeAllCredits => "EXCLUDE_ALL_CREDITS",
+                Self::IncludeSpecifiedCredits => "INCLUDE_SPECIFIED_CREDITS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -403,10 +401,10 @@ impl CalendarPeriod {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            CalendarPeriod::Unspecified => "CALENDAR_PERIOD_UNSPECIFIED",
-            CalendarPeriod::Month => "MONTH",
-            CalendarPeriod::Quarter => "QUARTER",
-            CalendarPeriod::Year => "YEAR",
+            Self::Unspecified => "CALENDAR_PERIOD_UNSPECIFIED",
+            Self::Month => "MONTH",
+            Self::Quarter => "QUARTER",
+            Self::Year => "YEAR",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -501,7 +499,13 @@ pub struct DeleteBudgetRequest {
 }
 /// Generated client implementations.
 pub mod budget_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// BudgetService stores Cloud Billing budgets, which define a
@@ -597,8 +601,7 @@ pub mod budget_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -629,8 +632,7 @@ pub mod budget_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -662,8 +664,7 @@ pub mod budget_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -698,8 +699,7 @@ pub mod budget_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -726,8 +726,7 @@ pub mod budget_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

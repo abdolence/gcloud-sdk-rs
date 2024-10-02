@@ -305,69 +305,69 @@ pub mod scan_config_error {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Code::Unspecified => "CODE_UNSPECIFIED",
-                Code::InternalError => "INTERNAL_ERROR",
-                Code::AppengineApiBackendError => "APPENGINE_API_BACKEND_ERROR",
-                Code::AppengineApiNotAccessible => "APPENGINE_API_NOT_ACCESSIBLE",
-                Code::AppengineDefaultHostMissing => "APPENGINE_DEFAULT_HOST_MISSING",
-                Code::CannotUseGoogleComAccount => "CANNOT_USE_GOOGLE_COM_ACCOUNT",
-                Code::CannotUseOwnerAccount => "CANNOT_USE_OWNER_ACCOUNT",
-                Code::ComputeApiBackendError => "COMPUTE_API_BACKEND_ERROR",
-                Code::ComputeApiNotAccessible => "COMPUTE_API_NOT_ACCESSIBLE",
-                Code::CustomLoginUrlDoesNotBelongToCurrentProject => {
+                Self::Unspecified => "CODE_UNSPECIFIED",
+                Self::InternalError => "INTERNAL_ERROR",
+                Self::AppengineApiBackendError => "APPENGINE_API_BACKEND_ERROR",
+                Self::AppengineApiNotAccessible => "APPENGINE_API_NOT_ACCESSIBLE",
+                Self::AppengineDefaultHostMissing => "APPENGINE_DEFAULT_HOST_MISSING",
+                Self::CannotUseGoogleComAccount => "CANNOT_USE_GOOGLE_COM_ACCOUNT",
+                Self::CannotUseOwnerAccount => "CANNOT_USE_OWNER_ACCOUNT",
+                Self::ComputeApiBackendError => "COMPUTE_API_BACKEND_ERROR",
+                Self::ComputeApiNotAccessible => "COMPUTE_API_NOT_ACCESSIBLE",
+                Self::CustomLoginUrlDoesNotBelongToCurrentProject => {
                     "CUSTOM_LOGIN_URL_DOES_NOT_BELONG_TO_CURRENT_PROJECT"
                 }
-                Code::CustomLoginUrlMalformed => "CUSTOM_LOGIN_URL_MALFORMED",
-                Code::CustomLoginUrlMappedToNonRoutableAddress => {
+                Self::CustomLoginUrlMalformed => "CUSTOM_LOGIN_URL_MALFORMED",
+                Self::CustomLoginUrlMappedToNonRoutableAddress => {
                     "CUSTOM_LOGIN_URL_MAPPED_TO_NON_ROUTABLE_ADDRESS"
                 }
-                Code::CustomLoginUrlMappedToUnreservedAddress => {
+                Self::CustomLoginUrlMappedToUnreservedAddress => {
                     "CUSTOM_LOGIN_URL_MAPPED_TO_UNRESERVED_ADDRESS"
                 }
-                Code::CustomLoginUrlHasNonRoutableIpAddress => {
+                Self::CustomLoginUrlHasNonRoutableIpAddress => {
                     "CUSTOM_LOGIN_URL_HAS_NON_ROUTABLE_IP_ADDRESS"
                 }
-                Code::CustomLoginUrlHasUnreservedIpAddress => {
+                Self::CustomLoginUrlHasUnreservedIpAddress => {
                     "CUSTOM_LOGIN_URL_HAS_UNRESERVED_IP_ADDRESS"
                 }
-                Code::DuplicateScanName => "DUPLICATE_SCAN_NAME",
-                Code::InvalidFieldValue => "INVALID_FIELD_VALUE",
-                Code::FailedToAuthenticateToTarget => "FAILED_TO_AUTHENTICATE_TO_TARGET",
-                Code::FindingTypeUnspecified => "FINDING_TYPE_UNSPECIFIED",
-                Code::ForbiddenToScanCompute => "FORBIDDEN_TO_SCAN_COMPUTE",
-                Code::ForbiddenUpdateToManagedScan => "FORBIDDEN_UPDATE_TO_MANAGED_SCAN",
-                Code::MalformedFilter => "MALFORMED_FILTER",
-                Code::MalformedResourceName => "MALFORMED_RESOURCE_NAME",
-                Code::ProjectInactive => "PROJECT_INACTIVE",
-                Code::RequiredField => "REQUIRED_FIELD",
-                Code::ResourceNameInconsistent => "RESOURCE_NAME_INCONSISTENT",
-                Code::ScanAlreadyRunning => "SCAN_ALREADY_RUNNING",
-                Code::ScanNotRunning => "SCAN_NOT_RUNNING",
-                Code::SeedUrlDoesNotBelongToCurrentProject => {
+                Self::DuplicateScanName => "DUPLICATE_SCAN_NAME",
+                Self::InvalidFieldValue => "INVALID_FIELD_VALUE",
+                Self::FailedToAuthenticateToTarget => "FAILED_TO_AUTHENTICATE_TO_TARGET",
+                Self::FindingTypeUnspecified => "FINDING_TYPE_UNSPECIFIED",
+                Self::ForbiddenToScanCompute => "FORBIDDEN_TO_SCAN_COMPUTE",
+                Self::ForbiddenUpdateToManagedScan => "FORBIDDEN_UPDATE_TO_MANAGED_SCAN",
+                Self::MalformedFilter => "MALFORMED_FILTER",
+                Self::MalformedResourceName => "MALFORMED_RESOURCE_NAME",
+                Self::ProjectInactive => "PROJECT_INACTIVE",
+                Self::RequiredField => "REQUIRED_FIELD",
+                Self::ResourceNameInconsistent => "RESOURCE_NAME_INCONSISTENT",
+                Self::ScanAlreadyRunning => "SCAN_ALREADY_RUNNING",
+                Self::ScanNotRunning => "SCAN_NOT_RUNNING",
+                Self::SeedUrlDoesNotBelongToCurrentProject => {
                     "SEED_URL_DOES_NOT_BELONG_TO_CURRENT_PROJECT"
                 }
-                Code::SeedUrlMalformed => "SEED_URL_MALFORMED",
-                Code::SeedUrlMappedToNonRoutableAddress => {
+                Self::SeedUrlMalformed => "SEED_URL_MALFORMED",
+                Self::SeedUrlMappedToNonRoutableAddress => {
                     "SEED_URL_MAPPED_TO_NON_ROUTABLE_ADDRESS"
                 }
-                Code::SeedUrlMappedToUnreservedAddress => {
+                Self::SeedUrlMappedToUnreservedAddress => {
                     "SEED_URL_MAPPED_TO_UNRESERVED_ADDRESS"
                 }
-                Code::SeedUrlHasNonRoutableIpAddress => {
+                Self::SeedUrlHasNonRoutableIpAddress => {
                     "SEED_URL_HAS_NON_ROUTABLE_IP_ADDRESS"
                 }
-                Code::SeedUrlHasUnreservedIpAddress => {
+                Self::SeedUrlHasUnreservedIpAddress => {
                     "SEED_URL_HAS_UNRESERVED_IP_ADDRESS"
                 }
-                Code::ServiceAccountNotConfigured => "SERVICE_ACCOUNT_NOT_CONFIGURED",
-                Code::TooManyScans => "TOO_MANY_SCANS",
-                Code::UnableToResolveProjectInfo => "UNABLE_TO_RESOLVE_PROJECT_INFO",
-                Code::UnsupportedBlacklistPatternFormat => {
+                Self::ServiceAccountNotConfigured => "SERVICE_ACCOUNT_NOT_CONFIGURED",
+                Self::TooManyScans => "TOO_MANY_SCANS",
+                Self::UnableToResolveProjectInfo => "UNABLE_TO_RESOLVE_PROJECT_INFO",
+                Self::UnsupportedBlacklistPatternFormat => {
                     "UNSUPPORTED_BLACKLIST_PATTERN_FORMAT"
                 }
-                Code::UnsupportedFilter => "UNSUPPORTED_FILTER",
-                Code::UnsupportedFindingType => "UNSUPPORTED_FINDING_TYPE",
-                Code::UnsupportedUrlScheme => "UNSUPPORTED_URL_SCHEME",
+                Self::UnsupportedFilter => "UNSUPPORTED_FILTER",
+                Self::UnsupportedFindingType => "UNSUPPORTED_FINDING_TYPE",
+                Self::UnsupportedUrlScheme => "UNSUPPORTED_URL_SCHEME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -514,13 +514,13 @@ pub mod scan_run_error_trace {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Code::Unspecified => "CODE_UNSPECIFIED",
-                Code::InternalError => "INTERNAL_ERROR",
-                Code::ScanConfigIssue => "SCAN_CONFIG_ISSUE",
-                Code::AuthenticationConfigIssue => "AUTHENTICATION_CONFIG_ISSUE",
-                Code::TimedOutWhileScanning => "TIMED_OUT_WHILE_SCANNING",
-                Code::TooManyRedirects => "TOO_MANY_REDIRECTS",
-                Code::TooManyHttpErrors => "TOO_MANY_HTTP_ERRORS",
+                Self::Unspecified => "CODE_UNSPECIFIED",
+                Self::InternalError => "INTERNAL_ERROR",
+                Self::ScanConfigIssue => "SCAN_CONFIG_ISSUE",
+                Self::AuthenticationConfigIssue => "AUTHENTICATION_CONFIG_ISSUE",
+                Self::TimedOutWhileScanning => "TIMED_OUT_WHILE_SCANNING",
+                Self::TooManyRedirects => "TOO_MANY_REDIRECTS",
+                Self::TooManyHttpErrors => "TOO_MANY_HTTP_ERRORS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -588,11 +588,11 @@ pub mod scan_run_warning_trace {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Code::Unspecified => "CODE_UNSPECIFIED",
-                Code::InsufficientCrawlResults => "INSUFFICIENT_CRAWL_RESULTS",
-                Code::TooManyCrawlResults => "TOO_MANY_CRAWL_RESULTS",
-                Code::TooManyFuzzTasks => "TOO_MANY_FUZZ_TASKS",
-                Code::BlockedByIap => "BLOCKED_BY_IAP",
+                Self::Unspecified => "CODE_UNSPECIFIED",
+                Self::InsufficientCrawlResults => "INSUFFICIENT_CRAWL_RESULTS",
+                Self::TooManyCrawlResults => "TOO_MANY_CRAWL_RESULTS",
+                Self::TooManyFuzzTasks => "TOO_MANY_FUZZ_TASKS",
+                Self::BlockedByIap => "BLOCKED_BY_IAP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -691,10 +691,10 @@ pub mod scan_run {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ExecutionState::Unspecified => "EXECUTION_STATE_UNSPECIFIED",
-                ExecutionState::Queued => "QUEUED",
-                ExecutionState::Scanning => "SCANNING",
-                ExecutionState::Finished => "FINISHED",
+                Self::Unspecified => "EXECUTION_STATE_UNSPECIFIED",
+                Self::Queued => "QUEUED",
+                Self::Scanning => "SCANNING",
+                Self::Finished => "FINISHED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -739,10 +739,10 @@ pub mod scan_run {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ResultState::Unspecified => "RESULT_STATE_UNSPECIFIED",
-                ResultState::Success => "SUCCESS",
-                ResultState::Error => "ERROR",
-                ResultState::Killed => "KILLED",
+                Self::Unspecified => "RESULT_STATE_UNSPECIFIED",
+                Self::Success => "SUCCESS",
+                Self::Error => "ERROR",
+                Self::Killed => "KILLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -898,10 +898,10 @@ pub mod scan_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                UserAgent::Unspecified => "USER_AGENT_UNSPECIFIED",
-                UserAgent::ChromeLinux => "CHROME_LINUX",
-                UserAgent::ChromeAndroid => "CHROME_ANDROID",
-                UserAgent::SafariIphone => "SAFARI_IPHONE",
+                Self::Unspecified => "USER_AGENT_UNSPECIFIED",
+                Self::ChromeLinux => "CHROME_LINUX",
+                Self::ChromeAndroid => "CHROME_ANDROID",
+                Self::SafariIphone => "SAFARI_IPHONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -944,9 +944,9 @@ pub mod scan_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TargetPlatform::Unspecified => "TARGET_PLATFORM_UNSPECIFIED",
-                TargetPlatform::AppEngine => "APP_ENGINE",
-                TargetPlatform::Compute => "COMPUTE",
+                Self::Unspecified => "TARGET_PLATFORM_UNSPECIFIED",
+                Self::AppEngine => "APP_ENGINE",
+                Self::Compute => "COMPUTE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -989,9 +989,9 @@ pub mod scan_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RiskLevel::Unspecified => "RISK_LEVEL_UNSPECIFIED",
-                RiskLevel::Normal => "NORMAL",
-                RiskLevel::Low => "LOW",
+                Self::Unspecified => "RISK_LEVEL_UNSPECIFIED",
+                Self::Normal => "NORMAL",
+                Self::Low => "LOW",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1033,11 +1033,9 @@ pub mod scan_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ExportToSecurityCommandCenter::Unspecified => {
-                    "EXPORT_TO_SECURITY_COMMAND_CENTER_UNSPECIFIED"
-                }
-                ExportToSecurityCommandCenter::Enabled => "ENABLED",
-                ExportToSecurityCommandCenter::Disabled => "DISABLED",
+                Self::Unspecified => "EXPORT_TO_SECURITY_COMMAND_CENTER_UNSPECIFIED",
+                Self::Enabled => "ENABLED",
+                Self::Disabled => "DISABLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1271,7 +1269,13 @@ pub struct ListFindingTypeStatsResponse {
 }
 /// Generated client implementations.
 pub mod web_security_scanner_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Cloud Web Security Scanner Service identifies security vulnerabilities in web
@@ -1366,8 +1370,7 @@ pub mod web_security_scanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1394,8 +1397,7 @@ pub mod web_security_scanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1422,8 +1424,7 @@ pub mod web_security_scanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1453,8 +1454,7 @@ pub mod web_security_scanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1481,8 +1481,7 @@ pub mod web_security_scanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1509,8 +1508,7 @@ pub mod web_security_scanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1537,8 +1535,7 @@ pub mod web_security_scanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1569,8 +1566,7 @@ pub mod web_security_scanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1597,8 +1593,7 @@ pub mod web_security_scanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1628,8 +1623,7 @@ pub mod web_security_scanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1656,8 +1650,7 @@ pub mod web_security_scanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1687,8 +1680,7 @@ pub mod web_security_scanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1718,8 +1710,7 @@ pub mod web_security_scanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

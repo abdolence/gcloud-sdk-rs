@@ -82,8 +82,8 @@ pub mod basic_level {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConditionCombiningFunction::And => "AND",
-                ConditionCombiningFunction::Or => "OR",
+                Self::And => "AND",
+                Self::Or => "OR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -354,8 +354,8 @@ pub mod service_perimeter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PerimeterType::Regular => "PERIMETER_TYPE_REGULAR",
-                PerimeterType::Bridge => "PERIMETER_TYPE_BRIDGE",
+                Self::Regular => "PERIMETER_TYPE_REGULAR",
+                Self::Bridge => "PERIMETER_TYPE_BRIDGE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -771,10 +771,10 @@ pub mod service_perimeter_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                IdentityType::Unspecified => "IDENTITY_TYPE_UNSPECIFIED",
-                IdentityType::AnyIdentity => "ANY_IDENTITY",
-                IdentityType::AnyUserAccount => "ANY_USER_ACCOUNT",
-                IdentityType::AnyServiceAccount => "ANY_SERVICE_ACCOUNT",
+                Self::Unspecified => "IDENTITY_TYPE_UNSPECIFIED",
+                Self::AnyIdentity => "ANY_IDENTITY",
+                Self::AnyUserAccount => "ANY_USER_ACCOUNT",
+                Self::AnyServiceAccount => "ANY_SERVICE_ACCOUNT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1271,9 +1271,9 @@ impl LevelFormat {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            LevelFormat::Unspecified => "LEVEL_FORMAT_UNSPECIFIED",
-            LevelFormat::AsDefined => "AS_DEFINED",
-            LevelFormat::Cel => "CEL",
+            Self::Unspecified => "LEVEL_FORMAT_UNSPECIFIED",
+            Self::AsDefined => "AS_DEFINED",
+            Self::Cel => "CEL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1288,7 +1288,13 @@ impl LevelFormat {
 }
 /// Generated client implementations.
 pub mod access_context_manager_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// API for setting [access levels]
@@ -1396,8 +1402,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1425,8 +1430,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1460,8 +1464,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1496,8 +1499,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1531,8 +1533,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1564,8 +1565,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1594,8 +1594,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1631,8 +1630,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1669,8 +1667,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1705,8 +1702,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1752,8 +1748,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1785,8 +1780,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1818,8 +1812,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1856,8 +1849,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1894,8 +1886,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1930,8 +1921,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1973,8 +1963,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2018,8 +2007,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2051,8 +2039,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2084,8 +2071,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2124,8 +2110,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2159,8 +2144,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2194,8 +2178,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2232,8 +2215,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2266,8 +2248,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2306,8 +2287,7 @@ pub mod access_context_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

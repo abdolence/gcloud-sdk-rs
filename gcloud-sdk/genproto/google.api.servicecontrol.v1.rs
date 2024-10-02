@@ -96,27 +96,27 @@ pub mod check_error {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Code::ErrorCodeUnspecified => "ERROR_CODE_UNSPECIFIED",
-                Code::NotFound => "NOT_FOUND",
-                Code::PermissionDenied => "PERMISSION_DENIED",
-                Code::ResourceExhausted => "RESOURCE_EXHAUSTED",
-                Code::ServiceNotActivated => "SERVICE_NOT_ACTIVATED",
-                Code::BillingDisabled => "BILLING_DISABLED",
-                Code::ProjectDeleted => "PROJECT_DELETED",
-                Code::ProjectInvalid => "PROJECT_INVALID",
-                Code::ConsumerInvalid => "CONSUMER_INVALID",
-                Code::IpAddressBlocked => "IP_ADDRESS_BLOCKED",
-                Code::RefererBlocked => "REFERER_BLOCKED",
-                Code::ClientAppBlocked => "CLIENT_APP_BLOCKED",
-                Code::ApiTargetBlocked => "API_TARGET_BLOCKED",
-                Code::ApiKeyInvalid => "API_KEY_INVALID",
-                Code::ApiKeyExpired => "API_KEY_EXPIRED",
-                Code::ApiKeyNotFound => "API_KEY_NOT_FOUND",
-                Code::InvalidCredential => "INVALID_CREDENTIAL",
-                Code::NamespaceLookupUnavailable => "NAMESPACE_LOOKUP_UNAVAILABLE",
-                Code::ServiceStatusUnavailable => "SERVICE_STATUS_UNAVAILABLE",
-                Code::BillingStatusUnavailable => "BILLING_STATUS_UNAVAILABLE",
-                Code::CloudResourceManagerBackendUnavailable => {
+                Self::ErrorCodeUnspecified => "ERROR_CODE_UNSPECIFIED",
+                Self::NotFound => "NOT_FOUND",
+                Self::PermissionDenied => "PERMISSION_DENIED",
+                Self::ResourceExhausted => "RESOURCE_EXHAUSTED",
+                Self::ServiceNotActivated => "SERVICE_NOT_ACTIVATED",
+                Self::BillingDisabled => "BILLING_DISABLED",
+                Self::ProjectDeleted => "PROJECT_DELETED",
+                Self::ProjectInvalid => "PROJECT_INVALID",
+                Self::ConsumerInvalid => "CONSUMER_INVALID",
+                Self::IpAddressBlocked => "IP_ADDRESS_BLOCKED",
+                Self::RefererBlocked => "REFERER_BLOCKED",
+                Self::ClientAppBlocked => "CLIENT_APP_BLOCKED",
+                Self::ApiTargetBlocked => "API_TARGET_BLOCKED",
+                Self::ApiKeyInvalid => "API_KEY_INVALID",
+                Self::ApiKeyExpired => "API_KEY_EXPIRED",
+                Self::ApiKeyNotFound => "API_KEY_NOT_FOUND",
+                Self::InvalidCredential => "INVALID_CREDENTIAL",
+                Self::NamespaceLookupUnavailable => "NAMESPACE_LOOKUP_UNAVAILABLE",
+                Self::ServiceStatusUnavailable => "SERVICE_STATUS_UNAVAILABLE",
+                Self::BillingStatusUnavailable => "BILLING_STATUS_UNAVAILABLE",
+                Self::CloudResourceManagerBackendUnavailable => {
                     "CLOUD_RESOURCE_MANAGER_BACKEND_UNAVAILABLE"
                 }
             }
@@ -682,8 +682,8 @@ pub mod operation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Importance::Low => "LOW",
-                Importance::High => "HIGH",
+                Self::Low => "LOW",
+                Self::High => "HIGH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -831,12 +831,12 @@ pub mod quota_operation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                QuotaMode::Unspecified => "UNSPECIFIED",
-                QuotaMode::Normal => "NORMAL",
-                QuotaMode::BestEffort => "BEST_EFFORT",
-                QuotaMode::CheckOnly => "CHECK_ONLY",
-                QuotaMode::QueryOnly => "QUERY_ONLY",
-                QuotaMode::AdjustOnly => "ADJUST_ONLY",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Normal => "NORMAL",
+                Self::BestEffort => "BEST_EFFORT",
+                Self::CheckOnly => "CHECK_ONLY",
+                Self::QueryOnly => "QUERY_ONLY",
+                Self::AdjustOnly => "ADJUST_ONLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -940,12 +940,12 @@ pub mod quota_error {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Code::Unspecified => "UNSPECIFIED",
-                Code::ResourceExhausted => "RESOURCE_EXHAUSTED",
-                Code::BillingNotActive => "BILLING_NOT_ACTIVE",
-                Code::ProjectDeleted => "PROJECT_DELETED",
-                Code::ApiKeyInvalid => "API_KEY_INVALID",
-                Code::ApiKeyExpired => "API_KEY_EXPIRED",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::ResourceExhausted => "RESOURCE_EXHAUSTED",
+                Self::BillingNotActive => "BILLING_NOT_ACTIVE",
+                Self::ProjectDeleted => "PROJECT_DELETED",
+                Self::ApiKeyInvalid => "API_KEY_INVALID",
+                Self::ApiKeyExpired => "API_KEY_EXPIRED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -964,7 +964,13 @@ pub mod quota_error {
 }
 /// Generated client implementations.
 pub mod quota_controller_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// [Google Quota Control API](/service-control/overview)
@@ -1073,8 +1079,7 @@ pub mod quota_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1217,11 +1222,11 @@ pub mod check_response {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ConsumerType::Unspecified => "CONSUMER_TYPE_UNSPECIFIED",
-                    ConsumerType::Project => "PROJECT",
-                    ConsumerType::Folder => "FOLDER",
-                    ConsumerType::Organization => "ORGANIZATION",
-                    ConsumerType::ServiceSpecific => "SERVICE_SPECIFIC",
+                    Self::Unspecified => "CONSUMER_TYPE_UNSPECIFIED",
+                    Self::Project => "PROJECT",
+                    Self::Folder => "FOLDER",
+                    Self::Organization => "ORGANIZATION",
+                    Self::ServiceSpecific => "SERVICE_SPECIFIC",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1315,7 +1320,13 @@ pub mod report_response {
 }
 /// Generated client implementations.
 pub mod service_controller_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// [Google Service Control API](/service-control/overview)
@@ -1427,8 +1438,7 @@ pub mod service_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1469,8 +1479,7 @@ pub mod service_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

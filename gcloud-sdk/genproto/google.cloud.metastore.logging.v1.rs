@@ -77,10 +77,10 @@ pub mod scheduled_backup_log_entry {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::InProgress => "IN_PROGRESS",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

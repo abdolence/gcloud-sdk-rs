@@ -275,11 +275,11 @@ pub mod key_range {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::ClosedClosed => "CLOSED_CLOSED",
-                Type::ClosedOpen => "CLOSED_OPEN",
-                Type::OpenClosed => "OPEN_CLOSED",
-                Type::OpenOpen => "OPEN_OPEN",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::ClosedClosed => "CLOSED_CLOSED",
+                Self::ClosedOpen => "CLOSED_OPEN",
+                Self::OpenClosed => "OPEN_CLOSED",
+                Self::OpenOpen => "OPEN_OPEN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -554,9 +554,9 @@ pub mod finish_transaction_action {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Mode::Unspecified => "MODE_UNSPECIFIED",
-                Mode::Commit => "COMMIT",
-                Mode::Abandon => "ABANDON",
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::Commit => "COMMIT",
+                Self::Abandon => "ABANDON",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1728,7 +1728,13 @@ pub struct SessionPoolOptions {
 }
 /// Generated client implementations.
 pub mod spanner_executor_proxy_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service that executes SpannerActions asynchronously.
@@ -1834,8 +1840,7 @@ pub mod spanner_executor_proxy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

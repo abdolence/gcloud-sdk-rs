@@ -65,7 +65,7 @@ pub mod answer {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Reference {
         /// Search result content.
-        #[prost(oneof = "reference::Content", tags = "1, 2")]
+        #[prost(oneof = "reference::Content", tags = "1, 2, 3")]
         pub content: ::core::option::Option<reference::Content>,
     }
     /// Nested message and enum types in `Reference`.
@@ -103,6 +103,13 @@ pub mod answer {
                 /// Page identifier.
                 #[prost(string, tag = "2")]
                 pub page_identifier: ::prost::alloc::string::String,
+                /// The relevance of the chunk for a given query. Values range from 0.0
+                /// (completely irrelevant) to 1.0 (completely relevant).
+                /// This value is for informational purpose only. It may change for
+                /// the same query and chunk at any time due to a model retraining or
+                /// change in implementation.
+                #[prost(float, optional, tag = "3")]
+                pub relevance_score: ::core::option::Option<f32>,
             }
         }
         /// Chunk information.
@@ -114,7 +121,11 @@ pub mod answer {
             /// Chunk textual content.
             #[prost(string, tag = "2")]
             pub content: ::prost::alloc::string::String,
-            /// Relevance score.
+            /// The relevance of the chunk for a given query. Values range from 0.0
+            /// (completely irrelevant) to 1.0 (completely relevant).
+            /// This value is for informational purpose only. It may change for
+            /// the same query and chunk at any time due to a model retraining or
+            /// change in implementation.
             #[prost(float, optional, tag = "3")]
             pub relevance_score: ::core::option::Option<f32>,
             /// Document metadata.
@@ -144,6 +155,16 @@ pub mod answer {
                 pub struct_data: ::core::option::Option<::prost_types::Struct>,
             }
         }
+        /// Structured search information.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct StructuredDocumentInfo {
+            /// Document resource name.
+            #[prost(string, tag = "1")]
+            pub document: ::prost::alloc::string::String,
+            /// Structured search data.
+            #[prost(message, optional, tag = "2")]
+            pub struct_data: ::core::option::Option<::prost_types::Struct>,
+        }
         /// Search result content.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Content {
@@ -153,6 +174,9 @@ pub mod answer {
             /// Chunk information.
             #[prost(message, tag = "2")]
             ChunkInfo(ChunkInfo),
+            /// Structured document information.
+            #[prost(message, tag = "3")]
+            StructuredDocumentInfo(StructuredDocumentInfo),
         }
     }
     /// Step information.
@@ -225,9 +249,8 @@ pub mod answer {
                     pub chunk_info: ::prost::alloc::vec::Vec<search_result::ChunkInfo>,
                     /// Data representation.
                     /// The structured JSON data for the document.
-                    /// It's populated from the struct data from the Document (code
-                    /// pointer: <http://shortn/_objzAfIiHq>), or the Chunk in search result
-                    /// (code pointer: <http://shortn/_Ipo6KFFGBL>).
+                    /// It's populated from the struct data from the Document, or the
+                    /// Chunk in search result.
                     #[prost(message, optional, tag = "6")]
                     pub struct_data: ::core::option::Option<::prost_types::Struct>,
                 }
@@ -252,7 +275,11 @@ pub mod answer {
                         /// Chunk textual content.
                         #[prost(string, tag = "2")]
                         pub content: ::prost::alloc::string::String,
-                        /// Relevance score.
+                        /// The relevance of the chunk for a given query. Values range from
+                        /// 0.0 (completely irrelevant) to 1.0 (completely relevant).
+                        /// This value is for informational purpose only. It may change for
+                        /// the same query and chunk at any time due to a model retraining or
+                        /// change in implementation.
                         #[prost(float, optional, tag = "3")]
                         pub relevance_score: ::core::option::Option<f32>,
                     }
@@ -296,10 +323,10 @@ pub mod answer {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    State::Unspecified => "STATE_UNSPECIFIED",
-                    State::InProgress => "IN_PROGRESS",
-                    State::Failed => "FAILED",
-                    State::Succeeded => "SUCCEEDED",
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::InProgress => "IN_PROGRESS",
+                    Self::Failed => "FAILED",
+                    Self::Succeeded => "SUCCEEDED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -357,6 +384,8 @@ pub mod answer {
                 AdversarialQuery = 1,
                 /// Non-answer-seeking query classification type.
                 NonAnswerSeekingQuery = 2,
+                /// Jail-breaking query classification type.
+                JailBreakingQuery = 3,
             }
             impl Type {
                 /// String value of the enum field names used in the ProtoBuf definition.
@@ -365,9 +394,10 @@ pub mod answer {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        Type::Unspecified => "TYPE_UNSPECIFIED",
-                        Type::AdversarialQuery => "ADVERSARIAL_QUERY",
-                        Type::NonAnswerSeekingQuery => "NON_ANSWER_SEEKING_QUERY",
+                        Self::Unspecified => "TYPE_UNSPECIFIED",
+                        Self::AdversarialQuery => "ADVERSARIAL_QUERY",
+                        Self::NonAnswerSeekingQuery => "NON_ANSWER_SEEKING_QUERY",
+                        Self::JailBreakingQuery => "JAIL_BREAKING_QUERY",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -376,6 +406,7 @@ pub mod answer {
                         "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                         "ADVERSARIAL_QUERY" => Some(Self::AdversarialQuery),
                         "NON_ANSWER_SEEKING_QUERY" => Some(Self::NonAnswerSeekingQuery),
+                        "JAIL_BREAKING_QUERY" => Some(Self::JailBreakingQuery),
                         _ => None,
                     }
                 }
@@ -412,10 +443,10 @@ pub mod answer {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::InProgress => "IN_PROGRESS",
-                State::Failed => "FAILED",
-                State::Succeeded => "SUCCEEDED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Failed => "FAILED",
+                Self::Succeeded => "SUCCEEDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -463,6 +494,17 @@ pub mod answer {
         /// Google skips the answer if there is no relevant content in the
         /// retrieved search results.
         NoRelevantContent = 5,
+        /// The jail-breaking query ignored case.
+        ///
+        /// For example, "Reply in the tone of a competing company's CEO".
+        /// Google skips the answer if the query is classified as a jail-breaking
+        /// query.
+        JailBreakingQueryIgnored = 6,
+        /// The customer policy violation case.
+        ///
+        /// Google skips the summary if there is a customer policy violation
+        /// detected. The policy is defined by the customer.
+        CustomerPolicyViolation = 7,
     }
     impl AnswerSkippedReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -471,20 +513,14 @@ pub mod answer {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AnswerSkippedReason::Unspecified => "ANSWER_SKIPPED_REASON_UNSPECIFIED",
-                AnswerSkippedReason::AdversarialQueryIgnored => {
-                    "ADVERSARIAL_QUERY_IGNORED"
-                }
-                AnswerSkippedReason::NonAnswerSeekingQueryIgnored => {
-                    "NON_ANSWER_SEEKING_QUERY_IGNORED"
-                }
-                AnswerSkippedReason::OutOfDomainQueryIgnored => {
-                    "OUT_OF_DOMAIN_QUERY_IGNORED"
-                }
-                AnswerSkippedReason::PotentialPolicyViolation => {
-                    "POTENTIAL_POLICY_VIOLATION"
-                }
-                AnswerSkippedReason::NoRelevantContent => "NO_RELEVANT_CONTENT",
+                Self::Unspecified => "ANSWER_SKIPPED_REASON_UNSPECIFIED",
+                Self::AdversarialQueryIgnored => "ADVERSARIAL_QUERY_IGNORED",
+                Self::NonAnswerSeekingQueryIgnored => "NON_ANSWER_SEEKING_QUERY_IGNORED",
+                Self::OutOfDomainQueryIgnored => "OUT_OF_DOMAIN_QUERY_IGNORED",
+                Self::PotentialPolicyViolation => "POTENTIAL_POLICY_VIOLATION",
+                Self::NoRelevantContent => "NO_RELEVANT_CONTENT",
+                Self::JailBreakingQueryIgnored => "JAIL_BREAKING_QUERY_IGNORED",
+                Self::CustomerPolicyViolation => "CUSTOMER_POLICY_VIOLATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -498,6 +534,8 @@ pub mod answer {
                 "OUT_OF_DOMAIN_QUERY_IGNORED" => Some(Self::OutOfDomainQueryIgnored),
                 "POTENTIAL_POLICY_VIOLATION" => Some(Self::PotentialPolicyViolation),
                 "NO_RELEVANT_CONTENT" => Some(Self::NoRelevantContent),
+                "JAIL_BREAKING_QUERY_IGNORED" => Some(Self::JailBreakingQueryIgnored),
+                "CUSTOMER_POLICY_VIOLATION" => Some(Self::CustomerPolicyViolation),
                 _ => None,
             }
         }
@@ -720,10 +758,10 @@ impl IndustryVertical {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            IndustryVertical::Unspecified => "INDUSTRY_VERTICAL_UNSPECIFIED",
-            IndustryVertical::Generic => "GENERIC",
-            IndustryVertical::Media => "MEDIA",
-            IndustryVertical::HealthcareFhir => "HEALTHCARE_FHIR",
+            Self::Unspecified => "INDUSTRY_VERTICAL_UNSPECIFIED",
+            Self::Generic => "GENERIC",
+            Self::Media => "MEDIA",
+            Self::HealthcareFhir => "HEALTHCARE_FHIR",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -761,11 +799,11 @@ impl SolutionType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SolutionType::Unspecified => "SOLUTION_TYPE_UNSPECIFIED",
-            SolutionType::Recommendation => "SOLUTION_TYPE_RECOMMENDATION",
-            SolutionType::Search => "SOLUTION_TYPE_SEARCH",
-            SolutionType::Chat => "SOLUTION_TYPE_CHAT",
-            SolutionType::GenerativeChat => "SOLUTION_TYPE_GENERATIVE_CHAT",
+            Self::Unspecified => "SOLUTION_TYPE_UNSPECIFIED",
+            Self::Recommendation => "SOLUTION_TYPE_RECOMMENDATION",
+            Self::Search => "SOLUTION_TYPE_SEARCH",
+            Self::Chat => "SOLUTION_TYPE_CHAT",
+            Self::GenerativeChat => "SOLUTION_TYPE_GENERATIVE_CHAT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -802,9 +840,9 @@ impl SearchUseCase {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SearchUseCase::Unspecified => "SEARCH_USE_CASE_UNSPECIFIED",
-            SearchUseCase::Search => "SEARCH_USE_CASE_SEARCH",
-            SearchUseCase::Browse => "SEARCH_USE_CASE_BROWSE",
+            Self::Unspecified => "SEARCH_USE_CASE_UNSPECIFIED",
+            Self::Search => "SEARCH_USE_CASE_SEARCH",
+            Self::Browse => "SEARCH_USE_CASE_BROWSE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -836,9 +874,9 @@ impl SearchTier {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SearchTier::Unspecified => "SEARCH_TIER_UNSPECIFIED",
-            SearchTier::Standard => "SEARCH_TIER_STANDARD",
-            SearchTier::Enterprise => "SEARCH_TIER_ENTERPRISE",
+            Self::Unspecified => "SEARCH_TIER_UNSPECIFIED",
+            Self::Standard => "SEARCH_TIER_STANDARD",
+            Self::Enterprise => "SEARCH_TIER_ENTERPRISE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -867,8 +905,8 @@ impl SearchAddOn {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SearchAddOn::Unspecified => "SEARCH_ADD_ON_UNSPECIFIED",
-            SearchAddOn::Llm => "SEARCH_ADD_ON_LLM",
+            Self::Unspecified => "SEARCH_ADD_ON_UNSPECIFIED",
+            Self::Llm => "SEARCH_ADD_ON_LLM",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -923,9 +961,9 @@ pub mod suggestion_deny_list_entry {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MatchOperator::Unspecified => "MATCH_OPERATOR_UNSPECIFIED",
-                MatchOperator::ExactMatch => "EXACT_MATCH",
-                MatchOperator::Contains => "CONTAINS",
+                Self::Unspecified => "MATCH_OPERATOR_UNSPECIFIED",
+                Self::ExactMatch => "EXACT_MATCH",
+                Self::Contains => "CONTAINS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1022,6 +1060,14 @@ pub struct Document {
     /// document has never been indexed.
     #[prost(message, optional, tag = "13")]
     pub index_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The index status of the document.
+    ///
+    /// * If document is indexed successfully, the index_time field is populated.
+    /// * Otherwise, if document is not indexed due to errors, the error_samples
+    ///    field is populated.
+    /// * Otherwise, index_status is unset.
+    #[prost(message, optional, tag = "15")]
+    pub index_status: ::core::option::Option<document::IndexStatus>,
     /// Data representation. One of
     /// [struct_data][google.cloud.discoveryengine.v1.Document.struct_data] or
     /// [json_data][google.cloud.discoveryengine.v1.Document.json_data] should be
@@ -1068,6 +1114,20 @@ pub mod document {
             #[prost(string, tag = "3")]
             Uri(::prost::alloc::string::String),
         }
+    }
+    /// Index status of the document.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct IndexStatus {
+        /// The time when the document was indexed.
+        /// If this field is populated, it means the document has been indexed.
+        #[prost(message, optional, tag = "1")]
+        pub index_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// A sample of errors encountered while indexing the document.
+        /// If this field is populated, the document is not indexed due to errors.
+        #[prost(message, repeated, tag = "2")]
+        pub error_samples: ::prost::alloc::vec::Vec<
+            super::super::super::super::rpc::Status,
+        >,
     }
     /// Data representation. One of
     /// [struct_data][google.cloud.discoveryengine.v1.Document.struct_data] or
@@ -1487,6 +1547,10 @@ pub struct DocumentInfo {
     /// Currently, this field is restricted to at most one ID.
     #[prost(string, repeated, tag = "4")]
     pub promotion_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Whether the referenced Document can be found in the data
+    /// store.
+    #[prost(bool, tag = "5")]
+    pub joined: bool,
     /// A required descriptor of the associated
     /// [Document][google.cloud.discoveryengine.v1.Document].
     ///
@@ -1617,7 +1681,7 @@ pub struct GcsSource {
 /// BigQuery source import data from.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQuerySource {
-    /// The project ID (can be project # or ID) that the BigQuery source is in with
+    /// The project ID or the project number that contains the BigQuery source. Has
     /// a length limit of 128 characters. If not specified, inherits the project
     /// ID from the parent request.
     #[prost(string, tag = "1")]
@@ -1675,7 +1739,7 @@ pub mod big_query_source {
 /// The Spanner source for importing data
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpannerSource {
-    /// The project ID that the Spanner source is in with a length limit of 128
+    /// The project ID that contains the Spanner source. Has a length limit of 128
     /// characters. If not specified, inherits the project ID from the parent
     /// request.
     #[prost(string, tag = "1")]
@@ -1814,14 +1878,14 @@ pub mod bigtable_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::String => "STRING",
-                Type::Number => "NUMBER",
-                Type::Integer => "INTEGER",
-                Type::VarInteger => "VAR_INTEGER",
-                Type::BigNumeric => "BIG_NUMERIC",
-                Type::Boolean => "BOOLEAN",
-                Type::Json => "JSON",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::String => "STRING",
+                Self::Number => "NUMBER",
+                Self::Integer => "INTEGER",
+                Self::VarInteger => "VAR_INTEGER",
+                Self::BigNumeric => "BIG_NUMERIC",
+                Self::Boolean => "BOOLEAN",
+                Self::Json => "JSON",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1867,9 +1931,9 @@ pub mod bigtable_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Encoding::Unspecified => "ENCODING_UNSPECIFIED",
-                Encoding::Text => "TEXT",
-                Encoding::Binary => "BINARY",
+                Self::Unspecified => "ENCODING_UNSPECIFIED",
+                Self::Text => "TEXT",
+                Self::Binary => "BINARY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1886,7 +1950,7 @@ pub mod bigtable_options {
 /// The Cloud Bigtable source for importing data.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigtableSource {
-    /// The project ID that the Bigtable source is in with a length limit of 128
+    /// The project ID that contains the Bigtable source. Has a length limit of 128
     /// characters. If not specified, inherits the project ID from the parent
     /// request.
     #[prost(string, tag = "1")]
@@ -1915,12 +1979,18 @@ pub struct FhirStoreSource {
     /// FhirStore export to a specific Cloud Storage directory.
     #[prost(string, tag = "2")]
     pub gcs_staging_dir: ::prost::alloc::string::String,
+    /// The FHIR resource types to import. The resource types should be a subset of
+    /// all [supported FHIR resource
+    /// types](<https://cloud.google.com/generative-ai-app-builder/docs/fhir-schema-reference#resource-level-specification>).
+    /// Default to all supported FHIR resource types if empty.
+    #[prost(string, repeated, tag = "3")]
+    pub resource_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Cloud SQL source import data from.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlSource {
-    /// The project ID that the Cloud SQL source is in with a length limit of 128
-    /// characters. If not specified, inherits the project ID from the parent
+    /// The project ID that contains the Cloud SQL source. Has a length limit of
+    /// 128 characters. If not specified, inherits the project ID from the parent
     /// request.
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
@@ -1953,8 +2023,8 @@ pub struct CloudSqlSource {
 /// AlloyDB source import data from.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AlloyDbSource {
-    /// The project ID that the AlloyDB source is in
-    /// with a length limit of 128 characters. If not specified, inherits the
+    /// The project ID that contains the AlloyDB source.
+    /// Has a length limit of 128 characters. If not specified, inherits the
     /// project ID from the parent request.
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
@@ -2256,9 +2326,9 @@ pub mod import_documents_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReconciliationMode::Unspecified => "RECONCILIATION_MODE_UNSPECIFIED",
-                ReconciliationMode::Incremental => "INCREMENTAL",
-                ReconciliationMode::Full => "FULL",
+                Self::Unspecified => "RECONCILIATION_MODE_UNSPECIFIED",
+                Self::Incremental => "INCREMENTAL",
+                Self::Full => "FULL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2467,6 +2537,97 @@ pub struct ImportCompletionSuggestionsMetadata {
     #[prost(int64, tag = "4")]
     pub failure_count: i64,
 }
+/// Request message for PurgeUserEvents method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PurgeUserEventsRequest {
+    /// Required. The resource name of the catalog under which the events are
+    /// created. The format is
+    /// `projects/{project}/locations/global/collections/{collection}/dataStores/{dataStore}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The filter string to specify the events to be deleted with a
+    /// length limit of 5,000 characters. The eligible fields for filtering are:
+    ///
+    /// * `eventType`: Double quoted
+    /// [UserEvent.event_type][google.cloud.discoveryengine.v1.UserEvent.event_type]
+    /// string.
+    /// * `eventTime`: in ISO 8601 "zulu" format.
+    /// * `userPseudoId`: Double quoted string. Specifying this will delete all
+    ///    events associated with a visitor.
+    /// * `userId`: Double quoted string. Specifying this will delete all events
+    ///    associated with a user.
+    ///
+    /// Examples:
+    ///
+    /// * Deleting all events in a time range:
+    ///    `eventTime > "2012-04-23T18:25:43.511Z"
+    ///    eventTime < "2012-04-23T18:30:43.511Z"`
+    /// * Deleting specific eventType:
+    ///    `eventType = "search"`
+    /// * Deleting all events for a specific visitor:
+    ///    `userPseudoId = "visitor1024"`
+    /// * Deleting all events inside a DataStore:
+    ///    `*`
+    ///
+    /// The filtering fields are assumed to have an implicit AND.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// The `force` field is currently not supported. Purge user event requests
+    /// will permanently delete all purgeable events. Once the development is
+    /// complete:
+    /// If `force` is set to false, the method will return the expected
+    /// purge count without deleting any user events. This field will default to
+    /// false if not included in the request.
+    #[prost(bool, tag = "3")]
+    pub force: bool,
+}
+/// Response of the PurgeUserEventsRequest. If the long running operation is
+/// successfully done, then this message is returned by the
+/// google.longrunning.Operations.response field.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct PurgeUserEventsResponse {
+    /// The total count of events purged as a result of the operation.
+    #[prost(int64, tag = "1")]
+    pub purge_count: i64,
+}
+/// Metadata related to the progress of the PurgeUserEvents operation.
+/// This will be returned by the google.longrunning.Operation.metadata field.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct PurgeUserEventsMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Count of entries that were deleted successfully.
+    #[prost(int64, tag = "3")]
+    pub success_count: i64,
+    /// Count of entries that encountered errors while processing.
+    #[prost(int64, tag = "4")]
+    pub failure_count: i64,
+}
+/// Configuration of destination for Purge related errors.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PurgeErrorConfig {
+    /// Required. Errors destination.
+    #[prost(oneof = "purge_error_config::Destination", tags = "1")]
+    pub destination: ::core::option::Option<purge_error_config::Destination>,
+}
+/// Nested message and enum types in `PurgeErrorConfig`.
+pub mod purge_error_config {
+    /// Required. Errors destination.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Destination {
+        /// Cloud Storage prefix for purge errors. This must be an empty,
+        /// existing Cloud Storage directory. Purge errors are written to
+        /// sharded files in this directory, one per line, as a JSON-encoded
+        /// `google.rpc.Status` message.
+        #[prost(string, tag = "1")]
+        GcsPrefix(::prost::alloc::string::String),
+    }
+}
 /// Request message for
 /// [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1.DocumentService.PurgeDocuments]
 /// method.
@@ -2481,10 +2642,44 @@ pub struct PurgeDocumentsRequest {
     /// `*` (all items).
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
+    /// The desired location of errors incurred during the purge.
+    #[prost(message, optional, tag = "7")]
+    pub error_config: ::core::option::Option<PurgeErrorConfig>,
     /// Actually performs the purge. If `force` is set to false, return the
     /// expected purge count without deleting any documents.
     #[prost(bool, tag = "3")]
     pub force: bool,
+    /// The desired input source for the purging documents based on document IDs.
+    #[prost(oneof = "purge_documents_request::Source", tags = "5, 6")]
+    pub source: ::core::option::Option<purge_documents_request::Source>,
+}
+/// Nested message and enum types in `PurgeDocumentsRequest`.
+pub mod purge_documents_request {
+    /// The inline source for the input config for
+    /// [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1.DocumentService.PurgeDocuments]
+    /// method.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InlineSource {
+        /// Required. A list of full resource name of documents to purge. In the
+        /// format
+        /// `projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*`.
+        /// Recommended max of 100 items.
+        #[prost(string, repeated, tag = "1")]
+        pub documents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// The desired input source for the purging documents based on document IDs.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Cloud Storage location for the input content.
+        /// Supported `data_schema`:
+        /// * `document_id`: One valid
+        /// [Document.id][google.cloud.discoveryengine.v1.Document.id] per line.
+        #[prost(message, tag = "5")]
+        GcsSource(super::GcsSource),
+        /// Inline source for the input content for purge.
+        #[prost(message, tag = "6")]
+        InlineSource(InlineSource),
+    }
 }
 /// Response message for
 /// [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1.DocumentService.PurgeDocuments]
@@ -2687,7 +2882,13 @@ pub mod complete_query_response {
 }
 /// Generated client implementations.
 pub mod completion_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for Auto-Completion.
@@ -2783,8 +2984,7 @@ pub mod completion_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2818,8 +3018,7 @@ pub mod completion_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2853,8 +3052,7 @@ pub mod completion_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2886,8 +3084,7 @@ pub mod completion_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2919,8 +3116,7 @@ pub mod completion_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2989,8 +3185,9 @@ pub mod condition {
     }
 }
 /// Defines a conditioned behavior to employ during serving.
-/// Must be attached to a [ServingConfig][] to be considered at serving time.
-/// Permitted actions dependent on `SolutionType`.
+/// Must be attached to a
+/// [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig] to be
+/// considered at serving time. Permitted actions dependent on `SolutionType`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Control {
     /// Immutable. Fully qualified name
@@ -3003,8 +3200,9 @@ pub struct Control {
     /// Otherwise an INVALID ARGUMENT error is thrown.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Output only. List of all [ServingConfig][] ids this control is attached to.
-    /// May take up to 10 minutes to update after changes.
+    /// Output only. List of all
+    /// [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig] IDs this
+    /// control is attached to. May take up to 10 minutes to update after changes.
     #[prost(string, repeated, tag = "3")]
     pub associated_serving_config_ids: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -3214,7 +3412,13 @@ pub struct ListControlsResponse {
 }
 /// Generated client implementations.
 pub mod control_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for performing CRUD operations on Controls.
@@ -3315,8 +3519,7 @@ pub mod control_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3346,8 +3549,7 @@ pub mod control_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3378,8 +3580,7 @@ pub mod control_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3406,8 +3607,7 @@ pub mod control_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3438,8 +3638,7 @@ pub mod control_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3558,9 +3757,12 @@ pub struct SearchRequest {
     /// Leave it unset if ordered by relevance. `order_by` expression is
     /// case-sensitive.
     ///
-    /// For more information on ordering for retail search, see
-    /// [Ordering](<https://cloud.google.com/retail/docs/filter-and-order#order>)
-    ///
+    /// For more information on ordering the website search results, see
+    /// [Order web search
+    /// results](<https://cloud.google.com/generative-ai-app-builder/docs/order-web-search-results>).
+    /// For more information on ordering the healthcare search results, see
+    /// [Order healthcare search
+    /// results](<https://cloud.google.com/generative-ai-app-builder/docs/order-hc-results>).
     /// If this field is unrecognizable, an `INVALID_ARGUMENT` is returned.
     #[prost(string, tag = "8")]
     pub order_by: ::prost::alloc::string::String,
@@ -3976,9 +4178,9 @@ pub mod search_request {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Condition::Unspecified => "CONDITION_UNSPECIFIED",
-                    Condition::Disabled => "DISABLED",
-                    Condition::Auto => "AUTO",
+                    Self::Unspecified => "CONDITION_UNSPECIFIED",
+                    Self::Disabled => "DISABLED",
+                    Self::Auto => "AUTO",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4037,9 +4239,9 @@ pub mod search_request {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Mode::Unspecified => "MODE_UNSPECIFIED",
-                    Mode::SuggestionOnly => "SUGGESTION_ONLY",
-                    Mode::Auto => "AUTO",
+                    Self::Unspecified => "MODE_UNSPECIFIED",
+                    Self::SuggestionOnly => "SUGGESTION_ONLY",
+                    Self::Auto => "AUTO",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4071,11 +4273,7 @@ pub mod search_request {
             content_search_spec::ExtractiveContentSpec,
         >,
         /// Specifies the search result mode. If unspecified, the
-        /// search result mode is based on
-        /// [DataStore.DocumentProcessingConfig.chunking_config][]:
-        /// * If [DataStore.DocumentProcessingConfig.chunking_config][] is specified,
-        ///    it defaults to `CHUNKS`.
-        /// * Otherwise, it defaults to `DOCUMENTS`.
+        /// search result mode defaults to `DOCUMENTS`.
         #[prost(enumeration = "content_search_spec::SearchResultMode", tag = "4")]
         pub search_result_mode: i32,
         /// Specifies the chunk spec to be returned from the search response.
@@ -4167,6 +4365,14 @@ pub mod search_request {
             /// fallback messages instead.
             #[prost(bool, tag = "4")]
             pub ignore_non_summary_seeking_query: bool,
+            /// Specifies whether to filter out queries that have low relevance. The
+            /// default value is `false`.
+            ///
+            /// If this field is set to `false`, all search results are used regardless
+            /// of relevance to generate answers. If set to `true`, only queries with
+            /// high relevance search results will generate answers.
+            #[prost(bool, tag = "9")]
+            pub ignore_low_relevant_content: bool,
             /// If specified, the spec will be used to modify the prompt provided to
             /// the LLM.
             #[prost(message, optional, tag = "5")]
@@ -4292,11 +4498,7 @@ pub mod search_request {
             pub num_next_chunks: i32,
         }
         /// Specifies the search result mode. If unspecified, the
-        /// search result mode is based on
-        /// [DataStore.DocumentProcessingConfig.chunking_config][]:
-        /// * If [DataStore.DocumentProcessingConfig.chunking_config][] is specified,
-        ///    it defaults to `CHUNKS`.
-        /// * Otherwise, it defaults to `DOCUMENTS`.
+        /// search result mode defaults to `DOCUMENTS`.
         #[derive(
             Clone,
             Copy,
@@ -4325,9 +4527,9 @@ pub mod search_request {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    SearchResultMode::Unspecified => "SEARCH_RESULT_MODE_UNSPECIFIED",
-                    SearchResultMode::Documents => "DOCUMENTS",
-                    SearchResultMode::Chunks => "CHUNKS",
+                    Self::Unspecified => "SEARCH_RESULT_MODE_UNSPECIFIED",
+                    Self::Documents => "DOCUMENTS",
+                    Self::Chunks => "CHUNKS",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4381,9 +4583,9 @@ pub mod search_request {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Condition::Unspecified => "CONDITION_UNSPECIFIED",
-                    Condition::Disabled => "DISABLED",
-                    Condition::Enabled => "ENABLED",
+                    Self::Unspecified => "CONDITION_UNSPECIFIED",
+                    Self::Disabled => "DISABLED",
+                    Self::Enabled => "ENABLED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4463,7 +4665,8 @@ pub struct SearchResponse {
     /// A unique search token. This should be included in the
     /// [UserEvent][google.cloud.discoveryengine.v1.UserEvent] logs resulting from
     /// this search, which enables accurate attribution of search model
-    /// performance.
+    /// performance. This also helps to identify a request during the customer
+    /// support scenarios.
     #[prost(string, tag = "4")]
     pub attribution_token: ::prost::alloc::string::String,
     /// The URI of a customer-defined redirect page. If redirect action is
@@ -4690,13 +4893,13 @@ pub mod search_response {
             Unspecified = 0,
             /// The adversarial query ignored case.
             ///
-            /// Only populated when
+            /// Only used when
             /// [SummarySpec.ignore_adversarial_query][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SummarySpec.ignore_adversarial_query]
             /// is set to `true`.
             AdversarialQueryIgnored = 1,
             /// The non-summary seeking query ignored case.
             ///
-            /// Only populated when
+            /// Only used when
             /// [SummarySpec.ignore_non_summary_seeking_query][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SummarySpec.ignore_non_summary_seeking_query]
             /// is set to `true`.
             NonSummarySeekingQueryIgnored = 2,
@@ -4715,6 +4918,23 @@ pub mod search_response {
             ///
             /// Google skips the summary if the LLM addon is not enabled.
             LlmAddonNotEnabled = 5,
+            /// The no relevant content case.
+            ///
+            /// Google skips the summary if there is no relevant content in the
+            /// retrieved search results.
+            NoRelevantContent = 6,
+            /// The jail-breaking query ignored case.
+            ///
+            /// For example, "Reply in the tone of a competing company's CEO".
+            /// Only used when
+            /// \[SearchRequest.ContentSearchSpec.SummarySpec.ignore_jail_breaking_query\]
+            /// is set to `true`.
+            JailBreakingQueryIgnored = 7,
+            /// The customer policy violation case.
+            ///
+            /// Google skips the summary if there is a customer policy violation
+            /// detected. The policy is defined by the customer.
+            CustomerPolicyViolation = 8,
         }
         impl SummarySkippedReason {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -4723,22 +4943,17 @@ pub mod search_response {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    SummarySkippedReason::Unspecified => {
-                        "SUMMARY_SKIPPED_REASON_UNSPECIFIED"
-                    }
-                    SummarySkippedReason::AdversarialQueryIgnored => {
-                        "ADVERSARIAL_QUERY_IGNORED"
-                    }
-                    SummarySkippedReason::NonSummarySeekingQueryIgnored => {
+                    Self::Unspecified => "SUMMARY_SKIPPED_REASON_UNSPECIFIED",
+                    Self::AdversarialQueryIgnored => "ADVERSARIAL_QUERY_IGNORED",
+                    Self::NonSummarySeekingQueryIgnored => {
                         "NON_SUMMARY_SEEKING_QUERY_IGNORED"
                     }
-                    SummarySkippedReason::OutOfDomainQueryIgnored => {
-                        "OUT_OF_DOMAIN_QUERY_IGNORED"
-                    }
-                    SummarySkippedReason::PotentialPolicyViolation => {
-                        "POTENTIAL_POLICY_VIOLATION"
-                    }
-                    SummarySkippedReason::LlmAddonNotEnabled => "LLM_ADDON_NOT_ENABLED",
+                    Self::OutOfDomainQueryIgnored => "OUT_OF_DOMAIN_QUERY_IGNORED",
+                    Self::PotentialPolicyViolation => "POTENTIAL_POLICY_VIOLATION",
+                    Self::LlmAddonNotEnabled => "LLM_ADDON_NOT_ENABLED",
+                    Self::NoRelevantContent => "NO_RELEVANT_CONTENT",
+                    Self::JailBreakingQueryIgnored => "JAIL_BREAKING_QUERY_IGNORED",
+                    Self::CustomerPolicyViolation => "CUSTOMER_POLICY_VIOLATION",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4752,6 +4967,9 @@ pub mod search_response {
                     "OUT_OF_DOMAIN_QUERY_IGNORED" => Some(Self::OutOfDomainQueryIgnored),
                     "POTENTIAL_POLICY_VIOLATION" => Some(Self::PotentialPolicyViolation),
                     "LLM_ADDON_NOT_ENABLED" => Some(Self::LlmAddonNotEnabled),
+                    "NO_RELEVANT_CONTENT" => Some(Self::NoRelevantContent),
+                    "JAIL_BREAKING_QUERY_IGNORED" => Some(Self::JailBreakingQueryIgnored),
+                    "CUSTOMER_POLICY_VIOLATION" => Some(Self::CustomerPolicyViolation),
                     _ => None,
                 }
             }
@@ -4792,7 +5010,13 @@ pub mod search_response {
 }
 /// Generated client implementations.
 pub mod search_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for search.
@@ -4885,8 +5109,7 @@ pub mod search_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4961,9 +5184,9 @@ pub mod conversation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::InProgress => "IN_PROGRESS",
-                State::Completed => "COMPLETED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Completed => "COMPLETED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5092,8 +5315,8 @@ pub mod session {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::InProgress => "IN_PROGRESS",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::InProgress => "IN_PROGRESS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5535,12 +5758,7 @@ pub mod answer_query_request {
             #[prost(string, tag = "4")]
             pub order_by: ::prost::alloc::string::String,
             /// Specifies the search result mode. If unspecified, the
-            /// search result mode is based on
-            /// [DataStore.DocumentProcessingConfig.chunking_config][]:
-            /// * If [DataStore.DocumentProcessingConfig.chunking_config][] is
-            /// specified,
-            ///    it defaults to `CHUNKS`.
-            /// * Otherwise, it defaults to `DOCUMENTS`.
+            /// search result mode defaults to `DOCUMENTS`.
             /// See [parse and chunk
             /// documents](<https://cloud.google.com/generative-ai-app-builder/docs/parse-chunk-documents>)
             #[prost(
@@ -5723,6 +5941,8 @@ pub mod answer_query_request {
                 AdversarialQuery = 1,
                 /// Non-answer-seeking query classification type.
                 NonAnswerSeekingQuery = 2,
+                /// Jail-breaking query classification type.
+                JailBreakingQuery = 3,
             }
             impl Type {
                 /// String value of the enum field names used in the ProtoBuf definition.
@@ -5731,9 +5951,10 @@ pub mod answer_query_request {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        Type::Unspecified => "TYPE_UNSPECIFIED",
-                        Type::AdversarialQuery => "ADVERSARIAL_QUERY",
-                        Type::NonAnswerSeekingQuery => "NON_ANSWER_SEEKING_QUERY",
+                        Self::Unspecified => "TYPE_UNSPECIFIED",
+                        Self::AdversarialQuery => "ADVERSARIAL_QUERY",
+                        Self::NonAnswerSeekingQuery => "NON_ANSWER_SEEKING_QUERY",
+                        Self::JailBreakingQuery => "JAIL_BREAKING_QUERY",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5742,6 +5963,7 @@ pub mod answer_query_request {
                         "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                         "ADVERSARIAL_QUERY" => Some(Self::AdversarialQuery),
                         "NON_ANSWER_SEEKING_QUERY" => Some(Self::NonAnswerSeekingQuery),
+                        "JAIL_BREAKING_QUERY" => Some(Self::JailBreakingQuery),
                         _ => None,
                     }
                 }
@@ -5767,9 +5989,11 @@ pub mod answer_query_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnswerQueryResponse {
     /// Answer resource object.
-    /// If [AnswerQueryRequest.StepSpec.max_step_count][] is greater than 1,
-    /// use [Answer.name][google.cloud.discoveryengine.v1.Answer.name] to fetch
-    /// answer information using
+    /// If
+    /// [AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.max_rephrase_steps][google.cloud.discoveryengine.v1.AnswerQueryRequest.QueryUnderstandingSpec.QueryRephraserSpec.max_rephrase_steps]
+    /// is greater than 1, use
+    /// [Answer.name][google.cloud.discoveryengine.v1.Answer.name] to fetch answer
+    /// information using
     /// [ConversationalSearchService.GetAnswer][google.cloud.discoveryengine.v1.ConversationalSearchService.GetAnswer]
     /// API.
     #[prost(message, optional, tag = "1")]
@@ -5882,7 +6106,13 @@ pub struct ListSessionsResponse {
 }
 /// Generated client implementations.
 pub mod conversational_search_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for conversational search.
@@ -5980,8 +6210,7 @@ pub mod conversational_search_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6011,8 +6240,7 @@ pub mod conversational_search_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6042,8 +6270,7 @@ pub mod conversational_search_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6075,8 +6302,7 @@ pub mod conversational_search_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6103,8 +6329,7 @@ pub mod conversational_search_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6135,8 +6360,7 @@ pub mod conversational_search_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6166,8 +6390,7 @@ pub mod conversational_search_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6194,8 +6417,7 @@ pub mod conversational_search_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6225,8 +6447,7 @@ pub mod conversational_search_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6256,8 +6477,7 @@ pub mod conversational_search_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6288,8 +6508,7 @@ pub mod conversational_search_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6316,8 +6535,7 @@ pub mod conversational_search_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6348,8 +6566,7 @@ pub mod conversational_search_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6366,6 +6583,102 @@ pub mod conversational_search_service_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Metadata that describes a custom tuned model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomTuningModel {
+    /// Required. The fully qualified resource name of the model.
+    ///
+    /// Format:
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/customTuningModels/{custom_tuning_model}`
+    /// model must be an alpha-numerical string with limit of 40 characters.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The display name of the model.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// The version of the model.
+    #[prost(int64, tag = "3")]
+    pub model_version: i64,
+    /// The state that the model is in (e.g.`TRAINING` or `TRAINING_FAILED`).
+    #[prost(enumeration = "custom_tuning_model::ModelState", tag = "4")]
+    pub model_state: i32,
+    /// Deprecated: timestamp the Model was created at.
+    #[deprecated]
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Timestamp the model training was initiated.
+    #[prost(message, optional, tag = "6")]
+    pub training_start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The metrics of the trained model.
+    #[prost(map = "string, double", tag = "7")]
+    pub metrics: ::std::collections::HashMap<::prost::alloc::string::String, f64>,
+}
+/// Nested message and enum types in `CustomTuningModel`.
+pub mod custom_tuning_model {
+    /// The state of the model.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ModelState {
+        /// Default value.
+        Unspecified = 0,
+        /// The model is in a paused training state.
+        TrainingPaused = 1,
+        /// The model is currently training.
+        Training = 2,
+        /// The model has successfully completed training.
+        TrainingComplete = 3,
+        /// The model is ready for serving.
+        ReadyForServing = 4,
+        /// The model training failed.
+        TrainingFailed = 5,
+        /// The model training finished successfully but metrics did not improve.
+        NoImprovement = 6,
+        /// Input data validation failed. Model training didn't start.
+        InputValidationFailed = 7,
+    }
+    impl ModelState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODEL_STATE_UNSPECIFIED",
+                Self::TrainingPaused => "TRAINING_PAUSED",
+                Self::Training => "TRAINING",
+                Self::TrainingComplete => "TRAINING_COMPLETE",
+                Self::ReadyForServing => "READY_FOR_SERVING",
+                Self::TrainingFailed => "TRAINING_FAILED",
+                Self::NoImprovement => "NO_IMPROVEMENT",
+                Self::InputValidationFailed => "INPUT_VALIDATION_FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODEL_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TRAINING_PAUSED" => Some(Self::TrainingPaused),
+                "TRAINING" => Some(Self::Training),
+                "TRAINING_COMPLETE" => Some(Self::TrainingComplete),
+                "READY_FOR_SERVING" => Some(Self::ReadyForServing),
+                "TRAINING_FAILED" => Some(Self::TrainingFailed),
+                "NO_IMPROVEMENT" => Some(Self::NoImprovement),
+                "INPUT_VALIDATION_FAILED" => Some(Self::InputValidationFailed),
+                _ => None,
+            }
         }
     }
 }
@@ -6405,6 +6718,8 @@ pub struct DocumentProcessingConfig {
     /// * `docx`: Override parsing config for DOCX files, only digital parsing and
     /// layout parsing are supported.
     /// * `pptx`: Override parsing config for PPTX files, only digital parsing and
+    /// layout parsing are supported.
+    /// * `xlsx`: Override parsing config for XLSX files, only digital parsing and
     /// layout parsing are supported.
     #[prost(map = "string, message", tag = "5")]
     pub parsing_config_overrides: ::std::collections::HashMap<
@@ -6624,10 +6939,10 @@ pub mod data_store {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ContentConfig::Unspecified => "CONTENT_CONFIG_UNSPECIFIED",
-                ContentConfig::NoContent => "NO_CONTENT",
-                ContentConfig::ContentRequired => "CONTENT_REQUIRED",
-                ContentConfig::PublicWebsite => "PUBLIC_WEBSITE",
+                Self::Unspecified => "CONTENT_CONFIG_UNSPECIFIED",
+                Self::NoContent => "NO_CONTENT",
+                Self::ContentRequired => "CONTENT_REQUIRED",
+                Self::PublicWebsite => "PUBLIC_WEBSITE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6672,6 +6987,16 @@ pub struct CreateDataStoreRequest {
     /// be ignored.
     #[prost(bool, tag = "4")]
     pub create_advanced_site_search: bool,
+    /// A boolean flag indicating whether to skip the default schema creation for
+    /// the data store. Only enable this flag if you are certain that the default
+    /// schema is incompatible with your use case.
+    ///
+    /// If set to true, you must manually create a schema for the data store before
+    /// any documents can be ingested.
+    ///
+    /// This flag cannot be specified if `data_store.starting_schema` is specified.
+    #[prost(bool, tag = "7")]
+    pub skip_default_schema_creation: bool,
 }
 /// Request message for
 /// [DataStoreService.GetDataStore][google.cloud.discoveryengine.v1.DataStoreService.GetDataStore]
@@ -6816,7 +7141,13 @@ pub struct DeleteDataStoreMetadata {
 }
 /// Generated client implementations.
 pub mod data_store_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for managing [DataStore][google.cloud.discoveryengine.v1.DataStore]
@@ -6919,8 +7250,7 @@ pub mod data_store_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6947,8 +7277,7 @@ pub mod data_store_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6979,8 +7308,7 @@ pub mod data_store_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7010,8 +7338,7 @@ pub mod data_store_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7038,8 +7365,7 @@ pub mod data_store_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7206,9 +7532,169 @@ pub struct DeleteDocumentRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Request message for
+/// [DocumentService.BatchGetDocumentsMetadata][google.cloud.discoveryengine.v1.DocumentService.BatchGetDocumentsMetadata]
+/// method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchGetDocumentsMetadataRequest {
+    /// Required. The parent branch resource name, such as
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Matcher for the
+    /// [Document][google.cloud.discoveryengine.v1.Document]s.
+    #[prost(message, optional, tag = "2")]
+    pub matcher: ::core::option::Option<batch_get_documents_metadata_request::Matcher>,
+}
+/// Nested message and enum types in `BatchGetDocumentsMetadataRequest`.
+pub mod batch_get_documents_metadata_request {
+    /// Matcher for the [Document][google.cloud.discoveryengine.v1.Document]s by
+    /// exact uris.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UrisMatcher {
+        /// The exact URIs to match by.
+        #[prost(string, repeated, tag = "1")]
+        pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Matcher for the [Document][google.cloud.discoveryengine.v1.Document]s.
+    /// Currently supports matching by exact URIs.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Matcher {
+        /// Matcher for the [Document][google.cloud.discoveryengine.v1.Document]s.
+        #[prost(oneof = "matcher::Matcher", tags = "1")]
+        pub matcher: ::core::option::Option<matcher::Matcher>,
+    }
+    /// Nested message and enum types in `Matcher`.
+    pub mod matcher {
+        /// Matcher for the [Document][google.cloud.discoveryengine.v1.Document]s.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Matcher {
+            /// Matcher by exact URIs.
+            #[prost(message, tag = "1")]
+            UrisMatcher(super::UrisMatcher),
+        }
+    }
+}
+/// Response message for
+/// [DocumentService.BatchGetDocumentsMetadata][google.cloud.discoveryengine.v1.DocumentService.BatchGetDocumentsMetadata]
+/// method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchGetDocumentsMetadataResponse {
+    /// The metadata of the [Document][google.cloud.discoveryengine.v1.Document]s.
+    #[prost(message, repeated, tag = "1")]
+    pub documents_metadata: ::prost::alloc::vec::Vec<
+        batch_get_documents_metadata_response::DocumentMetadata,
+    >,
+}
+/// Nested message and enum types in `BatchGetDocumentsMetadataResponse`.
+pub mod batch_get_documents_metadata_response {
+    /// The metadata of a [Document][google.cloud.discoveryengine.v1.Document].
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DocumentMetadata {
+        /// The value of the matcher that was used to match the
+        /// [Document][google.cloud.discoveryengine.v1.Document].
+        #[prost(message, optional, tag = "2")]
+        pub matcher_value: ::core::option::Option<document_metadata::MatcherValue>,
+        /// The state of the document.
+        #[prost(enumeration = "State", tag = "3")]
+        pub state: i32,
+        /// The timestamp of the last time the
+        /// [Document][google.cloud.discoveryengine.v1.Document] was last indexed.
+        #[prost(message, optional, tag = "4")]
+        pub last_refreshed_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// The data ingestion source of the
+        /// [Document][google.cloud.discoveryengine.v1.Document].
+        ///
+        /// Allowed values are:
+        ///
+        /// * `batch`: Data ingested via Batch API, e.g., ImportDocuments.
+        /// * `streaming` Data ingested via Streaming API, e.g., FHIR streaming.
+        #[prost(string, tag = "5")]
+        pub data_ingestion_source: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `DocumentMetadata`.
+    pub mod document_metadata {
+        /// The value of the matcher that was used to match the
+        /// [Document][google.cloud.discoveryengine.v1.Document].
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct MatcherValue {
+            /// The value of the matcher that was used to match the
+            /// [Document][google.cloud.discoveryengine.v1.Document].
+            #[prost(oneof = "matcher_value::MatcherValue", tags = "1")]
+            pub matcher_value: ::core::option::Option<matcher_value::MatcherValue>,
+        }
+        /// Nested message and enum types in `MatcherValue`.
+        pub mod matcher_value {
+            /// The value of the matcher that was used to match the
+            /// [Document][google.cloud.discoveryengine.v1.Document].
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum MatcherValue {
+                /// If match by URI, the URI of the
+                /// [Document][google.cloud.discoveryengine.v1.Document].
+                #[prost(string, tag = "1")]
+                Uri(::prost::alloc::string::String),
+            }
+        }
+    }
+    /// The state of the [Document][google.cloud.discoveryengine.v1.Document].
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Should never be set.
+        Unspecified = 0,
+        /// The [Document][google.cloud.discoveryengine.v1.Document] is indexed.
+        Indexed = 1,
+        /// The [Document][google.cloud.discoveryengine.v1.Document] is not indexed
+        /// because its URI is not in the
+        /// [TargetSite][google.cloud.discoveryengine.v1.TargetSite].
+        NotInTargetSite = 2,
+        /// The [Document][google.cloud.discoveryengine.v1.Document] is not indexed.
+        NotInIndex = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Indexed => "INDEXED",
+                Self::NotInTargetSite => "NOT_IN_TARGET_SITE",
+                Self::NotInIndex => "NOT_IN_INDEX",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INDEXED" => Some(Self::Indexed),
+                "NOT_IN_TARGET_SITE" => Some(Self::NotInTargetSite),
+                "NOT_IN_INDEX" => Some(Self::NotInIndex),
+                _ => None,
+            }
+        }
+    }
+}
 /// Generated client implementations.
 pub mod document_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for ingesting [Document][google.cloud.discoveryengine.v1.Document]
@@ -7302,8 +7788,7 @@ pub mod document_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7333,8 +7818,7 @@ pub mod document_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7361,8 +7845,7 @@ pub mod document_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7389,8 +7872,7 @@ pub mod document_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7417,8 +7899,7 @@ pub mod document_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7454,8 +7935,7 @@ pub mod document_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7500,8 +7980,7 @@ pub mod document_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7515,6 +7994,38 @@ pub mod document_service_client {
                     GrpcMethod::new(
                         "google.cloud.discoveryengine.v1.DocumentService",
                         "PurgeDocuments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets index freshness metadata for
+        /// [Document][google.cloud.discoveryengine.v1.Document]s. Supported for
+        /// website search only.
+        pub async fn batch_get_documents_metadata(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchGetDocumentsMetadataRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::BatchGetDocumentsMetadataResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.DocumentService/BatchGetDocumentsMetadata",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.DocumentService",
+                        "BatchGetDocumentsMetadata",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -7856,7 +8367,13 @@ pub struct UpdateEngineRequest {
 }
 /// Generated client implementations.
 pub mod engine_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for managing [Engine][google.cloud.discoveryengine.v1.Engine]
@@ -7953,8 +8470,7 @@ pub mod engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7984,8 +8500,7 @@ pub mod engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8012,8 +8527,7 @@ pub mod engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8040,8 +8554,7 @@ pub mod engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8072,8 +8585,7 @@ pub mod engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8230,8 +8742,9 @@ pub mod check_grounding_response {
         /// field will be set to false. In that case, no grounding check was done for
         /// the claim and therefore
         /// [citation_indices][google.cloud.discoveryengine.v1.CheckGroundingResponse.Claim.citation_indices],
+        /// [anti_citation_indices][google.cloud.discoveryengine.v1.CheckGroundingResponse.Claim.anti_citation_indices],
         /// and
-        /// [anti_citation_indices][google.cloud.discoveryengine.v1.CheckGroundingResponse.Claim.anti_citation_indices]
+        /// [score][google.cloud.discoveryengine.v1.CheckGroundingResponse.Claim.score]
         /// should not be returned.
         #[prost(bool, optional, tag = "6")]
         pub grounding_check_required: ::core::option::Option<bool>,
@@ -8239,7 +8752,13 @@ pub mod check_grounding_response {
 }
 /// Generated client implementations.
 pub mod grounded_generation_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for grounded generation.
@@ -8337,8 +8856,7 @@ pub mod grounded_generation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8447,10 +8965,10 @@ pub mod project {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    State::Unspecified => "STATE_UNSPECIFIED",
-                    State::TermsAccepted => "TERMS_ACCEPTED",
-                    State::TermsPending => "TERMS_PENDING",
-                    State::TermsDeclined => "TERMS_DECLINED",
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::TermsAccepted => "TERMS_ACCEPTED",
+                    Self::TermsPending => "TERMS_PENDING",
+                    Self::TermsDeclined => "TERMS_DECLINED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8494,7 +9012,13 @@ pub struct ProvisionProjectRequest {
 pub struct ProvisionProjectMetadata {}
 /// Generated client implementations.
 pub mod project_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for operations on the
@@ -8596,8 +9120,7 @@ pub mod project_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8705,7 +9228,13 @@ pub struct RankResponse {
 }
 /// Generated client implementations.
 pub mod rank_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for ranking text records.
@@ -8798,8 +9327,7 @@ pub mod rank_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8822,7 +9350,8 @@ pub mod rank_service_client {
 /// Request message for Recommend method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecommendRequest {
-    /// Required. Full resource name of a [ServingConfig][]:
+    /// Required. Full resource name of a
+    /// [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]:
     /// `projects/*/locations/global/collections/*/engines/*/servingConfigs/*`, or
     /// `projects/*/locations/global/collections/*/dataStores/*/servingConfigs/*`
     ///
@@ -9003,7 +9532,13 @@ pub mod recommend_response {
 }
 /// Generated client implementations.
 pub mod recommendation_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for making recommendations.
@@ -9099,8 +9634,7 @@ pub mod recommendation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -9255,7 +9789,13 @@ pub struct DeleteSchemaMetadata {
 }
 /// Generated client implementations.
 pub mod schema_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for managing [Schema][google.cloud.discoveryengine.v1.Schema]s.
@@ -9348,8 +9888,7 @@ pub mod schema_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -9379,8 +9918,7 @@ pub mod schema_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -9410,8 +9948,7 @@ pub mod schema_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -9441,8 +9978,7 @@ pub mod schema_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -9472,8 +10008,7 @@ pub mod schema_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -9487,6 +10022,297 @@ pub mod schema_service_client {
                     GrpcMethod::new(
                         "google.cloud.discoveryengine.v1.SchemaService",
                         "DeleteSchema",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Request message for
+/// [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1.SearchTuningService.ListCustomModels]
+/// method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCustomModelsRequest {
+    /// Required. The resource name of the parent Data Store, such as
+    /// `projects/*/locations/global/collections/default_collection/dataStores/default_data_store`.
+    /// This field is used to identify the data store where to fetch the models
+    /// from.
+    #[prost(string, tag = "1")]
+    pub data_store: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1.SearchTuningService.ListCustomModels]
+/// method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCustomModelsResponse {
+    /// List of custom tuning models.
+    #[prost(message, repeated, tag = "1")]
+    pub models: ::prost::alloc::vec::Vec<CustomTuningModel>,
+}
+/// Request message for
+/// [SearchTuningService.TrainCustomModel][google.cloud.discoveryengine.v1.SearchTuningService.TrainCustomModel]
+/// method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrainCustomModelRequest {
+    /// Required. The resource name of the Data Store, such as
+    /// `projects/*/locations/global/collections/default_collection/dataStores/default_data_store`.
+    /// This field is used to identify the data store where to train the models.
+    #[prost(string, tag = "1")]
+    pub data_store: ::prost::alloc::string::String,
+    /// Model to be trained. Supported values are:
+    ///
+    ///   * **search-tuning**: Fine tuning the search system based on data provided.
+    #[prost(string, tag = "3")]
+    pub model_type: ::prost::alloc::string::String,
+    /// The desired location of errors incurred during the data ingestion and
+    /// training.
+    #[prost(message, optional, tag = "4")]
+    pub error_config: ::core::option::Option<ImportErrorConfig>,
+    /// If not provided, a UUID will be generated.
+    #[prost(string, tag = "5")]
+    pub model_id: ::prost::alloc::string::String,
+    /// Model training input.
+    #[prost(oneof = "train_custom_model_request::TrainingInput", tags = "2")]
+    pub training_input: ::core::option::Option<
+        train_custom_model_request::TrainingInput,
+    >,
+}
+/// Nested message and enum types in `TrainCustomModelRequest`.
+pub mod train_custom_model_request {
+    /// Cloud Storage training data input.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GcsTrainingInput {
+        /// The Cloud Storage corpus data which could be associated in train data.
+        /// The data path format is `gs://<bucket_to_data>/<jsonl_file_name>`.
+        /// A newline delimited jsonl/ndjson file.
+        ///
+        /// For search-tuning model, each line should have the _id, title
+        /// and text. Example:
+        /// `{"_id": "doc1", title: "relevant doc", "text": "relevant text"}`
+        #[prost(string, tag = "1")]
+        pub corpus_data_path: ::prost::alloc::string::String,
+        /// The gcs query data which could be associated in train data.
+        /// The data path format is `gs://<bucket_to_data>/<jsonl_file_name>`.
+        /// A newline delimited jsonl/ndjson file.
+        ///
+        /// For search-tuning model, each line should have the _id
+        /// and text. Example: {"_id": "query1",  "text": "example query"}
+        #[prost(string, tag = "2")]
+        pub query_data_path: ::prost::alloc::string::String,
+        /// Cloud Storage training data path whose format should be
+        /// `gs://<bucket_to_data>/<tsv_file_name>`. The file should be in tsv
+        /// format. Each line should have the doc_id and query_id and score (number).
+        ///
+        /// For search-tuning model, it should have the query-id corpus-id
+        /// score as tsv file header. The score should be a number in `[0, inf+)`.
+        /// The larger the number is, the more relevant the pair is. Example:
+        ///
+        /// * `query-id\tcorpus-id\tscore`
+        /// * `query1\tdoc1\t1`
+        #[prost(string, tag = "3")]
+        pub train_data_path: ::prost::alloc::string::String,
+        /// Cloud Storage test data. Same format as train_data_path. If not provided,
+        /// a random 80/20 train/test split will be performed on train_data_path.
+        #[prost(string, tag = "4")]
+        pub test_data_path: ::prost::alloc::string::String,
+    }
+    /// Model training input.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TrainingInput {
+        /// Cloud Storage training input.
+        #[prost(message, tag = "2")]
+        GcsTrainingInput(GcsTrainingInput),
+    }
+}
+/// Response of the
+/// [TrainCustomModelRequest][google.cloud.discoveryengine.v1.TrainCustomModelRequest].
+/// This message is returned by the google.longrunning.Operations.response field.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrainCustomModelResponse {
+    /// A sample of errors encountered while processing the data.
+    #[prost(message, repeated, tag = "1")]
+    pub error_samples: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+    /// Echoes the destination for the complete errors in the request if set.
+    #[prost(message, optional, tag = "2")]
+    pub error_config: ::core::option::Option<ImportErrorConfig>,
+    /// The trained model status. Possible values are:
+    ///
+    ///   * **bad-data**: The training data quality is bad.
+    ///   * **no-improvement**: Tuning didn't improve performance. Won't deploy.
+    ///   * **in-progress**: Model training job creation is in progress.
+    ///   * **training**: Model is actively training.
+    ///   * **evaluating**: The model is evaluating trained metrics.
+    ///   * **indexing**: The model trained metrics are indexing.
+    ///   * **ready**: The model is ready for serving.
+    #[prost(string, tag = "3")]
+    pub model_status: ::prost::alloc::string::String,
+    /// The metrics of the trained model.
+    #[prost(map = "string, double", tag = "4")]
+    pub metrics: ::std::collections::HashMap<::prost::alloc::string::String, f64>,
+    /// Fully qualified name of the CustomTuningModel.
+    #[prost(string, tag = "5")]
+    pub model_name: ::prost::alloc::string::String,
+}
+/// Metadata related to the progress of the TrainCustomModel operation. This is
+/// returned by the google.longrunning.Operation.metadata field.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct TrainCustomModelMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Generated client implementations.
+pub mod search_tuning_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for search tuning.
+    #[derive(Debug, Clone)]
+    pub struct SearchTuningServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl SearchTuningServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> SearchTuningServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SearchTuningServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            SearchTuningServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Trains a custom model.
+        pub async fn train_custom_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::TrainCustomModelRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.SearchTuningService/TrainCustomModel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.SearchTuningService",
+                        "TrainCustomModel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a list of all the custom models.
+        pub async fn list_custom_models(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListCustomModelsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListCustomModelsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.SearchTuningService/ListCustomModels",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.SearchTuningService",
+                        "ListCustomModels",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -9601,9 +10427,9 @@ pub mod target_site {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Include => "INCLUDE",
-                Type::Exclude => "EXCLUDE",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Include => "INCLUDE",
+                Self::Exclude => "EXCLUDE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9652,11 +10478,11 @@ pub mod target_site {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                IndexingStatus::Unspecified => "INDEXING_STATUS_UNSPECIFIED",
-                IndexingStatus::Pending => "PENDING",
-                IndexingStatus::Failed => "FAILED",
-                IndexingStatus::Succeeded => "SUCCEEDED",
-                IndexingStatus::Deleting => "DELETING",
+                Self::Unspecified => "INDEXING_STATUS_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Failed => "FAILED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9714,12 +10540,10 @@ pub mod site_verification_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SiteVerificationState::Unspecified => {
-                    "SITE_VERIFICATION_STATE_UNSPECIFIED"
-                }
-                SiteVerificationState::Verified => "VERIFIED",
-                SiteVerificationState::Unverified => "UNVERIFIED",
-                SiteVerificationState::Exempted => "EXEMPTED",
+                Self::Unspecified => "SITE_VERIFICATION_STATE_UNSPECIFIED",
+                Self::Verified => "VERIFIED",
+                Self::Unverified => "UNVERIFIED",
+                Self::Exempted => "EXEMPTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10090,9 +10914,9 @@ pub mod recrawl_uris_response {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        CorpusType::Unspecified => "CORPUS_TYPE_UNSPECIFIED",
-                        CorpusType::Desktop => "DESKTOP",
-                        CorpusType::Mobile => "MOBILE",
+                        Self::Unspecified => "CORPUS_TYPE_UNSPECIFIED",
+                        Self::Desktop => "DESKTOP",
+                        Self::Mobile => "MOBILE",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10214,7 +11038,13 @@ pub struct FetchDomainVerificationStatusResponse {
 }
 /// Generated client implementations.
 pub mod site_search_engine_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for managing site search related resources.
@@ -10313,8 +11143,7 @@ pub mod site_search_engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10344,8 +11173,7 @@ pub mod site_search_engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10376,8 +11204,7 @@ pub mod site_search_engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10404,8 +11231,7 @@ pub mod site_search_engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10435,8 +11261,7 @@ pub mod site_search_engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10466,8 +11291,7 @@ pub mod site_search_engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10497,8 +11321,7 @@ pub mod site_search_engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10528,8 +11351,7 @@ pub mod site_search_engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10559,8 +11381,7 @@ pub mod site_search_engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10590,8 +11411,7 @@ pub mod site_search_engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10623,8 +11443,7 @@ pub mod site_search_engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10656,8 +11475,7 @@ pub mod site_search_engine_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10725,7 +11543,13 @@ pub struct CollectUserEventRequest {
 }
 /// Generated client implementations.
 pub mod user_event_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for ingesting end user actions on a website to Discovery Engine API.
@@ -10818,8 +11642,7 @@ pub mod user_event_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10853,8 +11676,7 @@ pub mod user_event_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10868,6 +11690,39 @@ pub mod user_event_service_client {
                     GrpcMethod::new(
                         "google.cloud.discoveryengine.v1.UserEventService",
                         "CollectUserEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes permanently all user events specified by the filter provided.
+        /// Depending on the number of events specified by the filter, this operation
+        /// could take hours or days to complete. To test a filter, use the list
+        /// command first.
+        pub async fn purge_user_events(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PurgeUserEventsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.UserEventService/PurgeUserEvents",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.UserEventService",
+                        "PurgeUserEvents",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -10890,8 +11745,7 @@ pub mod user_event_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

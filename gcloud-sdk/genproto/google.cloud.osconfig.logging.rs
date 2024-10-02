@@ -118,14 +118,14 @@ pub mod patch_job_completed_log {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Started => "STARTED",
-                State::InstanceLookup => "INSTANCE_LOOKUP",
-                State::Patching => "PATCHING",
-                State::Succeeded => "SUCCEEDED",
-                State::CompletedWithErrors => "COMPLETED_WITH_ERRORS",
-                State::Canceled => "CANCELED",
-                State::TimedOut => "TIMED_OUT",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Started => "STARTED",
+                Self::InstanceLookup => "INSTANCE_LOOKUP",
+                Self::Patching => "PATCHING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::CompletedWithErrors => "COMPLETED_WITH_ERRORS",
+                Self::Canceled => "CANCELED",
+                Self::TimedOut => "TIMED_OUT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

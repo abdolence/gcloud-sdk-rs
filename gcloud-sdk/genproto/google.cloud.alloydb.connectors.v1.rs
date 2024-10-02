@@ -48,9 +48,9 @@ pub mod metadata_exchange_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AuthType::Unspecified => "AUTH_TYPE_UNSPECIFIED",
-                AuthType::DbNative => "DB_NATIVE",
-                AuthType::AutoIam => "AUTO_IAM",
+                Self::Unspecified => "AUTH_TYPE_UNSPECIFIED",
+                Self::DbNative => "DB_NATIVE",
+                Self::AutoIam => "AUTO_IAM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -106,9 +106,9 @@ pub mod metadata_exchange_response {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ResponseCode::Unspecified => "RESPONSE_CODE_UNSPECIFIED",
-                ResponseCode::Ok => "OK",
-                ResponseCode::Error => "ERROR",
+                Self::Unspecified => "RESPONSE_CODE_UNSPECIFIED",
+                Self::Ok => "OK",
+                Self::Error => "ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

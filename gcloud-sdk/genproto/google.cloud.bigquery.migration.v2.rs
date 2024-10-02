@@ -316,9 +316,9 @@ pub mod teradata_dialect {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Mode::Unspecified => "MODE_UNSPECIFIED",
-                Mode::Sql => "SQL",
-                Mode::Bteq => "BTEQ",
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::Sql => "SQL",
+                Self::Bteq => "BTEQ",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -453,14 +453,14 @@ pub mod name_mapping_key {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Database => "DATABASE",
-                Type::Schema => "SCHEMA",
-                Type::Relation => "RELATION",
-                Type::Attribute => "ATTRIBUTE",
-                Type::RelationAlias => "RELATION_ALIAS",
-                Type::AttributeAlias => "ATTRIBUTE_ALIAS",
-                Type::Function => "FUNCTION",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Database => "DATABASE",
+                Self::Schema => "SCHEMA",
+                Self::Relation => "RELATION",
+                Self::Attribute => "ATTRIBUTE",
+                Self::RelationAlias => "RELATION_ALIAS",
+                Self::AttributeAlias => "ATTRIBUTE_ALIAS",
+                Self::Function => "FUNCTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -738,11 +738,11 @@ pub mod migration_workflow {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Draft => "DRAFT",
-                State::Running => "RUNNING",
-                State::Paused => "PAUSED",
-                State::Completed => "COMPLETED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Draft => "DRAFT",
+                Self::Running => "RUNNING",
+                Self::Paused => "PAUSED",
+                Self::Completed => "COMPLETED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -856,13 +856,13 @@ pub mod migration_task {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Pending => "PENDING",
-                State::Orchestrating => "ORCHESTRATING",
-                State::Running => "RUNNING",
-                State::Paused => "PAUSED",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Orchestrating => "ORCHESTRATING",
+                Self::Running => "RUNNING",
+                Self::Paused => "PAUSED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -980,13 +980,13 @@ pub mod migration_subtask {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::Running => "RUNNING",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Paused => "PAUSED",
-                State::PendingDependency => "PENDING_DEPENDENCY",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Running => "RUNNING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Paused => "PAUSED",
+                Self::PendingDependency => "PENDING_DEPENDENCY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1153,7 +1153,13 @@ pub struct ListMigrationSubtasksResponse {
 }
 /// Generated client implementations.
 pub mod migration_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service to handle EDW migrations.
@@ -1249,8 +1255,7 @@ pub mod migration_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1280,8 +1285,7 @@ pub mod migration_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1311,8 +1315,7 @@ pub mod migration_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1339,8 +1342,7 @@ pub mod migration_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1370,8 +1372,7 @@ pub mod migration_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1401,8 +1402,7 @@ pub mod migration_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1432,8 +1432,7 @@ pub mod migration_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1507,10 +1506,10 @@ pub mod translation_report_record {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Severity::Unspecified => "SEVERITY_UNSPECIFIED",
-                Severity::Info => "INFO",
-                Severity::Warning => "WARNING",
-                Severity::Error => "ERROR",
+                Self::Unspecified => "SEVERITY_UNSPECIFIED",
+                Self::Info => "INFO",
+                Self::Warning => "WARNING",
+                Self::Error => "ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

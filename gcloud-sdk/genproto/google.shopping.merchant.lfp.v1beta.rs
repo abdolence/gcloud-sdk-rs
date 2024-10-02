@@ -82,7 +82,13 @@ pub struct InsertLfpInventoryRequest {
 }
 /// Generated client implementations.
 pub mod lfp_inventory_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for a [LFP
@@ -179,8 +185,7 @@ pub mod lfp_inventory_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -266,7 +271,13 @@ pub struct InsertLfpSaleRequest {
 }
 /// Generated client implementations.
 pub mod lfp_sale_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for a [LFP
@@ -361,8 +372,7 @@ pub mod lfp_sale_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -481,9 +491,9 @@ pub mod lfp_store {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                StoreMatchingState::Unspecified => "STORE_MATCHING_STATE_UNSPECIFIED",
-                StoreMatchingState::Matched => "STORE_MATCHING_STATE_MATCHED",
-                StoreMatchingState::Failed => "STORE_MATCHING_STATE_FAILED",
+                Self::Unspecified => "STORE_MATCHING_STATE_UNSPECIFIED",
+                Self::Matched => "STORE_MATCHING_STATE_MATCHED",
+                Self::Failed => "STORE_MATCHING_STATE_FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -563,7 +573,13 @@ pub struct ListLfpStoresResponse {
 }
 /// Generated client implementations.
 pub mod lfp_store_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for a [LFP
@@ -658,8 +674,7 @@ pub mod lfp_store_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -687,8 +702,7 @@ pub mod lfp_store_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -715,8 +729,7 @@ pub mod lfp_store_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -747,8 +760,7 @@ pub mod lfp_store_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

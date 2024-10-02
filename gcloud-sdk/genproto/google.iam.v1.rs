@@ -349,10 +349,10 @@ pub mod audit_log_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LogType::Unspecified => "LOG_TYPE_UNSPECIFIED",
-                LogType::AdminRead => "ADMIN_READ",
-                LogType::DataWrite => "DATA_WRITE",
-                LogType::DataRead => "DATA_READ",
+                Self::Unspecified => "LOG_TYPE_UNSPECIFIED",
+                Self::AdminRead => "ADMIN_READ",
+                Self::DataWrite => "DATA_WRITE",
+                Self::DataRead => "DATA_READ",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -429,9 +429,9 @@ pub mod binding_delta {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Action::Unspecified => "ACTION_UNSPECIFIED",
-                Action::Add => "ADD",
-                Action::Remove => "REMOVE",
+                Self::Unspecified => "ACTION_UNSPECIFIED",
+                Self::Add => "ADD",
+                Self::Remove => "REMOVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -500,9 +500,9 @@ pub mod audit_config_delta {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Action::Unspecified => "ACTION_UNSPECIFIED",
-                Action::Add => "ADD",
-                Action::Remove => "REMOVE",
+                Self::Unspecified => "ACTION_UNSPECIFIED",
+                Self::Add => "ADD",
+                Self::Remove => "REMOVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -573,7 +573,13 @@ pub struct TestIamPermissionsResponse {
 }
 /// Generated client implementations.
 pub mod iam_policy_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// API Overview
@@ -694,8 +700,7 @@ pub mod iam_policy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -719,8 +724,7 @@ pub mod iam_policy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -751,8 +755,7 @@ pub mod iam_policy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

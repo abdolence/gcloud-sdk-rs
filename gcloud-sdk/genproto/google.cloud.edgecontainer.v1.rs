@@ -163,11 +163,9 @@ pub mod cluster {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    SharedDeploymentPolicy::Unspecified => {
-                        "SHARED_DEPLOYMENT_POLICY_UNSPECIFIED"
-                    }
-                    SharedDeploymentPolicy::Allowed => "ALLOWED",
-                    SharedDeploymentPolicy::Disallowed => "DISALLOWED",
+                    Self::Unspecified => "SHARED_DEPLOYMENT_POLICY_UNSPECIFIED",
+                    Self::Allowed => "ALLOWED",
+                    Self::Disallowed => "DISALLOWED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -317,9 +315,9 @@ pub mod cluster {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Type::Unspecified => "TYPE_UNSPECIFIED",
-                    Type::UserInitiatedUpgrade => "USER_INITIATED_UPGRADE",
-                    Type::GoogleDrivenUpgrade => "GOOGLE_DRIVEN_UPGRADE",
+                    Self::Unspecified => "TYPE_UNSPECIFIED",
+                    Self::UserInitiatedUpgrade => "USER_INITIATED_UPGRADE",
+                    Self::GoogleDrivenUpgrade => "GOOGLE_DRIVEN_UPGRADE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -358,8 +356,8 @@ pub mod cluster {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Schedule::Unspecified => "SCHEDULE_UNSPECIFIED",
-                    Schedule::Immediately => "IMMEDIATELY",
+                    Self::Unspecified => "SCHEDULE_UNSPECIFIED",
+                    Self::Immediately => "IMMEDIATELY",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -401,10 +399,10 @@ pub mod cluster {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    State::Unspecified => "STATE_UNSPECIFIED",
-                    State::Reconciling => "RECONCILING",
-                    State::Succeeded => "SUCCEEDED",
-                    State::Failed => "FAILED",
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::Reconciling => "RECONCILING",
+                    Self::Succeeded => "SUCCEEDED",
+                    Self::Failed => "FAILED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -464,12 +462,12 @@ pub mod cluster {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::Unspecified => "STATUS_UNSPECIFIED",
-                Status::Provisioning => "PROVISIONING",
-                Status::Running => "RUNNING",
-                Status::Deleting => "DELETING",
-                Status::Error => "ERROR",
-                Status::Reconciling => "RECONCILING",
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Running => "RUNNING",
+                Self::Deleting => "DELETING",
+                Self::Error => "ERROR",
+                Self::Reconciling => "RECONCILING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -513,9 +511,9 @@ pub mod cluster {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReleaseChannel::Unspecified => "RELEASE_CHANNEL_UNSPECIFIED",
-                ReleaseChannel::None => "NONE",
-                ReleaseChannel::Regular => "REGULAR",
+                Self::Unspecified => "RELEASE_CHANNEL_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::Regular => "REGULAR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -836,10 +834,10 @@ pub mod vpn_connection {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    State::Unspecified => "STATE_UNSPECIFIED",
-                    State::Connected => "STATE_CONNECTED",
-                    State::Connecting => "STATE_CONNECTING",
-                    State::Error => "STATE_ERROR",
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::Connected => "STATE_CONNECTED",
+                    Self::Connecting => "STATE_CONNECTING",
+                    Self::Error => "STATE_ERROR",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -882,9 +880,9 @@ pub mod vpn_connection {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BgpRoutingMode::Unspecified => "BGP_ROUTING_MODE_UNSPECIFIED",
-                BgpRoutingMode::Regional => "REGIONAL",
-                BgpRoutingMode::Global => "GLOBAL",
+                Self::Unspecified => "BGP_ROUTING_MODE_UNSPECIFIED",
+                Self::Regional => "REGIONAL",
+                Self::Global => "GLOBAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -952,9 +950,9 @@ pub mod zone_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RackType::Unspecified => "RACK_TYPE_UNSPECIFIED",
-                RackType::Base => "BASE",
-                RackType::Expansion => "EXPANSION",
+                Self::Unspecified => "RACK_TYPE_UNSPECIFIED",
+                Self::Base => "BASE",
+                Self::Expansion => "EXPANSION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1068,9 +1066,9 @@ impl KmsKeyState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            KmsKeyState::Unspecified => "KMS_KEY_STATE_UNSPECIFIED",
-            KmsKeyState::KeyAvailable => "KMS_KEY_STATE_KEY_AVAILABLE",
-            KmsKeyState::KeyUnavailable => "KMS_KEY_STATE_KEY_UNAVAILABLE",
+            Self::Unspecified => "KMS_KEY_STATE_UNSPECIFIED",
+            Self::KeyAvailable => "KMS_KEY_STATE_KEY_AVAILABLE",
+            Self::KeyUnavailable => "KMS_KEY_STATE_KEY_UNAVAILABLE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1240,8 +1238,8 @@ pub mod upgrade_cluster_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Schedule::Unspecified => "SCHEDULE_UNSPECIFIED",
-                Schedule::Immediately => "IMMEDIATELY",
+                Self::Unspecified => "SCHEDULE_UNSPECIFIED",
+                Self::Immediately => "IMMEDIATELY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1513,7 +1511,13 @@ pub struct GetServerConfigRequest {
 }
 /// Generated client implementations.
 pub mod edge_container_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// EdgeContainer API provides management of Kubernetes Clusters on Google Edge
@@ -1610,8 +1614,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1638,8 +1641,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1669,8 +1671,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1700,8 +1701,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1731,8 +1731,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1762,8 +1761,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1793,8 +1791,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1824,8 +1821,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1855,8 +1851,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1883,8 +1878,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1914,8 +1908,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1945,8 +1938,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1976,8 +1968,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2007,8 +1998,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2035,8 +2025,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2066,8 +2055,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2094,8 +2082,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2125,8 +2112,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2156,8 +2142,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2184,8 +2169,7 @@ pub mod edge_container_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

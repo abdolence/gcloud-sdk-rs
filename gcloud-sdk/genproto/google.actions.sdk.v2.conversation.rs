@@ -119,10 +119,10 @@ pub mod image {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ImageFill::Unspecified => "UNSPECIFIED",
-                ImageFill::Gray => "GRAY",
-                ImageFill::White => "WHITE",
-                ImageFill::Cropped => "CROPPED",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Gray => "GRAY",
+                Self::White => "WHITE",
+                Self::Cropped => "CROPPED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -175,8 +175,8 @@ impl UrlHint {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            UrlHint::LinkUnspecified => "LINK_UNSPECIFIED",
-            UrlHint::Amp => "AMP",
+            Self::LinkUnspecified => "LINK_UNSPECIFIED",
+            Self::Amp => "AMP",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -316,9 +316,9 @@ pub mod media {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MediaType::Unspecified => "MEDIA_TYPE_UNSPECIFIED",
-                MediaType::Audio => "AUDIO",
-                MediaType::MediaStatusAck => "MEDIA_STATUS_ACK",
+                Self::Unspecified => "MEDIA_TYPE_UNSPECIFIED",
+                Self::Audio => "AUDIO",
+                Self::MediaStatusAck => "MEDIA_STATUS_ACK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -360,11 +360,9 @@ pub mod media {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OptionalMediaControls::Unspecified => {
-                    "OPTIONAL_MEDIA_CONTROLS_UNSPECIFIED"
-                }
-                OptionalMediaControls::Paused => "PAUSED",
-                OptionalMediaControls::Stopped => "STOPPED",
+                Self::Unspecified => "OPTIONAL_MEDIA_CONTROLS_UNSPECIFIED",
+                Self::Paused => "PAUSED",
+                Self::Stopped => "STOPPED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -484,10 +482,10 @@ pub mod table_column {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                HorizontalAlignment::Unspecified => "UNSPECIFIED",
-                HorizontalAlignment::Leading => "LEADING",
-                HorizontalAlignment::Center => "CENTER",
-                HorizontalAlignment::Trailing => "TRAILING",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Leading => "LEADING",
+                Self::Center => "CENTER",
+                Self::Trailing => "TRAILING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -691,9 +689,9 @@ pub mod slot {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SlotMode::ModeUnspecified => "MODE_UNSPECIFIED",
-                SlotMode::Optional => "OPTIONAL",
-                SlotMode::Required => "REQUIRED",
+                Self::ModeUnspecified => "MODE_UNSPECIFIED",
+                Self::Optional => "OPTIONAL",
+                Self::Required => "REQUIRED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -739,10 +737,10 @@ pub mod slot {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SlotStatus::SlotUnspecified => "SLOT_UNSPECIFIED",
-                SlotStatus::Empty => "EMPTY",
-                SlotStatus::Invalid => "INVALID",
-                SlotStatus::Filled => "FILLED",
+                Self::SlotUnspecified => "SLOT_UNSPECIFIED",
+                Self::Empty => "EMPTY",
+                Self::Invalid => "INVALID",
+                Self::Filled => "FILLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -777,10 +775,10 @@ impl SlotFillingStatus {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SlotFillingStatus::Unspecified => "UNSPECIFIED",
-            SlotFillingStatus::Initialized => "INITIALIZED",
-            SlotFillingStatus::Collecting => "COLLECTING",
-            SlotFillingStatus::Final => "FINAL",
+            Self::Unspecified => "UNSPECIFIED",
+            Self::Initialized => "INITIALIZED",
+            Self::Collecting => "COLLECTING",
+            Self::Final => "FINAL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.

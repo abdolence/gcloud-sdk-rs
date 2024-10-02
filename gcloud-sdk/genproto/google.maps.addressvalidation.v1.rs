@@ -131,12 +131,10 @@ pub mod address_component {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConfirmationLevel::Unspecified => "CONFIRMATION_LEVEL_UNSPECIFIED",
-                ConfirmationLevel::Confirmed => "CONFIRMED",
-                ConfirmationLevel::UnconfirmedButPlausible => "UNCONFIRMED_BUT_PLAUSIBLE",
-                ConfirmationLevel::UnconfirmedAndSuspicious => {
-                    "UNCONFIRMED_AND_SUSPICIOUS"
-                }
+                Self::Unspecified => "CONFIRMATION_LEVEL_UNSPECIFIED",
+                Self::Confirmed => "CONFIRMED",
+                Self::UnconfirmedButPlausible => "UNCONFIRMED_BUT_PLAUSIBLE",
+                Self::UnconfirmedAndSuspicious => "UNCONFIRMED_AND_SUSPICIOUS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -662,13 +660,11 @@ pub mod provide_validation_feedback_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ValidationConclusion::Unspecified => "VALIDATION_CONCLUSION_UNSPECIFIED",
-                ValidationConclusion::ValidatedVersionUsed => "VALIDATED_VERSION_USED",
-                ValidationConclusion::UserVersionUsed => "USER_VERSION_USED",
-                ValidationConclusion::UnvalidatedVersionUsed => {
-                    "UNVALIDATED_VERSION_USED"
-                }
-                ValidationConclusion::Unused => "UNUSED",
+                Self::Unspecified => "VALIDATION_CONCLUSION_UNSPECIFIED",
+                Self::ValidatedVersionUsed => "VALIDATED_VERSION_USED",
+                Self::UserVersionUsed => "USER_VERSION_USED",
+                Self::UnvalidatedVersionUsed => "UNVALIDATED_VERSION_USED",
+                Self::Unused => "UNUSED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -817,13 +813,13 @@ pub mod verdict {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Granularity::Unspecified => "GRANULARITY_UNSPECIFIED",
-                Granularity::SubPremise => "SUB_PREMISE",
-                Granularity::Premise => "PREMISE",
-                Granularity::PremiseProximity => "PREMISE_PROXIMITY",
-                Granularity::Block => "BLOCK",
-                Granularity::Route => "ROUTE",
-                Granularity::Other => "OTHER",
+                Self::Unspecified => "GRANULARITY_UNSPECIFIED",
+                Self::SubPremise => "SUB_PREMISE",
+                Self::Premise => "PREMISE",
+                Self::PremiseProximity => "PREMISE_PROXIMITY",
+                Self::Block => "BLOCK",
+                Self::Route => "ROUTE",
+                Self::Other => "OTHER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -843,7 +839,13 @@ pub mod verdict {
 }
 /// Generated client implementations.
 pub mod address_validation_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The service for validating addresses.
@@ -939,8 +941,7 @@ pub mod address_validation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -974,8 +975,7 @@ pub mod address_validation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

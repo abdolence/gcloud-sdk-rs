@@ -224,9 +224,9 @@ impl ClassificationType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ClassificationType::Unspecified => "CLASSIFICATION_TYPE_UNSPECIFIED",
-            ClassificationType::Multiclass => "MULTICLASS",
-            ClassificationType::Multilabel => "MULTILABEL",
+            Self::Unspecified => "CLASSIFICATION_TYPE_UNSPECIFIED",
+            Self::Multiclass => "MULTICLASS",
+            Self::Multilabel => "MULTILABEL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -652,13 +652,13 @@ impl TypeCode {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TypeCode::Unspecified => "TYPE_CODE_UNSPECIFIED",
-            TypeCode::Float64 => "FLOAT64",
-            TypeCode::Timestamp => "TIMESTAMP",
-            TypeCode::String => "STRING",
-            TypeCode::Array => "ARRAY",
-            TypeCode::Struct => "STRUCT",
-            TypeCode::Category => "CATEGORY",
+            Self::Unspecified => "TYPE_CODE_UNSPECIFIED",
+            Self::Float64 => "FLOAT64",
+            Self::Timestamp => "TIMESTAMP",
+            Self::String => "STRING",
+            Self::Array => "ARRAY",
+            Self::Struct => "STRUCT",
+            Self::Category => "CATEGORY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2029,12 +2029,10 @@ pub mod document_dimensions {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DocumentDimensionUnit::Unspecified => {
-                    "DOCUMENT_DIMENSION_UNIT_UNSPECIFIED"
-                }
-                DocumentDimensionUnit::Inch => "INCH",
-                DocumentDimensionUnit::Centimeter => "CENTIMETER",
-                DocumentDimensionUnit::Point => "POINT",
+                Self::Unspecified => "DOCUMENT_DIMENSION_UNIT_UNSPECIFIED",
+                Self::Inch => "INCH",
+                Self::Centimeter => "CENTIMETER",
+                Self::Point => "POINT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2151,16 +2149,16 @@ pub mod document {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    TextSegmentType::Unspecified => "TEXT_SEGMENT_TYPE_UNSPECIFIED",
-                    TextSegmentType::Token => "TOKEN",
-                    TextSegmentType::Paragraph => "PARAGRAPH",
-                    TextSegmentType::FormField => "FORM_FIELD",
-                    TextSegmentType::FormFieldName => "FORM_FIELD_NAME",
-                    TextSegmentType::FormFieldContents => "FORM_FIELD_CONTENTS",
-                    TextSegmentType::Table => "TABLE",
-                    TextSegmentType::TableHeader => "TABLE_HEADER",
-                    TextSegmentType::TableRow => "TABLE_ROW",
-                    TextSegmentType::TableCell => "TABLE_CELL",
+                    Self::Unspecified => "TEXT_SEGMENT_TYPE_UNSPECIFIED",
+                    Self::Token => "TOKEN",
+                    Self::Paragraph => "PARAGRAPH",
+                    Self::FormField => "FORM_FIELD",
+                    Self::FormFieldName => "FORM_FIELD_NAME",
+                    Self::FormFieldContents => "FORM_FIELD_CONTENTS",
+                    Self::Table => "TABLE",
+                    Self::TableHeader => "TABLE_HEADER",
+                    Self::TableRow => "TABLE_ROW",
+                    Self::TableCell => "TABLE_CELL",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3130,9 +3128,9 @@ pub mod model {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DeploymentState::Unspecified => "DEPLOYMENT_STATE_UNSPECIFIED",
-                DeploymentState::Deployed => "DEPLOYED",
-                DeploymentState::Undeployed => "UNDEPLOYED",
+                Self::Unspecified => "DEPLOYMENT_STATE_UNSPECIFIED",
+                Self::Deployed => "DEPLOYED",
+                Self::Undeployed => "UNDEPLOYED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3656,7 +3654,13 @@ pub struct BatchPredictResult {
 }
 /// Generated client implementations.
 pub mod prediction_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// AutoML Prediction API.
@@ -3773,8 +3777,7 @@ pub mod prediction_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3815,8 +3818,7 @@ pub mod prediction_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4265,7 +4267,13 @@ pub struct ListModelEvaluationsResponse {
 }
 /// Generated client implementations.
 pub mod auto_ml_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// AutoML Server API.
@@ -4371,8 +4379,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4399,8 +4406,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4427,8 +4433,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4452,8 +4457,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4487,8 +4491,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4526,8 +4529,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4556,8 +4558,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4581,8 +4582,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4609,8 +4609,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4637,8 +4636,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4665,8 +4663,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4693,8 +4690,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4724,8 +4720,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4752,8 +4747,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4787,8 +4781,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4812,8 +4805,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4840,8 +4832,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4872,8 +4863,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4911,8 +4901,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4945,8 +4934,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4983,8 +4971,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5024,8 +5011,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5055,8 +5041,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5086,8 +5071,7 @@ pub mod auto_ml_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -19,10 +19,10 @@ impl DeviceEncryptionStatus {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DeviceEncryptionStatus::EncryptionUnspecified => "ENCRYPTION_UNSPECIFIED",
-            DeviceEncryptionStatus::EncryptionUnsupported => "ENCRYPTION_UNSUPPORTED",
-            DeviceEncryptionStatus::Unencrypted => "UNENCRYPTED",
-            DeviceEncryptionStatus::Encrypted => "ENCRYPTED",
+            Self::EncryptionUnspecified => "ENCRYPTION_UNSPECIFIED",
+            Self::EncryptionUnsupported => "ENCRYPTION_UNSUPPORTED",
+            Self::Unencrypted => "UNENCRYPTED",
+            Self::Encrypted => "ENCRYPTED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -63,13 +63,13 @@ impl OsType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            OsType::OsUnspecified => "OS_UNSPECIFIED",
-            OsType::DesktopMac => "DESKTOP_MAC",
-            OsType::DesktopWindows => "DESKTOP_WINDOWS",
-            OsType::DesktopLinux => "DESKTOP_LINUX",
-            OsType::DesktopChromeOs => "DESKTOP_CHROME_OS",
-            OsType::Android => "ANDROID",
-            OsType::Ios => "IOS",
+            Self::OsUnspecified => "OS_UNSPECIFIED",
+            Self::DesktopMac => "DESKTOP_MAC",
+            Self::DesktopWindows => "DESKTOP_WINDOWS",
+            Self::DesktopLinux => "DESKTOP_LINUX",
+            Self::DesktopChromeOs => "DESKTOP_CHROME_OS",
+            Self::Android => "ANDROID",
+            Self::Ios => "IOS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -109,10 +109,10 @@ impl DeviceManagementLevel {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DeviceManagementLevel::ManagementUnspecified => "MANAGEMENT_UNSPECIFIED",
-            DeviceManagementLevel::None => "NONE",
-            DeviceManagementLevel::Basic => "BASIC",
-            DeviceManagementLevel::Complete => "COMPLETE",
+            Self::ManagementUnspecified => "MANAGEMENT_UNSPECIFIED",
+            Self::None => "NONE",
+            Self::Basic => "BASIC",
+            Self::Complete => "COMPLETE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.

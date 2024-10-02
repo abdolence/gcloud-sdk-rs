@@ -371,10 +371,10 @@ pub mod violation_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PolicyType::Unspecified => "POLICY_TYPE_UNSPECIFIED",
-                PolicyType::BooleanConstraint => "BOOLEAN_CONSTRAINT",
-                PolicyType::ListConstraint => "LIST_CONSTRAINT",
-                PolicyType::CustomConstraint => "CUSTOM_CONSTRAINT",
+                Self::Unspecified => "POLICY_TYPE_UNSPECIFIED",
+                Self::BooleanConstraint => "BOOLEAN_CONSTRAINT",
+                Self::ListConstraint => "LIST_CONSTRAINT",
+                Self::CustomConstraint => "CUSTOM_CONSTRAINT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -447,9 +447,9 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::JobInsertRequest => "JOB_INSERT_REQUEST",
-                    Reason::QueryRequest => "QUERY_REQUEST",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::JobInsertRequest => "JOB_INSERT_REQUEST",
+                    Self::QueryRequest => "QUERY_REQUEST",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -516,8 +516,8 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::JobDeleteRequest => "JOB_DELETE_REQUEST",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::JobDeleteRequest => "JOB_DELETE_REQUEST",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -576,9 +576,9 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::Create => "CREATE",
-                    Reason::Query => "QUERY",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::Create => "CREATE",
+                    Self::Query => "QUERY",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -640,10 +640,10 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::Update => "UPDATE",
-                    Reason::SetIamPolicy => "SET_IAM_POLICY",
-                    Reason::Query => "QUERY",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::Update => "UPDATE",
+                    Self::SetIamPolicy => "SET_IAM_POLICY",
+                    Self::Query => "QUERY",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -701,9 +701,9 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::Delete => "DELETE",
-                    Reason::Query => "QUERY",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::Delete => "DELETE",
+                    Self::Query => "QUERY",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -766,10 +766,10 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::Job => "JOB",
-                    Reason::Query => "QUERY",
-                    Reason::TableInsertRequest => "TABLE_INSERT_REQUEST",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::Job => "JOB",
+                    Self::Query => "QUERY",
+                    Self::TableInsertRequest => "TABLE_INSERT_REQUEST",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -827,8 +827,8 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::Query => "QUERY",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::Query => "QUERY",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -886,9 +886,9 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::Query => "QUERY",
-                    Reason::RoutineInsertRequest => "ROUTINE_INSERT_REQUEST",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::Query => "QUERY",
+                    Self::RoutineInsertRequest => "ROUTINE_INSERT_REQUEST",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -977,13 +977,13 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::Job => "JOB",
-                    Reason::TabledataListRequest => "TABLEDATA_LIST_REQUEST",
-                    Reason::GetQueryResultsRequest => "GET_QUERY_RESULTS_REQUEST",
-                    Reason::QueryRequest => "QUERY_REQUEST",
-                    Reason::CreateReadSession => "CREATE_READ_SESSION",
-                    Reason::MaterializedViewRefresh => "MATERIALIZED_VIEW_REFRESH",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::Job => "JOB",
+                    Self::TabledataListRequest => "TABLEDATA_LIST_REQUEST",
+                    Self::GetQueryResultsRequest => "GET_QUERY_RESULTS_REQUEST",
+                    Self::QueryRequest => "QUERY_REQUEST",
+                    Self::CreateReadSession => "CREATE_READ_SESSION",
+                    Self::MaterializedViewRefresh => "MATERIALIZED_VIEW_REFRESH",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1052,10 +1052,10 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::TableUpdateRequest => "TABLE_UPDATE_REQUEST",
-                    Reason::Job => "JOB",
-                    Reason::Query => "QUERY",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::TableUpdateRequest => "TABLE_UPDATE_REQUEST",
+                    Self::Job => "JOB",
+                    Self::Query => "QUERY",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1116,9 +1116,9 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::ModelPatchRequest => "MODEL_PATCH_REQUEST",
-                    Reason::Query => "QUERY",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::ModelPatchRequest => "MODEL_PATCH_REQUEST",
+                    Self::Query => "QUERY",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1177,9 +1177,9 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::Query => "QUERY",
-                    Reason::RoutineUpdateRequest => "ROUTINE_UPDATE_REQUEST",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::Query => "QUERY",
+                    Self::RoutineUpdateRequest => "ROUTINE_UPDATE_REQUEST",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1254,11 +1254,11 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::Job => "JOB",
-                    Reason::Query => "QUERY",
-                    Reason::MaterializedViewRefresh => "MATERIALIZED_VIEW_REFRESH",
-                    Reason::WriteApi => "WRITE_API",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::Job => "JOB",
+                    Self::Query => "QUERY",
+                    Self::MaterializedViewRefresh => "MATERIALIZED_VIEW_REFRESH",
+                    Self::WriteApi => "WRITE_API",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1314,8 +1314,8 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::Query => "QUERY",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::Query => "QUERY",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1368,8 +1368,8 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::Job => "JOB",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::Job => "JOB",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1427,10 +1427,10 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::TableDeleteRequest => "TABLE_DELETE_REQUEST",
-                    Reason::Expired => "EXPIRED",
-                    Reason::Query => "QUERY",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::TableDeleteRequest => "TABLE_DELETE_REQUEST",
+                    Self::Expired => "EXPIRED",
+                    Self::Query => "QUERY",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1490,10 +1490,10 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::ModelDeleteRequest => "MODEL_DELETE_REQUEST",
-                    Reason::Expired => "EXPIRED",
-                    Reason::Query => "QUERY",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::ModelDeleteRequest => "MODEL_DELETE_REQUEST",
+                    Self::Expired => "EXPIRED",
+                    Self::Query => "QUERY",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1554,9 +1554,9 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::Query => "QUERY",
-                    Reason::RoutineDeleteRequest => "ROUTINE_DELETE_REQUEST",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::Query => "QUERY",
+                    Self::RoutineDeleteRequest => "ROUTINE_DELETE_REQUEST",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1656,8 +1656,8 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Reason::Unspecified => "REASON_UNSPECIFIED",
-                    Reason::UnlinkApi => "UNLINK_API",
+                    Self::Unspecified => "REASON_UNSPECIFIED",
+                    Self::UnlinkApi => "UNLINK_API",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1775,9 +1775,9 @@ pub mod big_query_audit_metadata {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        Priority::Unspecified => "PRIORITY_UNSPECIFIED",
-                        Priority::QueryInteractive => "QUERY_INTERACTIVE",
-                        Priority::QueryBatch => "QUERY_BATCH",
+                        Self::Unspecified => "PRIORITY_UNSPECIFIED",
+                        Self::QueryInteractive => "QUERY_INTERACTIVE",
+                        Self::QueryBatch => "QUERY_BATCH",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1917,11 +1917,11 @@ pub mod big_query_audit_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Type::Unspecified => "TYPE_UNSPECIFIED",
-                    Type::Query => "QUERY",
-                    Type::Copy => "COPY",
-                    Type::Export => "EXPORT",
-                    Type::Import => "IMPORT",
+                    Self::Unspecified => "TYPE_UNSPECIFIED",
+                    Self::Query => "QUERY",
+                    Self::Copy => "COPY",
+                    Self::Export => "EXPORT",
+                    Self::Import => "IMPORT",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2303,9 +2303,9 @@ pub mod big_query_audit_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CreateDisposition::Unspecified => "CREATE_DISPOSITION_UNSPECIFIED",
-                CreateDisposition::CreateNever => "CREATE_NEVER",
-                CreateDisposition::CreateIfNeeded => "CREATE_IF_NEEDED",
+                Self::Unspecified => "CREATE_DISPOSITION_UNSPECIFIED",
+                Self::CreateNever => "CREATE_NEVER",
+                Self::CreateIfNeeded => "CREATE_IF_NEEDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2349,10 +2349,10 @@ pub mod big_query_audit_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                WriteDisposition::Unspecified => "WRITE_DISPOSITION_UNSPECIFIED",
-                WriteDisposition::WriteEmpty => "WRITE_EMPTY",
-                WriteDisposition::WriteTruncate => "WRITE_TRUNCATE",
-                WriteDisposition::WriteAppend => "WRITE_APPEND",
+                Self::Unspecified => "WRITE_DISPOSITION_UNSPECIFIED",
+                Self::WriteEmpty => "WRITE_EMPTY",
+                Self::WriteTruncate => "WRITE_TRUNCATE",
+                Self::WriteAppend => "WRITE_APPEND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2398,10 +2398,10 @@ pub mod big_query_audit_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OperationType::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
-                OperationType::Copy => "COPY",
-                OperationType::Snapshot => "SNAPSHOT",
-                OperationType::Restore => "RESTORE",
+                Self::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
+                Self::Copy => "COPY",
+                Self::Snapshot => "SNAPSHOT",
+                Self::Restore => "RESTORE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2445,10 +2445,10 @@ pub mod big_query_audit_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                JobState::Unspecified => "JOB_STATE_UNSPECIFIED",
-                JobState::Pending => "PENDING",
-                JobState::Running => "RUNNING",
-                JobState::Done => "DONE",
+                Self::Unspecified => "JOB_STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Running => "RUNNING",
+                Self::Done => "DONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2559,43 +2559,43 @@ pub mod big_query_audit_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                QueryStatementType::Unspecified => "QUERY_STATEMENT_TYPE_UNSPECIFIED",
-                QueryStatementType::Select => "SELECT",
-                QueryStatementType::Assert => "ASSERT",
-                QueryStatementType::Insert => "INSERT",
-                QueryStatementType::Update => "UPDATE",
-                QueryStatementType::Delete => "DELETE",
-                QueryStatementType::Merge => "MERGE",
-                QueryStatementType::CreateTable => "CREATE_TABLE",
-                QueryStatementType::CreateTableAsSelect => "CREATE_TABLE_AS_SELECT",
-                QueryStatementType::CreateView => "CREATE_VIEW",
-                QueryStatementType::CreateModel => "CREATE_MODEL",
-                QueryStatementType::CreateMaterializedView => "CREATE_MATERIALIZED_VIEW",
-                QueryStatementType::CreateFunction => "CREATE_FUNCTION",
-                QueryStatementType::CreateTableFunction => "CREATE_TABLE_FUNCTION",
-                QueryStatementType::CreateProcedure => "CREATE_PROCEDURE",
-                QueryStatementType::CreateRowAccessPolicy => "CREATE_ROW_ACCESS_POLICY",
-                QueryStatementType::CreateSchema => "CREATE_SCHEMA",
-                QueryStatementType::CreateSnapshotTable => "CREATE_SNAPSHOT_TABLE",
-                QueryStatementType::DropTable => "DROP_TABLE",
-                QueryStatementType::DropExternalTable => "DROP_EXTERNAL_TABLE",
-                QueryStatementType::DropView => "DROP_VIEW",
-                QueryStatementType::DropModel => "DROP_MODEL",
-                QueryStatementType::DropMaterializedView => "DROP_MATERIALIZED_VIEW",
-                QueryStatementType::DropFunction => "DROP_FUNCTION",
-                QueryStatementType::DropProcedure => "DROP_PROCEDURE",
-                QueryStatementType::DropSchema => "DROP_SCHEMA",
-                QueryStatementType::DropRowAccessPolicy => "DROP_ROW_ACCESS_POLICY",
-                QueryStatementType::DropSnapshotTable => "DROP_SNAPSHOT_TABLE",
-                QueryStatementType::AlterTable => "ALTER_TABLE",
-                QueryStatementType::AlterView => "ALTER_VIEW",
-                QueryStatementType::AlterMaterializedView => "ALTER_MATERIALIZED_VIEW",
-                QueryStatementType::AlterSchema => "ALTER_SCHEMA",
-                QueryStatementType::Script => "SCRIPT",
-                QueryStatementType::TruncateTable => "TRUNCATE_TABLE",
-                QueryStatementType::CreateExternalTable => "CREATE_EXTERNAL_TABLE",
-                QueryStatementType::ExportData => "EXPORT_DATA",
-                QueryStatementType::Call => "CALL",
+                Self::Unspecified => "QUERY_STATEMENT_TYPE_UNSPECIFIED",
+                Self::Select => "SELECT",
+                Self::Assert => "ASSERT",
+                Self::Insert => "INSERT",
+                Self::Update => "UPDATE",
+                Self::Delete => "DELETE",
+                Self::Merge => "MERGE",
+                Self::CreateTable => "CREATE_TABLE",
+                Self::CreateTableAsSelect => "CREATE_TABLE_AS_SELECT",
+                Self::CreateView => "CREATE_VIEW",
+                Self::CreateModel => "CREATE_MODEL",
+                Self::CreateMaterializedView => "CREATE_MATERIALIZED_VIEW",
+                Self::CreateFunction => "CREATE_FUNCTION",
+                Self::CreateTableFunction => "CREATE_TABLE_FUNCTION",
+                Self::CreateProcedure => "CREATE_PROCEDURE",
+                Self::CreateRowAccessPolicy => "CREATE_ROW_ACCESS_POLICY",
+                Self::CreateSchema => "CREATE_SCHEMA",
+                Self::CreateSnapshotTable => "CREATE_SNAPSHOT_TABLE",
+                Self::DropTable => "DROP_TABLE",
+                Self::DropExternalTable => "DROP_EXTERNAL_TABLE",
+                Self::DropView => "DROP_VIEW",
+                Self::DropModel => "DROP_MODEL",
+                Self::DropMaterializedView => "DROP_MATERIALIZED_VIEW",
+                Self::DropFunction => "DROP_FUNCTION",
+                Self::DropProcedure => "DROP_PROCEDURE",
+                Self::DropSchema => "DROP_SCHEMA",
+                Self::DropRowAccessPolicy => "DROP_ROW_ACCESS_POLICY",
+                Self::DropSnapshotTable => "DROP_SNAPSHOT_TABLE",
+                Self::AlterTable => "ALTER_TABLE",
+                Self::AlterView => "ALTER_VIEW",
+                Self::AlterMaterializedView => "ALTER_MATERIALIZED_VIEW",
+                Self::AlterSchema => "ALTER_SCHEMA",
+                Self::Script => "SCRIPT",
+                Self::TruncateTable => "TRUNCATE_TABLE",
+                Self::CreateExternalTable => "CREATE_EXTERNAL_TABLE",
+                Self::ExportData => "EXPORT_DATA",
+                Self::Call => "CALL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

@@ -32,11 +32,11 @@ impl OperationResponseMapping {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            OperationResponseMapping::Undefined => "UNDEFINED",
-            OperationResponseMapping::Name => "NAME",
-            OperationResponseMapping::Status => "STATUS",
-            OperationResponseMapping::ErrorCode => "ERROR_CODE",
-            OperationResponseMapping::ErrorMessage => "ERROR_MESSAGE",
+            Self::Undefined => "UNDEFINED",
+            Self::Name => "NAME",
+            Self::Status => "STATUS",
+            Self::ErrorCode => "ERROR_CODE",
+            Self::ErrorMessage => "ERROR_MESSAGE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.

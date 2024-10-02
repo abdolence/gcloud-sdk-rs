@@ -88,12 +88,12 @@ pub mod connector {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Ready => "READY",
-                State::Creating => "CREATING",
-                State::Deleting => "DELETING",
-                State::Error => "ERROR",
-                State::Updating => "UPDATING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Ready => "READY",
+                Self::Creating => "CREATING",
+                Self::Deleting => "DELETING",
+                Self::Error => "ERROR",
+                Self::Updating => "UPDATING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -181,7 +181,13 @@ pub struct OperationMetadata {
 }
 /// Generated client implementations.
 pub mod vpc_access_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Serverless VPC Access API allows users to create and manage connectors for
@@ -279,8 +285,7 @@ pub mod vpc_access_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -308,8 +313,7 @@ pub mod vpc_access_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -339,8 +343,7 @@ pub mod vpc_access_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -371,8 +374,7 @@ pub mod vpc_access_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

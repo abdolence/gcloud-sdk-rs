@@ -73,9 +73,9 @@ pub mod linux_node_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CgroupMode::Unspecified => "CGROUP_MODE_UNSPECIFIED",
-                CgroupMode::V1 => "CGROUP_MODE_V1",
-                CgroupMode::V2 => "CGROUP_MODE_V2",
+                Self::Unspecified => "CGROUP_MODE_UNSPECIFIED",
+                Self::V1 => "CGROUP_MODE_V1",
+                Self::V2 => "CGROUP_MODE_V2",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -128,9 +128,9 @@ pub mod windows_node_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OsVersion::Unspecified => "OS_VERSION_UNSPECIFIED",
-                OsVersion::Ltsc2019 => "OS_VERSION_LTSC2019",
-                OsVersion::Ltsc2022 => "OS_VERSION_LTSC2022",
+                Self::Unspecified => "OS_VERSION_UNSPECIFIED",
+                Self::Ltsc2019 => "OS_VERSION_LTSC2019",
+                Self::Ltsc2022 => "OS_VERSION_LTSC2022",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -569,8 +569,8 @@ pub mod node_network_config {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Tier::Unspecified => "TIER_UNSPECIFIED",
-                    Tier::Tier1 => "TIER_1",
+                    Self::Unspecified => "TIER_UNSPECIFIED",
+                    Self::Tier1 => "TIER_1",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -664,8 +664,8 @@ pub mod sandbox_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "UNSPECIFIED",
-                Type::Gvisor => "GVISOR",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Gvisor => "GVISOR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -737,10 +737,10 @@ pub mod reservation_affinity {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "UNSPECIFIED",
-                Type::NoReservation => "NO_RESERVATION",
-                Type::AnyReservation => "ANY_RESERVATION",
-                Type::SpecificReservation => "SPECIFIC_RESERVATION",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::NoReservation => "NO_RESERVATION",
+                Self::AnyReservation => "ANY_RESERVATION",
+                Self::SpecificReservation => "SPECIFIC_RESERVATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -811,9 +811,9 @@ pub mod sole_tenant_config {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Operator::Unspecified => "OPERATOR_UNSPECIFIED",
-                    Operator::In => "IN",
-                    Operator::NotIn => "NOT_IN",
+                    Self::Unspecified => "OPERATOR_UNSPECIFIED",
+                    Self::In => "IN",
+                    Self::NotIn => "NOT_IN",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -950,10 +950,10 @@ pub mod node_taint {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Effect::Unspecified => "EFFECT_UNSPECIFIED",
-                Effect::NoSchedule => "NO_SCHEDULE",
-                Effect::PreferNoSchedule => "PREFER_NO_SCHEDULE",
-                Effect::NoExecute => "NO_EXECUTE",
+                Self::Unspecified => "EFFECT_UNSPECIFIED",
+                Self::NoSchedule => "NO_SCHEDULE",
+                Self::PreferNoSchedule => "PREFER_NO_SCHEDULE",
+                Self::NoExecute => "NO_EXECUTE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1258,9 +1258,9 @@ pub mod cloud_run_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LoadBalancerType::Unspecified => "LOAD_BALANCER_TYPE_UNSPECIFIED",
-                LoadBalancerType::External => "LOAD_BALANCER_TYPE_EXTERNAL",
-                LoadBalancerType::Internal => "LOAD_BALANCER_TYPE_INTERNAL",
+                Self::Unspecified => "LOAD_BALANCER_TYPE_UNSPECIFIED",
+                Self::External => "LOAD_BALANCER_TYPE_EXTERNAL",
+                Self::Internal => "LOAD_BALANCER_TYPE_INTERNAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1413,8 +1413,8 @@ pub mod network_policy {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Provider::Unspecified => "PROVIDER_UNSPECIFIED",
-                Provider::Calico => "CALICO",
+                Self::Unspecified => "PROVIDER_UNSPECIFIED",
+                Self::Calico => "CALICO",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1473,11 +1473,9 @@ pub mod binary_authorization {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EvaluationMode::Unspecified => "EVALUATION_MODE_UNSPECIFIED",
-                EvaluationMode::Disabled => "DISABLED",
-                EvaluationMode::ProjectSingletonPolicyEnforce => {
-                    "PROJECT_SINGLETON_POLICY_ENFORCE"
-                }
+                Self::Unspecified => "EVALUATION_MODE_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::ProjectSingletonPolicyEnforce => "PROJECT_SINGLETON_POLICY_ENFORCE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2061,13 +2059,13 @@ pub mod cluster {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::Unspecified => "STATUS_UNSPECIFIED",
-                Status::Provisioning => "PROVISIONING",
-                Status::Running => "RUNNING",
-                Status::Reconciling => "RECONCILING",
-                Status::Stopping => "STOPPING",
-                Status::Error => "ERROR",
-                Status::Degraded => "DEGRADED",
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Running => "RUNNING",
+                Self::Reconciling => "RECONCILING",
+                Self::Stopping => "STOPPING",
+                Self::Error => "ERROR",
+                Self::Degraded => "DEGRADED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2139,10 +2137,10 @@ pub mod security_posture_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Mode::Unspecified => "MODE_UNSPECIFIED",
-                Mode::Disabled => "DISABLED",
-                Mode::Basic => "BASIC",
-                Mode::Enterprise => "ENTERPRISE",
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::Basic => "BASIC",
+                Self::Enterprise => "ENTERPRISE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2187,10 +2185,10 @@ pub mod security_posture_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                VulnerabilityMode::Unspecified => "VULNERABILITY_MODE_UNSPECIFIED",
-                VulnerabilityMode::VulnerabilityDisabled => "VULNERABILITY_DISABLED",
-                VulnerabilityMode::VulnerabilityBasic => "VULNERABILITY_BASIC",
-                VulnerabilityMode::VulnerabilityEnterprise => "VULNERABILITY_ENTERPRISE",
+                Self::Unspecified => "VULNERABILITY_MODE_UNSPECIFIED",
+                Self::VulnerabilityDisabled => "VULNERABILITY_DISABLED",
+                Self::VulnerabilityBasic => "VULNERABILITY_BASIC",
+                Self::VulnerabilityEnterprise => "VULNERABILITY_ENTERPRISE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2649,11 +2647,11 @@ pub mod operation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::Unspecified => "STATUS_UNSPECIFIED",
-                Status::Pending => "PENDING",
-                Status::Running => "RUNNING",
-                Status::Done => "DONE",
-                Status::Aborting => "ABORTING",
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Running => "RUNNING",
+                Self::Done => "DONE",
+                Self::Aborting => "ABORTING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2793,25 +2791,25 @@ pub mod operation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::CreateCluster => "CREATE_CLUSTER",
-                Type::DeleteCluster => "DELETE_CLUSTER",
-                Type::UpgradeMaster => "UPGRADE_MASTER",
-                Type::UpgradeNodes => "UPGRADE_NODES",
-                Type::RepairCluster => "REPAIR_CLUSTER",
-                Type::UpdateCluster => "UPDATE_CLUSTER",
-                Type::CreateNodePool => "CREATE_NODE_POOL",
-                Type::DeleteNodePool => "DELETE_NODE_POOL",
-                Type::SetNodePoolManagement => "SET_NODE_POOL_MANAGEMENT",
-                Type::AutoRepairNodes => "AUTO_REPAIR_NODES",
-                Type::AutoUpgradeNodes => "AUTO_UPGRADE_NODES",
-                Type::SetLabels => "SET_LABELS",
-                Type::SetMasterAuth => "SET_MASTER_AUTH",
-                Type::SetNodePoolSize => "SET_NODE_POOL_SIZE",
-                Type::SetNetworkPolicy => "SET_NETWORK_POLICY",
-                Type::SetMaintenancePolicy => "SET_MAINTENANCE_POLICY",
-                Type::ResizeCluster => "RESIZE_CLUSTER",
-                Type::FleetFeatureUpgrade => "FLEET_FEATURE_UPGRADE",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::CreateCluster => "CREATE_CLUSTER",
+                Self::DeleteCluster => "DELETE_CLUSTER",
+                Self::UpgradeMaster => "UPGRADE_MASTER",
+                Self::UpgradeNodes => "UPGRADE_NODES",
+                Self::RepairCluster => "REPAIR_CLUSTER",
+                Self::UpdateCluster => "UPDATE_CLUSTER",
+                Self::CreateNodePool => "CREATE_NODE_POOL",
+                Self::DeleteNodePool => "DELETE_NODE_POOL",
+                Self::SetNodePoolManagement => "SET_NODE_POOL_MANAGEMENT",
+                Self::AutoRepairNodes => "AUTO_REPAIR_NODES",
+                Self::AutoUpgradeNodes => "AUTO_UPGRADE_NODES",
+                Self::SetLabels => "SET_LABELS",
+                Self::SetMasterAuth => "SET_MASTER_AUTH",
+                Self::SetNodePoolSize => "SET_NODE_POOL_SIZE",
+                Self::SetNetworkPolicy => "SET_NETWORK_POLICY",
+                Self::SetMaintenancePolicy => "SET_MAINTENANCE_POLICY",
+                Self::ResizeCluster => "RESIZE_CLUSTER",
+                Self::FleetFeatureUpgrade => "FLEET_FEATURE_UPGRADE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3407,10 +3405,10 @@ pub mod set_master_auth_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Action::Unknown => "UNKNOWN",
-                Action::SetPassword => "SET_PASSWORD",
-                Action::GeneratePassword => "GENERATE_PASSWORD",
-                Action::SetUsername => "SET_USERNAME",
+                Self::Unknown => "UNKNOWN",
+                Self::SetPassword => "SET_PASSWORD",
+                Self::GeneratePassword => "GENERATE_PASSWORD",
+                Self::SetUsername => "SET_USERNAME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4039,14 +4037,14 @@ pub mod node_pool {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        Phase::Unspecified => "PHASE_UNSPECIFIED",
-                        Phase::UpdateStarted => "UPDATE_STARTED",
-                        Phase::CreatingGreenPool => "CREATING_GREEN_POOL",
-                        Phase::CordoningBluePool => "CORDONING_BLUE_POOL",
-                        Phase::DrainingBluePool => "DRAINING_BLUE_POOL",
-                        Phase::NodePoolSoaking => "NODE_POOL_SOAKING",
-                        Phase::DeletingBluePool => "DELETING_BLUE_POOL",
-                        Phase::RollbackStarted => "ROLLBACK_STARTED",
+                        Self::Unspecified => "PHASE_UNSPECIFIED",
+                        Self::UpdateStarted => "UPDATE_STARTED",
+                        Self::CreatingGreenPool => "CREATING_GREEN_POOL",
+                        Self::CordoningBluePool => "CORDONING_BLUE_POOL",
+                        Self::DrainingBluePool => "DRAINING_BLUE_POOL",
+                        Self::NodePoolSoaking => "NODE_POOL_SOAKING",
+                        Self::DeletingBluePool => "DELETING_BLUE_POOL",
+                        Self::RollbackStarted => "ROLLBACK_STARTED",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4112,8 +4110,8 @@ pub mod node_pool {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Type::Unspecified => "TYPE_UNSPECIFIED",
-                    Type::Compact => "COMPACT",
+                    Self::Unspecified => "TYPE_UNSPECIFIED",
+                    Self::Compact => "COMPACT",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4178,13 +4176,13 @@ pub mod node_pool {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::Unspecified => "STATUS_UNSPECIFIED",
-                Status::Provisioning => "PROVISIONING",
-                Status::Running => "RUNNING",
-                Status::RunningWithError => "RUNNING_WITH_ERROR",
-                Status::Reconciling => "RECONCILING",
-                Status::Stopping => "STOPPING",
-                Status::Error => "ERROR",
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Running => "RUNNING",
+                Self::RunningWithError => "RUNNING_WITH_ERROR",
+                Self::Reconciling => "RECONCILING",
+                Self::Stopping => "STOPPING",
+                Self::Error => "ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4356,9 +4354,9 @@ pub mod maintenance_exclusion_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Scope::NoUpgrades => "NO_UPGRADES",
-                Scope::NoMinorUpgrades => "NO_MINOR_UPGRADES",
-                Scope::NoMinorOrNodeUpgrades => "NO_MINOR_OR_NODE_UPGRADES",
+                Self::NoUpgrades => "NO_UPGRADES",
+                Self::NoMinorUpgrades => "NO_MINOR_UPGRADES",
+                Self::NoMinorOrNodeUpgrades => "NO_MINOR_OR_NODE_UPGRADES",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4614,9 +4612,9 @@ pub mod cluster_autoscaling {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AutoscalingProfile::ProfileUnspecified => "PROFILE_UNSPECIFIED",
-                AutoscalingProfile::OptimizeUtilization => "OPTIMIZE_UTILIZATION",
-                AutoscalingProfile::Balanced => "BALANCED",
+                Self::ProfileUnspecified => "PROFILE_UNSPECIFIED",
+                Self::OptimizeUtilization => "OPTIMIZE_UTILIZATION",
+                Self::Balanced => "BALANCED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4772,9 +4770,9 @@ pub mod node_pool_autoscaling {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LocationPolicy::Unspecified => "LOCATION_POLICY_UNSPECIFIED",
-                LocationPolicy::Balanced => "BALANCED",
-                LocationPolicy::Any => "ANY",
+                Self::Unspecified => "LOCATION_POLICY_UNSPECIFIED",
+                Self::Balanced => "BALANCED",
+                Self::Any => "ANY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4981,9 +4979,9 @@ pub mod gpu_sharing_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                GpuSharingStrategy::Unspecified => "GPU_SHARING_STRATEGY_UNSPECIFIED",
-                GpuSharingStrategy::TimeSharing => "TIME_SHARING",
-                GpuSharingStrategy::Mps => "MPS",
+                Self::Unspecified => "GPU_SHARING_STRATEGY_UNSPECIFIED",
+                Self::TimeSharing => "TIME_SHARING",
+                Self::Mps => "MPS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5041,10 +5039,10 @@ pub mod gpu_driver_installation_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                GpuDriverVersion::Unspecified => "GPU_DRIVER_VERSION_UNSPECIFIED",
-                GpuDriverVersion::InstallationDisabled => "INSTALLATION_DISABLED",
-                GpuDriverVersion::Default => "DEFAULT",
-                GpuDriverVersion::Latest => "LATEST",
+                Self::Unspecified => "GPU_DRIVER_VERSION_UNSPECIFIED",
+                Self::InstallationDisabled => "INSTALLATION_DISABLED",
+                Self::Default => "DEFAULT",
+                Self::Latest => "LATEST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5103,9 +5101,9 @@ pub mod workload_metadata_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Mode::Unspecified => "MODE_UNSPECIFIED",
-                Mode::GceMetadata => "GCE_METADATA",
-                Mode::GkeMetadata => "GKE_METADATA",
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::GceMetadata => "GCE_METADATA",
+                Self::GkeMetadata => "GKE_METADATA",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5230,13 +5228,13 @@ pub mod status_condition {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Code::Unknown => "UNKNOWN",
-                Code::GceStockout => "GCE_STOCKOUT",
-                Code::GkeServiceAccountDeleted => "GKE_SERVICE_ACCOUNT_DELETED",
-                Code::GceQuotaExceeded => "GCE_QUOTA_EXCEEDED",
-                Code::SetByOperator => "SET_BY_OPERATOR",
-                Code::CloudKmsKeyError => "CLOUD_KMS_KEY_ERROR",
-                Code::CaExpiring => "CA_EXPIRING",
+                Self::Unknown => "UNKNOWN",
+                Self::GceStockout => "GCE_STOCKOUT",
+                Self::GkeServiceAccountDeleted => "GKE_SERVICE_ACCOUNT_DELETED",
+                Self::GceQuotaExceeded => "GCE_QUOTA_EXCEEDED",
+                Self::SetByOperator => "SET_BY_OPERATOR",
+                Self::CloudKmsKeyError => "CLOUD_KMS_KEY_ERROR",
+                Self::CaExpiring => "CA_EXPIRING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5362,8 +5360,8 @@ pub mod network_config {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Tier::Unspecified => "TIER_UNSPECIFIED",
-                    Tier::Tier1 => "TIER_1",
+                    Self::Unspecified => "TIER_UNSPECIFIED",
+                    Self::Tier1 => "TIER_1",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5418,10 +5416,10 @@ pub mod gateway_api_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Channel::Unspecified => "CHANNEL_UNSPECIFIED",
-                Channel::Disabled => "CHANNEL_DISABLED",
-                Channel::Experimental => "CHANNEL_EXPERIMENTAL",
-                Channel::Standard => "CHANNEL_STANDARD",
+                Self::Unspecified => "CHANNEL_UNSPECIFIED",
+                Self::Disabled => "CHANNEL_DISABLED",
+                Self::Experimental => "CHANNEL_EXPERIMENTAL",
+                Self::Standard => "CHANNEL_STANDARD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5602,10 +5600,10 @@ pub mod autopilot_compatibility_issue {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                IssueType::Unspecified => "UNSPECIFIED",
-                IssueType::Incompatibility => "INCOMPATIBILITY",
-                IssueType::AdditionalConfigRequired => "ADDITIONAL_CONFIG_REQUIRED",
-                IssueType::PassedWithOptionalConfig => "PASSED_WITH_OPTIONAL_CONFIG",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Incompatibility => "INCOMPATIBILITY",
+                Self::AdditionalConfigRequired => "ADDITIONAL_CONFIG_REQUIRED",
+                Self::PassedWithOptionalConfig => "PASSED_WITH_OPTIONAL_CONFIG",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5685,11 +5683,11 @@ pub mod release_channel {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Channel::Unspecified => "UNSPECIFIED",
-                Channel::Rapid => "RAPID",
-                Channel::Regular => "REGULAR",
-                Channel::Stable => "STABLE",
-                Channel::Extended => "EXTENDED",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Rapid => "RAPID",
+                Self::Regular => "REGULAR",
+                Self::Stable => "STABLE",
+                Self::Extended => "EXTENDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5776,10 +5774,10 @@ pub mod dns_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Provider::Unspecified => "PROVIDER_UNSPECIFIED",
-                Provider::PlatformDefault => "PLATFORM_DEFAULT",
-                Provider::CloudDns => "CLOUD_DNS",
-                Provider::KubeDns => "KUBE_DNS",
+                Self::Unspecified => "PROVIDER_UNSPECIFIED",
+                Self::PlatformDefault => "PLATFORM_DEFAULT",
+                Self::CloudDns => "CLOUD_DNS",
+                Self::KubeDns => "KUBE_DNS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5821,9 +5819,9 @@ pub mod dns_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DnsScope::Unspecified => "DNS_SCOPE_UNSPECIFIED",
-                DnsScope::ClusterScope => "CLUSTER_SCOPE",
-                DnsScope::VpcScope => "VPC_SCOPE",
+                Self::Unspecified => "DNS_SCOPE_UNSPECIFIED",
+                Self::ClusterScope => "CLUSTER_SCOPE",
+                Self::VpcScope => "VPC_SCOPE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5946,9 +5944,9 @@ pub mod database_encryption {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unknown => "UNKNOWN",
-                State::Encrypted => "ENCRYPTED",
-                State::Decrypted => "DECRYPTED",
+                Self::Unknown => "UNKNOWN",
+                Self::Encrypted => "ENCRYPTED",
+                Self::Decrypted => "DECRYPTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6000,13 +5998,13 @@ pub mod database_encryption {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CurrentState::Unspecified => "CURRENT_STATE_UNSPECIFIED",
-                CurrentState::Encrypted => "CURRENT_STATE_ENCRYPTED",
-                CurrentState::Decrypted => "CURRENT_STATE_DECRYPTED",
-                CurrentState::EncryptionPending => "CURRENT_STATE_ENCRYPTION_PENDING",
-                CurrentState::EncryptionError => "CURRENT_STATE_ENCRYPTION_ERROR",
-                CurrentState::DecryptionPending => "CURRENT_STATE_DECRYPTION_PENDING",
-                CurrentState::DecryptionError => "CURRENT_STATE_DECRYPTION_ERROR",
+                Self::Unspecified => "CURRENT_STATE_UNSPECIFIED",
+                Self::Encrypted => "CURRENT_STATE_ENCRYPTED",
+                Self::Decrypted => "CURRENT_STATE_DECRYPTED",
+                Self::EncryptionPending => "CURRENT_STATE_ENCRYPTION_PENDING",
+                Self::EncryptionError => "CURRENT_STATE_ENCRYPTION_ERROR",
+                Self::DecryptionPending => "CURRENT_STATE_DECRYPTION_PENDING",
+                Self::DecryptionError => "CURRENT_STATE_DECRYPTION_ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6116,11 +6114,11 @@ pub mod usable_subnetwork_secondary_range {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::Unknown => "UNKNOWN",
-                Status::Unused => "UNUSED",
-                Status::InUseService => "IN_USE_SERVICE",
-                Status::InUseShareablePod => "IN_USE_SHAREABLE_POD",
-                Status::InUseManagedPod => "IN_USE_MANAGED_POD",
+                Self::Unknown => "UNKNOWN",
+                Self::Unused => "UNUSED",
+                Self::InUseService => "IN_USE_SERVICE",
+                Self::InUseShareablePod => "IN_USE_SHAREABLE_POD",
+                Self::InUseManagedPod => "IN_USE_MANAGED_POD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6302,10 +6300,10 @@ pub mod notification_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EventType::Unspecified => "EVENT_TYPE_UNSPECIFIED",
-                EventType::UpgradeAvailableEvent => "UPGRADE_AVAILABLE_EVENT",
-                EventType::UpgradeEvent => "UPGRADE_EVENT",
-                EventType::SecurityBulletinEvent => "SECURITY_BULLETIN_EVENT",
+                Self::Unspecified => "EVENT_TYPE_UNSPECIFIED",
+                Self::UpgradeAvailableEvent => "UPGRADE_AVAILABLE_EVENT",
+                Self::UpgradeEvent => "UPGRADE_EVENT",
+                Self::SecurityBulletinEvent => "SECURITY_BULLETIN_EVENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6484,12 +6482,12 @@ pub mod logging_component_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Component::Unspecified => "COMPONENT_UNSPECIFIED",
-                Component::SystemComponents => "SYSTEM_COMPONENTS",
-                Component::Workloads => "WORKLOADS",
-                Component::Apiserver => "APISERVER",
-                Component::Scheduler => "SCHEDULER",
-                Component::ControllerManager => "CONTROLLER_MANAGER",
+                Self::Unspecified => "COMPONENT_UNSPECIFIED",
+                Self::SystemComponents => "SYSTEM_COMPONENTS",
+                Self::Workloads => "WORKLOADS",
+                Self::Apiserver => "APISERVER",
+                Self::Scheduler => "SCHEDULER",
+                Self::ControllerManager => "CONTROLLER_MANAGER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6578,10 +6576,10 @@ pub mod advanced_datapath_observability_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RelayMode::Unspecified => "RELAY_MODE_UNSPECIFIED",
-                RelayMode::Disabled => "DISABLED",
-                RelayMode::InternalVpcLb => "INTERNAL_VPC_LB",
-                RelayMode::ExternalLb => "EXTERNAL_LB",
+                Self::Unspecified => "RELAY_MODE_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::InternalVpcLb => "INTERNAL_VPC_LB",
+                Self::ExternalLb => "EXTERNAL_LB",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6648,9 +6646,9 @@ pub mod logging_variant_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Variant::Unspecified => "VARIANT_UNSPECIFIED",
-                Variant::Default => "DEFAULT",
-                Variant::MaxThroughput => "MAX_THROUGHPUT",
+                Self::Unspecified => "VARIANT_UNSPECIFIED",
+                Self::Default => "DEFAULT",
+                Self::MaxThroughput => "MAX_THROUGHPUT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6724,20 +6722,20 @@ pub mod monitoring_component_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Component::Unspecified => "COMPONENT_UNSPECIFIED",
-                Component::SystemComponents => "SYSTEM_COMPONENTS",
-                Component::Apiserver => "APISERVER",
-                Component::Scheduler => "SCHEDULER",
-                Component::ControllerManager => "CONTROLLER_MANAGER",
-                Component::Storage => "STORAGE",
-                Component::Hpa => "HPA",
-                Component::Pod => "POD",
-                Component::Daemonset => "DAEMONSET",
-                Component::Deployment => "DEPLOYMENT",
-                Component::Statefulset => "STATEFULSET",
-                Component::Cadvisor => "CADVISOR",
-                Component::Kubelet => "KUBELET",
-                Component::Dcgm => "DCGM",
+                Self::Unspecified => "COMPONENT_UNSPECIFIED",
+                Self::SystemComponents => "SYSTEM_COMPONENTS",
+                Self::Apiserver => "APISERVER",
+                Self::Scheduler => "SCHEDULER",
+                Self::ControllerManager => "CONTROLLER_MANAGER",
+                Self::Storage => "STORAGE",
+                Self::Hpa => "HPA",
+                Self::Pod => "POD",
+                Self::Daemonset => "DAEMONSET",
+                Self::Deployment => "DEPLOYMENT",
+                Self::Statefulset => "STATEFULSET",
+                Self::Cadvisor => "CADVISOR",
+                Self::Kubelet => "KUBELET",
+                Self::Dcgm => "DCGM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6891,9 +6889,9 @@ pub mod enterprise_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ClusterTier::Unspecified => "CLUSTER_TIER_UNSPECIFIED",
-                ClusterTier::Standard => "STANDARD",
-                ClusterTier::Enterprise => "ENTERPRISE",
+                Self::Unspecified => "CLUSTER_TIER_UNSPECIFIED",
+                Self::Standard => "STANDARD",
+                Self::Enterprise => "ENTERPRISE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6948,8 +6946,8 @@ pub mod secondary_boot_disk {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Mode::Unspecified => "MODE_UNSPECIFIED",
-                Mode::ContainerImageCache => "CONTAINER_IMAGE_CACHE",
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::ContainerImageCache => "CONTAINER_IMAGE_CACHE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6987,16 +6985,16 @@ impl PrivateIPv6GoogleAccess {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            PrivateIPv6GoogleAccess::PrivateIpv6GoogleAccessUnspecified => {
+            Self::PrivateIpv6GoogleAccessUnspecified => {
                 "PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED"
             }
-            PrivateIPv6GoogleAccess::PrivateIpv6GoogleAccessDisabled => {
+            Self::PrivateIpv6GoogleAccessDisabled => {
                 "PRIVATE_IPV6_GOOGLE_ACCESS_DISABLED"
             }
-            PrivateIPv6GoogleAccess::PrivateIpv6GoogleAccessToGoogle => {
+            Self::PrivateIpv6GoogleAccessToGoogle => {
                 "PRIVATE_IPV6_GOOGLE_ACCESS_TO_GOOGLE"
             }
-            PrivateIPv6GoogleAccess::PrivateIpv6GoogleAccessBidirectional => {
+            Self::PrivateIpv6GoogleAccessBidirectional => {
                 "PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL"
             }
         }
@@ -7039,9 +7037,9 @@ impl UpgradeResourceType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            UpgradeResourceType::Unspecified => "UPGRADE_RESOURCE_TYPE_UNSPECIFIED",
-            UpgradeResourceType::Master => "MASTER",
-            UpgradeResourceType::NodePool => "NODE_POOL",
+            Self::Unspecified => "UPGRADE_RESOURCE_TYPE_UNSPECIFIED",
+            Self::Master => "MASTER",
+            Self::NodePool => "NODE_POOL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7076,9 +7074,9 @@ impl DatapathProvider {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DatapathProvider::Unspecified => "DATAPATH_PROVIDER_UNSPECIFIED",
-            DatapathProvider::LegacyDatapath => "LEGACY_DATAPATH",
-            DatapathProvider::AdvancedDatapath => "ADVANCED_DATAPATH",
+            Self::Unspecified => "DATAPATH_PROVIDER_UNSPECIFIED",
+            Self::LegacyDatapath => "LEGACY_DATAPATH",
+            Self::AdvancedDatapath => "ADVANCED_DATAPATH",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7111,11 +7109,9 @@ impl NodePoolUpdateStrategy {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            NodePoolUpdateStrategy::Unspecified => {
-                "NODE_POOL_UPDATE_STRATEGY_UNSPECIFIED"
-            }
-            NodePoolUpdateStrategy::BlueGreen => "BLUE_GREEN",
-            NodePoolUpdateStrategy::Surge => "SURGE",
+            Self::Unspecified => "NODE_POOL_UPDATE_STRATEGY_UNSPECIFIED",
+            Self::BlueGreen => "BLUE_GREEN",
+            Self::Surge => "SURGE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7146,9 +7142,9 @@ impl StackType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            StackType::Unspecified => "STACK_TYPE_UNSPECIFIED",
-            StackType::Ipv4 => "IPV4",
-            StackType::Ipv4Ipv6 => "IPV4_IPV6",
+            Self::Unspecified => "STACK_TYPE_UNSPECIFIED",
+            Self::Ipv4 => "IPV4",
+            Self::Ipv4Ipv6 => "IPV4_IPV6",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7179,9 +7175,9 @@ impl IPv6AccessType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            IPv6AccessType::Ipv6AccessTypeUnspecified => "IPV6_ACCESS_TYPE_UNSPECIFIED",
-            IPv6AccessType::Internal => "INTERNAL",
-            IPv6AccessType::External => "EXTERNAL",
+            Self::Ipv6AccessTypeUnspecified => "IPV6_ACCESS_TYPE_UNSPECIFIED",
+            Self::Internal => "INTERNAL",
+            Self::External => "EXTERNAL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7213,13 +7209,9 @@ impl InTransitEncryptionConfig {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            InTransitEncryptionConfig::Unspecified => {
-                "IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED"
-            }
-            InTransitEncryptionConfig::InTransitEncryptionDisabled => {
-                "IN_TRANSIT_ENCRYPTION_DISABLED"
-            }
-            InTransitEncryptionConfig::InTransitEncryptionInterNodeTransparent => {
+            Self::Unspecified => "IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED",
+            Self::InTransitEncryptionDisabled => "IN_TRANSIT_ENCRYPTION_DISABLED",
+            Self::InTransitEncryptionInterNodeTransparent => {
                 "IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT"
             }
         }
@@ -7238,7 +7230,13 @@ impl InTransitEncryptionConfig {
 }
 /// Generated client implementations.
 pub mod cluster_manager_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Google Kubernetes Engine Cluster Manager v1
@@ -7335,8 +7333,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7360,8 +7357,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7398,8 +7394,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7426,8 +7421,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7454,8 +7448,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7482,8 +7475,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7510,8 +7502,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7538,8 +7529,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7566,8 +7556,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7589,6 +7578,7 @@ pub mod cluster_manager_client {
         /// Deprecated. Use
         /// [projects.locations.clusters.update](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters/update)
         /// instead.
+        #[deprecated]
         pub async fn set_locations(
             &mut self,
             request: impl tonic::IntoRequest<super::SetLocationsRequest>,
@@ -7597,8 +7587,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7622,8 +7611,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7649,8 +7637,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7685,8 +7672,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7716,8 +7702,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7744,8 +7729,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7769,8 +7753,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7797,8 +7780,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7829,8 +7811,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7860,8 +7841,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7888,8 +7868,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7913,8 +7892,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7941,8 +7919,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7970,8 +7947,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7999,8 +7975,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8027,8 +8002,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8055,8 +8029,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8080,8 +8053,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8108,8 +8080,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8136,8 +8107,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8166,8 +8136,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8194,8 +8163,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8222,8 +8190,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8253,8 +8220,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8285,8 +8251,7 @@ pub mod cluster_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

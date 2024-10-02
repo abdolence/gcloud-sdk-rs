@@ -72,13 +72,13 @@ pub mod status_message {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Reference::Unspecified => "UNSPECIFIED",
-                Reference::BreakpointSourceLocation => "BREAKPOINT_SOURCE_LOCATION",
-                Reference::BreakpointCondition => "BREAKPOINT_CONDITION",
-                Reference::BreakpointExpression => "BREAKPOINT_EXPRESSION",
-                Reference::BreakpointAge => "BREAKPOINT_AGE",
-                Reference::VariableName => "VARIABLE_NAME",
-                Reference::VariableValue => "VARIABLE_VALUE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::BreakpointSourceLocation => "BREAKPOINT_SOURCE_LOCATION",
+                Self::BreakpointCondition => "BREAKPOINT_CONDITION",
+                Self::BreakpointExpression => "BREAKPOINT_EXPRESSION",
+                Self::BreakpointAge => "BREAKPOINT_AGE",
+                Self::VariableName => "VARIABLE_NAME",
+                Self::VariableValue => "VARIABLE_VALUE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -417,8 +417,8 @@ pub mod breakpoint {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Action::Capture => "CAPTURE",
-                Action::Log => "LOG",
+                Self::Capture => "CAPTURE",
+                Self::Log => "LOG",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -458,9 +458,9 @@ pub mod breakpoint {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LogLevel::Info => "INFO",
-                LogLevel::Warning => "WARNING",
-                LogLevel::Error => "ERROR",
+                Self::Info => "INFO",
+                Self::Warning => "WARNING",
+                Self::Error => "ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -616,7 +616,13 @@ pub struct UpdateActiveBreakpointRequest {
 pub struct UpdateActiveBreakpointResponse {}
 /// Generated client implementations.
 pub mod controller2_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The Controller service provides the API for orchestrating a collection of
@@ -740,8 +746,7 @@ pub mod controller2_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -783,8 +788,7 @@ pub mod controller2_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -821,8 +825,7 @@ pub mod controller2_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -987,7 +990,13 @@ pub struct ListDebuggeesResponse {
 }
 /// Generated client implementations.
 pub mod debugger2_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The Debugger service provides the API that allows users to collect run-time
@@ -1094,8 +1103,7 @@ pub mod debugger2_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1125,8 +1133,7 @@ pub mod debugger2_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1153,8 +1160,7 @@ pub mod debugger2_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1184,8 +1190,7 @@ pub mod debugger2_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1215,8 +1220,7 @@ pub mod debugger2_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

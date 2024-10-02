@@ -144,28 +144,28 @@ impl Language {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Language::Unspecified => "LANGUAGE_UNSPECIFIED",
-            Language::None => "NONE",
-            Language::Android => "ANDROID",
-            Language::As => "AS",
-            Language::Cc => "CC",
-            Language::Css => "CSS",
-            Language::Dart => "DART",
-            Language::Go => "GO",
-            Language::Gwt => "GWT",
-            Language::Haskell => "HASKELL",
-            Language::Java => "JAVA",
-            Language::Js => "JS",
-            Language::Lisp => "LISP",
-            Language::Objc => "OBJC",
-            Language::Py => "PY",
-            Language::Sh => "SH",
-            Language::Swift => "SWIFT",
-            Language::Ts => "TS",
-            Language::Web => "WEB",
-            Language::Scala => "SCALA",
-            Language::Proto => "PROTO",
-            Language::Xml => "XML",
+            Self::Unspecified => "LANGUAGE_UNSPECIFIED",
+            Self::None => "NONE",
+            Self::Android => "ANDROID",
+            Self::As => "AS",
+            Self::Cc => "CC",
+            Self::Css => "CSS",
+            Self::Dart => "DART",
+            Self::Go => "GO",
+            Self::Gwt => "GWT",
+            Self::Haskell => "HASKELL",
+            Self::Java => "JAVA",
+            Self::Js => "JS",
+            Self::Lisp => "LISP",
+            Self::Objc => "OBJC",
+            Self::Py => "PY",
+            Self::Sh => "SH",
+            Self::Swift => "SWIFT",
+            Self::Ts => "TS",
+            Self::Web => "WEB",
+            Self::Scala => "SCALA",
+            Self::Proto => "PROTO",
+            Self::Xml => "XML",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -247,20 +247,20 @@ impl Status {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Status::Unspecified => "STATUS_UNSPECIFIED",
-            Status::Building => "BUILDING",
-            Status::Built => "BUILT",
-            Status::FailedToBuild => "FAILED_TO_BUILD",
-            Status::Testing => "TESTING",
-            Status::Passed => "PASSED",
-            Status::Failed => "FAILED",
-            Status::TimedOut => "TIMED_OUT",
-            Status::Cancelled => "CANCELLED",
-            Status::ToolFailed => "TOOL_FAILED",
-            Status::Incomplete => "INCOMPLETE",
-            Status::Flaky => "FLAKY",
-            Status::Unknown => "UNKNOWN",
-            Status::Skipped => "SKIPPED",
+            Self::Unspecified => "STATUS_UNSPECIFIED",
+            Self::Building => "BUILDING",
+            Self::Built => "BUILT",
+            Self::FailedToBuild => "FAILED_TO_BUILD",
+            Self::Testing => "TESTING",
+            Self::Passed => "PASSED",
+            Self::Failed => "FAILED",
+            Self::TimedOut => "TIMED_OUT",
+            Self::Cancelled => "CANCELLED",
+            Self::ToolFailed => "TOOL_FAILED",
+            Self::Incomplete => "INCOMPLETE",
+            Self::Flaky => "FLAKY",
+            Self::Unknown => "UNKNOWN",
+            Self::Skipped => "SKIPPED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -307,10 +307,10 @@ impl UploadStatus {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            UploadStatus::Unspecified => "UPLOAD_STATUS_UNSPECIFIED",
-            UploadStatus::Uploading => "UPLOADING",
-            UploadStatus::PostProcessing => "POST_PROCESSING",
-            UploadStatus::Immutable => "IMMUTABLE",
+            Self::Unspecified => "UPLOAD_STATUS_UNSPECIFIED",
+            Self::Uploading => "UPLOADING",
+            Self::PostProcessing => "POST_PROCESSING",
+            Self::Immutable => "IMMUTABLE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -500,10 +500,10 @@ pub mod file {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                HashType::Unspecified => "HASH_TYPE_UNSPECIFIED",
-                HashType::Md5 => "MD5",
-                HashType::Sha1 => "SHA1",
-                HashType::Sha256 => "SHA256",
+                Self::Unspecified => "HASH_TYPE_UNSPECIFIED",
+                Self::Md5 => "MD5",
+                Self::Sha1 => "SHA1",
+                Self::Sha256 => "SHA256",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -584,17 +584,15 @@ impl FileProcessingErrorType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            FileProcessingErrorType::Unspecified => {
-                "FILE_PROCESSING_ERROR_TYPE_UNSPECIFIED"
-            }
-            FileProcessingErrorType::GenericReadError => "GENERIC_READ_ERROR",
-            FileProcessingErrorType::GenericParseError => "GENERIC_PARSE_ERROR",
-            FileProcessingErrorType::FileTooLarge => "FILE_TOO_LARGE",
-            FileProcessingErrorType::OutputTooLarge => "OUTPUT_TOO_LARGE",
-            FileProcessingErrorType::AccessDenied => "ACCESS_DENIED",
-            FileProcessingErrorType::DeadlineExceeded => "DEADLINE_EXCEEDED",
-            FileProcessingErrorType::NotFound => "NOT_FOUND",
-            FileProcessingErrorType::FileEmpty => "FILE_EMPTY",
+            Self::Unspecified => "FILE_PROCESSING_ERROR_TYPE_UNSPECIFIED",
+            Self::GenericReadError => "GENERIC_READ_ERROR",
+            Self::GenericParseError => "GENERIC_PARSE_ERROR",
+            Self::FileTooLarge => "FILE_TOO_LARGE",
+            Self::OutputTooLarge => "OUTPUT_TOO_LARGE",
+            Self::AccessDenied => "ACCESS_DENIED",
+            Self::DeadlineExceeded => "DEADLINE_EXCEEDED",
+            Self::NotFound => "NOT_FOUND",
+            Self::FileEmpty => "FILE_EMPTY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -764,13 +762,13 @@ pub mod test_case {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Result::Unspecified => "RESULT_UNSPECIFIED",
-                Result::Completed => "COMPLETED",
-                Result::Interrupted => "INTERRUPTED",
-                Result::Cancelled => "CANCELLED",
-                Result::Filtered => "FILTERED",
-                Result::Skipped => "SKIPPED",
-                Result::Suppressed => "SUPPRESSED",
+                Self::Unspecified => "RESULT_UNSPECIFIED",
+                Self::Completed => "COMPLETED",
+                Self::Interrupted => "INTERRUPTED",
+                Self::Cancelled => "CANCELLED",
+                Self::Filtered => "FILTERED",
+                Self::Skipped => "SKIPPED",
+                Self::Suppressed => "SUPPRESSED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1182,11 +1180,11 @@ impl ExecutionStrategy {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ExecutionStrategy::Unspecified => "EXECUTION_STRATEGY_UNSPECIFIED",
-            ExecutionStrategy::OtherEnvironment => "OTHER_ENVIRONMENT",
-            ExecutionStrategy::RemoteService => "REMOTE_SERVICE",
-            ExecutionStrategy::LocalParallel => "LOCAL_PARALLEL",
-            ExecutionStrategy::LocalSequential => "LOCAL_SEQUENTIAL",
+            Self::Unspecified => "EXECUTION_STRATEGY_UNSPECIFIED",
+            Self::OtherEnvironment => "OTHER_ENVIRONMENT",
+            Self::RemoteService => "REMOTE_SERVICE",
+            Self::LocalParallel => "LOCAL_PARALLEL",
+            Self::LocalSequential => "LOCAL_SEQUENTIAL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1223,10 +1221,10 @@ impl TestCaching {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TestCaching::Unspecified => "TEST_CACHING_UNSPECIFIED",
-            TestCaching::LocalCacheHit => "LOCAL_CACHE_HIT",
-            TestCaching::RemoteCacheHit => "REMOTE_CACHE_HIT",
-            TestCaching::CacheMiss => "CACHE_MISS",
+            Self::Unspecified => "TEST_CACHING_UNSPECIFIED",
+            Self::LocalCacheHit => "LOCAL_CACHE_HIT",
+            Self::RemoteCacheHit => "REMOTE_CACHE_HIT",
+            Self::CacheMiss => "CACHE_MISS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1754,12 +1752,12 @@ impl TargetType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TargetType::Unspecified => "TARGET_TYPE_UNSPECIFIED",
-            TargetType::Application => "APPLICATION",
-            TargetType::Binary => "BINARY",
-            TargetType::Library => "LIBRARY",
-            TargetType::Package => "PACKAGE",
-            TargetType::Test => "TEST",
+            Self::Unspecified => "TARGET_TYPE_UNSPECIFIED",
+            Self::Application => "APPLICATION",
+            Self::Binary => "BINARY",
+            Self::Library => "LIBRARY",
+            Self::Package => "PACKAGE",
+            Self::Test => "TEST",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1799,12 +1797,12 @@ impl TestSize {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TestSize::Unspecified => "TEST_SIZE_UNSPECIFIED",
-            TestSize::Small => "SMALL",
-            TestSize::Medium => "MEDIUM",
-            TestSize::Large => "LARGE",
-            TestSize::Enormous => "ENORMOUS",
-            TestSize::OtherSize => "OTHER_SIZE",
+            Self::Unspecified => "TEST_SIZE_UNSPECIFIED",
+            Self::Small => "SMALL",
+            Self::Medium => "MEDIUM",
+            Self::Large => "LARGE",
+            Self::Enormous => "ENORMOUS",
+            Self::OtherSize => "OTHER_SIZE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2465,7 +2463,13 @@ pub struct TraverseFileSetsResponse {
 }
 /// Generated client implementations.
 pub mod result_store_download_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// This is the interface used to download information from the ResultStore
@@ -2590,8 +2594,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2623,8 +2626,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2662,8 +2664,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2697,8 +2698,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2730,8 +2730,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2769,8 +2768,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2802,8 +2800,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2840,8 +2837,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2876,8 +2872,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2916,8 +2911,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2962,8 +2956,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2995,8 +2988,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3038,8 +3030,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3077,8 +3068,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3110,8 +3100,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3149,8 +3138,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3188,8 +3176,7 @@ pub mod result_store_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3287,7 +3274,13 @@ pub struct GetFileTailResponse {
 }
 /// Generated client implementations.
 pub mod result_store_file_download_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// This API allows download of File messages referenced in
@@ -3391,8 +3384,7 @@ pub mod result_store_file_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3426,8 +3418,7 @@ pub mod result_store_file_download_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4191,11 +4182,11 @@ pub mod upload_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                UploadOperation::Unspecified => "UPLOAD_OPERATION_UNSPECIFIED",
-                UploadOperation::Create => "CREATE",
-                UploadOperation::Update => "UPDATE",
-                UploadOperation::Merge => "MERGE",
-                UploadOperation::Finalize => "FINALIZE",
+                Self::Unspecified => "UPLOAD_OPERATION_UNSPECIFIED",
+                Self::Create => "CREATE",
+                Self::Update => "UPDATE",
+                Self::Merge => "MERGE",
+                Self::Finalize => "FINALIZE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4247,7 +4238,13 @@ pub struct GetInvocationUploadMetadataRequest {
 }
 /// Generated client implementations.
 pub mod result_store_upload_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// This is the interface used to upload information to the ResultStore database,
@@ -4356,8 +4353,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4396,8 +4392,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4438,8 +4433,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4477,8 +4471,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4516,8 +4509,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4550,8 +4542,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4589,8 +4580,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4628,8 +4618,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4669,8 +4658,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4705,8 +4693,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4749,8 +4736,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4792,8 +4778,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4837,8 +4822,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4873,8 +4857,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4912,8 +4895,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4951,8 +4933,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4992,8 +4973,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5034,8 +5014,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5075,8 +5054,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5114,8 +5092,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5154,8 +5131,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5196,8 +5172,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5240,8 +5215,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5276,8 +5250,7 @@ pub mod result_store_upload_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

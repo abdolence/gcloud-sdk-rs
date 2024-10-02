@@ -208,8 +208,8 @@ pub mod settings {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    PayloadFormat::Unspecified => "PAYLOAD_FORMAT_UNSPECIFIED",
-                    PayloadFormat::Json => "JSON",
+                    Self::Unspecified => "PAYLOAD_FORMAT_UNSPECIFIED",
+                    Self::Json => "JSON",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -483,10 +483,10 @@ impl AlertFeedbackType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AlertFeedbackType::Unspecified => "ALERT_FEEDBACK_TYPE_UNSPECIFIED",
-            AlertFeedbackType::NotUseful => "NOT_USEFUL",
-            AlertFeedbackType::SomewhatUseful => "SOMEWHAT_USEFUL",
-            AlertFeedbackType::VeryUseful => "VERY_USEFUL",
+            Self::Unspecified => "ALERT_FEEDBACK_TYPE_UNSPECIFIED",
+            Self::NotUseful => "NOT_USEFUL",
+            Self::SomewhatUseful => "SOMEWHAT_USEFUL",
+            Self::VeryUseful => "VERY_USEFUL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -502,7 +502,13 @@ impl AlertFeedbackType {
 }
 /// Generated client implementations.
 pub mod alert_center_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Google Workspace Alert Center API (beta).
@@ -598,8 +604,7 @@ pub mod alert_center_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -627,8 +632,7 @@ pub mod alert_center_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -659,8 +663,7 @@ pub mod alert_center_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -691,8 +694,7 @@ pub mod alert_center_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -722,8 +724,7 @@ pub mod alert_center_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -754,8 +755,7 @@ pub mod alert_center_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -783,8 +783,7 @@ pub mod alert_center_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -811,8 +810,7 @@ pub mod alert_center_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -839,8 +837,7 @@ pub mod alert_center_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -870,8 +867,7 @@ pub mod alert_center_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -901,8 +897,7 @@ pub mod alert_center_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

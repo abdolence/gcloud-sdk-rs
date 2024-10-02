@@ -29,9 +29,9 @@ impl Billing {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Billing::Unspecified => "BILLING_UNSPECIFIED",
-            Billing::PayAsYouGo => "PAY_AS_YOU_GO",
-            Billing::AnthosLicense => "ANTHOS_LICENSE",
+            Self::Unspecified => "BILLING_UNSPECIFIED",
+            Self::PayAsYouGo => "PAY_AS_YOU_GO",
+            Self::AnthosLicense => "ANTHOS_LICENSE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.

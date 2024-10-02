@@ -109,11 +109,11 @@ pub mod async_model_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Running => "RUNNING",
-                State::Succeeded => "SUCCEEDED",
-                State::Cancelled => "CANCELLED",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Running => "RUNNING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Cancelled => "CANCELLED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -147,9 +147,9 @@ impl DataFormat {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DataFormat::Unspecified => "DATA_FORMAT_UNSPECIFIED",
-            DataFormat::Json => "JSON",
-            DataFormat::String => "STRING",
+            Self::Unspecified => "DATA_FORMAT_UNSPECIFIED",
+            Self::Json => "JSON",
+            Self::String => "STRING",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -425,11 +425,9 @@ pub mod optimize_tours_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SolvingMode::DefaultSolve => "DEFAULT_SOLVE",
-                SolvingMode::ValidateOnly => "VALIDATE_ONLY",
-                SolvingMode::DetectSomeInfeasibleShipments => {
-                    "DETECT_SOME_INFEASIBLE_SHIPMENTS"
-                }
+                Self::DefaultSolve => "DEFAULT_SOLVE",
+                Self::ValidateOnly => "VALIDATE_ONLY",
+                Self::DetectSomeInfeasibleShipments => "DETECT_SOME_INFEASIBLE_SHIPMENTS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -473,9 +471,9 @@ pub mod optimize_tours_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SearchMode::Unspecified => "SEARCH_MODE_UNSPECIFIED",
-                SearchMode::ReturnFast => "RETURN_FAST",
-                SearchMode::ConsumeAllAvailableTime => "CONSUME_ALL_AVAILABLE_TIME",
+                Self::Unspecified => "SEARCH_MODE_UNSPECIFIED",
+                Self::ReturnFast => "RETURN_FAST",
+                Self::ConsumeAllAvailableTime => "CONSUME_ALL_AVAILABLE_TIME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1286,11 +1284,9 @@ pub mod shipment_type_incompatibility {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                IncompatibilityMode::Unspecified => "INCOMPATIBILITY_MODE_UNSPECIFIED",
-                IncompatibilityMode::NotPerformedBySameVehicle => {
-                    "NOT_PERFORMED_BY_SAME_VEHICLE"
-                }
-                IncompatibilityMode::NotInSameVehicleSimultaneously => {
+                Self::Unspecified => "INCOMPATIBILITY_MODE_UNSPECIFIED",
+                Self::NotPerformedBySameVehicle => "NOT_PERFORMED_BY_SAME_VEHICLE",
+                Self::NotInSameVehicleSimultaneously => {
                     "NOT_IN_SAME_VEHICLE_SIMULTANEOUSLY"
                 }
             }
@@ -1375,14 +1371,10 @@ pub mod shipment_type_requirement {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RequirementMode::Unspecified => "REQUIREMENT_MODE_UNSPECIFIED",
-                RequirementMode::PerformedBySameVehicle => "PERFORMED_BY_SAME_VEHICLE",
-                RequirementMode::InSameVehicleAtPickupTime => {
-                    "IN_SAME_VEHICLE_AT_PICKUP_TIME"
-                }
-                RequirementMode::InSameVehicleAtDeliveryTime => {
-                    "IN_SAME_VEHICLE_AT_DELIVERY_TIME"
-                }
+                Self::Unspecified => "REQUIREMENT_MODE_UNSPECIFIED",
+                Self::PerformedBySameVehicle => "PERFORMED_BY_SAME_VEHICLE",
+                Self::InSameVehicleAtPickupTime => "IN_SAME_VEHICLE_AT_PICKUP_TIME",
+                Self::InSameVehicleAtDeliveryTime => "IN_SAME_VEHICLE_AT_DELIVERY_TIME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1793,9 +1785,9 @@ pub mod vehicle {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TravelMode::Unspecified => "TRAVEL_MODE_UNSPECIFIED",
-                TravelMode::Driving => "DRIVING",
-                TravelMode::Walking => "WALKING",
+                Self::Unspecified => "TRAVEL_MODE_UNSPECIFIED",
+                Self::Driving => "DRIVING",
+                Self::Walking => "WALKING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1841,9 +1833,9 @@ pub mod vehicle {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                UnloadingPolicy::Unspecified => "UNLOADING_POLICY_UNSPECIFIED",
-                UnloadingPolicy::LastInFirstOut => "LAST_IN_FIRST_OUT",
-                UnloadingPolicy::FirstInFirstOut => "FIRST_IN_FIRST_OUT",
+                Self::Unspecified => "UNLOADING_POLICY_UNSPECIFIED",
+                Self::LastInFirstOut => "LAST_IN_FIRST_OUT",
+                Self::FirstInFirstOut => "FIRST_IN_FIRST_OUT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2728,24 +2720,24 @@ pub mod skipped_shipment {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Code::Unspecified => "CODE_UNSPECIFIED",
-                    Code::NoVehicle => "NO_VEHICLE",
-                    Code::DemandExceedsVehicleCapacity => {
+                    Self::Unspecified => "CODE_UNSPECIFIED",
+                    Self::NoVehicle => "NO_VEHICLE",
+                    Self::DemandExceedsVehicleCapacity => {
                         "DEMAND_EXCEEDS_VEHICLE_CAPACITY"
                     }
-                    Code::CannotBePerformedWithinVehicleDistanceLimit => {
+                    Self::CannotBePerformedWithinVehicleDistanceLimit => {
                         "CANNOT_BE_PERFORMED_WITHIN_VEHICLE_DISTANCE_LIMIT"
                     }
-                    Code::CannotBePerformedWithinVehicleDurationLimit => {
+                    Self::CannotBePerformedWithinVehicleDurationLimit => {
                         "CANNOT_BE_PERFORMED_WITHIN_VEHICLE_DURATION_LIMIT"
                     }
-                    Code::CannotBePerformedWithinVehicleTravelDurationLimit => {
+                    Self::CannotBePerformedWithinVehicleTravelDurationLimit => {
                         "CANNOT_BE_PERFORMED_WITHIN_VEHICLE_TRAVEL_DURATION_LIMIT"
                     }
-                    Code::CannotBePerformedWithinVehicleTimeWindows => {
+                    Self::CannotBePerformedWithinVehicleTimeWindows => {
                         "CANNOT_BE_PERFORMED_WITHIN_VEHICLE_TIME_WINDOWS"
                     }
-                    Code::VehicleNotAllowed => "VEHICLE_NOT_ALLOWED",
+                    Self::VehicleNotAllowed => "VEHICLE_NOT_ALLOWED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2990,14 +2982,14 @@ pub mod injected_solution_constraint {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        Level::Unspecified => "LEVEL_UNSPECIFIED",
-                        Level::RelaxVisitTimesAfterThreshold => {
+                        Self::Unspecified => "LEVEL_UNSPECIFIED",
+                        Self::RelaxVisitTimesAfterThreshold => {
                             "RELAX_VISIT_TIMES_AFTER_THRESHOLD"
                         }
-                        Level::RelaxVisitTimesAndSequenceAfterThreshold => {
+                        Self::RelaxVisitTimesAndSequenceAfterThreshold => {
                             "RELAX_VISIT_TIMES_AND_SEQUENCE_AFTER_THRESHOLD"
                         }
-                        Level::RelaxAllAfterThreshold => "RELAX_ALL_AFTER_THRESHOLD",
+                        Self::RelaxAllAfterThreshold => "RELAX_ALL_AFTER_THRESHOLD",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3336,7 +3328,13 @@ pub mod optimize_tours_validation_error {
 }
 /// Generated client implementations.
 pub mod fleet_routing_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// A service for optimizing vehicle tours.
@@ -3461,8 +3459,7 @@ pub mod fleet_routing_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3501,8 +3498,7 @@ pub mod fleet_routing_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

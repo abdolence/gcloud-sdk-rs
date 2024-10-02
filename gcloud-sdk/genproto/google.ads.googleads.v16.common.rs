@@ -7045,10 +7045,10 @@ pub mod target_restriction_operation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Operator::Unspecified => "UNSPECIFIED",
-                Operator::Unknown => "UNKNOWN",
-                Operator::Add => "ADD",
-                Operator::Remove => "REMOVE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::Add => "ADD",
+                Self::Remove => "REMOVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

@@ -74,9 +74,9 @@ pub mod build_signature {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                KeyType::Unspecified => "KEY_TYPE_UNSPECIFIED",
-                KeyType::PgpAsciiArmored => "PGP_ASCII_ARMORED",
-                KeyType::PkixPem => "PKIX_PEM",
+                Self::Unspecified => "KEY_TYPE_UNSPECIFIED",
+                Self::PgpAsciiArmored => "PGP_ASCII_ARMORED",
+                Self::PkixPem => "PKIX_PEM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

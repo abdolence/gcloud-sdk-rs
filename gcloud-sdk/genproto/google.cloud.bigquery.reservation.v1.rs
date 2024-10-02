@@ -204,16 +204,16 @@ pub mod capacity_commitment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CommitmentPlan::Unspecified => "COMMITMENT_PLAN_UNSPECIFIED",
-                CommitmentPlan::Flex => "FLEX",
-                CommitmentPlan::FlexFlatRate => "FLEX_FLAT_RATE",
-                CommitmentPlan::Trial => "TRIAL",
-                CommitmentPlan::Monthly => "MONTHLY",
-                CommitmentPlan::MonthlyFlatRate => "MONTHLY_FLAT_RATE",
-                CommitmentPlan::Annual => "ANNUAL",
-                CommitmentPlan::AnnualFlatRate => "ANNUAL_FLAT_RATE",
-                CommitmentPlan::ThreeYear => "THREE_YEAR",
-                CommitmentPlan::None => "NONE",
+                Self::Unspecified => "COMMITMENT_PLAN_UNSPECIFIED",
+                Self::Flex => "FLEX",
+                Self::FlexFlatRate => "FLEX_FLAT_RATE",
+                Self::Trial => "TRIAL",
+                Self::Monthly => "MONTHLY",
+                Self::MonthlyFlatRate => "MONTHLY_FLAT_RATE",
+                Self::Annual => "ANNUAL",
+                Self::AnnualFlatRate => "ANNUAL_FLAT_RATE",
+                Self::ThreeYear => "THREE_YEAR",
+                Self::None => "NONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -266,10 +266,10 @@ pub mod capacity_commitment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Pending => "PENDING",
-                State::Active => "ACTIVE",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Active => "ACTIVE",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -539,11 +539,11 @@ pub mod assignment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                JobType::Unspecified => "JOB_TYPE_UNSPECIFIED",
-                JobType::Pipeline => "PIPELINE",
-                JobType::Query => "QUERY",
-                JobType::MlExternal => "ML_EXTERNAL",
-                JobType::Background => "BACKGROUND",
+                Self::Unspecified => "JOB_TYPE_UNSPECIFIED",
+                Self::Pipeline => "PIPELINE",
+                Self::Query => "QUERY",
+                Self::MlExternal => "ML_EXTERNAL",
+                Self::Background => "BACKGROUND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -589,9 +589,9 @@ pub mod assignment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Pending => "PENDING",
-                State::Active => "ACTIVE",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Active => "ACTIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -857,10 +857,10 @@ impl Edition {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Edition::Unspecified => "EDITION_UNSPECIFIED",
-            Edition::Standard => "STANDARD",
-            Edition::Enterprise => "ENTERPRISE",
-            Edition::EnterprisePlus => "ENTERPRISE_PLUS",
+            Self::Unspecified => "EDITION_UNSPECIFIED",
+            Self::Standard => "STANDARD",
+            Self::Enterprise => "ENTERPRISE",
+            Self::EnterprisePlus => "ENTERPRISE_PLUS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -876,7 +876,13 @@ impl Edition {
 }
 /// Generated client implementations.
 pub mod reservation_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// This API allows users to manage their BigQuery reservations.
@@ -983,8 +989,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1014,8 +1019,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1042,8 +1046,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1072,8 +1075,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1100,8 +1102,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1131,8 +1132,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1162,8 +1162,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1193,8 +1192,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1223,8 +1221,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1260,8 +1257,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1298,8 +1294,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1335,8 +1330,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1397,8 +1391,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1448,8 +1441,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1490,8 +1482,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1532,6 +1523,7 @@ pub mod reservation_service_client {
         ///
         /// **Note** "-" cannot be used for projects
         /// nor locations.
+        #[deprecated]
         pub async fn search_assignments(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchAssignmentsRequest>,
@@ -1543,8 +1535,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1593,8 +1584,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1625,8 +1615,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1655,8 +1644,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1683,8 +1671,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1718,8 +1705,7 @@ pub mod reservation_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

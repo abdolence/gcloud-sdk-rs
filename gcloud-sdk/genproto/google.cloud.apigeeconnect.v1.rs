@@ -55,7 +55,13 @@ pub struct Cluster {
 }
 /// Generated client implementations.
 pub mod connection_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service Interface for the Apigee Connect connection management APIs.
@@ -152,8 +158,7 @@ pub mod connection_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -339,8 +344,8 @@ impl Action {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Action::Unspecified => "ACTION_UNSPECIFIED",
-            Action::OpenNewStream => "OPEN_NEW_STREAM",
+            Self::Unspecified => "ACTION_UNSPECIFIED",
+            Self::OpenNewStream => "OPEN_NEW_STREAM",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -372,10 +377,10 @@ impl TetherEndpoint {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TetherEndpoint::Unspecified => "TETHER_ENDPOINT_UNSPECIFIED",
-            TetherEndpoint::ApigeeMart => "APIGEE_MART",
-            TetherEndpoint::ApigeeRuntime => "APIGEE_RUNTIME",
-            TetherEndpoint::ApigeeMintRating => "APIGEE_MINT_RATING",
+            Self::Unspecified => "TETHER_ENDPOINT_UNSPECIFIED",
+            Self::ApigeeMart => "APIGEE_MART",
+            Self::ApigeeRuntime => "APIGEE_RUNTIME",
+            Self::ApigeeMintRating => "APIGEE_MINT_RATING",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -405,8 +410,8 @@ impl Scheme {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Scheme::Unspecified => "SCHEME_UNSPECIFIED",
-            Scheme::Https => "HTTPS",
+            Self::Unspecified => "SCHEME_UNSPECIFIED",
+            Self::Https => "HTTPS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -420,7 +425,13 @@ impl Scheme {
 }
 /// Generated client implementations.
 pub mod tether_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Tether provides a way for the control plane to send HTTP API requests to
@@ -524,8 +535,7 @@ pub mod tether_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

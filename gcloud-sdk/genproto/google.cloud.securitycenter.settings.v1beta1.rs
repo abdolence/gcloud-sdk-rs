@@ -37,9 +37,9 @@ impl BillingTier {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            BillingTier::Unspecified => "BILLING_TIER_UNSPECIFIED",
-            BillingTier::Standard => "STANDARD",
-            BillingTier::Premium => "PREMIUM",
+            Self::Unspecified => "BILLING_TIER_UNSPECIFIED",
+            Self::Standard => "STANDARD",
+            Self::Premium => "PREMIUM",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -72,10 +72,10 @@ impl BillingType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            BillingType::Unspecified => "BILLING_TYPE_UNSPECIFIED",
-            BillingType::Subscription => "SUBSCRIPTION",
-            BillingType::TrialSubscription => "TRIAL_SUBSCRIPTION",
-            BillingType::Alpha => "ALPHA",
+            Self::Unspecified => "BILLING_TYPE_UNSPECIFIED",
+            Self::Subscription => "SUBSCRIPTION",
+            Self::TrialSubscription => "TRIAL_SUBSCRIPTION",
+            Self::Alpha => "ALPHA",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -244,12 +244,10 @@ impl ComponentEnablementState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ComponentEnablementState::Unspecified => {
-                "COMPONENT_ENABLEMENT_STATE_UNSPECIFIED"
-            }
-            ComponentEnablementState::Disable => "DISABLE",
-            ComponentEnablementState::Enable => "ENABLE",
-            ComponentEnablementState::Inherit => "INHERIT",
+            Self::Unspecified => "COMPONENT_ENABLEMENT_STATE_UNSPECIFIED",
+            Self::Disable => "DISABLE",
+            Self::Enable => "ENABLE",
+            Self::Inherit => "INHERIT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -401,15 +399,13 @@ pub mod settings {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OnboardingState::Unspecified => "ONBOARDING_STATE_UNSPECIFIED",
-                OnboardingState::Enabled => "ENABLED",
-                OnboardingState::Disabled => "DISABLED",
-                OnboardingState::BillingSelected => "BILLING_SELECTED",
-                OnboardingState::ProvidersSelected => "PROVIDERS_SELECTED",
-                OnboardingState::ResourcesSelected => "RESOURCES_SELECTED",
-                OnboardingState::OrgServiceAccountCreated => {
-                    "ORG_SERVICE_ACCOUNT_CREATED"
-                }
+                Self::Unspecified => "ONBOARDING_STATE_UNSPECIFIED",
+                Self::Enabled => "ENABLED",
+                Self::Disabled => "DISABLED",
+                Self::BillingSelected => "BILLING_SELECTED",
+                Self::ProvidersSelected => "PROVIDERS_SELECTED",
+                Self::ResourcesSelected => "RESOURCES_SELECTED",
+                Self::OrgServiceAccountCreated => "ORG_SERVICE_ACCOUNT_CREATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -713,7 +709,13 @@ pub struct ListComponentsResponse {
 }
 /// Generated client implementations.
 pub mod security_center_settings_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// ## API Overview
@@ -822,8 +824,7 @@ pub mod security_center_settings_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -850,8 +851,7 @@ pub mod security_center_settings_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -878,8 +878,7 @@ pub mod security_center_settings_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -915,8 +914,7 @@ pub mod security_center_settings_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -946,8 +944,7 @@ pub mod security_center_settings_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -984,8 +981,7 @@ pub mod security_center_settings_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1017,8 +1013,7 @@ pub mod security_center_settings_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1048,8 +1043,7 @@ pub mod security_center_settings_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1079,8 +1073,7 @@ pub mod security_center_settings_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1111,8 +1104,7 @@ pub mod security_center_settings_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1144,8 +1136,7 @@ pub mod security_center_settings_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1175,8 +1166,7 @@ pub mod security_center_settings_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1206,8 +1196,7 @@ pub mod security_center_settings_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

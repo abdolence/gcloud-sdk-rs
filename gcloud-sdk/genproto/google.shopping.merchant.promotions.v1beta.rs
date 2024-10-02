@@ -293,13 +293,13 @@ pub mod promotion_status {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    State::Unspecified => "STATE_UNSPECIFIED",
-                    State::InReview => "IN_REVIEW",
-                    State::Rejected => "REJECTED",
-                    State::Live => "LIVE",
-                    State::Stopped => "STOPPED",
-                    State::Expired => "EXPIRED",
-                    State::Pending => "PENDING",
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::InReview => "IN_REVIEW",
+                    Self::Rejected => "REJECTED",
+                    Self::Live => "LIVE",
+                    Self::Stopped => "STOPPED",
+                    Self::Expired => "EXPIRED",
+                    Self::Pending => "PENDING",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -389,10 +389,10 @@ pub mod promotion_status {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Severity::Unspecified => "SEVERITY_UNSPECIFIED",
-                    Severity::NotImpacted => "NOT_IMPACTED",
-                    Severity::Demoted => "DEMOTED",
-                    Severity::Disapproved => "DISAPPROVED",
+                    Self::Unspecified => "SEVERITY_UNSPECIFIED",
+                    Self::NotImpacted => "NOT_IMPACTED",
+                    Self::Demoted => "DEMOTED",
+                    Self::Disapproved => "DISAPPROVED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -426,9 +426,9 @@ impl ProductApplicability {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ProductApplicability::Unspecified => "PRODUCT_APPLICABILITY_UNSPECIFIED",
-            ProductApplicability::AllProducts => "ALL_PRODUCTS",
-            ProductApplicability::SpecificProducts => "SPECIFIC_PRODUCTS",
+            Self::Unspecified => "PRODUCT_APPLICABILITY_UNSPECIFIED",
+            Self::AllProducts => "ALL_PRODUCTS",
+            Self::SpecificProducts => "SPECIFIC_PRODUCTS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -460,9 +460,9 @@ impl StoreApplicability {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            StoreApplicability::Unspecified => "STORE_APPLICABILITY_UNSPECIFIED",
-            StoreApplicability::AllStores => "ALL_STORES",
-            StoreApplicability::SpecificStores => "SPECIFIC_STORES",
+            Self::Unspecified => "STORE_APPLICABILITY_UNSPECIFIED",
+            Self::AllStores => "ALL_STORES",
+            Self::SpecificStores => "SPECIFIC_STORES",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -494,9 +494,9 @@ impl OfferType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            OfferType::Unspecified => "OFFER_TYPE_UNSPECIFIED",
-            OfferType::NoCode => "NO_CODE",
-            OfferType::GenericCode => "GENERIC_CODE",
+            Self::Unspecified => "OFFER_TYPE_UNSPECIFIED",
+            Self::NoCode => "NO_CODE",
+            Self::GenericCode => "GENERIC_CODE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -528,9 +528,9 @@ impl RedemptionChannel {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            RedemptionChannel::Unspecified => "REDEMPTION_CHANNEL_UNSPECIFIED",
-            RedemptionChannel::InStore => "IN_STORE",
-            RedemptionChannel::Online => "ONLINE",
+            Self::Unspecified => "REDEMPTION_CHANNEL_UNSPECIFIED",
+            Self::InStore => "IN_STORE",
+            Self::Online => "ONLINE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -589,19 +589,19 @@ impl CouponValueType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            CouponValueType::Unspecified => "COUPON_VALUE_TYPE_UNSPECIFIED",
-            CouponValueType::MoneyOff => "MONEY_OFF",
-            CouponValueType::PercentOff => "PERCENT_OFF",
-            CouponValueType::BuyMGetNMoneyOff => "BUY_M_GET_N_MONEY_OFF",
-            CouponValueType::BuyMGetNPercentOff => "BUY_M_GET_N_PERCENT_OFF",
-            CouponValueType::BuyMGetMoneyOff => "BUY_M_GET_MONEY_OFF",
-            CouponValueType::BuyMGetPercentOff => "BUY_M_GET_PERCENT_OFF",
-            CouponValueType::FreeGift => "FREE_GIFT",
-            CouponValueType::FreeGiftWithValue => "FREE_GIFT_WITH_VALUE",
-            CouponValueType::FreeGiftWithItemId => "FREE_GIFT_WITH_ITEM_ID",
-            CouponValueType::FreeShippingStandard => "FREE_SHIPPING_STANDARD",
-            CouponValueType::FreeShippingOvernight => "FREE_SHIPPING_OVERNIGHT",
-            CouponValueType::FreeShippingTwoDay => "FREE_SHIPPING_TWO_DAY",
+            Self::Unspecified => "COUPON_VALUE_TYPE_UNSPECIFIED",
+            Self::MoneyOff => "MONEY_OFF",
+            Self::PercentOff => "PERCENT_OFF",
+            Self::BuyMGetNMoneyOff => "BUY_M_GET_N_MONEY_OFF",
+            Self::BuyMGetNPercentOff => "BUY_M_GET_N_PERCENT_OFF",
+            Self::BuyMGetMoneyOff => "BUY_M_GET_MONEY_OFF",
+            Self::BuyMGetPercentOff => "BUY_M_GET_PERCENT_OFF",
+            Self::FreeGift => "FREE_GIFT",
+            Self::FreeGiftWithValue => "FREE_GIFT_WITH_VALUE",
+            Self::FreeGiftWithItemId => "FREE_GIFT_WITH_ITEM_ID",
+            Self::FreeShippingStandard => "FREE_SHIPPING_STANDARD",
+            Self::FreeShippingOvernight => "FREE_SHIPPING_OVERNIGHT",
+            Self::FreeShippingTwoDay => "FREE_SHIPPING_TWO_DAY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -766,7 +766,13 @@ pub struct ListPromotionsResponse {
 }
 /// Generated client implementations.
 pub mod promotions_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service to manage promotions for products.
@@ -860,8 +866,7 @@ pub mod promotions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -891,8 +896,7 @@ pub mod promotions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -927,8 +931,7 @@ pub mod promotions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

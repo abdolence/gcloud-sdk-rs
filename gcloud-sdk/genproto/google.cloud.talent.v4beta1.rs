@@ -89,17 +89,17 @@ pub mod location {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LocationType::Unspecified => "LOCATION_TYPE_UNSPECIFIED",
-                LocationType::Country => "COUNTRY",
-                LocationType::AdministrativeArea => "ADMINISTRATIVE_AREA",
-                LocationType::SubAdministrativeArea => "SUB_ADMINISTRATIVE_AREA",
-                LocationType::Locality => "LOCALITY",
-                LocationType::PostalCode => "POSTAL_CODE",
-                LocationType::SubLocality => "SUB_LOCALITY",
-                LocationType::SubLocality1 => "SUB_LOCALITY_1",
-                LocationType::SubLocality2 => "SUB_LOCALITY_2",
-                LocationType::Neighborhood => "NEIGHBORHOOD",
-                LocationType::StreetAddress => "STREET_ADDRESS",
+                Self::Unspecified => "LOCATION_TYPE_UNSPECIFIED",
+                Self::Country => "COUNTRY",
+                Self::AdministrativeArea => "ADMINISTRATIVE_AREA",
+                Self::SubAdministrativeArea => "SUB_ADMINISTRATIVE_AREA",
+                Self::Locality => "LOCALITY",
+                Self::PostalCode => "POSTAL_CODE",
+                Self::SubLocality => "SUB_LOCALITY",
+                Self::SubLocality1 => "SUB_LOCALITY_1",
+                Self::SubLocality2 => "SUB_LOCALITY_2",
+                Self::Neighborhood => "NEIGHBORHOOD",
+                Self::StreetAddress => "STREET_ADDRESS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -256,13 +256,13 @@ pub mod device_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DeviceType::Unspecified => "DEVICE_TYPE_UNSPECIFIED",
-                DeviceType::Web => "WEB",
-                DeviceType::MobileWeb => "MOBILE_WEB",
-                DeviceType::Android => "ANDROID",
-                DeviceType::Ios => "IOS",
-                DeviceType::Bot => "BOT",
-                DeviceType::Other => "OTHER",
+                Self::Unspecified => "DEVICE_TYPE_UNSPECIFIED",
+                Self::Web => "WEB",
+                Self::MobileWeb => "MOBILE_WEB",
+                Self::Android => "ANDROID",
+                Self::Ios => "IOS",
+                Self::Bot => "BOT",
+                Self::Other => "OTHER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -539,15 +539,15 @@ pub mod compensation_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CompensationType::Unspecified => "COMPENSATION_TYPE_UNSPECIFIED",
-                CompensationType::Base => "BASE",
-                CompensationType::Bonus => "BONUS",
-                CompensationType::SigningBonus => "SIGNING_BONUS",
-                CompensationType::Equity => "EQUITY",
-                CompensationType::ProfitSharing => "PROFIT_SHARING",
-                CompensationType::Commissions => "COMMISSIONS",
-                CompensationType::Tips => "TIPS",
-                CompensationType::OtherCompensationType => "OTHER_COMPENSATION_TYPE",
+                Self::Unspecified => "COMPENSATION_TYPE_UNSPECIFIED",
+                Self::Base => "BASE",
+                Self::Bonus => "BONUS",
+                Self::SigningBonus => "SIGNING_BONUS",
+                Self::Equity => "EQUITY",
+                Self::ProfitSharing => "PROFIT_SHARING",
+                Self::Commissions => "COMMISSIONS",
+                Self::Tips => "TIPS",
+                Self::OtherCompensationType => "OTHER_COMPENSATION_TYPE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -604,14 +604,14 @@ pub mod compensation_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CompensationUnit::Unspecified => "COMPENSATION_UNIT_UNSPECIFIED",
-                CompensationUnit::Hourly => "HOURLY",
-                CompensationUnit::Daily => "DAILY",
-                CompensationUnit::Weekly => "WEEKLY",
-                CompensationUnit::Monthly => "MONTHLY",
-                CompensationUnit::Yearly => "YEARLY",
-                CompensationUnit::OneTime => "ONE_TIME",
-                CompensationUnit::OtherCompensationUnit => "OTHER_COMPENSATION_UNIT",
+                Self::Unspecified => "COMPENSATION_UNIT_UNSPECIFIED",
+                Self::Hourly => "HOURLY",
+                Self::Daily => "DAILY",
+                Self::Weekly => "WEEKLY",
+                Self::Monthly => "MONTHLY",
+                Self::Yearly => "YEARLY",
+                Self::OneTime => "ONE_TIME",
+                Self::OtherCompensationUnit => "OTHER_COMPENSATION_UNIT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -707,13 +707,13 @@ pub mod batch_operation_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Initializing => "INITIALIZING",
-                State::Processing => "PROCESSING",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Cancelling => "CANCELLING",
-                State::Cancelled => "CANCELLED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Initializing => "INITIALIZING",
+                Self::Processing => "PROCESSING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Cancelling => "CANCELLING",
+                Self::Cancelled => "CANCELLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -759,14 +759,14 @@ impl CompanySize {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            CompanySize::Unspecified => "COMPANY_SIZE_UNSPECIFIED",
-            CompanySize::Mini => "MINI",
-            CompanySize::Small => "SMALL",
-            CompanySize::Smedium => "SMEDIUM",
-            CompanySize::Medium => "MEDIUM",
-            CompanySize::Big => "BIG",
-            CompanySize::Bigger => "BIGGER",
-            CompanySize::Giant => "GIANT",
+            Self::Unspecified => "COMPANY_SIZE_UNSPECIFIED",
+            Self::Mini => "MINI",
+            Self::Small => "SMALL",
+            Self::Smedium => "SMEDIUM",
+            Self::Medium => "MEDIUM",
+            Self::Big => "BIG",
+            Self::Bigger => "BIGGER",
+            Self::Giant => "GIANT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -826,18 +826,18 @@ impl JobBenefit {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            JobBenefit::Unspecified => "JOB_BENEFIT_UNSPECIFIED",
-            JobBenefit::ChildCare => "CHILD_CARE",
-            JobBenefit::Dental => "DENTAL",
-            JobBenefit::DomesticPartner => "DOMESTIC_PARTNER",
-            JobBenefit::FlexibleHours => "FLEXIBLE_HOURS",
-            JobBenefit::Medical => "MEDICAL",
-            JobBenefit::LifeInsurance => "LIFE_INSURANCE",
-            JobBenefit::ParentalLeave => "PARENTAL_LEAVE",
-            JobBenefit::RetirementPlan => "RETIREMENT_PLAN",
-            JobBenefit::SickDays => "SICK_DAYS",
-            JobBenefit::Vacation => "VACATION",
-            JobBenefit::Vision => "VISION",
+            Self::Unspecified => "JOB_BENEFIT_UNSPECIFIED",
+            Self::ChildCare => "CHILD_CARE",
+            Self::Dental => "DENTAL",
+            Self::DomesticPartner => "DOMESTIC_PARTNER",
+            Self::FlexibleHours => "FLEXIBLE_HOURS",
+            Self::Medical => "MEDICAL",
+            Self::LifeInsurance => "LIFE_INSURANCE",
+            Self::ParentalLeave => "PARENTAL_LEAVE",
+            Self::RetirementPlan => "RETIREMENT_PLAN",
+            Self::SickDays => "SICK_DAYS",
+            Self::Vacation => "VACATION",
+            Self::Vision => "VISION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -914,15 +914,15 @@ impl DegreeType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DegreeType::Unspecified => "DEGREE_TYPE_UNSPECIFIED",
-            DegreeType::PrimaryEducation => "PRIMARY_EDUCATION",
-            DegreeType::LowerSecondaryEducation => "LOWER_SECONDARY_EDUCATION",
-            DegreeType::UpperSecondaryEducation => "UPPER_SECONDARY_EDUCATION",
-            DegreeType::AdultRemedialEducation => "ADULT_REMEDIAL_EDUCATION",
-            DegreeType::AssociatesOrEquivalent => "ASSOCIATES_OR_EQUIVALENT",
-            DegreeType::BachelorsOrEquivalent => "BACHELORS_OR_EQUIVALENT",
-            DegreeType::MastersOrEquivalent => "MASTERS_OR_EQUIVALENT",
-            DegreeType::DoctoralOrEquivalent => "DOCTORAL_OR_EQUIVALENT",
+            Self::Unspecified => "DEGREE_TYPE_UNSPECIFIED",
+            Self::PrimaryEducation => "PRIMARY_EDUCATION",
+            Self::LowerSecondaryEducation => "LOWER_SECONDARY_EDUCATION",
+            Self::UpperSecondaryEducation => "UPPER_SECONDARY_EDUCATION",
+            Self::AdultRemedialEducation => "ADULT_REMEDIAL_EDUCATION",
+            Self::AssociatesOrEquivalent => "ASSOCIATES_OR_EQUIVALENT",
+            Self::BachelorsOrEquivalent => "BACHELORS_OR_EQUIVALENT",
+            Self::MastersOrEquivalent => "MASTERS_OR_EQUIVALENT",
+            Self::DoctoralOrEquivalent => "DOCTORAL_OR_EQUIVALENT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -989,17 +989,17 @@ impl EmploymentType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            EmploymentType::Unspecified => "EMPLOYMENT_TYPE_UNSPECIFIED",
-            EmploymentType::FullTime => "FULL_TIME",
-            EmploymentType::PartTime => "PART_TIME",
-            EmploymentType::Contractor => "CONTRACTOR",
-            EmploymentType::ContractToHire => "CONTRACT_TO_HIRE",
-            EmploymentType::Temporary => "TEMPORARY",
-            EmploymentType::Intern => "INTERN",
-            EmploymentType::Volunteer => "VOLUNTEER",
-            EmploymentType::PerDiem => "PER_DIEM",
-            EmploymentType::FlyInFlyOut => "FLY_IN_FLY_OUT",
-            EmploymentType::OtherEmploymentType => "OTHER_EMPLOYMENT_TYPE",
+            Self::Unspecified => "EMPLOYMENT_TYPE_UNSPECIFIED",
+            Self::FullTime => "FULL_TIME",
+            Self::PartTime => "PART_TIME",
+            Self::Contractor => "CONTRACTOR",
+            Self::ContractToHire => "CONTRACT_TO_HIRE",
+            Self::Temporary => "TEMPORARY",
+            Self::Intern => "INTERN",
+            Self::Volunteer => "VOLUNTEER",
+            Self::PerDiem => "PER_DIEM",
+            Self::FlyInFlyOut => "FLY_IN_FLY_OUT",
+            Self::OtherEmploymentType => "OTHER_EMPLOYMENT_TYPE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1046,12 +1046,12 @@ impl JobLevel {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            JobLevel::Unspecified => "JOB_LEVEL_UNSPECIFIED",
-            JobLevel::EntryLevel => "ENTRY_LEVEL",
-            JobLevel::Experienced => "EXPERIENCED",
-            JobLevel::Manager => "MANAGER",
-            JobLevel::Director => "DIRECTOR",
-            JobLevel::Executive => "EXECUTIVE",
+            Self::Unspecified => "JOB_LEVEL_UNSPECIFIED",
+            Self::EntryLevel => "ENTRY_LEVEL",
+            Self::Experienced => "EXPERIENCED",
+            Self::Manager => "MANAGER",
+            Self::Director => "DIRECTOR",
+            Self::Executive => "EXECUTIVE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1144,41 +1144,39 @@ impl JobCategory {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            JobCategory::Unspecified => "JOB_CATEGORY_UNSPECIFIED",
-            JobCategory::AccountingAndFinance => "ACCOUNTING_AND_FINANCE",
-            JobCategory::AdministrativeAndOffice => "ADMINISTRATIVE_AND_OFFICE",
-            JobCategory::AdvertisingAndMarketing => "ADVERTISING_AND_MARKETING",
-            JobCategory::AnimalCare => "ANIMAL_CARE",
-            JobCategory::ArtFashionAndDesign => "ART_FASHION_AND_DESIGN",
-            JobCategory::BusinessOperations => "BUSINESS_OPERATIONS",
-            JobCategory::CleaningAndFacilities => "CLEANING_AND_FACILITIES",
-            JobCategory::ComputerAndIt => "COMPUTER_AND_IT",
-            JobCategory::Construction => "CONSTRUCTION",
-            JobCategory::CustomerService => "CUSTOMER_SERVICE",
-            JobCategory::Education => "EDUCATION",
-            JobCategory::EntertainmentAndTravel => "ENTERTAINMENT_AND_TRAVEL",
-            JobCategory::FarmingAndOutdoors => "FARMING_AND_OUTDOORS",
-            JobCategory::Healthcare => "HEALTHCARE",
-            JobCategory::HumanResources => "HUMAN_RESOURCES",
-            JobCategory::InstallationMaintenanceAndRepair => {
+            Self::Unspecified => "JOB_CATEGORY_UNSPECIFIED",
+            Self::AccountingAndFinance => "ACCOUNTING_AND_FINANCE",
+            Self::AdministrativeAndOffice => "ADMINISTRATIVE_AND_OFFICE",
+            Self::AdvertisingAndMarketing => "ADVERTISING_AND_MARKETING",
+            Self::AnimalCare => "ANIMAL_CARE",
+            Self::ArtFashionAndDesign => "ART_FASHION_AND_DESIGN",
+            Self::BusinessOperations => "BUSINESS_OPERATIONS",
+            Self::CleaningAndFacilities => "CLEANING_AND_FACILITIES",
+            Self::ComputerAndIt => "COMPUTER_AND_IT",
+            Self::Construction => "CONSTRUCTION",
+            Self::CustomerService => "CUSTOMER_SERVICE",
+            Self::Education => "EDUCATION",
+            Self::EntertainmentAndTravel => "ENTERTAINMENT_AND_TRAVEL",
+            Self::FarmingAndOutdoors => "FARMING_AND_OUTDOORS",
+            Self::Healthcare => "HEALTHCARE",
+            Self::HumanResources => "HUMAN_RESOURCES",
+            Self::InstallationMaintenanceAndRepair => {
                 "INSTALLATION_MAINTENANCE_AND_REPAIR"
             }
-            JobCategory::Legal => "LEGAL",
-            JobCategory::Management => "MANAGEMENT",
-            JobCategory::ManufacturingAndWarehouse => "MANUFACTURING_AND_WAREHOUSE",
-            JobCategory::MediaCommunicationsAndWriting => {
-                "MEDIA_COMMUNICATIONS_AND_WRITING"
-            }
-            JobCategory::OilGasAndMining => "OIL_GAS_AND_MINING",
-            JobCategory::PersonalCareAndServices => "PERSONAL_CARE_AND_SERVICES",
-            JobCategory::ProtectiveServices => "PROTECTIVE_SERVICES",
-            JobCategory::RealEstate => "REAL_ESTATE",
-            JobCategory::RestaurantAndHospitality => "RESTAURANT_AND_HOSPITALITY",
-            JobCategory::SalesAndRetail => "SALES_AND_RETAIL",
-            JobCategory::ScienceAndEngineering => "SCIENCE_AND_ENGINEERING",
-            JobCategory::SocialServicesAndNonProfit => "SOCIAL_SERVICES_AND_NON_PROFIT",
-            JobCategory::SportsFitnessAndRecreation => "SPORTS_FITNESS_AND_RECREATION",
-            JobCategory::TransportationAndLogistics => "TRANSPORTATION_AND_LOGISTICS",
+            Self::Legal => "LEGAL",
+            Self::Management => "MANAGEMENT",
+            Self::ManufacturingAndWarehouse => "MANUFACTURING_AND_WAREHOUSE",
+            Self::MediaCommunicationsAndWriting => "MEDIA_COMMUNICATIONS_AND_WRITING",
+            Self::OilGasAndMining => "OIL_GAS_AND_MINING",
+            Self::PersonalCareAndServices => "PERSONAL_CARE_AND_SERVICES",
+            Self::ProtectiveServices => "PROTECTIVE_SERVICES",
+            Self::RealEstate => "REAL_ESTATE",
+            Self::RestaurantAndHospitality => "RESTAURANT_AND_HOSPITALITY",
+            Self::SalesAndRetail => "SALES_AND_RETAIL",
+            Self::ScienceAndEngineering => "SCIENCE_AND_ENGINEERING",
+            Self::SocialServicesAndNonProfit => "SOCIAL_SERVICES_AND_NON_PROFIT",
+            Self::SportsFitnessAndRecreation => "SPORTS_FITNESS_AND_RECREATION",
+            Self::TransportationAndLogistics => "TRANSPORTATION_AND_LOGISTICS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1262,10 +1260,10 @@ impl PostingRegion {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            PostingRegion::Unspecified => "POSTING_REGION_UNSPECIFIED",
-            PostingRegion::AdministrativeArea => "ADMINISTRATIVE_AREA",
-            PostingRegion::Nation => "NATION",
-            PostingRegion::Telecommute => "TELECOMMUTE",
+            Self::Unspecified => "POSTING_REGION_UNSPECIFIED",
+            Self::AdministrativeArea => "ADMINISTRATIVE_AREA",
+            Self::Nation => "NATION",
+            Self::Telecommute => "TELECOMMUTE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1303,10 +1301,10 @@ impl Visibility {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Visibility::Unspecified => "VISIBILITY_UNSPECIFIED",
-            Visibility::AccountOnly => "ACCOUNT_ONLY",
-            Visibility::SharedWithGoogle => "SHARED_WITH_GOOGLE",
-            Visibility::SharedWithPublic => "SHARED_WITH_PUBLIC",
+            Self::Unspecified => "VISIBILITY_UNSPECIFIED",
+            Self::AccountOnly => "ACCOUNT_ONLY",
+            Self::SharedWithGoogle => "SHARED_WITH_GOOGLE",
+            Self::SharedWithPublic => "SHARED_WITH_PUBLIC",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1341,9 +1339,9 @@ impl HtmlSanitization {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            HtmlSanitization::Unspecified => "HTML_SANITIZATION_UNSPECIFIED",
-            HtmlSanitization::Disabled => "HTML_SANITIZATION_DISABLED",
-            HtmlSanitization::SimpleFormattingOnly => "SIMPLE_FORMATTING_ONLY",
+            Self::Unspecified => "HTML_SANITIZATION_UNSPECIFIED",
+            Self::Disabled => "HTML_SANITIZATION_DISABLED",
+            Self::SimpleFormattingOnly => "SIMPLE_FORMATTING_ONLY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1379,11 +1377,11 @@ impl CommuteMethod {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            CommuteMethod::Unspecified => "COMMUTE_METHOD_UNSPECIFIED",
-            CommuteMethod::Driving => "DRIVING",
-            CommuteMethod::Transit => "TRANSIT",
-            CommuteMethod::Walking => "WALKING",
-            CommuteMethod::Cycling => "CYCLING",
+            Self::Unspecified => "COMMUTE_METHOD_UNSPECIFIED",
+            Self::Driving => "DRIVING",
+            Self::Transit => "TRANSIT",
+            Self::Walking => "WALKING",
+            Self::Cycling => "CYCLING",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1607,7 +1605,13 @@ pub struct ListCompaniesResponse {
 }
 /// Generated client implementations.
 pub mod company_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// A service that handles company management, including CRUD and enumeration.
@@ -1700,8 +1704,7 @@ pub mod company_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1728,8 +1731,7 @@ pub mod company_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1756,8 +1758,7 @@ pub mod company_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1785,8 +1786,7 @@ pub mod company_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1816,8 +1816,7 @@ pub mod company_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1917,9 +1916,9 @@ pub mod complete_query_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CompletionScope::Unspecified => "COMPLETION_SCOPE_UNSPECIFIED",
-                CompletionScope::Tenant => "TENANT",
-                CompletionScope::Public => "PUBLIC",
+                Self::Unspecified => "COMPLETION_SCOPE_UNSPECIFIED",
+                Self::Tenant => "TENANT",
+                Self::Public => "PUBLIC",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1982,10 +1981,10 @@ pub mod complete_query_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CompletionType::Unspecified => "COMPLETION_TYPE_UNSPECIFIED",
-                CompletionType::JobTitle => "JOB_TITLE",
-                CompletionType::CompanyName => "COMPANY_NAME",
-                CompletionType::Combined => "COMBINED",
+                Self::Unspecified => "COMPLETION_TYPE_UNSPECIFIED",
+                Self::JobTitle => "JOB_TITLE",
+                Self::CompanyName => "COMPANY_NAME",
+                Self::Combined => "COMBINED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2035,7 +2034,13 @@ pub mod complete_query_response {
 }
 /// Generated client implementations.
 pub mod completion_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// A service handles auto completion.
@@ -2132,8 +2137,7 @@ pub mod completion_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2330,28 +2334,22 @@ pub mod job_event {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                JobEventType::Unspecified => "JOB_EVENT_TYPE_UNSPECIFIED",
-                JobEventType::Impression => "IMPRESSION",
-                JobEventType::View => "VIEW",
-                JobEventType::ViewRedirect => "VIEW_REDIRECT",
-                JobEventType::ApplicationStart => "APPLICATION_START",
-                JobEventType::ApplicationFinish => "APPLICATION_FINISH",
-                JobEventType::ApplicationQuickSubmission => {
-                    "APPLICATION_QUICK_SUBMISSION"
-                }
-                JobEventType::ApplicationRedirect => "APPLICATION_REDIRECT",
-                JobEventType::ApplicationStartFromSearch => {
-                    "APPLICATION_START_FROM_SEARCH"
-                }
-                JobEventType::ApplicationRedirectFromSearch => {
-                    "APPLICATION_REDIRECT_FROM_SEARCH"
-                }
-                JobEventType::ApplicationCompanySubmit => "APPLICATION_COMPANY_SUBMIT",
-                JobEventType::Bookmark => "BOOKMARK",
-                JobEventType::Notification => "NOTIFICATION",
-                JobEventType::Hired => "HIRED",
-                JobEventType::SentCv => "SENT_CV",
-                JobEventType::InterviewGranted => "INTERVIEW_GRANTED",
+                Self::Unspecified => "JOB_EVENT_TYPE_UNSPECIFIED",
+                Self::Impression => "IMPRESSION",
+                Self::View => "VIEW",
+                Self::ViewRedirect => "VIEW_REDIRECT",
+                Self::ApplicationStart => "APPLICATION_START",
+                Self::ApplicationFinish => "APPLICATION_FINISH",
+                Self::ApplicationQuickSubmission => "APPLICATION_QUICK_SUBMISSION",
+                Self::ApplicationRedirect => "APPLICATION_REDIRECT",
+                Self::ApplicationStartFromSearch => "APPLICATION_START_FROM_SEARCH",
+                Self::ApplicationRedirectFromSearch => "APPLICATION_REDIRECT_FROM_SEARCH",
+                Self::ApplicationCompanySubmit => "APPLICATION_COMPANY_SUBMIT",
+                Self::Bookmark => "BOOKMARK",
+                Self::Notification => "NOTIFICATION",
+                Self::Hired => "HIRED",
+                Self::SentCv => "SENT_CV",
+                Self::InterviewGranted => "INTERVIEW_GRANTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2397,7 +2395,13 @@ pub struct CreateClientEventRequest {
 }
 /// Generated client implementations.
 pub mod event_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// A service handles client event report.
@@ -2496,8 +2500,7 @@ pub mod event_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2793,14 +2796,10 @@ pub mod location_filter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TelecommutePreference::Unspecified => {
-                    "TELECOMMUTE_PREFERENCE_UNSPECIFIED"
-                }
-                TelecommutePreference::TelecommuteExcluded => "TELECOMMUTE_EXCLUDED",
-                TelecommutePreference::TelecommuteAllowed => "TELECOMMUTE_ALLOWED",
-                TelecommutePreference::TelecommuteJobsExcluded => {
-                    "TELECOMMUTE_JOBS_EXCLUDED"
-                }
+                Self::Unspecified => "TELECOMMUTE_PREFERENCE_UNSPECIFIED",
+                Self::TelecommuteExcluded => "TELECOMMUTE_EXCLUDED",
+                Self::TelecommuteAllowed => "TELECOMMUTE_ALLOWED",
+                Self::TelecommuteJobsExcluded => "TELECOMMUTE_JOBS_EXCLUDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2900,11 +2899,11 @@ pub mod compensation_filter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FilterType::Unspecified => "FILTER_TYPE_UNSPECIFIED",
-                FilterType::UnitOnly => "UNIT_ONLY",
-                FilterType::UnitAndAmount => "UNIT_AND_AMOUNT",
-                FilterType::AnnualizedBaseAmount => "ANNUALIZED_BASE_AMOUNT",
-                FilterType::AnnualizedTotalAmount => "ANNUALIZED_TOTAL_AMOUNT",
+                Self::Unspecified => "FILTER_TYPE_UNSPECIFIED",
+                Self::UnitOnly => "UNIT_ONLY",
+                Self::UnitAndAmount => "UNIT_AND_AMOUNT",
+                Self::AnnualizedBaseAmount => "ANNUALIZED_BASE_AMOUNT",
+                Self::AnnualizedTotalAmount => "ANNUALIZED_TOTAL_AMOUNT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2975,9 +2974,9 @@ pub mod commute_filter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RoadTraffic::Unspecified => "ROAD_TRAFFIC_UNSPECIFIED",
-                RoadTraffic::TrafficFree => "TRAFFIC_FREE",
-                RoadTraffic::BusyHour => "BUSY_HOUR",
+                Self::Unspecified => "ROAD_TRAFFIC_UNSPECIFIED",
+                Self::TrafficFree => "TRAFFIC_FREE",
+                Self::BusyHour => "BUSY_HOUR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3939,13 +3938,13 @@ pub mod search_jobs_request {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ImportanceLevel::Unspecified => "IMPORTANCE_LEVEL_UNSPECIFIED",
-                    ImportanceLevel::None => "NONE",
-                    ImportanceLevel::Low => "LOW",
-                    ImportanceLevel::Mild => "MILD",
-                    ImportanceLevel::Medium => "MEDIUM",
-                    ImportanceLevel::High => "HIGH",
-                    ImportanceLevel::Extreme => "EXTREME",
+                    Self::Unspecified => "IMPORTANCE_LEVEL_UNSPECIFIED",
+                    Self::None => "NONE",
+                    Self::Low => "LOW",
+                    Self::Mild => "MILD",
+                    Self::Medium => "MEDIUM",
+                    Self::High => "HIGH",
+                    Self::Extreme => "EXTREME",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3998,9 +3997,9 @@ pub mod search_jobs_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SearchMode::Unspecified => "SEARCH_MODE_UNSPECIFIED",
-                SearchMode::JobSearch => "JOB_SEARCH",
-                SearchMode::FeaturedJobSearch => "FEATURED_JOB_SEARCH",
+                Self::Unspecified => "SEARCH_MODE_UNSPECIFIED",
+                Self::JobSearch => "JOB_SEARCH",
+                Self::FeaturedJobSearch => "FEATURED_JOB_SEARCH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4053,9 +4052,9 @@ pub mod search_jobs_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DiversificationLevel::Unspecified => "DIVERSIFICATION_LEVEL_UNSPECIFIED",
-                DiversificationLevel::Disabled => "DISABLED",
-                DiversificationLevel::Simple => "SIMPLE",
+                Self::Unspecified => "DIVERSIFICATION_LEVEL_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::Simple => "SIMPLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4125,10 +4124,10 @@ pub mod search_jobs_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                KeywordMatchMode::Unspecified => "KEYWORD_MATCH_MODE_UNSPECIFIED",
-                KeywordMatchMode::KeywordMatchDisabled => "KEYWORD_MATCH_DISABLED",
-                KeywordMatchMode::KeywordMatchAll => "KEYWORD_MATCH_ALL",
-                KeywordMatchMode::KeywordMatchTitleOnly => "KEYWORD_MATCH_TITLE_ONLY",
+                Self::Unspecified => "KEYWORD_MATCH_MODE_UNSPECIFIED",
+                Self::KeywordMatchDisabled => "KEYWORD_MATCH_DISABLED",
+                Self::KeywordMatchAll => "KEYWORD_MATCH_ALL",
+                Self::KeywordMatchTitleOnly => "KEYWORD_MATCH_TITLE_ONLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4366,11 +4365,11 @@ impl JobView {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            JobView::Unspecified => "JOB_VIEW_UNSPECIFIED",
-            JobView::IdOnly => "JOB_VIEW_ID_ONLY",
-            JobView::Minimal => "JOB_VIEW_MINIMAL",
-            JobView::Small => "JOB_VIEW_SMALL",
-            JobView::Full => "JOB_VIEW_FULL",
+            Self::Unspecified => "JOB_VIEW_UNSPECIFIED",
+            Self::IdOnly => "JOB_VIEW_ID_ONLY",
+            Self::Minimal => "JOB_VIEW_MINIMAL",
+            Self::Small => "JOB_VIEW_SMALL",
+            Self::Full => "JOB_VIEW_FULL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4387,7 +4386,13 @@ impl JobView {
 }
 /// Generated client implementations.
 pub mod job_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// A service handles job management, including job CRUD, enumeration and search.
@@ -4483,8 +4488,7 @@ pub mod job_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4514,8 +4518,7 @@ pub mod job_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4543,8 +4546,7 @@ pub mod job_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4571,8 +4573,7 @@ pub mod job_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4602,8 +4603,7 @@ pub mod job_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4633,8 +4633,7 @@ pub mod job_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4661,8 +4660,7 @@ pub mod job_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4692,8 +4690,7 @@ pub mod job_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4726,8 +4723,7 @@ pub mod job_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4768,8 +4764,7 @@ pub mod job_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4862,9 +4857,9 @@ pub mod tenant {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DataUsageType::Unspecified => "DATA_USAGE_TYPE_UNSPECIFIED",
-                DataUsageType::Aggregated => "AGGREGATED",
-                DataUsageType::Isolated => "ISOLATED",
+                Self::Unspecified => "DATA_USAGE_TYPE_UNSPECIFIED",
+                Self::Aggregated => "AGGREGATED",
+                Self::Isolated => "ISOLATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4965,7 +4960,13 @@ pub struct ListTenantsResponse {
 }
 /// Generated client implementations.
 pub mod tenant_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// A service that handles tenant management, including CRUD and enumeration.
@@ -5058,8 +5059,7 @@ pub mod tenant_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5086,8 +5086,7 @@ pub mod tenant_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5114,8 +5113,7 @@ pub mod tenant_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5142,8 +5140,7 @@ pub mod tenant_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5173,8 +5170,7 @@ pub mod tenant_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

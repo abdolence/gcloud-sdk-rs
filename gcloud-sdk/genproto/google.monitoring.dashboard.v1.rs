@@ -270,25 +270,25 @@ pub mod aggregation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Aligner::AlignNone => "ALIGN_NONE",
-                Aligner::AlignDelta => "ALIGN_DELTA",
-                Aligner::AlignRate => "ALIGN_RATE",
-                Aligner::AlignInterpolate => "ALIGN_INTERPOLATE",
-                Aligner::AlignNextOlder => "ALIGN_NEXT_OLDER",
-                Aligner::AlignMin => "ALIGN_MIN",
-                Aligner::AlignMax => "ALIGN_MAX",
-                Aligner::AlignMean => "ALIGN_MEAN",
-                Aligner::AlignCount => "ALIGN_COUNT",
-                Aligner::AlignSum => "ALIGN_SUM",
-                Aligner::AlignStddev => "ALIGN_STDDEV",
-                Aligner::AlignCountTrue => "ALIGN_COUNT_TRUE",
-                Aligner::AlignCountFalse => "ALIGN_COUNT_FALSE",
-                Aligner::AlignFractionTrue => "ALIGN_FRACTION_TRUE",
-                Aligner::AlignPercentile99 => "ALIGN_PERCENTILE_99",
-                Aligner::AlignPercentile95 => "ALIGN_PERCENTILE_95",
-                Aligner::AlignPercentile50 => "ALIGN_PERCENTILE_50",
-                Aligner::AlignPercentile05 => "ALIGN_PERCENTILE_05",
-                Aligner::AlignPercentChange => "ALIGN_PERCENT_CHANGE",
+                Self::AlignNone => "ALIGN_NONE",
+                Self::AlignDelta => "ALIGN_DELTA",
+                Self::AlignRate => "ALIGN_RATE",
+                Self::AlignInterpolate => "ALIGN_INTERPOLATE",
+                Self::AlignNextOlder => "ALIGN_NEXT_OLDER",
+                Self::AlignMin => "ALIGN_MIN",
+                Self::AlignMax => "ALIGN_MAX",
+                Self::AlignMean => "ALIGN_MEAN",
+                Self::AlignCount => "ALIGN_COUNT",
+                Self::AlignSum => "ALIGN_SUM",
+                Self::AlignStddev => "ALIGN_STDDEV",
+                Self::AlignCountTrue => "ALIGN_COUNT_TRUE",
+                Self::AlignCountFalse => "ALIGN_COUNT_FALSE",
+                Self::AlignFractionTrue => "ALIGN_FRACTION_TRUE",
+                Self::AlignPercentile99 => "ALIGN_PERCENTILE_99",
+                Self::AlignPercentile95 => "ALIGN_PERCENTILE_95",
+                Self::AlignPercentile50 => "ALIGN_PERCENTILE_50",
+                Self::AlignPercentile05 => "ALIGN_PERCENTILE_05",
+                Self::AlignPercentChange => "ALIGN_PERCENT_CHANGE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -417,20 +417,20 @@ pub mod aggregation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Reducer::ReduceNone => "REDUCE_NONE",
-                Reducer::ReduceMean => "REDUCE_MEAN",
-                Reducer::ReduceMin => "REDUCE_MIN",
-                Reducer::ReduceMax => "REDUCE_MAX",
-                Reducer::ReduceSum => "REDUCE_SUM",
-                Reducer::ReduceStddev => "REDUCE_STDDEV",
-                Reducer::ReduceCount => "REDUCE_COUNT",
-                Reducer::ReduceCountTrue => "REDUCE_COUNT_TRUE",
-                Reducer::ReduceCountFalse => "REDUCE_COUNT_FALSE",
-                Reducer::ReduceFractionTrue => "REDUCE_FRACTION_TRUE",
-                Reducer::ReducePercentile99 => "REDUCE_PERCENTILE_99",
-                Reducer::ReducePercentile95 => "REDUCE_PERCENTILE_95",
-                Reducer::ReducePercentile50 => "REDUCE_PERCENTILE_50",
-                Reducer::ReducePercentile05 => "REDUCE_PERCENTILE_05",
+                Self::ReduceNone => "REDUCE_NONE",
+                Self::ReduceMean => "REDUCE_MEAN",
+                Self::ReduceMin => "REDUCE_MIN",
+                Self::ReduceMax => "REDUCE_MAX",
+                Self::ReduceSum => "REDUCE_SUM",
+                Self::ReduceStddev => "REDUCE_STDDEV",
+                Self::ReduceCount => "REDUCE_COUNT",
+                Self::ReduceCountTrue => "REDUCE_COUNT_TRUE",
+                Self::ReduceCountFalse => "REDUCE_COUNT_FALSE",
+                Self::ReduceFractionTrue => "REDUCE_FRACTION_TRUE",
+                Self::ReducePercentile99 => "REDUCE_PERCENTILE_99",
+                Self::ReducePercentile95 => "REDUCE_PERCENTILE_95",
+                Self::ReducePercentile50 => "REDUCE_PERCENTILE_50",
+                Self::ReducePercentile05 => "REDUCE_PERCENTILE_05",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -516,12 +516,12 @@ pub mod pick_time_series_filter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Method::Unspecified => "METHOD_UNSPECIFIED",
-                Method::Mean => "METHOD_MEAN",
-                Method::Max => "METHOD_MAX",
-                Method::Min => "METHOD_MIN",
-                Method::Sum => "METHOD_SUM",
-                Method::Latest => "METHOD_LATEST",
+                Self::Unspecified => "METHOD_UNSPECIFIED",
+                Self::Mean => "METHOD_MEAN",
+                Self::Max => "METHOD_MAX",
+                Self::Min => "METHOD_MIN",
+                Self::Sum => "METHOD_SUM",
+                Self::Latest => "METHOD_LATEST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -566,9 +566,9 @@ pub mod pick_time_series_filter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Direction::Unspecified => "DIRECTION_UNSPECIFIED",
-                Direction::Top => "TOP",
-                Direction::Bottom => "BOTTOM",
+                Self::Unspecified => "DIRECTION_UNSPECIFIED",
+                Self::Top => "TOP",
+                Self::Bottom => "BOTTOM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -626,8 +626,8 @@ pub mod statistical_time_series_filter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Method::Unspecified => "METHOD_UNSPECIFIED",
-                Method::ClusterOutlier => "METHOD_CLUSTER_OUTLIER",
+                Self::Unspecified => "METHOD_UNSPECIFIED",
+                Self::ClusterOutlier => "METHOD_CLUSTER_OUTLIER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -694,12 +694,12 @@ pub mod dashboard_filter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FilterType::Unspecified => "FILTER_TYPE_UNSPECIFIED",
-                FilterType::ResourceLabel => "RESOURCE_LABEL",
-                FilterType::MetricLabel => "METRIC_LABEL",
-                FilterType::UserMetadataLabel => "USER_METADATA_LABEL",
-                FilterType::SystemMetadataLabel => "SYSTEM_METADATA_LABEL",
-                FilterType::Group => "GROUP",
+                Self::Unspecified => "FILTER_TYPE_UNSPECIFIED",
+                Self::ResourceLabel => "RESOURCE_LABEL",
+                Self::MetricLabel => "METRIC_LABEL",
+                Self::UserMetadataLabel => "USER_METADATA_LABEL",
+                Self::SystemMetadataLabel => "SYSTEM_METADATA_LABEL",
+                Self::Group => "GROUP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -964,9 +964,9 @@ pub mod threshold {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Color::Unspecified => "COLOR_UNSPECIFIED",
-                Color::Yellow => "YELLOW",
-                Color::Red => "RED",
+                Self::Unspecified => "COLOR_UNSPECIFIED",
+                Self::Yellow => "YELLOW",
+                Self::Red => "RED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1010,9 +1010,9 @@ pub mod threshold {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Direction::Unspecified => "DIRECTION_UNSPECIFIED",
-                Direction::Above => "ABOVE",
-                Direction::Below => "BELOW",
+                Self::Unspecified => "DIRECTION_UNSPECIFIED",
+                Self::Above => "ABOVE",
+                Self::Below => "BELOW",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1053,9 +1053,9 @@ pub mod threshold {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TargetAxis::Unspecified => "TARGET_AXIS_UNSPECIFIED",
-                TargetAxis::Y1 => "Y1",
-                TargetAxis::Y2 => "Y2",
+                Self::Unspecified => "TARGET_AXIS_UNSPECIFIED",
+                Self::Y1 => "Y1",
+                Self::Y2 => "Y2",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1087,9 +1087,9 @@ impl SparkChartType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SparkChartType::Unspecified => "SPARK_CHART_TYPE_UNSPECIFIED",
-            SparkChartType::SparkLine => "SPARK_LINE",
-            SparkChartType::SparkBar => "SPARK_BAR",
+            Self::Unspecified => "SPARK_CHART_TYPE_UNSPECIFIED",
+            Self::SparkLine => "SPARK_LINE",
+            Self::SparkBar => "SPARK_BAR",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1168,9 +1168,9 @@ pub mod pie_chart {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PieChartType::Unspecified => "PIE_CHART_TYPE_UNSPECIFIED",
-                PieChartType::Pie => "PIE",
-                PieChartType::Donut => "DONUT",
+                Self::Unspecified => "PIE_CHART_TYPE_UNSPECIFIED",
+                Self::Pie => "PIE",
+                Self::Donut => "DONUT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1389,9 +1389,9 @@ pub mod time_series_table {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MetricVisualization::Unspecified => "METRIC_VISUALIZATION_UNSPECIFIED",
-                MetricVisualization::Number => "NUMBER",
-                MetricVisualization::Bar => "BAR",
+                Self::Unspecified => "METRIC_VISUALIZATION_UNSPECIFIED",
+                Self::Number => "NUMBER",
+                Self::Bar => "BAR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1478,12 +1478,10 @@ pub mod text {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    HorizontalAlignment::Unspecified => {
-                        "HORIZONTAL_ALIGNMENT_UNSPECIFIED"
-                    }
-                    HorizontalAlignment::HLeft => "H_LEFT",
-                    HorizontalAlignment::HCenter => "H_CENTER",
-                    HorizontalAlignment::HRight => "H_RIGHT",
+                    Self::Unspecified => "HORIZONTAL_ALIGNMENT_UNSPECIFIED",
+                    Self::HLeft => "H_LEFT",
+                    Self::HCenter => "H_CENTER",
+                    Self::HRight => "H_RIGHT",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1527,10 +1525,10 @@ pub mod text {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    VerticalAlignment::Unspecified => "VERTICAL_ALIGNMENT_UNSPECIFIED",
-                    VerticalAlignment::VTop => "V_TOP",
-                    VerticalAlignment::VCenter => "V_CENTER",
-                    VerticalAlignment::VBottom => "V_BOTTOM",
+                    Self::Unspecified => "VERTICAL_ALIGNMENT_UNSPECIFIED",
+                    Self::VTop => "V_TOP",
+                    Self::VCenter => "V_CENTER",
+                    Self::VBottom => "V_BOTTOM",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1578,12 +1576,12 @@ pub mod text {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    PaddingSize::Unspecified => "PADDING_SIZE_UNSPECIFIED",
-                    PaddingSize::PExtraSmall => "P_EXTRA_SMALL",
-                    PaddingSize::PSmall => "P_SMALL",
-                    PaddingSize::PMedium => "P_MEDIUM",
-                    PaddingSize::PLarge => "P_LARGE",
-                    PaddingSize::PExtraLarge => "P_EXTRA_LARGE",
+                    Self::Unspecified => "PADDING_SIZE_UNSPECIFIED",
+                    Self::PExtraSmall => "P_EXTRA_SMALL",
+                    Self::PSmall => "P_SMALL",
+                    Self::PMedium => "P_MEDIUM",
+                    Self::PLarge => "P_LARGE",
+                    Self::PExtraLarge => "P_EXTRA_LARGE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1633,12 +1631,12 @@ pub mod text {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    FontSize::Unspecified => "FONT_SIZE_UNSPECIFIED",
-                    FontSize::FsExtraSmall => "FS_EXTRA_SMALL",
-                    FontSize::FsSmall => "FS_SMALL",
-                    FontSize::FsMedium => "FS_MEDIUM",
-                    FontSize::FsLarge => "FS_LARGE",
-                    FontSize::FsExtraLarge => "FS_EXTRA_LARGE",
+                    Self::Unspecified => "FONT_SIZE_UNSPECIFIED",
+                    Self::FsExtraSmall => "FS_EXTRA_SMALL",
+                    Self::FsSmall => "FS_SMALL",
+                    Self::FsMedium => "FS_MEDIUM",
+                    Self::FsLarge => "FS_LARGE",
+                    Self::FsExtraLarge => "FS_EXTRA_LARGE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1703,19 +1701,19 @@ pub mod text {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    PointerLocation::Unspecified => "POINTER_LOCATION_UNSPECIFIED",
-                    PointerLocation::PlTop => "PL_TOP",
-                    PointerLocation::PlRight => "PL_RIGHT",
-                    PointerLocation::PlBottom => "PL_BOTTOM",
-                    PointerLocation::PlLeft => "PL_LEFT",
-                    PointerLocation::PlTopLeft => "PL_TOP_LEFT",
-                    PointerLocation::PlTopRight => "PL_TOP_RIGHT",
-                    PointerLocation::PlRightTop => "PL_RIGHT_TOP",
-                    PointerLocation::PlRightBottom => "PL_RIGHT_BOTTOM",
-                    PointerLocation::PlBottomRight => "PL_BOTTOM_RIGHT",
-                    PointerLocation::PlBottomLeft => "PL_BOTTOM_LEFT",
-                    PointerLocation::PlLeftBottom => "PL_LEFT_BOTTOM",
-                    PointerLocation::PlLeftTop => "PL_LEFT_TOP",
+                    Self::Unspecified => "POINTER_LOCATION_UNSPECIFIED",
+                    Self::PlTop => "PL_TOP",
+                    Self::PlRight => "PL_RIGHT",
+                    Self::PlBottom => "PL_BOTTOM",
+                    Self::PlLeft => "PL_LEFT",
+                    Self::PlTopLeft => "PL_TOP_LEFT",
+                    Self::PlTopRight => "PL_TOP_RIGHT",
+                    Self::PlRightTop => "PL_RIGHT_TOP",
+                    Self::PlRightBottom => "PL_RIGHT_BOTTOM",
+                    Self::PlBottomRight => "PL_BOTTOM_RIGHT",
+                    Self::PlBottomLeft => "PL_BOTTOM_LEFT",
+                    Self::PlLeftBottom => "PL_LEFT_BOTTOM",
+                    Self::PlLeftTop => "PL_LEFT_TOP",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1767,9 +1765,9 @@ pub mod text {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Format::Unspecified => "FORMAT_UNSPECIFIED",
-                Format::Markdown => "MARKDOWN",
-                Format::Raw => "RAW",
+                Self::Unspecified => "FORMAT_UNSPECIFIED",
+                Self::Markdown => "MARKDOWN",
+                Self::Raw => "RAW",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1883,11 +1881,11 @@ pub mod xy_chart {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    PlotType::Unspecified => "PLOT_TYPE_UNSPECIFIED",
-                    PlotType::Line => "LINE",
-                    PlotType::StackedArea => "STACKED_AREA",
-                    PlotType::StackedBar => "STACKED_BAR",
-                    PlotType::Heatmap => "HEATMAP",
+                    Self::Unspecified => "PLOT_TYPE_UNSPECIFIED",
+                    Self::Line => "LINE",
+                    Self::StackedArea => "STACKED_AREA",
+                    Self::StackedBar => "STACKED_BAR",
+                    Self::Heatmap => "HEATMAP",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1930,9 +1928,9 @@ pub mod xy_chart {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    TargetAxis::Unspecified => "TARGET_AXIS_UNSPECIFIED",
-                    TargetAxis::Y1 => "Y1",
-                    TargetAxis::Y2 => "Y2",
+                    Self::Unspecified => "TARGET_AXIS_UNSPECIFIED",
+                    Self::Y1 => "Y1",
+                    Self::Y2 => "Y2",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1986,9 +1984,9 @@ pub mod xy_chart {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Scale::Unspecified => "SCALE_UNSPECIFIED",
-                    Scale::Linear => "LINEAR",
-                    Scale::Log10 => "LOG10",
+                    Self::Unspecified => "SCALE_UNSPECIFIED",
+                    Self::Linear => "LINEAR",
+                    Self::Log10 => "LOG10",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2045,10 +2043,10 @@ pub mod chart_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Mode::Unspecified => "MODE_UNSPECIFIED",
-                Mode::Color => "COLOR",
-                Mode::XRay => "X_RAY",
-                Mode::Stats => "STATS",
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::Color => "COLOR",
+                Self::XRay => "X_RAY",
+                Self::Stats => "STATS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2367,7 +2365,13 @@ pub struct UpdateDashboardRequest {
 }
 /// Generated client implementations.
 pub mod dashboards_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Manages Stackdriver dashboards. A dashboard is an arrangement of data display
@@ -2466,8 +2470,7 @@ pub mod dashboards_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2501,8 +2504,7 @@ pub mod dashboards_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2533,8 +2535,7 @@ pub mod dashboards_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2565,8 +2566,7 @@ pub mod dashboards_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2597,8 +2597,7 @@ pub mod dashboards_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

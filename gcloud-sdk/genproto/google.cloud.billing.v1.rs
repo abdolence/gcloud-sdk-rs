@@ -216,7 +216,13 @@ pub struct MoveBillingAccountRequest {
 }
 /// Generated client implementations.
 pub mod cloud_billing_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Retrieves the Google Cloud Console billing accounts and associates them with
@@ -312,8 +318,7 @@ pub mod cloud_billing_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -345,8 +350,7 @@ pub mod cloud_billing_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -378,8 +382,7 @@ pub mod cloud_billing_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -420,8 +423,7 @@ pub mod cloud_billing_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -454,8 +456,7 @@ pub mod cloud_billing_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -489,8 +490,7 @@ pub mod cloud_billing_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -551,8 +551,7 @@ pub mod cloud_billing_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -587,8 +586,7 @@ pub mod cloud_billing_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -624,8 +622,7 @@ pub mod cloud_billing_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -661,8 +658,7 @@ pub mod cloud_billing_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -689,8 +685,7 @@ pub mod cloud_billing_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -923,9 +918,9 @@ pub mod aggregation_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AggregationLevel::Unspecified => "AGGREGATION_LEVEL_UNSPECIFIED",
-                AggregationLevel::Account => "ACCOUNT",
-                AggregationLevel::Project => "PROJECT",
+                Self::Unspecified => "AGGREGATION_LEVEL_UNSPECIFIED",
+                Self::Account => "ACCOUNT",
+                Self::Project => "PROJECT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -965,9 +960,9 @@ pub mod aggregation_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AggregationInterval::Unspecified => "AGGREGATION_INTERVAL_UNSPECIFIED",
-                AggregationInterval::Daily => "DAILY",
-                AggregationInterval::Monthly => "MONTHLY",
+                Self::Unspecified => "AGGREGATION_INTERVAL_UNSPECIFIED",
+                Self::Daily => "DAILY",
+                Self::Monthly => "MONTHLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1026,10 +1021,10 @@ pub mod geo_taxonomy {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Global => "GLOBAL",
-                Type::Regional => "REGIONAL",
-                Type::MultiRegional => "MULTI_REGIONAL",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Global => "GLOBAL",
+                Self::Regional => "REGIONAL",
+                Self::MultiRegional => "MULTI_REGIONAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1119,7 +1114,13 @@ pub struct ListSkusResponse {
 }
 /// Generated client implementations.
 pub mod cloud_catalog_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// A catalog of Google Cloud Platform services and SKUs.
@@ -1217,8 +1218,7 @@ pub mod cloud_catalog_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1248,8 +1248,7 @@ pub mod cloud_catalog_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -85,11 +85,11 @@ pub mod environment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Suspended => "SUSPENDED",
-                State::Pending => "PENDING",
-                State::Running => "RUNNING",
-                State::Deleting => "DELETING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Suspended => "SUSPENDED",
+                Self::Pending => "PENDING",
+                Self::Running => "RUNNING",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -223,11 +223,11 @@ pub mod start_environment_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Starting => "STARTING",
-                State::UnarchivingDisk => "UNARCHIVING_DISK",
-                State::AwaitingComputeResources => "AWAITING_COMPUTE_RESOURCES",
-                State::Finished => "FINISHED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Starting => "STARTING",
+                Self::UnarchivingDisk => "UNARCHIVING_DISK",
+                Self::AwaitingComputeResources => "AWAITING_COMPUTE_RESOURCES",
+                Self::Finished => "FINISHED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -350,12 +350,12 @@ pub mod cloud_shell_error_details {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CloudShellErrorCode::Unspecified => "CLOUD_SHELL_ERROR_CODE_UNSPECIFIED",
-                CloudShellErrorCode::ImageUnavailable => "IMAGE_UNAVAILABLE",
-                CloudShellErrorCode::CloudShellDisabled => "CLOUD_SHELL_DISABLED",
-                CloudShellErrorCode::TosViolation => "TOS_VIOLATION",
-                CloudShellErrorCode::QuotaExceeded => "QUOTA_EXCEEDED",
-                CloudShellErrorCode::EnvironmentUnavailable => "ENVIRONMENT_UNAVAILABLE",
+                Self::Unspecified => "CLOUD_SHELL_ERROR_CODE_UNSPECIFIED",
+                Self::ImageUnavailable => "IMAGE_UNAVAILABLE",
+                Self::CloudShellDisabled => "CLOUD_SHELL_DISABLED",
+                Self::TosViolation => "TOS_VIOLATION",
+                Self::QuotaExceeded => "QUOTA_EXCEEDED",
+                Self::EnvironmentUnavailable => "ENVIRONMENT_UNAVAILABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -374,7 +374,13 @@ pub mod cloud_shell_error_details {
 }
 /// Generated client implementations.
 pub mod cloud_shell_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// API for interacting with Google Cloud Shell. Each user of Cloud Shell has at
@@ -473,8 +479,7 @@ pub mod cloud_shell_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -509,8 +514,7 @@ pub mod cloud_shell_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -543,8 +547,7 @@ pub mod cloud_shell_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -576,8 +579,7 @@ pub mod cloud_shell_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -610,8 +612,7 @@ pub mod cloud_shell_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -449,10 +449,10 @@ pub mod source_info {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Component::Unspecified => "COMPONENT_UNSPECIFIED",
-                    Component::Parser => "COMPONENT_PARSER",
-                    Component::TypeChecker => "COMPONENT_TYPE_CHECKER",
-                    Component::Runtime => "COMPONENT_RUNTIME",
+                    Self::Unspecified => "COMPONENT_UNSPECIFIED",
+                    Self::Parser => "COMPONENT_PARSER",
+                    Self::TypeChecker => "COMPONENT_TYPE_CHECKER",
+                    Self::Runtime => "COMPONENT_RUNTIME",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -622,13 +622,13 @@ pub mod r#type {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PrimitiveType::Unspecified => "PRIMITIVE_TYPE_UNSPECIFIED",
-                PrimitiveType::Bool => "BOOL",
-                PrimitiveType::Int64 => "INT64",
-                PrimitiveType::Uint64 => "UINT64",
-                PrimitiveType::Double => "DOUBLE",
-                PrimitiveType::String => "STRING",
-                PrimitiveType::Bytes => "BYTES",
+                Self::Unspecified => "PRIMITIVE_TYPE_UNSPECIFIED",
+                Self::Bool => "BOOL",
+                Self::Int64 => "INT64",
+                Self::Uint64 => "UINT64",
+                Self::Double => "DOUBLE",
+                Self::String => "STRING",
+                Self::Bytes => "BYTES",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -679,10 +679,10 @@ pub mod r#type {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                WellKnownType::Unspecified => "WELL_KNOWN_TYPE_UNSPECIFIED",
-                WellKnownType::Any => "ANY",
-                WellKnownType::Timestamp => "TIMESTAMP",
-                WellKnownType::Duration => "DURATION",
+                Self::Unspecified => "WELL_KNOWN_TYPE_UNSPECIFIED",
+                Self::Any => "ANY",
+                Self::Timestamp => "TIMESTAMP",
+                Self::Duration => "DURATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

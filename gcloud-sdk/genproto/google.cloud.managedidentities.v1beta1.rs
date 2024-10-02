@@ -102,14 +102,14 @@ pub mod domain {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
-                State::Updating => "UPDATING",
-                State::Deleting => "DELETING",
-                State::Repairing => "REPAIRING",
-                State::PerformingMaintenance => "PERFORMING_MAINTENANCE",
-                State::Unavailable => "UNAVAILABLE",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
+                Self::Updating => "UPDATING",
+                Self::Deleting => "DELETING",
+                Self::Repairing => "REPAIRING",
+                Self::PerformingMaintenance => "PERFORMING_MAINTENANCE",
+                Self::Unavailable => "UNAVAILABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -212,12 +212,12 @@ pub mod trust {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Updating => "UPDATING",
-                State::Deleting => "DELETING",
-                State::Connected => "CONNECTED",
-                State::Disconnected => "DISCONNECTED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Updating => "UPDATING",
+                Self::Deleting => "DELETING",
+                Self::Connected => "CONNECTED",
+                Self::Disconnected => "DISCONNECTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -261,9 +261,9 @@ pub mod trust {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TrustType::Unspecified => "TRUST_TYPE_UNSPECIFIED",
-                TrustType::Forest => "FOREST",
-                TrustType::External => "EXTERNAL",
+                Self::Unspecified => "TRUST_TYPE_UNSPECIFIED",
+                Self::Forest => "FOREST",
+                Self::External => "EXTERNAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -309,10 +309,10 @@ pub mod trust {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TrustDirection::Unspecified => "TRUST_DIRECTION_UNSPECIFIED",
-                TrustDirection::Inbound => "INBOUND",
-                TrustDirection::Outbound => "OUTBOUND",
-                TrustDirection::Bidirectional => "BIDIRECTIONAL",
+                Self::Unspecified => "TRUST_DIRECTION_UNSPECIFIED",
+                Self::Inbound => "INBOUND",
+                Self::Outbound => "OUTBOUND",
+                Self::Bidirectional => "BIDIRECTIONAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -532,7 +532,13 @@ pub struct ValidateTrustRequest {
 }
 /// Generated client implementations.
 pub mod managed_identities_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     #[derive(Debug, Clone)]
@@ -629,8 +635,7 @@ pub mod managed_identities_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -660,8 +665,7 @@ pub mod managed_identities_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -691,8 +695,7 @@ pub mod managed_identities_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -719,8 +722,7 @@ pub mod managed_identities_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -750,8 +752,7 @@ pub mod managed_identities_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -781,8 +782,7 @@ pub mod managed_identities_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -812,8 +812,7 @@ pub mod managed_identities_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -843,8 +842,7 @@ pub mod managed_identities_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -874,8 +872,7 @@ pub mod managed_identities_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -906,8 +903,7 @@ pub mod managed_identities_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

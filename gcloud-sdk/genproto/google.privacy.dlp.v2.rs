@@ -68,13 +68,11 @@ pub mod sensitivity_score {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SensitivityScoreLevel::SensitivityScoreUnspecified => {
-                    "SENSITIVITY_SCORE_UNSPECIFIED"
-                }
-                SensitivityScoreLevel::SensitivityLow => "SENSITIVITY_LOW",
-                SensitivityScoreLevel::SensitivityUnknown => "SENSITIVITY_UNKNOWN",
-                SensitivityScoreLevel::SensitivityModerate => "SENSITIVITY_MODERATE",
-                SensitivityScoreLevel::SensitivityHigh => "SENSITIVITY_HIGH",
+                Self::SensitivityScoreUnspecified => "SENSITIVITY_SCORE_UNSPECIFIED",
+                Self::SensitivityLow => "SENSITIVITY_LOW",
+                Self::SensitivityUnknown => "SENSITIVITY_UNKNOWN",
+                Self::SensitivityModerate => "SENSITIVITY_MODERATE",
+                Self::SensitivityHigh => "SENSITIVITY_HIGH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -335,8 +333,8 @@ pub mod custom_info_type {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ExclusionType::Unspecified => "EXCLUSION_TYPE_UNSPECIFIED",
-                ExclusionType::Exclude => "EXCLUSION_TYPE_EXCLUDE",
+                Self::Unspecified => "EXCLUSION_TYPE_UNSPECIFIED",
+                Self::Exclude => "EXCLUSION_TYPE_EXCLUDE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -562,9 +560,9 @@ pub mod cloud_storage_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SampleMethod::Unspecified => "SAMPLE_METHOD_UNSPECIFIED",
-                SampleMethod::Top => "TOP",
-                SampleMethod::RandomStart => "RANDOM_START",
+                Self::Unspecified => "SAMPLE_METHOD_UNSPECIFIED",
+                Self::Top => "TOP",
+                Self::RandomStart => "RANDOM_START",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -676,9 +674,9 @@ pub mod big_query_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SampleMethod::Unspecified => "SAMPLE_METHOD_UNSPECIFIED",
-                SampleMethod::Top => "TOP",
-                SampleMethod::RandomStart => "RANDOM_START",
+                Self::Unspecified => "SAMPLE_METHOD_UNSPECIFIED",
+                Self::Top => "TOP",
+                Self::RandomStart => "RANDOM_START",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1034,12 +1032,12 @@ impl Likelihood {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Likelihood::Unspecified => "LIKELIHOOD_UNSPECIFIED",
-            Likelihood::VeryUnlikely => "VERY_UNLIKELY",
-            Likelihood::Unlikely => "UNLIKELY",
-            Likelihood::Possible => "POSSIBLE",
-            Likelihood::Likely => "LIKELY",
-            Likelihood::VeryLikely => "VERY_LIKELY",
+            Self::Unspecified => "LIKELIHOOD_UNSPECIFIED",
+            Self::VeryUnlikely => "VERY_UNLIKELY",
+            Self::Unlikely => "UNLIKELY",
+            Self::Possible => "POSSIBLE",
+            Self::Likely => "LIKELY",
+            Self::VeryLikely => "VERY_LIKELY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1122,17 +1120,17 @@ impl FileType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            FileType::Unspecified => "FILE_TYPE_UNSPECIFIED",
-            FileType::BinaryFile => "BINARY_FILE",
-            FileType::TextFile => "TEXT_FILE",
-            FileType::Image => "IMAGE",
-            FileType::Word => "WORD",
-            FileType::Pdf => "PDF",
-            FileType::Avro => "AVRO",
-            FileType::Csv => "CSV",
-            FileType::Tsv => "TSV",
-            FileType::Powerpoint => "POWERPOINT",
-            FileType::Excel => "EXCEL",
+            Self::Unspecified => "FILE_TYPE_UNSPECIFIED",
+            Self::BinaryFile => "BINARY_FILE",
+            Self::TextFile => "TEXT_FILE",
+            Self::Image => "IMAGE",
+            Self::Word => "WORD",
+            Self::Pdf => "PDF",
+            Self::Avro => "AVRO",
+            Self::Csv => "CSV",
+            Self::Tsv => "TSV",
+            Self::Powerpoint => "POWERPOINT",
+            Self::Excel => "EXCEL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1470,23 +1468,23 @@ pub mod byte_content_item {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BytesType::Unspecified => "BYTES_TYPE_UNSPECIFIED",
-                BytesType::Image => "IMAGE",
-                BytesType::ImageJpeg => "IMAGE_JPEG",
-                BytesType::ImageBmp => "IMAGE_BMP",
-                BytesType::ImagePng => "IMAGE_PNG",
-                BytesType::ImageSvg => "IMAGE_SVG",
-                BytesType::TextUtf8 => "TEXT_UTF8",
-                BytesType::WordDocument => "WORD_DOCUMENT",
-                BytesType::Pdf => "PDF",
-                BytesType::PowerpointDocument => "POWERPOINT_DOCUMENT",
-                BytesType::ExcelDocument => "EXCEL_DOCUMENT",
-                BytesType::Avro => "AVRO",
-                BytesType::Csv => "CSV",
-                BytesType::Tsv => "TSV",
-                BytesType::Audio => "AUDIO",
-                BytesType::Video => "VIDEO",
-                BytesType::Executable => "EXECUTABLE",
+                Self::Unspecified => "BYTES_TYPE_UNSPECIFIED",
+                Self::Image => "IMAGE",
+                Self::ImageJpeg => "IMAGE_JPEG",
+                Self::ImageBmp => "IMAGE_BMP",
+                Self::ImagePng => "IMAGE_PNG",
+                Self::ImageSvg => "IMAGE_SVG",
+                Self::TextUtf8 => "TEXT_UTF8",
+                Self::WordDocument => "WORD_DOCUMENT",
+                Self::Pdf => "PDF",
+                Self::PowerpointDocument => "POWERPOINT_DOCUMENT",
+                Self::ExcelDocument => "EXCEL_DOCUMENT",
+                Self::Avro => "AVRO",
+                Self::Csv => "CSV",
+                Self::Tsv => "TSV",
+                Self::Audio => "AUDIO",
+                Self::Video => "VIDEO",
+                Self::Executable => "EXECUTABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2198,12 +2196,12 @@ pub mod output_storage_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OutputSchema::Unspecified => "OUTPUT_SCHEMA_UNSPECIFIED",
-                OutputSchema::BasicColumns => "BASIC_COLUMNS",
-                OutputSchema::GcsColumns => "GCS_COLUMNS",
-                OutputSchema::DatastoreColumns => "DATASTORE_COLUMNS",
-                OutputSchema::BigQueryColumns => "BIG_QUERY_COLUMNS",
-                OutputSchema::AllColumns => "ALL_COLUMNS",
+                Self::Unspecified => "OUTPUT_SCHEMA_UNSPECIFIED",
+                Self::BasicColumns => "BASIC_COLUMNS",
+                Self::GcsColumns => "GCS_COLUMNS",
+                Self::DatastoreColumns => "DATASTORE_COLUMNS",
+                Self::BigQueryColumns => "BIG_QUERY_COLUMNS",
+                Self::AllColumns => "ALL_COLUMNS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2572,57 +2570,57 @@ pub mod info_type_category {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LocationCategory::LocationUnspecified => "LOCATION_UNSPECIFIED",
-                LocationCategory::Global => "GLOBAL",
-                LocationCategory::Argentina => "ARGENTINA",
-                LocationCategory::Armenia => "ARMENIA",
-                LocationCategory::Australia => "AUSTRALIA",
-                LocationCategory::Azerbaijan => "AZERBAIJAN",
-                LocationCategory::Belarus => "BELARUS",
-                LocationCategory::Belgium => "BELGIUM",
-                LocationCategory::Brazil => "BRAZIL",
-                LocationCategory::Canada => "CANADA",
-                LocationCategory::Chile => "CHILE",
-                LocationCategory::China => "CHINA",
-                LocationCategory::Colombia => "COLOMBIA",
-                LocationCategory::Croatia => "CROATIA",
-                LocationCategory::Denmark => "DENMARK",
-                LocationCategory::France => "FRANCE",
-                LocationCategory::Finland => "FINLAND",
-                LocationCategory::Germany => "GERMANY",
-                LocationCategory::HongKong => "HONG_KONG",
-                LocationCategory::India => "INDIA",
-                LocationCategory::Indonesia => "INDONESIA",
-                LocationCategory::Ireland => "IRELAND",
-                LocationCategory::Israel => "ISRAEL",
-                LocationCategory::Italy => "ITALY",
-                LocationCategory::Japan => "JAPAN",
-                LocationCategory::Kazakhstan => "KAZAKHSTAN",
-                LocationCategory::Korea => "KOREA",
-                LocationCategory::Mexico => "MEXICO",
-                LocationCategory::TheNetherlands => "THE_NETHERLANDS",
-                LocationCategory::NewZealand => "NEW_ZEALAND",
-                LocationCategory::Norway => "NORWAY",
-                LocationCategory::Paraguay => "PARAGUAY",
-                LocationCategory::Peru => "PERU",
-                LocationCategory::Poland => "POLAND",
-                LocationCategory::Portugal => "PORTUGAL",
-                LocationCategory::Russia => "RUSSIA",
-                LocationCategory::Singapore => "SINGAPORE",
-                LocationCategory::SouthAfrica => "SOUTH_AFRICA",
-                LocationCategory::Spain => "SPAIN",
-                LocationCategory::Sweden => "SWEDEN",
-                LocationCategory::Switzerland => "SWITZERLAND",
-                LocationCategory::Taiwan => "TAIWAN",
-                LocationCategory::Thailand => "THAILAND",
-                LocationCategory::Turkey => "TURKEY",
-                LocationCategory::Ukraine => "UKRAINE",
-                LocationCategory::UnitedKingdom => "UNITED_KINGDOM",
-                LocationCategory::UnitedStates => "UNITED_STATES",
-                LocationCategory::Uruguay => "URUGUAY",
-                LocationCategory::Uzbekistan => "UZBEKISTAN",
-                LocationCategory::Venezuela => "VENEZUELA",
-                LocationCategory::Internal => "INTERNAL",
+                Self::LocationUnspecified => "LOCATION_UNSPECIFIED",
+                Self::Global => "GLOBAL",
+                Self::Argentina => "ARGENTINA",
+                Self::Armenia => "ARMENIA",
+                Self::Australia => "AUSTRALIA",
+                Self::Azerbaijan => "AZERBAIJAN",
+                Self::Belarus => "BELARUS",
+                Self::Belgium => "BELGIUM",
+                Self::Brazil => "BRAZIL",
+                Self::Canada => "CANADA",
+                Self::Chile => "CHILE",
+                Self::China => "CHINA",
+                Self::Colombia => "COLOMBIA",
+                Self::Croatia => "CROATIA",
+                Self::Denmark => "DENMARK",
+                Self::France => "FRANCE",
+                Self::Finland => "FINLAND",
+                Self::Germany => "GERMANY",
+                Self::HongKong => "HONG_KONG",
+                Self::India => "INDIA",
+                Self::Indonesia => "INDONESIA",
+                Self::Ireland => "IRELAND",
+                Self::Israel => "ISRAEL",
+                Self::Italy => "ITALY",
+                Self::Japan => "JAPAN",
+                Self::Kazakhstan => "KAZAKHSTAN",
+                Self::Korea => "KOREA",
+                Self::Mexico => "MEXICO",
+                Self::TheNetherlands => "THE_NETHERLANDS",
+                Self::NewZealand => "NEW_ZEALAND",
+                Self::Norway => "NORWAY",
+                Self::Paraguay => "PARAGUAY",
+                Self::Peru => "PERU",
+                Self::Poland => "POLAND",
+                Self::Portugal => "PORTUGAL",
+                Self::Russia => "RUSSIA",
+                Self::Singapore => "SINGAPORE",
+                Self::SouthAfrica => "SOUTH_AFRICA",
+                Self::Spain => "SPAIN",
+                Self::Sweden => "SWEDEN",
+                Self::Switzerland => "SWITZERLAND",
+                Self::Taiwan => "TAIWAN",
+                Self::Thailand => "THAILAND",
+                Self::Turkey => "TURKEY",
+                Self::Ukraine => "UKRAINE",
+                Self::UnitedKingdom => "UNITED_KINGDOM",
+                Self::UnitedStates => "UNITED_STATES",
+                Self::Uruguay => "URUGUAY",
+                Self::Uzbekistan => "UZBEKISTAN",
+                Self::Venezuela => "VENEZUELA",
+                Self::Internal => "INTERNAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2714,10 +2712,10 @@ pub mod info_type_category {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                IndustryCategory::IndustryUnspecified => "INDUSTRY_UNSPECIFIED",
-                IndustryCategory::Finance => "FINANCE",
-                IndustryCategory::Health => "HEALTH",
-                IndustryCategory::Telecommunications => "TELECOMMUNICATIONS",
+                Self::IndustryUnspecified => "INDUSTRY_UNSPECIFIED",
+                Self::Finance => "FINANCE",
+                Self::Health => "HEALTH",
+                Self::Telecommunications => "TELECOMMUNICATIONS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2774,14 +2772,14 @@ pub mod info_type_category {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TypeCategory::TypeUnspecified => "TYPE_UNSPECIFIED",
-                TypeCategory::Pii => "PII",
-                TypeCategory::Spii => "SPII",
-                TypeCategory::Demographic => "DEMOGRAPHIC",
-                TypeCategory::Credential => "CREDENTIAL",
-                TypeCategory::GovernmentId => "GOVERNMENT_ID",
-                TypeCategory::Document => "DOCUMENT",
-                TypeCategory::ContextualInformation => "CONTEXTUAL_INFORMATION",
+                Self::TypeUnspecified => "TYPE_UNSPECIFIED",
+                Self::Pii => "PII",
+                Self::Spii => "SPII",
+                Self::Demographic => "DEMOGRAPHIC",
+                Self::Credential => "CREDENTIAL",
+                Self::GovernmentId => "GOVERNMENT_ID",
+                Self::Document => "DOCUMENT",
+                Self::ContextualInformation => "CONTEXTUAL_INFORMATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3794,13 +3792,13 @@ pub mod time_part_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TimePart::Unspecified => "TIME_PART_UNSPECIFIED",
-                TimePart::Year => "YEAR",
-                TimePart::Month => "MONTH",
-                TimePart::DayOfMonth => "DAY_OF_MONTH",
-                TimePart::DayOfWeek => "DAY_OF_WEEK",
-                TimePart::WeekOfYear => "WEEK_OF_YEAR",
-                TimePart::HourOfDay => "HOUR_OF_DAY",
+                Self::Unspecified => "TIME_PART_UNSPECIFIED",
+                Self::Year => "YEAR",
+                Self::Month => "MONTH",
+                Self::DayOfMonth => "DAY_OF_MONTH",
+                Self::DayOfWeek => "DAY_OF_WEEK",
+                Self::WeekOfYear => "WEEK_OF_YEAR",
+                Self::HourOfDay => "HOUR_OF_DAY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3975,12 +3973,12 @@ pub mod chars_to_ignore {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CommonCharsToIgnore::Unspecified => "COMMON_CHARS_TO_IGNORE_UNSPECIFIED",
-                CommonCharsToIgnore::Numeric => "NUMERIC",
-                CommonCharsToIgnore::AlphaUpperCase => "ALPHA_UPPER_CASE",
-                CommonCharsToIgnore::AlphaLowerCase => "ALPHA_LOWER_CASE",
-                CommonCharsToIgnore::Punctuation => "PUNCTUATION",
-                CommonCharsToIgnore::Whitespace => "WHITESPACE",
+                Self::Unspecified => "COMMON_CHARS_TO_IGNORE_UNSPECIFIED",
+                Self::Numeric => "NUMERIC",
+                Self::AlphaUpperCase => "ALPHA_UPPER_CASE",
+                Self::AlphaLowerCase => "ALPHA_LOWER_CASE",
+                Self::Punctuation => "PUNCTUATION",
+                Self::Whitespace => "WHITESPACE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4235,15 +4233,11 @@ pub mod crypto_replace_ffx_fpe_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FfxCommonNativeAlphabet::Unspecified => {
-                    "FFX_COMMON_NATIVE_ALPHABET_UNSPECIFIED"
-                }
-                FfxCommonNativeAlphabet::Numeric => "NUMERIC",
-                FfxCommonNativeAlphabet::Hexadecimal => "HEXADECIMAL",
-                FfxCommonNativeAlphabet::UpperCaseAlphaNumeric => {
-                    "UPPER_CASE_ALPHA_NUMERIC"
-                }
-                FfxCommonNativeAlphabet::AlphaNumeric => "ALPHA_NUMERIC",
+                Self::Unspecified => "FFX_COMMON_NATIVE_ALPHABET_UNSPECIFIED",
+                Self::Numeric => "NUMERIC",
+                Self::Hexadecimal => "HEXADECIMAL",
+                Self::UpperCaseAlphaNumeric => "UPPER_CASE_ALPHA_NUMERIC",
+                Self::AlphaNumeric => "ALPHA_NUMERIC",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4566,8 +4560,8 @@ pub mod record_condition {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    LogicalOperator::Unspecified => "LOGICAL_OPERATOR_UNSPECIFIED",
-                    LogicalOperator::And => "AND",
+                    Self::Unspecified => "LOGICAL_OPERATOR_UNSPECIFIED",
+                    Self::And => "AND",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4672,11 +4666,9 @@ pub mod transformation_summary {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TransformationResultCode::Unspecified => {
-                    "TRANSFORMATION_RESULT_CODE_UNSPECIFIED"
-                }
-                TransformationResultCode::Success => "SUCCESS",
-                TransformationResultCode::Error => "ERROR",
+                Self::Unspecified => "TRANSFORMATION_RESULT_CODE_UNSPECIFIED",
+                Self::Success => "SUCCESS",
+                Self::Error => "ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4959,13 +4951,9 @@ pub mod error {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ErrorExtraInfo::ErrorInfoUnspecified => "ERROR_INFO_UNSPECIFIED",
-                ErrorExtraInfo::ImageScanUnavailableInRegion => {
-                    "IMAGE_SCAN_UNAVAILABLE_IN_REGION"
-                }
-                ErrorExtraInfo::FileStoreClusterUnsupported => {
-                    "FILE_STORE_CLUSTER_UNSUPPORTED"
-                }
+                Self::ErrorInfoUnspecified => "ERROR_INFO_UNSPECIFIED",
+                Self::ImageScanUnavailableInRegion => "IMAGE_SCAN_UNAVAILABLE_IN_REGION",
+                Self::FileStoreClusterUnsupported => "FILE_STORE_CLUSTER_UNSUPPORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5082,10 +5070,10 @@ pub mod job_trigger {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::Unspecified => "STATUS_UNSPECIFIED",
-                Status::Healthy => "HEALTHY",
-                Status::Paused => "PAUSED",
-                Status::Cancelled => "CANCELLED",
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::Healthy => "HEALTHY",
+                Self::Paused => "PAUSED",
+                Self::Cancelled => "CANCELLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5777,7 +5765,7 @@ pub struct InspectJobConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfileAction {
     /// Type of action to execute when a profile is generated.
-    #[prost(oneof = "data_profile_action::Action", tags = "1, 2, 8")]
+    #[prost(oneof = "data_profile_action::Action", tags = "1, 2, 3, 4, 8")]
     pub action: ::core::option::Option<data_profile_action::Action>,
 }
 /// Nested message and enum types in `DataProfileAction`.
@@ -5853,10 +5841,10 @@ pub mod data_profile_action {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    DetailLevel::Unspecified => "DETAIL_LEVEL_UNSPECIFIED",
-                    DetailLevel::TableProfile => "TABLE_PROFILE",
-                    DetailLevel::ResourceName => "RESOURCE_NAME",
-                    DetailLevel::FileStoreProfile => "FILE_STORE_PROFILE",
+                    Self::Unspecified => "DETAIL_LEVEL_UNSPECIFIED",
+                    Self::TableProfile => "TABLE_PROFILE",
+                    Self::ResourceName => "RESOURCE_NAME",
+                    Self::FileStoreProfile => "FILE_STORE_PROFILE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5871,6 +5859,12 @@ pub mod data_profile_action {
             }
         }
     }
+    /// Message expressing intention to publish to Google Security Operations.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct PublishToChronicle {}
+    /// If set, a summary finding will be created/updated in SCC for each profile.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct PublishToSecurityCommandCenter {}
     /// If set, attaches the \[tags\]
     /// (<https://cloud.google.com/resource-manager/docs/tags/tags-overview>)
     /// provided to profiled resources. Tags support [access
@@ -5979,11 +5973,11 @@ pub mod data_profile_action {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EventType::Unspecified => "EVENT_TYPE_UNSPECIFIED",
-                EventType::NewProfile => "NEW_PROFILE",
-                EventType::ChangedProfile => "CHANGED_PROFILE",
-                EventType::ScoreIncreased => "SCORE_INCREASED",
-                EventType::ErrorChanged => "ERROR_CHANGED",
+                Self::Unspecified => "EVENT_TYPE_UNSPECIFIED",
+                Self::NewProfile => "NEW_PROFILE",
+                Self::ChangedProfile => "CHANGED_PROFILE",
+                Self::ScoreIncreased => "SCORE_INCREASED",
+                Self::ErrorChanged => "ERROR_CHANGED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6007,6 +6001,15 @@ pub mod data_profile_action {
         /// Publish a message into the Pub/Sub topic.
         #[prost(message, tag = "2")]
         PubSubNotification(PubSubNotification),
+        /// Publishes generated data profiles to Google Security Operations.
+        /// For more information, see [Use Sensitive Data Protection data in
+        /// context-aware
+        /// analytics](<https://cloud.google.com/chronicle/docs/detection/usecase-dlp-high-risk-user-download>).
+        #[prost(message, tag = "3")]
+        PublishToChronicle(PublishToChronicle),
+        /// Publishes findings to SCC for each data profile.
+        #[prost(message, tag = "4")]
+        PublishToScc(PublishToSecurityCommandCenter),
         /// Tags the profiled resources with the specified tag values.
         #[prost(message, tag = "8")]
         TagResources(TagResources),
@@ -6029,6 +6032,11 @@ pub struct DataProfileJobConfig {
     /// that are profiled, and the Cloud DLP API must be enabled.
     #[prost(string, tag = "5")]
     pub project_id: ::prost::alloc::string::String,
+    /// Must be set only when scanning other clouds.
+    #[prost(message, optional, tag = "8")]
+    pub other_cloud_starting_location: ::core::option::Option<
+        OtherCloudDiscoveryStartingLocation,
+    >,
     /// Detection logic for profile generation.
     ///
     /// Not all template features are used by profiles. FindingLimits,
@@ -6128,6 +6136,11 @@ pub struct DiscoveryConfig {
     /// Only set when the parent is an org.
     #[prost(message, optional, tag = "2")]
     pub org_config: ::core::option::Option<discovery_config::OrgConfig>,
+    /// Must be set only when scanning other clouds.
+    #[prost(message, optional, tag = "12")]
+    pub other_cloud_starting_location: ::core::option::Option<
+        OtherCloudDiscoveryStartingLocation,
+    >,
     /// Detection logic for profile generation.
     ///
     /// Not all template features are used by Discovery. FindingLimits,
@@ -6214,9 +6227,9 @@ pub mod discovery_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::Unspecified => "STATUS_UNSPECIFIED",
-                Status::Running => "RUNNING",
-                Status::Paused => "PAUSED",
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::Running => "RUNNING",
+                Self::Paused => "PAUSED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6234,7 +6247,7 @@ pub mod discovery_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoveryTarget {
     /// A target to match against for Discovery.
-    #[prost(oneof = "discovery_target::Target", tags = "1, 2, 3, 4")]
+    #[prost(oneof = "discovery_target::Target", tags = "1, 2, 3, 4, 5")]
     pub target: ::core::option::Option<discovery_target::Target>,
 }
 /// Nested message and enum types in `DiscoveryTarget`.
@@ -6259,6 +6272,10 @@ pub mod discovery_target {
         /// will be the one applied.
         #[prost(message, tag = "4")]
         CloudStorageTarget(super::CloudStorageDiscoveryTarget),
+        /// Other clouds target for discovery. The first target to match a resource
+        /// will be the one applied.
+        #[prost(message, tag = "5")]
+        OtherCloudTarget(super::OtherCloudDiscoveryTarget),
     }
 }
 /// Target used to match against for discovery with BigQuery tables
@@ -6665,12 +6682,10 @@ pub mod discovery_cloud_sql_conditions {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DatabaseEngine::Unspecified => "DATABASE_ENGINE_UNSPECIFIED",
-                DatabaseEngine::AllSupportedDatabaseEngines => {
-                    "ALL_SUPPORTED_DATABASE_ENGINES"
-                }
-                DatabaseEngine::Mysql => "MYSQL",
-                DatabaseEngine::Postgres => "POSTGRES",
+                Self::Unspecified => "DATABASE_ENGINE_UNSPECIFIED",
+                Self::AllSupportedDatabaseEngines => "ALL_SUPPORTED_DATABASE_ENGINES",
+                Self::Mysql => "MYSQL",
+                Self::Postgres => "POSTGRES",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6714,11 +6729,9 @@ pub mod discovery_cloud_sql_conditions {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DatabaseResourceType::Unspecified => "DATABASE_RESOURCE_TYPE_UNSPECIFIED",
-                DatabaseResourceType::AllSupportedTypes => {
-                    "DATABASE_RESOURCE_TYPE_ALL_SUPPORTED_TYPES"
-                }
-                DatabaseResourceType::Table => "DATABASE_RESOURCE_TYPE_TABLE",
+                Self::Unspecified => "DATABASE_RESOURCE_TYPE_UNSPECIFIED",
+                Self::AllSupportedTypes => "DATABASE_RESOURCE_TYPE_ALL_SUPPORTED_TYPES",
+                Self::Table => "DATABASE_RESOURCE_TYPE_TABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6806,11 +6819,11 @@ pub mod discovery_cloud_sql_generation_cadence {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    CloudSqlSchemaModification::SqlSchemaModificationUnspecified => {
+                    Self::SqlSchemaModificationUnspecified => {
                         "SQL_SCHEMA_MODIFICATION_UNSPECIFIED"
                     }
-                    CloudSqlSchemaModification::NewColumns => "NEW_COLUMNS",
-                    CloudSqlSchemaModification::RemovedColumns => "REMOVED_COLUMNS",
+                    Self::NewColumns => "NEW_COLUMNS",
+                    Self::RemovedColumns => "REMOVED_COLUMNS",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7074,21 +7087,15 @@ pub mod discovery_cloud_storage_conditions {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CloudStorageObjectAttribute::Unspecified => {
-                    "CLOUD_STORAGE_OBJECT_ATTRIBUTE_UNSPECIFIED"
-                }
-                CloudStorageObjectAttribute::AllSupportedObjects => {
-                    "ALL_SUPPORTED_OBJECTS"
-                }
-                CloudStorageObjectAttribute::Standard => "STANDARD",
-                CloudStorageObjectAttribute::Nearline => "NEARLINE",
-                CloudStorageObjectAttribute::Coldline => "COLDLINE",
-                CloudStorageObjectAttribute::Archive => "ARCHIVE",
-                CloudStorageObjectAttribute::Regional => "REGIONAL",
-                CloudStorageObjectAttribute::MultiRegional => "MULTI_REGIONAL",
-                CloudStorageObjectAttribute::DurableReducedAvailability => {
-                    "DURABLE_REDUCED_AVAILABILITY"
-                }
+                Self::Unspecified => "CLOUD_STORAGE_OBJECT_ATTRIBUTE_UNSPECIFIED",
+                Self::AllSupportedObjects => "ALL_SUPPORTED_OBJECTS",
+                Self::Standard => "STANDARD",
+                Self::Nearline => "NEARLINE",
+                Self::Coldline => "COLDLINE",
+                Self::Archive => "ARCHIVE",
+                Self::Regional => "REGIONAL",
+                Self::MultiRegional => "MULTI_REGIONAL",
+                Self::DurableReducedAvailability => "DURABLE_REDUCED_AVAILABILITY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7142,14 +7149,10 @@ pub mod discovery_cloud_storage_conditions {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CloudStorageBucketAttribute::Unspecified => {
-                    "CLOUD_STORAGE_BUCKET_ATTRIBUTE_UNSPECIFIED"
-                }
-                CloudStorageBucketAttribute::AllSupportedBuckets => {
-                    "ALL_SUPPORTED_BUCKETS"
-                }
-                CloudStorageBucketAttribute::AutoclassDisabled => "AUTOCLASS_DISABLED",
-                CloudStorageBucketAttribute::AutoclassEnabled => "AUTOCLASS_ENABLED",
+                Self::Unspecified => "CLOUD_STORAGE_BUCKET_ATTRIBUTE_UNSPECIFIED",
+                Self::AllSupportedBuckets => "ALL_SUPPORTED_BUCKETS",
+                Self::AutoclassDisabled => "AUTOCLASS_DISABLED",
+                Self::AutoclassEnabled => "AUTOCLASS_ENABLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7191,6 +7194,345 @@ pub mod discovery_file_store_conditions {
         CloudStorageConditions(super::DiscoveryCloudStorageConditions),
     }
 }
+/// Target used to match against for discovery of resources from other clouds.
+/// An [AWS connector in Security Command Center
+/// (Enterprise](<https://cloud.google.com/security-command-center/docs/connect-scc-to-aws>)
+/// is required to use this feature.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OtherCloudDiscoveryTarget {
+    /// Required. The type of data profiles generated by this discovery target.
+    /// Supported values are:
+    /// * aws/s3/bucket
+    #[prost(message, optional, tag = "1")]
+    pub data_source_type: ::core::option::Option<DataSourceType>,
+    /// Required. The resources that the discovery cadence applies to. The
+    /// first target with a matching filter will be the one to apply to a resource.
+    #[prost(message, optional, tag = "2")]
+    pub filter: ::core::option::Option<DiscoveryOtherCloudFilter>,
+    /// Optional. In addition to matching the filter, these conditions must be true
+    /// before a profile is generated.
+    #[prost(message, optional, tag = "3")]
+    pub conditions: ::core::option::Option<DiscoveryOtherCloudConditions>,
+    /// Type of cadence.
+    #[prost(oneof = "other_cloud_discovery_target::Cadence", tags = "4, 5")]
+    pub cadence: ::core::option::Option<other_cloud_discovery_target::Cadence>,
+}
+/// Nested message and enum types in `OtherCloudDiscoveryTarget`.
+pub mod other_cloud_discovery_target {
+    /// Type of cadence.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum Cadence {
+        /// How often and when to update data profiles. New resources that match both
+        /// the filter and conditions are scanned as quickly as possible depending on
+        /// system capacity.
+        #[prost(message, tag = "4")]
+        GenerationCadence(super::DiscoveryOtherCloudGenerationCadence),
+        /// Disable profiling for resources that match this filter.
+        #[prost(message, tag = "5")]
+        Disabled(super::Disabled),
+    }
+}
+/// Determines which resources from the other cloud will have profiles generated.
+/// Includes the ability to filter by resource names.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiscoveryOtherCloudFilter {
+    /// Whether the filter applies to a specific set of resources or all
+    /// other resources. The first filter to match will be applied, regardless of
+    /// the condition. Defaults to `others` if none is set.
+    #[prost(oneof = "discovery_other_cloud_filter::Filter", tags = "1, 2, 100")]
+    pub filter: ::core::option::Option<discovery_other_cloud_filter::Filter>,
+}
+/// Nested message and enum types in `DiscoveryOtherCloudFilter`.
+pub mod discovery_other_cloud_filter {
+    /// Whether the filter applies to a specific set of resources or all
+    /// other resources. The first filter to match will be applied, regardless of
+    /// the condition. Defaults to `others` if none is set.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Filter {
+        /// A collection of resources for this filter to apply to.
+        #[prost(message, tag = "1")]
+        Collection(super::OtherCloudResourceCollection),
+        /// The resource to scan. Configs using this filter can only have one target
+        /// (the target with this single resource reference).
+        #[prost(message, tag = "2")]
+        SingleResource(super::OtherCloudSingleResourceReference),
+        /// Optional. Catch-all. This should always be the last target in the list
+        /// because anything above it will apply first. Should only appear once in a
+        /// configuration. If none is specified, a default one will be added
+        /// automatically.
+        #[prost(message, tag = "100")]
+        Others(super::AllOtherResources),
+    }
+}
+/// Match resources using regex filters.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OtherCloudResourceCollection {
+    /// The first filter containing a pattern that matches a resource will be used.
+    #[prost(oneof = "other_cloud_resource_collection::Pattern", tags = "1")]
+    pub pattern: ::core::option::Option<other_cloud_resource_collection::Pattern>,
+}
+/// Nested message and enum types in `OtherCloudResourceCollection`.
+pub mod other_cloud_resource_collection {
+    /// The first filter containing a pattern that matches a resource will be used.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Pattern {
+        /// A collection of regular expressions to match a resource against.
+        #[prost(message, tag = "1")]
+        IncludeRegexes(super::OtherCloudResourceRegexes),
+    }
+}
+/// A collection of regular expressions to determine what resources to match
+/// against.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OtherCloudResourceRegexes {
+    /// A group of regular expression patterns to match against one or more
+    /// resources.
+    /// Maximum of 100 entries. The sum of all regular expression's length can't
+    /// exceed 10 KiB.
+    #[prost(message, repeated, tag = "1")]
+    pub patterns: ::prost::alloc::vec::Vec<OtherCloudResourceRegex>,
+}
+/// A pattern to match against one or more resources. At least one pattern must
+/// be specified. Regular expressions use RE2
+/// [syntax](<https://github.com/google/re2/wiki/Syntax>); a guide can be found
+/// under the google/re2 repository on GitHub.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OtherCloudResourceRegex {
+    /// The type of resource regex to use.
+    #[prost(oneof = "other_cloud_resource_regex::ResourceRegex", tags = "1")]
+    pub resource_regex: ::core::option::Option<
+        other_cloud_resource_regex::ResourceRegex,
+    >,
+}
+/// Nested message and enum types in `OtherCloudResourceRegex`.
+pub mod other_cloud_resource_regex {
+    /// The type of resource regex to use.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ResourceRegex {
+        /// Regex for Amazon S3 buckets.
+        #[prost(message, tag = "1")]
+        AmazonS3BucketRegex(super::AmazonS3BucketRegex),
+    }
+}
+/// AWS account regex.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AwsAccountRegex {
+    /// Optional. Regex to test the AWS account ID against.
+    /// If empty, all accounts match.
+    #[prost(string, tag = "1")]
+    pub account_id_regex: ::prost::alloc::string::String,
+}
+/// Amazon S3 bucket regex.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AmazonS3BucketRegex {
+    /// The AWS account regex.
+    #[prost(message, optional, tag = "1")]
+    pub aws_account_regex: ::core::option::Option<AwsAccountRegex>,
+    /// Optional. Regex to test the bucket name against.
+    /// If empty, all buckets match.
+    #[prost(string, tag = "2")]
+    pub bucket_name_regex: ::prost::alloc::string::String,
+}
+/// Identifies a single resource, like a single Amazon S3 bucket.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OtherCloudSingleResourceReference {
+    /// The resource to scan.
+    #[prost(oneof = "other_cloud_single_resource_reference::Resource", tags = "1")]
+    pub resource: ::core::option::Option<
+        other_cloud_single_resource_reference::Resource,
+    >,
+}
+/// Nested message and enum types in `OtherCloudSingleResourceReference`.
+pub mod other_cloud_single_resource_reference {
+    /// The resource to scan.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Resource {
+        /// Amazon S3 bucket.
+        #[prost(message, tag = "1")]
+        AmazonS3Bucket(super::AmazonS3Bucket),
+    }
+}
+/// AWS account.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AwsAccount {
+    /// Required. AWS account ID.
+    #[prost(string, tag = "1")]
+    pub account_id: ::prost::alloc::string::String,
+}
+/// Amazon S3 bucket.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AmazonS3Bucket {
+    /// The AWS account.
+    #[prost(message, optional, tag = "1")]
+    pub aws_account: ::core::option::Option<AwsAccount>,
+    /// Required. The bucket name.
+    #[prost(string, tag = "2")]
+    pub bucket_name: ::prost::alloc::string::String,
+}
+/// Requirements that must be true before a resource is profiled for the first
+/// time.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiscoveryOtherCloudConditions {
+    /// Minimum age a resource must be before Cloud DLP can profile it. Value must
+    /// be 1 hour or greater.
+    #[prost(message, optional, tag = "1")]
+    pub min_age: ::core::option::Option<::prost_types::Duration>,
+    /// The conditions to apply.
+    #[prost(oneof = "discovery_other_cloud_conditions::Conditions", tags = "2")]
+    pub conditions: ::core::option::Option<discovery_other_cloud_conditions::Conditions>,
+}
+/// Nested message and enum types in `DiscoveryOtherCloudConditions`.
+pub mod discovery_other_cloud_conditions {
+    /// The conditions to apply.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Conditions {
+        /// Amazon S3 bucket conditions.
+        #[prost(message, tag = "2")]
+        AmazonS3BucketConditions(super::AmazonS3BucketConditions),
+    }
+}
+/// Amazon S3 bucket conditions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AmazonS3BucketConditions {
+    /// Optional. Bucket types that should be profiled.
+    /// Optional. Defaults to TYPE_ALL_SUPPORTED if unspecified.
+    #[prost(
+        enumeration = "amazon_s3_bucket_conditions::BucketType",
+        repeated,
+        packed = "false",
+        tag = "1"
+    )]
+    pub bucket_types: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. Object classes that should be profiled.
+    /// Optional. Defaults to ALL_SUPPORTED_CLASSES if unspecified.
+    #[prost(
+        enumeration = "amazon_s3_bucket_conditions::ObjectStorageClass",
+        repeated,
+        packed = "false",
+        tag = "2"
+    )]
+    pub object_storage_classes: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `AmazonS3BucketConditions`.
+pub mod amazon_s3_bucket_conditions {
+    /// Supported Amazon S3 bucket types.
+    /// Defaults to TYPE_ALL_SUPPORTED.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BucketType {
+        /// Unused.
+        TypeUnspecified = 0,
+        /// All supported classes.
+        TypeAllSupported = 1,
+        /// A general purpose Amazon S3 bucket.
+        TypeGeneralPurpose = 2,
+    }
+    impl BucketType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::TypeUnspecified => "TYPE_UNSPECIFIED",
+                Self::TypeAllSupported => "TYPE_ALL_SUPPORTED",
+                Self::TypeGeneralPurpose => "TYPE_GENERAL_PURPOSE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::TypeUnspecified),
+                "TYPE_ALL_SUPPORTED" => Some(Self::TypeAllSupported),
+                "TYPE_GENERAL_PURPOSE" => Some(Self::TypeGeneralPurpose),
+                _ => None,
+            }
+        }
+    }
+    /// Supported Amazon S3 object storage classes.
+    /// Defaults to ALL_SUPPORTED_CLASSES.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ObjectStorageClass {
+        /// Unused.
+        Unspecified = 0,
+        /// All supported classes.
+        AllSupportedClasses = 1,
+        /// Standard object class.
+        Standard = 2,
+        /// Standard - infrequent access object class.
+        StandardInfrequentAccess = 4,
+        /// Glacier - instant retrieval object class.
+        GlacierInstantRetrieval = 6,
+        /// Objects in the S3 Intelligent-Tiering access tiers.
+        IntelligentTiering = 7,
+    }
+    impl ObjectStorageClass {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::AllSupportedClasses => "ALL_SUPPORTED_CLASSES",
+                Self::Standard => "STANDARD",
+                Self::StandardInfrequentAccess => "STANDARD_INFREQUENT_ACCESS",
+                Self::GlacierInstantRetrieval => "GLACIER_INSTANT_RETRIEVAL",
+                Self::IntelligentTiering => "INTELLIGENT_TIERING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "ALL_SUPPORTED_CLASSES" => Some(Self::AllSupportedClasses),
+                "STANDARD" => Some(Self::Standard),
+                "STANDARD_INFREQUENT_ACCESS" => Some(Self::StandardInfrequentAccess),
+                "GLACIER_INSTANT_RETRIEVAL" => Some(Self::GlacierInstantRetrieval),
+                "INTELLIGENT_TIERING" => Some(Self::IntelligentTiering),
+                _ => None,
+            }
+        }
+    }
+}
+/// How often existing resources should have their profiles refreshed.
+/// New resources are scanned as quickly as possible depending on system
+/// capacity.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct DiscoveryOtherCloudGenerationCadence {
+    /// Optional. Frequency to update profiles regardless of whether the underlying
+    /// resource has changes. Defaults to never.
+    #[prost(enumeration = "DataProfileUpdateFrequency", tag = "1")]
+    pub refresh_frequency: i32,
+    /// Optional. Governs when to update data profiles when the inspection rules
+    /// defined by the `InspectTemplate` change.
+    /// If not set, changing the template will not cause a data profile to update.
+    #[prost(message, optional, tag = "2")]
+    pub inspect_template_modified_cadence: ::core::option::Option<
+        DiscoveryInspectTemplateModifiedCadence,
+    >,
+}
 /// The location to begin a discovery scan. Denotes an organization ID or folder
 /// ID within an organization.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -7210,6 +7552,49 @@ pub mod discovery_starting_location {
         /// The ID of the folder within an organization to be scanned.
         #[prost(int64, tag = "2")]
         FolderId(i64),
+    }
+}
+/// The other cloud starting location for discovery.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OtherCloudDiscoveryStartingLocation {
+    /// The other cloud starting location for discovery.
+    #[prost(oneof = "other_cloud_discovery_starting_location::Location", tags = "1")]
+    pub location: ::core::option::Option<
+        other_cloud_discovery_starting_location::Location,
+    >,
+}
+/// Nested message and enum types in `OtherCloudDiscoveryStartingLocation`.
+pub mod other_cloud_discovery_starting_location {
+    /// The AWS starting location for discovery.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AwsDiscoveryStartingLocation {
+        /// The scope of this starting location.
+        #[prost(oneof = "aws_discovery_starting_location::Scope", tags = "2, 3")]
+        pub scope: ::core::option::Option<aws_discovery_starting_location::Scope>,
+    }
+    /// Nested message and enum types in `AwsDiscoveryStartingLocation`.
+    pub mod aws_discovery_starting_location {
+        /// The scope of this starting location.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Scope {
+            /// The AWS account ID that this discovery config applies to.
+            /// Within an AWS organization, you can find the AWS account ID inside an
+            /// AWS account ARN. Example:
+            /// arn:{partition}:organizations::{management_account_id}:account/{org_id}/{account_id}
+            #[prost(string, tag = "2")]
+            AccountId(::prost::alloc::string::String),
+            /// All AWS assets stored in Asset Inventory that didn't match other AWS
+            /// discovery configs.
+            #[prost(bool, tag = "3")]
+            AllAssetInventoryAssets(bool),
+        }
+    }
+    /// The other cloud starting location for discovery.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Location {
+        /// The AWS starting location for discovery.
+        #[prost(message, tag = "1")]
+        AwsLocation(AwsDiscoveryStartingLocation),
     }
 }
 /// Match discovery resources not covered by any other filter.
@@ -7295,13 +7680,13 @@ pub mod dlp_job {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                JobState::Unspecified => "JOB_STATE_UNSPECIFIED",
-                JobState::Pending => "PENDING",
-                JobState::Running => "RUNNING",
-                JobState::Done => "DONE",
-                JobState::Canceled => "CANCELED",
-                JobState::Failed => "FAILED",
-                JobState::Active => "ACTIVE",
+                Self::Unspecified => "JOB_STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Running => "RUNNING",
+                Self::Done => "DONE",
+                Self::Canceled => "CANCELED",
+                Self::Failed => "FAILED",
+                Self::Active => "ACTIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8205,11 +8590,11 @@ pub mod data_risk_level {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DataRiskLevelScore::RiskScoreUnspecified => "RISK_SCORE_UNSPECIFIED",
-                DataRiskLevelScore::RiskLow => "RISK_LOW",
-                DataRiskLevelScore::RiskUnknown => "RISK_UNKNOWN",
-                DataRiskLevelScore::RiskModerate => "RISK_MODERATE",
-                DataRiskLevelScore::RiskHigh => "RISK_HIGH",
+                Self::RiskScoreUnspecified => "RISK_SCORE_UNSPECIFIED",
+                Self::RiskLow => "RISK_LOW",
+                Self::RiskUnknown => "RISK_UNKNOWN",
+                Self::RiskModerate => "RISK_MODERATE",
+                Self::RiskHigh => "RISK_HIGH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8232,7 +8617,7 @@ pub struct ProjectDataProfile {
     /// The resource name of the profile.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Project ID that was profiled.
+    /// Project ID or account that was profiled.
     #[prost(string, tag = "2")]
     pub project_id: ::prost::alloc::string::String,
     /// The last time the profile was generated.
@@ -8402,9 +8787,9 @@ pub mod table_data_profile {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Running => "RUNNING",
-                State::Done => "DONE",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Running => "RUNNING",
+                Self::Done => "DONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8560,9 +8945,9 @@ pub mod column_data_profile {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Running => "RUNNING",
-                State::Done => "DONE",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Running => "RUNNING",
+                Self::Done => "DONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8636,25 +9021,25 @@ pub mod column_data_profile {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ColumnDataType::Unspecified => "COLUMN_DATA_TYPE_UNSPECIFIED",
-                ColumnDataType::TypeInt64 => "TYPE_INT64",
-                ColumnDataType::TypeBool => "TYPE_BOOL",
-                ColumnDataType::TypeFloat64 => "TYPE_FLOAT64",
-                ColumnDataType::TypeString => "TYPE_STRING",
-                ColumnDataType::TypeBytes => "TYPE_BYTES",
-                ColumnDataType::TypeTimestamp => "TYPE_TIMESTAMP",
-                ColumnDataType::TypeDate => "TYPE_DATE",
-                ColumnDataType::TypeTime => "TYPE_TIME",
-                ColumnDataType::TypeDatetime => "TYPE_DATETIME",
-                ColumnDataType::TypeGeography => "TYPE_GEOGRAPHY",
-                ColumnDataType::TypeNumeric => "TYPE_NUMERIC",
-                ColumnDataType::TypeRecord => "TYPE_RECORD",
-                ColumnDataType::TypeBignumeric => "TYPE_BIGNUMERIC",
-                ColumnDataType::TypeJson => "TYPE_JSON",
-                ColumnDataType::TypeInterval => "TYPE_INTERVAL",
-                ColumnDataType::TypeRangeDate => "TYPE_RANGE_DATE",
-                ColumnDataType::TypeRangeDatetime => "TYPE_RANGE_DATETIME",
-                ColumnDataType::TypeRangeTimestamp => "TYPE_RANGE_TIMESTAMP",
+                Self::Unspecified => "COLUMN_DATA_TYPE_UNSPECIFIED",
+                Self::TypeInt64 => "TYPE_INT64",
+                Self::TypeBool => "TYPE_BOOL",
+                Self::TypeFloat64 => "TYPE_FLOAT64",
+                Self::TypeString => "TYPE_STRING",
+                Self::TypeBytes => "TYPE_BYTES",
+                Self::TypeTimestamp => "TYPE_TIMESTAMP",
+                Self::TypeDate => "TYPE_DATE",
+                Self::TypeTime => "TYPE_TIME",
+                Self::TypeDatetime => "TYPE_DATETIME",
+                Self::TypeGeography => "TYPE_GEOGRAPHY",
+                Self::TypeNumeric => "TYPE_NUMERIC",
+                Self::TypeRecord => "TYPE_RECORD",
+                Self::TypeBignumeric => "TYPE_BIGNUMERIC",
+                Self::TypeJson => "TYPE_JSON",
+                Self::TypeInterval => "TYPE_INTERVAL",
+                Self::TypeRangeDate => "TYPE_RANGE_DATE",
+                Self::TypeRangeDatetime => "TYPE_RANGE_DATETIME",
+                Self::TypeRangeTimestamp => "TYPE_RANGE_TIMESTAMP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8709,8 +9094,8 @@ pub mod column_data_profile {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ColumnPolicyState::Unspecified => "COLUMN_POLICY_STATE_UNSPECIFIED",
-                ColumnPolicyState::ColumnPolicyTagged => "COLUMN_POLICY_TAGGED",
+                Self::Unspecified => "COLUMN_POLICY_STATE_UNSPECIFIED",
+                Self::ColumnPolicyTagged => "COLUMN_POLICY_TAGGED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8726,6 +9111,7 @@ pub mod column_data_profile {
 /// The profile for a file store.
 ///
 /// * Cloud Storage: maps 1:1 with a bucket.
+/// * Amazon S3: maps 1:1 with a bucket.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileStoreDataProfile {
     /// The name of the profile.
@@ -8738,12 +9124,15 @@ pub struct FileStoreDataProfile {
     #[prost(string, tag = "3")]
     pub project_data_profile: ::prost::alloc::string::String,
     /// The Google Cloud project ID that owns the resource.
+    /// For Amazon S3 buckets, this is the AWS Account Id.
     #[prost(string, tag = "4")]
     pub project_id: ::prost::alloc::string::String,
     /// The location of the file store.
     ///
     /// * Cloud Storage:
     /// <https://cloud.google.com/storage/docs/locations#available-locations>
+    /// * Amazon S3:
+    /// <https://docs.aws.amazon.com/general/latest/gr/rande.html#regional-endpoints>
     #[prost(string, tag = "5")]
     pub file_store_location: ::prost::alloc::string::String,
     /// For resources that have multiple storage locations, these are those
@@ -8761,10 +9150,14 @@ pub struct FileStoreDataProfile {
     /// The file store path.
     ///
     /// * Cloud Storage: `gs://{bucket}`
+    /// * Amazon S3: `s3://{bucket}`
     #[prost(string, tag = "6")]
     pub file_store_path: ::prost::alloc::string::String,
     /// The resource name of the resource profiled.
     /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
+    ///
+    /// Example format of an S3 bucket full resource name:
+    /// `//cloudasset.googleapis.com/organizations/{org_id}/otherCloudConnections/aws/arn:aws:s3:::{bucket_name}`
     #[prost(string, tag = "24")]
     pub full_resource: ::prost::alloc::string::String,
     /// The snapshot of the configurations used to generate the profile.
@@ -8857,9 +9250,9 @@ pub mod file_store_data_profile {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Running => "RUNNING",
-                State::Done => "DONE",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Running => "RUNNING",
+                Self::Done => "DONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8991,6 +9384,7 @@ pub struct ListFileStoreDataProfilesRequest {
     /// * A restriction has the form of `{field} {operator} {value}`.
     /// * Supported fields/values:
     ///      - `project_id` - The Google Cloud project ID.
+    ///      - `account_id` - The AWS account ID.
     ///      - `file_store_path` - The path like "gs://bucket".
     ///      - `data_source_type` - The profile's data source type, like
     ///      "google/storage/bucket".
@@ -9119,11 +9513,9 @@ pub mod data_profile_pub_sub_condition {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    PubSubLogicalOperator::LogicalOperatorUnspecified => {
-                        "LOGICAL_OPERATOR_UNSPECIFIED"
-                    }
-                    PubSubLogicalOperator::Or => "OR",
-                    PubSubLogicalOperator::And => "AND",
+                    Self::LogicalOperatorUnspecified => "LOGICAL_OPERATOR_UNSPECIFIED",
+                    Self::Or => "OR",
+                    Self::And => "AND",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9167,9 +9559,9 @@ pub mod data_profile_pub_sub_condition {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ProfileScoreBucket::Unspecified => "PROFILE_SCORE_BUCKET_UNSPECIFIED",
-                ProfileScoreBucket::High => "HIGH",
-                ProfileScoreBucket::MediumOrHigh => "MEDIUM_OR_HIGH",
+                Self::Unspecified => "PROFILE_SCORE_BUCKET_UNSPECIFIED",
+                Self::High => "HIGH",
+                Self::MediumOrHigh => "MEDIUM_OR_HIGH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9419,9 +9811,9 @@ pub mod cloud_sql_properties {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DatabaseEngine::Unknown => "DATABASE_ENGINE_UNKNOWN",
-                DatabaseEngine::Mysql => "DATABASE_ENGINE_MYSQL",
-                DatabaseEngine::Postgres => "DATABASE_ENGINE_POSTGRES",
+                Self::Unknown => "DATABASE_ENGINE_UNKNOWN",
+                Self::Mysql => "DATABASE_ENGINE_MYSQL",
+                Self::Postgres => "DATABASE_ENGINE_POSTGRES",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9456,7 +9848,12 @@ pub struct DeleteTableDataProfileRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataSourceType {
     /// Output only. An identifying string to the type of resource being profiled.
-    /// Current values: google/bigquery/table, google/project
+    /// Current values:
+    ///
+    /// * google/bigquery/table
+    /// * google/project
+    /// * google/sql/table
+    /// * google/gcs/bucket
     #[prost(string, tag = "1")]
     pub data_source: ::prost::alloc::string::String,
 }
@@ -9512,16 +9909,16 @@ pub mod file_cluster_type {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Cluster::Unspecified => "CLUSTER_UNSPECIFIED",
-                Cluster::Unknown => "CLUSTER_UNKNOWN",
-                Cluster::Text => "CLUSTER_TEXT",
-                Cluster::StructuredData => "CLUSTER_STRUCTURED_DATA",
-                Cluster::SourceCode => "CLUSTER_SOURCE_CODE",
-                Cluster::RichDocument => "CLUSTER_RICH_DOCUMENT",
-                Cluster::Image => "CLUSTER_IMAGE",
-                Cluster::Archive => "CLUSTER_ARCHIVE",
-                Cluster::Multimedia => "CLUSTER_MULTIMEDIA",
-                Cluster::Executable => "CLUSTER_EXECUTABLE",
+                Self::Unspecified => "CLUSTER_UNSPECIFIED",
+                Self::Unknown => "CLUSTER_UNKNOWN",
+                Self::Text => "CLUSTER_TEXT",
+                Self::StructuredData => "CLUSTER_STRUCTURED_DATA",
+                Self::SourceCode => "CLUSTER_SOURCE_CODE",
+                Self::RichDocument => "CLUSTER_RICH_DOCUMENT",
+                Self::Image => "CLUSTER_IMAGE",
+                Self::Archive => "CLUSTER_ARCHIVE",
+                Self::Multimedia => "CLUSTER_MULTIMEDIA",
+                Self::Executable => "CLUSTER_EXECUTABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9578,17 +9975,11 @@ impl TransformationResultStatusType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TransformationResultStatusType::StateTypeUnspecified => {
-                "STATE_TYPE_UNSPECIFIED"
-            }
-            TransformationResultStatusType::InvalidTransform => "INVALID_TRANSFORM",
-            TransformationResultStatusType::BigqueryMaxRowSizeExceeded => {
-                "BIGQUERY_MAX_ROW_SIZE_EXCEEDED"
-            }
-            TransformationResultStatusType::MetadataUnretrievable => {
-                "METADATA_UNRETRIEVABLE"
-            }
-            TransformationResultStatusType::Success => "SUCCESS",
+            Self::StateTypeUnspecified => "STATE_TYPE_UNSPECIFIED",
+            Self::InvalidTransform => "INVALID_TRANSFORM",
+            Self::BigqueryMaxRowSizeExceeded => "BIGQUERY_MAX_ROW_SIZE_EXCEEDED",
+            Self::MetadataUnretrievable => "METADATA_UNRETRIEVABLE",
+            Self::Success => "SUCCESS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9623,12 +10014,10 @@ impl TransformationContainerType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TransformationContainerType::TransformUnknownContainer => {
-                "TRANSFORM_UNKNOWN_CONTAINER"
-            }
-            TransformationContainerType::TransformBody => "TRANSFORM_BODY",
-            TransformationContainerType::TransformMetadata => "TRANSFORM_METADATA",
-            TransformationContainerType::TransformTable => "TRANSFORM_TABLE",
+            Self::TransformUnknownContainer => "TRANSFORM_UNKNOWN_CONTAINER",
+            Self::TransformBody => "TRANSFORM_BODY",
+            Self::TransformMetadata => "TRANSFORM_METADATA",
+            Self::TransformTable => "TRANSFORM_TABLE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9686,23 +10075,21 @@ impl TransformationType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TransformationType::Unspecified => "TRANSFORMATION_TYPE_UNSPECIFIED",
-            TransformationType::RecordSuppression => "RECORD_SUPPRESSION",
-            TransformationType::ReplaceValue => "REPLACE_VALUE",
-            TransformationType::ReplaceDictionary => "REPLACE_DICTIONARY",
-            TransformationType::Redact => "REDACT",
-            TransformationType::CharacterMask => "CHARACTER_MASK",
-            TransformationType::CryptoReplaceFfxFpe => "CRYPTO_REPLACE_FFX_FPE",
-            TransformationType::FixedSizeBucketing => "FIXED_SIZE_BUCKETING",
-            TransformationType::Bucketing => "BUCKETING",
-            TransformationType::ReplaceWithInfoType => "REPLACE_WITH_INFO_TYPE",
-            TransformationType::TimePart => "TIME_PART",
-            TransformationType::CryptoHash => "CRYPTO_HASH",
-            TransformationType::DateShift => "DATE_SHIFT",
-            TransformationType::CryptoDeterministicConfig => {
-                "CRYPTO_DETERMINISTIC_CONFIG"
-            }
-            TransformationType::RedactImage => "REDACT_IMAGE",
+            Self::Unspecified => "TRANSFORMATION_TYPE_UNSPECIFIED",
+            Self::RecordSuppression => "RECORD_SUPPRESSION",
+            Self::ReplaceValue => "REPLACE_VALUE",
+            Self::ReplaceDictionary => "REPLACE_DICTIONARY",
+            Self::Redact => "REDACT",
+            Self::CharacterMask => "CHARACTER_MASK",
+            Self::CryptoReplaceFfxFpe => "CRYPTO_REPLACE_FFX_FPE",
+            Self::FixedSizeBucketing => "FIXED_SIZE_BUCKETING",
+            Self::Bucketing => "BUCKETING",
+            Self::ReplaceWithInfoType => "REPLACE_WITH_INFO_TYPE",
+            Self::TimePart => "TIME_PART",
+            Self::CryptoHash => "CRYPTO_HASH",
+            Self::DateShift => "DATE_SHIFT",
+            Self::CryptoDeterministicConfig => "CRYPTO_DETERMINISTIC_CONFIG",
+            Self::RedactImage => "REDACT_IMAGE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9745,9 +10132,9 @@ impl ProfileGeneration {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ProfileGeneration::Unspecified => "PROFILE_GENERATION_UNSPECIFIED",
-            ProfileGeneration::New => "PROFILE_GENERATION_NEW",
-            ProfileGeneration::Update => "PROFILE_GENERATION_UPDATE",
+            Self::Unspecified => "PROFILE_GENERATION_UNSPECIFIED",
+            Self::New => "PROFILE_GENERATION_NEW",
+            Self::Update => "PROFILE_GENERATION_UPDATE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9785,13 +10172,9 @@ impl BigQueryTableTypeCollection {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            BigQueryTableTypeCollection::BigQueryCollectionUnspecified => {
-                "BIG_QUERY_COLLECTION_UNSPECIFIED"
-            }
-            BigQueryTableTypeCollection::BigQueryCollectionAllTypes => {
-                "BIG_QUERY_COLLECTION_ALL_TYPES"
-            }
-            BigQueryTableTypeCollection::BigQueryCollectionOnlySupportedTypes => {
+            Self::BigQueryCollectionUnspecified => "BIG_QUERY_COLLECTION_UNSPECIFIED",
+            Self::BigQueryCollectionAllTypes => "BIG_QUERY_COLLECTION_ALL_TYPES",
+            Self::BigQueryCollectionOnlySupportedTypes => {
                 "BIG_QUERY_COLLECTION_ONLY_SUPPORTED_TYPES"
             }
         }
@@ -9829,11 +10212,9 @@ impl BigQueryTableType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            BigQueryTableType::Unspecified => "BIG_QUERY_TABLE_TYPE_UNSPECIFIED",
-            BigQueryTableType::Table => "BIG_QUERY_TABLE_TYPE_TABLE",
-            BigQueryTableType::ExternalBigLake => {
-                "BIG_QUERY_TABLE_TYPE_EXTERNAL_BIG_LAKE"
-            }
+            Self::Unspecified => "BIG_QUERY_TABLE_TYPE_UNSPECIFIED",
+            Self::Table => "BIG_QUERY_TABLE_TYPE_TABLE",
+            Self::ExternalBigLake => "BIG_QUERY_TABLE_TYPE_EXTERNAL_BIG_LAKE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9867,14 +10248,10 @@ impl DataProfileUpdateFrequency {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DataProfileUpdateFrequency::UpdateFrequencyUnspecified => {
-                "UPDATE_FREQUENCY_UNSPECIFIED"
-            }
-            DataProfileUpdateFrequency::UpdateFrequencyNever => "UPDATE_FREQUENCY_NEVER",
-            DataProfileUpdateFrequency::UpdateFrequencyDaily => "UPDATE_FREQUENCY_DAILY",
-            DataProfileUpdateFrequency::UpdateFrequencyMonthly => {
-                "UPDATE_FREQUENCY_MONTHLY"
-            }
+            Self::UpdateFrequencyUnspecified => "UPDATE_FREQUENCY_UNSPECIFIED",
+            Self::UpdateFrequencyNever => "UPDATE_FREQUENCY_NEVER",
+            Self::UpdateFrequencyDaily => "UPDATE_FREQUENCY_DAILY",
+            Self::UpdateFrequencyMonthly => "UPDATE_FREQUENCY_MONTHLY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9906,12 +10283,8 @@ impl BigQueryTableModification {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            BigQueryTableModification::TableModificationUnspecified => {
-                "TABLE_MODIFICATION_UNSPECIFIED"
-            }
-            BigQueryTableModification::TableModifiedTimestamp => {
-                "TABLE_MODIFIED_TIMESTAMP"
-            }
+            Self::TableModificationUnspecified => "TABLE_MODIFICATION_UNSPECIFIED",
+            Self::TableModifiedTimestamp => "TABLE_MODIFIED_TIMESTAMP",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9943,11 +10316,9 @@ impl BigQuerySchemaModification {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            BigQuerySchemaModification::SchemaModificationUnspecified => {
-                "SCHEMA_MODIFICATION_UNSPECIFIED"
-            }
-            BigQuerySchemaModification::SchemaNewColumns => "SCHEMA_NEW_COLUMNS",
-            BigQuerySchemaModification::SchemaRemovedColumns => "SCHEMA_REMOVED_COLUMNS",
+            Self::SchemaModificationUnspecified => "SCHEMA_MODIFICATION_UNSPECIFIED",
+            Self::SchemaNewColumns => "SCHEMA_NEW_COLUMNS",
+            Self::SchemaRemovedColumns => "SCHEMA_REMOVED_COLUMNS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9990,14 +10361,14 @@ impl RelationalOperator {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            RelationalOperator::Unspecified => "RELATIONAL_OPERATOR_UNSPECIFIED",
-            RelationalOperator::EqualTo => "EQUAL_TO",
-            RelationalOperator::NotEqualTo => "NOT_EQUAL_TO",
-            RelationalOperator::GreaterThan => "GREATER_THAN",
-            RelationalOperator::LessThan => "LESS_THAN",
-            RelationalOperator::GreaterThanOrEquals => "GREATER_THAN_OR_EQUALS",
-            RelationalOperator::LessThanOrEquals => "LESS_THAN_OR_EQUALS",
-            RelationalOperator::Exists => "EXISTS",
+            Self::Unspecified => "RELATIONAL_OPERATOR_UNSPECIFIED",
+            Self::EqualTo => "EQUAL_TO",
+            Self::NotEqualTo => "NOT_EQUAL_TO",
+            Self::GreaterThan => "GREATER_THAN",
+            Self::LessThan => "LESS_THAN",
+            Self::GreaterThanOrEquals => "GREATER_THAN_OR_EQUALS",
+            Self::LessThanOrEquals => "LESS_THAN_OR_EQUALS",
+            Self::Exists => "EXISTS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10049,10 +10420,10 @@ impl MatchingType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            MatchingType::Unspecified => "MATCHING_TYPE_UNSPECIFIED",
-            MatchingType::FullMatch => "MATCHING_TYPE_FULL_MATCH",
-            MatchingType::PartialMatch => "MATCHING_TYPE_PARTIAL_MATCH",
-            MatchingType::InverseMatch => "MATCHING_TYPE_INVERSE_MATCH",
+            Self::Unspecified => "MATCHING_TYPE_UNSPECIFIED",
+            Self::FullMatch => "MATCHING_TYPE_FULL_MATCH",
+            Self::PartialMatch => "MATCHING_TYPE_PARTIAL_MATCH",
+            Self::InverseMatch => "MATCHING_TYPE_INVERSE_MATCH",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10084,9 +10455,9 @@ impl ContentOption {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ContentOption::ContentUnspecified => "CONTENT_UNSPECIFIED",
-            ContentOption::ContentText => "CONTENT_TEXT",
-            ContentOption::ContentImage => "CONTENT_IMAGE",
+            Self::ContentUnspecified => "CONTENT_UNSPECIFIED",
+            Self::ContentText => "CONTENT_TEXT",
+            Self::ContentImage => "CONTENT_IMAGE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10115,8 +10486,8 @@ impl MetadataType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            MetadataType::MetadatatypeUnspecified => "METADATATYPE_UNSPECIFIED",
-            MetadataType::StorageMetadata => "STORAGE_METADATA",
+            Self::MetadatatypeUnspecified => "METADATATYPE_UNSPECIFIED",
+            Self::StorageMetadata => "STORAGE_METADATA",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10146,9 +10517,9 @@ impl InfoTypeSupportedBy {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            InfoTypeSupportedBy::EnumTypeUnspecified => "ENUM_TYPE_UNSPECIFIED",
-            InfoTypeSupportedBy::Inspect => "INSPECT",
-            InfoTypeSupportedBy::RiskAnalysis => "RISK_ANALYSIS",
+            Self::EnumTypeUnspecified => "ENUM_TYPE_UNSPECIFIED",
+            Self::Inspect => "INSPECT",
+            Self::RiskAnalysis => "RISK_ANALYSIS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10179,9 +10550,9 @@ impl DlpJobType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DlpJobType::Unspecified => "DLP_JOB_TYPE_UNSPECIFIED",
-            DlpJobType::InspectJob => "INSPECT_JOB",
-            DlpJobType::RiskAnalysisJob => "RISK_ANALYSIS_JOB",
+            Self::Unspecified => "DLP_JOB_TYPE_UNSPECIFIED",
+            Self::InspectJob => "INSPECT_JOB",
+            Self::RiskAnalysisJob => "RISK_ANALYSIS_JOB",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10219,11 +10590,11 @@ impl StoredInfoTypeState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            StoredInfoTypeState::Unspecified => "STORED_INFO_TYPE_STATE_UNSPECIFIED",
-            StoredInfoTypeState::Pending => "PENDING",
-            StoredInfoTypeState::Ready => "READY",
-            StoredInfoTypeState::Failed => "FAILED",
-            StoredInfoTypeState::Invalid => "INVALID",
+            Self::Unspecified => "STORED_INFO_TYPE_STATE_UNSPECIFIED",
+            Self::Pending => "PENDING",
+            Self::Ready => "READY",
+            Self::Failed => "FAILED",
+            Self::Invalid => "INVALID",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10261,10 +10632,10 @@ impl ResourceVisibility {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ResourceVisibility::Unspecified => "RESOURCE_VISIBILITY_UNSPECIFIED",
-            ResourceVisibility::Public => "RESOURCE_VISIBILITY_PUBLIC",
-            ResourceVisibility::Inconclusive => "RESOURCE_VISIBILITY_INCONCLUSIVE",
-            ResourceVisibility::Restricted => "RESOURCE_VISIBILITY_RESTRICTED",
+            Self::Unspecified => "RESOURCE_VISIBILITY_UNSPECIFIED",
+            Self::Public => "RESOURCE_VISIBILITY_PUBLIC",
+            Self::Inconclusive => "RESOURCE_VISIBILITY_INCONCLUSIVE",
+            Self::Restricted => "RESOURCE_VISIBILITY_RESTRICTED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10296,9 +10667,9 @@ impl EncryptionStatus {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            EncryptionStatus::Unspecified => "ENCRYPTION_STATUS_UNSPECIFIED",
-            EncryptionStatus::EncryptionGoogleManaged => "ENCRYPTION_GOOGLE_MANAGED",
-            EncryptionStatus::EncryptionCustomerManaged => "ENCRYPTION_CUSTOMER_MANAGED",
+            Self::Unspecified => "ENCRYPTION_STATUS_UNSPECIFIED",
+            Self::EncryptionGoogleManaged => "ENCRYPTION_GOOGLE_MANAGED",
+            Self::EncryptionCustomerManaged => "ENCRYPTION_CUSTOMER_MANAGED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10334,11 +10705,11 @@ impl NullPercentageLevel {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            NullPercentageLevel::Unspecified => "NULL_PERCENTAGE_LEVEL_UNSPECIFIED",
-            NullPercentageLevel::NullPercentageVeryLow => "NULL_PERCENTAGE_VERY_LOW",
-            NullPercentageLevel::NullPercentageLow => "NULL_PERCENTAGE_LOW",
-            NullPercentageLevel::NullPercentageMedium => "NULL_PERCENTAGE_MEDIUM",
-            NullPercentageLevel::NullPercentageHigh => "NULL_PERCENTAGE_HIGH",
+            Self::Unspecified => "NULL_PERCENTAGE_LEVEL_UNSPECIFIED",
+            Self::NullPercentageVeryLow => "NULL_PERCENTAGE_VERY_LOW",
+            Self::NullPercentageLow => "NULL_PERCENTAGE_LOW",
+            Self::NullPercentageMedium => "NULL_PERCENTAGE_MEDIUM",
+            Self::NullPercentageHigh => "NULL_PERCENTAGE_HIGH",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10377,10 +10748,10 @@ impl UniquenessScoreLevel {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            UniquenessScoreLevel::Unspecified => "UNIQUENESS_SCORE_LEVEL_UNSPECIFIED",
-            UniquenessScoreLevel::UniquenessScoreLow => "UNIQUENESS_SCORE_LOW",
-            UniquenessScoreLevel::UniquenessScoreMedium => "UNIQUENESS_SCORE_MEDIUM",
-            UniquenessScoreLevel::UniquenessScoreHigh => "UNIQUENESS_SCORE_HIGH",
+            Self::Unspecified => "UNIQUENESS_SCORE_LEVEL_UNSPECIFIED",
+            Self::UniquenessScoreLow => "UNIQUENESS_SCORE_LOW",
+            Self::UniquenessScoreMedium => "UNIQUENESS_SCORE_MEDIUM",
+            Self::UniquenessScoreHigh => "UNIQUENESS_SCORE_HIGH",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10422,10 +10793,10 @@ impl ConnectionState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ConnectionState::Unspecified => "CONNECTION_STATE_UNSPECIFIED",
-            ConnectionState::MissingCredentials => "MISSING_CREDENTIALS",
-            ConnectionState::Available => "AVAILABLE",
-            ConnectionState::Error => "ERROR",
+            Self::Unspecified => "CONNECTION_STATE_UNSPECIFIED",
+            Self::MissingCredentials => "MISSING_CREDENTIALS",
+            Self::Available => "AVAILABLE",
+            Self::Error => "ERROR",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10441,7 +10812,13 @@ impl ConnectionState {
 }
 /// Generated client implementations.
 pub mod dlp_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The Cloud Data Loss Prevention (DLP) API is a service that allows clients
@@ -10555,8 +10932,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10591,8 +10967,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10627,8 +11002,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10661,8 +11035,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10695,8 +11068,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10727,8 +11099,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10761,8 +11132,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10795,8 +11165,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10829,8 +11198,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10860,8 +11228,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10895,8 +11262,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10929,8 +11295,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10963,8 +11328,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -10997,8 +11361,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11028,8 +11391,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11060,8 +11422,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11091,8 +11452,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11124,8 +11484,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11155,8 +11514,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11186,8 +11544,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11217,8 +11574,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11246,8 +11602,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11277,8 +11632,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11308,8 +11662,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11339,8 +11692,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11370,8 +11722,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11398,8 +11749,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11435,8 +11785,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11468,8 +11817,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11498,8 +11846,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11530,8 +11877,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11562,8 +11908,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11590,8 +11935,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11622,8 +11966,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11653,8 +11996,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11687,8 +12029,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11718,8 +12059,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11749,8 +12089,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11780,8 +12119,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11811,8 +12149,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11842,8 +12179,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11873,8 +12209,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11904,8 +12239,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11933,8 +12267,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11964,8 +12297,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11995,8 +12327,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12024,8 +12355,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12057,8 +12387,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12086,8 +12415,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12111,8 +12439,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12139,8 +12466,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12168,8 +12494,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12199,8 +12524,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12227,8 +12551,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12255,8 +12578,7 @@ pub mod dlp_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

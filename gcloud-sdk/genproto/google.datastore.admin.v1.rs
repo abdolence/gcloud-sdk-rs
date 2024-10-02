@@ -68,9 +68,9 @@ pub mod index {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AncestorMode::Unspecified => "ANCESTOR_MODE_UNSPECIFIED",
-                AncestorMode::None => "NONE",
-                AncestorMode::AllAncestors => "ALL_ANCESTORS",
+                Self::Unspecified => "ANCESTOR_MODE_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::AllAncestors => "ALL_ANCESTORS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -113,9 +113,9 @@ pub mod index {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Direction::Unspecified => "DIRECTION_UNSPECIFIED",
-                Direction::Ascending => "ASCENDING",
-                Direction::Descending => "DESCENDING",
+                Self::Unspecified => "DIRECTION_UNSPECIFIED",
+                Self::Ascending => "ASCENDING",
+                Self::Descending => "DESCENDING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -173,11 +173,11 @@ pub mod index {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
-                State::Deleting => "DELETING",
-                State::Error => "ERROR",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
+                Self::Deleting => "DELETING",
+                Self::Error => "ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -264,12 +264,10 @@ pub mod migration_progress_event {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConcurrencyMode::Unspecified => "CONCURRENCY_MODE_UNSPECIFIED",
-                ConcurrencyMode::Pessimistic => "PESSIMISTIC",
-                ConcurrencyMode::Optimistic => "OPTIMISTIC",
-                ConcurrencyMode::OptimisticWithEntityGroups => {
-                    "OPTIMISTIC_WITH_ENTITY_GROUPS"
-                }
+                Self::Unspecified => "CONCURRENCY_MODE_UNSPECIFIED",
+                Self::Pessimistic => "PESSIMISTIC",
+                Self::Optimistic => "OPTIMISTIC",
+                Self::OptimisticWithEntityGroups => "OPTIMISTIC_WITH_ENTITY_GROUPS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -314,10 +312,10 @@ impl MigrationState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            MigrationState::Unspecified => "MIGRATION_STATE_UNSPECIFIED",
-            MigrationState::Running => "RUNNING",
-            MigrationState::Paused => "PAUSED",
-            MigrationState::Complete => "COMPLETE",
+            Self::Unspecified => "MIGRATION_STATE_UNSPECIFIED",
+            Self::Running => "RUNNING",
+            Self::Paused => "PAUSED",
+            Self::Complete => "COMPLETE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -360,18 +358,16 @@ impl MigrationStep {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            MigrationStep::Unspecified => "MIGRATION_STEP_UNSPECIFIED",
-            MigrationStep::Prepare => "PREPARE",
-            MigrationStep::Start => "START",
-            MigrationStep::ApplyWritesSynchronously => "APPLY_WRITES_SYNCHRONOUSLY",
-            MigrationStep::CopyAndVerify => "COPY_AND_VERIFY",
-            MigrationStep::RedirectEventuallyConsistentReads => {
+            Self::Unspecified => "MIGRATION_STEP_UNSPECIFIED",
+            Self::Prepare => "PREPARE",
+            Self::Start => "START",
+            Self::ApplyWritesSynchronously => "APPLY_WRITES_SYNCHRONOUSLY",
+            Self::CopyAndVerify => "COPY_AND_VERIFY",
+            Self::RedirectEventuallyConsistentReads => {
                 "REDIRECT_EVENTUALLY_CONSISTENT_READS"
             }
-            MigrationStep::RedirectStronglyConsistentReads => {
-                "REDIRECT_STRONGLY_CONSISTENT_READS"
-            }
-            MigrationStep::RedirectWrites => "REDIRECT_WRITES",
+            Self::RedirectStronglyConsistentReads => "REDIRECT_STRONGLY_CONSISTENT_READS",
+            Self::RedirectWrites => "REDIRECT_WRITES",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -459,14 +455,14 @@ pub mod common_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Initializing => "INITIALIZING",
-                State::Processing => "PROCESSING",
-                State::Cancelling => "CANCELLING",
-                State::Finalizing => "FINALIZING",
-                State::Successful => "SUCCESSFUL",
-                State::Failed => "FAILED",
-                State::Cancelled => "CANCELLED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Initializing => "INITIALIZING",
+                Self::Processing => "PROCESSING",
+                Self::Cancelling => "CANCELLING",
+                Self::Finalizing => "FINALIZING",
+                Self::Successful => "SUCCESSFUL",
+                Self::Failed => "FAILED",
+                Self::Cancelled => "CANCELLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -776,11 +772,11 @@ impl OperationType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            OperationType::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
-            OperationType::ExportEntities => "EXPORT_ENTITIES",
-            OperationType::ImportEntities => "IMPORT_ENTITIES",
-            OperationType::CreateIndex => "CREATE_INDEX",
-            OperationType::DeleteIndex => "DELETE_INDEX",
+            Self::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
+            Self::ExportEntities => "EXPORT_ENTITIES",
+            Self::ImportEntities => "IMPORT_ENTITIES",
+            Self::CreateIndex => "CREATE_INDEX",
+            Self::DeleteIndex => "DELETE_INDEX",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -797,7 +793,13 @@ impl OperationType {
 }
 /// Generated client implementations.
 pub mod datastore_admin_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Google Cloud Datastore Admin API
@@ -946,8 +948,7 @@ pub mod datastore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -981,8 +982,7 @@ pub mod datastore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1025,8 +1025,7 @@ pub mod datastore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1066,8 +1065,7 @@ pub mod datastore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1094,8 +1092,7 @@ pub mod datastore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1127,8 +1124,7 @@ pub mod datastore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

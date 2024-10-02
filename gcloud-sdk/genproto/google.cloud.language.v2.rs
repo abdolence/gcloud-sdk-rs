@@ -51,9 +51,9 @@ pub mod document {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::PlainText => "PLAIN_TEXT",
-                Type::Html => "HTML",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::PlainText => "PLAIN_TEXT",
+                Self::Html => "HTML",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -211,19 +211,19 @@ pub mod entity {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unknown => "UNKNOWN",
-                Type::Person => "PERSON",
-                Type::Location => "LOCATION",
-                Type::Organization => "ORGANIZATION",
-                Type::Event => "EVENT",
-                Type::WorkOfArt => "WORK_OF_ART",
-                Type::ConsumerGood => "CONSUMER_GOOD",
-                Type::Other => "OTHER",
-                Type::PhoneNumber => "PHONE_NUMBER",
-                Type::Address => "ADDRESS",
-                Type::Date => "DATE",
-                Type::Number => "NUMBER",
-                Type::Price => "PRICE",
+                Self::Unknown => "UNKNOWN",
+                Self::Person => "PERSON",
+                Self::Location => "LOCATION",
+                Self::Organization => "ORGANIZATION",
+                Self::Event => "EVENT",
+                Self::WorkOfArt => "WORK_OF_ART",
+                Self::ConsumerGood => "CONSUMER_GOOD",
+                Self::Other => "OTHER",
+                Self::PhoneNumber => "PHONE_NUMBER",
+                Self::Address => "ADDRESS",
+                Self::Date => "DATE",
+                Self::Number => "NUMBER",
+                Self::Price => "PRICE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -314,9 +314,9 @@ pub mod entity_mention {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unknown => "TYPE_UNKNOWN",
-                Type::Proper => "PROPER",
-                Type::Common => "COMMON",
+                Self::Unknown => "TYPE_UNKNOWN",
+                Self::Proper => "PROPER",
+                Self::Common => "COMMON",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -484,9 +484,9 @@ pub mod moderate_text_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ModelVersion::Unspecified => "MODEL_VERSION_UNSPECIFIED",
-                ModelVersion::ModelVersion1 => "MODEL_VERSION_1",
-                ModelVersion::ModelVersion2 => "MODEL_VERSION_2",
+                Self::Unspecified => "MODEL_VERSION_UNSPECIFIED",
+                Self::ModelVersion1 => "MODEL_VERSION_1",
+                Self::ModelVersion2 => "MODEL_VERSION_2",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -617,10 +617,10 @@ impl EncodingType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            EncodingType::None => "NONE",
-            EncodingType::Utf8 => "UTF8",
-            EncodingType::Utf16 => "UTF16",
-            EncodingType::Utf32 => "UTF32",
+            Self::None => "NONE",
+            Self::Utf8 => "UTF8",
+            Self::Utf16 => "UTF16",
+            Self::Utf32 => "UTF32",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -636,7 +636,13 @@ impl EncodingType {
 }
 /// Generated client implementations.
 pub mod language_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Provides text analysis operations such as sentiment analysis and entity
@@ -733,8 +739,7 @@ pub mod language_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -766,8 +771,7 @@ pub mod language_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -797,8 +801,7 @@ pub mod language_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -828,8 +831,7 @@ pub mod language_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -859,8 +861,7 @@ pub mod language_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

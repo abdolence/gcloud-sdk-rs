@@ -86,8 +86,8 @@ pub mod synthesize_speech_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TimepointType::Unspecified => "TIMEPOINT_TYPE_UNSPECIFIED",
-                TimepointType::SsmlMark => "SSML_MARK",
+                Self::Unspecified => "TIMEPOINT_TYPE_UNSPECIFIED",
+                Self::SsmlMark => "SSML_MARK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -251,9 +251,9 @@ pub mod custom_voice_params {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReportedUsage::Unspecified => "REPORTED_USAGE_UNSPECIFIED",
-                ReportedUsage::Realtime => "REALTIME",
-                ReportedUsage::Offline => "OFFLINE",
+                Self::Unspecified => "REPORTED_USAGE_UNSPECIFIED",
+                Self::Realtime => "REALTIME",
+                Self::Offline => "OFFLINE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -386,10 +386,10 @@ impl SsmlVoiceGender {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SsmlVoiceGender::Unspecified => "SSML_VOICE_GENDER_UNSPECIFIED",
-            SsmlVoiceGender::Male => "MALE",
-            SsmlVoiceGender::Female => "FEMALE",
-            SsmlVoiceGender::Neutral => "NEUTRAL",
+            Self::Unspecified => "SSML_VOICE_GENDER_UNSPECIFIED",
+            Self::Male => "MALE",
+            Self::Female => "FEMALE",
+            Self::Neutral => "NEUTRAL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -437,13 +437,13 @@ impl AudioEncoding {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AudioEncoding::Unspecified => "AUDIO_ENCODING_UNSPECIFIED",
-            AudioEncoding::Linear16 => "LINEAR16",
-            AudioEncoding::Mp3 => "MP3",
-            AudioEncoding::Mp364Kbps => "MP3_64_KBPS",
-            AudioEncoding::OggOpus => "OGG_OPUS",
-            AudioEncoding::Mulaw => "MULAW",
-            AudioEncoding::Alaw => "ALAW",
+            Self::Unspecified => "AUDIO_ENCODING_UNSPECIFIED",
+            Self::Linear16 => "LINEAR16",
+            Self::Mp3 => "MP3",
+            Self::Mp364Kbps => "MP3_64_KBPS",
+            Self::OggOpus => "OGG_OPUS",
+            Self::Mulaw => "MULAW",
+            Self::Alaw => "ALAW",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -462,7 +462,13 @@ impl AudioEncoding {
 }
 /// Generated client implementations.
 pub mod text_to_speech_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service that implements Google Cloud Text-to-Speech API.
@@ -558,8 +564,7 @@ pub mod text_to_speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -590,8 +595,7 @@ pub mod text_to_speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -624,8 +628,7 @@ pub mod text_to_speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -687,7 +690,13 @@ pub struct SynthesizeLongAudioMetadata {
 }
 /// Generated client implementations.
 pub mod text_to_speech_long_audio_synthesize_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service that implements Google Cloud Text-to-Speech API.
@@ -785,8 +794,7 @@ pub mod text_to_speech_long_audio_synthesize_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -92,12 +92,12 @@ pub mod threat_log {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Severity::Unspecified => "SEVERITY_UNSPECIFIED",
-                Severity::Low => "LOW",
-                Severity::Medium => "MEDIUM",
-                Severity::High => "HIGH",
-                Severity::Critical => "CRITICAL",
-                Severity::Informational => "INFORMATIONAL",
+                Self::Unspecified => "SEVERITY_UNSPECIFIED",
+                Self::Low => "LOW",
+                Self::Medium => "MEDIUM",
+                Self::High => "HIGH",
+                Self::Critical => "CRITICAL",
+                Self::Informational => "INFORMATIONAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -140,9 +140,9 @@ pub mod threat_log {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Direction::Undefined => "DIRECTION_UNDEFINED",
-                Direction::ClientToServer => "CLIENT_TO_SERVER",
-                Direction::ServerToClient => "SERVER_TO_CLIENT",
+                Self::Undefined => "DIRECTION_UNDEFINED",
+                Self::ClientToServer => "CLIENT_TO_SERVER",
+                Self::ServerToClient => "SERVER_TO_CLIENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

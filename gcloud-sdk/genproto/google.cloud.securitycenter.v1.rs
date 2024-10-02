@@ -322,9 +322,9 @@ pub mod attack_exposure {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Calculated => "CALCULATED",
-                State::NotCalculated => "NOT_CALCULATED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Calculated => "CALCULATED",
+                Self::NotCalculated => "NOT_CALCULATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -452,11 +452,11 @@ pub mod attack_path {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    NodeType::Unspecified => "NODE_TYPE_UNSPECIFIED",
-                    NodeType::And => "NODE_TYPE_AND",
-                    NodeType::Or => "NODE_TYPE_OR",
-                    NodeType::Defense => "NODE_TYPE_DEFENSE",
-                    NodeType::Attacker => "NODE_TYPE_ATTACKER",
+                    Self::Unspecified => "NODE_TYPE_UNSPECIFIED",
+                    Self::And => "NODE_TYPE_AND",
+                    Self::Or => "NODE_TYPE_OR",
+                    Self::Defense => "NODE_TYPE_DEFENSE",
+                    Self::Attacker => "NODE_TYPE_ATTACKER",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -744,9 +744,9 @@ pub mod cloud_dlp_data_profile {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ParentType::Unspecified => "PARENT_TYPE_UNSPECIFIED",
-                ParentType::Organization => "ORGANIZATION",
-                ParentType::Project => "PROJECT",
+                Self::Unspecified => "PARENT_TYPE_UNSPECIFIED",
+                Self::Organization => "ORGANIZATION",
+                Self::Project => "PROJECT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -854,12 +854,12 @@ pub mod connection {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Protocol::Unspecified => "PROTOCOL_UNSPECIFIED",
-                Protocol::Icmp => "ICMP",
-                Protocol::Tcp => "TCP",
-                Protocol::Udp => "UDP",
-                Protocol::Gre => "GRE",
-                Protocol::Esp => "ESP",
+                Self::Unspecified => "PROTOCOL_UNSPECIFIED",
+                Self::Icmp => "ICMP",
+                Self::Tcp => "TCP",
+                Self::Udp => "UDP",
+                Self::Gre => "GRE",
+                Self::Esp => "ESP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1033,9 +1033,9 @@ pub mod effective_event_threat_detection_custom_module {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EnablementState::Unspecified => "ENABLEMENT_STATE_UNSPECIFIED",
-                EnablementState::Enabled => "ENABLED",
-                EnablementState::Disabled => "DISABLED",
+                Self::Unspecified => "ENABLEMENT_STATE_UNSPECIFIED",
+                Self::Enabled => "ENABLED",
+                Self::Disabled => "DISABLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1148,11 +1148,11 @@ pub mod custom_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Severity::Unspecified => "SEVERITY_UNSPECIFIED",
-                Severity::Critical => "CRITICAL",
-                Severity::High => "HIGH",
-                Severity::Medium => "MEDIUM",
-                Severity::Low => "LOW",
+                Self::Unspecified => "SEVERITY_UNSPECIFIED",
+                Self::Critical => "CRITICAL",
+                Self::High => "HIGH",
+                Self::Medium => "MEDIUM",
+                Self::Low => "LOW",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1234,9 +1234,9 @@ pub mod effective_security_health_analytics_custom_module {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EnablementState::Unspecified => "ENABLEMENT_STATE_UNSPECIFIED",
-                EnablementState::Enabled => "ENABLED",
-                EnablementState::Disabled => "DISABLED",
+                Self::Unspecified => "ENABLEMENT_STATE_UNSPECIFIED",
+                Self::Enabled => "ENABLED",
+                Self::Disabled => "DISABLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1330,10 +1330,10 @@ pub mod event_threat_detection_custom_module {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EnablementState::Unspecified => "ENABLEMENT_STATE_UNSPECIFIED",
-                EnablementState::Enabled => "ENABLED",
-                EnablementState::Disabled => "DISABLED",
-                EnablementState::Inherited => "INHERITED",
+                Self::Unspecified => "ENABLEMENT_STATE_UNSPECIFIED",
+                Self::Enabled => "ENABLED",
+                Self::Disabled => "DISABLED",
+                Self::Inherited => "INHERITED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1574,8 +1574,8 @@ pub mod group_membership {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                GroupType::Unspecified => "GROUP_TYPE_UNSPECIFIED",
-                GroupType::ToxicCombination => "GROUP_TYPE_TOXIC_COMBINATION",
+                Self::Unspecified => "GROUP_TYPE_UNSPECIFIED",
+                Self::ToxicCombination => "GROUP_TYPE_TOXIC_COMBINATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1634,9 +1634,9 @@ pub mod iam_binding {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Action::Unspecified => "ACTION_UNSPECIFIED",
-                Action::Add => "ADD",
-                Action::Remove => "REMOVE",
+                Self::Unspecified => "ACTION_UNSPECIFIED",
+                Self::Add => "ADD",
+                Self::Remove => "REMOVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1745,9 +1745,9 @@ pub mod indicator {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    SignatureType::Unspecified => "SIGNATURE_TYPE_UNSPECIFIED",
-                    SignatureType::Process => "SIGNATURE_TYPE_PROCESS",
-                    SignatureType::File => "SIGNATURE_TYPE_FILE",
+                    Self::Unspecified => "SIGNATURE_TYPE_UNSPECIFIED",
+                    Self::Process => "SIGNATURE_TYPE_PROCESS",
+                    Self::File => "SIGNATURE_TYPE_FILE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1926,9 +1926,9 @@ pub mod kubernetes {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Kind::Unspecified => "KIND_UNSPECIFIED",
-                    Kind::Role => "ROLE",
-                    Kind::ClusterRole => "CLUSTER_ROLE",
+                    Self::Unspecified => "KIND_UNSPECIFIED",
+                    Self::Role => "ROLE",
+                    Self::ClusterRole => "CLUSTER_ROLE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2004,10 +2004,10 @@ pub mod kubernetes {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    AuthType::Unspecified => "AUTH_TYPE_UNSPECIFIED",
-                    AuthType::User => "USER",
-                    AuthType::Serviceaccount => "SERVICEACCOUNT",
-                    AuthType::Group => "GROUP",
+                    Self::Unspecified => "AUTH_TYPE_UNSPECIFIED",
+                    Self::User => "USER",
+                    Self::Serviceaccount => "SERVICEACCOUNT",
+                    Self::Group => "GROUP",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2203,21 +2203,21 @@ pub mod mitre_attack {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Tactic::Unspecified => "TACTIC_UNSPECIFIED",
-                Tactic::Reconnaissance => "RECONNAISSANCE",
-                Tactic::ResourceDevelopment => "RESOURCE_DEVELOPMENT",
-                Tactic::InitialAccess => "INITIAL_ACCESS",
-                Tactic::Execution => "EXECUTION",
-                Tactic::Persistence => "PERSISTENCE",
-                Tactic::PrivilegeEscalation => "PRIVILEGE_ESCALATION",
-                Tactic::DefenseEvasion => "DEFENSE_EVASION",
-                Tactic::CredentialAccess => "CREDENTIAL_ACCESS",
-                Tactic::Discovery => "DISCOVERY",
-                Tactic::LateralMovement => "LATERAL_MOVEMENT",
-                Tactic::Collection => "COLLECTION",
-                Tactic::CommandAndControl => "COMMAND_AND_CONTROL",
-                Tactic::Exfiltration => "EXFILTRATION",
-                Tactic::Impact => "IMPACT",
+                Self::Unspecified => "TACTIC_UNSPECIFIED",
+                Self::Reconnaissance => "RECONNAISSANCE",
+                Self::ResourceDevelopment => "RESOURCE_DEVELOPMENT",
+                Self::InitialAccess => "INITIAL_ACCESS",
+                Self::Execution => "EXECUTION",
+                Self::Persistence => "PERSISTENCE",
+                Self::PrivilegeEscalation => "PRIVILEGE_ESCALATION",
+                Self::DefenseEvasion => "DEFENSE_EVASION",
+                Self::CredentialAccess => "CREDENTIAL_ACCESS",
+                Self::Discovery => "DISCOVERY",
+                Self::LateralMovement => "LATERAL_MOVEMENT",
+                Self::Collection => "COLLECTION",
+                Self::CommandAndControl => "COMMAND_AND_CONTROL",
+                Self::Exfiltration => "EXFILTRATION",
+                Self::Impact => "IMPACT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2396,99 +2396,89 @@ pub mod mitre_attack {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Technique::Unspecified => "TECHNIQUE_UNSPECIFIED",
-                Technique::Masquerading => "MASQUERADING",
-                Technique::MatchLegitimateNameOrLocation => {
+                Self::Unspecified => "TECHNIQUE_UNSPECIFIED",
+                Self::Masquerading => "MASQUERADING",
+                Self::MatchLegitimateNameOrLocation => {
                     "MATCH_LEGITIMATE_NAME_OR_LOCATION"
                 }
-                Technique::BootOrLogonInitializationScripts => {
+                Self::BootOrLogonInitializationScripts => {
                     "BOOT_OR_LOGON_INITIALIZATION_SCRIPTS"
                 }
-                Technique::StartupItems => "STARTUP_ITEMS",
-                Technique::NetworkServiceDiscovery => "NETWORK_SERVICE_DISCOVERY",
-                Technique::ProcessDiscovery => "PROCESS_DISCOVERY",
-                Technique::CommandAndScriptingInterpreter => {
+                Self::StartupItems => "STARTUP_ITEMS",
+                Self::NetworkServiceDiscovery => "NETWORK_SERVICE_DISCOVERY",
+                Self::ProcessDiscovery => "PROCESS_DISCOVERY",
+                Self::CommandAndScriptingInterpreter => {
                     "COMMAND_AND_SCRIPTING_INTERPRETER"
                 }
-                Technique::UnixShell => "UNIX_SHELL",
-                Technique::Python => "PYTHON",
-                Technique::ExploitationForPrivilegeEscalation => {
+                Self::UnixShell => "UNIX_SHELL",
+                Self::Python => "PYTHON",
+                Self::ExploitationForPrivilegeEscalation => {
                     "EXPLOITATION_FOR_PRIVILEGE_ESCALATION"
                 }
-                Technique::PermissionGroupsDiscovery => "PERMISSION_GROUPS_DISCOVERY",
-                Technique::CloudGroups => "CLOUD_GROUPS",
-                Technique::IndicatorRemovalFileDeletion => {
-                    "INDICATOR_REMOVAL_FILE_DELETION"
-                }
-                Technique::ApplicationLayerProtocol => "APPLICATION_LAYER_PROTOCOL",
-                Technique::Dns => "DNS",
-                Technique::SoftwareDeploymentTools => "SOFTWARE_DEPLOYMENT_TOOLS",
-                Technique::ValidAccounts => "VALID_ACCOUNTS",
-                Technique::DefaultAccounts => "DEFAULT_ACCOUNTS",
-                Technique::LocalAccounts => "LOCAL_ACCOUNTS",
-                Technique::CloudAccounts => "CLOUD_ACCOUNTS",
-                Technique::Proxy => "PROXY",
-                Technique::ExternalProxy => "EXTERNAL_PROXY",
-                Technique::MultiHopProxy => "MULTI_HOP_PROXY",
-                Technique::AccountManipulation => "ACCOUNT_MANIPULATION",
-                Technique::AdditionalCloudCredentials => "ADDITIONAL_CLOUD_CREDENTIALS",
-                Technique::SshAuthorizedKeys => "SSH_AUTHORIZED_KEYS",
-                Technique::AdditionalContainerClusterRoles => {
+                Self::PermissionGroupsDiscovery => "PERMISSION_GROUPS_DISCOVERY",
+                Self::CloudGroups => "CLOUD_GROUPS",
+                Self::IndicatorRemovalFileDeletion => "INDICATOR_REMOVAL_FILE_DELETION",
+                Self::ApplicationLayerProtocol => "APPLICATION_LAYER_PROTOCOL",
+                Self::Dns => "DNS",
+                Self::SoftwareDeploymentTools => "SOFTWARE_DEPLOYMENT_TOOLS",
+                Self::ValidAccounts => "VALID_ACCOUNTS",
+                Self::DefaultAccounts => "DEFAULT_ACCOUNTS",
+                Self::LocalAccounts => "LOCAL_ACCOUNTS",
+                Self::CloudAccounts => "CLOUD_ACCOUNTS",
+                Self::Proxy => "PROXY",
+                Self::ExternalProxy => "EXTERNAL_PROXY",
+                Self::MultiHopProxy => "MULTI_HOP_PROXY",
+                Self::AccountManipulation => "ACCOUNT_MANIPULATION",
+                Self::AdditionalCloudCredentials => "ADDITIONAL_CLOUD_CREDENTIALS",
+                Self::SshAuthorizedKeys => "SSH_AUTHORIZED_KEYS",
+                Self::AdditionalContainerClusterRoles => {
                     "ADDITIONAL_CONTAINER_CLUSTER_ROLES"
                 }
-                Technique::IngressToolTransfer => "INGRESS_TOOL_TRANSFER",
-                Technique::NativeApi => "NATIVE_API",
-                Technique::BruteForce => "BRUTE_FORCE",
-                Technique::SharedModules => "SHARED_MODULES",
-                Technique::AccessTokenManipulation => "ACCESS_TOKEN_MANIPULATION",
-                Technique::TokenImpersonationOrTheft => "TOKEN_IMPERSONATION_OR_THEFT",
-                Technique::ExploitPublicFacingApplication => {
+                Self::IngressToolTransfer => "INGRESS_TOOL_TRANSFER",
+                Self::NativeApi => "NATIVE_API",
+                Self::BruteForce => "BRUTE_FORCE",
+                Self::SharedModules => "SHARED_MODULES",
+                Self::AccessTokenManipulation => "ACCESS_TOKEN_MANIPULATION",
+                Self::TokenImpersonationOrTheft => "TOKEN_IMPERSONATION_OR_THEFT",
+                Self::ExploitPublicFacingApplication => {
                     "EXPLOIT_PUBLIC_FACING_APPLICATION"
                 }
-                Technique::DomainPolicyModification => "DOMAIN_POLICY_MODIFICATION",
-                Technique::DataDestruction => "DATA_DESTRUCTION",
-                Technique::ServiceStop => "SERVICE_STOP",
-                Technique::InhibitSystemRecovery => "INHIBIT_SYSTEM_RECOVERY",
-                Technique::ResourceHijacking => "RESOURCE_HIJACKING",
-                Technique::NetworkDenialOfService => "NETWORK_DENIAL_OF_SERVICE",
-                Technique::CloudServiceDiscovery => "CLOUD_SERVICE_DISCOVERY",
-                Technique::StealApplicationAccessToken => {
-                    "STEAL_APPLICATION_ACCESS_TOKEN"
-                }
-                Technique::AccountAccessRemoval => "ACCOUNT_ACCESS_REMOVAL",
-                Technique::StealWebSessionCookie => "STEAL_WEB_SESSION_COOKIE",
-                Technique::CreateOrModifySystemProcess => {
-                    "CREATE_OR_MODIFY_SYSTEM_PROCESS"
-                }
-                Technique::AbuseElevationControlMechanism => {
+                Self::DomainPolicyModification => "DOMAIN_POLICY_MODIFICATION",
+                Self::DataDestruction => "DATA_DESTRUCTION",
+                Self::ServiceStop => "SERVICE_STOP",
+                Self::InhibitSystemRecovery => "INHIBIT_SYSTEM_RECOVERY",
+                Self::ResourceHijacking => "RESOURCE_HIJACKING",
+                Self::NetworkDenialOfService => "NETWORK_DENIAL_OF_SERVICE",
+                Self::CloudServiceDiscovery => "CLOUD_SERVICE_DISCOVERY",
+                Self::StealApplicationAccessToken => "STEAL_APPLICATION_ACCESS_TOKEN",
+                Self::AccountAccessRemoval => "ACCOUNT_ACCESS_REMOVAL",
+                Self::StealWebSessionCookie => "STEAL_WEB_SESSION_COOKIE",
+                Self::CreateOrModifySystemProcess => "CREATE_OR_MODIFY_SYSTEM_PROCESS",
+                Self::AbuseElevationControlMechanism => {
                     "ABUSE_ELEVATION_CONTROL_MECHANISM"
                 }
-                Technique::UnsecuredCredentials => "UNSECURED_CREDENTIALS",
-                Technique::ModifyAuthenticationProcess => "MODIFY_AUTHENTICATION_PROCESS",
-                Technique::ImpairDefenses => "IMPAIR_DEFENSES",
-                Technique::DisableOrModifyTools => "DISABLE_OR_MODIFY_TOOLS",
-                Technique::ExfiltrationOverWebService => "EXFILTRATION_OVER_WEB_SERVICE",
-                Technique::ExfiltrationToCloudStorage => "EXFILTRATION_TO_CLOUD_STORAGE",
-                Technique::DynamicResolution => "DYNAMIC_RESOLUTION",
-                Technique::LateralToolTransfer => "LATERAL_TOOL_TRANSFER",
-                Technique::ModifyCloudComputeInfrastructure => {
+                Self::UnsecuredCredentials => "UNSECURED_CREDENTIALS",
+                Self::ModifyAuthenticationProcess => "MODIFY_AUTHENTICATION_PROCESS",
+                Self::ImpairDefenses => "IMPAIR_DEFENSES",
+                Self::DisableOrModifyTools => "DISABLE_OR_MODIFY_TOOLS",
+                Self::ExfiltrationOverWebService => "EXFILTRATION_OVER_WEB_SERVICE",
+                Self::ExfiltrationToCloudStorage => "EXFILTRATION_TO_CLOUD_STORAGE",
+                Self::DynamicResolution => "DYNAMIC_RESOLUTION",
+                Self::LateralToolTransfer => "LATERAL_TOOL_TRANSFER",
+                Self::ModifyCloudComputeInfrastructure => {
                     "MODIFY_CLOUD_COMPUTE_INFRASTRUCTURE"
                 }
-                Technique::CreateSnapshot => "CREATE_SNAPSHOT",
-                Technique::CloudInfrastructureDiscovery => {
-                    "CLOUD_INFRASTRUCTURE_DISCOVERY"
-                }
-                Technique::ObtainCapabilities => "OBTAIN_CAPABILITIES",
-                Technique::ActiveScanning => "ACTIVE_SCANNING",
-                Technique::ScanningIpBlocks => "SCANNING_IP_BLOCKS",
-                Technique::ContainerAdministrationCommand => {
+                Self::CreateSnapshot => "CREATE_SNAPSHOT",
+                Self::CloudInfrastructureDiscovery => "CLOUD_INFRASTRUCTURE_DISCOVERY",
+                Self::ObtainCapabilities => "OBTAIN_CAPABILITIES",
+                Self::ActiveScanning => "ACTIVE_SCANNING",
+                Self::ScanningIpBlocks => "SCANNING_IP_BLOCKS",
+                Self::ContainerAdministrationCommand => {
                     "CONTAINER_ADMINISTRATION_COMMAND"
                 }
-                Technique::EscapeToHost => "ESCAPE_TO_HOST",
-                Technique::ContainerAndResourceDiscovery => {
-                    "CONTAINER_AND_RESOURCE_DISCOVERY"
-                }
-                Technique::StealOrForgeAuthenticationCertificates => {
+                Self::EscapeToHost => "ESCAPE_TO_HOST",
+                Self::ContainerAndResourceDiscovery => "CONTAINER_AND_RESOURCE_DISCOVERY",
+                Self::StealOrForgeAuthenticationCertificates => {
                     "STEAL_OR_FORGE_AUTHENTICATION_CERTIFICATES"
                 }
             }
@@ -2842,11 +2832,11 @@ pub mod cve {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RiskRating::Unspecified => "RISK_RATING_UNSPECIFIED",
-                RiskRating::Low => "LOW",
-                RiskRating::Medium => "MEDIUM",
-                RiskRating::High => "HIGH",
-                RiskRating::Critical => "CRITICAL",
+                Self::Unspecified => "RISK_RATING_UNSPECIFIED",
+                Self::Low => "LOW",
+                Self::Medium => "MEDIUM",
+                Self::High => "HIGH",
+                Self::Critical => "CRITICAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2897,12 +2887,12 @@ pub mod cve {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ExploitationActivity::Unspecified => "EXPLOITATION_ACTIVITY_UNSPECIFIED",
-                ExploitationActivity::Wide => "WIDE",
-                ExploitationActivity::Confirmed => "CONFIRMED",
-                ExploitationActivity::Available => "AVAILABLE",
-                ExploitationActivity::Anticipated => "ANTICIPATED",
-                ExploitationActivity::NoKnown => "NO_KNOWN",
+                Self::Unspecified => "EXPLOITATION_ACTIVITY_UNSPECIFIED",
+                Self::Wide => "WIDE",
+                Self::Confirmed => "CONFIRMED",
+                Self::Available => "AVAILABLE",
+                Self::Anticipated => "ANTICIPATED",
+                Self::NoKnown => "NO_KNOWN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3014,11 +3004,11 @@ pub mod cvssv3 {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AttackVector::Unspecified => "ATTACK_VECTOR_UNSPECIFIED",
-                AttackVector::Network => "ATTACK_VECTOR_NETWORK",
-                AttackVector::Adjacent => "ATTACK_VECTOR_ADJACENT",
-                AttackVector::Local => "ATTACK_VECTOR_LOCAL",
-                AttackVector::Physical => "ATTACK_VECTOR_PHYSICAL",
+                Self::Unspecified => "ATTACK_VECTOR_UNSPECIFIED",
+                Self::Network => "ATTACK_VECTOR_NETWORK",
+                Self::Adjacent => "ATTACK_VECTOR_ADJACENT",
+                Self::Local => "ATTACK_VECTOR_LOCAL",
+                Self::Physical => "ATTACK_VECTOR_PHYSICAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3068,9 +3058,9 @@ pub mod cvssv3 {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AttackComplexity::Unspecified => "ATTACK_COMPLEXITY_UNSPECIFIED",
-                AttackComplexity::Low => "ATTACK_COMPLEXITY_LOW",
-                AttackComplexity::High => "ATTACK_COMPLEXITY_HIGH",
+                Self::Unspecified => "ATTACK_COMPLEXITY_UNSPECIFIED",
+                Self::Low => "ATTACK_COMPLEXITY_LOW",
+                Self::High => "ATTACK_COMPLEXITY_HIGH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3121,10 +3111,10 @@ pub mod cvssv3 {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PrivilegesRequired::Unspecified => "PRIVILEGES_REQUIRED_UNSPECIFIED",
-                PrivilegesRequired::None => "PRIVILEGES_REQUIRED_NONE",
-                PrivilegesRequired::Low => "PRIVILEGES_REQUIRED_LOW",
-                PrivilegesRequired::High => "PRIVILEGES_REQUIRED_HIGH",
+                Self::Unspecified => "PRIVILEGES_REQUIRED_UNSPECIFIED",
+                Self::None => "PRIVILEGES_REQUIRED_NONE",
+                Self::Low => "PRIVILEGES_REQUIRED_LOW",
+                Self::High => "PRIVILEGES_REQUIRED_HIGH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3169,9 +3159,9 @@ pub mod cvssv3 {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                UserInteraction::Unspecified => "USER_INTERACTION_UNSPECIFIED",
-                UserInteraction::None => "USER_INTERACTION_NONE",
-                UserInteraction::Required => "USER_INTERACTION_REQUIRED",
+                Self::Unspecified => "USER_INTERACTION_UNSPECIFIED",
+                Self::None => "USER_INTERACTION_NONE",
+                Self::Required => "USER_INTERACTION_REQUIRED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3215,9 +3205,9 @@ pub mod cvssv3 {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Scope::Unspecified => "SCOPE_UNSPECIFIED",
-                Scope::Unchanged => "SCOPE_UNCHANGED",
-                Scope::Changed => "SCOPE_CHANGED",
+                Self::Unspecified => "SCOPE_UNSPECIFIED",
+                Self::Unchanged => "SCOPE_UNCHANGED",
+                Self::Changed => "SCOPE_CHANGED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3262,10 +3252,10 @@ pub mod cvssv3 {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Impact::Unspecified => "IMPACT_UNSPECIFIED",
-                Impact::High => "IMPACT_HIGH",
-                Impact::Low => "IMPACT_LOW",
-                Impact::None => "IMPACT_NONE",
+                Self::Unspecified => "IMPACT_UNSPECIFIED",
+                Self::High => "IMPACT_HIGH",
+                Self::Low => "IMPACT_LOW",
+                Self::None => "IMPACT_NONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3627,9 +3617,9 @@ pub mod finding {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::Inactive => "INACTIVE",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Inactive => "INACTIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3716,11 +3706,11 @@ pub mod finding {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Severity::Unspecified => "SEVERITY_UNSPECIFIED",
-                Severity::Critical => "CRITICAL",
-                Severity::High => "HIGH",
-                Severity::Medium => "MEDIUM",
-                Severity::Low => "LOW",
+                Self::Unspecified => "SEVERITY_UNSPECIFIED",
+                Self::Critical => "CRITICAL",
+                Self::High => "HIGH",
+                Self::Medium => "MEDIUM",
+                Self::Low => "LOW",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3765,10 +3755,10 @@ pub mod finding {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Mute::Unspecified => "MUTE_UNSPECIFIED",
-                Mute::Muted => "MUTED",
-                Mute::Unmuted => "UNMUTED",
-                Mute::Undefined => "UNDEFINED",
+                Self::Unspecified => "MUTE_UNSPECIFIED",
+                Self::Muted => "MUTED",
+                Self::Unmuted => "UNMUTED",
+                Self::Undefined => "UNDEFINED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3826,14 +3816,14 @@ pub mod finding {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FindingClass::Unspecified => "FINDING_CLASS_UNSPECIFIED",
-                FindingClass::Threat => "THREAT",
-                FindingClass::Vulnerability => "VULNERABILITY",
-                FindingClass::Misconfiguration => "MISCONFIGURATION",
-                FindingClass::Observation => "OBSERVATION",
-                FindingClass::SccError => "SCC_ERROR",
-                FindingClass::PostureViolation => "POSTURE_VIOLATION",
-                FindingClass::ToxicCombination => "TOXIC_COMBINATION",
+                Self::Unspecified => "FINDING_CLASS_UNSPECIFIED",
+                Self::Threat => "THREAT",
+                Self::Vulnerability => "VULNERABILITY",
+                Self::Misconfiguration => "MISCONFIGURATION",
+                Self::Observation => "OBSERVATION",
+                Self::SccError => "SCC_ERROR",
+                Self::PostureViolation => "POSTURE_VIOLATION",
+                Self::ToxicCombination => "TOXIC_COMBINATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3958,9 +3948,9 @@ pub mod mute_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MuteConfigType::Unspecified => "MUTE_CONFIG_TYPE_UNSPECIFIED",
-                MuteConfigType::Static => "STATIC",
-                MuteConfigType::Dynamic => "DYNAMIC",
+                Self::Unspecified => "MUTE_CONFIG_TYPE_UNSPECIFIED",
+                Self::Static => "STATIC",
+                Self::Dynamic => "DYNAMIC",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4288,18 +4278,16 @@ pub mod resource_path {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ResourcePathNodeType::Unspecified => {
-                    "RESOURCE_PATH_NODE_TYPE_UNSPECIFIED"
-                }
-                ResourcePathNodeType::GcpOrganization => "GCP_ORGANIZATION",
-                ResourcePathNodeType::GcpFolder => "GCP_FOLDER",
-                ResourcePathNodeType::GcpProject => "GCP_PROJECT",
-                ResourcePathNodeType::AwsOrganization => "AWS_ORGANIZATION",
-                ResourcePathNodeType::AwsOrganizationalUnit => "AWS_ORGANIZATIONAL_UNIT",
-                ResourcePathNodeType::AwsAccount => "AWS_ACCOUNT",
-                ResourcePathNodeType::AzureManagementGroup => "AZURE_MANAGEMENT_GROUP",
-                ResourcePathNodeType::AzureSubscription => "AZURE_SUBSCRIPTION",
-                ResourcePathNodeType::AzureResourceGroup => "AZURE_RESOURCE_GROUP",
+                Self::Unspecified => "RESOURCE_PATH_NODE_TYPE_UNSPECIFIED",
+                Self::GcpOrganization => "GCP_ORGANIZATION",
+                Self::GcpFolder => "GCP_FOLDER",
+                Self::GcpProject => "GCP_PROJECT",
+                Self::AwsOrganization => "AWS_ORGANIZATION",
+                Self::AwsOrganizationalUnit => "AWS_ORGANIZATIONAL_UNIT",
+                Self::AwsAccount => "AWS_ACCOUNT",
+                Self::AzureManagementGroup => "AZURE_MANAGEMENT_GROUP",
+                Self::AzureSubscription => "AZURE_SUBSCRIPTION",
+                Self::AzureResourceGroup => "AZURE_RESOURCE_GROUP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4341,10 +4329,10 @@ impl CloudProvider {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            CloudProvider::Unspecified => "CLOUD_PROVIDER_UNSPECIFIED",
-            CloudProvider::GoogleCloudPlatform => "GOOGLE_CLOUD_PLATFORM",
-            CloudProvider::AmazonWebServices => "AMAZON_WEB_SERVICES",
-            CloudProvider::MicrosoftAzure => "MICROSOFT_AZURE",
+            Self::Unspecified => "CLOUD_PROVIDER_UNSPECIFIED",
+            Self::GoogleCloudPlatform => "GOOGLE_CLOUD_PLATFORM",
+            Self::AmazonWebServices => "AMAZON_WEB_SERVICES",
+            Self::MicrosoftAzure => "MICROSOFT_AZURE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4460,9 +4448,9 @@ pub mod organization_settings {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    InclusionMode::Unspecified => "INCLUSION_MODE_UNSPECIFIED",
-                    InclusionMode::IncludeOnly => "INCLUDE_ONLY",
-                    InclusionMode::Exclude => "EXCLUDE",
+                    Self::Unspecified => "INCLUSION_MODE_UNSPECIFIED",
+                    Self::IncludeOnly => "INCLUDE_ONLY",
+                    Self::Exclude => "EXCLUDE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4575,11 +4563,11 @@ impl ResourceValue {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ResourceValue::Unspecified => "RESOURCE_VALUE_UNSPECIFIED",
-            ResourceValue::High => "HIGH",
-            ResourceValue::Medium => "MEDIUM",
-            ResourceValue::Low => "LOW",
-            ResourceValue::None => "NONE",
+            Self::Unspecified => "RESOURCE_VALUE_UNSPECIFIED",
+            Self::High => "HIGH",
+            Self::Medium => "MEDIUM",
+            Self::Low => "LOW",
+            Self::None => "NONE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4637,10 +4625,10 @@ pub mod run_asset_discovery_response {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Completed => "COMPLETED",
-                State::Superseded => "SUPERSEDED",
-                State::Terminated => "TERMINATED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Completed => "COMPLETED",
+                Self::Superseded => "SUPERSEDED",
+                Self::Terminated => "TERMINATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4737,10 +4725,10 @@ pub mod security_health_analytics_custom_module {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EnablementState::Unspecified => "ENABLEMENT_STATE_UNSPECIFIED",
-                EnablementState::Enabled => "ENABLED",
-                EnablementState::Disabled => "DISABLED",
-                EnablementState::Inherited => "INHERITED",
+                Self::Unspecified => "ENABLEMENT_STATE_UNSPECIFIED",
+                Self::Enabled => "ENABLED",
+                Self::Disabled => "DISABLED",
+                Self::Inherited => "INHERITED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4823,10 +4811,10 @@ pub mod valued_resource {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ResourceValue::Unspecified => "RESOURCE_VALUE_UNSPECIFIED",
-                ResourceValue::Low => "RESOURCE_VALUE_LOW",
-                ResourceValue::Medium => "RESOURCE_VALUE_MEDIUM",
-                ResourceValue::High => "RESOURCE_VALUE_HIGH",
+                Self::Unspecified => "RESOURCE_VALUE_UNSPECIFIED",
+                Self::Low => "RESOURCE_VALUE_LOW",
+                Self::Medium => "RESOURCE_VALUE_MEDIUM",
+                Self::High => "RESOURCE_VALUE_HIGH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4981,9 +4969,9 @@ pub mod bulk_mute_findings_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MuteState::Unspecified => "MUTE_STATE_UNSPECIFIED",
-                MuteState::Muted => "MUTED",
-                MuteState::Undefined => "UNDEFINED",
+                Self::Unspecified => "MUTE_STATE_UNSPECIFIED",
+                Self::Muted => "MUTED",
+                Self::Undefined => "UNDEFINED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6127,10 +6115,10 @@ pub mod list_assets_response {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    StateChange::Unused => "UNUSED",
-                    StateChange::Added => "ADDED",
-                    StateChange::Removed => "REMOVED",
-                    StateChange::Active => "ACTIVE",
+                    Self::Unused => "UNUSED",
+                    Self::Added => "ADDED",
+                    Self::Removed => "REMOVED",
+                    Self::Active => "ACTIVE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6446,11 +6434,11 @@ pub mod list_findings_response {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    StateChange::Unused => "UNUSED",
-                    StateChange::Changed => "CHANGED",
-                    StateChange::Unchanged => "UNCHANGED",
-                    StateChange::Added => "ADDED",
-                    StateChange::Removed => "REMOVED",
+                    Self::Unused => "UNUSED",
+                    Self::Changed => "CHANGED",
+                    Self::Unchanged => "UNCHANGED",
+                    Self::Added => "ADDED",
+                    Self::Removed => "REMOVED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6999,7 +6987,13 @@ pub struct ListEffectiveEventThreatDetectionCustomModulesResponse {
 }
 /// Generated client implementations.
 pub mod security_center_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// V1 APIs for Security Center service.
@@ -7097,8 +7091,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7133,8 +7126,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7161,8 +7153,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7190,8 +7181,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7218,8 +7208,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7249,8 +7238,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7277,8 +7265,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7305,8 +7292,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7337,8 +7323,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7366,8 +7351,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7394,8 +7378,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7422,8 +7405,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7455,8 +7437,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7483,8 +7464,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7514,8 +7494,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7545,8 +7524,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7578,8 +7556,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7611,8 +7588,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7639,8 +7615,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7660,6 +7635,7 @@ pub mod security_center_client {
         }
         /// Filters an organization's assets and  groups them by their specified
         /// properties.
+        #[deprecated]
         pub async fn group_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::GroupAssetsRequest>,
@@ -7671,8 +7647,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7708,8 +7683,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7728,6 +7702,7 @@ pub mod security_center_client {
             self.inner.unary(req, path, codec).await
         }
         /// Lists an organization's assets.
+        #[deprecated]
         pub async fn list_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAssetsRequest>,
@@ -7739,8 +7714,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7775,8 +7749,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7809,8 +7782,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7840,8 +7812,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7871,8 +7842,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7908,8 +7878,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7943,8 +7912,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7974,8 +7942,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7999,6 +7966,7 @@ pub mod security_center_client {
         /// This API can only be called with limited frequency for an organization. If
         /// it is called too frequently the caller will receive a TOO_MANY_REQUESTS
         /// error.
+        #[deprecated]
         pub async fn run_asset_discovery(
             &mut self,
             request: impl tonic::IntoRequest<super::RunAssetDiscoveryRequest>,
@@ -8010,8 +7978,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8038,8 +8005,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8066,8 +8032,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8099,8 +8064,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8134,8 +8098,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8167,8 +8130,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8195,8 +8157,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8224,8 +8185,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8252,8 +8212,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8285,8 +8244,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8316,8 +8274,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8353,8 +8310,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8381,8 +8337,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8409,8 +8364,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8437,8 +8391,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8465,8 +8418,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8493,8 +8445,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8528,8 +8479,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8564,8 +8514,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8596,8 +8545,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8629,8 +8577,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8665,8 +8612,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8700,8 +8646,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8738,8 +8683,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8771,8 +8715,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8804,8 +8747,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8841,8 +8783,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8875,8 +8816,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8903,8 +8843,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8934,8 +8873,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8965,8 +8903,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8996,8 +8933,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -9027,8 +8963,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -9059,8 +8994,7 @@ pub mod security_center_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

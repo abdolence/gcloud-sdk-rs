@@ -104,9 +104,9 @@ pub mod compute_threat_list_diff_response {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ResponseType::Unspecified => "RESPONSE_TYPE_UNSPECIFIED",
-                ResponseType::Diff => "DIFF",
-                ResponseType::Reset => "RESET",
+                Self::Unspecified => "RESPONSE_TYPE_UNSPECIFIED",
+                Self::Diff => "DIFF",
+                Self::Reset => "RESET",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -288,10 +288,10 @@ impl ThreatType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ThreatType::Unspecified => "THREAT_TYPE_UNSPECIFIED",
-            ThreatType::Malware => "MALWARE",
-            ThreatType::SocialEngineering => "SOCIAL_ENGINEERING",
-            ThreatType::UnwantedSoftware => "UNWANTED_SOFTWARE",
+            Self::Unspecified => "THREAT_TYPE_UNSPECIFIED",
+            Self::Malware => "MALWARE",
+            Self::SocialEngineering => "SOCIAL_ENGINEERING",
+            Self::UnwantedSoftware => "UNWANTED_SOFTWARE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -323,9 +323,9 @@ impl CompressionType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            CompressionType::Unspecified => "COMPRESSION_TYPE_UNSPECIFIED",
-            CompressionType::Raw => "RAW",
-            CompressionType::Rice => "RICE",
+            Self::Unspecified => "COMPRESSION_TYPE_UNSPECIFIED",
+            Self::Raw => "RAW",
+            Self::Rice => "RICE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -340,7 +340,13 @@ impl CompressionType {
 }
 /// Generated client implementations.
 pub mod web_risk_service_v1_beta1_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Web Risk v1beta1 API defines an interface to detect malicious URLs on your
@@ -437,8 +443,7 @@ pub mod web_risk_service_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -468,8 +473,7 @@ pub mod web_risk_service_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -503,8 +507,7 @@ pub mod web_risk_service_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -113,9 +113,9 @@ pub mod membership {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                InfrastructureType::Unspecified => "INFRASTRUCTURE_TYPE_UNSPECIFIED",
-                InfrastructureType::OnPrem => "ON_PREM",
-                InfrastructureType::MultiCloud => "MULTI_CLOUD",
+                Self::Unspecified => "INFRASTRUCTURE_TYPE_UNSPECIFIED",
+                Self::OnPrem => "ON_PREM",
+                Self::MultiCloud => "MULTI_CLOUD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -324,11 +324,11 @@ pub mod on_prem_cluster {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ClusterType::ClustertypeUnspecified => "CLUSTERTYPE_UNSPECIFIED",
-                ClusterType::Bootstrap => "BOOTSTRAP",
-                ClusterType::Hybrid => "HYBRID",
-                ClusterType::Standalone => "STANDALONE",
-                ClusterType::User => "USER",
+                Self::ClustertypeUnspecified => "CLUSTERTYPE_UNSPECIFIED",
+                Self::Bootstrap => "BOOTSTRAP",
+                Self::Hybrid => "HYBRID",
+                Self::Standalone => "STANDALONE",
+                Self::User => "USER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -531,12 +531,12 @@ pub mod membership_state {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Code::Unspecified => "CODE_UNSPECIFIED",
-                Code::Creating => "CREATING",
-                Code::Ready => "READY",
-                Code::Deleting => "DELETING",
-                Code::Updating => "UPDATING",
-                Code::ServiceUpdating => "SERVICE_UPDATING",
+                Self::Unspecified => "CODE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
+                Self::Deleting => "DELETING",
+                Self::Updating => "UPDATING",
+                Self::ServiceUpdating => "SERVICE_UPDATING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -895,7 +895,13 @@ pub struct OperationMetadata {
 }
 /// Generated client implementations.
 pub mod gke_hub_membership_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The GKE Hub MembershipService handles the registration of many Kubernetes
@@ -1002,8 +1008,7 @@ pub mod gke_hub_membership_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1030,8 +1035,7 @@ pub mod gke_hub_membership_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1065,8 +1069,7 @@ pub mod gke_hub_membership_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1100,8 +1103,7 @@ pub mod gke_hub_membership_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1131,8 +1133,7 @@ pub mod gke_hub_membership_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1165,8 +1166,7 @@ pub mod gke_hub_membership_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1197,8 +1197,7 @@ pub mod gke_hub_membership_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1239,8 +1238,7 @@ pub mod gke_hub_membership_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

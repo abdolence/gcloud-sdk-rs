@@ -61,11 +61,11 @@ pub mod condition {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::ConditionPending => "CONDITION_PENDING",
-                State::ConditionReconciling => "CONDITION_RECONCILING",
-                State::ConditionFailed => "CONDITION_FAILED",
-                State::ConditionSucceeded => "CONDITION_SUCCEEDED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::ConditionPending => "CONDITION_PENDING",
+                Self::ConditionReconciling => "CONDITION_RECONCILING",
+                Self::ConditionFailed => "CONDITION_FAILED",
+                Self::ConditionSucceeded => "CONDITION_SUCCEEDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -110,10 +110,10 @@ pub mod condition {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Severity::Unspecified => "SEVERITY_UNSPECIFIED",
-                Severity::Error => "ERROR",
-                Severity::Warning => "WARNING",
-                Severity::Info => "INFO",
+                Self::Unspecified => "SEVERITY_UNSPECIFIED",
+                Self::Error => "ERROR",
+                Self::Warning => "WARNING",
+                Self::Info => "INFO",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -179,27 +179,23 @@ pub mod condition {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CommonReason::Undefined => "COMMON_REASON_UNDEFINED",
-                CommonReason::Unknown => "UNKNOWN",
-                CommonReason::RevisionFailed => "REVISION_FAILED",
-                CommonReason::ProgressDeadlineExceeded => "PROGRESS_DEADLINE_EXCEEDED",
-                CommonReason::ContainerMissing => "CONTAINER_MISSING",
-                CommonReason::ContainerPermissionDenied => "CONTAINER_PERMISSION_DENIED",
-                CommonReason::ContainerImageUnauthorized => {
-                    "CONTAINER_IMAGE_UNAUTHORIZED"
-                }
-                CommonReason::ContainerImageAuthorizationCheckFailed => {
+                Self::Undefined => "COMMON_REASON_UNDEFINED",
+                Self::Unknown => "UNKNOWN",
+                Self::RevisionFailed => "REVISION_FAILED",
+                Self::ProgressDeadlineExceeded => "PROGRESS_DEADLINE_EXCEEDED",
+                Self::ContainerMissing => "CONTAINER_MISSING",
+                Self::ContainerPermissionDenied => "CONTAINER_PERMISSION_DENIED",
+                Self::ContainerImageUnauthorized => "CONTAINER_IMAGE_UNAUTHORIZED",
+                Self::ContainerImageAuthorizationCheckFailed => {
                     "CONTAINER_IMAGE_AUTHORIZATION_CHECK_FAILED"
                 }
-                CommonReason::EncryptionKeyPermissionDenied => {
-                    "ENCRYPTION_KEY_PERMISSION_DENIED"
-                }
-                CommonReason::EncryptionKeyCheckFailed => "ENCRYPTION_KEY_CHECK_FAILED",
-                CommonReason::SecretsAccessCheckFailed => "SECRETS_ACCESS_CHECK_FAILED",
-                CommonReason::WaitingForOperation => "WAITING_FOR_OPERATION",
-                CommonReason::ImmediateRetry => "IMMEDIATE_RETRY",
-                CommonReason::PostponedRetry => "POSTPONED_RETRY",
-                CommonReason::Internal => "INTERNAL",
+                Self::EncryptionKeyPermissionDenied => "ENCRYPTION_KEY_PERMISSION_DENIED",
+                Self::EncryptionKeyCheckFailed => "ENCRYPTION_KEY_CHECK_FAILED",
+                Self::SecretsAccessCheckFailed => "SECRETS_ACCESS_CHECK_FAILED",
+                Self::WaitingForOperation => "WAITING_FOR_OPERATION",
+                Self::ImmediateRetry => "IMMEDIATE_RETRY",
+                Self::PostponedRetry => "POSTPONED_RETRY",
+                Self::Internal => "INTERNAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -283,27 +279,19 @@ pub mod condition {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RevisionReason::Undefined => "REVISION_REASON_UNDEFINED",
-                RevisionReason::Pending => "PENDING",
-                RevisionReason::Reserve => "RESERVE",
-                RevisionReason::Retired => "RETIRED",
-                RevisionReason::Retiring => "RETIRING",
-                RevisionReason::Recreating => "RECREATING",
-                RevisionReason::HealthCheckContainerError => {
-                    "HEALTH_CHECK_CONTAINER_ERROR"
-                }
-                RevisionReason::CustomizedPathResponsePending => {
-                    "CUSTOMIZED_PATH_RESPONSE_PENDING"
-                }
-                RevisionReason::MinInstancesNotProvisioned => {
-                    "MIN_INSTANCES_NOT_PROVISIONED"
-                }
-                RevisionReason::ActiveRevisionLimitReached => {
-                    "ACTIVE_REVISION_LIMIT_REACHED"
-                }
-                RevisionReason::NoDeployment => "NO_DEPLOYMENT",
-                RevisionReason::HealthCheckSkipped => "HEALTH_CHECK_SKIPPED",
-                RevisionReason::MinInstancesWarming => "MIN_INSTANCES_WARMING",
+                Self::Undefined => "REVISION_REASON_UNDEFINED",
+                Self::Pending => "PENDING",
+                Self::Reserve => "RESERVE",
+                Self::Retired => "RETIRED",
+                Self::Retiring => "RETIRING",
+                Self::Recreating => "RECREATING",
+                Self::HealthCheckContainerError => "HEALTH_CHECK_CONTAINER_ERROR",
+                Self::CustomizedPathResponsePending => "CUSTOMIZED_PATH_RESPONSE_PENDING",
+                Self::MinInstancesNotProvisioned => "MIN_INSTANCES_NOT_PROVISIONED",
+                Self::ActiveRevisionLimitReached => "ACTIVE_REVISION_LIMIT_REACHED",
+                Self::NoDeployment => "NO_DEPLOYMENT",
+                Self::HealthCheckSkipped => "HEALTH_CHECK_SKIPPED",
+                Self::MinInstancesWarming => "MIN_INSTANCES_WARMING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -363,14 +351,12 @@ pub mod condition {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ExecutionReason::Undefined => "EXECUTION_REASON_UNDEFINED",
-                ExecutionReason::JobStatusServicePollingError => {
-                    "JOB_STATUS_SERVICE_POLLING_ERROR"
-                }
-                ExecutionReason::NonZeroExitCode => "NON_ZERO_EXIT_CODE",
-                ExecutionReason::Cancelled => "CANCELLED",
-                ExecutionReason::Cancelling => "CANCELLING",
-                ExecutionReason::Deleted => "DELETED",
+                Self::Undefined => "EXECUTION_REASON_UNDEFINED",
+                Self::JobStatusServicePollingError => "JOB_STATUS_SERVICE_POLLING_ERROR",
+                Self::NonZeroExitCode => "NON_ZERO_EXIT_CODE",
+                Self::Cancelled => "CANCELLED",
+                Self::Cancelling => "CANCELLING",
+                Self::Deleted => "DELETED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -733,8 +719,8 @@ pub mod empty_dir_volume_source {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Medium::Unspecified => "MEDIUM_UNSPECIFIED",
-                Medium::Memory => "MEMORY",
+                Self::Unspecified => "MEDIUM_UNSPECIFIED",
+                Self::Memory => "MEMORY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -937,9 +923,9 @@ pub mod vpc_access {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                VpcEgress::Unspecified => "VPC_EGRESS_UNSPECIFIED",
-                VpcEgress::AllTraffic => "ALL_TRAFFIC",
-                VpcEgress::PrivateRangesOnly => "PRIVATE_RANGES_ONLY",
+                Self::Unspecified => "VPC_EGRESS_UNSPECIFIED",
+                Self::AllTraffic => "ALL_TRAFFIC",
+                Self::PrivateRangesOnly => "PRIVATE_RANGES_ONLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1021,12 +1007,10 @@ impl IngressTraffic {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            IngressTraffic::Unspecified => "INGRESS_TRAFFIC_UNSPECIFIED",
-            IngressTraffic::All => "INGRESS_TRAFFIC_ALL",
-            IngressTraffic::InternalOnly => "INGRESS_TRAFFIC_INTERNAL_ONLY",
-            IngressTraffic::InternalLoadBalancer => {
-                "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
-            }
+            Self::Unspecified => "INGRESS_TRAFFIC_UNSPECIFIED",
+            Self::All => "INGRESS_TRAFFIC_ALL",
+            Self::InternalOnly => "INGRESS_TRAFFIC_INTERNAL_ONLY",
+            Self::InternalLoadBalancer => "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1058,9 +1042,9 @@ impl ExecutionEnvironment {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ExecutionEnvironment::Unspecified => "EXECUTION_ENVIRONMENT_UNSPECIFIED",
-            ExecutionEnvironment::Gen1 => "EXECUTION_ENVIRONMENT_GEN1",
-            ExecutionEnvironment::Gen2 => "EXECUTION_ENVIRONMENT_GEN2",
+            Self::Unspecified => "EXECUTION_ENVIRONMENT_UNSPECIFIED",
+            Self::Gen1 => "EXECUTION_ENVIRONMENT_GEN1",
+            Self::Gen2 => "EXECUTION_ENVIRONMENT_GEN2",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1091,11 +1075,9 @@ impl EncryptionKeyRevocationAction {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            EncryptionKeyRevocationAction::Unspecified => {
-                "ENCRYPTION_KEY_REVOCATION_ACTION_UNSPECIFIED"
-            }
-            EncryptionKeyRevocationAction::PreventNew => "PREVENT_NEW",
-            EncryptionKeyRevocationAction::Shutdown => "SHUTDOWN",
+            Self::Unspecified => "ENCRYPTION_KEY_REVOCATION_ACTION_UNSPECIFIED",
+            Self::PreventNew => "PREVENT_NEW",
+            Self::Shutdown => "SHUTDOWN",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1369,7 +1351,13 @@ pub struct Execution {
 }
 /// Generated client implementations.
 pub mod executions_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Cloud Run Execution Control Plane API.
@@ -1462,8 +1450,7 @@ pub mod executions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1491,8 +1478,7 @@ pub mod executions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1519,8 +1505,7 @@ pub mod executions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1547,8 +1532,7 @@ pub mod executions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1997,12 +1981,12 @@ pub mod execution_reference {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CompletionStatus::Unspecified => "COMPLETION_STATUS_UNSPECIFIED",
-                CompletionStatus::ExecutionSucceeded => "EXECUTION_SUCCEEDED",
-                CompletionStatus::ExecutionFailed => "EXECUTION_FAILED",
-                CompletionStatus::ExecutionRunning => "EXECUTION_RUNNING",
-                CompletionStatus::ExecutionPending => "EXECUTION_PENDING",
-                CompletionStatus::ExecutionCancelled => "EXECUTION_CANCELLED",
+                Self::Unspecified => "COMPLETION_STATUS_UNSPECIFIED",
+                Self::ExecutionSucceeded => "EXECUTION_SUCCEEDED",
+                Self::ExecutionFailed => "EXECUTION_FAILED",
+                Self::ExecutionRunning => "EXECUTION_RUNNING",
+                Self::ExecutionPending => "EXECUTION_PENDING",
+                Self::ExecutionCancelled => "EXECUTION_CANCELLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2021,7 +2005,13 @@ pub mod execution_reference {
 }
 /// Generated client implementations.
 pub mod jobs_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Cloud Run Job Control Plane API.
@@ -2117,8 +2107,7 @@ pub mod jobs_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2140,8 +2129,7 @@ pub mod jobs_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2166,8 +2154,7 @@ pub mod jobs_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2192,8 +2179,7 @@ pub mod jobs_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2218,8 +2204,7 @@ pub mod jobs_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2244,8 +2229,7 @@ pub mod jobs_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2273,8 +2257,7 @@ pub mod jobs_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2302,8 +2285,7 @@ pub mod jobs_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2334,8 +2316,7 @@ pub mod jobs_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2559,7 +2540,13 @@ pub struct Revision {
 }
 /// Generated client implementations.
 pub mod revisions_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Cloud Run Revision Control Plane API.
@@ -2652,8 +2639,7 @@ pub mod revisions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2679,8 +2665,7 @@ pub mod revisions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2707,8 +2692,7 @@ pub mod revisions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2865,15 +2849,9 @@ impl TrafficTargetAllocationType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TrafficTargetAllocationType::Unspecified => {
-                "TRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED"
-            }
-            TrafficTargetAllocationType::Latest => {
-                "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
-            }
-            TrafficTargetAllocationType::Revision => {
-                "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
-            }
+            Self::Unspecified => "TRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED",
+            Self::Latest => "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+            Self::Revision => "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3183,7 +3161,13 @@ pub struct Service {
 }
 /// Generated client implementations.
 pub mod services_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Cloud Run Service Control Plane API
@@ -3279,8 +3263,7 @@ pub mod services_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3304,8 +3287,7 @@ pub mod services_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3330,8 +3312,7 @@ pub mod services_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3356,8 +3337,7 @@ pub mod services_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3386,8 +3366,7 @@ pub mod services_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3417,8 +3396,7 @@ pub mod services_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3446,8 +3424,7 @@ pub mod services_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3478,8 +3455,7 @@ pub mod services_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3693,7 +3669,13 @@ pub struct TaskAttemptResult {
 }
 /// Generated client implementations.
 pub mod tasks_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Cloud Run Task Control Plane API.
@@ -3786,8 +3768,7 @@ pub mod tasks_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3812,8 +3793,7 @@ pub mod tasks_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

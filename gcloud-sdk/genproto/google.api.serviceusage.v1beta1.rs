@@ -421,9 +421,9 @@ impl State {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            State::Unspecified => "STATE_UNSPECIFIED",
-            State::Disabled => "DISABLED",
-            State::Enabled => "ENABLED",
+            Self::Unspecified => "STATE_UNSPECIFIED",
+            Self::Disabled => "DISABLED",
+            Self::Enabled => "ENABLED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -461,9 +461,9 @@ impl QuotaView {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            QuotaView::Unspecified => "QUOTA_VIEW_UNSPECIFIED",
-            QuotaView::Basic => "BASIC",
-            QuotaView::Full => "FULL",
+            Self::Unspecified => "QUOTA_VIEW_UNSPECIFIED",
+            Self::Basic => "BASIC",
+            Self::Full => "FULL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -496,11 +496,9 @@ impl QuotaSafetyCheck {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            QuotaSafetyCheck::Unspecified => "QUOTA_SAFETY_CHECK_UNSPECIFIED",
-            QuotaSafetyCheck::LimitDecreaseBelowUsage => "LIMIT_DECREASE_BELOW_USAGE",
-            QuotaSafetyCheck::LimitDecreasePercentageTooHigh => {
-                "LIMIT_DECREASE_PERCENTAGE_TOO_HIGH"
-            }
+            Self::Unspecified => "QUOTA_SAFETY_CHECK_UNSPECIFIED",
+            Self::LimitDecreaseBelowUsage => "LIMIT_DECREASE_BELOW_USAGE",
+            Self::LimitDecreasePercentageTooHigh => "LIMIT_DECREASE_PERCENTAGE_TOO_HIGH",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1076,8 +1074,8 @@ pub mod get_service_identity_response {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                IdentityState::Unspecified => "IDENTITY_STATE_UNSPECIFIED",
-                IdentityState::Active => "ACTIVE",
+                Self::Unspecified => "IDENTITY_STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1095,7 +1093,13 @@ pub mod get_service_identity_response {
 pub struct GetServiceIdentityMetadata {}
 /// Generated client implementations.
 pub mod service_usage_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// [Service Usage API](https://cloud.google.com/service-usage/docs/overview)
@@ -1182,6 +1186,7 @@ pub mod service_usage_client {
         /// Enables a service so that it can be used with a project.
         ///
         /// Operation response type: `google.protobuf.Empty`
+        #[deprecated]
         pub async fn enable_service(
             &mut self,
             request: impl tonic::IntoRequest<super::EnableServiceRequest>,
@@ -1193,8 +1198,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1221,6 +1225,7 @@ pub mod service_usage_client {
         /// the target service is not currently enabled.
         ///
         /// Operation response type: `google.protobuf.Empty`
+        #[deprecated]
         pub async fn disable_service(
             &mut self,
             request: impl tonic::IntoRequest<super::DisableServiceRequest>,
@@ -1232,8 +1237,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1252,6 +1256,7 @@ pub mod service_usage_client {
             self.inner.unary(req, path, codec).await
         }
         /// Returns the service configuration and enabled state for a given service.
+        #[deprecated]
         pub async fn get_service(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServiceRequest>,
@@ -1260,8 +1265,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1286,6 +1290,7 @@ pub mod service_usage_client {
         /// already been enabled on the project. The list can be filtered to
         /// only include services in a specific state, for example to only include
         /// services enabled on the project.
+        #[deprecated]
         pub async fn list_services(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServicesRequest>,
@@ -1297,8 +1302,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1321,6 +1325,7 @@ pub mod service_usage_client {
         /// changes occur.
         ///
         /// Operation response type: `google.protobuf.Empty`
+        #[deprecated]
         pub async fn batch_enable_services(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchEnableServicesRequest>,
@@ -1332,8 +1337,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1367,8 +1371,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1398,8 +1401,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1429,8 +1431,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1465,8 +1466,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1496,8 +1496,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1527,8 +1526,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1558,8 +1556,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1591,8 +1588,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1626,8 +1622,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1657,8 +1652,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1688,8 +1682,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1719,8 +1712,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1752,8 +1744,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1783,8 +1774,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

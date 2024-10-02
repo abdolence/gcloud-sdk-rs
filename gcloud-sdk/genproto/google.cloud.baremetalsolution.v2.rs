@@ -19,10 +19,10 @@ impl VolumePerformanceTier {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            VolumePerformanceTier::Unspecified => "VOLUME_PERFORMANCE_TIER_UNSPECIFIED",
-            VolumePerformanceTier::Shared => "VOLUME_PERFORMANCE_TIER_SHARED",
-            VolumePerformanceTier::Assigned => "VOLUME_PERFORMANCE_TIER_ASSIGNED",
-            VolumePerformanceTier::Ht => "VOLUME_PERFORMANCE_TIER_HT",
+            Self::Unspecified => "VOLUME_PERFORMANCE_TIER_UNSPECIFIED",
+            Self::Shared => "VOLUME_PERFORMANCE_TIER_SHARED",
+            Self::Assigned => "VOLUME_PERFORMANCE_TIER_ASSIGNED",
+            Self::Ht => "VOLUME_PERFORMANCE_TIER_HT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -54,9 +54,9 @@ impl WorkloadProfile {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            WorkloadProfile::Unspecified => "WORKLOAD_PROFILE_UNSPECIFIED",
-            WorkloadProfile::Generic => "WORKLOAD_PROFILE_GENERIC",
-            WorkloadProfile::Hana => "WORKLOAD_PROFILE_HANA",
+            Self::Unspecified => "WORKLOAD_PROFILE_UNSPECIFIED",
+            Self::Generic => "WORKLOAD_PROFILE_GENERIC",
+            Self::Hana => "WORKLOAD_PROFILE_HANA",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -147,12 +147,12 @@ pub mod lun {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Updating => "UPDATING",
-                State::Ready => "READY",
-                State::Deleting => "DELETING",
-                State::CoolOff => "COOL_OFF",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Updating => "UPDATING",
+                Self::Ready => "READY",
+                Self::Deleting => "DELETING",
+                Self::CoolOff => "COOL_OFF",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -194,8 +194,8 @@ pub mod lun {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MultiprotocolType::Unspecified => "MULTIPROTOCOL_TYPE_UNSPECIFIED",
-                MultiprotocolType::Linux => "LINUX",
+                Self::Unspecified => "MULTIPROTOCOL_TYPE_UNSPECIFIED",
+                Self::Linux => "LINUX",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -235,9 +235,9 @@ pub mod lun {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                StorageType::Unspecified => "STORAGE_TYPE_UNSPECIFIED",
-                StorageType::Ssd => "SSD",
-                StorageType::Hdd => "HDD",
+                Self::Unspecified => "STORAGE_TYPE_UNSPECIFIED",
+                Self::Ssd => "SSD",
+                Self::Hdd => "HDD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -383,9 +383,9 @@ pub mod network {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Client => "CLIENT",
-                Type::Private => "PRIVATE",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Client => "CLIENT",
+                Self::Private => "PRIVATE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -430,11 +430,11 @@ pub mod network {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Provisioning => "PROVISIONING",
-                State::Provisioned => "PROVISIONED",
-                State::Deprovisioning => "DEPROVISIONING",
-                State::Updating => "UPDATING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Provisioned => "PROVISIONED",
+                Self::Deprovisioning => "DEPROVISIONING",
+                Self::Updating => "UPDATING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -550,9 +550,9 @@ pub mod vrf {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Provisioning => "PROVISIONING",
-                State::Provisioned => "PROVISIONED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Provisioned => "PROVISIONED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -864,9 +864,9 @@ pub mod volume {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                StorageType::Unspecified => "STORAGE_TYPE_UNSPECIFIED",
-                StorageType::Ssd => "SSD",
-                StorageType::Hdd => "HDD",
+                Self::Unspecified => "STORAGE_TYPE_UNSPECIFIED",
+                Self::Ssd => "SSD",
+                Self::Hdd => "HDD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -914,12 +914,12 @@ pub mod volume {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
-                State::Deleting => "DELETING",
-                State::Updating => "UPDATING",
-                State::CoolOff => "COOL_OFF",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
+                Self::Deleting => "DELETING",
+                Self::Updating => "UPDATING",
+                Self::CoolOff => "COOL_OFF",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -967,12 +967,10 @@ pub mod volume {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SnapshotAutoDeleteBehavior::Unspecified => {
-                    "SNAPSHOT_AUTO_DELETE_BEHAVIOR_UNSPECIFIED"
-                }
-                SnapshotAutoDeleteBehavior::Disabled => "DISABLED",
-                SnapshotAutoDeleteBehavior::OldestFirst => "OLDEST_FIRST",
-                SnapshotAutoDeleteBehavior::NewestFirst => "NEWEST_FIRST",
+                Self::Unspecified => "SNAPSHOT_AUTO_DELETE_BEHAVIOR_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::OldestFirst => "OLDEST_FIRST",
+                Self::NewestFirst => "NEWEST_FIRST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1015,9 +1013,9 @@ pub mod volume {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Protocol::Unspecified => "PROTOCOL_UNSPECIFIED",
-                Protocol::FibreChannel => "FIBRE_CHANNEL",
-                Protocol::Nfs => "NFS",
+                Self::Unspecified => "PROTOCOL_UNSPECIFIED",
+                Self::FibreChannel => "FIBRE_CHANNEL",
+                Self::Nfs => "NFS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1058,9 +1056,9 @@ pub mod volume {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                WorkloadProfile::Unspecified => "WORKLOAD_PROFILE_UNSPECIFIED",
-                WorkloadProfile::Generic => "GENERIC",
-                WorkloadProfile::Hana => "HANA",
+                Self::Unspecified => "WORKLOAD_PROFILE_UNSPECIFIED",
+                Self::Generic => "GENERIC",
+                Self::Hana => "HANA",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1278,14 +1276,14 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Provisioning => "PROVISIONING",
-                State::Running => "RUNNING",
-                State::Deleted => "DELETED",
-                State::Updating => "UPDATING",
-                State::Starting => "STARTING",
-                State::Stopping => "STOPPING",
-                State::Shutdown => "SHUTDOWN",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Running => "RUNNING",
+                Self::Deleted => "DELETED",
+                Self::Updating => "UPDATING",
+                Self::Starting => "STARTING",
+                Self::Stopping => "STOPPING",
+                Self::Shutdown => "SHUTDOWN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1499,9 +1497,9 @@ pub mod server_network_template {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    InterfaceType::Unspecified => "INTERFACE_TYPE_UNSPECIFIED",
-                    InterfaceType::Bond => "BOND",
-                    InterfaceType::Nic => "NIC",
+                    Self::Unspecified => "INTERFACE_TYPE_UNSPECIFIED",
+                    Self::Bond => "BOND",
+                    Self::Nic => "NIC",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1620,11 +1618,11 @@ pub mod nfs_share {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Provisioned => "PROVISIONED",
-                State::Creating => "CREATING",
-                State::Updating => "UPDATING",
-                State::Deleting => "DELETING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Provisioned => "PROVISIONED",
+                Self::Creating => "CREATING",
+                Self::Updating => "UPDATING",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1667,9 +1665,9 @@ pub mod nfs_share {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MountPermissions::Unspecified => "MOUNT_PERMISSIONS_UNSPECIFIED",
-                MountPermissions::Read => "READ",
-                MountPermissions::ReadWrite => "READ_WRITE",
+                Self::Unspecified => "MOUNT_PERMISSIONS_UNSPECIFIED",
+                Self::Read => "READ",
+                Self::ReadWrite => "READ_WRITE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1710,9 +1708,9 @@ pub mod nfs_share {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                StorageType::Unspecified => "STORAGE_TYPE_UNSPECIFIED",
-                StorageType::Ssd => "SSD",
-                StorageType::Hdd => "HDD",
+                Self::Unspecified => "STORAGE_TYPE_UNSPECIFIED",
+                Self::Ssd => "SSD",
+                Self::Hdd => "HDD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1953,14 +1951,14 @@ pub mod provisioning_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Draft => "DRAFT",
-                State::Submitted => "SUBMITTED",
-                State::Provisioning => "PROVISIONING",
-                State::Provisioned => "PROVISIONED",
-                State::Validated => "VALIDATED",
-                State::Cancelled => "CANCELLED",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Draft => "DRAFT",
+                Self::Submitted => "SUBMITTED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Provisioned => "PROVISIONED",
+                Self::Validated => "VALIDATED",
+                Self::Cancelled => "CANCELLED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2058,10 +2056,10 @@ pub mod provisioning_quota {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AssetType::Unspecified => "ASSET_TYPE_UNSPECIFIED",
-                AssetType::Server => "ASSET_TYPE_SERVER",
-                AssetType::Storage => "ASSET_TYPE_STORAGE",
-                AssetType::Network => "ASSET_TYPE_NETWORK",
+                Self::Unspecified => "ASSET_TYPE_UNSPECIFIED",
+                Self::Server => "ASSET_TYPE_SERVER",
+                Self::Storage => "ASSET_TYPE_STORAGE",
+                Self::Network => "ASSET_TYPE_NETWORK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2222,9 +2220,9 @@ pub mod instance_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                NetworkConfig::NetworkconfigUnspecified => "NETWORKCONFIG_UNSPECIFIED",
-                NetworkConfig::SingleVlan => "SINGLE_VLAN",
-                NetworkConfig::MultiVlan => "MULTI_VLAN",
+                Self::NetworkconfigUnspecified => "NETWORKCONFIG_UNSPECIFIED",
+                Self::SingleVlan => "SINGLE_VLAN",
+                Self::MultiVlan => "MULTI_VLAN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2349,9 +2347,9 @@ pub mod volume_config {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Permissions::Unspecified => "PERMISSIONS_UNSPECIFIED",
-                    Permissions::ReadOnly => "READ_ONLY",
-                    Permissions::ReadWrite => "READ_WRITE",
+                    Self::Unspecified => "PERMISSIONS_UNSPECIFIED",
+                    Self::ReadOnly => "READ_ONLY",
+                    Self::ReadWrite => "READ_WRITE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2404,9 +2402,9 @@ pub mod volume_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Flash => "FLASH",
-                Type::Disk => "DISK",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Flash => "FLASH",
+                Self::Disk => "DISK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2447,9 +2445,9 @@ pub mod volume_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Protocol::Unspecified => "PROTOCOL_UNSPECIFIED",
-                Protocol::Fc => "PROTOCOL_FC",
-                Protocol::Nfs => "PROTOCOL_NFS",
+                Self::Unspecified => "PROTOCOL_UNSPECIFIED",
+                Self::Fc => "PROTOCOL_FC",
+                Self::Nfs => "PROTOCOL_NFS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2544,9 +2542,9 @@ pub mod network_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Client => "CLIENT",
-                Type::Private => "PRIVATE",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Client => "CLIENT",
+                Self::Private => "PRIVATE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2591,11 +2589,11 @@ pub mod network_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Bandwidth::Unspecified => "BANDWIDTH_UNSPECIFIED",
-                Bandwidth::Bw1Gbps => "BW_1_GBPS",
-                Bandwidth::Bw2Gbps => "BW_2_GBPS",
-                Bandwidth::Bw5Gbps => "BW_5_GBPS",
-                Bandwidth::Bw10Gbps => "BW_10_GBPS",
+                Self::Unspecified => "BANDWIDTH_UNSPECIFIED",
+                Self::Bw1Gbps => "BW_1_GBPS",
+                Self::Bw2Gbps => "BW_2_GBPS",
+                Self::Bw5Gbps => "BW_5_GBPS",
+                Self::Bw10Gbps => "BW_10_GBPS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2642,11 +2640,11 @@ pub mod network_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ServiceCidr::Unspecified => "SERVICE_CIDR_UNSPECIFIED",
-                ServiceCidr::Disabled => "DISABLED",
-                ServiceCidr::High26 => "HIGH_26",
-                ServiceCidr::High27 => "HIGH_27",
-                ServiceCidr::High28 => "HIGH_28",
+                Self::Unspecified => "SERVICE_CIDR_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::High26 => "HIGH_26",
+                Self::High27 => "HIGH_27",
+                Self::High28 => "HIGH_28",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2834,9 +2832,9 @@ pub mod volume_snapshot {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SnapshotType::Unspecified => "SNAPSHOT_TYPE_UNSPECIFIED",
-                SnapshotType::AdHoc => "AD_HOC",
-                SnapshotType::Scheduled => "SCHEDULED",
+                Self::Unspecified => "SNAPSHOT_TYPE_UNSPECIFIED",
+                Self::AdHoc => "AD_HOC",
+                Self::Scheduled => "SCHEDULED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2943,7 +2941,13 @@ pub struct OperationMetadata {
 pub struct ResetInstanceResponse {}
 /// Generated client implementations.
 pub mod bare_metal_solution_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Performs management operations on Bare Metal Solution servers.
@@ -3046,8 +3050,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3074,8 +3077,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3105,8 +3107,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3134,8 +3135,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3166,8 +3166,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3197,8 +3196,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3228,8 +3226,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3261,8 +3258,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3294,8 +3290,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3325,8 +3320,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3357,8 +3351,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3386,8 +3379,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3414,8 +3406,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3445,8 +3436,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3473,8 +3463,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3504,8 +3493,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3533,8 +3521,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3565,8 +3552,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3596,8 +3582,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3627,8 +3612,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3659,8 +3643,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3687,8 +3670,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3718,8 +3700,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3747,8 +3728,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3779,8 +3759,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3808,8 +3787,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3837,8 +3815,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3870,8 +3847,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3898,8 +3874,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3929,8 +3904,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3961,8 +3935,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3989,8 +3962,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4020,8 +3992,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4051,8 +4022,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4082,8 +4052,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4111,8 +4080,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4142,8 +4110,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4173,8 +4140,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4204,8 +4170,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4235,8 +4200,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4266,8 +4230,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4297,8 +4260,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4326,8 +4288,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4357,8 +4318,7 @@ pub mod bare_metal_solution_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -131,9 +131,9 @@ pub mod trace_span {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SpanKind::Unspecified => "SPAN_KIND_UNSPECIFIED",
-                SpanKind::RpcServer => "RPC_SERVER",
-                SpanKind::RpcClient => "RPC_CLIENT",
+                Self::Unspecified => "SPAN_KIND_UNSPECIFIED",
+                Self::RpcServer => "RPC_SERVER",
+                Self::RpcClient => "RPC_CLIENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -259,10 +259,10 @@ pub mod list_traces_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ViewType::Unspecified => "VIEW_TYPE_UNSPECIFIED",
-                ViewType::Minimal => "MINIMAL",
-                ViewType::Rootspan => "ROOTSPAN",
-                ViewType::Complete => "COMPLETE",
+                Self::Unspecified => "VIEW_TYPE_UNSPECIFIED",
+                Self::Minimal => "MINIMAL",
+                Self::Rootspan => "ROOTSPAN",
+                Self::Complete => "COMPLETE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -311,7 +311,13 @@ pub struct PatchTracesRequest {
 }
 /// Generated client implementations.
 pub mod trace_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// This file describes an API for collecting and viewing traces and spans
@@ -411,8 +417,7 @@ pub mod trace_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -439,8 +444,7 @@ pub mod trace_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -471,8 +475,7 @@ pub mod trace_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

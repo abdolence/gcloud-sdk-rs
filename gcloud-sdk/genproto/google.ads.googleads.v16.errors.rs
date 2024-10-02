@@ -47,28 +47,22 @@ pub mod access_invitation_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AccessInvitationError::Unspecified => "UNSPECIFIED",
-                AccessInvitationError::Unknown => "UNKNOWN",
-                AccessInvitationError::InvalidEmailAddress => "INVALID_EMAIL_ADDRESS",
-                AccessInvitationError::EmailAddressAlreadyHasAccess => {
-                    "EMAIL_ADDRESS_ALREADY_HAS_ACCESS"
-                }
-                AccessInvitationError::InvalidInvitationStatus => {
-                    "INVALID_INVITATION_STATUS"
-                }
-                AccessInvitationError::GoogleConsumerAccountNotAllowed => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidEmailAddress => "INVALID_EMAIL_ADDRESS",
+                Self::EmailAddressAlreadyHasAccess => "EMAIL_ADDRESS_ALREADY_HAS_ACCESS",
+                Self::InvalidInvitationStatus => "INVALID_INVITATION_STATUS",
+                Self::GoogleConsumerAccountNotAllowed => {
                     "GOOGLE_CONSUMER_ACCOUNT_NOT_ALLOWED"
                 }
-                AccessInvitationError::InvalidInvitationId => "INVALID_INVITATION_ID",
-                AccessInvitationError::EmailAddressAlreadyHasPendingInvitation => {
+                Self::InvalidInvitationId => "INVALID_INVITATION_ID",
+                Self::EmailAddressAlreadyHasPendingInvitation => {
                     "EMAIL_ADDRESS_ALREADY_HAS_PENDING_INVITATION"
                 }
-                AccessInvitationError::PendingInvitationsLimitExceeded => {
+                Self::PendingInvitationsLimitExceeded => {
                     "PENDING_INVITATIONS_LIMIT_EXCEEDED"
                 }
-                AccessInvitationError::EmailDomainPolicyViolated => {
-                    "EMAIL_DOMAIN_POLICY_VIOLATED"
-                }
+                Self::EmailDomainPolicyViolated => "EMAIL_DOMAIN_POLICY_VIOLATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -188,76 +182,42 @@ pub mod account_budget_proposal_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AccountBudgetProposalError::Unspecified => "UNSPECIFIED",
-                AccountBudgetProposalError::Unknown => "UNKNOWN",
-                AccountBudgetProposalError::FieldMaskNotAllowed => {
-                    "FIELD_MASK_NOT_ALLOWED"
-                }
-                AccountBudgetProposalError::ImmutableField => "IMMUTABLE_FIELD",
-                AccountBudgetProposalError::RequiredFieldMissing => {
-                    "REQUIRED_FIELD_MISSING"
-                }
-                AccountBudgetProposalError::CannotCancelApprovedProposal => {
-                    "CANNOT_CANCEL_APPROVED_PROPOSAL"
-                }
-                AccountBudgetProposalError::CannotRemoveUnapprovedBudget => {
-                    "CANNOT_REMOVE_UNAPPROVED_BUDGET"
-                }
-                AccountBudgetProposalError::CannotRemoveRunningBudget => {
-                    "CANNOT_REMOVE_RUNNING_BUDGET"
-                }
-                AccountBudgetProposalError::CannotEndUnapprovedBudget => {
-                    "CANNOT_END_UNAPPROVED_BUDGET"
-                }
-                AccountBudgetProposalError::CannotEndInactiveBudget => {
-                    "CANNOT_END_INACTIVE_BUDGET"
-                }
-                AccountBudgetProposalError::BudgetNameRequired => "BUDGET_NAME_REQUIRED",
-                AccountBudgetProposalError::CannotUpdateOldBudget => {
-                    "CANNOT_UPDATE_OLD_BUDGET"
-                }
-                AccountBudgetProposalError::CannotEndInPast => "CANNOT_END_IN_PAST",
-                AccountBudgetProposalError::CannotExtendEndTime => {
-                    "CANNOT_EXTEND_END_TIME"
-                }
-                AccountBudgetProposalError::PurchaseOrderNumberRequired => {
-                    "PURCHASE_ORDER_NUMBER_REQUIRED"
-                }
-                AccountBudgetProposalError::PendingUpdateProposalExists => {
-                    "PENDING_UPDATE_PROPOSAL_EXISTS"
-                }
-                AccountBudgetProposalError::MultipleBudgetsNotAllowedForUnapprovedBillingSetup => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::FieldMaskNotAllowed => "FIELD_MASK_NOT_ALLOWED",
+                Self::ImmutableField => "IMMUTABLE_FIELD",
+                Self::RequiredFieldMissing => "REQUIRED_FIELD_MISSING",
+                Self::CannotCancelApprovedProposal => "CANNOT_CANCEL_APPROVED_PROPOSAL",
+                Self::CannotRemoveUnapprovedBudget => "CANNOT_REMOVE_UNAPPROVED_BUDGET",
+                Self::CannotRemoveRunningBudget => "CANNOT_REMOVE_RUNNING_BUDGET",
+                Self::CannotEndUnapprovedBudget => "CANNOT_END_UNAPPROVED_BUDGET",
+                Self::CannotEndInactiveBudget => "CANNOT_END_INACTIVE_BUDGET",
+                Self::BudgetNameRequired => "BUDGET_NAME_REQUIRED",
+                Self::CannotUpdateOldBudget => "CANNOT_UPDATE_OLD_BUDGET",
+                Self::CannotEndInPast => "CANNOT_END_IN_PAST",
+                Self::CannotExtendEndTime => "CANNOT_EXTEND_END_TIME",
+                Self::PurchaseOrderNumberRequired => "PURCHASE_ORDER_NUMBER_REQUIRED",
+                Self::PendingUpdateProposalExists => "PENDING_UPDATE_PROPOSAL_EXISTS",
+                Self::MultipleBudgetsNotAllowedForUnapprovedBillingSetup => {
                     "MULTIPLE_BUDGETS_NOT_ALLOWED_FOR_UNAPPROVED_BILLING_SETUP"
                 }
-                AccountBudgetProposalError::CannotUpdateStartTimeForStartedBudget => {
+                Self::CannotUpdateStartTimeForStartedBudget => {
                     "CANNOT_UPDATE_START_TIME_FOR_STARTED_BUDGET"
                 }
-                AccountBudgetProposalError::SpendingLimitLowerThanAccruedCostNotAllowed => {
+                Self::SpendingLimitLowerThanAccruedCostNotAllowed => {
                     "SPENDING_LIMIT_LOWER_THAN_ACCRUED_COST_NOT_ALLOWED"
                 }
-                AccountBudgetProposalError::UpdateIsNoOp => "UPDATE_IS_NO_OP",
-                AccountBudgetProposalError::EndTimeMustFollowStartTime => {
-                    "END_TIME_MUST_FOLLOW_START_TIME"
-                }
-                AccountBudgetProposalError::BudgetDateRangeIncompatibleWithBillingSetup => {
+                Self::UpdateIsNoOp => "UPDATE_IS_NO_OP",
+                Self::EndTimeMustFollowStartTime => "END_TIME_MUST_FOLLOW_START_TIME",
+                Self::BudgetDateRangeIncompatibleWithBillingSetup => {
                     "BUDGET_DATE_RANGE_INCOMPATIBLE_WITH_BILLING_SETUP"
                 }
-                AccountBudgetProposalError::NotAuthorized => "NOT_AUTHORIZED",
-                AccountBudgetProposalError::InvalidBillingSetup => {
-                    "INVALID_BILLING_SETUP"
-                }
-                AccountBudgetProposalError::OverlapsExistingBudget => {
-                    "OVERLAPS_EXISTING_BUDGET"
-                }
-                AccountBudgetProposalError::CannotCreateBudgetThroughApi => {
-                    "CANNOT_CREATE_BUDGET_THROUGH_API"
-                }
-                AccountBudgetProposalError::InvalidMasterServiceAgreement => {
-                    "INVALID_MASTER_SERVICE_AGREEMENT"
-                }
-                AccountBudgetProposalError::CanceledBillingSetup => {
-                    "CANCELED_BILLING_SETUP"
-                }
+                Self::NotAuthorized => "NOT_AUTHORIZED",
+                Self::InvalidBillingSetup => "INVALID_BILLING_SETUP",
+                Self::OverlapsExistingBudget => "OVERLAPS_EXISTING_BUDGET",
+                Self::CannotCreateBudgetThroughApi => "CANNOT_CREATE_BUDGET_THROUGH_API",
+                Self::InvalidMasterServiceAgreement => "INVALID_MASTER_SERVICE_AGREEMENT",
+                Self::CanceledBillingSetup => "CANCELED_BILLING_SETUP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -353,10 +313,10 @@ pub mod account_link_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AccountLinkError::Unspecified => "UNSPECIFIED",
-                AccountLinkError::Unknown => "UNKNOWN",
-                AccountLinkError::InvalidStatus => "INVALID_STATUS",
-                AccountLinkError::PermissionDenied => "PERMISSION_DENIED",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidStatus => "INVALID_STATUS",
+                Self::PermissionDenied => "PERMISSION_DENIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -412,17 +372,15 @@ pub mod ad_customizer_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AdCustomizerError::Unspecified => "UNSPECIFIED",
-                AdCustomizerError::Unknown => "UNKNOWN",
-                AdCustomizerError::CountdownInvalidDateFormat => {
-                    "COUNTDOWN_INVALID_DATE_FORMAT"
-                }
-                AdCustomizerError::CountdownDateInPast => "COUNTDOWN_DATE_IN_PAST",
-                AdCustomizerError::CountdownInvalidLocale => "COUNTDOWN_INVALID_LOCALE",
-                AdCustomizerError::CountdownInvalidStartDaysBefore => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CountdownInvalidDateFormat => "COUNTDOWN_INVALID_DATE_FORMAT",
+                Self::CountdownDateInPast => "COUNTDOWN_DATE_IN_PAST",
+                Self::CountdownInvalidLocale => "COUNTDOWN_INVALID_LOCALE",
+                Self::CountdownInvalidStartDaysBefore => {
                     "COUNTDOWN_INVALID_START_DAYS_BEFORE"
                 }
-                AdCustomizerError::UnknownUserList => "UNKNOWN_USER_LIST",
+                Self::UnknownUserList => "UNKNOWN_USER_LIST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -807,266 +765,260 @@ pub mod ad_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AdError::Unspecified => "UNSPECIFIED",
-                AdError::Unknown => "UNKNOWN",
-                AdError::AdCustomizersNotSupportedForAdType => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::AdCustomizersNotSupportedForAdType => {
                     "AD_CUSTOMIZERS_NOT_SUPPORTED_FOR_AD_TYPE"
                 }
-                AdError::ApproximatelyTooLong => "APPROXIMATELY_TOO_LONG",
-                AdError::ApproximatelyTooShort => "APPROXIMATELY_TOO_SHORT",
-                AdError::BadSnippet => "BAD_SNIPPET",
-                AdError::CannotModifyAd => "CANNOT_MODIFY_AD",
-                AdError::CannotSetBusinessNameIfUrlSet => {
+                Self::ApproximatelyTooLong => "APPROXIMATELY_TOO_LONG",
+                Self::ApproximatelyTooShort => "APPROXIMATELY_TOO_SHORT",
+                Self::BadSnippet => "BAD_SNIPPET",
+                Self::CannotModifyAd => "CANNOT_MODIFY_AD",
+                Self::CannotSetBusinessNameIfUrlSet => {
                     "CANNOT_SET_BUSINESS_NAME_IF_URL_SET"
                 }
-                AdError::CannotSetField => "CANNOT_SET_FIELD",
-                AdError::CannotSetFieldWithOriginAdIdSet => {
+                Self::CannotSetField => "CANNOT_SET_FIELD",
+                Self::CannotSetFieldWithOriginAdIdSet => {
                     "CANNOT_SET_FIELD_WITH_ORIGIN_AD_ID_SET"
                 }
-                AdError::CannotSetFieldWithAdIdSetForSharing => {
+                Self::CannotSetFieldWithAdIdSetForSharing => {
                     "CANNOT_SET_FIELD_WITH_AD_ID_SET_FOR_SHARING"
                 }
-                AdError::CannotSetAllowFlexibleColorFalse => {
+                Self::CannotSetAllowFlexibleColorFalse => {
                     "CANNOT_SET_ALLOW_FLEXIBLE_COLOR_FALSE"
                 }
-                AdError::CannotSetColorControlWhenNativeFormatSetting => {
+                Self::CannotSetColorControlWhenNativeFormatSetting => {
                     "CANNOT_SET_COLOR_CONTROL_WHEN_NATIVE_FORMAT_SETTING"
                 }
-                AdError::CannotSetUrl => "CANNOT_SET_URL",
-                AdError::CannotSetWithoutFinalUrls => "CANNOT_SET_WITHOUT_FINAL_URLS",
-                AdError::CannotSetWithFinalUrls => "CANNOT_SET_WITH_FINAL_URLS",
-                AdError::CannotSetWithUrlData => "CANNOT_SET_WITH_URL_DATA",
-                AdError::CannotUseAdSubclassForOperator => {
+                Self::CannotSetUrl => "CANNOT_SET_URL",
+                Self::CannotSetWithoutFinalUrls => "CANNOT_SET_WITHOUT_FINAL_URLS",
+                Self::CannotSetWithFinalUrls => "CANNOT_SET_WITH_FINAL_URLS",
+                Self::CannotSetWithUrlData => "CANNOT_SET_WITH_URL_DATA",
+                Self::CannotUseAdSubclassForOperator => {
                     "CANNOT_USE_AD_SUBCLASS_FOR_OPERATOR"
                 }
-                AdError::CustomerNotApprovedMobileads => {
-                    "CUSTOMER_NOT_APPROVED_MOBILEADS"
-                }
-                AdError::CustomerNotApprovedThirdpartyAds => {
+                Self::CustomerNotApprovedMobileads => "CUSTOMER_NOT_APPROVED_MOBILEADS",
+                Self::CustomerNotApprovedThirdpartyAds => {
                     "CUSTOMER_NOT_APPROVED_THIRDPARTY_ADS"
                 }
-                AdError::CustomerNotApprovedThirdpartyRedirectAds => {
+                Self::CustomerNotApprovedThirdpartyRedirectAds => {
                     "CUSTOMER_NOT_APPROVED_THIRDPARTY_REDIRECT_ADS"
                 }
-                AdError::CustomerNotEligible => "CUSTOMER_NOT_ELIGIBLE",
-                AdError::CustomerNotEligibleForUpdatingBeaconUrl => {
+                Self::CustomerNotEligible => "CUSTOMER_NOT_ELIGIBLE",
+                Self::CustomerNotEligibleForUpdatingBeaconUrl => {
                     "CUSTOMER_NOT_ELIGIBLE_FOR_UPDATING_BEACON_URL"
                 }
-                AdError::DimensionAlreadyInUnion => "DIMENSION_ALREADY_IN_UNION",
-                AdError::DimensionMustBeSet => "DIMENSION_MUST_BE_SET",
-                AdError::DimensionNotInUnion => "DIMENSION_NOT_IN_UNION",
-                AdError::DisplayUrlCannotBeSpecified => "DISPLAY_URL_CANNOT_BE_SPECIFIED",
-                AdError::DomesticPhoneNumberFormat => "DOMESTIC_PHONE_NUMBER_FORMAT",
-                AdError::EmergencyPhoneNumber => "EMERGENCY_PHONE_NUMBER",
-                AdError::EmptyField => "EMPTY_FIELD",
-                AdError::FeedAttributeMustHaveMappingForTypeId => {
+                Self::DimensionAlreadyInUnion => "DIMENSION_ALREADY_IN_UNION",
+                Self::DimensionMustBeSet => "DIMENSION_MUST_BE_SET",
+                Self::DimensionNotInUnion => "DIMENSION_NOT_IN_UNION",
+                Self::DisplayUrlCannotBeSpecified => "DISPLAY_URL_CANNOT_BE_SPECIFIED",
+                Self::DomesticPhoneNumberFormat => "DOMESTIC_PHONE_NUMBER_FORMAT",
+                Self::EmergencyPhoneNumber => "EMERGENCY_PHONE_NUMBER",
+                Self::EmptyField => "EMPTY_FIELD",
+                Self::FeedAttributeMustHaveMappingForTypeId => {
                     "FEED_ATTRIBUTE_MUST_HAVE_MAPPING_FOR_TYPE_ID"
                 }
-                AdError::FeedAttributeMappingTypeMismatch => {
+                Self::FeedAttributeMappingTypeMismatch => {
                     "FEED_ATTRIBUTE_MAPPING_TYPE_MISMATCH"
                 }
-                AdError::IllegalAdCustomizerTagUse => "ILLEGAL_AD_CUSTOMIZER_TAG_USE",
-                AdError::IllegalTagUse => "ILLEGAL_TAG_USE",
-                AdError::InconsistentDimensions => "INCONSISTENT_DIMENSIONS",
-                AdError::InconsistentStatusInTemplateUnion => {
+                Self::IllegalAdCustomizerTagUse => "ILLEGAL_AD_CUSTOMIZER_TAG_USE",
+                Self::IllegalTagUse => "ILLEGAL_TAG_USE",
+                Self::InconsistentDimensions => "INCONSISTENT_DIMENSIONS",
+                Self::InconsistentStatusInTemplateUnion => {
                     "INCONSISTENT_STATUS_IN_TEMPLATE_UNION"
                 }
-                AdError::IncorrectLength => "INCORRECT_LENGTH",
-                AdError::IneligibleForUpgrade => "INELIGIBLE_FOR_UPGRADE",
-                AdError::InvalidAdAddressCampaignTarget => {
+                Self::IncorrectLength => "INCORRECT_LENGTH",
+                Self::IneligibleForUpgrade => "INELIGIBLE_FOR_UPGRADE",
+                Self::InvalidAdAddressCampaignTarget => {
                     "INVALID_AD_ADDRESS_CAMPAIGN_TARGET"
                 }
-                AdError::InvalidAdType => "INVALID_AD_TYPE",
-                AdError::InvalidAttributesForMobileImage => {
+                Self::InvalidAdType => "INVALID_AD_TYPE",
+                Self::InvalidAttributesForMobileImage => {
                     "INVALID_ATTRIBUTES_FOR_MOBILE_IMAGE"
                 }
-                AdError::InvalidAttributesForMobileText => {
+                Self::InvalidAttributesForMobileText => {
                     "INVALID_ATTRIBUTES_FOR_MOBILE_TEXT"
                 }
-                AdError::InvalidCallToActionText => "INVALID_CALL_TO_ACTION_TEXT",
-                AdError::InvalidCharacterForUrl => "INVALID_CHARACTER_FOR_URL",
-                AdError::InvalidCountryCode => "INVALID_COUNTRY_CODE",
-                AdError::InvalidExpandedDynamicSearchAdTag => {
+                Self::InvalidCallToActionText => "INVALID_CALL_TO_ACTION_TEXT",
+                Self::InvalidCharacterForUrl => "INVALID_CHARACTER_FOR_URL",
+                Self::InvalidCountryCode => "INVALID_COUNTRY_CODE",
+                Self::InvalidExpandedDynamicSearchAdTag => {
                     "INVALID_EXPANDED_DYNAMIC_SEARCH_AD_TAG"
                 }
-                AdError::InvalidInput => "INVALID_INPUT",
-                AdError::InvalidMarkupLanguage => "INVALID_MARKUP_LANGUAGE",
-                AdError::InvalidMobileCarrier => "INVALID_MOBILE_CARRIER",
-                AdError::InvalidMobileCarrierTarget => "INVALID_MOBILE_CARRIER_TARGET",
-                AdError::InvalidNumberOfElements => "INVALID_NUMBER_OF_ELEMENTS",
-                AdError::InvalidPhoneNumberFormat => "INVALID_PHONE_NUMBER_FORMAT",
-                AdError::InvalidRichMediaCertifiedVendorFormatId => {
+                Self::InvalidInput => "INVALID_INPUT",
+                Self::InvalidMarkupLanguage => "INVALID_MARKUP_LANGUAGE",
+                Self::InvalidMobileCarrier => "INVALID_MOBILE_CARRIER",
+                Self::InvalidMobileCarrierTarget => "INVALID_MOBILE_CARRIER_TARGET",
+                Self::InvalidNumberOfElements => "INVALID_NUMBER_OF_ELEMENTS",
+                Self::InvalidPhoneNumberFormat => "INVALID_PHONE_NUMBER_FORMAT",
+                Self::InvalidRichMediaCertifiedVendorFormatId => {
                     "INVALID_RICH_MEDIA_CERTIFIED_VENDOR_FORMAT_ID"
                 }
-                AdError::InvalidTemplateData => "INVALID_TEMPLATE_DATA",
-                AdError::InvalidTemplateElementFieldType => {
+                Self::InvalidTemplateData => "INVALID_TEMPLATE_DATA",
+                Self::InvalidTemplateElementFieldType => {
                     "INVALID_TEMPLATE_ELEMENT_FIELD_TYPE"
                 }
-                AdError::InvalidTemplateId => "INVALID_TEMPLATE_ID",
-                AdError::LineTooWide => "LINE_TOO_WIDE",
-                AdError::MissingAdCustomizerMapping => "MISSING_AD_CUSTOMIZER_MAPPING",
-                AdError::MissingAddressComponent => "MISSING_ADDRESS_COMPONENT",
-                AdError::MissingAdvertisementName => "MISSING_ADVERTISEMENT_NAME",
-                AdError::MissingBusinessName => "MISSING_BUSINESS_NAME",
-                AdError::MissingDescription1 => "MISSING_DESCRIPTION1",
-                AdError::MissingDescription2 => "MISSING_DESCRIPTION2",
-                AdError::MissingDestinationUrlTag => "MISSING_DESTINATION_URL_TAG",
-                AdError::MissingLandingPageUrlTag => "MISSING_LANDING_PAGE_URL_TAG",
-                AdError::MissingDimension => "MISSING_DIMENSION",
-                AdError::MissingDisplayUrl => "MISSING_DISPLAY_URL",
-                AdError::MissingHeadline => "MISSING_HEADLINE",
-                AdError::MissingHeight => "MISSING_HEIGHT",
-                AdError::MissingImage => "MISSING_IMAGE",
-                AdError::MissingMarketingImageOrProductVideos => {
+                Self::InvalidTemplateId => "INVALID_TEMPLATE_ID",
+                Self::LineTooWide => "LINE_TOO_WIDE",
+                Self::MissingAdCustomizerMapping => "MISSING_AD_CUSTOMIZER_MAPPING",
+                Self::MissingAddressComponent => "MISSING_ADDRESS_COMPONENT",
+                Self::MissingAdvertisementName => "MISSING_ADVERTISEMENT_NAME",
+                Self::MissingBusinessName => "MISSING_BUSINESS_NAME",
+                Self::MissingDescription1 => "MISSING_DESCRIPTION1",
+                Self::MissingDescription2 => "MISSING_DESCRIPTION2",
+                Self::MissingDestinationUrlTag => "MISSING_DESTINATION_URL_TAG",
+                Self::MissingLandingPageUrlTag => "MISSING_LANDING_PAGE_URL_TAG",
+                Self::MissingDimension => "MISSING_DIMENSION",
+                Self::MissingDisplayUrl => "MISSING_DISPLAY_URL",
+                Self::MissingHeadline => "MISSING_HEADLINE",
+                Self::MissingHeight => "MISSING_HEIGHT",
+                Self::MissingImage => "MISSING_IMAGE",
+                Self::MissingMarketingImageOrProductVideos => {
                     "MISSING_MARKETING_IMAGE_OR_PRODUCT_VIDEOS"
                 }
-                AdError::MissingMarkupLanguages => "MISSING_MARKUP_LANGUAGES",
-                AdError::MissingMobileCarrier => "MISSING_MOBILE_CARRIER",
-                AdError::MissingPhone => "MISSING_PHONE",
-                AdError::MissingRequiredTemplateFields => {
-                    "MISSING_REQUIRED_TEMPLATE_FIELDS"
-                }
-                AdError::MissingTemplateFieldValue => "MISSING_TEMPLATE_FIELD_VALUE",
-                AdError::MissingText => "MISSING_TEXT",
-                AdError::MissingVisibleUrl => "MISSING_VISIBLE_URL",
-                AdError::MissingWidth => "MISSING_WIDTH",
-                AdError::MultipleDistinctFeedsUnsupported => {
+                Self::MissingMarkupLanguages => "MISSING_MARKUP_LANGUAGES",
+                Self::MissingMobileCarrier => "MISSING_MOBILE_CARRIER",
+                Self::MissingPhone => "MISSING_PHONE",
+                Self::MissingRequiredTemplateFields => "MISSING_REQUIRED_TEMPLATE_FIELDS",
+                Self::MissingTemplateFieldValue => "MISSING_TEMPLATE_FIELD_VALUE",
+                Self::MissingText => "MISSING_TEXT",
+                Self::MissingVisibleUrl => "MISSING_VISIBLE_URL",
+                Self::MissingWidth => "MISSING_WIDTH",
+                Self::MultipleDistinctFeedsUnsupported => {
                     "MULTIPLE_DISTINCT_FEEDS_UNSUPPORTED"
                 }
-                AdError::MustUseTempAdUnionIdOnAdd => "MUST_USE_TEMP_AD_UNION_ID_ON_ADD",
-                AdError::TooLong => "TOO_LONG",
-                AdError::TooShort => "TOO_SHORT",
-                AdError::UnionDimensionsCannotChange => "UNION_DIMENSIONS_CANNOT_CHANGE",
-                AdError::UnknownAddressComponent => "UNKNOWN_ADDRESS_COMPONENT",
-                AdError::UnknownFieldName => "UNKNOWN_FIELD_NAME",
-                AdError::UnknownUniqueName => "UNKNOWN_UNIQUE_NAME",
-                AdError::UnsupportedDimensions => "UNSUPPORTED_DIMENSIONS",
-                AdError::UrlInvalidScheme => "URL_INVALID_SCHEME",
-                AdError::UrlInvalidTopLevelDomain => "URL_INVALID_TOP_LEVEL_DOMAIN",
-                AdError::UrlMalformed => "URL_MALFORMED",
-                AdError::UrlNoHost => "URL_NO_HOST",
-                AdError::UrlNotEquivalent => "URL_NOT_EQUIVALENT",
-                AdError::UrlHostNameTooLong => "URL_HOST_NAME_TOO_LONG",
-                AdError::UrlNoScheme => "URL_NO_SCHEME",
-                AdError::UrlNoTopLevelDomain => "URL_NO_TOP_LEVEL_DOMAIN",
-                AdError::UrlPathNotAllowed => "URL_PATH_NOT_ALLOWED",
-                AdError::UrlPortNotAllowed => "URL_PORT_NOT_ALLOWED",
-                AdError::UrlQueryNotAllowed => "URL_QUERY_NOT_ALLOWED",
-                AdError::UrlSchemeBeforeExpandedDynamicSearchAdTag => {
+                Self::MustUseTempAdUnionIdOnAdd => "MUST_USE_TEMP_AD_UNION_ID_ON_ADD",
+                Self::TooLong => "TOO_LONG",
+                Self::TooShort => "TOO_SHORT",
+                Self::UnionDimensionsCannotChange => "UNION_DIMENSIONS_CANNOT_CHANGE",
+                Self::UnknownAddressComponent => "UNKNOWN_ADDRESS_COMPONENT",
+                Self::UnknownFieldName => "UNKNOWN_FIELD_NAME",
+                Self::UnknownUniqueName => "UNKNOWN_UNIQUE_NAME",
+                Self::UnsupportedDimensions => "UNSUPPORTED_DIMENSIONS",
+                Self::UrlInvalidScheme => "URL_INVALID_SCHEME",
+                Self::UrlInvalidTopLevelDomain => "URL_INVALID_TOP_LEVEL_DOMAIN",
+                Self::UrlMalformed => "URL_MALFORMED",
+                Self::UrlNoHost => "URL_NO_HOST",
+                Self::UrlNotEquivalent => "URL_NOT_EQUIVALENT",
+                Self::UrlHostNameTooLong => "URL_HOST_NAME_TOO_LONG",
+                Self::UrlNoScheme => "URL_NO_SCHEME",
+                Self::UrlNoTopLevelDomain => "URL_NO_TOP_LEVEL_DOMAIN",
+                Self::UrlPathNotAllowed => "URL_PATH_NOT_ALLOWED",
+                Self::UrlPortNotAllowed => "URL_PORT_NOT_ALLOWED",
+                Self::UrlQueryNotAllowed => "URL_QUERY_NOT_ALLOWED",
+                Self::UrlSchemeBeforeExpandedDynamicSearchAdTag => {
                     "URL_SCHEME_BEFORE_EXPANDED_DYNAMIC_SEARCH_AD_TAG"
                 }
-                AdError::UserDoesNotHaveAccessToTemplate => {
+                Self::UserDoesNotHaveAccessToTemplate => {
                     "USER_DOES_NOT_HAVE_ACCESS_TO_TEMPLATE"
                 }
-                AdError::InconsistentExpandableSettings => {
+                Self::InconsistentExpandableSettings => {
                     "INCONSISTENT_EXPANDABLE_SETTINGS"
                 }
-                AdError::InvalidFormat => "INVALID_FORMAT",
-                AdError::InvalidFieldText => "INVALID_FIELD_TEXT",
-                AdError::ElementNotPresent => "ELEMENT_NOT_PRESENT",
-                AdError::ImageError => "IMAGE_ERROR",
-                AdError::ValueNotInRange => "VALUE_NOT_IN_RANGE",
-                AdError::FieldNotPresent => "FIELD_NOT_PRESENT",
-                AdError::AddressNotComplete => "ADDRESS_NOT_COMPLETE",
-                AdError::AddressInvalid => "ADDRESS_INVALID",
-                AdError::VideoRetrievalError => "VIDEO_RETRIEVAL_ERROR",
-                AdError::AudioError => "AUDIO_ERROR",
-                AdError::InvalidYoutubeDisplayUrl => "INVALID_YOUTUBE_DISPLAY_URL",
-                AdError::TooManyProductImages => "TOO_MANY_PRODUCT_IMAGES",
-                AdError::TooManyProductVideos => "TOO_MANY_PRODUCT_VIDEOS",
-                AdError::IncompatibleAdTypeAndDevicePreference => {
+                Self::InvalidFormat => "INVALID_FORMAT",
+                Self::InvalidFieldText => "INVALID_FIELD_TEXT",
+                Self::ElementNotPresent => "ELEMENT_NOT_PRESENT",
+                Self::ImageError => "IMAGE_ERROR",
+                Self::ValueNotInRange => "VALUE_NOT_IN_RANGE",
+                Self::FieldNotPresent => "FIELD_NOT_PRESENT",
+                Self::AddressNotComplete => "ADDRESS_NOT_COMPLETE",
+                Self::AddressInvalid => "ADDRESS_INVALID",
+                Self::VideoRetrievalError => "VIDEO_RETRIEVAL_ERROR",
+                Self::AudioError => "AUDIO_ERROR",
+                Self::InvalidYoutubeDisplayUrl => "INVALID_YOUTUBE_DISPLAY_URL",
+                Self::TooManyProductImages => "TOO_MANY_PRODUCT_IMAGES",
+                Self::TooManyProductVideos => "TOO_MANY_PRODUCT_VIDEOS",
+                Self::IncompatibleAdTypeAndDevicePreference => {
                     "INCOMPATIBLE_AD_TYPE_AND_DEVICE_PREFERENCE"
                 }
-                AdError::CalltrackingNotSupportedForCountry => {
+                Self::CalltrackingNotSupportedForCountry => {
                     "CALLTRACKING_NOT_SUPPORTED_FOR_COUNTRY"
                 }
-                AdError::CarrierSpecificShortNumberNotAllowed => {
+                Self::CarrierSpecificShortNumberNotAllowed => {
                     "CARRIER_SPECIFIC_SHORT_NUMBER_NOT_ALLOWED"
                 }
-                AdError::DisallowedNumberType => "DISALLOWED_NUMBER_TYPE",
-                AdError::PhoneNumberNotSupportedForCountry => {
+                Self::DisallowedNumberType => "DISALLOWED_NUMBER_TYPE",
+                Self::PhoneNumberNotSupportedForCountry => {
                     "PHONE_NUMBER_NOT_SUPPORTED_FOR_COUNTRY"
                 }
-                AdError::PhoneNumberNotSupportedWithCalltrackingForCountry => {
+                Self::PhoneNumberNotSupportedWithCalltrackingForCountry => {
                     "PHONE_NUMBER_NOT_SUPPORTED_WITH_CALLTRACKING_FOR_COUNTRY"
                 }
-                AdError::PremiumRateNumberNotAllowed => "PREMIUM_RATE_NUMBER_NOT_ALLOWED",
-                AdError::VanityPhoneNumberNotAllowed => "VANITY_PHONE_NUMBER_NOT_ALLOWED",
-                AdError::InvalidCallConversionTypeId => "INVALID_CALL_CONVERSION_TYPE_ID",
-                AdError::CannotDisableCallConversionAndSetConversionTypeId => {
+                Self::PremiumRateNumberNotAllowed => "PREMIUM_RATE_NUMBER_NOT_ALLOWED",
+                Self::VanityPhoneNumberNotAllowed => "VANITY_PHONE_NUMBER_NOT_ALLOWED",
+                Self::InvalidCallConversionTypeId => "INVALID_CALL_CONVERSION_TYPE_ID",
+                Self::CannotDisableCallConversionAndSetConversionTypeId => {
                     "CANNOT_DISABLE_CALL_CONVERSION_AND_SET_CONVERSION_TYPE_ID"
                 }
-                AdError::CannotSetPath2WithoutPath1 => "CANNOT_SET_PATH2_WITHOUT_PATH1",
-                AdError::MissingDynamicSearchAdsSettingDomainName => {
+                Self::CannotSetPath2WithoutPath1 => "CANNOT_SET_PATH2_WITHOUT_PATH1",
+                Self::MissingDynamicSearchAdsSettingDomainName => {
                     "MISSING_DYNAMIC_SEARCH_ADS_SETTING_DOMAIN_NAME"
                 }
-                AdError::IncompatibleWithRestrictionType => {
+                Self::IncompatibleWithRestrictionType => {
                     "INCOMPATIBLE_WITH_RESTRICTION_TYPE"
                 }
-                AdError::CustomerConsentForCallRecordingRequired => {
+                Self::CustomerConsentForCallRecordingRequired => {
                     "CUSTOMER_CONSENT_FOR_CALL_RECORDING_REQUIRED"
                 }
-                AdError::MissingImageOrMediaBundle => "MISSING_IMAGE_OR_MEDIA_BUNDLE",
-                AdError::ProductTypeNotSupportedInThisCampaign => {
+                Self::MissingImageOrMediaBundle => "MISSING_IMAGE_OR_MEDIA_BUNDLE",
+                Self::ProductTypeNotSupportedInThisCampaign => {
                     "PRODUCT_TYPE_NOT_SUPPORTED_IN_THIS_CAMPAIGN"
                 }
-                AdError::PlaceholderCannotHaveEmptyDefaultValue => {
+                Self::PlaceholderCannotHaveEmptyDefaultValue => {
                     "PLACEHOLDER_CANNOT_HAVE_EMPTY_DEFAULT_VALUE"
                 }
-                AdError::PlaceholderCountdownFunctionCannotHaveDefaultValue => {
+                Self::PlaceholderCountdownFunctionCannotHaveDefaultValue => {
                     "PLACEHOLDER_COUNTDOWN_FUNCTION_CANNOT_HAVE_DEFAULT_VALUE"
                 }
-                AdError::PlaceholderDefaultValueMissing => {
+                Self::PlaceholderDefaultValueMissing => {
                     "PLACEHOLDER_DEFAULT_VALUE_MISSING"
                 }
-                AdError::UnexpectedPlaceholderDefaultValue => {
+                Self::UnexpectedPlaceholderDefaultValue => {
                     "UNEXPECTED_PLACEHOLDER_DEFAULT_VALUE"
                 }
-                AdError::AdCustomizersMayNotBeAdjacent => {
+                Self::AdCustomizersMayNotBeAdjacent => {
                     "AD_CUSTOMIZERS_MAY_NOT_BE_ADJACENT"
                 }
-                AdError::UpdatingAdWithNoEnabledAssociation => {
+                Self::UpdatingAdWithNoEnabledAssociation => {
                     "UPDATING_AD_WITH_NO_ENABLED_ASSOCIATION"
                 }
-                AdError::CallAdVerificationUrlFinalUrlDoesNotHaveSameDomain => {
+                Self::CallAdVerificationUrlFinalUrlDoesNotHaveSameDomain => {
                     "CALL_AD_VERIFICATION_URL_FINAL_URL_DOES_NOT_HAVE_SAME_DOMAIN"
                 }
-                AdError::CallAdFinalUrlAndVerificationUrlCannotBothBeEmpty => {
+                Self::CallAdFinalUrlAndVerificationUrlCannotBothBeEmpty => {
                     "CALL_AD_FINAL_URL_AND_VERIFICATION_URL_CANNOT_BOTH_BE_EMPTY"
                 }
-                AdError::TooManyAdCustomizers => "TOO_MANY_AD_CUSTOMIZERS",
-                AdError::InvalidAdCustomizerFormat => "INVALID_AD_CUSTOMIZER_FORMAT",
-                AdError::NestedAdCustomizerSyntax => "NESTED_AD_CUSTOMIZER_SYNTAX",
-                AdError::UnsupportedAdCustomizerSyntax => {
-                    "UNSUPPORTED_AD_CUSTOMIZER_SYNTAX"
-                }
-                AdError::UnpairedBraceInAdCustomizerTag => {
+                Self::TooManyAdCustomizers => "TOO_MANY_AD_CUSTOMIZERS",
+                Self::InvalidAdCustomizerFormat => "INVALID_AD_CUSTOMIZER_FORMAT",
+                Self::NestedAdCustomizerSyntax => "NESTED_AD_CUSTOMIZER_SYNTAX",
+                Self::UnsupportedAdCustomizerSyntax => "UNSUPPORTED_AD_CUSTOMIZER_SYNTAX",
+                Self::UnpairedBraceInAdCustomizerTag => {
                     "UNPAIRED_BRACE_IN_AD_CUSTOMIZER_TAG"
                 }
-                AdError::MoreThanOneCountdownTagTypeExists => {
+                Self::MoreThanOneCountdownTagTypeExists => {
                     "MORE_THAN_ONE_COUNTDOWN_TAG_TYPE_EXISTS"
                 }
-                AdError::DateTimeInCountdownTagIsInvalid => {
+                Self::DateTimeInCountdownTagIsInvalid => {
                     "DATE_TIME_IN_COUNTDOWN_TAG_IS_INVALID"
                 }
-                AdError::DateTimeInCountdownTagIsPast => {
+                Self::DateTimeInCountdownTagIsPast => {
                     "DATE_TIME_IN_COUNTDOWN_TAG_IS_PAST"
                 }
-                AdError::UnrecognizedAdCustomizerTagFound => {
+                Self::UnrecognizedAdCustomizerTagFound => {
                     "UNRECOGNIZED_AD_CUSTOMIZER_TAG_FOUND"
                 }
-                AdError::CustomizerTypeForbiddenForField => {
+                Self::CustomizerTypeForbiddenForField => {
                     "CUSTOMIZER_TYPE_FORBIDDEN_FOR_FIELD"
                 }
-                AdError::InvalidCustomizerAttributeName => {
+                Self::InvalidCustomizerAttributeName => {
                     "INVALID_CUSTOMIZER_ATTRIBUTE_NAME"
                 }
-                AdError::StoreMismatch => "STORE_MISMATCH",
-                AdError::MissingRequiredImageAspectRatio => {
+                Self::StoreMismatch => "STORE_MISMATCH",
+                Self::MissingRequiredImageAspectRatio => {
                     "MISSING_REQUIRED_IMAGE_ASPECT_RATIO"
                 }
-                AdError::MismatchedAspectRatios => "MISMATCHED_ASPECT_RATIOS",
-                AdError::DuplicateImageAcrossCarouselCards => {
+                Self::MismatchedAspectRatios => "MISMATCHED_ASPECT_RATIOS",
+                Self::DuplicateImageAcrossCarouselCards => {
                     "DUPLICATE_IMAGE_ACROSS_CAROUSEL_CARDS"
                 }
             }
@@ -1411,31 +1363,23 @@ pub mod ad_group_ad_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AdGroupAdError::Unspecified => "UNSPECIFIED",
-                AdGroupAdError::Unknown => "UNKNOWN",
-                AdGroupAdError::AdGroupAdLabelDoesNotExist => {
-                    "AD_GROUP_AD_LABEL_DOES_NOT_EXIST"
-                }
-                AdGroupAdError::AdGroupAdLabelAlreadyExists => {
-                    "AD_GROUP_AD_LABEL_ALREADY_EXISTS"
-                }
-                AdGroupAdError::AdNotUnderAdgroup => "AD_NOT_UNDER_ADGROUP",
-                AdGroupAdError::CannotOperateOnRemovedAdgroupad => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::AdGroupAdLabelDoesNotExist => "AD_GROUP_AD_LABEL_DOES_NOT_EXIST",
+                Self::AdGroupAdLabelAlreadyExists => "AD_GROUP_AD_LABEL_ALREADY_EXISTS",
+                Self::AdNotUnderAdgroup => "AD_NOT_UNDER_ADGROUP",
+                Self::CannotOperateOnRemovedAdgroupad => {
                     "CANNOT_OPERATE_ON_REMOVED_ADGROUPAD"
                 }
-                AdGroupAdError::CannotCreateDeprecatedAds => {
-                    "CANNOT_CREATE_DEPRECATED_ADS"
-                }
-                AdGroupAdError::CannotCreateTextAds => "CANNOT_CREATE_TEXT_ADS",
-                AdGroupAdError::EmptyField => "EMPTY_FIELD",
-                AdGroupAdError::ResourceReferencedInMultipleOps => {
+                Self::CannotCreateDeprecatedAds => "CANNOT_CREATE_DEPRECATED_ADS",
+                Self::CannotCreateTextAds => "CANNOT_CREATE_TEXT_ADS",
+                Self::EmptyField => "EMPTY_FIELD",
+                Self::ResourceReferencedInMultipleOps => {
                     "RESOURCE_REFERENCED_IN_MULTIPLE_OPS"
                 }
-                AdGroupAdError::AdTypeCannotBePaused => "AD_TYPE_CANNOT_BE_PAUSED",
-                AdGroupAdError::AdTypeCannotBeRemoved => "AD_TYPE_CANNOT_BE_REMOVED",
-                AdGroupAdError::CannotUpdateDeprecatedAds => {
-                    "CANNOT_UPDATE_DEPRECATED_ADS"
-                }
+                Self::AdTypeCannotBePaused => "AD_TYPE_CANNOT_BE_PAUSED",
+                Self::AdTypeCannotBeRemoved => "AD_TYPE_CANNOT_BE_REMOVED",
+                Self::CannotUpdateDeprecatedAds => "CANNOT_UPDATE_DEPRECATED_ADS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1503,12 +1447,10 @@ pub mod ad_group_bid_modifier_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AdGroupBidModifierError::Unspecified => "UNSPECIFIED",
-                AdGroupBidModifierError::Unknown => "UNKNOWN",
-                AdGroupBidModifierError::CriterionIdNotSupported => {
-                    "CRITERION_ID_NOT_SUPPORTED"
-                }
-                AdGroupBidModifierError::CannotOverrideOptedOutCampaignCriterionBidModifier => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CriterionIdNotSupported => "CRITERION_ID_NOT_SUPPORTED",
+                Self::CannotOverrideOptedOutCampaignCriterionBidModifier => {
                     "CANNOT_OVERRIDE_OPTED_OUT_CAMPAIGN_CRITERION_BID_MODIFIER"
                 }
             }
@@ -1560,11 +1502,9 @@ pub mod ad_group_criterion_customizer_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AdGroupCriterionCustomizerError::Unspecified => "UNSPECIFIED",
-                AdGroupCriterionCustomizerError::Unknown => "UNKNOWN",
-                AdGroupCriterionCustomizerError::CriterionIsNotKeyword => {
-                    "CRITERION_IS_NOT_KEYWORD"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CriterionIsNotKeyword => "CRITERION_IS_NOT_KEYWORD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1674,76 +1614,64 @@ pub mod ad_group_criterion_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AdGroupCriterionError::Unspecified => "UNSPECIFIED",
-                AdGroupCriterionError::Unknown => "UNKNOWN",
-                AdGroupCriterionError::AdGroupCriterionLabelDoesNotExist => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::AdGroupCriterionLabelDoesNotExist => {
                     "AD_GROUP_CRITERION_LABEL_DOES_NOT_EXIST"
                 }
-                AdGroupCriterionError::AdGroupCriterionLabelAlreadyExists => {
+                Self::AdGroupCriterionLabelAlreadyExists => {
                     "AD_GROUP_CRITERION_LABEL_ALREADY_EXISTS"
                 }
-                AdGroupCriterionError::CannotAddLabelToNegativeCriterion => {
+                Self::CannotAddLabelToNegativeCriterion => {
                     "CANNOT_ADD_LABEL_TO_NEGATIVE_CRITERION"
                 }
-                AdGroupCriterionError::TooManyOperations => "TOO_MANY_OPERATIONS",
-                AdGroupCriterionError::CantUpdateNegative => "CANT_UPDATE_NEGATIVE",
-                AdGroupCriterionError::ConcreteTypeRequired => "CONCRETE_TYPE_REQUIRED",
-                AdGroupCriterionError::BidIncompatibleWithAdgroup => {
-                    "BID_INCOMPATIBLE_WITH_ADGROUP"
-                }
-                AdGroupCriterionError::CannotTargetAndExclude => {
-                    "CANNOT_TARGET_AND_EXCLUDE"
-                }
-                AdGroupCriterionError::IllegalUrl => "ILLEGAL_URL",
-                AdGroupCriterionError::InvalidKeywordText => "INVALID_KEYWORD_TEXT",
-                AdGroupCriterionError::InvalidDestinationUrl => "INVALID_DESTINATION_URL",
-                AdGroupCriterionError::MissingDestinationUrlTag => {
-                    "MISSING_DESTINATION_URL_TAG"
-                }
-                AdGroupCriterionError::KeywordLevelBidNotSupportedForManualcpm => {
+                Self::TooManyOperations => "TOO_MANY_OPERATIONS",
+                Self::CantUpdateNegative => "CANT_UPDATE_NEGATIVE",
+                Self::ConcreteTypeRequired => "CONCRETE_TYPE_REQUIRED",
+                Self::BidIncompatibleWithAdgroup => "BID_INCOMPATIBLE_WITH_ADGROUP",
+                Self::CannotTargetAndExclude => "CANNOT_TARGET_AND_EXCLUDE",
+                Self::IllegalUrl => "ILLEGAL_URL",
+                Self::InvalidKeywordText => "INVALID_KEYWORD_TEXT",
+                Self::InvalidDestinationUrl => "INVALID_DESTINATION_URL",
+                Self::MissingDestinationUrlTag => "MISSING_DESTINATION_URL_TAG",
+                Self::KeywordLevelBidNotSupportedForManualcpm => {
                     "KEYWORD_LEVEL_BID_NOT_SUPPORTED_FOR_MANUALCPM"
                 }
-                AdGroupCriterionError::InvalidUserStatus => "INVALID_USER_STATUS",
-                AdGroupCriterionError::CannotAddCriteriaType => {
-                    "CANNOT_ADD_CRITERIA_TYPE"
-                }
-                AdGroupCriterionError::CannotExcludeCriteriaType => {
-                    "CANNOT_EXCLUDE_CRITERIA_TYPE"
-                }
-                AdGroupCriterionError::CampaignTypeNotCompatibleWithPartialFailure => {
+                Self::InvalidUserStatus => "INVALID_USER_STATUS",
+                Self::CannotAddCriteriaType => "CANNOT_ADD_CRITERIA_TYPE",
+                Self::CannotExcludeCriteriaType => "CANNOT_EXCLUDE_CRITERIA_TYPE",
+                Self::CampaignTypeNotCompatibleWithPartialFailure => {
                     "CAMPAIGN_TYPE_NOT_COMPATIBLE_WITH_PARTIAL_FAILURE"
                 }
-                AdGroupCriterionError::OperationsForTooManyShoppingAdgroups => {
+                Self::OperationsForTooManyShoppingAdgroups => {
                     "OPERATIONS_FOR_TOO_MANY_SHOPPING_ADGROUPS"
                 }
-                AdGroupCriterionError::CannotModifyUrlFieldsWithDuplicateElements => {
+                Self::CannotModifyUrlFieldsWithDuplicateElements => {
                     "CANNOT_MODIFY_URL_FIELDS_WITH_DUPLICATE_ELEMENTS"
                 }
-                AdGroupCriterionError::CannotSetWithoutFinalUrls => {
-                    "CANNOT_SET_WITHOUT_FINAL_URLS"
-                }
-                AdGroupCriterionError::CannotClearFinalUrlsIfFinalMobileUrlsExist => {
+                Self::CannotSetWithoutFinalUrls => "CANNOT_SET_WITHOUT_FINAL_URLS",
+                Self::CannotClearFinalUrlsIfFinalMobileUrlsExist => {
                     "CANNOT_CLEAR_FINAL_URLS_IF_FINAL_MOBILE_URLS_EXIST"
                 }
-                AdGroupCriterionError::CannotClearFinalUrlsIfFinalAppUrlsExist => {
+                Self::CannotClearFinalUrlsIfFinalAppUrlsExist => {
                     "CANNOT_CLEAR_FINAL_URLS_IF_FINAL_APP_URLS_EXIST"
                 }
-                AdGroupCriterionError::CannotClearFinalUrlsIfTrackingUrlTemplateExists => {
+                Self::CannotClearFinalUrlsIfTrackingUrlTemplateExists => {
                     "CANNOT_CLEAR_FINAL_URLS_IF_TRACKING_URL_TEMPLATE_EXISTS"
                 }
-                AdGroupCriterionError::CannotClearFinalUrlsIfUrlCustomParametersExist => {
+                Self::CannotClearFinalUrlsIfUrlCustomParametersExist => {
                     "CANNOT_CLEAR_FINAL_URLS_IF_URL_CUSTOM_PARAMETERS_EXIST"
                 }
-                AdGroupCriterionError::CannotSetBothDestinationUrlAndFinalUrls => {
+                Self::CannotSetBothDestinationUrlAndFinalUrls => {
                     "CANNOT_SET_BOTH_DESTINATION_URL_AND_FINAL_URLS"
                 }
-                AdGroupCriterionError::CannotSetBothDestinationUrlAndTrackingUrlTemplate => {
+                Self::CannotSetBothDestinationUrlAndTrackingUrlTemplate => {
                     "CANNOT_SET_BOTH_DESTINATION_URL_AND_TRACKING_URL_TEMPLATE"
                 }
-                AdGroupCriterionError::FinalUrlsNotSupportedForCriterionType => {
+                Self::FinalUrlsNotSupportedForCriterionType => {
                     "FINAL_URLS_NOT_SUPPORTED_FOR_CRITERION_TYPE"
                 }
-                AdGroupCriterionError::FinalMobileUrlsNotSupportedForCriterionType => {
+                Self::FinalMobileUrlsNotSupportedForCriterionType => {
                     "FINAL_MOBILE_URLS_NOT_SUPPORTED_FOR_CRITERION_TYPE"
                 }
             }
@@ -1847,8 +1775,8 @@ pub mod ad_group_customizer_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AdGroupCustomizerError::Unspecified => "UNSPECIFIED",
-                AdGroupCustomizerError::Unknown => "UNKNOWN",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1932,45 +1860,45 @@ pub mod ad_group_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AdGroupError::Unspecified => "UNSPECIFIED",
-                AdGroupError::Unknown => "UNKNOWN",
-                AdGroupError::DuplicateAdgroupName => "DUPLICATE_ADGROUP_NAME",
-                AdGroupError::InvalidAdgroupName => "INVALID_ADGROUP_NAME",
-                AdGroupError::AdvertiserNotOnContentNetwork => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::DuplicateAdgroupName => "DUPLICATE_ADGROUP_NAME",
+                Self::InvalidAdgroupName => "INVALID_ADGROUP_NAME",
+                Self::AdvertiserNotOnContentNetwork => {
                     "ADVERTISER_NOT_ON_CONTENT_NETWORK"
                 }
-                AdGroupError::BidTooBig => "BID_TOO_BIG",
-                AdGroupError::BidTypeAndBiddingStrategyMismatch => {
+                Self::BidTooBig => "BID_TOO_BIG",
+                Self::BidTypeAndBiddingStrategyMismatch => {
                     "BID_TYPE_AND_BIDDING_STRATEGY_MISMATCH"
                 }
-                AdGroupError::MissingAdgroupName => "MISSING_ADGROUP_NAME",
-                AdGroupError::AdgroupLabelDoesNotExist => "ADGROUP_LABEL_DOES_NOT_EXIST",
-                AdGroupError::AdgroupLabelAlreadyExists => "ADGROUP_LABEL_ALREADY_EXISTS",
-                AdGroupError::InvalidContentBidCriterionTypeGroup => {
+                Self::MissingAdgroupName => "MISSING_ADGROUP_NAME",
+                Self::AdgroupLabelDoesNotExist => "ADGROUP_LABEL_DOES_NOT_EXIST",
+                Self::AdgroupLabelAlreadyExists => "ADGROUP_LABEL_ALREADY_EXISTS",
+                Self::InvalidContentBidCriterionTypeGroup => {
                     "INVALID_CONTENT_BID_CRITERION_TYPE_GROUP"
                 }
-                AdGroupError::AdGroupTypeNotValidForAdvertisingChannelType => {
+                Self::AdGroupTypeNotValidForAdvertisingChannelType => {
                     "AD_GROUP_TYPE_NOT_VALID_FOR_ADVERTISING_CHANNEL_TYPE"
                 }
-                AdGroupError::AdgroupTypeNotSupportedForCampaignSalesCountry => {
+                Self::AdgroupTypeNotSupportedForCampaignSalesCountry => {
                     "ADGROUP_TYPE_NOT_SUPPORTED_FOR_CAMPAIGN_SALES_COUNTRY"
                 }
-                AdGroupError::CannotAddAdgroupOfTypeDsaToCampaignWithoutDsaSetting => {
+                Self::CannotAddAdgroupOfTypeDsaToCampaignWithoutDsaSetting => {
                     "CANNOT_ADD_ADGROUP_OF_TYPE_DSA_TO_CAMPAIGN_WITHOUT_DSA_SETTING"
                 }
-                AdGroupError::PromotedHotelAdGroupsNotAvailableForCustomer => {
+                Self::PromotedHotelAdGroupsNotAvailableForCustomer => {
                     "PROMOTED_HOTEL_AD_GROUPS_NOT_AVAILABLE_FOR_CUSTOMER"
                 }
-                AdGroupError::InvalidExcludedParentAssetFieldType => {
+                Self::InvalidExcludedParentAssetFieldType => {
                     "INVALID_EXCLUDED_PARENT_ASSET_FIELD_TYPE"
                 }
-                AdGroupError::InvalidExcludedParentAssetSetType => {
+                Self::InvalidExcludedParentAssetSetType => {
                     "INVALID_EXCLUDED_PARENT_ASSET_SET_TYPE"
                 }
-                AdGroupError::CannotAddAdGroupForCampaignType => {
+                Self::CannotAddAdGroupForCampaignType => {
                     "CANNOT_ADD_AD_GROUP_FOR_CAMPAIGN_TYPE"
                 }
-                AdGroupError::InvalidStatus => "INVALID_STATUS",
+                Self::InvalidStatus => "INVALID_STATUS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2067,25 +1995,21 @@ pub mod ad_group_feed_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AdGroupFeedError::Unspecified => "UNSPECIFIED",
-                AdGroupFeedError::Unknown => "UNKNOWN",
-                AdGroupFeedError::FeedAlreadyExistsForPlaceholderType => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::FeedAlreadyExistsForPlaceholderType => {
                     "FEED_ALREADY_EXISTS_FOR_PLACEHOLDER_TYPE"
                 }
-                AdGroupFeedError::CannotCreateForRemovedFeed => {
-                    "CANNOT_CREATE_FOR_REMOVED_FEED"
-                }
-                AdGroupFeedError::AdgroupFeedAlreadyExists => {
-                    "ADGROUP_FEED_ALREADY_EXISTS"
-                }
-                AdGroupFeedError::CannotOperateOnRemovedAdgroupFeed => {
+                Self::CannotCreateForRemovedFeed => "CANNOT_CREATE_FOR_REMOVED_FEED",
+                Self::AdgroupFeedAlreadyExists => "ADGROUP_FEED_ALREADY_EXISTS",
+                Self::CannotOperateOnRemovedAdgroupFeed => {
                     "CANNOT_OPERATE_ON_REMOVED_ADGROUP_FEED"
                 }
-                AdGroupFeedError::InvalidPlaceholderType => "INVALID_PLACEHOLDER_TYPE",
-                AdGroupFeedError::MissingFeedmappingForPlaceholderType => {
+                Self::InvalidPlaceholderType => "INVALID_PLACEHOLDER_TYPE",
+                Self::MissingFeedmappingForPlaceholderType => {
                     "MISSING_FEEDMAPPING_FOR_PLACEHOLDER_TYPE"
                 }
-                AdGroupFeedError::NoExistingLocationCustomerFeed => {
+                Self::NoExistingLocationCustomerFeed => {
                     "NO_EXISTING_LOCATION_CUSTOMER_FEED"
                 }
             }
@@ -2152,14 +2076,12 @@ pub mod ad_parameter_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AdParameterError::Unspecified => "UNSPECIFIED",
-                AdParameterError::Unknown => "UNKNOWN",
-                AdParameterError::AdGroupCriterionMustBeKeyword => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::AdGroupCriterionMustBeKeyword => {
                     "AD_GROUP_CRITERION_MUST_BE_KEYWORD"
                 }
-                AdParameterError::InvalidInsertionTextFormat => {
-                    "INVALID_INSERTION_TEXT_FORMAT"
-                }
+                Self::InvalidInsertionTextFormat => "INVALID_INSERTION_TEXT_FORMAT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2214,15 +2136,11 @@ pub mod ad_sharing_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AdSharingError::Unspecified => "UNSPECIFIED",
-                AdSharingError::Unknown => "UNKNOWN",
-                AdSharingError::AdGroupAlreadyContainsAd => {
-                    "AD_GROUP_ALREADY_CONTAINS_AD"
-                }
-                AdSharingError::IncompatibleAdUnderAdGroup => {
-                    "INCOMPATIBLE_AD_UNDER_AD_GROUP"
-                }
-                AdSharingError::CannotShareInactiveAd => "CANNOT_SHARE_INACTIVE_AD",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::AdGroupAlreadyContainsAd => "AD_GROUP_ALREADY_CONTAINS_AD",
+                Self::IncompatibleAdUnderAdGroup => "INCOMPATIBLE_AD_UNDER_AD_GROUP",
+                Self::CannotShareInactiveAd => "CANNOT_SHARE_INACTIVE_AD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2273,9 +2191,9 @@ pub mod adx_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AdxError::Unspecified => "UNSPECIFIED",
-                AdxError::Unknown => "UNKNOWN",
-                AdxError::UnsupportedFeature => "UNSUPPORTED_FEATURE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::UnsupportedFeature => "UNSUPPORTED_FEATURE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2402,84 +2320,80 @@ pub mod asset_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AssetError::Unspecified => "UNSPECIFIED",
-                AssetError::Unknown => "UNKNOWN",
-                AssetError::CustomerNotOnAllowlistForAssetType => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CustomerNotOnAllowlistForAssetType => {
                     "CUSTOMER_NOT_ON_ALLOWLIST_FOR_ASSET_TYPE"
                 }
-                AssetError::DuplicateAsset => "DUPLICATE_ASSET",
-                AssetError::DuplicateAssetName => "DUPLICATE_ASSET_NAME",
-                AssetError::AssetDataIsMissing => "ASSET_DATA_IS_MISSING",
-                AssetError::CannotModifyAssetName => "CANNOT_MODIFY_ASSET_NAME",
-                AssetError::FieldIncompatibleWithAssetType => {
+                Self::DuplicateAsset => "DUPLICATE_ASSET",
+                Self::DuplicateAssetName => "DUPLICATE_ASSET_NAME",
+                Self::AssetDataIsMissing => "ASSET_DATA_IS_MISSING",
+                Self::CannotModifyAssetName => "CANNOT_MODIFY_ASSET_NAME",
+                Self::FieldIncompatibleWithAssetType => {
                     "FIELD_INCOMPATIBLE_WITH_ASSET_TYPE"
                 }
-                AssetError::InvalidCallToActionText => "INVALID_CALL_TO_ACTION_TEXT",
-                AssetError::LeadFormInvalidFieldsCombination => {
+                Self::InvalidCallToActionText => "INVALID_CALL_TO_ACTION_TEXT",
+                Self::LeadFormInvalidFieldsCombination => {
                     "LEAD_FORM_INVALID_FIELDS_COMBINATION"
                 }
-                AssetError::LeadFormMissingAgreement => "LEAD_FORM_MISSING_AGREEMENT",
-                AssetError::InvalidAssetStatus => "INVALID_ASSET_STATUS",
-                AssetError::FieldCannotBeModifiedForAssetType => {
+                Self::LeadFormMissingAgreement => "LEAD_FORM_MISSING_AGREEMENT",
+                Self::InvalidAssetStatus => "INVALID_ASSET_STATUS",
+                Self::FieldCannotBeModifiedForAssetType => {
                     "FIELD_CANNOT_BE_MODIFIED_FOR_ASSET_TYPE"
                 }
-                AssetError::SchedulesCannotOverlap => "SCHEDULES_CANNOT_OVERLAP",
-                AssetError::PromotionCannotSetPercentOffAndMoneyAmountOff => {
+                Self::SchedulesCannotOverlap => "SCHEDULES_CANNOT_OVERLAP",
+                Self::PromotionCannotSetPercentOffAndMoneyAmountOff => {
                     "PROMOTION_CANNOT_SET_PERCENT_OFF_AND_MONEY_AMOUNT_OFF"
                 }
-                AssetError::PromotionCannotSetPromotionCodeAndOrdersOverAmount => {
+                Self::PromotionCannotSetPromotionCodeAndOrdersOverAmount => {
                     "PROMOTION_CANNOT_SET_PROMOTION_CODE_AND_ORDERS_OVER_AMOUNT"
                 }
-                AssetError::TooManyDecimalPlacesSpecified => {
+                Self::TooManyDecimalPlacesSpecified => {
                     "TOO_MANY_DECIMAL_PLACES_SPECIFIED"
                 }
-                AssetError::DuplicateAssetsWithDifferentFieldValue => {
+                Self::DuplicateAssetsWithDifferentFieldValue => {
                     "DUPLICATE_ASSETS_WITH_DIFFERENT_FIELD_VALUE"
                 }
-                AssetError::CallCarrierSpecificShortNumberNotAllowed => {
+                Self::CallCarrierSpecificShortNumberNotAllowed => {
                     "CALL_CARRIER_SPECIFIC_SHORT_NUMBER_NOT_ALLOWED"
                 }
-                AssetError::CallCustomerConsentForCallRecordingRequired => {
+                Self::CallCustomerConsentForCallRecordingRequired => {
                     "CALL_CUSTOMER_CONSENT_FOR_CALL_RECORDING_REQUIRED"
                 }
-                AssetError::CallDisallowedNumberType => "CALL_DISALLOWED_NUMBER_TYPE",
-                AssetError::CallInvalidConversionAction => {
-                    "CALL_INVALID_CONVERSION_ACTION"
-                }
-                AssetError::CallInvalidCountryCode => "CALL_INVALID_COUNTRY_CODE",
-                AssetError::CallInvalidDomesticPhoneNumberFormat => {
+                Self::CallDisallowedNumberType => "CALL_DISALLOWED_NUMBER_TYPE",
+                Self::CallInvalidConversionAction => "CALL_INVALID_CONVERSION_ACTION",
+                Self::CallInvalidCountryCode => "CALL_INVALID_COUNTRY_CODE",
+                Self::CallInvalidDomesticPhoneNumberFormat => {
                     "CALL_INVALID_DOMESTIC_PHONE_NUMBER_FORMAT"
                 }
-                AssetError::CallInvalidPhoneNumber => "CALL_INVALID_PHONE_NUMBER",
-                AssetError::CallPhoneNumberNotSupportedForCountry => {
+                Self::CallInvalidPhoneNumber => "CALL_INVALID_PHONE_NUMBER",
+                Self::CallPhoneNumberNotSupportedForCountry => {
                     "CALL_PHONE_NUMBER_NOT_SUPPORTED_FOR_COUNTRY"
                 }
-                AssetError::CallPremiumRateNumberNotAllowed => {
+                Self::CallPremiumRateNumberNotAllowed => {
                     "CALL_PREMIUM_RATE_NUMBER_NOT_ALLOWED"
                 }
-                AssetError::CallVanityPhoneNumberNotAllowed => {
+                Self::CallVanityPhoneNumberNotAllowed => {
                     "CALL_VANITY_PHONE_NUMBER_NOT_ALLOWED"
                 }
-                AssetError::PriceHeaderSameAsDescription => {
-                    "PRICE_HEADER_SAME_AS_DESCRIPTION"
-                }
-                AssetError::MobileAppInvalidAppId => "MOBILE_APP_INVALID_APP_ID",
-                AssetError::MobileAppInvalidFinalUrlForAppDownloadUrl => {
+                Self::PriceHeaderSameAsDescription => "PRICE_HEADER_SAME_AS_DESCRIPTION",
+                Self::MobileAppInvalidAppId => "MOBILE_APP_INVALID_APP_ID",
+                Self::MobileAppInvalidFinalUrlForAppDownloadUrl => {
                     "MOBILE_APP_INVALID_FINAL_URL_FOR_APP_DOWNLOAD_URL"
                 }
-                AssetError::NameRequiredForAssetType => "NAME_REQUIRED_FOR_ASSET_TYPE",
-                AssetError::LeadFormLegacyQualifyingQuestionsDisallowed => {
+                Self::NameRequiredForAssetType => "NAME_REQUIRED_FOR_ASSET_TYPE",
+                Self::LeadFormLegacyQualifyingQuestionsDisallowed => {
                     "LEAD_FORM_LEGACY_QUALIFYING_QUESTIONS_DISALLOWED"
                 }
-                AssetError::NameConflictForAssetType => "NAME_CONFLICT_FOR_ASSET_TYPE",
-                AssetError::CannotModifyAssetSource => "CANNOT_MODIFY_ASSET_SOURCE",
-                AssetError::CannotModifyAutomaticallyCreatedAsset => {
+                Self::NameConflictForAssetType => "NAME_CONFLICT_FOR_ASSET_TYPE",
+                Self::CannotModifyAssetSource => "CANNOT_MODIFY_ASSET_SOURCE",
+                Self::CannotModifyAutomaticallyCreatedAsset => {
                     "CANNOT_MODIFY_AUTOMATICALLY_CREATED_ASSET"
                 }
-                AssetError::LeadFormLocationAnswerTypeDisallowed => {
+                Self::LeadFormLocationAnswerTypeDisallowed => {
                     "LEAD_FORM_LOCATION_ANSWER_TYPE_DISALLOWED"
                 }
-                AssetError::PageFeedInvalidLabelText => "PAGE_FEED_INVALID_LABEL_TEXT",
+                Self::PageFeedInvalidLabelText => "PAGE_FEED_INVALID_LABEL_TEXT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2608,16 +2522,14 @@ pub mod asset_group_asset_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AssetGroupAssetError::Unspecified => "UNSPECIFIED",
-                AssetGroupAssetError::Unknown => "UNKNOWN",
-                AssetGroupAssetError::DuplicateResource => "DUPLICATE_RESOURCE",
-                AssetGroupAssetError::ExpandableTagsNotAllowedInDescription => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::DuplicateResource => "DUPLICATE_RESOURCE",
+                Self::ExpandableTagsNotAllowedInDescription => {
                     "EXPANDABLE_TAGS_NOT_ALLOWED_IN_DESCRIPTION"
                 }
-                AssetGroupAssetError::AdCustomizerNotSupported => {
-                    "AD_CUSTOMIZER_NOT_SUPPORTED"
-                }
-                AssetGroupAssetError::HotelPropertyAssetNotLinkedToCampaign => {
+                Self::AdCustomizerNotSupported => "AD_CUSTOMIZER_NOT_SUPPORTED",
+                Self::HotelPropertyAssetNotLinkedToCampaign => {
                     "HOTEL_PROPERTY_ASSET_NOT_LINKED_TO_CAMPAIGN"
                 }
             }
@@ -2703,44 +2615,32 @@ pub mod asset_group_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AssetGroupError::Unspecified => "UNSPECIFIED",
-                AssetGroupError::Unknown => "UNKNOWN",
-                AssetGroupError::DuplicateName => "DUPLICATE_NAME",
-                AssetGroupError::CannotAddAssetGroupForCampaignType => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::DuplicateName => "DUPLICATE_NAME",
+                Self::CannotAddAssetGroupForCampaignType => {
                     "CANNOT_ADD_ASSET_GROUP_FOR_CAMPAIGN_TYPE"
                 }
-                AssetGroupError::NotEnoughHeadlineAsset => "NOT_ENOUGH_HEADLINE_ASSET",
-                AssetGroupError::NotEnoughLongHeadlineAsset => {
-                    "NOT_ENOUGH_LONG_HEADLINE_ASSET"
-                }
-                AssetGroupError::NotEnoughDescriptionAsset => {
-                    "NOT_ENOUGH_DESCRIPTION_ASSET"
-                }
-                AssetGroupError::NotEnoughBusinessNameAsset => {
-                    "NOT_ENOUGH_BUSINESS_NAME_ASSET"
-                }
-                AssetGroupError::NotEnoughMarketingImageAsset => {
-                    "NOT_ENOUGH_MARKETING_IMAGE_ASSET"
-                }
-                AssetGroupError::NotEnoughSquareMarketingImageAsset => {
+                Self::NotEnoughHeadlineAsset => "NOT_ENOUGH_HEADLINE_ASSET",
+                Self::NotEnoughLongHeadlineAsset => "NOT_ENOUGH_LONG_HEADLINE_ASSET",
+                Self::NotEnoughDescriptionAsset => "NOT_ENOUGH_DESCRIPTION_ASSET",
+                Self::NotEnoughBusinessNameAsset => "NOT_ENOUGH_BUSINESS_NAME_ASSET",
+                Self::NotEnoughMarketingImageAsset => "NOT_ENOUGH_MARKETING_IMAGE_ASSET",
+                Self::NotEnoughSquareMarketingImageAsset => {
                     "NOT_ENOUGH_SQUARE_MARKETING_IMAGE_ASSET"
                 }
-                AssetGroupError::NotEnoughLogoAsset => "NOT_ENOUGH_LOGO_ASSET",
-                AssetGroupError::FinalUrlShoppingMerchantHomePageUrlDomainsDiffer => {
+                Self::NotEnoughLogoAsset => "NOT_ENOUGH_LOGO_ASSET",
+                Self::FinalUrlShoppingMerchantHomePageUrlDomainsDiffer => {
                     "FINAL_URL_SHOPPING_MERCHANT_HOME_PAGE_URL_DOMAINS_DIFFER"
                 }
-                AssetGroupError::Path1RequiredWhenPath2IsSet => {
-                    "PATH1_REQUIRED_WHEN_PATH2_IS_SET"
-                }
-                AssetGroupError::ShortDescriptionRequired => "SHORT_DESCRIPTION_REQUIRED",
-                AssetGroupError::FinalUrlRequired => "FINAL_URL_REQUIRED",
-                AssetGroupError::FinalUrlContainsInvalidDomainName => {
+                Self::Path1RequiredWhenPath2IsSet => "PATH1_REQUIRED_WHEN_PATH2_IS_SET",
+                Self::ShortDescriptionRequired => "SHORT_DESCRIPTION_REQUIRED",
+                Self::FinalUrlRequired => "FINAL_URL_REQUIRED",
+                Self::FinalUrlContainsInvalidDomainName => {
                     "FINAL_URL_CONTAINS_INVALID_DOMAIN_NAME"
                 }
-                AssetGroupError::AdCustomizerNotSupported => {
-                    "AD_CUSTOMIZER_NOT_SUPPORTED"
-                }
-                AssetGroupError::CannotMutateAssetGroupForRemovedCampaign => {
+                Self::AdCustomizerNotSupported => "AD_CUSTOMIZER_NOT_SUPPORTED",
+                Self::CannotMutateAssetGroupForRemovedCampaign => {
                     "CANNOT_MUTATE_ASSET_GROUP_FOR_REMOVED_CAMPAIGN"
                 }
             }
@@ -2869,70 +2769,50 @@ pub mod asset_group_listing_group_filter_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AssetGroupListingGroupFilterError::Unspecified => "UNSPECIFIED",
-                AssetGroupListingGroupFilterError::Unknown => "UNKNOWN",
-                AssetGroupListingGroupFilterError::TreeTooDeep => "TREE_TOO_DEEP",
-                AssetGroupListingGroupFilterError::UnitCannotHaveChildren => {
-                    "UNIT_CANNOT_HAVE_CHILDREN"
-                }
-                AssetGroupListingGroupFilterError::SubdivisionMustHaveEverythingElseChild => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::TreeTooDeep => "TREE_TOO_DEEP",
+                Self::UnitCannotHaveChildren => "UNIT_CANNOT_HAVE_CHILDREN",
+                Self::SubdivisionMustHaveEverythingElseChild => {
                     "SUBDIVISION_MUST_HAVE_EVERYTHING_ELSE_CHILD"
                 }
-                AssetGroupListingGroupFilterError::DifferentDimensionTypeBetweenSiblings => {
+                Self::DifferentDimensionTypeBetweenSiblings => {
                     "DIFFERENT_DIMENSION_TYPE_BETWEEN_SIBLINGS"
                 }
-                AssetGroupListingGroupFilterError::SameDimensionValueBetweenSiblings => {
+                Self::SameDimensionValueBetweenSiblings => {
                     "SAME_DIMENSION_VALUE_BETWEEN_SIBLINGS"
                 }
-                AssetGroupListingGroupFilterError::SameDimensionTypeBetweenAncestors => {
+                Self::SameDimensionTypeBetweenAncestors => {
                     "SAME_DIMENSION_TYPE_BETWEEN_ANCESTORS"
                 }
-                AssetGroupListingGroupFilterError::MultipleRoots => "MULTIPLE_ROOTS",
-                AssetGroupListingGroupFilterError::InvalidDimensionValue => {
-                    "INVALID_DIMENSION_VALUE"
-                }
-                AssetGroupListingGroupFilterError::MustRefineHierarchicalParentType => {
+                Self::MultipleRoots => "MULTIPLE_ROOTS",
+                Self::InvalidDimensionValue => "INVALID_DIMENSION_VALUE",
+                Self::MustRefineHierarchicalParentType => {
                     "MUST_REFINE_HIERARCHICAL_PARENT_TYPE"
                 }
-                AssetGroupListingGroupFilterError::InvalidProductBiddingCategory => {
-                    "INVALID_PRODUCT_BIDDING_CATEGORY"
-                }
-                AssetGroupListingGroupFilterError::ChangingCaseValueWithChildren => {
+                Self::InvalidProductBiddingCategory => "INVALID_PRODUCT_BIDDING_CATEGORY",
+                Self::ChangingCaseValueWithChildren => {
                     "CHANGING_CASE_VALUE_WITH_CHILDREN"
                 }
-                AssetGroupListingGroupFilterError::SubdivisionHasChildren => {
-                    "SUBDIVISION_HAS_CHILDREN"
-                }
-                AssetGroupListingGroupFilterError::CannotRefineHierarchicalEverythingElse => {
+                Self::SubdivisionHasChildren => "SUBDIVISION_HAS_CHILDREN",
+                Self::CannotRefineHierarchicalEverythingElse => {
                     "CANNOT_REFINE_HIERARCHICAL_EVERYTHING_ELSE"
                 }
-                AssetGroupListingGroupFilterError::DimensionTypeNotAllowed => {
-                    "DIMENSION_TYPE_NOT_ALLOWED"
-                }
-                AssetGroupListingGroupFilterError::DuplicateWebpageFilterUnderAssetGroup => {
+                Self::DimensionTypeNotAllowed => "DIMENSION_TYPE_NOT_ALLOWED",
+                Self::DuplicateWebpageFilterUnderAssetGroup => {
                     "DUPLICATE_WEBPAGE_FILTER_UNDER_ASSET_GROUP"
                 }
-                AssetGroupListingGroupFilterError::ListingSourceNotAllowed => {
-                    "LISTING_SOURCE_NOT_ALLOWED"
-                }
-                AssetGroupListingGroupFilterError::FilterExclusionNotAllowed => {
-                    "FILTER_EXCLUSION_NOT_ALLOWED"
-                }
-                AssetGroupListingGroupFilterError::MultipleListingSources => {
-                    "MULTIPLE_LISTING_SOURCES"
-                }
-                AssetGroupListingGroupFilterError::MultipleWebpageConditionTypesNotAllowed => {
+                Self::ListingSourceNotAllowed => "LISTING_SOURCE_NOT_ALLOWED",
+                Self::FilterExclusionNotAllowed => "FILTER_EXCLUSION_NOT_ALLOWED",
+                Self::MultipleListingSources => "MULTIPLE_LISTING_SOURCES",
+                Self::MultipleWebpageConditionTypesNotAllowed => {
                     "MULTIPLE_WEBPAGE_CONDITION_TYPES_NOT_ALLOWED"
                 }
-                AssetGroupListingGroupFilterError::MultipleWebpageTypesPerAssetGroup => {
+                Self::MultipleWebpageTypesPerAssetGroup => {
                     "MULTIPLE_WEBPAGE_TYPES_PER_ASSET_GROUP"
                 }
-                AssetGroupListingGroupFilterError::PageFeedFilterHasParent => {
-                    "PAGE_FEED_FILTER_HAS_PARENT"
-                }
-                AssetGroupListingGroupFilterError::MultipleOperationsOnOneNode => {
-                    "MULTIPLE_OPERATIONS_ON_ONE_NODE"
-                }
+                Self::PageFeedFilterHasParent => "PAGE_FEED_FILTER_HAS_PARENT",
+                Self::MultipleOperationsOnOneNode => "MULTIPLE_OPERATIONS_ON_ONE_NODE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3033,13 +2913,11 @@ pub mod asset_group_signal_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AssetGroupSignalError::Unspecified => "UNSPECIFIED",
-                AssetGroupSignalError::Unknown => "UNKNOWN",
-                AssetGroupSignalError::TooManyWords => "TOO_MANY_WORDS",
-                AssetGroupSignalError::SearchThemePolicyViolation => {
-                    "SEARCH_THEME_POLICY_VIOLATION"
-                }
-                AssetGroupSignalError::AudienceWithWrongAssetGroupId => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::TooManyWords => "TOO_MANY_WORDS",
+                Self::SearchThemePolicyViolation => "SEARCH_THEME_POLICY_VIOLATION",
+                Self::AudienceWithWrongAssetGroupId => {
                     "AUDIENCE_WITH_WRONG_ASSET_GROUP_ID"
                 }
             }
@@ -3154,57 +3032,55 @@ pub mod asset_link_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AssetLinkError::Unspecified => "UNSPECIFIED",
-                AssetLinkError::Unknown => "UNKNOWN",
-                AssetLinkError::PinningUnsupported => "PINNING_UNSUPPORTED",
-                AssetLinkError::UnsupportedFieldType => "UNSUPPORTED_FIELD_TYPE",
-                AssetLinkError::FieldTypeIncompatibleWithAssetType => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::PinningUnsupported => "PINNING_UNSUPPORTED",
+                Self::UnsupportedFieldType => "UNSUPPORTED_FIELD_TYPE",
+                Self::FieldTypeIncompatibleWithAssetType => {
                     "FIELD_TYPE_INCOMPATIBLE_WITH_ASSET_TYPE"
                 }
-                AssetLinkError::FieldTypeIncompatibleWithCampaignType => {
+                Self::FieldTypeIncompatibleWithCampaignType => {
                     "FIELD_TYPE_INCOMPATIBLE_WITH_CAMPAIGN_TYPE"
                 }
-                AssetLinkError::IncompatibleAdvertisingChannelType => {
+                Self::IncompatibleAdvertisingChannelType => {
                     "INCOMPATIBLE_ADVERTISING_CHANNEL_TYPE"
                 }
-                AssetLinkError::ImageNotWithinSpecifiedDimensionRange => {
+                Self::ImageNotWithinSpecifiedDimensionRange => {
                     "IMAGE_NOT_WITHIN_SPECIFIED_DIMENSION_RANGE"
                 }
-                AssetLinkError::InvalidPinnedField => "INVALID_PINNED_FIELD",
-                AssetLinkError::MediaBundleAssetFileSizeTooLarge => {
+                Self::InvalidPinnedField => "INVALID_PINNED_FIELD",
+                Self::MediaBundleAssetFileSizeTooLarge => {
                     "MEDIA_BUNDLE_ASSET_FILE_SIZE_TOO_LARGE"
                 }
-                AssetLinkError::NotEnoughAvailableAssetLinksForValidCombination => {
+                Self::NotEnoughAvailableAssetLinksForValidCombination => {
                     "NOT_ENOUGH_AVAILABLE_ASSET_LINKS_FOR_VALID_COMBINATION"
                 }
-                AssetLinkError::NotEnoughAvailableAssetLinksWithFallback => {
+                Self::NotEnoughAvailableAssetLinksWithFallback => {
                     "NOT_ENOUGH_AVAILABLE_ASSET_LINKS_WITH_FALLBACK"
                 }
-                AssetLinkError::NotEnoughAvailableAssetLinksWithFallbackForValidCombination => {
+                Self::NotEnoughAvailableAssetLinksWithFallbackForValidCombination => {
                     "NOT_ENOUGH_AVAILABLE_ASSET_LINKS_WITH_FALLBACK_FOR_VALID_COMBINATION"
                 }
-                AssetLinkError::YoutubeVideoRemoved => "YOUTUBE_VIDEO_REMOVED",
-                AssetLinkError::YoutubeVideoTooLong => "YOUTUBE_VIDEO_TOO_LONG",
-                AssetLinkError::YoutubeVideoTooShort => "YOUTUBE_VIDEO_TOO_SHORT",
-                AssetLinkError::ExcludedParentFieldType => "EXCLUDED_PARENT_FIELD_TYPE",
-                AssetLinkError::InvalidStatus => "INVALID_STATUS",
-                AssetLinkError::YoutubeVideoDurationNotDefined => {
+                Self::YoutubeVideoRemoved => "YOUTUBE_VIDEO_REMOVED",
+                Self::YoutubeVideoTooLong => "YOUTUBE_VIDEO_TOO_LONG",
+                Self::YoutubeVideoTooShort => "YOUTUBE_VIDEO_TOO_SHORT",
+                Self::ExcludedParentFieldType => "EXCLUDED_PARENT_FIELD_TYPE",
+                Self::InvalidStatus => "INVALID_STATUS",
+                Self::YoutubeVideoDurationNotDefined => {
                     "YOUTUBE_VIDEO_DURATION_NOT_DEFINED"
                 }
-                AssetLinkError::CannotCreateAutomaticallyCreatedLinks => {
+                Self::CannotCreateAutomaticallyCreatedLinks => {
                     "CANNOT_CREATE_AUTOMATICALLY_CREATED_LINKS"
                 }
-                AssetLinkError::CannotLinkToAutomaticallyCreatedAsset => {
+                Self::CannotLinkToAutomaticallyCreatedAsset => {
                     "CANNOT_LINK_TO_AUTOMATICALLY_CREATED_ASSET"
                 }
-                AssetLinkError::CannotModifyAssetLinkSource => {
-                    "CANNOT_MODIFY_ASSET_LINK_SOURCE"
-                }
-                AssetLinkError::CannotLinkLocationLeadFormWithoutLocationAsset => {
+                Self::CannotModifyAssetLinkSource => "CANNOT_MODIFY_ASSET_LINK_SOURCE",
+                Self::CannotLinkLocationLeadFormWithoutLocationAsset => {
                     "CANNOT_LINK_LOCATION_LEAD_FORM_WITHOUT_LOCATION_ASSET"
                 }
-                AssetLinkError::CustomerNotVerified => "CUSTOMER_NOT_VERIFIED",
-                AssetLinkError::UnsupportedCallToAction => "UNSUPPORTED_CALL_TO_ACTION",
+                Self::CustomerNotVerified => "CUSTOMER_NOT_VERIFIED",
+                Self::UnsupportedCallToAction => "UNSUPPORTED_CALL_TO_ACTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3312,14 +3188,12 @@ pub mod asset_set_asset_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AssetSetAssetError::Unspecified => "UNSPECIFIED",
-                AssetSetAssetError::Unknown => "UNKNOWN",
-                AssetSetAssetError::InvalidAssetType => "INVALID_ASSET_TYPE",
-                AssetSetAssetError::InvalidAssetSetType => "INVALID_ASSET_SET_TYPE",
-                AssetSetAssetError::DuplicateExternalKey => "DUPLICATE_EXTERNAL_KEY",
-                AssetSetAssetError::ParentLinkageDoesNotExist => {
-                    "PARENT_LINKAGE_DOES_NOT_EXIST"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidAssetType => "INVALID_ASSET_TYPE",
+                Self::InvalidAssetSetType => "INVALID_ASSET_SET_TYPE",
+                Self::DuplicateExternalKey => "DUPLICATE_EXTERNAL_KEY",
+                Self::ParentLinkageDoesNotExist => "PARENT_LINKAGE_DOES_NOT_EXIST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3395,29 +3269,27 @@ pub mod asset_set_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AssetSetError::Unspecified => "UNSPECIFIED",
-                AssetSetError::Unknown => "UNKNOWN",
-                AssetSetError::DuplicateAssetSetName => "DUPLICATE_ASSET_SET_NAME",
-                AssetSetError::InvalidParentAssetSetType => {
-                    "INVALID_PARENT_ASSET_SET_TYPE"
-                }
-                AssetSetError::AssetSetSourceIncompatibleWithParentAssetSet => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::DuplicateAssetSetName => "DUPLICATE_ASSET_SET_NAME",
+                Self::InvalidParentAssetSetType => "INVALID_PARENT_ASSET_SET_TYPE",
+                Self::AssetSetSourceIncompatibleWithParentAssetSet => {
                     "ASSET_SET_SOURCE_INCOMPATIBLE_WITH_PARENT_ASSET_SET"
                 }
-                AssetSetError::AssetSetTypeCannotBeLinkedToCustomer => {
+                Self::AssetSetTypeCannotBeLinkedToCustomer => {
                     "ASSET_SET_TYPE_CANNOT_BE_LINKED_TO_CUSTOMER"
                 }
-                AssetSetError::InvalidChainIds => "INVALID_CHAIN_IDS",
-                AssetSetError::LocationSyncAssetSetDoesNotSupportRelationshipType => {
+                Self::InvalidChainIds => "INVALID_CHAIN_IDS",
+                Self::LocationSyncAssetSetDoesNotSupportRelationshipType => {
                     "LOCATION_SYNC_ASSET_SET_DOES_NOT_SUPPORT_RELATIONSHIP_TYPE"
                 }
-                AssetSetError::NotUniqueEnabledLocationSyncTypedAssetSet => {
+                Self::NotUniqueEnabledLocationSyncTypedAssetSet => {
                     "NOT_UNIQUE_ENABLED_LOCATION_SYNC_TYPED_ASSET_SET"
                 }
-                AssetSetError::InvalidPlaceIds => "INVALID_PLACE_IDS",
-                AssetSetError::OauthInfoInvalid => "OAUTH_INFO_INVALID",
-                AssetSetError::OauthInfoMissing => "OAUTH_INFO_MISSING",
-                AssetSetError::CannotDeleteAsEnabledLinkagesExist => {
+                Self::InvalidPlaceIds => "INVALID_PLACE_IDS",
+                Self::OauthInfoInvalid => "OAUTH_INFO_INVALID",
+                Self::OauthInfoMissing => "OAUTH_INFO_MISSING",
+                Self::CannotDeleteAsEnabledLinkagesExist => {
                     "CANNOT_DELETE_AS_ENABLED_LINKAGES_EXIST"
                 }
             }
@@ -3496,19 +3368,17 @@ pub mod asset_set_link_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AssetSetLinkError::Unspecified => "UNSPECIFIED",
-                AssetSetLinkError::Unknown => "UNKNOWN",
-                AssetSetLinkError::IncompatibleAdvertisingChannelType => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::IncompatibleAdvertisingChannelType => {
                     "INCOMPATIBLE_ADVERTISING_CHANNEL_TYPE"
                 }
-                AssetSetLinkError::DuplicateFeedLink => "DUPLICATE_FEED_LINK",
-                AssetSetLinkError::IncompatibleAssetSetTypeWithCampaignType => {
+                Self::DuplicateFeedLink => "DUPLICATE_FEED_LINK",
+                Self::IncompatibleAssetSetTypeWithCampaignType => {
                     "INCOMPATIBLE_ASSET_SET_TYPE_WITH_CAMPAIGN_TYPE"
                 }
-                AssetSetLinkError::DuplicateAssetSetLink => "DUPLICATE_ASSET_SET_LINK",
-                AssetSetLinkError::AssetSetLinkCannotBeRemoved => {
-                    "ASSET_SET_LINK_CANNOT_BE_REMOVED"
-                }
+                Self::DuplicateAssetSetLink => "DUPLICATE_ASSET_SET_LINK",
+                Self::AssetSetLinkCannotBeRemoved => "ASSET_SET_LINK_CANNOT_BE_REMOVED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3585,22 +3455,20 @@ pub mod audience_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AudienceError::Unspecified => "UNSPECIFIED",
-                AudienceError::Unknown => "UNKNOWN",
-                AudienceError::NameAlreadyInUse => "NAME_ALREADY_IN_USE",
-                AudienceError::DimensionInvalid => "DIMENSION_INVALID",
-                AudienceError::AudienceSegmentNotFound => "AUDIENCE_SEGMENT_NOT_FOUND",
-                AudienceError::AudienceSegmentTypeNotSupported => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::NameAlreadyInUse => "NAME_ALREADY_IN_USE",
+                Self::DimensionInvalid => "DIMENSION_INVALID",
+                Self::AudienceSegmentNotFound => "AUDIENCE_SEGMENT_NOT_FOUND",
+                Self::AudienceSegmentTypeNotSupported => {
                     "AUDIENCE_SEGMENT_TYPE_NOT_SUPPORTED"
                 }
-                AudienceError::DuplicateAudienceSegment => "DUPLICATE_AUDIENCE_SEGMENT",
-                AudienceError::TooManySegments => "TOO_MANY_SEGMENTS",
-                AudienceError::TooManyDimensionsOfSameType => {
-                    "TOO_MANY_DIMENSIONS_OF_SAME_TYPE"
-                }
-                AudienceError::InUse => "IN_USE",
-                AudienceError::MissingAssetGroupId => "MISSING_ASSET_GROUP_ID",
-                AudienceError::CannotChangeFromCustomerToAssetGroupScope => {
+                Self::DuplicateAudienceSegment => "DUPLICATE_AUDIENCE_SEGMENT",
+                Self::TooManySegments => "TOO_MANY_SEGMENTS",
+                Self::TooManyDimensionsOfSameType => "TOO_MANY_DIMENSIONS_OF_SAME_TYPE",
+                Self::InUse => "IN_USE",
+                Self::MissingAssetGroupId => "MISSING_ASSET_GROUP_ID",
+                Self::CannotChangeFromCustomerToAssetGroupScope => {
                     "CANNOT_CHANGE_FROM_CUSTOMER_TO_ASSET_GROUP_SCOPE"
                 }
             }
@@ -3665,9 +3533,9 @@ pub mod audience_insights_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AudienceInsightsError::Unspecified => "UNSPECIFIED",
-                AudienceInsightsError::Unknown => "UNKNOWN",
-                AudienceInsightsError::DimensionIncompatibleWithTopicAudienceCombinations => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::DimensionIncompatibleWithTopicAudienceCombinations => {
                     "DIMENSION_INCOMPATIBLE_WITH_TOPIC_AUDIENCE_COMBINATIONS"
                 }
             }
@@ -3767,47 +3635,35 @@ pub mod authentication_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AuthenticationError::Unspecified => "UNSPECIFIED",
-                AuthenticationError::Unknown => "UNKNOWN",
-                AuthenticationError::AuthenticationError => "AUTHENTICATION_ERROR",
-                AuthenticationError::ClientCustomerIdInvalid => {
-                    "CLIENT_CUSTOMER_ID_INVALID"
-                }
-                AuthenticationError::CustomerNotFound => "CUSTOMER_NOT_FOUND",
-                AuthenticationError::GoogleAccountDeleted => "GOOGLE_ACCOUNT_DELETED",
-                AuthenticationError::GoogleAccountCookieInvalid => {
-                    "GOOGLE_ACCOUNT_COOKIE_INVALID"
-                }
-                AuthenticationError::GoogleAccountAuthenticationFailed => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::AuthenticationError => "AUTHENTICATION_ERROR",
+                Self::ClientCustomerIdInvalid => "CLIENT_CUSTOMER_ID_INVALID",
+                Self::CustomerNotFound => "CUSTOMER_NOT_FOUND",
+                Self::GoogleAccountDeleted => "GOOGLE_ACCOUNT_DELETED",
+                Self::GoogleAccountCookieInvalid => "GOOGLE_ACCOUNT_COOKIE_INVALID",
+                Self::GoogleAccountAuthenticationFailed => {
                     "GOOGLE_ACCOUNT_AUTHENTICATION_FAILED"
                 }
-                AuthenticationError::GoogleAccountUserAndAdsUserMismatch => {
+                Self::GoogleAccountUserAndAdsUserMismatch => {
                     "GOOGLE_ACCOUNT_USER_AND_ADS_USER_MISMATCH"
                 }
-                AuthenticationError::LoginCookieRequired => "LOGIN_COOKIE_REQUIRED",
-                AuthenticationError::NotAdsUser => "NOT_ADS_USER",
-                AuthenticationError::OauthTokenInvalid => "OAUTH_TOKEN_INVALID",
-                AuthenticationError::OauthTokenExpired => "OAUTH_TOKEN_EXPIRED",
-                AuthenticationError::OauthTokenDisabled => "OAUTH_TOKEN_DISABLED",
-                AuthenticationError::OauthTokenRevoked => "OAUTH_TOKEN_REVOKED",
-                AuthenticationError::OauthTokenHeaderInvalid => {
-                    "OAUTH_TOKEN_HEADER_INVALID"
-                }
-                AuthenticationError::LoginCookieInvalid => "LOGIN_COOKIE_INVALID",
-                AuthenticationError::UserIdInvalid => "USER_ID_INVALID",
-                AuthenticationError::TwoStepVerificationNotEnrolled => {
+                Self::LoginCookieRequired => "LOGIN_COOKIE_REQUIRED",
+                Self::NotAdsUser => "NOT_ADS_USER",
+                Self::OauthTokenInvalid => "OAUTH_TOKEN_INVALID",
+                Self::OauthTokenExpired => "OAUTH_TOKEN_EXPIRED",
+                Self::OauthTokenDisabled => "OAUTH_TOKEN_DISABLED",
+                Self::OauthTokenRevoked => "OAUTH_TOKEN_REVOKED",
+                Self::OauthTokenHeaderInvalid => "OAUTH_TOKEN_HEADER_INVALID",
+                Self::LoginCookieInvalid => "LOGIN_COOKIE_INVALID",
+                Self::UserIdInvalid => "USER_ID_INVALID",
+                Self::TwoStepVerificationNotEnrolled => {
                     "TWO_STEP_VERIFICATION_NOT_ENROLLED"
                 }
-                AuthenticationError::AdvancedProtectionNotEnrolled => {
-                    "ADVANCED_PROTECTION_NOT_ENROLLED"
-                }
-                AuthenticationError::OrganizationNotRecognized => {
-                    "ORGANIZATION_NOT_RECOGNIZED"
-                }
-                AuthenticationError::OrganizationNotApproved => {
-                    "ORGANIZATION_NOT_APPROVED"
-                }
-                AuthenticationError::OrganizationNotAssociatedWithDeveloperToken => {
+                Self::AdvancedProtectionNotEnrolled => "ADVANCED_PROTECTION_NOT_ENROLLED",
+                Self::OrganizationNotRecognized => "ORGANIZATION_NOT_RECOGNIZED",
+                Self::OrganizationNotApproved => "ORGANIZATION_NOT_APPROVED",
+                Self::OrganizationNotAssociatedWithDeveloperToken => {
                     "ORGANIZATION_NOT_ASSOCIATED_WITH_DEVELOPER_TOKEN"
                 }
             }
@@ -3927,36 +3783,28 @@ pub mod authorization_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AuthorizationError::Unspecified => "UNSPECIFIED",
-                AuthorizationError::Unknown => "UNKNOWN",
-                AuthorizationError::UserPermissionDenied => "USER_PERMISSION_DENIED",
-                AuthorizationError::DeveloperTokenNotOnAllowlist => {
-                    "DEVELOPER_TOKEN_NOT_ON_ALLOWLIST"
-                }
-                AuthorizationError::DeveloperTokenProhibited => {
-                    "DEVELOPER_TOKEN_PROHIBITED"
-                }
-                AuthorizationError::ProjectDisabled => "PROJECT_DISABLED",
-                AuthorizationError::AuthorizationError => "AUTHORIZATION_ERROR",
-                AuthorizationError::ActionNotPermitted => "ACTION_NOT_PERMITTED",
-                AuthorizationError::IncompleteSignup => "INCOMPLETE_SIGNUP",
-                AuthorizationError::CustomerNotEnabled => "CUSTOMER_NOT_ENABLED",
-                AuthorizationError::MissingTos => "MISSING_TOS",
-                AuthorizationError::DeveloperTokenNotApproved => {
-                    "DEVELOPER_TOKEN_NOT_APPROVED"
-                }
-                AuthorizationError::InvalidLoginCustomerIdServingCustomerIdCombination => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::UserPermissionDenied => "USER_PERMISSION_DENIED",
+                Self::DeveloperTokenNotOnAllowlist => "DEVELOPER_TOKEN_NOT_ON_ALLOWLIST",
+                Self::DeveloperTokenProhibited => "DEVELOPER_TOKEN_PROHIBITED",
+                Self::ProjectDisabled => "PROJECT_DISABLED",
+                Self::AuthorizationError => "AUTHORIZATION_ERROR",
+                Self::ActionNotPermitted => "ACTION_NOT_PERMITTED",
+                Self::IncompleteSignup => "INCOMPLETE_SIGNUP",
+                Self::CustomerNotEnabled => "CUSTOMER_NOT_ENABLED",
+                Self::MissingTos => "MISSING_TOS",
+                Self::DeveloperTokenNotApproved => "DEVELOPER_TOKEN_NOT_APPROVED",
+                Self::InvalidLoginCustomerIdServingCustomerIdCombination => {
                     "INVALID_LOGIN_CUSTOMER_ID_SERVING_CUSTOMER_ID_COMBINATION"
                 }
-                AuthorizationError::ServiceAccessDenied => "SERVICE_ACCESS_DENIED",
-                AuthorizationError::AccessDeniedForAccountType => {
-                    "ACCESS_DENIED_FOR_ACCOUNT_TYPE"
-                }
-                AuthorizationError::MetricAccessDenied => "METRIC_ACCESS_DENIED",
-                AuthorizationError::CloudProjectNotUnderOrganization => {
+                Self::ServiceAccessDenied => "SERVICE_ACCESS_DENIED",
+                Self::AccessDeniedForAccountType => "ACCESS_DENIED_FOR_ACCOUNT_TYPE",
+                Self::MetricAccessDenied => "METRIC_ACCESS_DENIED",
+                Self::CloudProjectNotUnderOrganization => {
                     "CLOUD_PROJECT_NOT_UNDER_ORGANIZATION"
                 }
-                AuthorizationError::ActionNotPermittedForSuspendedAccount => {
+                Self::ActionNotPermittedForSuspendedAccount => {
                     "ACTION_NOT_PERMITTED_FOR_SUSPENDED_ACCOUNT"
                 }
             }
@@ -4044,17 +3892,17 @@ pub mod batch_job_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BatchJobError::Unspecified => "UNSPECIFIED",
-                BatchJobError::Unknown => "UNKNOWN",
-                BatchJobError::CannotModifyJobAfterJobStartsRunning => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CannotModifyJobAfterJobStartsRunning => {
                     "CANNOT_MODIFY_JOB_AFTER_JOB_STARTS_RUNNING"
                 }
-                BatchJobError::EmptyOperations => "EMPTY_OPERATIONS",
-                BatchJobError::InvalidSequenceToken => "INVALID_SEQUENCE_TOKEN",
-                BatchJobError::ResultsNotReady => "RESULTS_NOT_READY",
-                BatchJobError::InvalidPageSize => "INVALID_PAGE_SIZE",
-                BatchJobError::CanOnlyRemovePendingJob => "CAN_ONLY_REMOVE_PENDING_JOB",
-                BatchJobError::CannotListResults => "CANNOT_LIST_RESULTS",
+                Self::EmptyOperations => "EMPTY_OPERATIONS",
+                Self::InvalidSequenceToken => "INVALID_SEQUENCE_TOKEN",
+                Self::ResultsNotReady => "RESULTS_NOT_READY",
+                Self::InvalidPageSize => "INVALID_PAGE_SIZE",
+                Self::CanOnlyRemovePendingJob => "CAN_ONLY_REMOVE_PENDING_JOB",
+                Self::CannotListResults => "CANNOT_LIST_RESULTS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4162,70 +4010,64 @@ pub mod bidding_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BiddingError::Unspecified => "UNSPECIFIED",
-                BiddingError::Unknown => "UNKNOWN",
-                BiddingError::BiddingStrategyTransitionNotAllowed => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::BiddingStrategyTransitionNotAllowed => {
                     "BIDDING_STRATEGY_TRANSITION_NOT_ALLOWED"
                 }
-                BiddingError::CannotAttachBiddingStrategyToCampaign => {
+                Self::CannotAttachBiddingStrategyToCampaign => {
                     "CANNOT_ATTACH_BIDDING_STRATEGY_TO_CAMPAIGN"
                 }
-                BiddingError::InvalidAnonymousBiddingStrategyType => {
+                Self::InvalidAnonymousBiddingStrategyType => {
                     "INVALID_ANONYMOUS_BIDDING_STRATEGY_TYPE"
                 }
-                BiddingError::InvalidBiddingStrategyType => {
-                    "INVALID_BIDDING_STRATEGY_TYPE"
-                }
-                BiddingError::InvalidBid => "INVALID_BID",
-                BiddingError::BiddingStrategyNotAvailableForAccountType => {
+                Self::InvalidBiddingStrategyType => "INVALID_BIDDING_STRATEGY_TYPE",
+                Self::InvalidBid => "INVALID_BID",
+                Self::BiddingStrategyNotAvailableForAccountType => {
                     "BIDDING_STRATEGY_NOT_AVAILABLE_FOR_ACCOUNT_TYPE"
                 }
-                BiddingError::CannotCreateCampaignWithBiddingStrategy => {
+                Self::CannotCreateCampaignWithBiddingStrategy => {
                     "CANNOT_CREATE_CAMPAIGN_WITH_BIDDING_STRATEGY"
                 }
-                BiddingError::CannotTargetContentNetworkOnlyWithCampaignLevelPopBiddingStrategy => {
+                Self::CannotTargetContentNetworkOnlyWithCampaignLevelPopBiddingStrategy => {
                     "CANNOT_TARGET_CONTENT_NETWORK_ONLY_WITH_CAMPAIGN_LEVEL_POP_BIDDING_STRATEGY"
                 }
-                BiddingError::BiddingStrategyNotSupportedWithAdSchedule => {
+                Self::BiddingStrategyNotSupportedWithAdSchedule => {
                     "BIDDING_STRATEGY_NOT_SUPPORTED_WITH_AD_SCHEDULE"
                 }
-                BiddingError::PayPerConversionNotAvailableForCustomer => {
+                Self::PayPerConversionNotAvailableForCustomer => {
                     "PAY_PER_CONVERSION_NOT_AVAILABLE_FOR_CUSTOMER"
                 }
-                BiddingError::PayPerConversionNotAllowedWithTargetCpa => {
+                Self::PayPerConversionNotAllowedWithTargetCpa => {
                     "PAY_PER_CONVERSION_NOT_ALLOWED_WITH_TARGET_CPA"
                 }
-                BiddingError::BiddingStrategyNotAllowedForSearchOnlyCampaigns => {
+                Self::BiddingStrategyNotAllowedForSearchOnlyCampaigns => {
                     "BIDDING_STRATEGY_NOT_ALLOWED_FOR_SEARCH_ONLY_CAMPAIGNS"
                 }
-                BiddingError::BiddingStrategyNotSupportedInDraftsOrExperiments => {
+                Self::BiddingStrategyNotSupportedInDraftsOrExperiments => {
                     "BIDDING_STRATEGY_NOT_SUPPORTED_IN_DRAFTS_OR_EXPERIMENTS"
                 }
-                BiddingError::BiddingStrategyTypeDoesNotSupportProductTypeAdgroupCriterion => {
+                Self::BiddingStrategyTypeDoesNotSupportProductTypeAdgroupCriterion => {
                     "BIDDING_STRATEGY_TYPE_DOES_NOT_SUPPORT_PRODUCT_TYPE_ADGROUP_CRITERION"
                 }
-                BiddingError::BidTooSmall => "BID_TOO_SMALL",
-                BiddingError::BidTooBig => "BID_TOO_BIG",
-                BiddingError::BidTooManyFractionalDigits => {
-                    "BID_TOO_MANY_FRACTIONAL_DIGITS"
-                }
-                BiddingError::InvalidDomainName => "INVALID_DOMAIN_NAME",
-                BiddingError::NotCompatibleWithPaymentMode => {
-                    "NOT_COMPATIBLE_WITH_PAYMENT_MODE"
-                }
-                BiddingError::BiddingStrategyTypeIncompatibleWithSharedBudget => {
+                Self::BidTooSmall => "BID_TOO_SMALL",
+                Self::BidTooBig => "BID_TOO_BIG",
+                Self::BidTooManyFractionalDigits => "BID_TOO_MANY_FRACTIONAL_DIGITS",
+                Self::InvalidDomainName => "INVALID_DOMAIN_NAME",
+                Self::NotCompatibleWithPaymentMode => "NOT_COMPATIBLE_WITH_PAYMENT_MODE",
+                Self::BiddingStrategyTypeIncompatibleWithSharedBudget => {
                     "BIDDING_STRATEGY_TYPE_INCOMPATIBLE_WITH_SHARED_BUDGET"
                 }
-                BiddingError::BiddingStrategyAndBudgetMustBeAligned => {
+                Self::BiddingStrategyAndBudgetMustBeAligned => {
                     "BIDDING_STRATEGY_AND_BUDGET_MUST_BE_ALIGNED"
                 }
-                BiddingError::BiddingStrategyAndBudgetMustBeAttachedToTheSameCampaignsToAlign => {
+                Self::BiddingStrategyAndBudgetMustBeAttachedToTheSameCampaignsToAlign => {
                     "BIDDING_STRATEGY_AND_BUDGET_MUST_BE_ATTACHED_TO_THE_SAME_CAMPAIGNS_TO_ALIGN"
                 }
-                BiddingError::BiddingStrategyAndBudgetMustBeRemovedTogether => {
+                Self::BiddingStrategyAndBudgetMustBeRemovedTogether => {
                     "BIDDING_STRATEGY_AND_BUDGET_MUST_BE_REMOVED_TOGETHER"
                 }
-                BiddingError::CpcBidFloorMicrosGreaterThanCpcBidCeilingMicros => {
+                Self::CpcBidFloorMicrosGreaterThanCpcBidCeilingMicros => {
                     "CPC_BID_FLOOR_MICROS_GREATER_THAN_CPC_BID_CEILING_MICROS"
                 }
             }
@@ -4351,19 +4193,17 @@ pub mod bidding_strategy_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BiddingStrategyError::Unspecified => "UNSPECIFIED",
-                BiddingStrategyError::Unknown => "UNKNOWN",
-                BiddingStrategyError::DuplicateName => "DUPLICATE_NAME",
-                BiddingStrategyError::CannotChangeBiddingStrategyType => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::DuplicateName => "DUPLICATE_NAME",
+                Self::CannotChangeBiddingStrategyType => {
                     "CANNOT_CHANGE_BIDDING_STRATEGY_TYPE"
                 }
-                BiddingStrategyError::CannotRemoveAssociatedStrategy => {
+                Self::CannotRemoveAssociatedStrategy => {
                     "CANNOT_REMOVE_ASSOCIATED_STRATEGY"
                 }
-                BiddingStrategyError::BiddingStrategyNotSupported => {
-                    "BIDDING_STRATEGY_NOT_SUPPORTED"
-                }
-                BiddingStrategyError::IncompatibleBiddingStrategyAndBiddingStrategyGoalType => {
+                Self::BiddingStrategyNotSupported => "BIDDING_STRATEGY_NOT_SUPPORTED",
+                Self::IncompatibleBiddingStrategyAndBiddingStrategyGoalType => {
                     "INCOMPATIBLE_BIDDING_STRATEGY_AND_BIDDING_STRATEGY_GOAL_TYPE"
                 }
             }
@@ -4474,58 +4314,42 @@ pub mod billing_setup_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BillingSetupError::Unspecified => "UNSPECIFIED",
-                BillingSetupError::Unknown => "UNKNOWN",
-                BillingSetupError::CannotUseExistingAndNewAccount => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CannotUseExistingAndNewAccount => {
                     "CANNOT_USE_EXISTING_AND_NEW_ACCOUNT"
                 }
-                BillingSetupError::CannotRemoveStartedBillingSetup => {
+                Self::CannotRemoveStartedBillingSetup => {
                     "CANNOT_REMOVE_STARTED_BILLING_SETUP"
                 }
-                BillingSetupError::CannotChangeBillingToSamePaymentsAccount => {
+                Self::CannotChangeBillingToSamePaymentsAccount => {
                     "CANNOT_CHANGE_BILLING_TO_SAME_PAYMENTS_ACCOUNT"
                 }
-                BillingSetupError::BillingSetupNotPermittedForCustomerStatus => {
+                Self::BillingSetupNotPermittedForCustomerStatus => {
                     "BILLING_SETUP_NOT_PERMITTED_FOR_CUSTOMER_STATUS"
                 }
-                BillingSetupError::InvalidPaymentsAccount => "INVALID_PAYMENTS_ACCOUNT",
-                BillingSetupError::BillingSetupNotPermittedForCustomerCategory => {
+                Self::InvalidPaymentsAccount => "INVALID_PAYMENTS_ACCOUNT",
+                Self::BillingSetupNotPermittedForCustomerCategory => {
                     "BILLING_SETUP_NOT_PERMITTED_FOR_CUSTOMER_CATEGORY"
                 }
-                BillingSetupError::InvalidStartTimeType => "INVALID_START_TIME_TYPE",
-                BillingSetupError::ThirdPartyAlreadyHasBilling => {
-                    "THIRD_PARTY_ALREADY_HAS_BILLING"
-                }
-                BillingSetupError::BillingSetupInProgress => "BILLING_SETUP_IN_PROGRESS",
-                BillingSetupError::NoSignupPermission => "NO_SIGNUP_PERMISSION",
-                BillingSetupError::ChangeOfBillToInProgress => {
-                    "CHANGE_OF_BILL_TO_IN_PROGRESS"
-                }
-                BillingSetupError::PaymentsProfileNotFound => {
-                    "PAYMENTS_PROFILE_NOT_FOUND"
-                }
-                BillingSetupError::PaymentsAccountNotFound => {
-                    "PAYMENTS_ACCOUNT_NOT_FOUND"
-                }
-                BillingSetupError::PaymentsProfileIneligible => {
-                    "PAYMENTS_PROFILE_INELIGIBLE"
-                }
-                BillingSetupError::PaymentsAccountIneligible => {
-                    "PAYMENTS_ACCOUNT_INELIGIBLE"
-                }
-                BillingSetupError::CustomerNeedsInternalApproval => {
-                    "CUSTOMER_NEEDS_INTERNAL_APPROVAL"
-                }
-                BillingSetupError::PaymentsProfileNeedsServiceAgreementAcceptance => {
+                Self::InvalidStartTimeType => "INVALID_START_TIME_TYPE",
+                Self::ThirdPartyAlreadyHasBilling => "THIRD_PARTY_ALREADY_HAS_BILLING",
+                Self::BillingSetupInProgress => "BILLING_SETUP_IN_PROGRESS",
+                Self::NoSignupPermission => "NO_SIGNUP_PERMISSION",
+                Self::ChangeOfBillToInProgress => "CHANGE_OF_BILL_TO_IN_PROGRESS",
+                Self::PaymentsProfileNotFound => "PAYMENTS_PROFILE_NOT_FOUND",
+                Self::PaymentsAccountNotFound => "PAYMENTS_ACCOUNT_NOT_FOUND",
+                Self::PaymentsProfileIneligible => "PAYMENTS_PROFILE_INELIGIBLE",
+                Self::PaymentsAccountIneligible => "PAYMENTS_ACCOUNT_INELIGIBLE",
+                Self::CustomerNeedsInternalApproval => "CUSTOMER_NEEDS_INTERNAL_APPROVAL",
+                Self::PaymentsProfileNeedsServiceAgreementAcceptance => {
                     "PAYMENTS_PROFILE_NEEDS_SERVICE_AGREEMENT_ACCEPTANCE"
                 }
-                BillingSetupError::PaymentsAccountIneligibleCurrencyCodeMismatch => {
+                Self::PaymentsAccountIneligibleCurrencyCodeMismatch => {
                     "PAYMENTS_ACCOUNT_INELIGIBLE_CURRENCY_CODE_MISMATCH"
                 }
-                BillingSetupError::FutureStartTimeProhibited => {
-                    "FUTURE_START_TIME_PROHIBITED"
-                }
-                BillingSetupError::TooManyBillingSetupsForPaymentsAccount => {
+                Self::FutureStartTimeProhibited => "FUTURE_START_TIME_PROHIBITED",
+                Self::TooManyBillingSetupsForPaymentsAccount => {
                     "TOO_MANY_BILLING_SETUPS_FOR_PAYMENTS_ACCOUNT"
                 }
             }
@@ -4654,51 +4478,47 @@ pub mod campaign_budget_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CampaignBudgetError::Unspecified => "UNSPECIFIED",
-                CampaignBudgetError::Unknown => "UNKNOWN",
-                CampaignBudgetError::CampaignBudgetCannotBeShared => {
-                    "CAMPAIGN_BUDGET_CANNOT_BE_SHARED"
-                }
-                CampaignBudgetError::CampaignBudgetRemoved => "CAMPAIGN_BUDGET_REMOVED",
-                CampaignBudgetError::CampaignBudgetInUse => "CAMPAIGN_BUDGET_IN_USE",
-                CampaignBudgetError::CampaignBudgetPeriodNotAvailable => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CampaignBudgetCannotBeShared => "CAMPAIGN_BUDGET_CANNOT_BE_SHARED",
+                Self::CampaignBudgetRemoved => "CAMPAIGN_BUDGET_REMOVED",
+                Self::CampaignBudgetInUse => "CAMPAIGN_BUDGET_IN_USE",
+                Self::CampaignBudgetPeriodNotAvailable => {
                     "CAMPAIGN_BUDGET_PERIOD_NOT_AVAILABLE"
                 }
-                CampaignBudgetError::CannotModifyFieldOfImplicitlySharedCampaignBudget => {
+                Self::CannotModifyFieldOfImplicitlySharedCampaignBudget => {
                     "CANNOT_MODIFY_FIELD_OF_IMPLICITLY_SHARED_CAMPAIGN_BUDGET"
                 }
-                CampaignBudgetError::CannotUpdateCampaignBudgetToImplicitlyShared => {
+                Self::CannotUpdateCampaignBudgetToImplicitlyShared => {
                     "CANNOT_UPDATE_CAMPAIGN_BUDGET_TO_IMPLICITLY_SHARED"
                 }
-                CampaignBudgetError::CannotUpdateCampaignBudgetToExplicitlySharedWithoutName => {
+                Self::CannotUpdateCampaignBudgetToExplicitlySharedWithoutName => {
                     "CANNOT_UPDATE_CAMPAIGN_BUDGET_TO_EXPLICITLY_SHARED_WITHOUT_NAME"
                 }
-                CampaignBudgetError::CannotUpdateCampaignBudgetToExplicitlyShared => {
+                Self::CannotUpdateCampaignBudgetToExplicitlyShared => {
                     "CANNOT_UPDATE_CAMPAIGN_BUDGET_TO_EXPLICITLY_SHARED"
                 }
-                CampaignBudgetError::CannotUseImplicitlySharedCampaignBudgetWithMultipleCampaigns => {
+                Self::CannotUseImplicitlySharedCampaignBudgetWithMultipleCampaigns => {
                     "CANNOT_USE_IMPLICITLY_SHARED_CAMPAIGN_BUDGET_WITH_MULTIPLE_CAMPAIGNS"
                 }
-                CampaignBudgetError::DuplicateName => "DUPLICATE_NAME",
-                CampaignBudgetError::MoneyAmountInWrongCurrency => {
-                    "MONEY_AMOUNT_IN_WRONG_CURRENCY"
-                }
-                CampaignBudgetError::MoneyAmountLessThanCurrencyMinimumCpc => {
+                Self::DuplicateName => "DUPLICATE_NAME",
+                Self::MoneyAmountInWrongCurrency => "MONEY_AMOUNT_IN_WRONG_CURRENCY",
+                Self::MoneyAmountLessThanCurrencyMinimumCpc => {
                     "MONEY_AMOUNT_LESS_THAN_CURRENCY_MINIMUM_CPC"
                 }
-                CampaignBudgetError::MoneyAmountTooLarge => "MONEY_AMOUNT_TOO_LARGE",
-                CampaignBudgetError::NegativeMoneyAmount => "NEGATIVE_MONEY_AMOUNT",
-                CampaignBudgetError::NonMultipleOfMinimumCurrencyUnit => {
+                Self::MoneyAmountTooLarge => "MONEY_AMOUNT_TOO_LARGE",
+                Self::NegativeMoneyAmount => "NEGATIVE_MONEY_AMOUNT",
+                Self::NonMultipleOfMinimumCurrencyUnit => {
                     "NON_MULTIPLE_OF_MINIMUM_CURRENCY_UNIT"
                 }
-                CampaignBudgetError::TotalBudgetAmountMustBeUnsetForBudgetPeriodDaily => {
+                Self::TotalBudgetAmountMustBeUnsetForBudgetPeriodDaily => {
                     "TOTAL_BUDGET_AMOUNT_MUST_BE_UNSET_FOR_BUDGET_PERIOD_DAILY"
                 }
-                CampaignBudgetError::InvalidPeriod => "INVALID_PERIOD",
-                CampaignBudgetError::CannotUseAcceleratedDeliveryMode => {
+                Self::InvalidPeriod => "INVALID_PERIOD",
+                Self::CannotUseAcceleratedDeliveryMode => {
                     "CANNOT_USE_ACCELERATED_DELIVERY_MODE"
                 }
-                CampaignBudgetError::BudgetAmountMustBeUnsetForCustomBudgetPeriod => {
+                Self::BudgetAmountMustBeUnsetForCustomBudgetPeriod => {
                     "BUDGET_AMOUNT_MUST_BE_UNSET_FOR_CUSTOM_BUDGET_PERIOD"
                 }
             }
@@ -4795,12 +4615,12 @@ pub mod campaign_conversion_goal_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CampaignConversionGoalError::Unspecified => "UNSPECIFIED",
-                CampaignConversionGoalError::Unknown => "UNKNOWN",
-                CampaignConversionGoalError::CannotUseCampaignGoalForSearchAds360ManagedCampaign => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CannotUseCampaignGoalForSearchAds360ManagedCampaign => {
                     "CANNOT_USE_CAMPAIGN_GOAL_FOR_SEARCH_ADS_360_MANAGED_CAMPAIGN"
                 }
-                CampaignConversionGoalError::CannotUseStoreSaleGoalForPerformanceMaxCampaign => {
+                Self::CannotUseStoreSaleGoalForPerformanceMaxCampaign => {
                     "CANNOT_USE_STORE_SALE_GOAL_FOR_PERFORMANCE_MAX_CAMPAIGN"
                 }
             }
@@ -4920,78 +4740,68 @@ pub mod campaign_criterion_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CampaignCriterionError::Unspecified => "UNSPECIFIED",
-                CampaignCriterionError::Unknown => "UNKNOWN",
-                CampaignCriterionError::ConcreteTypeRequired => "CONCRETE_TYPE_REQUIRED",
-                CampaignCriterionError::InvalidPlacementUrl => "INVALID_PLACEMENT_URL",
-                CampaignCriterionError::CannotExcludeCriteriaType => {
-                    "CANNOT_EXCLUDE_CRITERIA_TYPE"
-                }
-                CampaignCriterionError::CannotSetStatusForCriteriaType => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ConcreteTypeRequired => "CONCRETE_TYPE_REQUIRED",
+                Self::InvalidPlacementUrl => "INVALID_PLACEMENT_URL",
+                Self::CannotExcludeCriteriaType => "CANNOT_EXCLUDE_CRITERIA_TYPE",
+                Self::CannotSetStatusForCriteriaType => {
                     "CANNOT_SET_STATUS_FOR_CRITERIA_TYPE"
                 }
-                CampaignCriterionError::CannotSetStatusForExcludedCriteria => {
+                Self::CannotSetStatusForExcludedCriteria => {
                     "CANNOT_SET_STATUS_FOR_EXCLUDED_CRITERIA"
                 }
-                CampaignCriterionError::CannotTargetAndExclude => {
-                    "CANNOT_TARGET_AND_EXCLUDE"
-                }
-                CampaignCriterionError::TooManyOperations => "TOO_MANY_OPERATIONS",
-                CampaignCriterionError::OperatorNotSupportedForCriterionType => {
+                Self::CannotTargetAndExclude => "CANNOT_TARGET_AND_EXCLUDE",
+                Self::TooManyOperations => "TOO_MANY_OPERATIONS",
+                Self::OperatorNotSupportedForCriterionType => {
                     "OPERATOR_NOT_SUPPORTED_FOR_CRITERION_TYPE"
                 }
-                CampaignCriterionError::ShoppingCampaignSalesCountryNotSupportedForSalesChannel => {
+                Self::ShoppingCampaignSalesCountryNotSupportedForSalesChannel => {
                     "SHOPPING_CAMPAIGN_SALES_COUNTRY_NOT_SUPPORTED_FOR_SALES_CHANNEL"
                 }
-                CampaignCriterionError::CannotAddExistingField => {
-                    "CANNOT_ADD_EXISTING_FIELD"
-                }
-                CampaignCriterionError::CannotUpdateNegativeCriterion => {
-                    "CANNOT_UPDATE_NEGATIVE_CRITERION"
-                }
-                CampaignCriterionError::CannotSetNegativeKeywordThemeConstantCriterion => {
+                Self::CannotAddExistingField => "CANNOT_ADD_EXISTING_FIELD",
+                Self::CannotUpdateNegativeCriterion => "CANNOT_UPDATE_NEGATIVE_CRITERION",
+                Self::CannotSetNegativeKeywordThemeConstantCriterion => {
                     "CANNOT_SET_NEGATIVE_KEYWORD_THEME_CONSTANT_CRITERION"
                 }
-                CampaignCriterionError::InvalidKeywordThemeConstant => {
-                    "INVALID_KEYWORD_THEME_CONSTANT"
-                }
-                CampaignCriterionError::MissingKeywordThemeConstantOrFreeFormKeywordTheme => {
+                Self::InvalidKeywordThemeConstant => "INVALID_KEYWORD_THEME_CONSTANT",
+                Self::MissingKeywordThemeConstantOrFreeFormKeywordTheme => {
                     "MISSING_KEYWORD_THEME_CONSTANT_OR_FREE_FORM_KEYWORD_THEME"
                 }
-                CampaignCriterionError::CannotTargetBothProximityAndLocationCriteriaForSmartCampaign => {
+                Self::CannotTargetBothProximityAndLocationCriteriaForSmartCampaign => {
                     "CANNOT_TARGET_BOTH_PROXIMITY_AND_LOCATION_CRITERIA_FOR_SMART_CAMPAIGN"
                 }
-                CampaignCriterionError::CannotTargetMultipleProximityCriteriaForSmartCampaign => {
+                Self::CannotTargetMultipleProximityCriteriaForSmartCampaign => {
                     "CANNOT_TARGET_MULTIPLE_PROXIMITY_CRITERIA_FOR_SMART_CAMPAIGN"
                 }
-                CampaignCriterionError::LocationNotLaunchedForLocalServicesCampaign => {
+                Self::LocationNotLaunchedForLocalServicesCampaign => {
                     "LOCATION_NOT_LAUNCHED_FOR_LOCAL_SERVICES_CAMPAIGN"
                 }
-                CampaignCriterionError::LocationInvalidForLocalServicesCampaign => {
+                Self::LocationInvalidForLocalServicesCampaign => {
                     "LOCATION_INVALID_FOR_LOCAL_SERVICES_CAMPAIGN"
                 }
-                CampaignCriterionError::CannotTargetCountryForLocalServicesCampaign => {
+                Self::CannotTargetCountryForLocalServicesCampaign => {
                     "CANNOT_TARGET_COUNTRY_FOR_LOCAL_SERVICES_CAMPAIGN"
                 }
-                CampaignCriterionError::LocationNotInHomeCountryForLocalServicesCampaign => {
+                Self::LocationNotInHomeCountryForLocalServicesCampaign => {
                     "LOCATION_NOT_IN_HOME_COUNTRY_FOR_LOCAL_SERVICES_CAMPAIGN"
                 }
-                CampaignCriterionError::CannotAddOrRemoveLocationForLocalServicesCampaign => {
+                Self::CannotAddOrRemoveLocationForLocalServicesCampaign => {
                     "CANNOT_ADD_OR_REMOVE_LOCATION_FOR_LOCAL_SERVICES_CAMPAIGN"
                 }
-                CampaignCriterionError::AtLeastOnePositiveLocationRequiredForLocalServicesCampaign => {
+                Self::AtLeastOnePositiveLocationRequiredForLocalServicesCampaign => {
                     "AT_LEAST_ONE_POSITIVE_LOCATION_REQUIRED_FOR_LOCAL_SERVICES_CAMPAIGN"
                 }
-                CampaignCriterionError::AtLeastOneLocalServiceIdCriterionRequiredForLocalServicesCampaign => {
+                Self::AtLeastOneLocalServiceIdCriterionRequiredForLocalServicesCampaign => {
                     "AT_LEAST_ONE_LOCAL_SERVICE_ID_CRITERION_REQUIRED_FOR_LOCAL_SERVICES_CAMPAIGN"
                 }
-                CampaignCriterionError::LocalServiceIdNotFoundForCategory => {
+                Self::LocalServiceIdNotFoundForCategory => {
                     "LOCAL_SERVICE_ID_NOT_FOUND_FOR_CATEGORY"
                 }
-                CampaignCriterionError::CannotAttachBrandListToNonQualifiedSearchCampaign => {
+                Self::CannotAttachBrandListToNonQualifiedSearchCampaign => {
                     "CANNOT_ATTACH_BRAND_LIST_TO_NON_QUALIFIED_SEARCH_CAMPAIGN"
                 }
-                CampaignCriterionError::CannotRemoveAllLocationsDueToTooManyCountryExclusions => {
+                Self::CannotRemoveAllLocationsDueToTooManyCountryExclusions => {
                     "CANNOT_REMOVE_ALL_LOCATIONS_DUE_TO_TOO_MANY_COUNTRY_EXCLUSIONS"
                 }
             }
@@ -5109,8 +4919,8 @@ pub mod campaign_customizer_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CampaignCustomizerError::Unspecified => "UNSPECIFIED",
-                CampaignCustomizerError::Unknown => "UNKNOWN",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5179,32 +4989,26 @@ pub mod campaign_draft_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CampaignDraftError::Unspecified => "UNSPECIFIED",
-                CampaignDraftError::Unknown => "UNKNOWN",
-                CampaignDraftError::DuplicateDraftName => "DUPLICATE_DRAFT_NAME",
-                CampaignDraftError::InvalidStatusTransitionFromRemoved => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::DuplicateDraftName => "DUPLICATE_DRAFT_NAME",
+                Self::InvalidStatusTransitionFromRemoved => {
                     "INVALID_STATUS_TRANSITION_FROM_REMOVED"
                 }
-                CampaignDraftError::InvalidStatusTransitionFromPromoted => {
+                Self::InvalidStatusTransitionFromPromoted => {
                     "INVALID_STATUS_TRANSITION_FROM_PROMOTED"
                 }
-                CampaignDraftError::InvalidStatusTransitionFromPromoteFailed => {
+                Self::InvalidStatusTransitionFromPromoteFailed => {
                     "INVALID_STATUS_TRANSITION_FROM_PROMOTE_FAILED"
                 }
-                CampaignDraftError::CustomerCannotCreateDraft => {
-                    "CUSTOMER_CANNOT_CREATE_DRAFT"
-                }
-                CampaignDraftError::CampaignCannotCreateDraft => {
-                    "CAMPAIGN_CANNOT_CREATE_DRAFT"
-                }
-                CampaignDraftError::InvalidDraftChange => "INVALID_DRAFT_CHANGE",
-                CampaignDraftError::InvalidStatusTransition => {
-                    "INVALID_STATUS_TRANSITION"
-                }
-                CampaignDraftError::MaxNumberOfDraftsPerCampaignReached => {
+                Self::CustomerCannotCreateDraft => "CUSTOMER_CANNOT_CREATE_DRAFT",
+                Self::CampaignCannotCreateDraft => "CAMPAIGN_CANNOT_CREATE_DRAFT",
+                Self::InvalidDraftChange => "INVALID_DRAFT_CHANGE",
+                Self::InvalidStatusTransition => "INVALID_STATUS_TRANSITION",
+                Self::MaxNumberOfDraftsPerCampaignReached => {
                     "MAX_NUMBER_OF_DRAFTS_PER_CAMPAIGN_REACHED"
                 }
-                CampaignDraftError::ListErrorsForPromotedDraftOnly => {
+                Self::ListErrorsForPromotedDraftOnly => {
                     "LIST_ERRORS_FOR_PROMOTED_DRAFT_ONLY"
                 }
             }
@@ -5460,193 +5264,169 @@ pub mod campaign_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CampaignError::Unspecified => "UNSPECIFIED",
-                CampaignError::Unknown => "UNKNOWN",
-                CampaignError::CannotTargetContentNetwork => {
-                    "CANNOT_TARGET_CONTENT_NETWORK"
-                }
-                CampaignError::CannotTargetSearchNetwork => {
-                    "CANNOT_TARGET_SEARCH_NETWORK"
-                }
-                CampaignError::CannotTargetSearchNetworkWithoutGoogleSearch => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CannotTargetContentNetwork => "CANNOT_TARGET_CONTENT_NETWORK",
+                Self::CannotTargetSearchNetwork => "CANNOT_TARGET_SEARCH_NETWORK",
+                Self::CannotTargetSearchNetworkWithoutGoogleSearch => {
                     "CANNOT_TARGET_SEARCH_NETWORK_WITHOUT_GOOGLE_SEARCH"
                 }
-                CampaignError::CannotTargetGoogleSearchForCpmCampaign => {
+                Self::CannotTargetGoogleSearchForCpmCampaign => {
                     "CANNOT_TARGET_GOOGLE_SEARCH_FOR_CPM_CAMPAIGN"
                 }
-                CampaignError::CampaignMustTargetAtLeastOneNetwork => {
+                Self::CampaignMustTargetAtLeastOneNetwork => {
                     "CAMPAIGN_MUST_TARGET_AT_LEAST_ONE_NETWORK"
                 }
-                CampaignError::CannotTargetPartnerSearchNetwork => {
+                Self::CannotTargetPartnerSearchNetwork => {
                     "CANNOT_TARGET_PARTNER_SEARCH_NETWORK"
                 }
-                CampaignError::CannotTargetContentNetworkOnlyWithCriteriaLevelBiddingStrategy => {
+                Self::CannotTargetContentNetworkOnlyWithCriteriaLevelBiddingStrategy => {
                     "CANNOT_TARGET_CONTENT_NETWORK_ONLY_WITH_CRITERIA_LEVEL_BIDDING_STRATEGY"
                 }
-                CampaignError::CampaignDurationMustContainAllRunnableTrials => {
+                Self::CampaignDurationMustContainAllRunnableTrials => {
                     "CAMPAIGN_DURATION_MUST_CONTAIN_ALL_RUNNABLE_TRIALS"
                 }
-                CampaignError::CannotModifyForTrialCampaign => {
-                    "CANNOT_MODIFY_FOR_TRIAL_CAMPAIGN"
-                }
-                CampaignError::DuplicateCampaignName => "DUPLICATE_CAMPAIGN_NAME",
-                CampaignError::IncompatibleCampaignField => "INCOMPATIBLE_CAMPAIGN_FIELD",
-                CampaignError::InvalidCampaignName => "INVALID_CAMPAIGN_NAME",
-                CampaignError::InvalidAdServingOptimizationStatus => {
+                Self::CannotModifyForTrialCampaign => "CANNOT_MODIFY_FOR_TRIAL_CAMPAIGN",
+                Self::DuplicateCampaignName => "DUPLICATE_CAMPAIGN_NAME",
+                Self::IncompatibleCampaignField => "INCOMPATIBLE_CAMPAIGN_FIELD",
+                Self::InvalidCampaignName => "INVALID_CAMPAIGN_NAME",
+                Self::InvalidAdServingOptimizationStatus => {
                     "INVALID_AD_SERVING_OPTIMIZATION_STATUS"
                 }
-                CampaignError::InvalidTrackingUrl => "INVALID_TRACKING_URL",
-                CampaignError::CannotSetBothTrackingUrlTemplateAndTrackingSetting => {
+                Self::InvalidTrackingUrl => "INVALID_TRACKING_URL",
+                Self::CannotSetBothTrackingUrlTemplateAndTrackingSetting => {
                     "CANNOT_SET_BOTH_TRACKING_URL_TEMPLATE_AND_TRACKING_SETTING"
                 }
-                CampaignError::MaxImpressionsNotInRange => "MAX_IMPRESSIONS_NOT_IN_RANGE",
-                CampaignError::TimeUnitNotSupported => "TIME_UNIT_NOT_SUPPORTED",
-                CampaignError::InvalidOperationIfServingStatusHasEnded => {
+                Self::MaxImpressionsNotInRange => "MAX_IMPRESSIONS_NOT_IN_RANGE",
+                Self::TimeUnitNotSupported => "TIME_UNIT_NOT_SUPPORTED",
+                Self::InvalidOperationIfServingStatusHasEnded => {
                     "INVALID_OPERATION_IF_SERVING_STATUS_HAS_ENDED"
                 }
-                CampaignError::BudgetCannotBeShared => "BUDGET_CANNOT_BE_SHARED",
-                CampaignError::CampaignCannotUseSharedBudget => {
+                Self::BudgetCannotBeShared => "BUDGET_CANNOT_BE_SHARED",
+                Self::CampaignCannotUseSharedBudget => {
                     "CAMPAIGN_CANNOT_USE_SHARED_BUDGET"
                 }
-                CampaignError::CannotChangeBudgetOnCampaignWithTrials => {
+                Self::CannotChangeBudgetOnCampaignWithTrials => {
                     "CANNOT_CHANGE_BUDGET_ON_CAMPAIGN_WITH_TRIALS"
                 }
-                CampaignError::CampaignLabelDoesNotExist => {
-                    "CAMPAIGN_LABEL_DOES_NOT_EXIST"
-                }
-                CampaignError::CampaignLabelAlreadyExists => {
-                    "CAMPAIGN_LABEL_ALREADY_EXISTS"
-                }
-                CampaignError::MissingShoppingSetting => "MISSING_SHOPPING_SETTING",
-                CampaignError::InvalidShoppingSalesCountry => {
-                    "INVALID_SHOPPING_SALES_COUNTRY"
-                }
-                CampaignError::AdvertisingChannelTypeNotAvailableForAccountType => {
+                Self::CampaignLabelDoesNotExist => "CAMPAIGN_LABEL_DOES_NOT_EXIST",
+                Self::CampaignLabelAlreadyExists => "CAMPAIGN_LABEL_ALREADY_EXISTS",
+                Self::MissingShoppingSetting => "MISSING_SHOPPING_SETTING",
+                Self::InvalidShoppingSalesCountry => "INVALID_SHOPPING_SALES_COUNTRY",
+                Self::AdvertisingChannelTypeNotAvailableForAccountType => {
                     "ADVERTISING_CHANNEL_TYPE_NOT_AVAILABLE_FOR_ACCOUNT_TYPE"
                 }
-                CampaignError::InvalidAdvertisingChannelSubType => {
+                Self::InvalidAdvertisingChannelSubType => {
                     "INVALID_ADVERTISING_CHANNEL_SUB_TYPE"
                 }
-                CampaignError::AtLeastOneConversionMustBeSelected => {
+                Self::AtLeastOneConversionMustBeSelected => {
                     "AT_LEAST_ONE_CONVERSION_MUST_BE_SELECTED"
                 }
-                CampaignError::CannotSetAdRotationMode => "CANNOT_SET_AD_ROTATION_MODE",
-                CampaignError::CannotModifyStartDateIfAlreadyStarted => {
+                Self::CannotSetAdRotationMode => "CANNOT_SET_AD_ROTATION_MODE",
+                Self::CannotModifyStartDateIfAlreadyStarted => {
                     "CANNOT_MODIFY_START_DATE_IF_ALREADY_STARTED"
                 }
-                CampaignError::CannotSetDateToPast => "CANNOT_SET_DATE_TO_PAST",
-                CampaignError::MissingHotelCustomerLink => "MISSING_HOTEL_CUSTOMER_LINK",
-                CampaignError::InvalidHotelCustomerLink => "INVALID_HOTEL_CUSTOMER_LINK",
-                CampaignError::MissingHotelSetting => "MISSING_HOTEL_SETTING",
-                CampaignError::CannotUseSharedCampaignBudgetWhilePartOfCampaignGroup => {
+                Self::CannotSetDateToPast => "CANNOT_SET_DATE_TO_PAST",
+                Self::MissingHotelCustomerLink => "MISSING_HOTEL_CUSTOMER_LINK",
+                Self::InvalidHotelCustomerLink => "INVALID_HOTEL_CUSTOMER_LINK",
+                Self::MissingHotelSetting => "MISSING_HOTEL_SETTING",
+                Self::CannotUseSharedCampaignBudgetWhilePartOfCampaignGroup => {
                     "CANNOT_USE_SHARED_CAMPAIGN_BUDGET_WHILE_PART_OF_CAMPAIGN_GROUP"
                 }
-                CampaignError::AppNotFound => "APP_NOT_FOUND",
-                CampaignError::ShoppingEnableLocalNotSupportedForCampaignType => {
+                Self::AppNotFound => "APP_NOT_FOUND",
+                Self::ShoppingEnableLocalNotSupportedForCampaignType => {
                     "SHOPPING_ENABLE_LOCAL_NOT_SUPPORTED_FOR_CAMPAIGN_TYPE"
                 }
-                CampaignError::MerchantNotAllowedForComparisonListingAds => {
+                Self::MerchantNotAllowedForComparisonListingAds => {
                     "MERCHANT_NOT_ALLOWED_FOR_COMPARISON_LISTING_ADS"
                 }
-                CampaignError::InsufficientAppInstallsCount => {
-                    "INSUFFICIENT_APP_INSTALLS_COUNT"
-                }
-                CampaignError::SensitiveCategoryApp => "SENSITIVE_CATEGORY_APP",
-                CampaignError::HecAgreementRequired => "HEC_AGREEMENT_REQUIRED",
-                CampaignError::NotCompatibleWithViewThroughConversionOptimization => {
+                Self::InsufficientAppInstallsCount => "INSUFFICIENT_APP_INSTALLS_COUNT",
+                Self::SensitiveCategoryApp => "SENSITIVE_CATEGORY_APP",
+                Self::HecAgreementRequired => "HEC_AGREEMENT_REQUIRED",
+                Self::NotCompatibleWithViewThroughConversionOptimization => {
                     "NOT_COMPATIBLE_WITH_VIEW_THROUGH_CONVERSION_OPTIMIZATION"
                 }
-                CampaignError::InvalidExcludedParentAssetFieldType => {
+                Self::InvalidExcludedParentAssetFieldType => {
                     "INVALID_EXCLUDED_PARENT_ASSET_FIELD_TYPE"
                 }
-                CampaignError::CannotCreateAppPreRegistrationForNonAndroidApp => {
+                Self::CannotCreateAppPreRegistrationForNonAndroidApp => {
                     "CANNOT_CREATE_APP_PRE_REGISTRATION_FOR_NON_ANDROID_APP"
                 }
-                CampaignError::AppNotAvailableToCreateAppPreRegistrationCampaign => {
+                Self::AppNotAvailableToCreateAppPreRegistrationCampaign => {
                     "APP_NOT_AVAILABLE_TO_CREATE_APP_PRE_REGISTRATION_CAMPAIGN"
                 }
-                CampaignError::IncompatibleBudgetType => "INCOMPATIBLE_BUDGET_TYPE",
-                CampaignError::LocalServicesDuplicateCategoryBid => {
+                Self::IncompatibleBudgetType => "INCOMPATIBLE_BUDGET_TYPE",
+                Self::LocalServicesDuplicateCategoryBid => {
                     "LOCAL_SERVICES_DUPLICATE_CATEGORY_BID"
                 }
-                CampaignError::LocalServicesInvalidCategoryBid => {
+                Self::LocalServicesInvalidCategoryBid => {
                     "LOCAL_SERVICES_INVALID_CATEGORY_BID"
                 }
-                CampaignError::LocalServicesMissingCategoryBid => {
+                Self::LocalServicesMissingCategoryBid => {
                     "LOCAL_SERVICES_MISSING_CATEGORY_BID"
                 }
-                CampaignError::InvalidStatusChange => "INVALID_STATUS_CHANGE",
-                CampaignError::MissingTravelCustomerLink => {
-                    "MISSING_TRAVEL_CUSTOMER_LINK"
-                }
-                CampaignError::InvalidTravelCustomerLink => {
-                    "INVALID_TRAVEL_CUSTOMER_LINK"
-                }
-                CampaignError::InvalidExcludedParentAssetSetType => {
+                Self::InvalidStatusChange => "INVALID_STATUS_CHANGE",
+                Self::MissingTravelCustomerLink => "MISSING_TRAVEL_CUSTOMER_LINK",
+                Self::InvalidTravelCustomerLink => "INVALID_TRAVEL_CUSTOMER_LINK",
+                Self::InvalidExcludedParentAssetSetType => {
                     "INVALID_EXCLUDED_PARENT_ASSET_SET_TYPE"
                 }
-                CampaignError::AssetSetNotAHotelPropertyAssetSet => {
+                Self::AssetSetNotAHotelPropertyAssetSet => {
                     "ASSET_SET_NOT_A_HOTEL_PROPERTY_ASSET_SET"
                 }
-                CampaignError::HotelPropertyAssetSetOnlyForPerformanceMaxForTravelGoals => {
+                Self::HotelPropertyAssetSetOnlyForPerformanceMaxForTravelGoals => {
                     "HOTEL_PROPERTY_ASSET_SET_ONLY_FOR_PERFORMANCE_MAX_FOR_TRAVEL_GOALS"
                 }
-                CampaignError::AverageDailySpendTooHigh => "AVERAGE_DAILY_SPEND_TOO_HIGH",
-                CampaignError::CannotAttachToRemovedCampaignGroup => {
+                Self::AverageDailySpendTooHigh => "AVERAGE_DAILY_SPEND_TOO_HIGH",
+                Self::CannotAttachToRemovedCampaignGroup => {
                     "CANNOT_ATTACH_TO_REMOVED_CAMPAIGN_GROUP"
                 }
-                CampaignError::CannotAttachToBiddingStrategy => {
+                Self::CannotAttachToBiddingStrategy => {
                     "CANNOT_ATTACH_TO_BIDDING_STRATEGY"
                 }
-                CampaignError::CannotChangeBudgetPeriod => "CANNOT_CHANGE_BUDGET_PERIOD",
-                CampaignError::NotEnoughConversions => "NOT_ENOUGH_CONVERSIONS",
-                CampaignError::CannotSetMoreThanOneConversionAction => {
+                Self::CannotChangeBudgetPeriod => "CANNOT_CHANGE_BUDGET_PERIOD",
+                Self::NotEnoughConversions => "NOT_ENOUGH_CONVERSIONS",
+                Self::CannotSetMoreThanOneConversionAction => {
                     "CANNOT_SET_MORE_THAN_ONE_CONVERSION_ACTION"
                 }
-                CampaignError::NotCompatibleWithBudgetType => {
-                    "NOT_COMPATIBLE_WITH_BUDGET_TYPE"
-                }
-                CampaignError::NotCompatibleWithUploadClicksConversion => {
+                Self::NotCompatibleWithBudgetType => "NOT_COMPATIBLE_WITH_BUDGET_TYPE",
+                Self::NotCompatibleWithUploadClicksConversion => {
                     "NOT_COMPATIBLE_WITH_UPLOAD_CLICKS_CONVERSION"
                 }
-                CampaignError::AppIdMustMatchConversionActionAppId => {
+                Self::AppIdMustMatchConversionActionAppId => {
                     "APP_ID_MUST_MATCH_CONVERSION_ACTION_APP_ID"
                 }
-                CampaignError::ConversionActionWithDownloadCategoryNotAllowed => {
+                Self::ConversionActionWithDownloadCategoryNotAllowed => {
                     "CONVERSION_ACTION_WITH_DOWNLOAD_CATEGORY_NOT_ALLOWED"
                 }
-                CampaignError::ConversionActionWithDownloadCategoryRequired => {
+                Self::ConversionActionWithDownloadCategoryRequired => {
                     "CONVERSION_ACTION_WITH_DOWNLOAD_CATEGORY_REQUIRED"
                 }
-                CampaignError::ConversionTrackingNotEnabled => {
-                    "CONVERSION_TRACKING_NOT_ENABLED"
-                }
-                CampaignError::NotCompatibleWithBiddingStrategyType => {
+                Self::ConversionTrackingNotEnabled => "CONVERSION_TRACKING_NOT_ENABLED",
+                Self::NotCompatibleWithBiddingStrategyType => {
                     "NOT_COMPATIBLE_WITH_BIDDING_STRATEGY_TYPE"
                 }
-                CampaignError::NotCompatibleWithGoogleAttributionConversions => {
+                Self::NotCompatibleWithGoogleAttributionConversions => {
                     "NOT_COMPATIBLE_WITH_GOOGLE_ATTRIBUTION_CONVERSIONS"
                 }
-                CampaignError::ConversionLagTooHigh => "CONVERSION_LAG_TOO_HIGH",
-                CampaignError::NotLinkedAdvertisingPartner => {
-                    "NOT_LINKED_ADVERTISING_PARTNER"
-                }
-                CampaignError::InvalidNumberOfAdvertisingPartnerIds => {
+                Self::ConversionLagTooHigh => "CONVERSION_LAG_TOO_HIGH",
+                Self::NotLinkedAdvertisingPartner => "NOT_LINKED_ADVERTISING_PARTNER",
+                Self::InvalidNumberOfAdvertisingPartnerIds => {
                     "INVALID_NUMBER_OF_ADVERTISING_PARTNER_IDS"
                 }
-                CampaignError::CannotTargetDisplayNetworkWithoutYoutube => {
+                Self::CannotTargetDisplayNetworkWithoutYoutube => {
                     "CANNOT_TARGET_DISPLAY_NETWORK_WITHOUT_YOUTUBE"
                 }
-                CampaignError::CannotLinkToComparisonShoppingServiceAccount => {
+                Self::CannotLinkToComparisonShoppingServiceAccount => {
                     "CANNOT_LINK_TO_COMPARISON_SHOPPING_SERVICE_ACCOUNT"
                 }
-                CampaignError::CannotTargetNetworkForComparisonShoppingServiceLinkedAccounts => {
+                Self::CannotTargetNetworkForComparisonShoppingServiceLinkedAccounts => {
                     "CANNOT_TARGET_NETWORK_FOR_COMPARISON_SHOPPING_SERVICE_LINKED_ACCOUNTS"
                 }
-                CampaignError::CannotModifyTextAssetAutomationWithEnabledTrial => {
+                Self::CannotModifyTextAssetAutomationWithEnabledTrial => {
                     "CANNOT_MODIFY_TEXT_ASSET_AUTOMATION_WITH_ENABLED_TRIAL"
                 }
-                CampaignError::DynamicTextAssetCannotOptOutWithFinalUrlExpansionOptIn => {
+                Self::DynamicTextAssetCannotOptOutWithFinalUrlExpansionOptIn => {
                     "DYNAMIC_TEXT_ASSET_CANNOT_OPT_OUT_WITH_FINAL_URL_EXPANSION_OPT_IN"
                 }
             }
@@ -5898,32 +5678,32 @@ pub mod campaign_experiment_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CampaignExperimentError::Unspecified => "UNSPECIFIED",
-                CampaignExperimentError::Unknown => "UNKNOWN",
-                CampaignExperimentError::DuplicateName => "DUPLICATE_NAME",
-                CampaignExperimentError::InvalidTransition => "INVALID_TRANSITION",
-                CampaignExperimentError::CannotCreateExperimentWithSharedBudget => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::DuplicateName => "DUPLICATE_NAME",
+                Self::InvalidTransition => "INVALID_TRANSITION",
+                Self::CannotCreateExperimentWithSharedBudget => {
                     "CANNOT_CREATE_EXPERIMENT_WITH_SHARED_BUDGET"
                 }
-                CampaignExperimentError::CannotCreateExperimentForRemovedBaseCampaign => {
+                Self::CannotCreateExperimentForRemovedBaseCampaign => {
                     "CANNOT_CREATE_EXPERIMENT_FOR_REMOVED_BASE_CAMPAIGN"
                 }
-                CampaignExperimentError::CannotCreateExperimentForNonProposedDraft => {
+                Self::CannotCreateExperimentForNonProposedDraft => {
                     "CANNOT_CREATE_EXPERIMENT_FOR_NON_PROPOSED_DRAFT"
                 }
-                CampaignExperimentError::CustomerCannotCreateExperiment => {
+                Self::CustomerCannotCreateExperiment => {
                     "CUSTOMER_CANNOT_CREATE_EXPERIMENT"
                 }
-                CampaignExperimentError::CampaignCannotCreateExperiment => {
+                Self::CampaignCannotCreateExperiment => {
                     "CAMPAIGN_CANNOT_CREATE_EXPERIMENT"
                 }
-                CampaignExperimentError::ExperimentDurationsMustNotOverlap => {
+                Self::ExperimentDurationsMustNotOverlap => {
                     "EXPERIMENT_DURATIONS_MUST_NOT_OVERLAP"
                 }
-                CampaignExperimentError::ExperimentDurationMustBeWithinCampaignDuration => {
+                Self::ExperimentDurationMustBeWithinCampaignDuration => {
                     "EXPERIMENT_DURATION_MUST_BE_WITHIN_CAMPAIGN_DURATION"
                 }
-                CampaignExperimentError::CannotMutateExperimentDueToStatus => {
+                Self::CannotMutateExperimentDueToStatus => {
                     "CANNOT_MUTATE_EXPERIMENT_DUE_TO_STATUS"
                 }
             }
@@ -6013,28 +5793,26 @@ pub mod campaign_feed_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CampaignFeedError::Unspecified => "UNSPECIFIED",
-                CampaignFeedError::Unknown => "UNKNOWN",
-                CampaignFeedError::FeedAlreadyExistsForPlaceholderType => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::FeedAlreadyExistsForPlaceholderType => {
                     "FEED_ALREADY_EXISTS_FOR_PLACEHOLDER_TYPE"
                 }
-                CampaignFeedError::CannotCreateForRemovedFeed => {
-                    "CANNOT_CREATE_FOR_REMOVED_FEED"
-                }
-                CampaignFeedError::CannotCreateAlreadyExistingCampaignFeed => {
+                Self::CannotCreateForRemovedFeed => "CANNOT_CREATE_FOR_REMOVED_FEED",
+                Self::CannotCreateAlreadyExistingCampaignFeed => {
                     "CANNOT_CREATE_ALREADY_EXISTING_CAMPAIGN_FEED"
                 }
-                CampaignFeedError::CannotModifyRemovedCampaignFeed => {
+                Self::CannotModifyRemovedCampaignFeed => {
                     "CANNOT_MODIFY_REMOVED_CAMPAIGN_FEED"
                 }
-                CampaignFeedError::InvalidPlaceholderType => "INVALID_PLACEHOLDER_TYPE",
-                CampaignFeedError::MissingFeedmappingForPlaceholderType => {
+                Self::InvalidPlaceholderType => "INVALID_PLACEHOLDER_TYPE",
+                Self::MissingFeedmappingForPlaceholderType => {
                     "MISSING_FEEDMAPPING_FOR_PLACEHOLDER_TYPE"
                 }
-                CampaignFeedError::NoExistingLocationCustomerFeed => {
+                Self::NoExistingLocationCustomerFeed => {
                     "NO_EXISTING_LOCATION_CUSTOMER_FEED"
                 }
-                CampaignFeedError::LegacyFeedTypeReadOnly => "LEGACY_FEED_TYPE_READ_ONLY",
+                Self::LegacyFeedTypeReadOnly => "LEGACY_FEED_TYPE_READ_ONLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6153,35 +5931,31 @@ pub mod campaign_lifecycle_goal_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CampaignLifecycleGoalError::Unspecified => "UNSPECIFIED",
-                CampaignLifecycleGoalError::Unknown => "UNKNOWN",
-                CampaignLifecycleGoalError::CampaignMissing => "CAMPAIGN_MISSING",
-                CampaignLifecycleGoalError::InvalidCampaign => "INVALID_CAMPAIGN",
-                CampaignLifecycleGoalError::CustomerAcquisitionInvalidOptimizationMode => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CampaignMissing => "CAMPAIGN_MISSING",
+                Self::InvalidCampaign => "INVALID_CAMPAIGN",
+                Self::CustomerAcquisitionInvalidOptimizationMode => {
                     "CUSTOMER_ACQUISITION_INVALID_OPTIMIZATION_MODE"
                 }
-                CampaignLifecycleGoalError::IncompatibleBiddingStrategy => {
-                    "INCOMPATIBLE_BIDDING_STRATEGY"
-                }
-                CampaignLifecycleGoalError::MissingPurchaseGoal => {
-                    "MISSING_PURCHASE_GOAL"
-                }
-                CampaignLifecycleGoalError::CustomerAcquisitionInvalidHighLifetimeValue => {
+                Self::IncompatibleBiddingStrategy => "INCOMPATIBLE_BIDDING_STRATEGY",
+                Self::MissingPurchaseGoal => "MISSING_PURCHASE_GOAL",
+                Self::CustomerAcquisitionInvalidHighLifetimeValue => {
                     "CUSTOMER_ACQUISITION_INVALID_HIGH_LIFETIME_VALUE"
                 }
-                CampaignLifecycleGoalError::CustomerAcquisitionUnsupportedCampaignType => {
+                Self::CustomerAcquisitionUnsupportedCampaignType => {
                     "CUSTOMER_ACQUISITION_UNSUPPORTED_CAMPAIGN_TYPE"
                 }
-                CampaignLifecycleGoalError::CustomerAcquisitionInvalidValue => {
+                Self::CustomerAcquisitionInvalidValue => {
                     "CUSTOMER_ACQUISITION_INVALID_VALUE"
                 }
-                CampaignLifecycleGoalError::CustomerAcquisitionValueMissing => {
+                Self::CustomerAcquisitionValueMissing => {
                     "CUSTOMER_ACQUISITION_VALUE_MISSING"
                 }
-                CampaignLifecycleGoalError::CustomerAcquisitionMissingExistingCustomerDefinition => {
+                Self::CustomerAcquisitionMissingExistingCustomerDefinition => {
                     "CUSTOMER_ACQUISITION_MISSING_EXISTING_CUSTOMER_DEFINITION"
                 }
-                CampaignLifecycleGoalError::CustomerAcquisitionMissingHighValueCustomerDefinition => {
+                Self::CustomerAcquisitionMissingHighValueCustomerDefinition => {
                     "CUSTOMER_ACQUISITION_MISSING_HIGH_VALUE_CUSTOMER_DEFINITION"
                 }
             }
@@ -6256,11 +6030,9 @@ pub mod campaign_shared_set_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CampaignSharedSetError::Unspecified => "UNSPECIFIED",
-                CampaignSharedSetError::Unknown => "UNKNOWN",
-                CampaignSharedSetError::SharedSetAccessDenied => {
-                    "SHARED_SET_ACCESS_DENIED"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::SharedSetAccessDenied => "SHARED_SET_ACCESS_DENIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6319,13 +6091,13 @@ pub mod change_event_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ChangeEventError::Unspecified => "UNSPECIFIED",
-                ChangeEventError::Unknown => "UNKNOWN",
-                ChangeEventError::StartDateTooOld => "START_DATE_TOO_OLD",
-                ChangeEventError::ChangeDateRangeInfinite => "CHANGE_DATE_RANGE_INFINITE",
-                ChangeEventError::ChangeDateRangeNegative => "CHANGE_DATE_RANGE_NEGATIVE",
-                ChangeEventError::LimitNotSpecified => "LIMIT_NOT_SPECIFIED",
-                ChangeEventError::InvalidLimitClause => "INVALID_LIMIT_CLAUSE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::StartDateTooOld => "START_DATE_TOO_OLD",
+                Self::ChangeDateRangeInfinite => "CHANGE_DATE_RANGE_INFINITE",
+                Self::ChangeDateRangeNegative => "CHANGE_DATE_RANGE_NEGATIVE",
+                Self::LimitNotSpecified => "LIMIT_NOT_SPECIFIED",
+                Self::InvalidLimitClause => "INVALID_LIMIT_CLAUSE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6388,17 +6160,13 @@ pub mod change_status_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ChangeStatusError::Unspecified => "UNSPECIFIED",
-                ChangeStatusError::Unknown => "UNKNOWN",
-                ChangeStatusError::StartDateTooOld => "START_DATE_TOO_OLD",
-                ChangeStatusError::ChangeDateRangeInfinite => {
-                    "CHANGE_DATE_RANGE_INFINITE"
-                }
-                ChangeStatusError::ChangeDateRangeNegative => {
-                    "CHANGE_DATE_RANGE_NEGATIVE"
-                }
-                ChangeStatusError::LimitNotSpecified => "LIMIT_NOT_SPECIFIED",
-                ChangeStatusError::InvalidLimitClause => "INVALID_LIMIT_CLAUSE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::StartDateTooOld => "START_DATE_TOO_OLD",
+                Self::ChangeDateRangeInfinite => "CHANGE_DATE_RANGE_INFINITE",
+                Self::ChangeDateRangeNegative => "CHANGE_DATE_RANGE_NEGATIVE",
+                Self::LimitNotSpecified => "LIMIT_NOT_SPECIFIED",
+                Self::InvalidLimitClause => "INVALID_LIMIT_CLAUSE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6451,10 +6219,10 @@ pub mod collection_size_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CollectionSizeError::Unspecified => "UNSPECIFIED",
-                CollectionSizeError::Unknown => "UNKNOWN",
-                CollectionSizeError::TooFew => "TOO_FEW",
-                CollectionSizeError::TooMany => "TOO_MANY",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::TooFew => "TOO_FEW",
+                Self::TooMany => "TOO_MANY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6504,12 +6272,12 @@ pub mod context_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ContextError::Unspecified => "UNSPECIFIED",
-                ContextError::Unknown => "UNKNOWN",
-                ContextError::OperationNotPermittedForContext => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::OperationNotPermittedForContext => {
                     "OPERATION_NOT_PERMITTED_FOR_CONTEXT"
                 }
-                ContextError::OperationNotPermittedForRemovedResource => {
+                Self::OperationNotPermittedForRemovedResource => {
                     "OPERATION_NOT_PERMITTED_FOR_REMOVED_RESOURCE"
                 }
             }
@@ -6592,29 +6360,25 @@ pub mod conversion_action_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConversionActionError::Unspecified => "UNSPECIFIED",
-                ConversionActionError::Unknown => "UNKNOWN",
-                ConversionActionError::DuplicateName => "DUPLICATE_NAME",
-                ConversionActionError::DuplicateAppId => "DUPLICATE_APP_ID",
-                ConversionActionError::TwoConversionActionsBiddingOnSameAppDownload => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::DuplicateName => "DUPLICATE_NAME",
+                Self::DuplicateAppId => "DUPLICATE_APP_ID",
+                Self::TwoConversionActionsBiddingOnSameAppDownload => {
                     "TWO_CONVERSION_ACTIONS_BIDDING_ON_SAME_APP_DOWNLOAD"
                 }
-                ConversionActionError::BiddingOnSameAppDownloadAsGlobalAction => {
+                Self::BiddingOnSameAppDownloadAsGlobalAction => {
                     "BIDDING_ON_SAME_APP_DOWNLOAD_AS_GLOBAL_ACTION"
                 }
-                ConversionActionError::DataDrivenModelWasNeverGenerated => {
+                Self::DataDrivenModelWasNeverGenerated => {
                     "DATA_DRIVEN_MODEL_WAS_NEVER_GENERATED"
                 }
-                ConversionActionError::DataDrivenModelExpired => {
-                    "DATA_DRIVEN_MODEL_EXPIRED"
-                }
-                ConversionActionError::DataDrivenModelStale => "DATA_DRIVEN_MODEL_STALE",
-                ConversionActionError::DataDrivenModelUnknown => {
-                    "DATA_DRIVEN_MODEL_UNKNOWN"
-                }
-                ConversionActionError::CreationNotSupported => "CREATION_NOT_SUPPORTED",
-                ConversionActionError::UpdateNotSupported => "UPDATE_NOT_SUPPORTED",
-                ConversionActionError::CannotSetRuleBasedAttributionModels => {
+                Self::DataDrivenModelExpired => "DATA_DRIVEN_MODEL_EXPIRED",
+                Self::DataDrivenModelStale => "DATA_DRIVEN_MODEL_STALE",
+                Self::DataDrivenModelUnknown => "DATA_DRIVEN_MODEL_UNKNOWN",
+                Self::CreationNotSupported => "CREATION_NOT_SUPPORTED",
+                Self::UpdateNotSupported => "UPDATE_NOT_SUPPORTED",
+                Self::CannotSetRuleBasedAttributionModels => {
                     "CANNOT_SET_RULE_BASED_ATTRIBUTION_MODELS"
                 }
             }
@@ -6761,81 +6525,43 @@ pub mod conversion_adjustment_upload_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConversionAdjustmentUploadError::Unspecified => "UNSPECIFIED",
-                ConversionAdjustmentUploadError::Unknown => "UNKNOWN",
-                ConversionAdjustmentUploadError::TooRecentConversionAction => {
-                    "TOO_RECENT_CONVERSION_ACTION"
-                }
-                ConversionAdjustmentUploadError::ConversionAlreadyRetracted => {
-                    "CONVERSION_ALREADY_RETRACTED"
-                }
-                ConversionAdjustmentUploadError::ConversionNotFound => {
-                    "CONVERSION_NOT_FOUND"
-                }
-                ConversionAdjustmentUploadError::ConversionExpired => {
-                    "CONVERSION_EXPIRED"
-                }
-                ConversionAdjustmentUploadError::AdjustmentPrecedesConversion => {
-                    "ADJUSTMENT_PRECEDES_CONVERSION"
-                }
-                ConversionAdjustmentUploadError::MoreRecentRestatementFound => {
-                    "MORE_RECENT_RESTATEMENT_FOUND"
-                }
-                ConversionAdjustmentUploadError::TooRecentConversion => {
-                    "TOO_RECENT_CONVERSION"
-                }
-                ConversionAdjustmentUploadError::CannotRestateConversionActionThatAlwaysUsesDefaultConversionValue => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::TooRecentConversionAction => "TOO_RECENT_CONVERSION_ACTION",
+                Self::ConversionAlreadyRetracted => "CONVERSION_ALREADY_RETRACTED",
+                Self::ConversionNotFound => "CONVERSION_NOT_FOUND",
+                Self::ConversionExpired => "CONVERSION_EXPIRED",
+                Self::AdjustmentPrecedesConversion => "ADJUSTMENT_PRECEDES_CONVERSION",
+                Self::MoreRecentRestatementFound => "MORE_RECENT_RESTATEMENT_FOUND",
+                Self::TooRecentConversion => "TOO_RECENT_CONVERSION",
+                Self::CannotRestateConversionActionThatAlwaysUsesDefaultConversionValue => {
                     "CANNOT_RESTATE_CONVERSION_ACTION_THAT_ALWAYS_USES_DEFAULT_CONVERSION_VALUE"
                 }
-                ConversionAdjustmentUploadError::TooManyAdjustmentsInRequest => {
-                    "TOO_MANY_ADJUSTMENTS_IN_REQUEST"
-                }
-                ConversionAdjustmentUploadError::TooManyAdjustments => {
-                    "TOO_MANY_ADJUSTMENTS"
-                }
-                ConversionAdjustmentUploadError::RestatementAlreadyExists => {
-                    "RESTATEMENT_ALREADY_EXISTS"
-                }
-                ConversionAdjustmentUploadError::DuplicateAdjustmentInRequest => {
-                    "DUPLICATE_ADJUSTMENT_IN_REQUEST"
-                }
-                ConversionAdjustmentUploadError::CustomerNotAcceptedCustomerDataTerms => {
+                Self::TooManyAdjustmentsInRequest => "TOO_MANY_ADJUSTMENTS_IN_REQUEST",
+                Self::TooManyAdjustments => "TOO_MANY_ADJUSTMENTS",
+                Self::RestatementAlreadyExists => "RESTATEMENT_ALREADY_EXISTS",
+                Self::DuplicateAdjustmentInRequest => "DUPLICATE_ADJUSTMENT_IN_REQUEST",
+                Self::CustomerNotAcceptedCustomerDataTerms => {
                     "CUSTOMER_NOT_ACCEPTED_CUSTOMER_DATA_TERMS"
                 }
-                ConversionAdjustmentUploadError::ConversionActionNotEligibleForEnhancement => {
+                Self::ConversionActionNotEligibleForEnhancement => {
                     "CONVERSION_ACTION_NOT_ELIGIBLE_FOR_ENHANCEMENT"
                 }
-                ConversionAdjustmentUploadError::InvalidUserIdentifier => {
-                    "INVALID_USER_IDENTIFIER"
-                }
-                ConversionAdjustmentUploadError::UnsupportedUserIdentifier => {
-                    "UNSUPPORTED_USER_IDENTIFIER"
-                }
-                ConversionAdjustmentUploadError::GclidDateTimePairAndOrderIdBothSet => {
+                Self::InvalidUserIdentifier => "INVALID_USER_IDENTIFIER",
+                Self::UnsupportedUserIdentifier => "UNSUPPORTED_USER_IDENTIFIER",
+                Self::GclidDateTimePairAndOrderIdBothSet => {
                     "GCLID_DATE_TIME_PAIR_AND_ORDER_ID_BOTH_SET"
                 }
-                ConversionAdjustmentUploadError::ConversionAlreadyEnhanced => {
-                    "CONVERSION_ALREADY_ENHANCED"
-                }
-                ConversionAdjustmentUploadError::DuplicateEnhancementInRequest => {
-                    "DUPLICATE_ENHANCEMENT_IN_REQUEST"
-                }
-                ConversionAdjustmentUploadError::CustomerDataPolicyProhibitsEnhancement => {
+                Self::ConversionAlreadyEnhanced => "CONVERSION_ALREADY_ENHANCED",
+                Self::DuplicateEnhancementInRequest => "DUPLICATE_ENHANCEMENT_IN_REQUEST",
+                Self::CustomerDataPolicyProhibitsEnhancement => {
                     "CUSTOMER_DATA_POLICY_PROHIBITS_ENHANCEMENT"
                 }
-                ConversionAdjustmentUploadError::MissingOrderIdForWebpage => {
-                    "MISSING_ORDER_ID_FOR_WEBPAGE"
-                }
-                ConversionAdjustmentUploadError::OrderIdContainsPii => {
-                    "ORDER_ID_CONTAINS_PII"
-                }
-                ConversionAdjustmentUploadError::InvalidJobId => "INVALID_JOB_ID",
-                ConversionAdjustmentUploadError::NoConversionActionFound => {
-                    "NO_CONVERSION_ACTION_FOUND"
-                }
-                ConversionAdjustmentUploadError::InvalidConversionActionType => {
-                    "INVALID_CONVERSION_ACTION_TYPE"
-                }
+                Self::MissingOrderIdForWebpage => "MISSING_ORDER_ID_FOR_WEBPAGE",
+                Self::OrderIdContainsPii => "ORDER_ID_CONTAINS_PII",
+                Self::InvalidJobId => "INVALID_JOB_ID",
+                Self::NoConversionActionFound => "NO_CONVERSION_ACTION_FOUND",
+                Self::InvalidConversionActionType => "INVALID_CONVERSION_ACTION_TYPE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6933,11 +6659,11 @@ pub mod conversion_custom_variable_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConversionCustomVariableError::Unspecified => "UNSPECIFIED",
-                ConversionCustomVariableError::Unknown => "UNKNOWN",
-                ConversionCustomVariableError::DuplicateName => "DUPLICATE_NAME",
-                ConversionCustomVariableError::DuplicateTag => "DUPLICATE_TAG",
-                ConversionCustomVariableError::ReservedTag => "RESERVED_TAG",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::DuplicateName => "DUPLICATE_NAME",
+                Self::DuplicateTag => "DUPLICATE_TAG",
+                Self::ReservedTag => "RESERVED_TAG",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7001,24 +6727,22 @@ pub mod conversion_goal_campaign_config_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConversionGoalCampaignConfigError::Unspecified => "UNSPECIFIED",
-                ConversionGoalCampaignConfigError::Unknown => "UNKNOWN",
-                ConversionGoalCampaignConfigError::CannotUseCampaignGoalForSearchAds360ManagedCampaign => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CannotUseCampaignGoalForSearchAds360ManagedCampaign => {
                     "CANNOT_USE_CAMPAIGN_GOAL_FOR_SEARCH_ADS_360_MANAGED_CAMPAIGN"
                 }
-                ConversionGoalCampaignConfigError::CustomGoalDoesNotBelongToGoogleAdsConversionCustomer => {
+                Self::CustomGoalDoesNotBelongToGoogleAdsConversionCustomer => {
                     "CUSTOM_GOAL_DOES_NOT_BELONG_TO_GOOGLE_ADS_CONVERSION_CUSTOMER"
                 }
-                ConversionGoalCampaignConfigError::CampaignCannotUseUnifiedGoals => {
+                Self::CampaignCannotUseUnifiedGoals => {
                     "CAMPAIGN_CANNOT_USE_UNIFIED_GOALS"
                 }
-                ConversionGoalCampaignConfigError::EmptyConversionGoals => {
-                    "EMPTY_CONVERSION_GOALS"
-                }
-                ConversionGoalCampaignConfigError::StoreSaleStoreVisitCannotBeBothIncluded => {
+                Self::EmptyConversionGoals => "EMPTY_CONVERSION_GOALS",
+                Self::StoreSaleStoreVisitCannotBeBothIncluded => {
                     "STORE_SALE_STORE_VISIT_CANNOT_BE_BOTH_INCLUDED"
                 }
-                ConversionGoalCampaignConfigError::PerformanceMaxCampaignCannotUseCustomGoalWithStoreSales => {
+                Self::PerformanceMaxCampaignCannotUseCustomGoalWithStoreSales => {
                     "PERFORMANCE_MAX_CAMPAIGN_CANNOT_USE_CUSTOM_GOAL_WITH_STORE_SALES"
                 }
             }
@@ -7226,106 +6950,80 @@ pub mod conversion_upload_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConversionUploadError::Unspecified => "UNSPECIFIED",
-                ConversionUploadError::Unknown => "UNKNOWN",
-                ConversionUploadError::TooManyConversionsInRequest => {
-                    "TOO_MANY_CONVERSIONS_IN_REQUEST"
-                }
-                ConversionUploadError::UnparseableGclid => "UNPARSEABLE_GCLID",
-                ConversionUploadError::ConversionPrecedesEvent => {
-                    "CONVERSION_PRECEDES_EVENT"
-                }
-                ConversionUploadError::ExpiredEvent => "EXPIRED_EVENT",
-                ConversionUploadError::TooRecentEvent => "TOO_RECENT_EVENT",
-                ConversionUploadError::EventNotFound => "EVENT_NOT_FOUND",
-                ConversionUploadError::UnauthorizedCustomer => "UNAUTHORIZED_CUSTOMER",
-                ConversionUploadError::TooRecentConversionAction => {
-                    "TOO_RECENT_CONVERSION_ACTION"
-                }
-                ConversionUploadError::ConversionTrackingNotEnabledAtImpressionTime => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::TooManyConversionsInRequest => "TOO_MANY_CONVERSIONS_IN_REQUEST",
+                Self::UnparseableGclid => "UNPARSEABLE_GCLID",
+                Self::ConversionPrecedesEvent => "CONVERSION_PRECEDES_EVENT",
+                Self::ExpiredEvent => "EXPIRED_EVENT",
+                Self::TooRecentEvent => "TOO_RECENT_EVENT",
+                Self::EventNotFound => "EVENT_NOT_FOUND",
+                Self::UnauthorizedCustomer => "UNAUTHORIZED_CUSTOMER",
+                Self::TooRecentConversionAction => "TOO_RECENT_CONVERSION_ACTION",
+                Self::ConversionTrackingNotEnabledAtImpressionTime => {
                     "CONVERSION_TRACKING_NOT_ENABLED_AT_IMPRESSION_TIME"
                 }
-                ConversionUploadError::ExternalAttributionDataSetForNonExternallyAttributedConversionAction => {
+                Self::ExternalAttributionDataSetForNonExternallyAttributedConversionAction => {
                     "EXTERNAL_ATTRIBUTION_DATA_SET_FOR_NON_EXTERNALLY_ATTRIBUTED_CONVERSION_ACTION"
                 }
-                ConversionUploadError::ExternalAttributionDataNotSetForExternallyAttributedConversionAction => {
+                Self::ExternalAttributionDataNotSetForExternallyAttributedConversionAction => {
                     "EXTERNAL_ATTRIBUTION_DATA_NOT_SET_FOR_EXTERNALLY_ATTRIBUTED_CONVERSION_ACTION"
                 }
-                ConversionUploadError::OrderIdNotPermittedForExternallyAttributedConversionAction => {
+                Self::OrderIdNotPermittedForExternallyAttributedConversionAction => {
                     "ORDER_ID_NOT_PERMITTED_FOR_EXTERNALLY_ATTRIBUTED_CONVERSION_ACTION"
                 }
-                ConversionUploadError::OrderIdAlreadyInUse => "ORDER_ID_ALREADY_IN_USE",
-                ConversionUploadError::DuplicateOrderId => "DUPLICATE_ORDER_ID",
-                ConversionUploadError::TooRecentCall => "TOO_RECENT_CALL",
-                ConversionUploadError::ExpiredCall => "EXPIRED_CALL",
-                ConversionUploadError::CallNotFound => "CALL_NOT_FOUND",
-                ConversionUploadError::ConversionPrecedesCall => {
-                    "CONVERSION_PRECEDES_CALL"
-                }
-                ConversionUploadError::ConversionTrackingNotEnabledAtCallTime => {
+                Self::OrderIdAlreadyInUse => "ORDER_ID_ALREADY_IN_USE",
+                Self::DuplicateOrderId => "DUPLICATE_ORDER_ID",
+                Self::TooRecentCall => "TOO_RECENT_CALL",
+                Self::ExpiredCall => "EXPIRED_CALL",
+                Self::CallNotFound => "CALL_NOT_FOUND",
+                Self::ConversionPrecedesCall => "CONVERSION_PRECEDES_CALL",
+                Self::ConversionTrackingNotEnabledAtCallTime => {
                     "CONVERSION_TRACKING_NOT_ENABLED_AT_CALL_TIME"
                 }
-                ConversionUploadError::UnparseableCallersPhoneNumber => {
-                    "UNPARSEABLE_CALLERS_PHONE_NUMBER"
-                }
-                ConversionUploadError::ClickConversionAlreadyExists => {
-                    "CLICK_CONVERSION_ALREADY_EXISTS"
-                }
-                ConversionUploadError::CallConversionAlreadyExists => {
-                    "CALL_CONVERSION_ALREADY_EXISTS"
-                }
-                ConversionUploadError::DuplicateClickConversionInRequest => {
+                Self::UnparseableCallersPhoneNumber => "UNPARSEABLE_CALLERS_PHONE_NUMBER",
+                Self::ClickConversionAlreadyExists => "CLICK_CONVERSION_ALREADY_EXISTS",
+                Self::CallConversionAlreadyExists => "CALL_CONVERSION_ALREADY_EXISTS",
+                Self::DuplicateClickConversionInRequest => {
                     "DUPLICATE_CLICK_CONVERSION_IN_REQUEST"
                 }
-                ConversionUploadError::DuplicateCallConversionInRequest => {
+                Self::DuplicateCallConversionInRequest => {
                     "DUPLICATE_CALL_CONVERSION_IN_REQUEST"
                 }
-                ConversionUploadError::CustomVariableNotEnabled => {
-                    "CUSTOM_VARIABLE_NOT_ENABLED"
-                }
-                ConversionUploadError::CustomVariableValueContainsPii => {
+                Self::CustomVariableNotEnabled => "CUSTOM_VARIABLE_NOT_ENABLED",
+                Self::CustomVariableValueContainsPii => {
                     "CUSTOM_VARIABLE_VALUE_CONTAINS_PII"
                 }
-                ConversionUploadError::InvalidCustomerForClick => {
-                    "INVALID_CUSTOMER_FOR_CLICK"
-                }
-                ConversionUploadError::InvalidCustomerForCall => {
-                    "INVALID_CUSTOMER_FOR_CALL"
-                }
-                ConversionUploadError::ConversionNotCompliantWithAttPolicy => {
+                Self::InvalidCustomerForClick => "INVALID_CUSTOMER_FOR_CLICK",
+                Self::InvalidCustomerForCall => "INVALID_CUSTOMER_FOR_CALL",
+                Self::ConversionNotCompliantWithAttPolicy => {
                     "CONVERSION_NOT_COMPLIANT_WITH_ATT_POLICY"
                 }
-                ConversionUploadError::ClickNotFound => "CLICK_NOT_FOUND",
-                ConversionUploadError::InvalidUserIdentifier => "INVALID_USER_IDENTIFIER",
-                ConversionUploadError::ExternallyAttributedConversionActionNotPermittedWithUserIdentifier => {
+                Self::ClickNotFound => "CLICK_NOT_FOUND",
+                Self::InvalidUserIdentifier => "INVALID_USER_IDENTIFIER",
+                Self::ExternallyAttributedConversionActionNotPermittedWithUserIdentifier => {
                     "EXTERNALLY_ATTRIBUTED_CONVERSION_ACTION_NOT_PERMITTED_WITH_USER_IDENTIFIER"
                 }
-                ConversionUploadError::UnsupportedUserIdentifier => {
-                    "UNSUPPORTED_USER_IDENTIFIER"
-                }
-                ConversionUploadError::GbraidWbraidBothSet => "GBRAID_WBRAID_BOTH_SET",
-                ConversionUploadError::UnparseableWbraid => "UNPARSEABLE_WBRAID",
-                ConversionUploadError::UnparseableGbraid => "UNPARSEABLE_GBRAID",
-                ConversionUploadError::OnePerClickConversionActionNotPermittedWithBraid => {
+                Self::UnsupportedUserIdentifier => "UNSUPPORTED_USER_IDENTIFIER",
+                Self::GbraidWbraidBothSet => "GBRAID_WBRAID_BOTH_SET",
+                Self::UnparseableWbraid => "UNPARSEABLE_WBRAID",
+                Self::UnparseableGbraid => "UNPARSEABLE_GBRAID",
+                Self::OnePerClickConversionActionNotPermittedWithBraid => {
                     "ONE_PER_CLICK_CONVERSION_ACTION_NOT_PERMITTED_WITH_BRAID"
                 }
-                ConversionUploadError::CustomerDataPolicyProhibitsEnhancedConversions => {
+                Self::CustomerDataPolicyProhibitsEnhancedConversions => {
                     "CUSTOMER_DATA_POLICY_PROHIBITS_ENHANCED_CONVERSIONS"
                 }
-                ConversionUploadError::CustomerNotAcceptedCustomerDataTerms => {
+                Self::CustomerNotAcceptedCustomerDataTerms => {
                     "CUSTOMER_NOT_ACCEPTED_CUSTOMER_DATA_TERMS"
                 }
-                ConversionUploadError::OrderIdContainsPii => "ORDER_ID_CONTAINS_PII",
-                ConversionUploadError::CustomerNotEnabledEnhancedConversionsForLeads => {
+                Self::OrderIdContainsPii => "ORDER_ID_CONTAINS_PII",
+                Self::CustomerNotEnabledEnhancedConversionsForLeads => {
                     "CUSTOMER_NOT_ENABLED_ENHANCED_CONVERSIONS_FOR_LEADS"
                 }
-                ConversionUploadError::InvalidJobId => "INVALID_JOB_ID",
-                ConversionUploadError::NoConversionActionFound => {
-                    "NO_CONVERSION_ACTION_FOUND"
-                }
-                ConversionUploadError::InvalidConversionActionType => {
-                    "INVALID_CONVERSION_ACTION_TYPE"
-                }
+                Self::InvalidJobId => "INVALID_JOB_ID",
+                Self::NoConversionActionFound => "NO_CONVERSION_ACTION_FOUND",
+                Self::InvalidConversionActionType => "INVALID_CONVERSION_ACTION_TYPE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7495,38 +7193,26 @@ pub mod conversion_value_rule_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConversionValueRuleError::Unspecified => "UNSPECIFIED",
-                ConversionValueRuleError::Unknown => "UNKNOWN",
-                ConversionValueRuleError::InvalidGeoTargetConstant => {
-                    "INVALID_GEO_TARGET_CONSTANT"
-                }
-                ConversionValueRuleError::ConflictingIncludedAndExcludedGeoTarget => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidGeoTargetConstant => "INVALID_GEO_TARGET_CONSTANT",
+                Self::ConflictingIncludedAndExcludedGeoTarget => {
                     "CONFLICTING_INCLUDED_AND_EXCLUDED_GEO_TARGET"
                 }
-                ConversionValueRuleError::ConflictingConditions => {
-                    "CONFLICTING_CONDITIONS"
-                }
-                ConversionValueRuleError::CannotRemoveIfIncludedInValueRuleSet => {
+                Self::ConflictingConditions => "CONFLICTING_CONDITIONS",
+                Self::CannotRemoveIfIncludedInValueRuleSet => {
                     "CANNOT_REMOVE_IF_INCLUDED_IN_VALUE_RULE_SET"
                 }
-                ConversionValueRuleError::ConditionNotAllowed => "CONDITION_NOT_ALLOWED",
-                ConversionValueRuleError::FieldMustBeUnset => "FIELD_MUST_BE_UNSET",
-                ConversionValueRuleError::CannotPauseUnlessValueRuleSetIsPaused => {
+                Self::ConditionNotAllowed => "CONDITION_NOT_ALLOWED",
+                Self::FieldMustBeUnset => "FIELD_MUST_BE_UNSET",
+                Self::CannotPauseUnlessValueRuleSetIsPaused => {
                     "CANNOT_PAUSE_UNLESS_VALUE_RULE_SET_IS_PAUSED"
                 }
-                ConversionValueRuleError::UntargetableGeoTarget => {
-                    "UNTARGETABLE_GEO_TARGET"
-                }
-                ConversionValueRuleError::InvalidAudienceUserList => {
-                    "INVALID_AUDIENCE_USER_LIST"
-                }
-                ConversionValueRuleError::InaccessibleUserList => {
-                    "INACCESSIBLE_USER_LIST"
-                }
-                ConversionValueRuleError::InvalidAudienceUserInterest => {
-                    "INVALID_AUDIENCE_USER_INTEREST"
-                }
-                ConversionValueRuleError::CannotAddRuleWithStatusRemoved => {
+                Self::UntargetableGeoTarget => "UNTARGETABLE_GEO_TARGET",
+                Self::InvalidAudienceUserList => "INVALID_AUDIENCE_USER_LIST",
+                Self::InaccessibleUserList => "INACCESSIBLE_USER_LIST",
+                Self::InvalidAudienceUserInterest => "INVALID_AUDIENCE_USER_INTEREST",
+                Self::CannotAddRuleWithStatusRemoved => {
                     "CANNOT_ADD_RULE_WITH_STATUS_REMOVED"
                 }
             }
@@ -7639,41 +7325,37 @@ pub mod conversion_value_rule_set_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConversionValueRuleSetError::Unspecified => "UNSPECIFIED",
-                ConversionValueRuleSetError::Unknown => "UNKNOWN",
-                ConversionValueRuleSetError::ConflictingValueRuleConditions => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ConflictingValueRuleConditions => {
                     "CONFLICTING_VALUE_RULE_CONDITIONS"
                 }
-                ConversionValueRuleSetError::InvalidValueRule => "INVALID_VALUE_RULE",
-                ConversionValueRuleSetError::DimensionsUpdateOnlyAllowAppend => {
+                Self::InvalidValueRule => "INVALID_VALUE_RULE",
+                Self::DimensionsUpdateOnlyAllowAppend => {
                     "DIMENSIONS_UPDATE_ONLY_ALLOW_APPEND"
                 }
-                ConversionValueRuleSetError::ConditionTypeNotAllowed => {
-                    "CONDITION_TYPE_NOT_ALLOWED"
-                }
-                ConversionValueRuleSetError::DuplicateDimensions => {
-                    "DUPLICATE_DIMENSIONS"
-                }
-                ConversionValueRuleSetError::InvalidCampaignId => "INVALID_CAMPAIGN_ID",
-                ConversionValueRuleSetError::CannotPauseUnlessAllValueRulesArePaused => {
+                Self::ConditionTypeNotAllowed => "CONDITION_TYPE_NOT_ALLOWED",
+                Self::DuplicateDimensions => "DUPLICATE_DIMENSIONS",
+                Self::InvalidCampaignId => "INVALID_CAMPAIGN_ID",
+                Self::CannotPauseUnlessAllValueRulesArePaused => {
                     "CANNOT_PAUSE_UNLESS_ALL_VALUE_RULES_ARE_PAUSED"
                 }
-                ConversionValueRuleSetError::ShouldPauseWhenAllValueRulesArePaused => {
+                Self::ShouldPauseWhenAllValueRulesArePaused => {
                     "SHOULD_PAUSE_WHEN_ALL_VALUE_RULES_ARE_PAUSED"
                 }
-                ConversionValueRuleSetError::ValueRulesNotSupportedForCampaignType => {
+                Self::ValueRulesNotSupportedForCampaignType => {
                     "VALUE_RULES_NOT_SUPPORTED_FOR_CAMPAIGN_TYPE"
                 }
-                ConversionValueRuleSetError::IneligibleConversionActionCategories => {
+                Self::IneligibleConversionActionCategories => {
                     "INELIGIBLE_CONVERSION_ACTION_CATEGORIES"
                 }
-                ConversionValueRuleSetError::DimensionNoConditionUsedWithOtherDimensions => {
+                Self::DimensionNoConditionUsedWithOtherDimensions => {
                     "DIMENSION_NO_CONDITION_USED_WITH_OTHER_DIMENSIONS"
                 }
-                ConversionValueRuleSetError::DimensionNoConditionNotAllowed => {
+                Self::DimensionNoConditionNotAllowed => {
                     "DIMENSION_NO_CONDITION_NOT_ALLOWED"
                 }
-                ConversionValueRuleSetError::UnsupportedConversionActionCategories => {
+                Self::UnsupportedConversionActionCategories => {
                     "UNSUPPORTED_CONVERSION_ACTION_CATEGORIES"
                 }
             }
@@ -7752,9 +7434,9 @@ pub mod country_code_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CountryCodeError::Unspecified => "UNSPECIFIED",
-                CountryCodeError::Unknown => "UNKNOWN",
-                CountryCodeError::InvalidCountryCode => "INVALID_COUNTRY_CODE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidCountryCode => "INVALID_COUNTRY_CODE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8139,348 +7821,296 @@ pub mod criterion_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CriterionError::Unspecified => "UNSPECIFIED",
-                CriterionError::Unknown => "UNKNOWN",
-                CriterionError::ConcreteTypeRequired => "CONCRETE_TYPE_REQUIRED",
-                CriterionError::InvalidExcludedCategory => "INVALID_EXCLUDED_CATEGORY",
-                CriterionError::InvalidKeywordText => "INVALID_KEYWORD_TEXT",
-                CriterionError::KeywordTextTooLong => "KEYWORD_TEXT_TOO_LONG",
-                CriterionError::KeywordHasTooManyWords => "KEYWORD_HAS_TOO_MANY_WORDS",
-                CriterionError::KeywordHasInvalidChars => "KEYWORD_HAS_INVALID_CHARS",
-                CriterionError::InvalidPlacementUrl => "INVALID_PLACEMENT_URL",
-                CriterionError::InvalidUserList => "INVALID_USER_LIST",
-                CriterionError::InvalidUserInterest => "INVALID_USER_INTEREST",
-                CriterionError::InvalidFormatForPlacementUrl => {
-                    "INVALID_FORMAT_FOR_PLACEMENT_URL"
-                }
-                CriterionError::PlacementUrlIsTooLong => "PLACEMENT_URL_IS_TOO_LONG",
-                CriterionError::PlacementUrlHasIllegalChar => {
-                    "PLACEMENT_URL_HAS_ILLEGAL_CHAR"
-                }
-                CriterionError::PlacementUrlHasMultipleSitesInLine => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ConcreteTypeRequired => "CONCRETE_TYPE_REQUIRED",
+                Self::InvalidExcludedCategory => "INVALID_EXCLUDED_CATEGORY",
+                Self::InvalidKeywordText => "INVALID_KEYWORD_TEXT",
+                Self::KeywordTextTooLong => "KEYWORD_TEXT_TOO_LONG",
+                Self::KeywordHasTooManyWords => "KEYWORD_HAS_TOO_MANY_WORDS",
+                Self::KeywordHasInvalidChars => "KEYWORD_HAS_INVALID_CHARS",
+                Self::InvalidPlacementUrl => "INVALID_PLACEMENT_URL",
+                Self::InvalidUserList => "INVALID_USER_LIST",
+                Self::InvalidUserInterest => "INVALID_USER_INTEREST",
+                Self::InvalidFormatForPlacementUrl => "INVALID_FORMAT_FOR_PLACEMENT_URL",
+                Self::PlacementUrlIsTooLong => "PLACEMENT_URL_IS_TOO_LONG",
+                Self::PlacementUrlHasIllegalChar => "PLACEMENT_URL_HAS_ILLEGAL_CHAR",
+                Self::PlacementUrlHasMultipleSitesInLine => {
                     "PLACEMENT_URL_HAS_MULTIPLE_SITES_IN_LINE"
                 }
-                CriterionError::PlacementIsNotAvailableForTargetingOrExclusion => {
+                Self::PlacementIsNotAvailableForTargetingOrExclusion => {
                     "PLACEMENT_IS_NOT_AVAILABLE_FOR_TARGETING_OR_EXCLUSION"
                 }
-                CriterionError::InvalidTopicPath => "INVALID_TOPIC_PATH",
-                CriterionError::InvalidYoutubeChannelId => "INVALID_YOUTUBE_CHANNEL_ID",
-                CriterionError::InvalidYoutubeVideoId => "INVALID_YOUTUBE_VIDEO_ID",
-                CriterionError::YoutubeVerticalChannelDeprecated => {
+                Self::InvalidTopicPath => "INVALID_TOPIC_PATH",
+                Self::InvalidYoutubeChannelId => "INVALID_YOUTUBE_CHANNEL_ID",
+                Self::InvalidYoutubeVideoId => "INVALID_YOUTUBE_VIDEO_ID",
+                Self::YoutubeVerticalChannelDeprecated => {
                     "YOUTUBE_VERTICAL_CHANNEL_DEPRECATED"
                 }
-                CriterionError::YoutubeDemographicChannelDeprecated => {
+                Self::YoutubeDemographicChannelDeprecated => {
                     "YOUTUBE_DEMOGRAPHIC_CHANNEL_DEPRECATED"
                 }
-                CriterionError::YoutubeUrlUnsupported => "YOUTUBE_URL_UNSUPPORTED",
-                CriterionError::CannotExcludeCriteriaType => {
-                    "CANNOT_EXCLUDE_CRITERIA_TYPE"
-                }
-                CriterionError::CannotAddCriteriaType => "CANNOT_ADD_CRITERIA_TYPE",
-                CriterionError::CannotExcludeSimilarUserList => {
-                    "CANNOT_EXCLUDE_SIMILAR_USER_LIST"
-                }
-                CriterionError::CannotAddClosedUserList => "CANNOT_ADD_CLOSED_USER_LIST",
-                CriterionError::CannotAddDisplayOnlyListsToSearchOnlyCampaigns => {
+                Self::YoutubeUrlUnsupported => "YOUTUBE_URL_UNSUPPORTED",
+                Self::CannotExcludeCriteriaType => "CANNOT_EXCLUDE_CRITERIA_TYPE",
+                Self::CannotAddCriteriaType => "CANNOT_ADD_CRITERIA_TYPE",
+                Self::CannotExcludeSimilarUserList => "CANNOT_EXCLUDE_SIMILAR_USER_LIST",
+                Self::CannotAddClosedUserList => "CANNOT_ADD_CLOSED_USER_LIST",
+                Self::CannotAddDisplayOnlyListsToSearchOnlyCampaigns => {
                     "CANNOT_ADD_DISPLAY_ONLY_LISTS_TO_SEARCH_ONLY_CAMPAIGNS"
                 }
-                CriterionError::CannotAddDisplayOnlyListsToSearchCampaigns => {
+                Self::CannotAddDisplayOnlyListsToSearchCampaigns => {
                     "CANNOT_ADD_DISPLAY_ONLY_LISTS_TO_SEARCH_CAMPAIGNS"
                 }
-                CriterionError::CannotAddDisplayOnlyListsToShoppingCampaigns => {
+                Self::CannotAddDisplayOnlyListsToShoppingCampaigns => {
                     "CANNOT_ADD_DISPLAY_ONLY_LISTS_TO_SHOPPING_CAMPAIGNS"
                 }
-                CriterionError::CannotAddUserInterestsToSearchCampaigns => {
+                Self::CannotAddUserInterestsToSearchCampaigns => {
                     "CANNOT_ADD_USER_INTERESTS_TO_SEARCH_CAMPAIGNS"
                 }
-                CriterionError::CannotSetBidsOnCriterionTypeInSearchCampaigns => {
+                Self::CannotSetBidsOnCriterionTypeInSearchCampaigns => {
                     "CANNOT_SET_BIDS_ON_CRITERION_TYPE_IN_SEARCH_CAMPAIGNS"
                 }
-                CriterionError::CannotAddUrlsToCriterionTypeForCampaignType => {
+                Self::CannotAddUrlsToCriterionTypeForCampaignType => {
                     "CANNOT_ADD_URLS_TO_CRITERION_TYPE_FOR_CAMPAIGN_TYPE"
                 }
-                CriterionError::InvalidCombinedAudience => "INVALID_COMBINED_AUDIENCE",
-                CriterionError::InvalidCustomAffinity => "INVALID_CUSTOM_AFFINITY",
-                CriterionError::InvalidCustomIntent => "INVALID_CUSTOM_INTENT",
-                CriterionError::InvalidCustomAudience => "INVALID_CUSTOM_AUDIENCE",
-                CriterionError::InvalidIpAddress => "INVALID_IP_ADDRESS",
-                CriterionError::InvalidIpFormat => "INVALID_IP_FORMAT",
-                CriterionError::InvalidMobileApp => "INVALID_MOBILE_APP",
-                CriterionError::InvalidMobileAppCategory => "INVALID_MOBILE_APP_CATEGORY",
-                CriterionError::InvalidCriterionId => "INVALID_CRITERION_ID",
-                CriterionError::CannotTargetCriterion => "CANNOT_TARGET_CRITERION",
-                CriterionError::CannotTargetObsoleteCriterion => {
-                    "CANNOT_TARGET_OBSOLETE_CRITERION"
-                }
-                CriterionError::CriterionIdAndTypeMismatch => {
-                    "CRITERION_ID_AND_TYPE_MISMATCH"
-                }
-                CriterionError::InvalidProximityRadius => "INVALID_PROXIMITY_RADIUS",
-                CriterionError::InvalidProximityRadiusUnits => {
-                    "INVALID_PROXIMITY_RADIUS_UNITS"
-                }
-                CriterionError::InvalidStreetaddressLength => {
-                    "INVALID_STREETADDRESS_LENGTH"
-                }
-                CriterionError::InvalidCitynameLength => "INVALID_CITYNAME_LENGTH",
-                CriterionError::InvalidRegioncodeLength => "INVALID_REGIONCODE_LENGTH",
-                CriterionError::InvalidRegionnameLength => "INVALID_REGIONNAME_LENGTH",
-                CriterionError::InvalidPostalcodeLength => "INVALID_POSTALCODE_LENGTH",
-                CriterionError::InvalidCountryCode => "INVALID_COUNTRY_CODE",
-                CriterionError::InvalidLatitude => "INVALID_LATITUDE",
-                CriterionError::InvalidLongitude => "INVALID_LONGITUDE",
-                CriterionError::ProximityGeopointAndAddressBothCannotBeNull => {
+                Self::InvalidCombinedAudience => "INVALID_COMBINED_AUDIENCE",
+                Self::InvalidCustomAffinity => "INVALID_CUSTOM_AFFINITY",
+                Self::InvalidCustomIntent => "INVALID_CUSTOM_INTENT",
+                Self::InvalidCustomAudience => "INVALID_CUSTOM_AUDIENCE",
+                Self::InvalidIpAddress => "INVALID_IP_ADDRESS",
+                Self::InvalidIpFormat => "INVALID_IP_FORMAT",
+                Self::InvalidMobileApp => "INVALID_MOBILE_APP",
+                Self::InvalidMobileAppCategory => "INVALID_MOBILE_APP_CATEGORY",
+                Self::InvalidCriterionId => "INVALID_CRITERION_ID",
+                Self::CannotTargetCriterion => "CANNOT_TARGET_CRITERION",
+                Self::CannotTargetObsoleteCriterion => "CANNOT_TARGET_OBSOLETE_CRITERION",
+                Self::CriterionIdAndTypeMismatch => "CRITERION_ID_AND_TYPE_MISMATCH",
+                Self::InvalidProximityRadius => "INVALID_PROXIMITY_RADIUS",
+                Self::InvalidProximityRadiusUnits => "INVALID_PROXIMITY_RADIUS_UNITS",
+                Self::InvalidStreetaddressLength => "INVALID_STREETADDRESS_LENGTH",
+                Self::InvalidCitynameLength => "INVALID_CITYNAME_LENGTH",
+                Self::InvalidRegioncodeLength => "INVALID_REGIONCODE_LENGTH",
+                Self::InvalidRegionnameLength => "INVALID_REGIONNAME_LENGTH",
+                Self::InvalidPostalcodeLength => "INVALID_POSTALCODE_LENGTH",
+                Self::InvalidCountryCode => "INVALID_COUNTRY_CODE",
+                Self::InvalidLatitude => "INVALID_LATITUDE",
+                Self::InvalidLongitude => "INVALID_LONGITUDE",
+                Self::ProximityGeopointAndAddressBothCannotBeNull => {
                     "PROXIMITY_GEOPOINT_AND_ADDRESS_BOTH_CANNOT_BE_NULL"
                 }
-                CriterionError::InvalidProximityAddress => "INVALID_PROXIMITY_ADDRESS",
-                CriterionError::InvalidUserDomainName => "INVALID_USER_DOMAIN_NAME",
-                CriterionError::CriterionParameterTooLong => {
-                    "CRITERION_PARAMETER_TOO_LONG"
-                }
-                CriterionError::AdScheduleTimeIntervalsOverlap => {
+                Self::InvalidProximityAddress => "INVALID_PROXIMITY_ADDRESS",
+                Self::InvalidUserDomainName => "INVALID_USER_DOMAIN_NAME",
+                Self::CriterionParameterTooLong => "CRITERION_PARAMETER_TOO_LONG",
+                Self::AdScheduleTimeIntervalsOverlap => {
                     "AD_SCHEDULE_TIME_INTERVALS_OVERLAP"
                 }
-                CriterionError::AdScheduleIntervalCannotSpanMultipleDays => {
+                Self::AdScheduleIntervalCannotSpanMultipleDays => {
                     "AD_SCHEDULE_INTERVAL_CANNOT_SPAN_MULTIPLE_DAYS"
                 }
-                CriterionError::AdScheduleInvalidTimeInterval => {
+                Self::AdScheduleInvalidTimeInterval => {
                     "AD_SCHEDULE_INVALID_TIME_INTERVAL"
                 }
-                CriterionError::AdScheduleExceededIntervalsPerDayLimit => {
+                Self::AdScheduleExceededIntervalsPerDayLimit => {
                     "AD_SCHEDULE_EXCEEDED_INTERVALS_PER_DAY_LIMIT"
                 }
-                CriterionError::AdScheduleCriterionIdMismatchingFields => {
+                Self::AdScheduleCriterionIdMismatchingFields => {
                     "AD_SCHEDULE_CRITERION_ID_MISMATCHING_FIELDS"
                 }
-                CriterionError::CannotBidModifyCriterionType => {
-                    "CANNOT_BID_MODIFY_CRITERION_TYPE"
-                }
-                CriterionError::CannotBidModifyCriterionCampaignOptedOut => {
+                Self::CannotBidModifyCriterionType => "CANNOT_BID_MODIFY_CRITERION_TYPE",
+                Self::CannotBidModifyCriterionCampaignOptedOut => {
                     "CANNOT_BID_MODIFY_CRITERION_CAMPAIGN_OPTED_OUT"
                 }
-                CriterionError::CannotBidModifyNegativeCriterion => {
+                Self::CannotBidModifyNegativeCriterion => {
                     "CANNOT_BID_MODIFY_NEGATIVE_CRITERION"
                 }
-                CriterionError::BidModifierAlreadyExists => "BID_MODIFIER_ALREADY_EXISTS",
-                CriterionError::FeedIdNotAllowed => "FEED_ID_NOT_ALLOWED",
-                CriterionError::AccountIneligibleForCriteriaType => {
+                Self::BidModifierAlreadyExists => "BID_MODIFIER_ALREADY_EXISTS",
+                Self::FeedIdNotAllowed => "FEED_ID_NOT_ALLOWED",
+                Self::AccountIneligibleForCriteriaType => {
                     "ACCOUNT_INELIGIBLE_FOR_CRITERIA_TYPE"
                 }
-                CriterionError::CriteriaTypeInvalidForBiddingStrategy => {
+                Self::CriteriaTypeInvalidForBiddingStrategy => {
                     "CRITERIA_TYPE_INVALID_FOR_BIDDING_STRATEGY"
                 }
-                CriterionError::CannotExcludeCriterion => "CANNOT_EXCLUDE_CRITERION",
-                CriterionError::CannotRemoveCriterion => "CANNOT_REMOVE_CRITERION",
-                CriterionError::InvalidProductBiddingCategory => {
-                    "INVALID_PRODUCT_BIDDING_CATEGORY"
-                }
-                CriterionError::MissingShoppingSetting => "MISSING_SHOPPING_SETTING",
-                CriterionError::InvalidMatchingFunction => "INVALID_MATCHING_FUNCTION",
-                CriterionError::LocationFilterNotAllowed => "LOCATION_FILTER_NOT_ALLOWED",
-                CriterionError::InvalidFeedForLocationFilter => {
-                    "INVALID_FEED_FOR_LOCATION_FILTER"
-                }
-                CriterionError::LocationFilterInvalid => "LOCATION_FILTER_INVALID",
-                CriterionError::CannotSetGeoTargetConstantsWithFeedItemSets => {
+                Self::CannotExcludeCriterion => "CANNOT_EXCLUDE_CRITERION",
+                Self::CannotRemoveCriterion => "CANNOT_REMOVE_CRITERION",
+                Self::InvalidProductBiddingCategory => "INVALID_PRODUCT_BIDDING_CATEGORY",
+                Self::MissingShoppingSetting => "MISSING_SHOPPING_SETTING",
+                Self::InvalidMatchingFunction => "INVALID_MATCHING_FUNCTION",
+                Self::LocationFilterNotAllowed => "LOCATION_FILTER_NOT_ALLOWED",
+                Self::InvalidFeedForLocationFilter => "INVALID_FEED_FOR_LOCATION_FILTER",
+                Self::LocationFilterInvalid => "LOCATION_FILTER_INVALID",
+                Self::CannotSetGeoTargetConstantsWithFeedItemSets => {
                     "CANNOT_SET_GEO_TARGET_CONSTANTS_WITH_FEED_ITEM_SETS"
                 }
-                CriterionError::CannotSetBothAssetSetAndFeed => {
+                Self::CannotSetBothAssetSetAndFeed => {
                     "CANNOT_SET_BOTH_ASSET_SET_AND_FEED"
                 }
-                CriterionError::CannotSetFeedOrFeedItemSetsForCustomer => {
+                Self::CannotSetFeedOrFeedItemSetsForCustomer => {
                     "CANNOT_SET_FEED_OR_FEED_ITEM_SETS_FOR_CUSTOMER"
                 }
-                CriterionError::CannotSetAssetSetFieldForCustomer => {
+                Self::CannotSetAssetSetFieldForCustomer => {
                     "CANNOT_SET_ASSET_SET_FIELD_FOR_CUSTOMER"
                 }
-                CriterionError::CannotSetGeoTargetConstantsWithAssetSets => {
+                Self::CannotSetGeoTargetConstantsWithAssetSets => {
                     "CANNOT_SET_GEO_TARGET_CONSTANTS_WITH_ASSET_SETS"
                 }
-                CriterionError::CannotSetAssetSetsWithFeedItemSets => {
+                Self::CannotSetAssetSetsWithFeedItemSets => {
                     "CANNOT_SET_ASSET_SETS_WITH_FEED_ITEM_SETS"
                 }
-                CriterionError::InvalidLocationGroupAssetSet => {
-                    "INVALID_LOCATION_GROUP_ASSET_SET"
-                }
-                CriterionError::InvalidLocationGroupRadius => {
-                    "INVALID_LOCATION_GROUP_RADIUS"
-                }
-                CriterionError::InvalidLocationGroupRadiusUnit => {
+                Self::InvalidLocationGroupAssetSet => "INVALID_LOCATION_GROUP_ASSET_SET",
+                Self::InvalidLocationGroupRadius => "INVALID_LOCATION_GROUP_RADIUS",
+                Self::InvalidLocationGroupRadiusUnit => {
                     "INVALID_LOCATION_GROUP_RADIUS_UNIT"
                 }
-                CriterionError::CannotAttachCriteriaAtCampaignAndAdgroup => {
+                Self::CannotAttachCriteriaAtCampaignAndAdgroup => {
                     "CANNOT_ATTACH_CRITERIA_AT_CAMPAIGN_AND_ADGROUP"
                 }
-                CriterionError::HotelLengthOfStayOverlapsWithExistingCriterion => {
+                Self::HotelLengthOfStayOverlapsWithExistingCriterion => {
                     "HOTEL_LENGTH_OF_STAY_OVERLAPS_WITH_EXISTING_CRITERION"
                 }
-                CriterionError::HotelAdvanceBookingWindowOverlapsWithExistingCriterion => {
+                Self::HotelAdvanceBookingWindowOverlapsWithExistingCriterion => {
                     "HOTEL_ADVANCE_BOOKING_WINDOW_OVERLAPS_WITH_EXISTING_CRITERION"
                 }
-                CriterionError::FieldIncompatibleWithNegativeTargeting => {
+                Self::FieldIncompatibleWithNegativeTargeting => {
                     "FIELD_INCOMPATIBLE_WITH_NEGATIVE_TARGETING"
                 }
-                CriterionError::InvalidWebpageCondition => "INVALID_WEBPAGE_CONDITION",
-                CriterionError::InvalidWebpageConditionUrl => {
-                    "INVALID_WEBPAGE_CONDITION_URL"
-                }
-                CriterionError::WebpageConditionUrlCannotBeEmpty => {
+                Self::InvalidWebpageCondition => "INVALID_WEBPAGE_CONDITION",
+                Self::InvalidWebpageConditionUrl => "INVALID_WEBPAGE_CONDITION_URL",
+                Self::WebpageConditionUrlCannotBeEmpty => {
                     "WEBPAGE_CONDITION_URL_CANNOT_BE_EMPTY"
                 }
-                CriterionError::WebpageConditionUrlUnsupportedProtocol => {
+                Self::WebpageConditionUrlUnsupportedProtocol => {
                     "WEBPAGE_CONDITION_URL_UNSUPPORTED_PROTOCOL"
                 }
-                CriterionError::WebpageConditionUrlCannotBeIpAddress => {
+                Self::WebpageConditionUrlCannotBeIpAddress => {
                     "WEBPAGE_CONDITION_URL_CANNOT_BE_IP_ADDRESS"
                 }
-                CriterionError::WebpageConditionUrlDomainNotConsistentWithCampaignSetting => {
+                Self::WebpageConditionUrlDomainNotConsistentWithCampaignSetting => {
                     "WEBPAGE_CONDITION_URL_DOMAIN_NOT_CONSISTENT_WITH_CAMPAIGN_SETTING"
                 }
-                CriterionError::WebpageConditionUrlCannotBePublicSuffix => {
+                Self::WebpageConditionUrlCannotBePublicSuffix => {
                     "WEBPAGE_CONDITION_URL_CANNOT_BE_PUBLIC_SUFFIX"
                 }
-                CriterionError::WebpageConditionUrlInvalidPublicSuffix => {
+                Self::WebpageConditionUrlInvalidPublicSuffix => {
                     "WEBPAGE_CONDITION_URL_INVALID_PUBLIC_SUFFIX"
                 }
-                CriterionError::WebpageConditionUrlValueTrackValueNotSupported => {
+                Self::WebpageConditionUrlValueTrackValueNotSupported => {
                     "WEBPAGE_CONDITION_URL_VALUE_TRACK_VALUE_NOT_SUPPORTED"
                 }
-                CriterionError::WebpageCriterionUrlEqualsCanHaveOnlyOneCondition => {
+                Self::WebpageCriterionUrlEqualsCanHaveOnlyOneCondition => {
                     "WEBPAGE_CRITERION_URL_EQUALS_CAN_HAVE_ONLY_ONE_CONDITION"
                 }
-                CriterionError::WebpageCriterionNotSupportedOnNonDsaAdGroup => {
+                Self::WebpageCriterionNotSupportedOnNonDsaAdGroup => {
                     "WEBPAGE_CRITERION_NOT_SUPPORTED_ON_NON_DSA_AD_GROUP"
                 }
-                CriterionError::CannotTargetUserListForSmartDisplayCampaigns => {
+                Self::CannotTargetUserListForSmartDisplayCampaigns => {
                     "CANNOT_TARGET_USER_LIST_FOR_SMART_DISPLAY_CAMPAIGNS"
                 }
-                CriterionError::CannotTargetPlacementsForSearchCampaigns => {
+                Self::CannotTargetPlacementsForSearchCampaigns => {
                     "CANNOT_TARGET_PLACEMENTS_FOR_SEARCH_CAMPAIGNS"
                 }
-                CriterionError::ListingScopeTooManyDimensionTypes => {
+                Self::ListingScopeTooManyDimensionTypes => {
                     "LISTING_SCOPE_TOO_MANY_DIMENSION_TYPES"
                 }
-                CriterionError::ListingScopeTooManyInOperators => {
+                Self::ListingScopeTooManyInOperators => {
                     "LISTING_SCOPE_TOO_MANY_IN_OPERATORS"
                 }
-                CriterionError::ListingScopeInOperatorNotSupported => {
+                Self::ListingScopeInOperatorNotSupported => {
                     "LISTING_SCOPE_IN_OPERATOR_NOT_SUPPORTED"
                 }
-                CriterionError::DuplicateListingDimensionType => {
-                    "DUPLICATE_LISTING_DIMENSION_TYPE"
-                }
-                CriterionError::DuplicateListingDimensionValue => {
+                Self::DuplicateListingDimensionType => "DUPLICATE_LISTING_DIMENSION_TYPE",
+                Self::DuplicateListingDimensionValue => {
                     "DUPLICATE_LISTING_DIMENSION_VALUE"
                 }
-                CriterionError::CannotSetBidsOnListingGroupSubdivision => {
+                Self::CannotSetBidsOnListingGroupSubdivision => {
                     "CANNOT_SET_BIDS_ON_LISTING_GROUP_SUBDIVISION"
                 }
-                CriterionError::InvalidListingGroupHierarchy => {
-                    "INVALID_LISTING_GROUP_HIERARCHY"
-                }
-                CriterionError::ListingGroupUnitCannotHaveChildren => {
+                Self::InvalidListingGroupHierarchy => "INVALID_LISTING_GROUP_HIERARCHY",
+                Self::ListingGroupUnitCannotHaveChildren => {
                     "LISTING_GROUP_UNIT_CANNOT_HAVE_CHILDREN"
                 }
-                CriterionError::ListingGroupSubdivisionRequiresOthersCase => {
+                Self::ListingGroupSubdivisionRequiresOthersCase => {
                     "LISTING_GROUP_SUBDIVISION_REQUIRES_OTHERS_CASE"
                 }
-                CriterionError::ListingGroupRequiresSameDimensionTypeAsSiblings => {
+                Self::ListingGroupRequiresSameDimensionTypeAsSiblings => {
                     "LISTING_GROUP_REQUIRES_SAME_DIMENSION_TYPE_AS_SIBLINGS"
                 }
-                CriterionError::ListingGroupAlreadyExists => {
-                    "LISTING_GROUP_ALREADY_EXISTS"
-                }
-                CriterionError::ListingGroupDoesNotExist => {
-                    "LISTING_GROUP_DOES_NOT_EXIST"
-                }
-                CriterionError::ListingGroupCannotBeRemoved => {
-                    "LISTING_GROUP_CANNOT_BE_REMOVED"
-                }
-                CriterionError::InvalidListingGroupType => "INVALID_LISTING_GROUP_TYPE",
-                CriterionError::ListingGroupAddMayOnlyUseTempId => {
+                Self::ListingGroupAlreadyExists => "LISTING_GROUP_ALREADY_EXISTS",
+                Self::ListingGroupDoesNotExist => "LISTING_GROUP_DOES_NOT_EXIST",
+                Self::ListingGroupCannotBeRemoved => "LISTING_GROUP_CANNOT_BE_REMOVED",
+                Self::InvalidListingGroupType => "INVALID_LISTING_GROUP_TYPE",
+                Self::ListingGroupAddMayOnlyUseTempId => {
                     "LISTING_GROUP_ADD_MAY_ONLY_USE_TEMP_ID"
                 }
-                CriterionError::ListingScopeTooLong => "LISTING_SCOPE_TOO_LONG",
-                CriterionError::ListingScopeTooManyDimensions => {
+                Self::ListingScopeTooLong => "LISTING_SCOPE_TOO_LONG",
+                Self::ListingScopeTooManyDimensions => {
                     "LISTING_SCOPE_TOO_MANY_DIMENSIONS"
                 }
-                CriterionError::ListingGroupTooLong => "LISTING_GROUP_TOO_LONG",
-                CriterionError::ListingGroupTreeTooDeep => "LISTING_GROUP_TREE_TOO_DEEP",
-                CriterionError::InvalidListingDimension => "INVALID_LISTING_DIMENSION",
-                CriterionError::InvalidListingDimensionType => {
-                    "INVALID_LISTING_DIMENSION_TYPE"
-                }
-                CriterionError::AdvertiserNotOnAllowlistForCombinedAudienceOnDisplay => {
+                Self::ListingGroupTooLong => "LISTING_GROUP_TOO_LONG",
+                Self::ListingGroupTreeTooDeep => "LISTING_GROUP_TREE_TOO_DEEP",
+                Self::InvalidListingDimension => "INVALID_LISTING_DIMENSION",
+                Self::InvalidListingDimensionType => "INVALID_LISTING_DIMENSION_TYPE",
+                Self::AdvertiserNotOnAllowlistForCombinedAudienceOnDisplay => {
                     "ADVERTISER_NOT_ON_ALLOWLIST_FOR_COMBINED_AUDIENCE_ON_DISPLAY"
                 }
-                CriterionError::CannotTargetRemovedCombinedAudience => {
+                Self::CannotTargetRemovedCombinedAudience => {
                     "CANNOT_TARGET_REMOVED_COMBINED_AUDIENCE"
                 }
-                CriterionError::InvalidCombinedAudienceId => {
-                    "INVALID_COMBINED_AUDIENCE_ID"
-                }
-                CriterionError::CannotTargetRemovedCustomAudience => {
+                Self::InvalidCombinedAudienceId => "INVALID_COMBINED_AUDIENCE_ID",
+                Self::CannotTargetRemovedCustomAudience => {
                     "CANNOT_TARGET_REMOVED_CUSTOM_AUDIENCE"
                 }
-                CriterionError::HotelCheckInDateRangeOverlapsWithExistingCriterion => {
+                Self::HotelCheckInDateRangeOverlapsWithExistingCriterion => {
                     "HOTEL_CHECK_IN_DATE_RANGE_OVERLAPS_WITH_EXISTING_CRITERION"
                 }
-                CriterionError::HotelCheckInDateRangeStartDateTooEarly => {
+                Self::HotelCheckInDateRangeStartDateTooEarly => {
                     "HOTEL_CHECK_IN_DATE_RANGE_START_DATE_TOO_EARLY"
                 }
-                CriterionError::HotelCheckInDateRangeEndDateTooLate => {
+                Self::HotelCheckInDateRangeEndDateTooLate => {
                     "HOTEL_CHECK_IN_DATE_RANGE_END_DATE_TOO_LATE"
                 }
-                CriterionError::HotelCheckInDateRangeReversed => {
+                Self::HotelCheckInDateRangeReversed => {
                     "HOTEL_CHECK_IN_DATE_RANGE_REVERSED"
                 }
-                CriterionError::BroadMatchModifierKeywordNotAllowed => {
+                Self::BroadMatchModifierKeywordNotAllowed => {
                     "BROAD_MATCH_MODIFIER_KEYWORD_NOT_ALLOWED"
                 }
-                CriterionError::OneAudienceAllowedPerAssetGroup => {
+                Self::OneAudienceAllowedPerAssetGroup => {
                     "ONE_AUDIENCE_ALLOWED_PER_ASSET_GROUP"
                 }
-                CriterionError::AudienceNotEligibleForCampaignType => {
+                Self::AudienceNotEligibleForCampaignType => {
                     "AUDIENCE_NOT_ELIGIBLE_FOR_CAMPAIGN_TYPE"
                 }
-                CriterionError::AudienceNotAllowedToAttachWhenAudienceGroupedSetToFalse => {
+                Self::AudienceNotAllowedToAttachWhenAudienceGroupedSetToFalse => {
                     "AUDIENCE_NOT_ALLOWED_TO_ATTACH_WHEN_AUDIENCE_GROUPED_SET_TO_FALSE"
                 }
-                CriterionError::CannotTargetCustomerMatchUserList => {
+                Self::CannotTargetCustomerMatchUserList => {
                     "CANNOT_TARGET_CUSTOMER_MATCH_USER_LIST"
                 }
-                CriterionError::NegativeKeywordSharedSetDoesNotExist => {
+                Self::NegativeKeywordSharedSetDoesNotExist => {
                     "NEGATIVE_KEYWORD_SHARED_SET_DOES_NOT_EXIST"
                 }
-                CriterionError::CannotAddRemovedNegativeKeywordSharedSet => {
+                Self::CannotAddRemovedNegativeKeywordSharedSet => {
                     "CANNOT_ADD_REMOVED_NEGATIVE_KEYWORD_SHARED_SET"
                 }
-                CriterionError::CannotHaveMultipleNegativeKeywordListPerAccount => {
+                Self::CannotHaveMultipleNegativeKeywordListPerAccount => {
                     "CANNOT_HAVE_MULTIPLE_NEGATIVE_KEYWORD_LIST_PER_ACCOUNT"
                 }
-                CriterionError::CustomerCannotAddCriterionOfThisType => {
+                Self::CustomerCannotAddCriterionOfThisType => {
                     "CUSTOMER_CANNOT_ADD_CRITERION_OF_THIS_TYPE"
                 }
-                CriterionError::CannotTargetSimilarUserList => {
-                    "CANNOT_TARGET_SIMILAR_USER_LIST"
-                }
-                CriterionError::CannotAddAudienceSegmentCriterionWhenAudienceGroupedIsSet => {
+                Self::CannotTargetSimilarUserList => "CANNOT_TARGET_SIMILAR_USER_LIST",
+                Self::CannotAddAudienceSegmentCriterionWhenAudienceGroupedIsSet => {
                     "CANNOT_ADD_AUDIENCE_SEGMENT_CRITERION_WHEN_AUDIENCE_GROUPED_IS_SET"
                 }
-                CriterionError::OneAudienceAllowedPerAdGroup => {
-                    "ONE_AUDIENCE_ALLOWED_PER_AD_GROUP"
-                }
-                CriterionError::InvalidDetailedDemographic => {
-                    "INVALID_DETAILED_DEMOGRAPHIC"
-                }
-                CriterionError::CannotRecognizeBrand => "CANNOT_RECOGNIZE_BRAND",
-                CriterionError::BrandSharedSetDoesNotExist => {
-                    "BRAND_SHARED_SET_DOES_NOT_EXIST"
-                }
-                CriterionError::CannotAddRemovedBrandSharedSet => {
+                Self::OneAudienceAllowedPerAdGroup => "ONE_AUDIENCE_ALLOWED_PER_AD_GROUP",
+                Self::InvalidDetailedDemographic => "INVALID_DETAILED_DEMOGRAPHIC",
+                Self::CannotRecognizeBrand => "CANNOT_RECOGNIZE_BRAND",
+                Self::BrandSharedSetDoesNotExist => "BRAND_SHARED_SET_DOES_NOT_EXIST",
+                Self::CannotAddRemovedBrandSharedSet => {
                     "CANNOT_ADD_REMOVED_BRAND_SHARED_SET"
                 }
-                CriterionError::OnlyExclusionBrandListAllowedForCampaignType => {
+                Self::OnlyExclusionBrandListAllowedForCampaignType => {
                     "ONLY_EXCLUSION_BRAND_LIST_ALLOWED_FOR_CAMPAIGN_TYPE"
                 }
             }
@@ -8852,9 +8482,9 @@ pub mod currency_code_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CurrencyCodeError::Unspecified => "UNSPECIFIED",
-                CurrencyCodeError::Unknown => "UNKNOWN",
-                CurrencyCodeError::Unsupported => "UNSUPPORTED",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::Unsupported => "UNSUPPORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8901,9 +8531,9 @@ pub mod currency_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CurrencyError::Unspecified => "UNSPECIFIED",
-                CurrencyError::Unknown => "UNKNOWN",
-                CurrencyError::ValueNotMultipleOfBillableUnit => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ValueNotMultipleOfBillableUnit => {
                     "VALUE_NOT_MULTIPLE_OF_BILLABLE_UNIT"
                 }
             }
@@ -8968,22 +8598,20 @@ pub mod custom_audience_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CustomAudienceError::Unspecified => "UNSPECIFIED",
-                CustomAudienceError::Unknown => "UNKNOWN",
-                CustomAudienceError::NameAlreadyUsed => "NAME_ALREADY_USED",
-                CustomAudienceError::CannotRemoveWhileInUse => {
-                    "CANNOT_REMOVE_WHILE_IN_USE"
-                }
-                CustomAudienceError::ResourceAlreadyRemoved => "RESOURCE_ALREADY_REMOVED",
-                CustomAudienceError::MemberTypeAndParameterAlreadyExisted => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::NameAlreadyUsed => "NAME_ALREADY_USED",
+                Self::CannotRemoveWhileInUse => "CANNOT_REMOVE_WHILE_IN_USE",
+                Self::ResourceAlreadyRemoved => "RESOURCE_ALREADY_REMOVED",
+                Self::MemberTypeAndParameterAlreadyExisted => {
                     "MEMBER_TYPE_AND_PARAMETER_ALREADY_EXISTED"
                 }
-                CustomAudienceError::InvalidMemberType => "INVALID_MEMBER_TYPE",
-                CustomAudienceError::MemberTypeAndValueDoesNotMatch => {
+                Self::InvalidMemberType => "INVALID_MEMBER_TYPE",
+                Self::MemberTypeAndValueDoesNotMatch => {
                     "MEMBER_TYPE_AND_VALUE_DOES_NOT_MATCH"
                 }
-                CustomAudienceError::PolicyViolation => "POLICY_VIOLATION",
-                CustomAudienceError::InvalidTypeChange => "INVALID_TYPE_CHANGE",
+                Self::PolicyViolation => "POLICY_VIOLATION",
+                Self::InvalidTypeChange => "INVALID_TYPE_CHANGE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9054,24 +8682,16 @@ pub mod custom_conversion_goal_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CustomConversionGoalError::Unspecified => "UNSPECIFIED",
-                CustomConversionGoalError::Unknown => "UNKNOWN",
-                CustomConversionGoalError::InvalidConversionAction => {
-                    "INVALID_CONVERSION_ACTION"
-                }
-                CustomConversionGoalError::ConversionActionNotEnabled => {
-                    "CONVERSION_ACTION_NOT_ENABLED"
-                }
-                CustomConversionGoalError::CannotRemoveLinkedCustomConversionGoal => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidConversionAction => "INVALID_CONVERSION_ACTION",
+                Self::ConversionActionNotEnabled => "CONVERSION_ACTION_NOT_ENABLED",
+                Self::CannotRemoveLinkedCustomConversionGoal => {
                     "CANNOT_REMOVE_LINKED_CUSTOM_CONVERSION_GOAL"
                 }
-                CustomConversionGoalError::CustomGoalDuplicateName => {
-                    "CUSTOM_GOAL_DUPLICATE_NAME"
-                }
-                CustomConversionGoalError::DuplicateConversionActionList => {
-                    "DUPLICATE_CONVERSION_ACTION_LIST"
-                }
-                CustomConversionGoalError::NonBiddableConversionActionNotEligibleForCustomGoal => {
+                Self::CustomGoalDuplicateName => "CUSTOM_GOAL_DUPLICATE_NAME",
+                Self::DuplicateConversionActionList => "DUPLICATE_CONVERSION_ACTION_LIST",
+                Self::NonBiddableConversionActionNotEligibleForCustomGoal => {
                     "NON_BIDDABLE_CONVERSION_ACTION_NOT_ELIGIBLE_FOR_CUSTOM_GOAL"
                 }
             }
@@ -9144,25 +8764,21 @@ pub mod custom_interest_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CustomInterestError::Unspecified => "UNSPECIFIED",
-                CustomInterestError::Unknown => "UNKNOWN",
-                CustomInterestError::NameAlreadyUsed => "NAME_ALREADY_USED",
-                CustomInterestError::CustomInterestMemberIdAndTypeParameterNotPresentInRemove => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::NameAlreadyUsed => "NAME_ALREADY_USED",
+                Self::CustomInterestMemberIdAndTypeParameterNotPresentInRemove => {
                     "CUSTOM_INTEREST_MEMBER_ID_AND_TYPE_PARAMETER_NOT_PRESENT_IN_REMOVE"
                 }
-                CustomInterestError::TypeAndParameterNotFound => {
-                    "TYPE_AND_PARAMETER_NOT_FOUND"
-                }
-                CustomInterestError::TypeAndParameterAlreadyExisted => {
+                Self::TypeAndParameterNotFound => "TYPE_AND_PARAMETER_NOT_FOUND",
+                Self::TypeAndParameterAlreadyExisted => {
                     "TYPE_AND_PARAMETER_ALREADY_EXISTED"
                 }
-                CustomInterestError::InvalidCustomInterestMemberType => {
+                Self::InvalidCustomInterestMemberType => {
                     "INVALID_CUSTOM_INTEREST_MEMBER_TYPE"
                 }
-                CustomInterestError::CannotRemoveWhileInUse => {
-                    "CANNOT_REMOVE_WHILE_IN_USE"
-                }
-                CustomInterestError::CannotChangeType => "CANNOT_CHANGE_TYPE",
+                Self::CannotRemoveWhileInUse => "CANNOT_REMOVE_WHILE_IN_USE",
+                Self::CannotChangeType => "CANNOT_CHANGE_TYPE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9235,32 +8851,24 @@ pub mod customer_client_link_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CustomerClientLinkError::Unspecified => "UNSPECIFIED",
-                CustomerClientLinkError::Unknown => "UNKNOWN",
-                CustomerClientLinkError::ClientAlreadyInvitedByThisManager => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ClientAlreadyInvitedByThisManager => {
                     "CLIENT_ALREADY_INVITED_BY_THIS_MANAGER"
                 }
-                CustomerClientLinkError::ClientAlreadyManagedInHierarchy => {
+                Self::ClientAlreadyManagedInHierarchy => {
                     "CLIENT_ALREADY_MANAGED_IN_HIERARCHY"
                 }
-                CustomerClientLinkError::CyclicLinkNotAllowed => {
-                    "CYCLIC_LINK_NOT_ALLOWED"
-                }
-                CustomerClientLinkError::CustomerHasTooManyAccounts => {
-                    "CUSTOMER_HAS_TOO_MANY_ACCOUNTS"
-                }
-                CustomerClientLinkError::ClientHasTooManyInvitations => {
-                    "CLIENT_HAS_TOO_MANY_INVITATIONS"
-                }
-                CustomerClientLinkError::CannotHideOrUnhideManagerAccounts => {
+                Self::CyclicLinkNotAllowed => "CYCLIC_LINK_NOT_ALLOWED",
+                Self::CustomerHasTooManyAccounts => "CUSTOMER_HAS_TOO_MANY_ACCOUNTS",
+                Self::ClientHasTooManyInvitations => "CLIENT_HAS_TOO_MANY_INVITATIONS",
+                Self::CannotHideOrUnhideManagerAccounts => {
                     "CANNOT_HIDE_OR_UNHIDE_MANAGER_ACCOUNTS"
                 }
-                CustomerClientLinkError::CustomerHasTooManyAccountsAtManager => {
+                Self::CustomerHasTooManyAccountsAtManager => {
                     "CUSTOMER_HAS_TOO_MANY_ACCOUNTS_AT_MANAGER"
                 }
-                CustomerClientLinkError::ClientHasTooManyManagers => {
-                    "CLIENT_HAS_TOO_MANY_MANAGERS"
-                }
+                Self::ClientHasTooManyManagers => "CLIENT_HAS_TOO_MANY_MANAGERS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9324,8 +8932,8 @@ pub mod customer_customizer_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CustomerCustomizerError::Unspecified => "UNSPECIFIED",
-                CustomerCustomizerError::Unknown => "UNKNOWN",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9375,10 +8983,10 @@ pub mod customer_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CustomerError::Unspecified => "UNSPECIFIED",
-                CustomerError::Unknown => "UNKNOWN",
-                CustomerError::StatusChangeDisallowed => "STATUS_CHANGE_DISALLOWED",
-                CustomerError::AccountNotSetUp => "ACCOUNT_NOT_SET_UP",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::StatusChangeDisallowed => "STATUS_CHANGE_DISALLOWED",
+                Self::AccountNotSetUp => "ACCOUNT_NOT_SET_UP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9439,25 +9047,23 @@ pub mod customer_feed_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CustomerFeedError::Unspecified => "UNSPECIFIED",
-                CustomerFeedError::Unknown => "UNKNOWN",
-                CustomerFeedError::FeedAlreadyExistsForPlaceholderType => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::FeedAlreadyExistsForPlaceholderType => {
                     "FEED_ALREADY_EXISTS_FOR_PLACEHOLDER_TYPE"
                 }
-                CustomerFeedError::CannotCreateForRemovedFeed => {
-                    "CANNOT_CREATE_FOR_REMOVED_FEED"
-                }
-                CustomerFeedError::CannotCreateAlreadyExistingCustomerFeed => {
+                Self::CannotCreateForRemovedFeed => "CANNOT_CREATE_FOR_REMOVED_FEED",
+                Self::CannotCreateAlreadyExistingCustomerFeed => {
                     "CANNOT_CREATE_ALREADY_EXISTING_CUSTOMER_FEED"
                 }
-                CustomerFeedError::CannotModifyRemovedCustomerFeed => {
+                Self::CannotModifyRemovedCustomerFeed => {
                     "CANNOT_MODIFY_REMOVED_CUSTOMER_FEED"
                 }
-                CustomerFeedError::InvalidPlaceholderType => "INVALID_PLACEHOLDER_TYPE",
-                CustomerFeedError::MissingFeedmappingForPlaceholderType => {
+                Self::InvalidPlaceholderType => "INVALID_PLACEHOLDER_TYPE",
+                Self::MissingFeedmappingForPlaceholderType => {
                     "MISSING_FEEDMAPPING_FOR_PLACEHOLDER_TYPE"
                 }
-                CustomerFeedError::PlaceholderTypeNotAllowedOnCustomerFeed => {
+                Self::PlaceholderTypeNotAllowedOnCustomerFeed => {
                     "PLACEHOLDER_TYPE_NOT_ALLOWED_ON_CUSTOMER_FEED"
                 }
             }
@@ -9552,27 +9158,25 @@ pub mod customer_lifecycle_goal_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CustomerLifecycleGoalError::Unspecified => "UNSPECIFIED",
-                CustomerLifecycleGoalError::Unknown => "UNKNOWN",
-                CustomerLifecycleGoalError::CustomerAcquisitionValueMissing => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CustomerAcquisitionValueMissing => {
                     "CUSTOMER_ACQUISITION_VALUE_MISSING"
                 }
-                CustomerLifecycleGoalError::CustomerAcquisitionInvalidValue => {
+                Self::CustomerAcquisitionInvalidValue => {
                     "CUSTOMER_ACQUISITION_INVALID_VALUE"
                 }
-                CustomerLifecycleGoalError::CustomerAcquisitionInvalidHighLifetimeValue => {
+                Self::CustomerAcquisitionInvalidHighLifetimeValue => {
                     "CUSTOMER_ACQUISITION_INVALID_HIGH_LIFETIME_VALUE"
                 }
-                CustomerLifecycleGoalError::CustomerAcquisitionValueCannotBeCleared => {
+                Self::CustomerAcquisitionValueCannotBeCleared => {
                     "CUSTOMER_ACQUISITION_VALUE_CANNOT_BE_CLEARED"
                 }
-                CustomerLifecycleGoalError::CustomerAcquisitionHighLifetimeValueCannotBeCleared => {
+                Self::CustomerAcquisitionHighLifetimeValueCannotBeCleared => {
                     "CUSTOMER_ACQUISITION_HIGH_LIFETIME_VALUE_CANNOT_BE_CLEARED"
                 }
-                CustomerLifecycleGoalError::InvalidExistingUserList => {
-                    "INVALID_EXISTING_USER_LIST"
-                }
-                CustomerLifecycleGoalError::InvalidHighLifetimeValueUserList => {
+                Self::InvalidExistingUserList => "INVALID_EXISTING_USER_LIST",
+                Self::InvalidHighLifetimeValueUserList => {
                     "INVALID_HIGH_LIFETIME_VALUE_USER_LIST"
                 }
             }
@@ -9659,29 +9263,29 @@ pub mod customer_manager_link_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CustomerManagerLinkError::Unspecified => "UNSPECIFIED",
-                CustomerManagerLinkError::Unknown => "UNKNOWN",
-                CustomerManagerLinkError::NoPendingInvite => "NO_PENDING_INVITE",
-                CustomerManagerLinkError::SameClientMoreThanOncePerCall => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::NoPendingInvite => "NO_PENDING_INVITE",
+                Self::SameClientMoreThanOncePerCall => {
                     "SAME_CLIENT_MORE_THAN_ONCE_PER_CALL"
                 }
-                CustomerManagerLinkError::ManagerHasMaxNumberOfLinkedAccounts => {
+                Self::ManagerHasMaxNumberOfLinkedAccounts => {
                     "MANAGER_HAS_MAX_NUMBER_OF_LINKED_ACCOUNTS"
                 }
-                CustomerManagerLinkError::CannotUnlinkAccountWithoutActiveUser => {
+                Self::CannotUnlinkAccountWithoutActiveUser => {
                     "CANNOT_UNLINK_ACCOUNT_WITHOUT_ACTIVE_USER"
                 }
-                CustomerManagerLinkError::CannotRemoveLastClientAccountOwner => {
+                Self::CannotRemoveLastClientAccountOwner => {
                     "CANNOT_REMOVE_LAST_CLIENT_ACCOUNT_OWNER"
                 }
-                CustomerManagerLinkError::CannotChangeRoleByNonAccountOwner => {
+                Self::CannotChangeRoleByNonAccountOwner => {
                     "CANNOT_CHANGE_ROLE_BY_NON_ACCOUNT_OWNER"
                 }
-                CustomerManagerLinkError::CannotChangeRoleForNonActiveLinkAccount => {
+                Self::CannotChangeRoleForNonActiveLinkAccount => {
                     "CANNOT_CHANGE_ROLE_FOR_NON_ACTIVE_LINK_ACCOUNT"
                 }
-                CustomerManagerLinkError::DuplicateChildFound => "DUPLICATE_CHILD_FOUND",
-                CustomerManagerLinkError::TestAccountLinksTooManyChildAccounts => {
+                Self::DuplicateChildFound => "DUPLICATE_CHILD_FOUND",
+                Self::TestAccountLinksTooManyChildAccounts => {
                     "TEST_ACCOUNT_LINKS_TOO_MANY_CHILD_ACCOUNTS"
                 }
             }
@@ -9763,28 +9367,14 @@ pub mod customer_sk_ad_network_conversion_value_schema_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CustomerSkAdNetworkConversionValueSchemaError::Unspecified => {
-                    "UNSPECIFIED"
-                }
-                CustomerSkAdNetworkConversionValueSchemaError::Unknown => "UNKNOWN",
-                CustomerSkAdNetworkConversionValueSchemaError::InvalidLinkId => {
-                    "INVALID_LINK_ID"
-                }
-                CustomerSkAdNetworkConversionValueSchemaError::InvalidAppId => {
-                    "INVALID_APP_ID"
-                }
-                CustomerSkAdNetworkConversionValueSchemaError::InvalidSchema => {
-                    "INVALID_SCHEMA"
-                }
-                CustomerSkAdNetworkConversionValueSchemaError::LinkCodeNotFound => {
-                    "LINK_CODE_NOT_FOUND"
-                }
-                CustomerSkAdNetworkConversionValueSchemaError::InvalidEventCounter => {
-                    "INVALID_EVENT_COUNTER"
-                }
-                CustomerSkAdNetworkConversionValueSchemaError::InvalidEventName => {
-                    "INVALID_EVENT_NAME"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidLinkId => "INVALID_LINK_ID",
+                Self::InvalidAppId => "INVALID_APP_ID",
+                Self::InvalidSchema => "INVALID_SCHEMA",
+                Self::LinkCodeNotFound => "LINK_CODE_NOT_FOUND",
+                Self::InvalidEventCounter => "INVALID_EVENT_COUNTER",
+                Self::InvalidEventName => "INVALID_EVENT_NAME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9845,17 +9435,15 @@ pub mod customer_user_access_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CustomerUserAccessError::Unspecified => "UNSPECIFIED",
-                CustomerUserAccessError::Unknown => "UNKNOWN",
-                CustomerUserAccessError::InvalidUserId => "INVALID_USER_ID",
-                CustomerUserAccessError::RemovalDisallowed => "REMOVAL_DISALLOWED",
-                CustomerUserAccessError::DisallowedAccessRole => "DISALLOWED_ACCESS_ROLE",
-                CustomerUserAccessError::LastAdminUserOfServingCustomer => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidUserId => "INVALID_USER_ID",
+                Self::RemovalDisallowed => "REMOVAL_DISALLOWED",
+                Self::DisallowedAccessRole => "DISALLOWED_ACCESS_ROLE",
+                Self::LastAdminUserOfServingCustomer => {
                     "LAST_ADMIN_USER_OF_SERVING_CUSTOMER"
                 }
-                CustomerUserAccessError::LastAdminUserOfManager => {
-                    "LAST_ADMIN_USER_OF_MANAGER"
-                }
+                Self::LastAdminUserOfManager => "LAST_ADMIN_USER_OF_MANAGER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9909,9 +9497,9 @@ pub mod customizer_attribute_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CustomizerAttributeError::Unspecified => "UNSPECIFIED",
-                CustomizerAttributeError::Unknown => "UNKNOWN",
-                CustomizerAttributeError::DuplicateCustomizerAttributeName => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::DuplicateCustomizerAttributeName => {
                     "DUPLICATE_CUSTOMIZER_ATTRIBUTE_NAME"
                 }
             }
@@ -9969,11 +9557,11 @@ pub mod database_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DatabaseError::Unspecified => "UNSPECIFIED",
-                DatabaseError::Unknown => "UNKNOWN",
-                DatabaseError::ConcurrentModification => "CONCURRENT_MODIFICATION",
-                DatabaseError::DataConstraintViolation => "DATA_CONSTRAINT_VIOLATION",
-                DatabaseError::RequestTooLarge => "REQUEST_TOO_LARGE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ConcurrentModification => "CONCURRENT_MODIFICATION",
+                Self::DataConstraintViolation => "DATA_CONSTRAINT_VIOLATION",
+                Self::RequestTooLarge => "REQUEST_TOO_LARGE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10040,28 +9628,22 @@ pub mod date_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DateError::Unspecified => "UNSPECIFIED",
-                DateError::Unknown => "UNKNOWN",
-                DateError::InvalidFieldValuesInDate => "INVALID_FIELD_VALUES_IN_DATE",
-                DateError::InvalidFieldValuesInDateTime => {
-                    "INVALID_FIELD_VALUES_IN_DATE_TIME"
-                }
-                DateError::InvalidStringDate => "INVALID_STRING_DATE",
-                DateError::InvalidStringDateTimeMicros => {
-                    "INVALID_STRING_DATE_TIME_MICROS"
-                }
-                DateError::InvalidStringDateTimeSeconds => {
-                    "INVALID_STRING_DATE_TIME_SECONDS"
-                }
-                DateError::InvalidStringDateTimeSecondsWithOffset => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidFieldValuesInDate => "INVALID_FIELD_VALUES_IN_DATE",
+                Self::InvalidFieldValuesInDateTime => "INVALID_FIELD_VALUES_IN_DATE_TIME",
+                Self::InvalidStringDate => "INVALID_STRING_DATE",
+                Self::InvalidStringDateTimeMicros => "INVALID_STRING_DATE_TIME_MICROS",
+                Self::InvalidStringDateTimeSeconds => "INVALID_STRING_DATE_TIME_SECONDS",
+                Self::InvalidStringDateTimeSecondsWithOffset => {
                     "INVALID_STRING_DATE_TIME_SECONDS_WITH_OFFSET"
                 }
-                DateError::EarlierThanMinimumDate => "EARLIER_THAN_MINIMUM_DATE",
-                DateError::LaterThanMaximumDate => "LATER_THAN_MAXIMUM_DATE",
-                DateError::DateRangeMinimumDateLaterThanMaximumDate => {
+                Self::EarlierThanMinimumDate => "EARLIER_THAN_MINIMUM_DATE",
+                Self::LaterThanMaximumDate => "LATER_THAN_MAXIMUM_DATE",
+                Self::DateRangeMinimumDateLaterThanMaximumDate => {
                     "DATE_RANGE_MINIMUM_DATE_LATER_THAN_MAXIMUM_DATE"
                 }
-                DateError::DateRangeMinimumAndMaximumDatesBothNull => {
+                Self::DateRangeMinimumAndMaximumDatesBothNull => {
                     "DATE_RANGE_MINIMUM_AND_MAXIMUM_DATES_BOTH_NULL"
                 }
             }
@@ -10139,15 +9721,13 @@ pub mod date_range_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DateRangeError::Unspecified => "UNSPECIFIED",
-                DateRangeError::Unknown => "UNKNOWN",
-                DateRangeError::InvalidDate => "INVALID_DATE",
-                DateRangeError::StartDateAfterEndDate => "START_DATE_AFTER_END_DATE",
-                DateRangeError::CannotSetDateToPast => "CANNOT_SET_DATE_TO_PAST",
-                DateRangeError::AfterMaximumAllowableDate => {
-                    "AFTER_MAXIMUM_ALLOWABLE_DATE"
-                }
-                DateRangeError::CannotModifyStartDateIfAlreadyStarted => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidDate => "INVALID_DATE",
+                Self::StartDateAfterEndDate => "START_DATE_AFTER_END_DATE",
+                Self::CannotSetDateToPast => "CANNOT_SET_DATE_TO_PAST",
+                Self::AfterMaximumAllowableDate => "AFTER_MAXIMUM_ALLOWABLE_DATE",
+                Self::CannotModifyStartDateIfAlreadyStarted => {
                     "CANNOT_MODIFY_START_DATE_IF_ALREADY_STARTED"
                 }
             }
@@ -10204,10 +9784,10 @@ pub mod distinct_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DistinctError::Unspecified => "UNSPECIFIED",
-                DistinctError::Unknown => "UNKNOWN",
-                DistinctError::DuplicateElement => "DUPLICATE_ELEMENT",
-                DistinctError::DuplicateType => "DUPLICATE_TYPE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::DuplicateElement => "DUPLICATE_ELEMENT",
+                Self::DuplicateType => "DUPLICATE_TYPE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10255,9 +9835,9 @@ pub mod enum_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EnumError::Unspecified => "UNSPECIFIED",
-                EnumError::Unknown => "UNKNOWN",
-                EnumError::EnumValueNotPermitted => "ENUM_VALUE_NOT_PERMITTED",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::EnumValueNotPermitted => "ENUM_VALUE_NOT_PERMITTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10332,46 +9912,42 @@ pub mod experiment_arm_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ExperimentArmError::Unspecified => "UNSPECIFIED",
-                ExperimentArmError::Unknown => "UNKNOWN",
-                ExperimentArmError::ExperimentArmCountLimitExceeded => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ExperimentArmCountLimitExceeded => {
                     "EXPERIMENT_ARM_COUNT_LIMIT_EXCEEDED"
                 }
-                ExperimentArmError::InvalidCampaignStatus => "INVALID_CAMPAIGN_STATUS",
-                ExperimentArmError::DuplicateExperimentArmName => {
-                    "DUPLICATE_EXPERIMENT_ARM_NAME"
-                }
-                ExperimentArmError::CannotSetTreatmentArmCampaign => {
+                Self::InvalidCampaignStatus => "INVALID_CAMPAIGN_STATUS",
+                Self::DuplicateExperimentArmName => "DUPLICATE_EXPERIMENT_ARM_NAME",
+                Self::CannotSetTreatmentArmCampaign => {
                     "CANNOT_SET_TREATMENT_ARM_CAMPAIGN"
                 }
-                ExperimentArmError::CannotModifyCampaignIds => {
-                    "CANNOT_MODIFY_CAMPAIGN_IDS"
-                }
-                ExperimentArmError::CannotModifyCampaignWithoutSuffixSet => {
+                Self::CannotModifyCampaignIds => "CANNOT_MODIFY_CAMPAIGN_IDS",
+                Self::CannotModifyCampaignWithoutSuffixSet => {
                     "CANNOT_MODIFY_CAMPAIGN_WITHOUT_SUFFIX_SET"
                 }
-                ExperimentArmError::CannotMutateTrafficSplitAfterStart => {
+                Self::CannotMutateTrafficSplitAfterStart => {
                     "CANNOT_MUTATE_TRAFFIC_SPLIT_AFTER_START"
                 }
-                ExperimentArmError::CannotAddCampaignWithSharedBudget => {
+                Self::CannotAddCampaignWithSharedBudget => {
                     "CANNOT_ADD_CAMPAIGN_WITH_SHARED_BUDGET"
                 }
-                ExperimentArmError::CannotAddCampaignWithCustomBudget => {
+                Self::CannotAddCampaignWithCustomBudget => {
                     "CANNOT_ADD_CAMPAIGN_WITH_CUSTOM_BUDGET"
                 }
-                ExperimentArmError::CannotAddCampaignsWithDynamicAssetsEnabled => {
+                Self::CannotAddCampaignsWithDynamicAssetsEnabled => {
                     "CANNOT_ADD_CAMPAIGNS_WITH_DYNAMIC_ASSETS_ENABLED"
                 }
-                ExperimentArmError::UnsupportedCampaignAdvertisingChannelSubType => {
+                Self::UnsupportedCampaignAdvertisingChannelSubType => {
                     "UNSUPPORTED_CAMPAIGN_ADVERTISING_CHANNEL_SUB_TYPE"
                 }
-                ExperimentArmError::CannotAddBaseCampaignWithDateRange => {
+                Self::CannotAddBaseCampaignWithDateRange => {
                     "CANNOT_ADD_BASE_CAMPAIGN_WITH_DATE_RANGE"
                 }
-                ExperimentArmError::BiddingStrategyNotSupportedInExperiments => {
+                Self::BiddingStrategyNotSupportedInExperiments => {
                     "BIDDING_STRATEGY_NOT_SUPPORTED_IN_EXPERIMENTS"
                 }
-                ExperimentArmError::TrafficSplitNotSupportedForChannelType => {
+                Self::TrafficSplitNotSupportedForChannelType => {
                     "TRAFFIC_SPLIT_NOT_SUPPORTED_FOR_CHANNEL_TYPE"
                 }
             }
@@ -10520,71 +10096,57 @@ pub mod experiment_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ExperimentError::Unspecified => "UNSPECIFIED",
-                ExperimentError::Unknown => "UNKNOWN",
-                ExperimentError::CannotSetStartDateInPast => {
-                    "CANNOT_SET_START_DATE_IN_PAST"
-                }
-                ExperimentError::EndDateBeforeStartDate => "END_DATE_BEFORE_START_DATE",
-                ExperimentError::StartDateTooFarInFuture => {
-                    "START_DATE_TOO_FAR_IN_FUTURE"
-                }
-                ExperimentError::DuplicateExperimentName => "DUPLICATE_EXPERIMENT_NAME",
-                ExperimentError::CannotModifyRemovedExperiment => {
-                    "CANNOT_MODIFY_REMOVED_EXPERIMENT"
-                }
-                ExperimentError::StartDateAlreadyPassed => "START_DATE_ALREADY_PASSED",
-                ExperimentError::CannotSetEndDateInPast => "CANNOT_SET_END_DATE_IN_PAST",
-                ExperimentError::CannotSetStatusToRemoved => {
-                    "CANNOT_SET_STATUS_TO_REMOVED"
-                }
-                ExperimentError::CannotModifyPastEndDate => "CANNOT_MODIFY_PAST_END_DATE",
-                ExperimentError::InvalidStatus => "INVALID_STATUS",
-                ExperimentError::InvalidCampaignChannelType => {
-                    "INVALID_CAMPAIGN_CHANNEL_TYPE"
-                }
-                ExperimentError::OverlappingMembersAndDateRange => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CannotSetStartDateInPast => "CANNOT_SET_START_DATE_IN_PAST",
+                Self::EndDateBeforeStartDate => "END_DATE_BEFORE_START_DATE",
+                Self::StartDateTooFarInFuture => "START_DATE_TOO_FAR_IN_FUTURE",
+                Self::DuplicateExperimentName => "DUPLICATE_EXPERIMENT_NAME",
+                Self::CannotModifyRemovedExperiment => "CANNOT_MODIFY_REMOVED_EXPERIMENT",
+                Self::StartDateAlreadyPassed => "START_DATE_ALREADY_PASSED",
+                Self::CannotSetEndDateInPast => "CANNOT_SET_END_DATE_IN_PAST",
+                Self::CannotSetStatusToRemoved => "CANNOT_SET_STATUS_TO_REMOVED",
+                Self::CannotModifyPastEndDate => "CANNOT_MODIFY_PAST_END_DATE",
+                Self::InvalidStatus => "INVALID_STATUS",
+                Self::InvalidCampaignChannelType => "INVALID_CAMPAIGN_CHANNEL_TYPE",
+                Self::OverlappingMembersAndDateRange => {
                     "OVERLAPPING_MEMBERS_AND_DATE_RANGE"
                 }
-                ExperimentError::InvalidTrialArmTrafficSplit => {
-                    "INVALID_TRIAL_ARM_TRAFFIC_SPLIT"
-                }
-                ExperimentError::TrafficSplitOverlapping => "TRAFFIC_SPLIT_OVERLAPPING",
-                ExperimentError::SumTrialArmTrafficUnequalsToTrialTrafficSplitDenominator => {
+                Self::InvalidTrialArmTrafficSplit => "INVALID_TRIAL_ARM_TRAFFIC_SPLIT",
+                Self::TrafficSplitOverlapping => "TRAFFIC_SPLIT_OVERLAPPING",
+                Self::SumTrialArmTrafficUnequalsToTrialTrafficSplitDenominator => {
                     "SUM_TRIAL_ARM_TRAFFIC_UNEQUALS_TO_TRIAL_TRAFFIC_SPLIT_DENOMINATOR"
                 }
-                ExperimentError::CannotModifyTrafficSplitAfterStart => {
+                Self::CannotModifyTrafficSplitAfterStart => {
                     "CANNOT_MODIFY_TRAFFIC_SPLIT_AFTER_START"
                 }
-                ExperimentError::ExperimentNotFound => "EXPERIMENT_NOT_FOUND",
-                ExperimentError::ExperimentNotYetStarted => "EXPERIMENT_NOT_YET_STARTED",
-                ExperimentError::CannotHaveMultipleControlArms => {
+                Self::ExperimentNotFound => "EXPERIMENT_NOT_FOUND",
+                Self::ExperimentNotYetStarted => "EXPERIMENT_NOT_YET_STARTED",
+                Self::CannotHaveMultipleControlArms => {
                     "CANNOT_HAVE_MULTIPLE_CONTROL_ARMS"
                 }
-                ExperimentError::InDesignCampaignsNotSet => "IN_DESIGN_CAMPAIGNS_NOT_SET",
-                ExperimentError::CannotSetStatusToGraduated => {
-                    "CANNOT_SET_STATUS_TO_GRADUATED"
-                }
-                ExperimentError::CannotCreateExperimentCampaignWithSharedBudget => {
+                Self::InDesignCampaignsNotSet => "IN_DESIGN_CAMPAIGNS_NOT_SET",
+                Self::CannotSetStatusToGraduated => "CANNOT_SET_STATUS_TO_GRADUATED",
+                Self::CannotCreateExperimentCampaignWithSharedBudget => {
                     "CANNOT_CREATE_EXPERIMENT_CAMPAIGN_WITH_SHARED_BUDGET"
                 }
-                ExperimentError::CannotCreateExperimentCampaignWithCustomBudget => {
+                Self::CannotCreateExperimentCampaignWithCustomBudget => {
                     "CANNOT_CREATE_EXPERIMENT_CAMPAIGN_WITH_CUSTOM_BUDGET"
                 }
-                ExperimentError::StatusTransitionInvalid => "STATUS_TRANSITION_INVALID",
-                ExperimentError::DuplicateExperimentCampaignName => {
+                Self::StatusTransitionInvalid => "STATUS_TRANSITION_INVALID",
+                Self::DuplicateExperimentCampaignName => {
                     "DUPLICATE_EXPERIMENT_CAMPAIGN_NAME"
                 }
-                ExperimentError::CannotRemoveInCreationExperiment => {
+                Self::CannotRemoveInCreationExperiment => {
                     "CANNOT_REMOVE_IN_CREATION_EXPERIMENT"
                 }
-                ExperimentError::CannotAddCampaignWithDeprecatedAdTypes => {
+                Self::CannotAddCampaignWithDeprecatedAdTypes => {
                     "CANNOT_ADD_CAMPAIGN_WITH_DEPRECATED_AD_TYPES"
                 }
-                ExperimentError::CannotEnableSyncForUnsupportedExperimentType => {
+                Self::CannotEnableSyncForUnsupportedExperimentType => {
                     "CANNOT_ENABLE_SYNC_FOR_UNSUPPORTED_EXPERIMENT_TYPE"
                 }
-                ExperimentError::InvalidDurationForAnExperiment => {
+                Self::InvalidDurationForAnExperiment => {
                     "INVALID_DURATION_FOR_AN_EXPERIMENT"
                 }
             }
@@ -10793,125 +10355,97 @@ pub mod extension_feed_item_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ExtensionFeedItemError::Unspecified => "UNSPECIFIED",
-                ExtensionFeedItemError::Unknown => "UNKNOWN",
-                ExtensionFeedItemError::ValueOutOfRange => "VALUE_OUT_OF_RANGE",
-                ExtensionFeedItemError::UrlListTooLong => "URL_LIST_TOO_LONG",
-                ExtensionFeedItemError::CannotHaveRestrictionOnEmptyGeoTargeting => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ValueOutOfRange => "VALUE_OUT_OF_RANGE",
+                Self::UrlListTooLong => "URL_LIST_TOO_LONG",
+                Self::CannotHaveRestrictionOnEmptyGeoTargeting => {
                     "CANNOT_HAVE_RESTRICTION_ON_EMPTY_GEO_TARGETING"
                 }
-                ExtensionFeedItemError::CannotSetWithFinalUrls => {
-                    "CANNOT_SET_WITH_FINAL_URLS"
-                }
-                ExtensionFeedItemError::CannotSetWithoutFinalUrls => {
-                    "CANNOT_SET_WITHOUT_FINAL_URLS"
-                }
-                ExtensionFeedItemError::InvalidPhoneNumber => "INVALID_PHONE_NUMBER",
-                ExtensionFeedItemError::PhoneNumberNotSupportedForCountry => {
+                Self::CannotSetWithFinalUrls => "CANNOT_SET_WITH_FINAL_URLS",
+                Self::CannotSetWithoutFinalUrls => "CANNOT_SET_WITHOUT_FINAL_URLS",
+                Self::InvalidPhoneNumber => "INVALID_PHONE_NUMBER",
+                Self::PhoneNumberNotSupportedForCountry => {
                     "PHONE_NUMBER_NOT_SUPPORTED_FOR_COUNTRY"
                 }
-                ExtensionFeedItemError::CarrierSpecificShortNumberNotAllowed => {
+                Self::CarrierSpecificShortNumberNotAllowed => {
                     "CARRIER_SPECIFIC_SHORT_NUMBER_NOT_ALLOWED"
                 }
-                ExtensionFeedItemError::PremiumRateNumberNotAllowed => {
-                    "PREMIUM_RATE_NUMBER_NOT_ALLOWED"
-                }
-                ExtensionFeedItemError::DisallowedNumberType => "DISALLOWED_NUMBER_TYPE",
-                ExtensionFeedItemError::InvalidDomesticPhoneNumberFormat => {
+                Self::PremiumRateNumberNotAllowed => "PREMIUM_RATE_NUMBER_NOT_ALLOWED",
+                Self::DisallowedNumberType => "DISALLOWED_NUMBER_TYPE",
+                Self::InvalidDomesticPhoneNumberFormat => {
                     "INVALID_DOMESTIC_PHONE_NUMBER_FORMAT"
                 }
-                ExtensionFeedItemError::VanityPhoneNumberNotAllowed => {
-                    "VANITY_PHONE_NUMBER_NOT_ALLOWED"
-                }
-                ExtensionFeedItemError::InvalidCallConversionAction => {
-                    "INVALID_CALL_CONVERSION_ACTION"
-                }
-                ExtensionFeedItemError::CustomerNotOnAllowlistForCalltracking => {
+                Self::VanityPhoneNumberNotAllowed => "VANITY_PHONE_NUMBER_NOT_ALLOWED",
+                Self::InvalidCallConversionAction => "INVALID_CALL_CONVERSION_ACTION",
+                Self::CustomerNotOnAllowlistForCalltracking => {
                     "CUSTOMER_NOT_ON_ALLOWLIST_FOR_CALLTRACKING"
                 }
-                ExtensionFeedItemError::CalltrackingNotSupportedForCountry => {
+                Self::CalltrackingNotSupportedForCountry => {
                     "CALLTRACKING_NOT_SUPPORTED_FOR_COUNTRY"
                 }
-                ExtensionFeedItemError::CustomerConsentForCallRecordingRequired => {
+                Self::CustomerConsentForCallRecordingRequired => {
                     "CUSTOMER_CONSENT_FOR_CALL_RECORDING_REQUIRED"
                 }
-                ExtensionFeedItemError::InvalidAppId => "INVALID_APP_ID",
-                ExtensionFeedItemError::QuotesInReviewExtensionSnippet => {
+                Self::InvalidAppId => "INVALID_APP_ID",
+                Self::QuotesInReviewExtensionSnippet => {
                     "QUOTES_IN_REVIEW_EXTENSION_SNIPPET"
                 }
-                ExtensionFeedItemError::HyphensInReviewExtensionSnippet => {
+                Self::HyphensInReviewExtensionSnippet => {
                     "HYPHENS_IN_REVIEW_EXTENSION_SNIPPET"
                 }
-                ExtensionFeedItemError::ReviewExtensionSourceIneligible => {
+                Self::ReviewExtensionSourceIneligible => {
                     "REVIEW_EXTENSION_SOURCE_INELIGIBLE"
                 }
-                ExtensionFeedItemError::SourceNameInReviewExtensionText => {
+                Self::SourceNameInReviewExtensionText => {
                     "SOURCE_NAME_IN_REVIEW_EXTENSION_TEXT"
                 }
-                ExtensionFeedItemError::InconsistentCurrencyCodes => {
-                    "INCONSISTENT_CURRENCY_CODES"
-                }
-                ExtensionFeedItemError::PriceExtensionHasDuplicatedHeaders => {
+                Self::InconsistentCurrencyCodes => "INCONSISTENT_CURRENCY_CODES",
+                Self::PriceExtensionHasDuplicatedHeaders => {
                     "PRICE_EXTENSION_HAS_DUPLICATED_HEADERS"
                 }
-                ExtensionFeedItemError::PriceItemHasDuplicatedHeaderAndDescription => {
+                Self::PriceItemHasDuplicatedHeaderAndDescription => {
                     "PRICE_ITEM_HAS_DUPLICATED_HEADER_AND_DESCRIPTION"
                 }
-                ExtensionFeedItemError::PriceExtensionHasTooFewItems => {
-                    "PRICE_EXTENSION_HAS_TOO_FEW_ITEMS"
-                }
-                ExtensionFeedItemError::PriceExtensionHasTooManyItems => {
+                Self::PriceExtensionHasTooFewItems => "PRICE_EXTENSION_HAS_TOO_FEW_ITEMS",
+                Self::PriceExtensionHasTooManyItems => {
                     "PRICE_EXTENSION_HAS_TOO_MANY_ITEMS"
                 }
-                ExtensionFeedItemError::UnsupportedValue => "UNSUPPORTED_VALUE",
-                ExtensionFeedItemError::UnsupportedValueInSelectedLanguage => {
+                Self::UnsupportedValue => "UNSUPPORTED_VALUE",
+                Self::UnsupportedValueInSelectedLanguage => {
                     "UNSUPPORTED_VALUE_IN_SELECTED_LANGUAGE"
                 }
-                ExtensionFeedItemError::InvalidDevicePreference => {
-                    "INVALID_DEVICE_PREFERENCE"
-                }
-                ExtensionFeedItemError::InvalidScheduleEnd => "INVALID_SCHEDULE_END",
-                ExtensionFeedItemError::DateTimeMustBeInAccountTimeZone => {
+                Self::InvalidDevicePreference => "INVALID_DEVICE_PREFERENCE",
+                Self::InvalidScheduleEnd => "INVALID_SCHEDULE_END",
+                Self::DateTimeMustBeInAccountTimeZone => {
                     "DATE_TIME_MUST_BE_IN_ACCOUNT_TIME_ZONE"
                 }
-                ExtensionFeedItemError::InvalidSnippetsHeader => {
-                    "INVALID_SNIPPETS_HEADER"
-                }
-                ExtensionFeedItemError::CannotOperateOnRemovedFeedItem => {
+                Self::InvalidSnippetsHeader => "INVALID_SNIPPETS_HEADER",
+                Self::CannotOperateOnRemovedFeedItem => {
                     "CANNOT_OPERATE_ON_REMOVED_FEED_ITEM"
                 }
-                ExtensionFeedItemError::PhoneNumberNotSupportedWithCalltrackingForCountry => {
+                Self::PhoneNumberNotSupportedWithCalltrackingForCountry => {
                     "PHONE_NUMBER_NOT_SUPPORTED_WITH_CALLTRACKING_FOR_COUNTRY"
                 }
-                ExtensionFeedItemError::ConflictingCallConversionSettings => {
+                Self::ConflictingCallConversionSettings => {
                     "CONFLICTING_CALL_CONVERSION_SETTINGS"
                 }
-                ExtensionFeedItemError::ExtensionTypeMismatch => {
-                    "EXTENSION_TYPE_MISMATCH"
-                }
-                ExtensionFeedItemError::ExtensionSubtypeRequired => {
-                    "EXTENSION_SUBTYPE_REQUIRED"
-                }
-                ExtensionFeedItemError::ExtensionTypeUnsupported => {
-                    "EXTENSION_TYPE_UNSUPPORTED"
-                }
-                ExtensionFeedItemError::CannotOperateOnFeedWithMultipleMappings => {
+                Self::ExtensionTypeMismatch => "EXTENSION_TYPE_MISMATCH",
+                Self::ExtensionSubtypeRequired => "EXTENSION_SUBTYPE_REQUIRED",
+                Self::ExtensionTypeUnsupported => "EXTENSION_TYPE_UNSUPPORTED",
+                Self::CannotOperateOnFeedWithMultipleMappings => {
                     "CANNOT_OPERATE_ON_FEED_WITH_MULTIPLE_MAPPINGS"
                 }
-                ExtensionFeedItemError::CannotOperateOnFeedWithKeyAttributes => {
+                Self::CannotOperateOnFeedWithKeyAttributes => {
                     "CANNOT_OPERATE_ON_FEED_WITH_KEY_ATTRIBUTES"
                 }
-                ExtensionFeedItemError::InvalidPriceFormat => "INVALID_PRICE_FORMAT",
-                ExtensionFeedItemError::PromotionInvalidTime => "PROMOTION_INVALID_TIME",
-                ExtensionFeedItemError::TooManyDecimalPlacesSpecified => {
+                Self::InvalidPriceFormat => "INVALID_PRICE_FORMAT",
+                Self::PromotionInvalidTime => "PROMOTION_INVALID_TIME",
+                Self::TooManyDecimalPlacesSpecified => {
                     "TOO_MANY_DECIMAL_PLACES_SPECIFIED"
                 }
-                ExtensionFeedItemError::ConcreteExtensionTypeRequired => {
-                    "CONCRETE_EXTENSION_TYPE_REQUIRED"
-                }
-                ExtensionFeedItemError::ScheduleEndNotAfterStart => {
-                    "SCHEDULE_END_NOT_AFTER_START"
-                }
+                Self::ConcreteExtensionTypeRequired => "CONCRETE_EXTENSION_TYPE_REQUIRED",
+                Self::ScheduleEndNotAfterStart => "SCHEDULE_END_NOT_AFTER_START",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -11206,167 +10740,141 @@ pub mod extension_setting_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ExtensionSettingError::Unspecified => "UNSPECIFIED",
-                ExtensionSettingError::Unknown => "UNKNOWN",
-                ExtensionSettingError::ExtensionsRequired => "EXTENSIONS_REQUIRED",
-                ExtensionSettingError::FeedTypeExtensionTypeMismatch => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ExtensionsRequired => "EXTENSIONS_REQUIRED",
+                Self::FeedTypeExtensionTypeMismatch => {
                     "FEED_TYPE_EXTENSION_TYPE_MISMATCH"
                 }
-                ExtensionSettingError::InvalidFeedType => "INVALID_FEED_TYPE",
-                ExtensionSettingError::InvalidFeedTypeForCustomerExtensionSetting => {
+                Self::InvalidFeedType => "INVALID_FEED_TYPE",
+                Self::InvalidFeedTypeForCustomerExtensionSetting => {
                     "INVALID_FEED_TYPE_FOR_CUSTOMER_EXTENSION_SETTING"
                 }
-                ExtensionSettingError::CannotChangeFeedItemOnCreate => {
-                    "CANNOT_CHANGE_FEED_ITEM_ON_CREATE"
-                }
-                ExtensionSettingError::CannotUpdateNewlyCreatedExtension => {
+                Self::CannotChangeFeedItemOnCreate => "CANNOT_CHANGE_FEED_ITEM_ON_CREATE",
+                Self::CannotUpdateNewlyCreatedExtension => {
                     "CANNOT_UPDATE_NEWLY_CREATED_EXTENSION"
                 }
-                ExtensionSettingError::NoExistingAdGroupExtensionSettingForType => {
+                Self::NoExistingAdGroupExtensionSettingForType => {
                     "NO_EXISTING_AD_GROUP_EXTENSION_SETTING_FOR_TYPE"
                 }
-                ExtensionSettingError::NoExistingCampaignExtensionSettingForType => {
+                Self::NoExistingCampaignExtensionSettingForType => {
                     "NO_EXISTING_CAMPAIGN_EXTENSION_SETTING_FOR_TYPE"
                 }
-                ExtensionSettingError::NoExistingCustomerExtensionSettingForType => {
+                Self::NoExistingCustomerExtensionSettingForType => {
                     "NO_EXISTING_CUSTOMER_EXTENSION_SETTING_FOR_TYPE"
                 }
-                ExtensionSettingError::AdGroupExtensionSettingAlreadyExists => {
+                Self::AdGroupExtensionSettingAlreadyExists => {
                     "AD_GROUP_EXTENSION_SETTING_ALREADY_EXISTS"
                 }
-                ExtensionSettingError::CampaignExtensionSettingAlreadyExists => {
+                Self::CampaignExtensionSettingAlreadyExists => {
                     "CAMPAIGN_EXTENSION_SETTING_ALREADY_EXISTS"
                 }
-                ExtensionSettingError::CustomerExtensionSettingAlreadyExists => {
+                Self::CustomerExtensionSettingAlreadyExists => {
                     "CUSTOMER_EXTENSION_SETTING_ALREADY_EXISTS"
                 }
-                ExtensionSettingError::AdGroupFeedAlreadyExistsForPlaceholderType => {
+                Self::AdGroupFeedAlreadyExistsForPlaceholderType => {
                     "AD_GROUP_FEED_ALREADY_EXISTS_FOR_PLACEHOLDER_TYPE"
                 }
-                ExtensionSettingError::CampaignFeedAlreadyExistsForPlaceholderType => {
+                Self::CampaignFeedAlreadyExistsForPlaceholderType => {
                     "CAMPAIGN_FEED_ALREADY_EXISTS_FOR_PLACEHOLDER_TYPE"
                 }
-                ExtensionSettingError::CustomerFeedAlreadyExistsForPlaceholderType => {
+                Self::CustomerFeedAlreadyExistsForPlaceholderType => {
                     "CUSTOMER_FEED_ALREADY_EXISTS_FOR_PLACEHOLDER_TYPE"
                 }
-                ExtensionSettingError::ValueOutOfRange => "VALUE_OUT_OF_RANGE",
-                ExtensionSettingError::CannotSetFieldWithFinalUrls => {
-                    "CANNOT_SET_FIELD_WITH_FINAL_URLS"
-                }
-                ExtensionSettingError::FinalUrlsNotSet => "FINAL_URLS_NOT_SET",
-                ExtensionSettingError::InvalidPhoneNumber => "INVALID_PHONE_NUMBER",
-                ExtensionSettingError::PhoneNumberNotSupportedForCountry => {
+                Self::ValueOutOfRange => "VALUE_OUT_OF_RANGE",
+                Self::CannotSetFieldWithFinalUrls => "CANNOT_SET_FIELD_WITH_FINAL_URLS",
+                Self::FinalUrlsNotSet => "FINAL_URLS_NOT_SET",
+                Self::InvalidPhoneNumber => "INVALID_PHONE_NUMBER",
+                Self::PhoneNumberNotSupportedForCountry => {
                     "PHONE_NUMBER_NOT_SUPPORTED_FOR_COUNTRY"
                 }
-                ExtensionSettingError::CarrierSpecificShortNumberNotAllowed => {
+                Self::CarrierSpecificShortNumberNotAllowed => {
                     "CARRIER_SPECIFIC_SHORT_NUMBER_NOT_ALLOWED"
                 }
-                ExtensionSettingError::PremiumRateNumberNotAllowed => {
-                    "PREMIUM_RATE_NUMBER_NOT_ALLOWED"
-                }
-                ExtensionSettingError::DisallowedNumberType => "DISALLOWED_NUMBER_TYPE",
-                ExtensionSettingError::InvalidDomesticPhoneNumberFormat => {
+                Self::PremiumRateNumberNotAllowed => "PREMIUM_RATE_NUMBER_NOT_ALLOWED",
+                Self::DisallowedNumberType => "DISALLOWED_NUMBER_TYPE",
+                Self::InvalidDomesticPhoneNumberFormat => {
                     "INVALID_DOMESTIC_PHONE_NUMBER_FORMAT"
                 }
-                ExtensionSettingError::VanityPhoneNumberNotAllowed => {
-                    "VANITY_PHONE_NUMBER_NOT_ALLOWED"
-                }
-                ExtensionSettingError::InvalidCountryCode => "INVALID_COUNTRY_CODE",
-                ExtensionSettingError::InvalidCallConversionTypeId => {
-                    "INVALID_CALL_CONVERSION_TYPE_ID"
-                }
-                ExtensionSettingError::CustomerNotInAllowlistForCalltracking => {
+                Self::VanityPhoneNumberNotAllowed => "VANITY_PHONE_NUMBER_NOT_ALLOWED",
+                Self::InvalidCountryCode => "INVALID_COUNTRY_CODE",
+                Self::InvalidCallConversionTypeId => "INVALID_CALL_CONVERSION_TYPE_ID",
+                Self::CustomerNotInAllowlistForCalltracking => {
                     "CUSTOMER_NOT_IN_ALLOWLIST_FOR_CALLTRACKING"
                 }
-                ExtensionSettingError::CalltrackingNotSupportedForCountry => {
+                Self::CalltrackingNotSupportedForCountry => {
                     "CALLTRACKING_NOT_SUPPORTED_FOR_COUNTRY"
                 }
-                ExtensionSettingError::InvalidAppId => "INVALID_APP_ID",
-                ExtensionSettingError::QuotesInReviewExtensionSnippet => {
+                Self::InvalidAppId => "INVALID_APP_ID",
+                Self::QuotesInReviewExtensionSnippet => {
                     "QUOTES_IN_REVIEW_EXTENSION_SNIPPET"
                 }
-                ExtensionSettingError::HyphensInReviewExtensionSnippet => {
+                Self::HyphensInReviewExtensionSnippet => {
                     "HYPHENS_IN_REVIEW_EXTENSION_SNIPPET"
                 }
-                ExtensionSettingError::ReviewExtensionSourceNotEligible => {
+                Self::ReviewExtensionSourceNotEligible => {
                     "REVIEW_EXTENSION_SOURCE_NOT_ELIGIBLE"
                 }
-                ExtensionSettingError::SourceNameInReviewExtensionText => {
+                Self::SourceNameInReviewExtensionText => {
                     "SOURCE_NAME_IN_REVIEW_EXTENSION_TEXT"
                 }
-                ExtensionSettingError::MissingField => "MISSING_FIELD",
-                ExtensionSettingError::InconsistentCurrencyCodes => {
-                    "INCONSISTENT_CURRENCY_CODES"
-                }
-                ExtensionSettingError::PriceExtensionHasDuplicatedHeaders => {
+                Self::MissingField => "MISSING_FIELD",
+                Self::InconsistentCurrencyCodes => "INCONSISTENT_CURRENCY_CODES",
+                Self::PriceExtensionHasDuplicatedHeaders => {
                     "PRICE_EXTENSION_HAS_DUPLICATED_HEADERS"
                 }
-                ExtensionSettingError::PriceItemHasDuplicatedHeaderAndDescription => {
+                Self::PriceItemHasDuplicatedHeaderAndDescription => {
                     "PRICE_ITEM_HAS_DUPLICATED_HEADER_AND_DESCRIPTION"
                 }
-                ExtensionSettingError::PriceExtensionHasTooFewItems => {
-                    "PRICE_EXTENSION_HAS_TOO_FEW_ITEMS"
-                }
-                ExtensionSettingError::PriceExtensionHasTooManyItems => {
+                Self::PriceExtensionHasTooFewItems => "PRICE_EXTENSION_HAS_TOO_FEW_ITEMS",
+                Self::PriceExtensionHasTooManyItems => {
                     "PRICE_EXTENSION_HAS_TOO_MANY_ITEMS"
                 }
-                ExtensionSettingError::UnsupportedValue => "UNSUPPORTED_VALUE",
-                ExtensionSettingError::InvalidDevicePreference => {
-                    "INVALID_DEVICE_PREFERENCE"
-                }
-                ExtensionSettingError::InvalidScheduleEnd => "INVALID_SCHEDULE_END",
-                ExtensionSettingError::DateTimeMustBeInAccountTimeZone => {
+                Self::UnsupportedValue => "UNSUPPORTED_VALUE",
+                Self::InvalidDevicePreference => "INVALID_DEVICE_PREFERENCE",
+                Self::InvalidScheduleEnd => "INVALID_SCHEDULE_END",
+                Self::DateTimeMustBeInAccountTimeZone => {
                     "DATE_TIME_MUST_BE_IN_ACCOUNT_TIME_ZONE"
                 }
-                ExtensionSettingError::OverlappingSchedulesNotAllowed => {
+                Self::OverlappingSchedulesNotAllowed => {
                     "OVERLAPPING_SCHEDULES_NOT_ALLOWED"
                 }
-                ExtensionSettingError::ScheduleEndNotAfterStart => {
-                    "SCHEDULE_END_NOT_AFTER_START"
-                }
-                ExtensionSettingError::TooManySchedulesPerDay => {
-                    "TOO_MANY_SCHEDULES_PER_DAY"
-                }
-                ExtensionSettingError::DuplicateExtensionFeedItemEdit => {
+                Self::ScheduleEndNotAfterStart => "SCHEDULE_END_NOT_AFTER_START",
+                Self::TooManySchedulesPerDay => "TOO_MANY_SCHEDULES_PER_DAY",
+                Self::DuplicateExtensionFeedItemEdit => {
                     "DUPLICATE_EXTENSION_FEED_ITEM_EDIT"
                 }
-                ExtensionSettingError::InvalidSnippetsHeader => "INVALID_SNIPPETS_HEADER",
-                ExtensionSettingError::PhoneNumberNotSupportedWithCalltrackingForCountry => {
+                Self::InvalidSnippetsHeader => "INVALID_SNIPPETS_HEADER",
+                Self::PhoneNumberNotSupportedWithCalltrackingForCountry => {
                     "PHONE_NUMBER_NOT_SUPPORTED_WITH_CALLTRACKING_FOR_COUNTRY"
                 }
-                ExtensionSettingError::CampaignTargetingMismatch => {
-                    "CAMPAIGN_TARGETING_MISMATCH"
-                }
-                ExtensionSettingError::CannotOperateOnRemovedFeed => {
-                    "CANNOT_OPERATE_ON_REMOVED_FEED"
-                }
-                ExtensionSettingError::ExtensionTypeRequired => "EXTENSION_TYPE_REQUIRED",
-                ExtensionSettingError::IncompatibleUnderlyingMatchingFunction => {
+                Self::CampaignTargetingMismatch => "CAMPAIGN_TARGETING_MISMATCH",
+                Self::CannotOperateOnRemovedFeed => "CANNOT_OPERATE_ON_REMOVED_FEED",
+                Self::ExtensionTypeRequired => "EXTENSION_TYPE_REQUIRED",
+                Self::IncompatibleUnderlyingMatchingFunction => {
                     "INCOMPATIBLE_UNDERLYING_MATCHING_FUNCTION"
                 }
-                ExtensionSettingError::StartDateAfterEndDate => {
-                    "START_DATE_AFTER_END_DATE"
-                }
-                ExtensionSettingError::InvalidPriceFormat => "INVALID_PRICE_FORMAT",
-                ExtensionSettingError::PromotionInvalidTime => "PROMOTION_INVALID_TIME",
-                ExtensionSettingError::PromotionCannotSetPercentDiscountAndMoneyDiscount => {
+                Self::StartDateAfterEndDate => "START_DATE_AFTER_END_DATE",
+                Self::InvalidPriceFormat => "INVALID_PRICE_FORMAT",
+                Self::PromotionInvalidTime => "PROMOTION_INVALID_TIME",
+                Self::PromotionCannotSetPercentDiscountAndMoneyDiscount => {
                     "PROMOTION_CANNOT_SET_PERCENT_DISCOUNT_AND_MONEY_DISCOUNT"
                 }
-                ExtensionSettingError::PromotionCannotSetPromotionCodeAndOrdersOverAmount => {
+                Self::PromotionCannotSetPromotionCodeAndOrdersOverAmount => {
                     "PROMOTION_CANNOT_SET_PROMOTION_CODE_AND_ORDERS_OVER_AMOUNT"
                 }
-                ExtensionSettingError::TooManyDecimalPlacesSpecified => {
+                Self::TooManyDecimalPlacesSpecified => {
                     "TOO_MANY_DECIMAL_PLACES_SPECIFIED"
                 }
-                ExtensionSettingError::InvalidLanguageCode => "INVALID_LANGUAGE_CODE",
-                ExtensionSettingError::UnsupportedLanguage => "UNSUPPORTED_LANGUAGE",
-                ExtensionSettingError::CustomerConsentForCallRecordingRequired => {
+                Self::InvalidLanguageCode => "INVALID_LANGUAGE_CODE",
+                Self::UnsupportedLanguage => "UNSUPPORTED_LANGUAGE",
+                Self::CustomerConsentForCallRecordingRequired => {
                     "CUSTOMER_CONSENT_FOR_CALL_RECORDING_REQUIRED"
                 }
-                ExtensionSettingError::ExtensionSettingUpdateIsANoop => {
+                Self::ExtensionSettingUpdateIsANoop => {
                     "EXTENSION_SETTING_UPDATE_IS_A_NOOP"
                 }
-                ExtensionSettingError::DisallowedText => "DISALLOWED_TEXT",
+                Self::DisallowedText => "DISALLOWED_TEXT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -11563,15 +11071,11 @@ pub mod feed_attribute_reference_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FeedAttributeReferenceError::Unspecified => "UNSPECIFIED",
-                FeedAttributeReferenceError::Unknown => "UNKNOWN",
-                FeedAttributeReferenceError::CannotReferenceRemovedFeed => {
-                    "CANNOT_REFERENCE_REMOVED_FEED"
-                }
-                FeedAttributeReferenceError::InvalidFeedName => "INVALID_FEED_NAME",
-                FeedAttributeReferenceError::InvalidFeedAttributeName => {
-                    "INVALID_FEED_ATTRIBUTE_NAME"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CannotReferenceRemovedFeed => "CANNOT_REFERENCE_REMOVED_FEED",
+                Self::InvalidFeedName => "INVALID_FEED_NAME",
+                Self::InvalidFeedAttributeName => "INVALID_FEED_ATTRIBUTE_NAME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -11665,49 +11169,47 @@ pub mod feed_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FeedError::Unspecified => "UNSPECIFIED",
-                FeedError::Unknown => "UNKNOWN",
-                FeedError::AttributeNamesNotUnique => "ATTRIBUTE_NAMES_NOT_UNIQUE",
-                FeedError::AttributesDoNotMatchExistingAttributes => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::AttributeNamesNotUnique => "ATTRIBUTE_NAMES_NOT_UNIQUE",
+                Self::AttributesDoNotMatchExistingAttributes => {
                     "ATTRIBUTES_DO_NOT_MATCH_EXISTING_ATTRIBUTES"
                 }
-                FeedError::CannotSpecifyUserOriginForSystemFeed => {
+                Self::CannotSpecifyUserOriginForSystemFeed => {
                     "CANNOT_SPECIFY_USER_ORIGIN_FOR_SYSTEM_FEED"
                 }
-                FeedError::CannotSpecifyGoogleOriginForNonSystemFeed => {
+                Self::CannotSpecifyGoogleOriginForNonSystemFeed => {
                     "CANNOT_SPECIFY_GOOGLE_ORIGIN_FOR_NON_SYSTEM_FEED"
                 }
-                FeedError::CannotSpecifyFeedAttributesForSystemFeed => {
+                Self::CannotSpecifyFeedAttributesForSystemFeed => {
                     "CANNOT_SPECIFY_FEED_ATTRIBUTES_FOR_SYSTEM_FEED"
                 }
-                FeedError::CannotUpdateFeedAttributesWithOriginGoogle => {
+                Self::CannotUpdateFeedAttributesWithOriginGoogle => {
                     "CANNOT_UPDATE_FEED_ATTRIBUTES_WITH_ORIGIN_GOOGLE"
                 }
-                FeedError::FeedRemoved => "FEED_REMOVED",
-                FeedError::InvalidOriginValue => "INVALID_ORIGIN_VALUE",
-                FeedError::FeedOriginIsNotUser => "FEED_ORIGIN_IS_NOT_USER",
-                FeedError::InvalidAuthTokenForEmail => "INVALID_AUTH_TOKEN_FOR_EMAIL",
-                FeedError::InvalidEmail => "INVALID_EMAIL",
-                FeedError::DuplicateFeedName => "DUPLICATE_FEED_NAME",
-                FeedError::InvalidFeedName => "INVALID_FEED_NAME",
-                FeedError::MissingOauthInfo => "MISSING_OAUTH_INFO",
-                FeedError::NewAttributeCannotBePartOfUniqueKey => {
+                Self::FeedRemoved => "FEED_REMOVED",
+                Self::InvalidOriginValue => "INVALID_ORIGIN_VALUE",
+                Self::FeedOriginIsNotUser => "FEED_ORIGIN_IS_NOT_USER",
+                Self::InvalidAuthTokenForEmail => "INVALID_AUTH_TOKEN_FOR_EMAIL",
+                Self::InvalidEmail => "INVALID_EMAIL",
+                Self::DuplicateFeedName => "DUPLICATE_FEED_NAME",
+                Self::InvalidFeedName => "INVALID_FEED_NAME",
+                Self::MissingOauthInfo => "MISSING_OAUTH_INFO",
+                Self::NewAttributeCannotBePartOfUniqueKey => {
                     "NEW_ATTRIBUTE_CANNOT_BE_PART_OF_UNIQUE_KEY"
                 }
-                FeedError::TooManyAttributes => "TOO_MANY_ATTRIBUTES",
-                FeedError::InvalidBusinessAccount => "INVALID_BUSINESS_ACCOUNT",
-                FeedError::BusinessAccountCannotAccessLocationAccount => {
+                Self::TooManyAttributes => "TOO_MANY_ATTRIBUTES",
+                Self::InvalidBusinessAccount => "INVALID_BUSINESS_ACCOUNT",
+                Self::BusinessAccountCannotAccessLocationAccount => {
                     "BUSINESS_ACCOUNT_CANNOT_ACCESS_LOCATION_ACCOUNT"
                 }
-                FeedError::InvalidAffiliateChainId => "INVALID_AFFILIATE_CHAIN_ID",
-                FeedError::DuplicateSystemFeed => "DUPLICATE_SYSTEM_FEED",
-                FeedError::GmbAccessError => "GMB_ACCESS_ERROR",
-                FeedError::CannotHaveLocationAndAffiliateLocationFeeds => {
+                Self::InvalidAffiliateChainId => "INVALID_AFFILIATE_CHAIN_ID",
+                Self::DuplicateSystemFeed => "DUPLICATE_SYSTEM_FEED",
+                Self::GmbAccessError => "GMB_ACCESS_ERROR",
+                Self::CannotHaveLocationAndAffiliateLocationFeeds => {
                     "CANNOT_HAVE_LOCATION_AND_AFFILIATE_LOCATION_FEEDS"
                 }
-                FeedError::LegacyExtensionTypeReadOnly => {
-                    "LEGACY_EXTENSION_TYPE_READ_ONLY"
-                }
+                Self::LegacyExtensionTypeReadOnly => "LEGACY_EXTENSION_TYPE_READ_ONLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -11812,28 +11314,28 @@ pub mod feed_item_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FeedItemError::Unspecified => "UNSPECIFIED",
-                FeedItemError::Unknown => "UNKNOWN",
-                FeedItemError::CannotConvertAttributeValueFromString => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CannotConvertAttributeValueFromString => {
                     "CANNOT_CONVERT_ATTRIBUTE_VALUE_FROM_STRING"
                 }
-                FeedItemError::CannotOperateOnRemovedFeedItem => {
+                Self::CannotOperateOnRemovedFeedItem => {
                     "CANNOT_OPERATE_ON_REMOVED_FEED_ITEM"
                 }
-                FeedItemError::DateTimeMustBeInAccountTimeZone => {
+                Self::DateTimeMustBeInAccountTimeZone => {
                     "DATE_TIME_MUST_BE_IN_ACCOUNT_TIME_ZONE"
                 }
-                FeedItemError::KeyAttributesNotFound => "KEY_ATTRIBUTES_NOT_FOUND",
-                FeedItemError::InvalidUrl => "INVALID_URL",
-                FeedItemError::MissingKeyAttributes => "MISSING_KEY_ATTRIBUTES",
-                FeedItemError::KeyAttributesNotUnique => "KEY_ATTRIBUTES_NOT_UNIQUE",
-                FeedItemError::CannotModifyKeyAttributeValue => {
+                Self::KeyAttributesNotFound => "KEY_ATTRIBUTES_NOT_FOUND",
+                Self::InvalidUrl => "INVALID_URL",
+                Self::MissingKeyAttributes => "MISSING_KEY_ATTRIBUTES",
+                Self::KeyAttributesNotUnique => "KEY_ATTRIBUTES_NOT_UNIQUE",
+                Self::CannotModifyKeyAttributeValue => {
                     "CANNOT_MODIFY_KEY_ATTRIBUTE_VALUE"
                 }
-                FeedItemError::SizeTooLargeForMultiValueAttribute => {
+                Self::SizeTooLargeForMultiValueAttribute => {
                     "SIZE_TOO_LARGE_FOR_MULTI_VALUE_ATTRIBUTE"
                 }
-                FeedItemError::LegacyFeedTypeReadOnly => "LEGACY_FEED_TYPE_READ_ONLY",
+                Self::LegacyFeedTypeReadOnly => "LEGACY_FEED_TYPE_READ_ONLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -11917,23 +11419,17 @@ pub mod feed_item_set_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FeedItemSetError::Unspecified => "UNSPECIFIED",
-                FeedItemSetError::Unknown => "UNKNOWN",
-                FeedItemSetError::FeedItemSetRemoved => "FEED_ITEM_SET_REMOVED",
-                FeedItemSetError::CannotClearDynamicFilter => {
-                    "CANNOT_CLEAR_DYNAMIC_FILTER"
-                }
-                FeedItemSetError::CannotCreateDynamicFilter => {
-                    "CANNOT_CREATE_DYNAMIC_FILTER"
-                }
-                FeedItemSetError::InvalidFeedType => "INVALID_FEED_TYPE",
-                FeedItemSetError::DuplicateName => "DUPLICATE_NAME",
-                FeedItemSetError::WrongDynamicFilterForFeedType => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::FeedItemSetRemoved => "FEED_ITEM_SET_REMOVED",
+                Self::CannotClearDynamicFilter => "CANNOT_CLEAR_DYNAMIC_FILTER",
+                Self::CannotCreateDynamicFilter => "CANNOT_CREATE_DYNAMIC_FILTER",
+                Self::InvalidFeedType => "INVALID_FEED_TYPE",
+                Self::DuplicateName => "DUPLICATE_NAME",
+                Self::WrongDynamicFilterForFeedType => {
                     "WRONG_DYNAMIC_FILTER_FOR_FEED_TYPE"
                 }
-                FeedItemSetError::DynamicFilterInvalidChainIds => {
-                    "DYNAMIC_FILTER_INVALID_CHAIN_IDS"
-                }
+                Self::DynamicFilterInvalidChainIds => "DYNAMIC_FILTER_INVALID_CHAIN_IDS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -11993,12 +11489,10 @@ pub mod feed_item_set_link_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FeedItemSetLinkError::Unspecified => "UNSPECIFIED",
-                FeedItemSetLinkError::Unknown => "UNKNOWN",
-                FeedItemSetLinkError::FeedIdMismatch => "FEED_ID_MISMATCH",
-                FeedItemSetLinkError::NoMutateAllowedForDynamicSet => {
-                    "NO_MUTATE_ALLOWED_FOR_DYNAMIC_SET"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::FeedIdMismatch => "FEED_ID_MISMATCH",
+                Self::NoMutateAllowedForDynamicSet => "NO_MUTATE_ALLOWED_FOR_DYNAMIC_SET",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -12064,28 +11558,22 @@ pub mod feed_item_target_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FeedItemTargetError::Unspecified => "UNSPECIFIED",
-                FeedItemTargetError::Unknown => "UNKNOWN",
-                FeedItemTargetError::MustSetTargetOneofOnCreate => {
-                    "MUST_SET_TARGET_ONEOF_ON_CREATE"
-                }
-                FeedItemTargetError::FeedItemTargetAlreadyExists => {
-                    "FEED_ITEM_TARGET_ALREADY_EXISTS"
-                }
-                FeedItemTargetError::FeedItemSchedulesCannotOverlap => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::MustSetTargetOneofOnCreate => "MUST_SET_TARGET_ONEOF_ON_CREATE",
+                Self::FeedItemTargetAlreadyExists => "FEED_ITEM_TARGET_ALREADY_EXISTS",
+                Self::FeedItemSchedulesCannotOverlap => {
                     "FEED_ITEM_SCHEDULES_CANNOT_OVERLAP"
                 }
-                FeedItemTargetError::TargetLimitExceededForGivenType => {
+                Self::TargetLimitExceededForGivenType => {
                     "TARGET_LIMIT_EXCEEDED_FOR_GIVEN_TYPE"
                 }
-                FeedItemTargetError::TooManySchedulesPerDay => {
-                    "TOO_MANY_SCHEDULES_PER_DAY"
-                }
-                FeedItemTargetError::CannotHaveEnabledCampaignAndEnabledAdGroupTargets => {
+                Self::TooManySchedulesPerDay => "TOO_MANY_SCHEDULES_PER_DAY",
+                Self::CannotHaveEnabledCampaignAndEnabledAdGroupTargets => {
                     "CANNOT_HAVE_ENABLED_CAMPAIGN_AND_ENABLED_AD_GROUP_TARGETS"
                 }
-                FeedItemTargetError::DuplicateAdSchedule => "DUPLICATE_AD_SCHEDULE",
-                FeedItemTargetError::DuplicateKeyword => "DUPLICATE_KEYWORD",
+                Self::DuplicateAdSchedule => "DUPLICATE_AD_SCHEDULE",
+                Self::DuplicateKeyword => "DUPLICATE_KEYWORD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -12375,245 +11863,171 @@ pub mod feed_item_validation_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FeedItemValidationError::Unspecified => "UNSPECIFIED",
-                FeedItemValidationError::Unknown => "UNKNOWN",
-                FeedItemValidationError::StringTooShort => "STRING_TOO_SHORT",
-                FeedItemValidationError::StringTooLong => "STRING_TOO_LONG",
-                FeedItemValidationError::ValueNotSpecified => "VALUE_NOT_SPECIFIED",
-                FeedItemValidationError::InvalidDomesticPhoneNumberFormat => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::StringTooShort => "STRING_TOO_SHORT",
+                Self::StringTooLong => "STRING_TOO_LONG",
+                Self::ValueNotSpecified => "VALUE_NOT_SPECIFIED",
+                Self::InvalidDomesticPhoneNumberFormat => {
                     "INVALID_DOMESTIC_PHONE_NUMBER_FORMAT"
                 }
-                FeedItemValidationError::InvalidPhoneNumber => "INVALID_PHONE_NUMBER",
-                FeedItemValidationError::PhoneNumberNotSupportedForCountry => {
+                Self::InvalidPhoneNumber => "INVALID_PHONE_NUMBER",
+                Self::PhoneNumberNotSupportedForCountry => {
                     "PHONE_NUMBER_NOT_SUPPORTED_FOR_COUNTRY"
                 }
-                FeedItemValidationError::PremiumRateNumberNotAllowed => {
-                    "PREMIUM_RATE_NUMBER_NOT_ALLOWED"
-                }
-                FeedItemValidationError::DisallowedNumberType => "DISALLOWED_NUMBER_TYPE",
-                FeedItemValidationError::ValueOutOfRange => "VALUE_OUT_OF_RANGE",
-                FeedItemValidationError::CalltrackingNotSupportedForCountry => {
+                Self::PremiumRateNumberNotAllowed => "PREMIUM_RATE_NUMBER_NOT_ALLOWED",
+                Self::DisallowedNumberType => "DISALLOWED_NUMBER_TYPE",
+                Self::ValueOutOfRange => "VALUE_OUT_OF_RANGE",
+                Self::CalltrackingNotSupportedForCountry => {
                     "CALLTRACKING_NOT_SUPPORTED_FOR_COUNTRY"
                 }
-                FeedItemValidationError::CustomerNotInAllowlistForCalltracking => {
+                Self::CustomerNotInAllowlistForCalltracking => {
                     "CUSTOMER_NOT_IN_ALLOWLIST_FOR_CALLTRACKING"
                 }
-                FeedItemValidationError::InvalidCountryCode => "INVALID_COUNTRY_CODE",
-                FeedItemValidationError::InvalidAppId => "INVALID_APP_ID",
-                FeedItemValidationError::MissingAttributesForFields => {
-                    "MISSING_ATTRIBUTES_FOR_FIELDS"
-                }
-                FeedItemValidationError::InvalidTypeId => "INVALID_TYPE_ID",
-                FeedItemValidationError::InvalidEmailAddress => "INVALID_EMAIL_ADDRESS",
-                FeedItemValidationError::InvalidHttpsUrl => "INVALID_HTTPS_URL",
-                FeedItemValidationError::MissingDeliveryAddress => {
-                    "MISSING_DELIVERY_ADDRESS"
-                }
-                FeedItemValidationError::StartDateAfterEndDate => {
-                    "START_DATE_AFTER_END_DATE"
-                }
-                FeedItemValidationError::MissingFeedItemStartTime => {
-                    "MISSING_FEED_ITEM_START_TIME"
-                }
-                FeedItemValidationError::MissingFeedItemEndTime => {
-                    "MISSING_FEED_ITEM_END_TIME"
-                }
-                FeedItemValidationError::MissingFeedItemId => "MISSING_FEED_ITEM_ID",
-                FeedItemValidationError::VanityPhoneNumberNotAllowed => {
-                    "VANITY_PHONE_NUMBER_NOT_ALLOWED"
-                }
-                FeedItemValidationError::InvalidReviewExtensionSnippet => {
-                    "INVALID_REVIEW_EXTENSION_SNIPPET"
-                }
-                FeedItemValidationError::InvalidNumberFormat => "INVALID_NUMBER_FORMAT",
-                FeedItemValidationError::InvalidDateFormat => "INVALID_DATE_FORMAT",
-                FeedItemValidationError::InvalidPriceFormat => "INVALID_PRICE_FORMAT",
-                FeedItemValidationError::UnknownPlaceholderField => {
-                    "UNKNOWN_PLACEHOLDER_FIELD"
-                }
-                FeedItemValidationError::MissingEnhancedSitelinkDescriptionLine => {
+                Self::InvalidCountryCode => "INVALID_COUNTRY_CODE",
+                Self::InvalidAppId => "INVALID_APP_ID",
+                Self::MissingAttributesForFields => "MISSING_ATTRIBUTES_FOR_FIELDS",
+                Self::InvalidTypeId => "INVALID_TYPE_ID",
+                Self::InvalidEmailAddress => "INVALID_EMAIL_ADDRESS",
+                Self::InvalidHttpsUrl => "INVALID_HTTPS_URL",
+                Self::MissingDeliveryAddress => "MISSING_DELIVERY_ADDRESS",
+                Self::StartDateAfterEndDate => "START_DATE_AFTER_END_DATE",
+                Self::MissingFeedItemStartTime => "MISSING_FEED_ITEM_START_TIME",
+                Self::MissingFeedItemEndTime => "MISSING_FEED_ITEM_END_TIME",
+                Self::MissingFeedItemId => "MISSING_FEED_ITEM_ID",
+                Self::VanityPhoneNumberNotAllowed => "VANITY_PHONE_NUMBER_NOT_ALLOWED",
+                Self::InvalidReviewExtensionSnippet => "INVALID_REVIEW_EXTENSION_SNIPPET",
+                Self::InvalidNumberFormat => "INVALID_NUMBER_FORMAT",
+                Self::InvalidDateFormat => "INVALID_DATE_FORMAT",
+                Self::InvalidPriceFormat => "INVALID_PRICE_FORMAT",
+                Self::UnknownPlaceholderField => "UNKNOWN_PLACEHOLDER_FIELD",
+                Self::MissingEnhancedSitelinkDescriptionLine => {
                     "MISSING_ENHANCED_SITELINK_DESCRIPTION_LINE"
                 }
-                FeedItemValidationError::ReviewExtensionSourceIneligible => {
+                Self::ReviewExtensionSourceIneligible => {
                     "REVIEW_EXTENSION_SOURCE_INELIGIBLE"
                 }
-                FeedItemValidationError::HyphensInReviewExtensionSnippet => {
+                Self::HyphensInReviewExtensionSnippet => {
                     "HYPHENS_IN_REVIEW_EXTENSION_SNIPPET"
                 }
-                FeedItemValidationError::DoubleQuotesInReviewExtensionSnippet => {
+                Self::DoubleQuotesInReviewExtensionSnippet => {
                     "DOUBLE_QUOTES_IN_REVIEW_EXTENSION_SNIPPET"
                 }
-                FeedItemValidationError::QuotesInReviewExtensionSnippet => {
+                Self::QuotesInReviewExtensionSnippet => {
                     "QUOTES_IN_REVIEW_EXTENSION_SNIPPET"
                 }
-                FeedItemValidationError::InvalidFormEncodedParams => {
-                    "INVALID_FORM_ENCODED_PARAMS"
-                }
-                FeedItemValidationError::InvalidUrlParameterName => {
-                    "INVALID_URL_PARAMETER_NAME"
-                }
-                FeedItemValidationError::NoGeocodingResult => "NO_GEOCODING_RESULT",
-                FeedItemValidationError::SourceNameInReviewExtensionText => {
+                Self::InvalidFormEncodedParams => "INVALID_FORM_ENCODED_PARAMS",
+                Self::InvalidUrlParameterName => "INVALID_URL_PARAMETER_NAME",
+                Self::NoGeocodingResult => "NO_GEOCODING_RESULT",
+                Self::SourceNameInReviewExtensionText => {
                     "SOURCE_NAME_IN_REVIEW_EXTENSION_TEXT"
                 }
-                FeedItemValidationError::CarrierSpecificShortNumberNotAllowed => {
+                Self::CarrierSpecificShortNumberNotAllowed => {
                     "CARRIER_SPECIFIC_SHORT_NUMBER_NOT_ALLOWED"
                 }
-                FeedItemValidationError::InvalidPlaceholderFieldId => {
-                    "INVALID_PLACEHOLDER_FIELD_ID"
-                }
-                FeedItemValidationError::InvalidUrlTag => "INVALID_URL_TAG",
-                FeedItemValidationError::ListTooLong => "LIST_TOO_LONG",
-                FeedItemValidationError::InvalidAttributesCombination => {
-                    "INVALID_ATTRIBUTES_COMBINATION"
-                }
-                FeedItemValidationError::DuplicateValues => "DUPLICATE_VALUES",
-                FeedItemValidationError::InvalidCallConversionActionId => {
+                Self::InvalidPlaceholderFieldId => "INVALID_PLACEHOLDER_FIELD_ID",
+                Self::InvalidUrlTag => "INVALID_URL_TAG",
+                Self::ListTooLong => "LIST_TOO_LONG",
+                Self::InvalidAttributesCombination => "INVALID_ATTRIBUTES_COMBINATION",
+                Self::DuplicateValues => "DUPLICATE_VALUES",
+                Self::InvalidCallConversionActionId => {
                     "INVALID_CALL_CONVERSION_ACTION_ID"
                 }
-                FeedItemValidationError::CannotSetWithoutFinalUrls => {
-                    "CANNOT_SET_WITHOUT_FINAL_URLS"
-                }
-                FeedItemValidationError::AppIdDoesntExistInAppStore => {
-                    "APP_ID_DOESNT_EXIST_IN_APP_STORE"
-                }
-                FeedItemValidationError::InvalidFinalUrl => "INVALID_FINAL_URL",
-                FeedItemValidationError::InvalidTrackingUrl => "INVALID_TRACKING_URL",
-                FeedItemValidationError::InvalidFinalUrlForAppDownloadUrl => {
+                Self::CannotSetWithoutFinalUrls => "CANNOT_SET_WITHOUT_FINAL_URLS",
+                Self::AppIdDoesntExistInAppStore => "APP_ID_DOESNT_EXIST_IN_APP_STORE",
+                Self::InvalidFinalUrl => "INVALID_FINAL_URL",
+                Self::InvalidTrackingUrl => "INVALID_TRACKING_URL",
+                Self::InvalidFinalUrlForAppDownloadUrl => {
                     "INVALID_FINAL_URL_FOR_APP_DOWNLOAD_URL"
                 }
-                FeedItemValidationError::ListTooShort => "LIST_TOO_SHORT",
-                FeedItemValidationError::InvalidUserAction => "INVALID_USER_ACTION",
-                FeedItemValidationError::InvalidTypeName => "INVALID_TYPE_NAME",
-                FeedItemValidationError::InvalidEventChangeStatus => {
-                    "INVALID_EVENT_CHANGE_STATUS"
-                }
-                FeedItemValidationError::InvalidSnippetsHeader => {
-                    "INVALID_SNIPPETS_HEADER"
-                }
-                FeedItemValidationError::InvalidAndroidAppLink => {
-                    "INVALID_ANDROID_APP_LINK"
-                }
-                FeedItemValidationError::NumberTypeWithCalltrackingNotSupportedForCountry => {
+                Self::ListTooShort => "LIST_TOO_SHORT",
+                Self::InvalidUserAction => "INVALID_USER_ACTION",
+                Self::InvalidTypeName => "INVALID_TYPE_NAME",
+                Self::InvalidEventChangeStatus => "INVALID_EVENT_CHANGE_STATUS",
+                Self::InvalidSnippetsHeader => "INVALID_SNIPPETS_HEADER",
+                Self::InvalidAndroidAppLink => "INVALID_ANDROID_APP_LINK",
+                Self::NumberTypeWithCalltrackingNotSupportedForCountry => {
                     "NUMBER_TYPE_WITH_CALLTRACKING_NOT_SUPPORTED_FOR_COUNTRY"
                 }
-                FeedItemValidationError::ReservedKeywordOther => "RESERVED_KEYWORD_OTHER",
-                FeedItemValidationError::DuplicateOptionLabels => {
-                    "DUPLICATE_OPTION_LABELS"
-                }
-                FeedItemValidationError::DuplicateOptionPrefills => {
-                    "DUPLICATE_OPTION_PREFILLS"
-                }
-                FeedItemValidationError::UnequalListLengths => "UNEQUAL_LIST_LENGTHS",
-                FeedItemValidationError::InconsistentCurrencyCodes => {
-                    "INCONSISTENT_CURRENCY_CODES"
-                }
-                FeedItemValidationError::PriceExtensionHasDuplicatedHeaders => {
+                Self::ReservedKeywordOther => "RESERVED_KEYWORD_OTHER",
+                Self::DuplicateOptionLabels => "DUPLICATE_OPTION_LABELS",
+                Self::DuplicateOptionPrefills => "DUPLICATE_OPTION_PREFILLS",
+                Self::UnequalListLengths => "UNEQUAL_LIST_LENGTHS",
+                Self::InconsistentCurrencyCodes => "INCONSISTENT_CURRENCY_CODES",
+                Self::PriceExtensionHasDuplicatedHeaders => {
                     "PRICE_EXTENSION_HAS_DUPLICATED_HEADERS"
                 }
-                FeedItemValidationError::ItemHasDuplicatedHeaderAndDescription => {
+                Self::ItemHasDuplicatedHeaderAndDescription => {
                     "ITEM_HAS_DUPLICATED_HEADER_AND_DESCRIPTION"
                 }
-                FeedItemValidationError::PriceExtensionHasTooFewItems => {
-                    "PRICE_EXTENSION_HAS_TOO_FEW_ITEMS"
-                }
-                FeedItemValidationError::UnsupportedValue => "UNSUPPORTED_VALUE",
-                FeedItemValidationError::InvalidFinalMobileUrl => {
-                    "INVALID_FINAL_MOBILE_URL"
-                }
-                FeedItemValidationError::InvalidKeywordlessAdRuleLabel => {
+                Self::PriceExtensionHasTooFewItems => "PRICE_EXTENSION_HAS_TOO_FEW_ITEMS",
+                Self::UnsupportedValue => "UNSUPPORTED_VALUE",
+                Self::InvalidFinalMobileUrl => "INVALID_FINAL_MOBILE_URL",
+                Self::InvalidKeywordlessAdRuleLabel => {
                     "INVALID_KEYWORDLESS_AD_RULE_LABEL"
                 }
-                FeedItemValidationError::ValueTrackParameterNotSupported => {
+                Self::ValueTrackParameterNotSupported => {
                     "VALUE_TRACK_PARAMETER_NOT_SUPPORTED"
                 }
-                FeedItemValidationError::UnsupportedValueInSelectedLanguage => {
+                Self::UnsupportedValueInSelectedLanguage => {
                     "UNSUPPORTED_VALUE_IN_SELECTED_LANGUAGE"
                 }
-                FeedItemValidationError::InvalidIosAppLink => "INVALID_IOS_APP_LINK",
-                FeedItemValidationError::MissingIosAppLinkOrIosAppStoreId => {
+                Self::InvalidIosAppLink => "INVALID_IOS_APP_LINK",
+                Self::MissingIosAppLinkOrIosAppStoreId => {
                     "MISSING_IOS_APP_LINK_OR_IOS_APP_STORE_ID"
                 }
-                FeedItemValidationError::PromotionInvalidTime => "PROMOTION_INVALID_TIME",
-                FeedItemValidationError::PromotionCannotSetPercentOffAndMoneyAmountOff => {
+                Self::PromotionInvalidTime => "PROMOTION_INVALID_TIME",
+                Self::PromotionCannotSetPercentOffAndMoneyAmountOff => {
                     "PROMOTION_CANNOT_SET_PERCENT_OFF_AND_MONEY_AMOUNT_OFF"
                 }
-                FeedItemValidationError::PromotionCannotSetPromotionCodeAndOrdersOverAmount => {
+                Self::PromotionCannotSetPromotionCodeAndOrdersOverAmount => {
                     "PROMOTION_CANNOT_SET_PROMOTION_CODE_AND_ORDERS_OVER_AMOUNT"
                 }
-                FeedItemValidationError::TooManyDecimalPlacesSpecified => {
+                Self::TooManyDecimalPlacesSpecified => {
                     "TOO_MANY_DECIMAL_PLACES_SPECIFIED"
                 }
-                FeedItemValidationError::AdCustomizersNotAllowed => {
-                    "AD_CUSTOMIZERS_NOT_ALLOWED"
-                }
-                FeedItemValidationError::InvalidLanguageCode => "INVALID_LANGUAGE_CODE",
-                FeedItemValidationError::UnsupportedLanguage => "UNSUPPORTED_LANGUAGE",
-                FeedItemValidationError::IfFunctionNotAllowed => {
-                    "IF_FUNCTION_NOT_ALLOWED"
-                }
-                FeedItemValidationError::InvalidFinalUrlSuffix => {
-                    "INVALID_FINAL_URL_SUFFIX"
-                }
-                FeedItemValidationError::InvalidTagInFinalUrlSuffix => {
-                    "INVALID_TAG_IN_FINAL_URL_SUFFIX"
-                }
-                FeedItemValidationError::InvalidFinalUrlSuffixFormat => {
-                    "INVALID_FINAL_URL_SUFFIX_FORMAT"
-                }
-                FeedItemValidationError::CustomerConsentForCallRecordingRequired => {
+                Self::AdCustomizersNotAllowed => "AD_CUSTOMIZERS_NOT_ALLOWED",
+                Self::InvalidLanguageCode => "INVALID_LANGUAGE_CODE",
+                Self::UnsupportedLanguage => "UNSUPPORTED_LANGUAGE",
+                Self::IfFunctionNotAllowed => "IF_FUNCTION_NOT_ALLOWED",
+                Self::InvalidFinalUrlSuffix => "INVALID_FINAL_URL_SUFFIX",
+                Self::InvalidTagInFinalUrlSuffix => "INVALID_TAG_IN_FINAL_URL_SUFFIX",
+                Self::InvalidFinalUrlSuffixFormat => "INVALID_FINAL_URL_SUFFIX_FORMAT",
+                Self::CustomerConsentForCallRecordingRequired => {
                     "CUSTOMER_CONSENT_FOR_CALL_RECORDING_REQUIRED"
                 }
-                FeedItemValidationError::OnlyOneDeliveryOptionIsAllowed => {
+                Self::OnlyOneDeliveryOptionIsAllowed => {
                     "ONLY_ONE_DELIVERY_OPTION_IS_ALLOWED"
                 }
-                FeedItemValidationError::NoDeliveryOptionIsSet => {
-                    "NO_DELIVERY_OPTION_IS_SET"
-                }
-                FeedItemValidationError::InvalidConversionReportingState => {
+                Self::NoDeliveryOptionIsSet => "NO_DELIVERY_OPTION_IS_SET",
+                Self::InvalidConversionReportingState => {
                     "INVALID_CONVERSION_REPORTING_STATE"
                 }
-                FeedItemValidationError::ImageSizeWrong => "IMAGE_SIZE_WRONG",
-                FeedItemValidationError::EmailDeliveryNotAvailableInCountry => {
+                Self::ImageSizeWrong => "IMAGE_SIZE_WRONG",
+                Self::EmailDeliveryNotAvailableInCountry => {
                     "EMAIL_DELIVERY_NOT_AVAILABLE_IN_COUNTRY"
                 }
-                FeedItemValidationError::AutoReplyNotAvailableInCountry => {
+                Self::AutoReplyNotAvailableInCountry => {
                     "AUTO_REPLY_NOT_AVAILABLE_IN_COUNTRY"
                 }
-                FeedItemValidationError::InvalidLatitudeValue => "INVALID_LATITUDE_VALUE",
-                FeedItemValidationError::InvalidLongitudeValue => {
-                    "INVALID_LONGITUDE_VALUE"
-                }
-                FeedItemValidationError::TooManyLabels => "TOO_MANY_LABELS",
-                FeedItemValidationError::InvalidImageUrl => "INVALID_IMAGE_URL",
-                FeedItemValidationError::MissingLatitudeValue => "MISSING_LATITUDE_VALUE",
-                FeedItemValidationError::MissingLongitudeValue => {
-                    "MISSING_LONGITUDE_VALUE"
-                }
-                FeedItemValidationError::AddressNotFound => "ADDRESS_NOT_FOUND",
-                FeedItemValidationError::AddressNotTargetable => "ADDRESS_NOT_TARGETABLE",
-                FeedItemValidationError::InvalidAssetId => "INVALID_ASSET_ID",
-                FeedItemValidationError::IncompatibleAssetType => {
-                    "INCOMPATIBLE_ASSET_TYPE"
-                }
-                FeedItemValidationError::ImageErrorUnexpectedSize => {
-                    "IMAGE_ERROR_UNEXPECTED_SIZE"
-                }
-                FeedItemValidationError::ImageErrorAspectRatioNotAllowed => {
+                Self::InvalidLatitudeValue => "INVALID_LATITUDE_VALUE",
+                Self::InvalidLongitudeValue => "INVALID_LONGITUDE_VALUE",
+                Self::TooManyLabels => "TOO_MANY_LABELS",
+                Self::InvalidImageUrl => "INVALID_IMAGE_URL",
+                Self::MissingLatitudeValue => "MISSING_LATITUDE_VALUE",
+                Self::MissingLongitudeValue => "MISSING_LONGITUDE_VALUE",
+                Self::AddressNotFound => "ADDRESS_NOT_FOUND",
+                Self::AddressNotTargetable => "ADDRESS_NOT_TARGETABLE",
+                Self::InvalidAssetId => "INVALID_ASSET_ID",
+                Self::IncompatibleAssetType => "INCOMPATIBLE_ASSET_TYPE",
+                Self::ImageErrorUnexpectedSize => "IMAGE_ERROR_UNEXPECTED_SIZE",
+                Self::ImageErrorAspectRatioNotAllowed => {
                     "IMAGE_ERROR_ASPECT_RATIO_NOT_ALLOWED"
                 }
-                FeedItemValidationError::ImageErrorFileTooLarge => {
-                    "IMAGE_ERROR_FILE_TOO_LARGE"
-                }
-                FeedItemValidationError::ImageErrorFormatNotAllowed => {
-                    "IMAGE_ERROR_FORMAT_NOT_ALLOWED"
-                }
-                FeedItemValidationError::ImageErrorConstraintsViolated => {
-                    "IMAGE_ERROR_CONSTRAINTS_VIOLATED"
-                }
-                FeedItemValidationError::ImageErrorServerError => {
-                    "IMAGE_ERROR_SERVER_ERROR"
-                }
+                Self::ImageErrorFileTooLarge => "IMAGE_ERROR_FILE_TOO_LARGE",
+                Self::ImageErrorFormatNotAllowed => "IMAGE_ERROR_FORMAT_NOT_ALLOWED",
+                Self::ImageErrorConstraintsViolated => "IMAGE_ERROR_CONSTRAINTS_VIOLATED",
+                Self::ImageErrorServerError => "IMAGE_ERROR_SERVER_ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -12881,52 +12295,48 @@ pub mod feed_mapping_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FeedMappingError::Unspecified => "UNSPECIFIED",
-                FeedMappingError::Unknown => "UNKNOWN",
-                FeedMappingError::InvalidPlaceholderField => "INVALID_PLACEHOLDER_FIELD",
-                FeedMappingError::InvalidCriterionField => "INVALID_CRITERION_FIELD",
-                FeedMappingError::InvalidPlaceholderType => "INVALID_PLACEHOLDER_TYPE",
-                FeedMappingError::InvalidCriterionType => "INVALID_CRITERION_TYPE",
-                FeedMappingError::NoAttributeFieldMappings => {
-                    "NO_ATTRIBUTE_FIELD_MAPPINGS"
-                }
-                FeedMappingError::FeedAttributeTypeMismatch => {
-                    "FEED_ATTRIBUTE_TYPE_MISMATCH"
-                }
-                FeedMappingError::CannotOperateOnMappingsForSystemGeneratedFeed => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidPlaceholderField => "INVALID_PLACEHOLDER_FIELD",
+                Self::InvalidCriterionField => "INVALID_CRITERION_FIELD",
+                Self::InvalidPlaceholderType => "INVALID_PLACEHOLDER_TYPE",
+                Self::InvalidCriterionType => "INVALID_CRITERION_TYPE",
+                Self::NoAttributeFieldMappings => "NO_ATTRIBUTE_FIELD_MAPPINGS",
+                Self::FeedAttributeTypeMismatch => "FEED_ATTRIBUTE_TYPE_MISMATCH",
+                Self::CannotOperateOnMappingsForSystemGeneratedFeed => {
                     "CANNOT_OPERATE_ON_MAPPINGS_FOR_SYSTEM_GENERATED_FEED"
                 }
-                FeedMappingError::MultipleMappingsForPlaceholderType => {
+                Self::MultipleMappingsForPlaceholderType => {
                     "MULTIPLE_MAPPINGS_FOR_PLACEHOLDER_TYPE"
                 }
-                FeedMappingError::MultipleMappingsForCriterionType => {
+                Self::MultipleMappingsForCriterionType => {
                     "MULTIPLE_MAPPINGS_FOR_CRITERION_TYPE"
                 }
-                FeedMappingError::MultipleMappingsForPlaceholderField => {
+                Self::MultipleMappingsForPlaceholderField => {
                     "MULTIPLE_MAPPINGS_FOR_PLACEHOLDER_FIELD"
                 }
-                FeedMappingError::MultipleMappingsForCriterionField => {
+                Self::MultipleMappingsForCriterionField => {
                     "MULTIPLE_MAPPINGS_FOR_CRITERION_FIELD"
                 }
-                FeedMappingError::UnexpectedAttributeFieldMappings => {
+                Self::UnexpectedAttributeFieldMappings => {
                     "UNEXPECTED_ATTRIBUTE_FIELD_MAPPINGS"
                 }
-                FeedMappingError::LocationPlaceholderOnlyForPlacesFeeds => {
+                Self::LocationPlaceholderOnlyForPlacesFeeds => {
                     "LOCATION_PLACEHOLDER_ONLY_FOR_PLACES_FEEDS"
                 }
-                FeedMappingError::CannotModifyMappingsForTypedFeed => {
+                Self::CannotModifyMappingsForTypedFeed => {
                     "CANNOT_MODIFY_MAPPINGS_FOR_TYPED_FEED"
                 }
-                FeedMappingError::InvalidPlaceholderTypeForNonSystemGeneratedFeed => {
+                Self::InvalidPlaceholderTypeForNonSystemGeneratedFeed => {
                     "INVALID_PLACEHOLDER_TYPE_FOR_NON_SYSTEM_GENERATED_FEED"
                 }
-                FeedMappingError::InvalidPlaceholderTypeForSystemGeneratedFeedType => {
+                Self::InvalidPlaceholderTypeForSystemGeneratedFeedType => {
                     "INVALID_PLACEHOLDER_TYPE_FOR_SYSTEM_GENERATED_FEED_TYPE"
                 }
-                FeedMappingError::AttributeFieldMappingMissingField => {
+                Self::AttributeFieldMappingMissingField => {
                     "ATTRIBUTE_FIELD_MAPPING_MISSING_FIELD"
                 }
-                FeedMappingError::LegacyFeedTypeReadOnly => "LEGACY_FEED_TYPE_READ_ONLY",
+                Self::LegacyFeedTypeReadOnly => "LEGACY_FEED_TYPE_READ_ONLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -13026,16 +12436,16 @@ pub mod field_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FieldError::Unspecified => "UNSPECIFIED",
-                FieldError::Unknown => "UNKNOWN",
-                FieldError::Required => "REQUIRED",
-                FieldError::ImmutableField => "IMMUTABLE_FIELD",
-                FieldError::InvalidValue => "INVALID_VALUE",
-                FieldError::ValueMustBeUnset => "VALUE_MUST_BE_UNSET",
-                FieldError::RequiredNonemptyList => "REQUIRED_NONEMPTY_LIST",
-                FieldError::FieldCannotBeCleared => "FIELD_CANNOT_BE_CLEARED",
-                FieldError::BlockedValue => "BLOCKED_VALUE",
-                FieldError::FieldCanOnlyBeCleared => "FIELD_CAN_ONLY_BE_CLEARED",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::Required => "REQUIRED",
+                Self::ImmutableField => "IMMUTABLE_FIELD",
+                Self::InvalidValue => "INVALID_VALUE",
+                Self::ValueMustBeUnset => "VALUE_MUST_BE_UNSET",
+                Self::RequiredNonemptyList => "REQUIRED_NONEMPTY_LIST",
+                Self::FieldCannotBeCleared => "FIELD_CANNOT_BE_CLEARED",
+                Self::BlockedValue => "BLOCKED_VALUE",
+                Self::FieldCanOnlyBeCleared => "FIELD_CAN_ONLY_BE_CLEARED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -13097,12 +12507,12 @@ pub mod field_mask_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FieldMaskError::Unspecified => "UNSPECIFIED",
-                FieldMaskError::Unknown => "UNKNOWN",
-                FieldMaskError::FieldMaskMissing => "FIELD_MASK_MISSING",
-                FieldMaskError::FieldMaskNotAllowed => "FIELD_MASK_NOT_ALLOWED",
-                FieldMaskError::FieldNotFound => "FIELD_NOT_FOUND",
-                FieldMaskError::FieldHasSubfields => "FIELD_HAS_SUBFIELDS",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::FieldMaskMissing => "FIELD_MASK_MISSING",
+                Self::FieldMaskNotAllowed => "FIELD_MASK_NOT_ALLOWED",
+                Self::FieldNotFound => "FIELD_NOT_FOUND",
+                Self::FieldHasSubfields => "FIELD_HAS_SUBFIELDS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -13183,40 +12593,28 @@ pub mod function_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FunctionError::Unspecified => "UNSPECIFIED",
-                FunctionError::Unknown => "UNKNOWN",
-                FunctionError::InvalidFunctionFormat => "INVALID_FUNCTION_FORMAT",
-                FunctionError::DataTypeMismatch => "DATA_TYPE_MISMATCH",
-                FunctionError::InvalidConjunctionOperands => {
-                    "INVALID_CONJUNCTION_OPERANDS"
-                }
-                FunctionError::InvalidNumberOfOperands => "INVALID_NUMBER_OF_OPERANDS",
-                FunctionError::InvalidOperandType => "INVALID_OPERAND_TYPE",
-                FunctionError::InvalidOperator => "INVALID_OPERATOR",
-                FunctionError::InvalidRequestContextType => {
-                    "INVALID_REQUEST_CONTEXT_TYPE"
-                }
-                FunctionError::InvalidFunctionForCallPlaceholder => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidFunctionFormat => "INVALID_FUNCTION_FORMAT",
+                Self::DataTypeMismatch => "DATA_TYPE_MISMATCH",
+                Self::InvalidConjunctionOperands => "INVALID_CONJUNCTION_OPERANDS",
+                Self::InvalidNumberOfOperands => "INVALID_NUMBER_OF_OPERANDS",
+                Self::InvalidOperandType => "INVALID_OPERAND_TYPE",
+                Self::InvalidOperator => "INVALID_OPERATOR",
+                Self::InvalidRequestContextType => "INVALID_REQUEST_CONTEXT_TYPE",
+                Self::InvalidFunctionForCallPlaceholder => {
                     "INVALID_FUNCTION_FOR_CALL_PLACEHOLDER"
                 }
-                FunctionError::InvalidFunctionForPlaceholder => {
-                    "INVALID_FUNCTION_FOR_PLACEHOLDER"
-                }
-                FunctionError::InvalidOperand => "INVALID_OPERAND",
-                FunctionError::MissingConstantOperandValue => {
-                    "MISSING_CONSTANT_OPERAND_VALUE"
-                }
-                FunctionError::InvalidConstantOperandValue => {
-                    "INVALID_CONSTANT_OPERAND_VALUE"
-                }
-                FunctionError::InvalidNesting => "INVALID_NESTING",
-                FunctionError::MultipleFeedIdsNotSupported => {
-                    "MULTIPLE_FEED_IDS_NOT_SUPPORTED"
-                }
-                FunctionError::InvalidFunctionForFeedWithFixedSchema => {
+                Self::InvalidFunctionForPlaceholder => "INVALID_FUNCTION_FOR_PLACEHOLDER",
+                Self::InvalidOperand => "INVALID_OPERAND",
+                Self::MissingConstantOperandValue => "MISSING_CONSTANT_OPERAND_VALUE",
+                Self::InvalidConstantOperandValue => "INVALID_CONSTANT_OPERAND_VALUE",
+                Self::InvalidNesting => "INVALID_NESTING",
+                Self::MultipleFeedIdsNotSupported => "MULTIPLE_FEED_IDS_NOT_SUPPORTED",
+                Self::InvalidFunctionForFeedWithFixedSchema => {
                     "INVALID_FUNCTION_FOR_FEED_WITH_FIXED_SCHEMA"
                 }
-                FunctionError::InvalidAttributeName => "INVALID_ATTRIBUTE_NAME",
+                Self::InvalidAttributeName => "INVALID_ATTRIBUTE_NAME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -13310,25 +12708,21 @@ pub mod function_parsing_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FunctionParsingError::Unspecified => "UNSPECIFIED",
-                FunctionParsingError::Unknown => "UNKNOWN",
-                FunctionParsingError::NoMoreInput => "NO_MORE_INPUT",
-                FunctionParsingError::ExpectedCharacter => "EXPECTED_CHARACTER",
-                FunctionParsingError::UnexpectedSeparator => "UNEXPECTED_SEPARATOR",
-                FunctionParsingError::UnmatchedLeftBracket => "UNMATCHED_LEFT_BRACKET",
-                FunctionParsingError::UnmatchedRightBracket => "UNMATCHED_RIGHT_BRACKET",
-                FunctionParsingError::TooManyNestedFunctions => {
-                    "TOO_MANY_NESTED_FUNCTIONS"
-                }
-                FunctionParsingError::MissingRightHandOperand => {
-                    "MISSING_RIGHT_HAND_OPERAND"
-                }
-                FunctionParsingError::InvalidOperatorName => "INVALID_OPERATOR_NAME",
-                FunctionParsingError::FeedAttributeOperandArgumentNotInteger => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::NoMoreInput => "NO_MORE_INPUT",
+                Self::ExpectedCharacter => "EXPECTED_CHARACTER",
+                Self::UnexpectedSeparator => "UNEXPECTED_SEPARATOR",
+                Self::UnmatchedLeftBracket => "UNMATCHED_LEFT_BRACKET",
+                Self::UnmatchedRightBracket => "UNMATCHED_RIGHT_BRACKET",
+                Self::TooManyNestedFunctions => "TOO_MANY_NESTED_FUNCTIONS",
+                Self::MissingRightHandOperand => "MISSING_RIGHT_HAND_OPERAND",
+                Self::InvalidOperatorName => "INVALID_OPERATOR_NAME",
+                Self::FeedAttributeOperandArgumentNotInteger => {
                     "FEED_ATTRIBUTE_OPERAND_ARGUMENT_NOT_INTEGER"
                 }
-                FunctionParsingError::NoOperands => "NO_OPERANDS",
-                FunctionParsingError::TooManyOperands => "TOO_MANY_OPERANDS",
+                Self::NoOperands => "NO_OPERANDS",
+                Self::TooManyOperands => "TOO_MANY_OPERANDS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -13395,20 +12789,12 @@ pub mod geo_target_constant_suggestion_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                GeoTargetConstantSuggestionError::Unspecified => "UNSPECIFIED",
-                GeoTargetConstantSuggestionError::Unknown => "UNKNOWN",
-                GeoTargetConstantSuggestionError::LocationNameSizeLimit => {
-                    "LOCATION_NAME_SIZE_LIMIT"
-                }
-                GeoTargetConstantSuggestionError::LocationNameLimit => {
-                    "LOCATION_NAME_LIMIT"
-                }
-                GeoTargetConstantSuggestionError::InvalidCountryCode => {
-                    "INVALID_COUNTRY_CODE"
-                }
-                GeoTargetConstantSuggestionError::RequestParametersUnset => {
-                    "REQUEST_PARAMETERS_UNSET"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::LocationNameSizeLimit => "LOCATION_NAME_SIZE_LIMIT",
+                Self::LocationNameLimit => "LOCATION_NAME_LIMIT",
+                Self::InvalidCountryCode => "INVALID_COUNTRY_CODE",
+                Self::RequestParametersUnset => "REQUEST_PARAMETERS_UNSET",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -13460,10 +12846,10 @@ pub mod header_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                HeaderError::Unspecified => "UNSPECIFIED",
-                HeaderError::Unknown => "UNKNOWN",
-                HeaderError::InvalidLoginCustomerId => "INVALID_LOGIN_CUSTOMER_ID",
-                HeaderError::InvalidLinkedCustomerId => "INVALID_LINKED_CUSTOMER_ID",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidLoginCustomerId => "INVALID_LOGIN_CUSTOMER_ID",
+                Self::InvalidLinkedCustomerId => "INVALID_LINKED_CUSTOMER_ID",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -13511,9 +12897,9 @@ pub mod id_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                IdError::Unspecified => "UNSPECIFIED",
-                IdError::Unknown => "UNKNOWN",
-                IdError::NotFound => "NOT_FOUND",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::NotFound => "NOT_FOUND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -13564,15 +12950,11 @@ pub mod identity_verification_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                IdentityVerificationError::Unspecified => "UNSPECIFIED",
-                IdentityVerificationError::Unknown => "UNKNOWN",
-                IdentityVerificationError::NoEffectiveBilling => "NO_EFFECTIVE_BILLING",
-                IdentityVerificationError::BillingNotOnMonthlyInvoicing => {
-                    "BILLING_NOT_ON_MONTHLY_INVOICING"
-                }
-                IdentityVerificationError::VerificationAlreadyStarted => {
-                    "VERIFICATION_ALREADY_STARTED"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::NoEffectiveBilling => "NO_EFFECTIVE_BILLING",
+                Self::BillingNotOnMonthlyInvoicing => "BILLING_NOT_ON_MONTHLY_INVOICING",
+                Self::VerificationAlreadyStarted => "VERIFICATION_ALREADY_STARTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -13702,55 +13084,51 @@ pub mod image_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ImageError::Unspecified => "UNSPECIFIED",
-                ImageError::Unknown => "UNKNOWN",
-                ImageError::InvalidImage => "INVALID_IMAGE",
-                ImageError::StorageError => "STORAGE_ERROR",
-                ImageError::BadRequest => "BAD_REQUEST",
-                ImageError::UnexpectedSize => "UNEXPECTED_SIZE",
-                ImageError::AnimatedNotAllowed => "ANIMATED_NOT_ALLOWED",
-                ImageError::AnimationTooLong => "ANIMATION_TOO_LONG",
-                ImageError::ServerError => "SERVER_ERROR",
-                ImageError::CmykJpegNotAllowed => "CMYK_JPEG_NOT_ALLOWED",
-                ImageError::FlashNotAllowed => "FLASH_NOT_ALLOWED",
-                ImageError::FlashWithoutClicktag => "FLASH_WITHOUT_CLICKTAG",
-                ImageError::FlashErrorAfterFixingClickTag => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidImage => "INVALID_IMAGE",
+                Self::StorageError => "STORAGE_ERROR",
+                Self::BadRequest => "BAD_REQUEST",
+                Self::UnexpectedSize => "UNEXPECTED_SIZE",
+                Self::AnimatedNotAllowed => "ANIMATED_NOT_ALLOWED",
+                Self::AnimationTooLong => "ANIMATION_TOO_LONG",
+                Self::ServerError => "SERVER_ERROR",
+                Self::CmykJpegNotAllowed => "CMYK_JPEG_NOT_ALLOWED",
+                Self::FlashNotAllowed => "FLASH_NOT_ALLOWED",
+                Self::FlashWithoutClicktag => "FLASH_WITHOUT_CLICKTAG",
+                Self::FlashErrorAfterFixingClickTag => {
                     "FLASH_ERROR_AFTER_FIXING_CLICK_TAG"
                 }
-                ImageError::AnimatedVisualEffect => "ANIMATED_VISUAL_EFFECT",
-                ImageError::FlashError => "FLASH_ERROR",
-                ImageError::LayoutProblem => "LAYOUT_PROBLEM",
-                ImageError::ProblemReadingImageFile => "PROBLEM_READING_IMAGE_FILE",
-                ImageError::ErrorStoringImage => "ERROR_STORING_IMAGE",
-                ImageError::AspectRatioNotAllowed => "ASPECT_RATIO_NOT_ALLOWED",
-                ImageError::FlashHasNetworkObjects => "FLASH_HAS_NETWORK_OBJECTS",
-                ImageError::FlashHasNetworkMethods => "FLASH_HAS_NETWORK_METHODS",
-                ImageError::FlashHasUrl => "FLASH_HAS_URL",
-                ImageError::FlashHasMouseTracking => "FLASH_HAS_MOUSE_TRACKING",
-                ImageError::FlashHasRandomNum => "FLASH_HAS_RANDOM_NUM",
-                ImageError::FlashSelfTargets => "FLASH_SELF_TARGETS",
-                ImageError::FlashBadGeturlTarget => "FLASH_BAD_GETURL_TARGET",
-                ImageError::FlashVersionNotSupported => "FLASH_VERSION_NOT_SUPPORTED",
-                ImageError::FlashWithoutHardCodedClickUrl => {
+                Self::AnimatedVisualEffect => "ANIMATED_VISUAL_EFFECT",
+                Self::FlashError => "FLASH_ERROR",
+                Self::LayoutProblem => "LAYOUT_PROBLEM",
+                Self::ProblemReadingImageFile => "PROBLEM_READING_IMAGE_FILE",
+                Self::ErrorStoringImage => "ERROR_STORING_IMAGE",
+                Self::AspectRatioNotAllowed => "ASPECT_RATIO_NOT_ALLOWED",
+                Self::FlashHasNetworkObjects => "FLASH_HAS_NETWORK_OBJECTS",
+                Self::FlashHasNetworkMethods => "FLASH_HAS_NETWORK_METHODS",
+                Self::FlashHasUrl => "FLASH_HAS_URL",
+                Self::FlashHasMouseTracking => "FLASH_HAS_MOUSE_TRACKING",
+                Self::FlashHasRandomNum => "FLASH_HAS_RANDOM_NUM",
+                Self::FlashSelfTargets => "FLASH_SELF_TARGETS",
+                Self::FlashBadGeturlTarget => "FLASH_BAD_GETURL_TARGET",
+                Self::FlashVersionNotSupported => "FLASH_VERSION_NOT_SUPPORTED",
+                Self::FlashWithoutHardCodedClickUrl => {
                     "FLASH_WITHOUT_HARD_CODED_CLICK_URL"
                 }
-                ImageError::InvalidFlashFile => "INVALID_FLASH_FILE",
-                ImageError::FailedToFixClickTagInFlash => {
-                    "FAILED_TO_FIX_CLICK_TAG_IN_FLASH"
-                }
-                ImageError::FlashAccessesNetworkResources => {
-                    "FLASH_ACCESSES_NETWORK_RESOURCES"
-                }
-                ImageError::FlashExternalJsCall => "FLASH_EXTERNAL_JS_CALL",
-                ImageError::FlashExternalFsCall => "FLASH_EXTERNAL_FS_CALL",
-                ImageError::FileTooLarge => "FILE_TOO_LARGE",
-                ImageError::ImageDataTooLarge => "IMAGE_DATA_TOO_LARGE",
-                ImageError::ImageProcessingError => "IMAGE_PROCESSING_ERROR",
-                ImageError::ImageTooSmall => "IMAGE_TOO_SMALL",
-                ImageError::InvalidInput => "INVALID_INPUT",
-                ImageError::ProblemReadingFile => "PROBLEM_READING_FILE",
-                ImageError::ImageConstraintsViolated => "IMAGE_CONSTRAINTS_VIOLATED",
-                ImageError::FormatNotAllowed => "FORMAT_NOT_ALLOWED",
+                Self::InvalidFlashFile => "INVALID_FLASH_FILE",
+                Self::FailedToFixClickTagInFlash => "FAILED_TO_FIX_CLICK_TAG_IN_FLASH",
+                Self::FlashAccessesNetworkResources => "FLASH_ACCESSES_NETWORK_RESOURCES",
+                Self::FlashExternalJsCall => "FLASH_EXTERNAL_JS_CALL",
+                Self::FlashExternalFsCall => "FLASH_EXTERNAL_FS_CALL",
+                Self::FileTooLarge => "FILE_TOO_LARGE",
+                Self::ImageDataTooLarge => "IMAGE_DATA_TOO_LARGE",
+                Self::ImageProcessingError => "IMAGE_PROCESSING_ERROR",
+                Self::ImageTooSmall => "IMAGE_TOO_SMALL",
+                Self::InvalidInput => "INVALID_INPUT",
+                Self::ProblemReadingFile => "PROBLEM_READING_FILE",
+                Self::ImageConstraintsViolated => "IMAGE_CONSTRAINTS_VIOLATED",
+                Self::FormatNotAllowed => "FORMAT_NOT_ALLOWED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -13851,12 +13229,12 @@ pub mod internal_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                InternalError::Unspecified => "UNSPECIFIED",
-                InternalError::Unknown => "UNKNOWN",
-                InternalError::InternalError => "INTERNAL_ERROR",
-                InternalError::ErrorCodeNotPublished => "ERROR_CODE_NOT_PUBLISHED",
-                InternalError::TransientError => "TRANSIENT_ERROR",
-                InternalError::DeadlineExceeded => "DEADLINE_EXCEEDED",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InternalError => "INTERNAL_ERROR",
+                Self::ErrorCodeNotPublished => "ERROR_CODE_NOT_PUBLISHED",
+                Self::TransientError => "TRANSIENT_ERROR",
+                Self::DeadlineExceeded => "DEADLINE_EXCEEDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -13915,15 +13293,15 @@ pub mod invoice_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                InvoiceError::Unspecified => "UNSPECIFIED",
-                InvoiceError::Unknown => "UNKNOWN",
-                InvoiceError::YearMonthTooOld => "YEAR_MONTH_TOO_OLD",
-                InvoiceError::NotInvoicedCustomer => "NOT_INVOICED_CUSTOMER",
-                InvoiceError::BillingSetupNotApproved => "BILLING_SETUP_NOT_APPROVED",
-                InvoiceError::BillingSetupNotOnMonthlyInvoicing => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::YearMonthTooOld => "YEAR_MONTH_TOO_OLD",
+                Self::NotInvoicedCustomer => "NOT_INVOICED_CUSTOMER",
+                Self::BillingSetupNotApproved => "BILLING_SETUP_NOT_APPROVED",
+                Self::BillingSetupNotOnMonthlyInvoicing => {
                     "BILLING_SETUP_NOT_ON_MONTHLY_INVOICING"
                 }
-                InvoiceError::NonServingCustomer => "NON_SERVING_CUSTOMER",
+                Self::NonServingCustomer => "NON_SERVING_CUSTOMER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -13981,10 +13359,10 @@ pub mod keyword_plan_ad_group_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                KeywordPlanAdGroupError::Unspecified => "UNSPECIFIED",
-                KeywordPlanAdGroupError::Unknown => "UNKNOWN",
-                KeywordPlanAdGroupError::InvalidName => "INVALID_NAME",
-                KeywordPlanAdGroupError::DuplicateName => "DUPLICATE_NAME",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidName => "INVALID_NAME",
+                Self::DuplicateName => "DUPLICATE_NAME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -14049,30 +13427,16 @@ pub mod keyword_plan_ad_group_keyword_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                KeywordPlanAdGroupKeywordError::Unspecified => "UNSPECIFIED",
-                KeywordPlanAdGroupKeywordError::Unknown => "UNKNOWN",
-                KeywordPlanAdGroupKeywordError::InvalidKeywordMatchType => {
-                    "INVALID_KEYWORD_MATCH_TYPE"
-                }
-                KeywordPlanAdGroupKeywordError::DuplicateKeyword => "DUPLICATE_KEYWORD",
-                KeywordPlanAdGroupKeywordError::KeywordTextTooLong => {
-                    "KEYWORD_TEXT_TOO_LONG"
-                }
-                KeywordPlanAdGroupKeywordError::KeywordHasInvalidChars => {
-                    "KEYWORD_HAS_INVALID_CHARS"
-                }
-                KeywordPlanAdGroupKeywordError::KeywordHasTooManyWords => {
-                    "KEYWORD_HAS_TOO_MANY_WORDS"
-                }
-                KeywordPlanAdGroupKeywordError::InvalidKeywordText => {
-                    "INVALID_KEYWORD_TEXT"
-                }
-                KeywordPlanAdGroupKeywordError::NegativeKeywordHasCpcBid => {
-                    "NEGATIVE_KEYWORD_HAS_CPC_BID"
-                }
-                KeywordPlanAdGroupKeywordError::NewBmmKeywordsNotAllowed => {
-                    "NEW_BMM_KEYWORDS_NOT_ALLOWED"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidKeywordMatchType => "INVALID_KEYWORD_MATCH_TYPE",
+                Self::DuplicateKeyword => "DUPLICATE_KEYWORD",
+                Self::KeywordTextTooLong => "KEYWORD_TEXT_TOO_LONG",
+                Self::KeywordHasInvalidChars => "KEYWORD_HAS_INVALID_CHARS",
+                Self::KeywordHasTooManyWords => "KEYWORD_HAS_TOO_MANY_WORDS",
+                Self::InvalidKeywordText => "INVALID_KEYWORD_TEXT",
+                Self::NegativeKeywordHasCpcBid => "NEGATIVE_KEYWORD_HAS_CPC_BID",
+                Self::NewBmmKeywordsNotAllowed => "NEW_BMM_KEYWORDS_NOT_ALLOWED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -14139,16 +13503,14 @@ pub mod keyword_plan_campaign_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                KeywordPlanCampaignError::Unspecified => "UNSPECIFIED",
-                KeywordPlanCampaignError::Unknown => "UNKNOWN",
-                KeywordPlanCampaignError::InvalidName => "INVALID_NAME",
-                KeywordPlanCampaignError::InvalidLanguages => "INVALID_LANGUAGES",
-                KeywordPlanCampaignError::InvalidGeos => "INVALID_GEOS",
-                KeywordPlanCampaignError::DuplicateName => "DUPLICATE_NAME",
-                KeywordPlanCampaignError::MaxGeosExceeded => "MAX_GEOS_EXCEEDED",
-                KeywordPlanCampaignError::MaxLanguagesExceeded => {
-                    "MAX_LANGUAGES_EXCEEDED"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidName => "INVALID_NAME",
+                Self::InvalidLanguages => "INVALID_LANGUAGES",
+                Self::InvalidGeos => "INVALID_GEOS",
+                Self::DuplicateName => "DUPLICATE_NAME",
+                Self::MaxGeosExceeded => "MAX_GEOS_EXCEEDED",
+                Self::MaxLanguagesExceeded => "MAX_LANGUAGES_EXCEEDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -14202,11 +13564,9 @@ pub mod keyword_plan_campaign_keyword_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                KeywordPlanCampaignKeywordError::Unspecified => "UNSPECIFIED",
-                KeywordPlanCampaignKeywordError::Unknown => "UNKNOWN",
-                KeywordPlanCampaignKeywordError::CampaignKeywordIsPositive => {
-                    "CAMPAIGN_KEYWORD_IS_POSITIVE"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CampaignKeywordIsPositive => "CAMPAIGN_KEYWORD_IS_POSITIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -14282,32 +13642,24 @@ pub mod keyword_plan_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                KeywordPlanError::Unspecified => "UNSPECIFIED",
-                KeywordPlanError::Unknown => "UNKNOWN",
-                KeywordPlanError::BidMultiplierOutOfRange => {
-                    "BID_MULTIPLIER_OUT_OF_RANGE"
-                }
-                KeywordPlanError::BidTooHigh => "BID_TOO_HIGH",
-                KeywordPlanError::BidTooLow => "BID_TOO_LOW",
-                KeywordPlanError::BidTooManyFractionalDigits => {
-                    "BID_TOO_MANY_FRACTIONAL_DIGITS"
-                }
-                KeywordPlanError::DailyBudgetTooLow => "DAILY_BUDGET_TOO_LOW",
-                KeywordPlanError::DailyBudgetTooManyFractionalDigits => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::BidMultiplierOutOfRange => "BID_MULTIPLIER_OUT_OF_RANGE",
+                Self::BidTooHigh => "BID_TOO_HIGH",
+                Self::BidTooLow => "BID_TOO_LOW",
+                Self::BidTooManyFractionalDigits => "BID_TOO_MANY_FRACTIONAL_DIGITS",
+                Self::DailyBudgetTooLow => "DAILY_BUDGET_TOO_LOW",
+                Self::DailyBudgetTooManyFractionalDigits => {
                     "DAILY_BUDGET_TOO_MANY_FRACTIONAL_DIGITS"
                 }
-                KeywordPlanError::InvalidValue => "INVALID_VALUE",
-                KeywordPlanError::KeywordPlanHasNoKeywords => {
-                    "KEYWORD_PLAN_HAS_NO_KEYWORDS"
-                }
-                KeywordPlanError::KeywordPlanNotEnabled => "KEYWORD_PLAN_NOT_ENABLED",
-                KeywordPlanError::KeywordPlanNotFound => "KEYWORD_PLAN_NOT_FOUND",
-                KeywordPlanError::MissingBid => "MISSING_BID",
-                KeywordPlanError::MissingForecastPeriod => "MISSING_FORECAST_PERIOD",
-                KeywordPlanError::InvalidForecastDateRange => {
-                    "INVALID_FORECAST_DATE_RANGE"
-                }
-                KeywordPlanError::InvalidName => "INVALID_NAME",
+                Self::InvalidValue => "INVALID_VALUE",
+                Self::KeywordPlanHasNoKeywords => "KEYWORD_PLAN_HAS_NO_KEYWORDS",
+                Self::KeywordPlanNotEnabled => "KEYWORD_PLAN_NOT_ENABLED",
+                Self::KeywordPlanNotFound => "KEYWORD_PLAN_NOT_FOUND",
+                Self::MissingBid => "MISSING_BID",
+                Self::MissingForecastPeriod => "MISSING_FORECAST_PERIOD",
+                Self::InvalidForecastDateRange => "INVALID_FORECAST_DATE_RANGE",
+                Self::InvalidName => "INVALID_NAME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -14373,10 +13725,10 @@ pub mod keyword_plan_idea_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                KeywordPlanIdeaError::Unspecified => "UNSPECIFIED",
-                KeywordPlanIdeaError::Unknown => "UNKNOWN",
-                KeywordPlanIdeaError::UrlCrawlError => "URL_CRAWL_ERROR",
-                KeywordPlanIdeaError::InvalidValue => "INVALID_VALUE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::UrlCrawlError => "URL_CRAWL_ERROR",
+                Self::InvalidValue => "INVALID_VALUE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -14442,23 +13794,23 @@ pub mod label_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LabelError::Unspecified => "UNSPECIFIED",
-                LabelError::Unknown => "UNKNOWN",
-                LabelError::CannotApplyInactiveLabel => "CANNOT_APPLY_INACTIVE_LABEL",
-                LabelError::CannotApplyLabelToDisabledAdGroupCriterion => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CannotApplyInactiveLabel => "CANNOT_APPLY_INACTIVE_LABEL",
+                Self::CannotApplyLabelToDisabledAdGroupCriterion => {
                     "CANNOT_APPLY_LABEL_TO_DISABLED_AD_GROUP_CRITERION"
                 }
-                LabelError::CannotApplyLabelToNegativeAdGroupCriterion => {
+                Self::CannotApplyLabelToNegativeAdGroupCriterion => {
                     "CANNOT_APPLY_LABEL_TO_NEGATIVE_AD_GROUP_CRITERION"
                 }
-                LabelError::ExceededLabelLimitPerType => "EXCEEDED_LABEL_LIMIT_PER_TYPE",
-                LabelError::InvalidResourceForManagerLabel => {
+                Self::ExceededLabelLimitPerType => "EXCEEDED_LABEL_LIMIT_PER_TYPE",
+                Self::InvalidResourceForManagerLabel => {
                     "INVALID_RESOURCE_FOR_MANAGER_LABEL"
                 }
-                LabelError::DuplicateName => "DUPLICATE_NAME",
-                LabelError::InvalidLabelName => "INVALID_LABEL_NAME",
-                LabelError::CannotAttachLabelToDraft => "CANNOT_ATTACH_LABEL_TO_DRAFT",
-                LabelError::CannotAttachNonManagerLabelToCustomer => {
+                Self::DuplicateName => "DUPLICATE_NAME",
+                Self::InvalidLabelName => "INVALID_LABEL_NAME",
+                Self::CannotAttachLabelToDraft => "CANNOT_ATTACH_LABEL_TO_DRAFT",
+                Self::CannotAttachNonManagerLabelToCustomer => {
                     "CANNOT_ATTACH_NON_MANAGER_LABEL_TO_CUSTOMER"
                 }
             }
@@ -14525,10 +13877,10 @@ pub mod language_code_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LanguageCodeError::Unspecified => "UNSPECIFIED",
-                LanguageCodeError::Unknown => "UNKNOWN",
-                LanguageCodeError::LanguageCodeNotFound => "LANGUAGE_CODE_NOT_FOUND",
-                LanguageCodeError::InvalidLanguageCode => "INVALID_LANGUAGE_CODE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::LanguageCodeNotFound => "LANGUAGE_CODE_NOT_FOUND",
+                Self::InvalidLanguageCode => "INVALID_LANGUAGE_CODE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -14578,10 +13930,10 @@ pub mod list_operation_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ListOperationError::Unspecified => "UNSPECIFIED",
-                ListOperationError::Unknown => "UNKNOWN",
-                ListOperationError::RequiredFieldMissing => "REQUIRED_FIELD_MISSING",
-                ListOperationError::DuplicateValues => "DUPLICATE_VALUES",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::RequiredFieldMissing => "REQUIRED_FIELD_MISSING",
+                Self::DuplicateValues => "DUPLICATE_VALUES",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -14667,43 +14019,31 @@ pub mod manager_link_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ManagerLinkError::Unspecified => "UNSPECIFIED",
-                ManagerLinkError::Unknown => "UNKNOWN",
-                ManagerLinkError::AccountsNotCompatibleForLinking => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::AccountsNotCompatibleForLinking => {
                     "ACCOUNTS_NOT_COMPATIBLE_FOR_LINKING"
                 }
-                ManagerLinkError::TooManyManagers => "TOO_MANY_MANAGERS",
-                ManagerLinkError::TooManyInvites => "TOO_MANY_INVITES",
-                ManagerLinkError::AlreadyInvitedByThisManager => {
-                    "ALREADY_INVITED_BY_THIS_MANAGER"
-                }
-                ManagerLinkError::AlreadyManagedByThisManager => {
-                    "ALREADY_MANAGED_BY_THIS_MANAGER"
-                }
-                ManagerLinkError::AlreadyManagedInHierarchy => {
-                    "ALREADY_MANAGED_IN_HIERARCHY"
-                }
-                ManagerLinkError::DuplicateChildFound => "DUPLICATE_CHILD_FOUND",
-                ManagerLinkError::ClientHasNoAdminUser => "CLIENT_HAS_NO_ADMIN_USER",
-                ManagerLinkError::MaxDepthExceeded => "MAX_DEPTH_EXCEEDED",
-                ManagerLinkError::CycleNotAllowed => "CYCLE_NOT_ALLOWED",
-                ManagerLinkError::TooManyAccounts => "TOO_MANY_ACCOUNTS",
-                ManagerLinkError::TooManyAccountsAtManager => {
-                    "TOO_MANY_ACCOUNTS_AT_MANAGER"
-                }
-                ManagerLinkError::NonOwnerUserCannotModifyLink => {
-                    "NON_OWNER_USER_CANNOT_MODIFY_LINK"
-                }
-                ManagerLinkError::SuspendedAccountCannotAddClients => {
+                Self::TooManyManagers => "TOO_MANY_MANAGERS",
+                Self::TooManyInvites => "TOO_MANY_INVITES",
+                Self::AlreadyInvitedByThisManager => "ALREADY_INVITED_BY_THIS_MANAGER",
+                Self::AlreadyManagedByThisManager => "ALREADY_MANAGED_BY_THIS_MANAGER",
+                Self::AlreadyManagedInHierarchy => "ALREADY_MANAGED_IN_HIERARCHY",
+                Self::DuplicateChildFound => "DUPLICATE_CHILD_FOUND",
+                Self::ClientHasNoAdminUser => "CLIENT_HAS_NO_ADMIN_USER",
+                Self::MaxDepthExceeded => "MAX_DEPTH_EXCEEDED",
+                Self::CycleNotAllowed => "CYCLE_NOT_ALLOWED",
+                Self::TooManyAccounts => "TOO_MANY_ACCOUNTS",
+                Self::TooManyAccountsAtManager => "TOO_MANY_ACCOUNTS_AT_MANAGER",
+                Self::NonOwnerUserCannotModifyLink => "NON_OWNER_USER_CANNOT_MODIFY_LINK",
+                Self::SuspendedAccountCannotAddClients => {
                     "SUSPENDED_ACCOUNT_CANNOT_ADD_CLIENTS"
                 }
-                ManagerLinkError::ClientOutsideTree => "CLIENT_OUTSIDE_TREE",
-                ManagerLinkError::InvalidStatusChange => "INVALID_STATUS_CHANGE",
-                ManagerLinkError::InvalidChange => "INVALID_CHANGE",
-                ManagerLinkError::CustomerCannotManageSelf => {
-                    "CUSTOMER_CANNOT_MANAGE_SELF"
-                }
-                ManagerLinkError::CreatingEnabledLinkNotAllowed => {
+                Self::ClientOutsideTree => "CLIENT_OUTSIDE_TREE",
+                Self::InvalidStatusChange => "INVALID_STATUS_CHANGE",
+                Self::InvalidChange => "INVALID_CHANGE",
+                Self::CustomerCannotManageSelf => "CUSTOMER_CANNOT_MANAGE_SELF",
+                Self::CreatingEnabledLinkNotAllowed => {
                     "CREATING_ENABLED_LINK_NOT_ALLOWED"
                 }
             }
@@ -14824,40 +14164,38 @@ pub mod media_bundle_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MediaBundleError::Unspecified => "UNSPECIFIED",
-                MediaBundleError::Unknown => "UNKNOWN",
-                MediaBundleError::BadRequest => "BAD_REQUEST",
-                MediaBundleError::DoubleclickBundleNotAllowed => {
-                    "DOUBLECLICK_BUNDLE_NOT_ALLOWED"
-                }
-                MediaBundleError::ExternalUrlNotAllowed => "EXTERNAL_URL_NOT_ALLOWED",
-                MediaBundleError::FileTooLarge => "FILE_TOO_LARGE",
-                MediaBundleError::GoogleWebDesignerZipFileNotPublished => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::BadRequest => "BAD_REQUEST",
+                Self::DoubleclickBundleNotAllowed => "DOUBLECLICK_BUNDLE_NOT_ALLOWED",
+                Self::ExternalUrlNotAllowed => "EXTERNAL_URL_NOT_ALLOWED",
+                Self::FileTooLarge => "FILE_TOO_LARGE",
+                Self::GoogleWebDesignerZipFileNotPublished => {
                     "GOOGLE_WEB_DESIGNER_ZIP_FILE_NOT_PUBLISHED"
                 }
-                MediaBundleError::InvalidInput => "INVALID_INPUT",
-                MediaBundleError::InvalidMediaBundle => "INVALID_MEDIA_BUNDLE",
-                MediaBundleError::InvalidMediaBundleEntry => "INVALID_MEDIA_BUNDLE_ENTRY",
-                MediaBundleError::InvalidMimeType => "INVALID_MIME_TYPE",
-                MediaBundleError::InvalidPath => "INVALID_PATH",
-                MediaBundleError::InvalidUrlReference => "INVALID_URL_REFERENCE",
-                MediaBundleError::MediaDataTooLarge => "MEDIA_DATA_TOO_LARGE",
-                MediaBundleError::MissingPrimaryMediaBundleEntry => {
+                Self::InvalidInput => "INVALID_INPUT",
+                Self::InvalidMediaBundle => "INVALID_MEDIA_BUNDLE",
+                Self::InvalidMediaBundleEntry => "INVALID_MEDIA_BUNDLE_ENTRY",
+                Self::InvalidMimeType => "INVALID_MIME_TYPE",
+                Self::InvalidPath => "INVALID_PATH",
+                Self::InvalidUrlReference => "INVALID_URL_REFERENCE",
+                Self::MediaDataTooLarge => "MEDIA_DATA_TOO_LARGE",
+                Self::MissingPrimaryMediaBundleEntry => {
                     "MISSING_PRIMARY_MEDIA_BUNDLE_ENTRY"
                 }
-                MediaBundleError::ServerError => "SERVER_ERROR",
-                MediaBundleError::StorageError => "STORAGE_ERROR",
-                MediaBundleError::SwiffyBundleNotAllowed => "SWIFFY_BUNDLE_NOT_ALLOWED",
-                MediaBundleError::TooManyFiles => "TOO_MANY_FILES",
-                MediaBundleError::UnexpectedSize => "UNEXPECTED_SIZE",
-                MediaBundleError::UnsupportedGoogleWebDesignerEnvironment => {
+                Self::ServerError => "SERVER_ERROR",
+                Self::StorageError => "STORAGE_ERROR",
+                Self::SwiffyBundleNotAllowed => "SWIFFY_BUNDLE_NOT_ALLOWED",
+                Self::TooManyFiles => "TOO_MANY_FILES",
+                Self::UnexpectedSize => "UNEXPECTED_SIZE",
+                Self::UnsupportedGoogleWebDesignerEnvironment => {
                     "UNSUPPORTED_GOOGLE_WEB_DESIGNER_ENVIRONMENT"
                 }
-                MediaBundleError::UnsupportedHtml5Feature => "UNSUPPORTED_HTML5_FEATURE",
-                MediaBundleError::UrlInMediaBundleNotSslCompliant => {
+                Self::UnsupportedHtml5Feature => "UNSUPPORTED_HTML5_FEATURE",
+                Self::UrlInMediaBundleNotSslCompliant => {
                     "URL_IN_MEDIA_BUNDLE_NOT_SSL_COMPLIANT"
                 }
-                MediaBundleError::CustomExitNotAllowed => "CUSTOM_EXIT_NOT_ALLOWED",
+                Self::CustomExitNotAllowed => "CUSTOM_EXIT_NOT_ALLOWED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -14979,49 +14317,43 @@ pub mod media_file_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MediaFileError::Unspecified => "UNSPECIFIED",
-                MediaFileError::Unknown => "UNKNOWN",
-                MediaFileError::CannotCreateStandardIcon => "CANNOT_CREATE_STANDARD_ICON",
-                MediaFileError::CannotSelectStandardIconWithOtherTypes => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CannotCreateStandardIcon => "CANNOT_CREATE_STANDARD_ICON",
+                Self::CannotSelectStandardIconWithOtherTypes => {
                     "CANNOT_SELECT_STANDARD_ICON_WITH_OTHER_TYPES"
                 }
-                MediaFileError::CannotSpecifyMediaFileIdAndData => {
+                Self::CannotSpecifyMediaFileIdAndData => {
                     "CANNOT_SPECIFY_MEDIA_FILE_ID_AND_DATA"
                 }
-                MediaFileError::DuplicateMedia => "DUPLICATE_MEDIA",
-                MediaFileError::EmptyField => "EMPTY_FIELD",
-                MediaFileError::ResourceReferencedInMultipleOps => {
+                Self::DuplicateMedia => "DUPLICATE_MEDIA",
+                Self::EmptyField => "EMPTY_FIELD",
+                Self::ResourceReferencedInMultipleOps => {
                     "RESOURCE_REFERENCED_IN_MULTIPLE_OPS"
                 }
-                MediaFileError::FieldNotSupportedForMediaSubType => {
+                Self::FieldNotSupportedForMediaSubType => {
                     "FIELD_NOT_SUPPORTED_FOR_MEDIA_SUB_TYPE"
                 }
-                MediaFileError::InvalidMediaFileId => "INVALID_MEDIA_FILE_ID",
-                MediaFileError::InvalidMediaSubType => "INVALID_MEDIA_SUB_TYPE",
-                MediaFileError::InvalidMediaFileType => "INVALID_MEDIA_FILE_TYPE",
-                MediaFileError::InvalidMimeType => "INVALID_MIME_TYPE",
-                MediaFileError::InvalidReferenceId => "INVALID_REFERENCE_ID",
-                MediaFileError::InvalidYouTubeId => "INVALID_YOU_TUBE_ID",
-                MediaFileError::MediaFileFailedTranscoding => {
-                    "MEDIA_FILE_FAILED_TRANSCODING"
-                }
-                MediaFileError::MediaNotTranscoded => "MEDIA_NOT_TRANSCODED",
-                MediaFileError::MediaTypeDoesNotMatchMediaFileType => {
+                Self::InvalidMediaFileId => "INVALID_MEDIA_FILE_ID",
+                Self::InvalidMediaSubType => "INVALID_MEDIA_SUB_TYPE",
+                Self::InvalidMediaFileType => "INVALID_MEDIA_FILE_TYPE",
+                Self::InvalidMimeType => "INVALID_MIME_TYPE",
+                Self::InvalidReferenceId => "INVALID_REFERENCE_ID",
+                Self::InvalidYouTubeId => "INVALID_YOU_TUBE_ID",
+                Self::MediaFileFailedTranscoding => "MEDIA_FILE_FAILED_TRANSCODING",
+                Self::MediaNotTranscoded => "MEDIA_NOT_TRANSCODED",
+                Self::MediaTypeDoesNotMatchMediaFileType => {
                     "MEDIA_TYPE_DOES_NOT_MATCH_MEDIA_FILE_TYPE"
                 }
-                MediaFileError::NoFieldsSpecified => "NO_FIELDS_SPECIFIED",
-                MediaFileError::NullReferenceIdAndMediaId => {
-                    "NULL_REFERENCE_ID_AND_MEDIA_ID"
-                }
-                MediaFileError::TooLong => "TOO_LONG",
-                MediaFileError::UnsupportedType => "UNSUPPORTED_TYPE",
-                MediaFileError::YouTubeServiceUnavailable => {
-                    "YOU_TUBE_SERVICE_UNAVAILABLE"
-                }
-                MediaFileError::YouTubeVideoHasNonPositiveDuration => {
+                Self::NoFieldsSpecified => "NO_FIELDS_SPECIFIED",
+                Self::NullReferenceIdAndMediaId => "NULL_REFERENCE_ID_AND_MEDIA_ID",
+                Self::TooLong => "TOO_LONG",
+                Self::UnsupportedType => "UNSUPPORTED_TYPE",
+                Self::YouTubeServiceUnavailable => "YOU_TUBE_SERVICE_UNAVAILABLE",
+                Self::YouTubeVideoHasNonPositiveDuration => {
                     "YOU_TUBE_VIDEO_HAS_NON_POSITIVE_DURATION"
                 }
-                MediaFileError::YouTubeVideoNotFound => "YOU_TUBE_VIDEO_NOT_FOUND",
+                Self::YouTubeVideoNotFound => "YOU_TUBE_VIDEO_NOT_FOUND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -15174,66 +14506,58 @@ pub mod media_upload_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MediaUploadError::Unspecified => "UNSPECIFIED",
-                MediaUploadError::Unknown => "UNKNOWN",
-                MediaUploadError::FileTooBig => "FILE_TOO_BIG",
-                MediaUploadError::UnparseableImage => "UNPARSEABLE_IMAGE",
-                MediaUploadError::AnimatedImageNotAllowed => "ANIMATED_IMAGE_NOT_ALLOWED",
-                MediaUploadError::FormatNotAllowed => "FORMAT_NOT_ALLOWED",
-                MediaUploadError::ExternalUrlNotAllowed => "EXTERNAL_URL_NOT_ALLOWED",
-                MediaUploadError::InvalidUrlReference => "INVALID_URL_REFERENCE",
-                MediaUploadError::MissingPrimaryMediaBundleEntry => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::FileTooBig => "FILE_TOO_BIG",
+                Self::UnparseableImage => "UNPARSEABLE_IMAGE",
+                Self::AnimatedImageNotAllowed => "ANIMATED_IMAGE_NOT_ALLOWED",
+                Self::FormatNotAllowed => "FORMAT_NOT_ALLOWED",
+                Self::ExternalUrlNotAllowed => "EXTERNAL_URL_NOT_ALLOWED",
+                Self::InvalidUrlReference => "INVALID_URL_REFERENCE",
+                Self::MissingPrimaryMediaBundleEntry => {
                     "MISSING_PRIMARY_MEDIA_BUNDLE_ENTRY"
                 }
-                MediaUploadError::AnimatedVisualEffect => "ANIMATED_VISUAL_EFFECT",
-                MediaUploadError::AnimationTooLong => "ANIMATION_TOO_LONG",
-                MediaUploadError::AspectRatioNotAllowed => "ASPECT_RATIO_NOT_ALLOWED",
-                MediaUploadError::AudioNotAllowedInMediaBundle => {
-                    "AUDIO_NOT_ALLOWED_IN_MEDIA_BUNDLE"
-                }
-                MediaUploadError::CmykJpegNotAllowed => "CMYK_JPEG_NOT_ALLOWED",
-                MediaUploadError::FlashNotAllowed => "FLASH_NOT_ALLOWED",
-                MediaUploadError::FrameRateTooHigh => "FRAME_RATE_TOO_HIGH",
-                MediaUploadError::GoogleWebDesignerZipFileNotPublished => {
+                Self::AnimatedVisualEffect => "ANIMATED_VISUAL_EFFECT",
+                Self::AnimationTooLong => "ANIMATION_TOO_LONG",
+                Self::AspectRatioNotAllowed => "ASPECT_RATIO_NOT_ALLOWED",
+                Self::AudioNotAllowedInMediaBundle => "AUDIO_NOT_ALLOWED_IN_MEDIA_BUNDLE",
+                Self::CmykJpegNotAllowed => "CMYK_JPEG_NOT_ALLOWED",
+                Self::FlashNotAllowed => "FLASH_NOT_ALLOWED",
+                Self::FrameRateTooHigh => "FRAME_RATE_TOO_HIGH",
+                Self::GoogleWebDesignerZipFileNotPublished => {
                     "GOOGLE_WEB_DESIGNER_ZIP_FILE_NOT_PUBLISHED"
                 }
-                MediaUploadError::ImageConstraintsViolated => {
-                    "IMAGE_CONSTRAINTS_VIOLATED"
-                }
-                MediaUploadError::InvalidMediaBundle => "INVALID_MEDIA_BUNDLE",
-                MediaUploadError::InvalidMediaBundleEntry => "INVALID_MEDIA_BUNDLE_ENTRY",
-                MediaUploadError::InvalidMimeType => "INVALID_MIME_TYPE",
-                MediaUploadError::InvalidPath => "INVALID_PATH",
-                MediaUploadError::LayoutProblem => "LAYOUT_PROBLEM",
-                MediaUploadError::MalformedUrl => "MALFORMED_URL",
-                MediaUploadError::MediaBundleNotAllowed => "MEDIA_BUNDLE_NOT_ALLOWED",
-                MediaUploadError::MediaBundleNotCompatibleToProductType => {
+                Self::ImageConstraintsViolated => "IMAGE_CONSTRAINTS_VIOLATED",
+                Self::InvalidMediaBundle => "INVALID_MEDIA_BUNDLE",
+                Self::InvalidMediaBundleEntry => "INVALID_MEDIA_BUNDLE_ENTRY",
+                Self::InvalidMimeType => "INVALID_MIME_TYPE",
+                Self::InvalidPath => "INVALID_PATH",
+                Self::LayoutProblem => "LAYOUT_PROBLEM",
+                Self::MalformedUrl => "MALFORMED_URL",
+                Self::MediaBundleNotAllowed => "MEDIA_BUNDLE_NOT_ALLOWED",
+                Self::MediaBundleNotCompatibleToProductType => {
                     "MEDIA_BUNDLE_NOT_COMPATIBLE_TO_PRODUCT_TYPE"
                 }
-                MediaUploadError::MediaBundleRejectedByMultipleAssetSpecs => {
+                Self::MediaBundleRejectedByMultipleAssetSpecs => {
                     "MEDIA_BUNDLE_REJECTED_BY_MULTIPLE_ASSET_SPECS"
                 }
-                MediaUploadError::TooManyFilesInMediaBundle => {
-                    "TOO_MANY_FILES_IN_MEDIA_BUNDLE"
-                }
-                MediaUploadError::UnsupportedGoogleWebDesignerEnvironment => {
+                Self::TooManyFilesInMediaBundle => "TOO_MANY_FILES_IN_MEDIA_BUNDLE",
+                Self::UnsupportedGoogleWebDesignerEnvironment => {
                     "UNSUPPORTED_GOOGLE_WEB_DESIGNER_ENVIRONMENT"
                 }
-                MediaUploadError::UnsupportedHtml5Feature => "UNSUPPORTED_HTML5_FEATURE",
-                MediaUploadError::UrlInMediaBundleNotSslCompliant => {
+                Self::UnsupportedHtml5Feature => "UNSUPPORTED_HTML5_FEATURE",
+                Self::UrlInMediaBundleNotSslCompliant => {
                     "URL_IN_MEDIA_BUNDLE_NOT_SSL_COMPLIANT"
                 }
-                MediaUploadError::VideoFileNameTooLong => "VIDEO_FILE_NAME_TOO_LONG",
-                MediaUploadError::VideoMultipleFilesWithSameName => {
+                Self::VideoFileNameTooLong => "VIDEO_FILE_NAME_TOO_LONG",
+                Self::VideoMultipleFilesWithSameName => {
                     "VIDEO_MULTIPLE_FILES_WITH_SAME_NAME"
                 }
-                MediaUploadError::VideoNotAllowedInMediaBundle => {
-                    "VIDEO_NOT_ALLOWED_IN_MEDIA_BUNDLE"
-                }
-                MediaUploadError::CannotUploadMediaTypeThroughApi => {
+                Self::VideoNotAllowedInMediaBundle => "VIDEO_NOT_ALLOWED_IN_MEDIA_BUNDLE",
+                Self::CannotUploadMediaTypeThroughApi => {
                     "CANNOT_UPLOAD_MEDIA_TYPE_THROUGH_API"
                 }
-                MediaUploadError::DimensionsNotAllowed => "DIMENSIONS_NOT_ALLOWED",
+                Self::DimensionsNotAllowed => "DIMENSIONS_NOT_ALLOWED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -15335,12 +14659,10 @@ pub mod merchant_center_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MerchantCenterError::Unspecified => "UNSPECIFIED",
-                MerchantCenterError::Unknown => "UNKNOWN",
-                MerchantCenterError::MerchantIdCannotBeAccessed => {
-                    "MERCHANT_ID_CANNOT_BE_ACCESSED"
-                }
-                MerchantCenterError::CustomerNotAllowedForShoppingPerformanceMax => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::MerchantIdCannotBeAccessed => "MERCHANT_ID_CANNOT_BE_ACCESSED",
+                Self::CustomerNotAllowedForShoppingPerformanceMax => {
                     "CUSTOMER_NOT_ALLOWED_FOR_SHOPPING_PERFORMANCE_MAX"
                 }
             }
@@ -15418,34 +14740,34 @@ pub mod multiplier_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MultiplierError::Unspecified => "UNSPECIFIED",
-                MultiplierError::Unknown => "UNKNOWN",
-                MultiplierError::MultiplierTooHigh => "MULTIPLIER_TOO_HIGH",
-                MultiplierError::MultiplierTooLow => "MULTIPLIER_TOO_LOW",
-                MultiplierError::TooManyFractionalDigits => "TOO_MANY_FRACTIONAL_DIGITS",
-                MultiplierError::MultiplierNotAllowedForBiddingStrategy => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::MultiplierTooHigh => "MULTIPLIER_TOO_HIGH",
+                Self::MultiplierTooLow => "MULTIPLIER_TOO_LOW",
+                Self::TooManyFractionalDigits => "TOO_MANY_FRACTIONAL_DIGITS",
+                Self::MultiplierNotAllowedForBiddingStrategy => {
                     "MULTIPLIER_NOT_ALLOWED_FOR_BIDDING_STRATEGY"
                 }
-                MultiplierError::MultiplierNotAllowedWhenBaseBidIsMissing => {
+                Self::MultiplierNotAllowedWhenBaseBidIsMissing => {
                     "MULTIPLIER_NOT_ALLOWED_WHEN_BASE_BID_IS_MISSING"
                 }
-                MultiplierError::NoMultiplierSpecified => "NO_MULTIPLIER_SPECIFIED",
-                MultiplierError::MultiplierCausesBidToExceedDailyBudget => {
+                Self::NoMultiplierSpecified => "NO_MULTIPLIER_SPECIFIED",
+                Self::MultiplierCausesBidToExceedDailyBudget => {
                     "MULTIPLIER_CAUSES_BID_TO_EXCEED_DAILY_BUDGET"
                 }
-                MultiplierError::MultiplierCausesBidToExceedMonthlyBudget => {
+                Self::MultiplierCausesBidToExceedMonthlyBudget => {
                     "MULTIPLIER_CAUSES_BID_TO_EXCEED_MONTHLY_BUDGET"
                 }
-                MultiplierError::MultiplierCausesBidToExceedCustomBudget => {
+                Self::MultiplierCausesBidToExceedCustomBudget => {
                     "MULTIPLIER_CAUSES_BID_TO_EXCEED_CUSTOM_BUDGET"
                 }
-                MultiplierError::MultiplierCausesBidToExceedMaxAllowedBid => {
+                Self::MultiplierCausesBidToExceedMaxAllowedBid => {
                     "MULTIPLIER_CAUSES_BID_TO_EXCEED_MAX_ALLOWED_BID"
                 }
-                MultiplierError::BidLessThanMinAllowedBidWithMultiplier => {
+                Self::BidLessThanMinAllowedBidWithMultiplier => {
                     "BID_LESS_THAN_MIN_ALLOWED_BID_WITH_MULTIPLIER"
                 }
-                MultiplierError::MultiplierAndBiddingStrategyTypeMismatch => {
+                Self::MultiplierAndBiddingStrategyTypeMismatch => {
                     "MULTIPLIER_AND_BIDDING_STRATEGY_TYPE_MISMATCH"
                 }
             }
@@ -15538,21 +14860,21 @@ pub mod mutate_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MutateError::Unspecified => "UNSPECIFIED",
-                MutateError::Unknown => "UNKNOWN",
-                MutateError::ResourceNotFound => "RESOURCE_NOT_FOUND",
-                MutateError::IdExistsInMultipleMutates => "ID_EXISTS_IN_MULTIPLE_MUTATES",
-                MutateError::InconsistentFieldValues => "INCONSISTENT_FIELD_VALUES",
-                MutateError::MutateNotAllowed => "MUTATE_NOT_ALLOWED",
-                MutateError::ResourceNotInGoogleAds => "RESOURCE_NOT_IN_GOOGLE_ADS",
-                MutateError::ResourceAlreadyExists => "RESOURCE_ALREADY_EXISTS",
-                MutateError::ResourceDoesNotSupportValidateOnly => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ResourceNotFound => "RESOURCE_NOT_FOUND",
+                Self::IdExistsInMultipleMutates => "ID_EXISTS_IN_MULTIPLE_MUTATES",
+                Self::InconsistentFieldValues => "INCONSISTENT_FIELD_VALUES",
+                Self::MutateNotAllowed => "MUTATE_NOT_ALLOWED",
+                Self::ResourceNotInGoogleAds => "RESOURCE_NOT_IN_GOOGLE_ADS",
+                Self::ResourceAlreadyExists => "RESOURCE_ALREADY_EXISTS",
+                Self::ResourceDoesNotSupportValidateOnly => {
                     "RESOURCE_DOES_NOT_SUPPORT_VALIDATE_ONLY"
                 }
-                MutateError::OperationDoesNotSupportPartialFailure => {
+                Self::OperationDoesNotSupportPartialFailure => {
                     "OPERATION_DOES_NOT_SUPPORT_PARTIAL_FAILURE"
                 }
-                MutateError::ResourceReadOnly => "RESOURCE_READ_ONLY",
+                Self::ResourceReadOnly => "RESOURCE_READ_ONLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -15616,15 +14938,11 @@ pub mod new_resource_creation_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                NewResourceCreationError::Unspecified => "UNSPECIFIED",
-                NewResourceCreationError::Unknown => "UNKNOWN",
-                NewResourceCreationError::CannotSetIdForCreate => {
-                    "CANNOT_SET_ID_FOR_CREATE"
-                }
-                NewResourceCreationError::DuplicateTempIds => "DUPLICATE_TEMP_IDS",
-                NewResourceCreationError::TempIdResourceHadErrors => {
-                    "TEMP_ID_RESOURCE_HAD_ERRORS"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CannotSetIdForCreate => "CANNOT_SET_ID_FOR_CREATE",
+                Self::DuplicateTempIds => "DUPLICATE_TEMP_IDS",
+                Self::TempIdResourceHadErrors => "TEMP_ID_RESOURCE_HAD_ERRORS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -15673,9 +14991,9 @@ pub mod not_allowlisted_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                NotAllowlistedError::Unspecified => "UNSPECIFIED",
-                NotAllowlistedError::Unknown => "UNKNOWN",
-                NotAllowlistedError::CustomerNotAllowlistedForThisFeature => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CustomerNotAllowlistedForThisFeature => {
                     "CUSTOMER_NOT_ALLOWLISTED_FOR_THIS_FEATURE"
                 }
             }
@@ -15726,9 +15044,9 @@ pub mod not_empty_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                NotEmptyError::Unspecified => "UNSPECIFIED",
-                NotEmptyError::Unknown => "UNKNOWN",
-                NotEmptyError::EmptyList => "EMPTY_LIST",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::EmptyList => "EMPTY_LIST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -15775,9 +15093,9 @@ pub mod null_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                NullError::Unspecified => "UNSPECIFIED",
-                NullError::Unknown => "UNKNOWN",
-                NullError::NullContent => "NULL_CONTENT",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::NullContent => "NULL_CONTENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -15915,94 +15233,64 @@ pub mod offline_user_data_job_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OfflineUserDataJobError::Unspecified => "UNSPECIFIED",
-                OfflineUserDataJobError::Unknown => "UNKNOWN",
-                OfflineUserDataJobError::InvalidUserListId => "INVALID_USER_LIST_ID",
-                OfflineUserDataJobError::InvalidUserListType => "INVALID_USER_LIST_TYPE",
-                OfflineUserDataJobError::NotOnAllowlistForUserId => {
-                    "NOT_ON_ALLOWLIST_FOR_USER_ID"
-                }
-                OfflineUserDataJobError::IncompatibleUploadKeyType => {
-                    "INCOMPATIBLE_UPLOAD_KEY_TYPE"
-                }
-                OfflineUserDataJobError::MissingUserIdentifier => {
-                    "MISSING_USER_IDENTIFIER"
-                }
-                OfflineUserDataJobError::InvalidMobileIdFormat => {
-                    "INVALID_MOBILE_ID_FORMAT"
-                }
-                OfflineUserDataJobError::TooManyUserIdentifiers => {
-                    "TOO_MANY_USER_IDENTIFIERS"
-                }
-                OfflineUserDataJobError::NotOnAllowlistForStoreSalesDirect => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidUserListId => "INVALID_USER_LIST_ID",
+                Self::InvalidUserListType => "INVALID_USER_LIST_TYPE",
+                Self::NotOnAllowlistForUserId => "NOT_ON_ALLOWLIST_FOR_USER_ID",
+                Self::IncompatibleUploadKeyType => "INCOMPATIBLE_UPLOAD_KEY_TYPE",
+                Self::MissingUserIdentifier => "MISSING_USER_IDENTIFIER",
+                Self::InvalidMobileIdFormat => "INVALID_MOBILE_ID_FORMAT",
+                Self::TooManyUserIdentifiers => "TOO_MANY_USER_IDENTIFIERS",
+                Self::NotOnAllowlistForStoreSalesDirect => {
                     "NOT_ON_ALLOWLIST_FOR_STORE_SALES_DIRECT"
                 }
-                OfflineUserDataJobError::NotOnAllowlistForUnifiedStoreSales => {
+                Self::NotOnAllowlistForUnifiedStoreSales => {
                     "NOT_ON_ALLOWLIST_FOR_UNIFIED_STORE_SALES"
                 }
-                OfflineUserDataJobError::InvalidPartnerId => "INVALID_PARTNER_ID",
-                OfflineUserDataJobError::InvalidEncoding => "INVALID_ENCODING",
-                OfflineUserDataJobError::InvalidCountryCode => "INVALID_COUNTRY_CODE",
-                OfflineUserDataJobError::IncompatibleUserIdentifier => {
-                    "INCOMPATIBLE_USER_IDENTIFIER"
-                }
-                OfflineUserDataJobError::FutureTransactionTime => {
-                    "FUTURE_TRANSACTION_TIME"
-                }
-                OfflineUserDataJobError::InvalidConversionAction => {
-                    "INVALID_CONVERSION_ACTION"
-                }
-                OfflineUserDataJobError::MobileIdNotSupported => {
-                    "MOBILE_ID_NOT_SUPPORTED"
-                }
-                OfflineUserDataJobError::InvalidOperationOrder => {
-                    "INVALID_OPERATION_ORDER"
-                }
-                OfflineUserDataJobError::ConflictingOperation => "CONFLICTING_OPERATION",
-                OfflineUserDataJobError::ExternalUpdateIdAlreadyExists => {
+                Self::InvalidPartnerId => "INVALID_PARTNER_ID",
+                Self::InvalidEncoding => "INVALID_ENCODING",
+                Self::InvalidCountryCode => "INVALID_COUNTRY_CODE",
+                Self::IncompatibleUserIdentifier => "INCOMPATIBLE_USER_IDENTIFIER",
+                Self::FutureTransactionTime => "FUTURE_TRANSACTION_TIME",
+                Self::InvalidConversionAction => "INVALID_CONVERSION_ACTION",
+                Self::MobileIdNotSupported => "MOBILE_ID_NOT_SUPPORTED",
+                Self::InvalidOperationOrder => "INVALID_OPERATION_ORDER",
+                Self::ConflictingOperation => "CONFLICTING_OPERATION",
+                Self::ExternalUpdateIdAlreadyExists => {
                     "EXTERNAL_UPDATE_ID_ALREADY_EXISTS"
                 }
-                OfflineUserDataJobError::JobAlreadyStarted => "JOB_ALREADY_STARTED",
-                OfflineUserDataJobError::RemoveNotSupported => "REMOVE_NOT_SUPPORTED",
-                OfflineUserDataJobError::RemoveAllNotSupported => {
-                    "REMOVE_ALL_NOT_SUPPORTED"
-                }
-                OfflineUserDataJobError::InvalidSha256Format => "INVALID_SHA256_FORMAT",
-                OfflineUserDataJobError::CustomKeyDisabled => "CUSTOM_KEY_DISABLED",
-                OfflineUserDataJobError::CustomKeyNotPredefined => {
-                    "CUSTOM_KEY_NOT_PREDEFINED"
-                }
-                OfflineUserDataJobError::CustomKeyNotSet => "CUSTOM_KEY_NOT_SET",
-                OfflineUserDataJobError::CustomerNotAcceptedCustomerDataTerms => {
+                Self::JobAlreadyStarted => "JOB_ALREADY_STARTED",
+                Self::RemoveNotSupported => "REMOVE_NOT_SUPPORTED",
+                Self::RemoveAllNotSupported => "REMOVE_ALL_NOT_SUPPORTED",
+                Self::InvalidSha256Format => "INVALID_SHA256_FORMAT",
+                Self::CustomKeyDisabled => "CUSTOM_KEY_DISABLED",
+                Self::CustomKeyNotPredefined => "CUSTOM_KEY_NOT_PREDEFINED",
+                Self::CustomKeyNotSet => "CUSTOM_KEY_NOT_SET",
+                Self::CustomerNotAcceptedCustomerDataTerms => {
                     "CUSTOMER_NOT_ACCEPTED_CUSTOMER_DATA_TERMS"
                 }
-                OfflineUserDataJobError::AttributesNotApplicableForCustomerMatchUserList => {
+                Self::AttributesNotApplicableForCustomerMatchUserList => {
                     "ATTRIBUTES_NOT_APPLICABLE_FOR_CUSTOMER_MATCH_USER_LIST"
                 }
-                OfflineUserDataJobError::LifetimeValueBucketNotInRange => {
+                Self::LifetimeValueBucketNotInRange => {
                     "LIFETIME_VALUE_BUCKET_NOT_IN_RANGE"
                 }
-                OfflineUserDataJobError::IncompatibleUserIdentifierForAttributes => {
+                Self::IncompatibleUserIdentifierForAttributes => {
                     "INCOMPATIBLE_USER_IDENTIFIER_FOR_ATTRIBUTES"
                 }
-                OfflineUserDataJobError::FutureTimeNotAllowed => {
-                    "FUTURE_TIME_NOT_ALLOWED"
-                }
-                OfflineUserDataJobError::LastPurchaseTimeLessThanAcquisitionTime => {
+                Self::FutureTimeNotAllowed => "FUTURE_TIME_NOT_ALLOWED",
+                Self::LastPurchaseTimeLessThanAcquisitionTime => {
                     "LAST_PURCHASE_TIME_LESS_THAN_ACQUISITION_TIME"
                 }
-                OfflineUserDataJobError::CustomerIdentifierNotAllowed => {
-                    "CUSTOMER_IDENTIFIER_NOT_ALLOWED"
-                }
-                OfflineUserDataJobError::InvalidItemId => "INVALID_ITEM_ID",
-                OfflineUserDataJobError::FirstPurchaseTimeGreaterThanLastPurchaseTime => {
+                Self::CustomerIdentifierNotAllowed => "CUSTOMER_IDENTIFIER_NOT_ALLOWED",
+                Self::InvalidItemId => "INVALID_ITEM_ID",
+                Self::FirstPurchaseTimeGreaterThanLastPurchaseTime => {
                     "FIRST_PURCHASE_TIME_GREATER_THAN_LAST_PURCHASE_TIME"
                 }
-                OfflineUserDataJobError::InvalidLifecycleStage => {
-                    "INVALID_LIFECYCLE_STAGE"
-                }
-                OfflineUserDataJobError::InvalidEventValue => "INVALID_EVENT_VALUE",
-                OfflineUserDataJobError::EventAttributeAllFieldsAreRequired => {
+                Self::InvalidLifecycleStage => "INVALID_LIFECYCLE_STAGE",
+                Self::InvalidEventValue => "INVALID_EVENT_VALUE",
+                Self::EventAttributeAllFieldsAreRequired => {
                     "EVENT_ATTRIBUTE_ALL_FIELDS_ARE_REQUIRED"
                 }
             }
@@ -16128,34 +15416,26 @@ pub mod operation_access_denied_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OperationAccessDeniedError::Unspecified => "UNSPECIFIED",
-                OperationAccessDeniedError::Unknown => "UNKNOWN",
-                OperationAccessDeniedError::ActionNotPermitted => "ACTION_NOT_PERMITTED",
-                OperationAccessDeniedError::CreateOperationNotPermitted => {
-                    "CREATE_OPERATION_NOT_PERMITTED"
-                }
-                OperationAccessDeniedError::RemoveOperationNotPermitted => {
-                    "REMOVE_OPERATION_NOT_PERMITTED"
-                }
-                OperationAccessDeniedError::UpdateOperationNotPermitted => {
-                    "UPDATE_OPERATION_NOT_PERMITTED"
-                }
-                OperationAccessDeniedError::MutateActionNotPermittedForClient => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ActionNotPermitted => "ACTION_NOT_PERMITTED",
+                Self::CreateOperationNotPermitted => "CREATE_OPERATION_NOT_PERMITTED",
+                Self::RemoveOperationNotPermitted => "REMOVE_OPERATION_NOT_PERMITTED",
+                Self::UpdateOperationNotPermitted => "UPDATE_OPERATION_NOT_PERMITTED",
+                Self::MutateActionNotPermittedForClient => {
                     "MUTATE_ACTION_NOT_PERMITTED_FOR_CLIENT"
                 }
-                OperationAccessDeniedError::OperationNotPermittedForCampaignType => {
+                Self::OperationNotPermittedForCampaignType => {
                     "OPERATION_NOT_PERMITTED_FOR_CAMPAIGN_TYPE"
                 }
-                OperationAccessDeniedError::CreateAsRemovedNotPermitted => {
-                    "CREATE_AS_REMOVED_NOT_PERMITTED"
-                }
-                OperationAccessDeniedError::OperationNotPermittedForRemovedResource => {
+                Self::CreateAsRemovedNotPermitted => "CREATE_AS_REMOVED_NOT_PERMITTED",
+                Self::OperationNotPermittedForRemovedResource => {
                     "OPERATION_NOT_PERMITTED_FOR_REMOVED_RESOURCE"
                 }
-                OperationAccessDeniedError::OperationNotPermittedForAdGroupType => {
+                Self::OperationNotPermittedForAdGroupType => {
                     "OPERATION_NOT_PERMITTED_FOR_AD_GROUP_TYPE"
                 }
-                OperationAccessDeniedError::MutateNotPermittedForCustomer => {
+                Self::MutateNotPermittedForCustomer => {
                     "MUTATE_NOT_PERMITTED_FOR_CUSTOMER"
                 }
             }
@@ -16231,9 +15511,9 @@ pub mod operator_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OperatorError::Unspecified => "UNSPECIFIED",
-                OperatorError::Unknown => "UNKNOWN",
-                OperatorError::OperatorNotSupported => "OPERATOR_NOT_SUPPORTED",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::OperatorNotSupported => "OPERATOR_NOT_SUPPORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -16281,11 +15561,9 @@ pub mod partial_failure_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PartialFailureError::Unspecified => "UNSPECIFIED",
-                PartialFailureError::Unknown => "UNKNOWN",
-                PartialFailureError::PartialFailureModeRequired => {
-                    "PARTIAL_FAILURE_MODE_REQUIRED"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::PartialFailureModeRequired => "PARTIAL_FAILURE_MODE_REQUIRED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -16332,9 +15610,9 @@ pub mod payments_account_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PaymentsAccountError::Unspecified => "UNSPECIFIED",
-                PaymentsAccountError::Unknown => "UNKNOWN",
-                PaymentsAccountError::NotSupportedForManagerCustomer => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::NotSupportedForManagerCustomer => {
                     "NOT_SUPPORTED_FOR_MANAGER_CUSTOMER"
                 }
             }
@@ -16388,10 +15666,10 @@ pub mod policy_finding_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PolicyFindingError::Unspecified => "UNSPECIFIED",
-                PolicyFindingError::Unknown => "UNKNOWN",
-                PolicyFindingError::PolicyFinding => "POLICY_FINDING",
-                PolicyFindingError::PolicyTopicNotFound => "POLICY_TOPIC_NOT_FOUND",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::PolicyFinding => "POLICY_FINDING",
+                Self::PolicyTopicNotFound => "POLICY_TOPIC_NOT_FOUND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -16444,15 +15722,15 @@ pub mod policy_validation_parameter_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PolicyValidationParameterError::Unspecified => "UNSPECIFIED",
-                PolicyValidationParameterError::Unknown => "UNKNOWN",
-                PolicyValidationParameterError::UnsupportedAdTypeForIgnorablePolicyTopics => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::UnsupportedAdTypeForIgnorablePolicyTopics => {
                     "UNSUPPORTED_AD_TYPE_FOR_IGNORABLE_POLICY_TOPICS"
                 }
-                PolicyValidationParameterError::UnsupportedAdTypeForExemptPolicyViolationKeys => {
+                Self::UnsupportedAdTypeForExemptPolicyViolationKeys => {
                     "UNSUPPORTED_AD_TYPE_FOR_EXEMPT_POLICY_VIOLATION_KEYS"
                 }
-                PolicyValidationParameterError::CannotSetBothIgnorablePolicyTopicsAndExemptPolicyViolationKeys => {
+                Self::CannotSetBothIgnorablePolicyTopicsAndExemptPolicyViolationKeys => {
                     "CANNOT_SET_BOTH_IGNORABLE_POLICY_TOPICS_AND_EXEMPT_POLICY_VIOLATION_KEYS"
                 }
             }
@@ -16511,9 +15789,9 @@ pub mod policy_violation_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PolicyViolationError::Unspecified => "UNSPECIFIED",
-                PolicyViolationError::Unknown => "UNKNOWN",
-                PolicyViolationError::PolicyError => "POLICY_ERROR",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::PolicyError => "POLICY_ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -16567,12 +15845,12 @@ pub mod product_link_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ProductLinkError::Unspecified => "UNSPECIFIED",
-                ProductLinkError::Unknown => "UNKNOWN",
-                ProductLinkError::InvalidOperation => "INVALID_OPERATION",
-                ProductLinkError::CreationNotPermitted => "CREATION_NOT_PERMITTED",
-                ProductLinkError::InvitationExists => "INVITATION_EXISTS",
-                ProductLinkError::LinkExists => "LINK_EXISTS",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidOperation => "INVALID_OPERATION",
+                Self::CreationNotPermitted => "CREATION_NOT_PERMITTED",
+                Self::InvitationExists => "INVITATION_EXISTS",
+                Self::LinkExists => "LINK_EXISTS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -16630,14 +15908,12 @@ pub mod product_link_invitation_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ProductLinkInvitationError::Unspecified => "UNSPECIFIED",
-                ProductLinkInvitationError::Unknown => "UNKNOWN",
-                ProductLinkInvitationError::InvalidStatus => "INVALID_STATUS",
-                ProductLinkInvitationError::PermissionDenied => "PERMISSION_DENIED",
-                ProductLinkInvitationError::NoInvitationRequired => {
-                    "NO_INVITATION_REQUIRED"
-                }
-                ProductLinkInvitationError::CustomerNotPermittedToCreateInvitation => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidStatus => "INVALID_STATUS",
+                Self::PermissionDenied => "PERMISSION_DENIED",
+                Self::NoInvitationRequired => "NO_INVITATION_REQUIRED",
+                Self::CustomerNotPermittedToCreateInvitation => {
                     "CUSTOMER_NOT_PERMITTED_TO_CREATE_INVITATION"
                 }
             }
@@ -16817,105 +16093,97 @@ pub mod query_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                QueryError::Unspecified => "UNSPECIFIED",
-                QueryError::Unknown => "UNKNOWN",
-                QueryError::QueryError => "QUERY_ERROR",
-                QueryError::BadEnumConstant => "BAD_ENUM_CONSTANT",
-                QueryError::BadEscapeSequence => "BAD_ESCAPE_SEQUENCE",
-                QueryError::BadFieldName => "BAD_FIELD_NAME",
-                QueryError::BadLimitValue => "BAD_LIMIT_VALUE",
-                QueryError::BadNumber => "BAD_NUMBER",
-                QueryError::BadOperator => "BAD_OPERATOR",
-                QueryError::BadParameterName => "BAD_PARAMETER_NAME",
-                QueryError::BadParameterValue => "BAD_PARAMETER_VALUE",
-                QueryError::BadResourceTypeInFromClause => {
-                    "BAD_RESOURCE_TYPE_IN_FROM_CLAUSE"
-                }
-                QueryError::BadSymbol => "BAD_SYMBOL",
-                QueryError::BadValue => "BAD_VALUE",
-                QueryError::DateRangeTooWide => "DATE_RANGE_TOO_WIDE",
-                QueryError::DateRangeTooNarrow => "DATE_RANGE_TOO_NARROW",
-                QueryError::ExpectedAnd => "EXPECTED_AND",
-                QueryError::ExpectedBy => "EXPECTED_BY",
-                QueryError::ExpectedDimensionFieldInSelectClause => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::QueryError => "QUERY_ERROR",
+                Self::BadEnumConstant => "BAD_ENUM_CONSTANT",
+                Self::BadEscapeSequence => "BAD_ESCAPE_SEQUENCE",
+                Self::BadFieldName => "BAD_FIELD_NAME",
+                Self::BadLimitValue => "BAD_LIMIT_VALUE",
+                Self::BadNumber => "BAD_NUMBER",
+                Self::BadOperator => "BAD_OPERATOR",
+                Self::BadParameterName => "BAD_PARAMETER_NAME",
+                Self::BadParameterValue => "BAD_PARAMETER_VALUE",
+                Self::BadResourceTypeInFromClause => "BAD_RESOURCE_TYPE_IN_FROM_CLAUSE",
+                Self::BadSymbol => "BAD_SYMBOL",
+                Self::BadValue => "BAD_VALUE",
+                Self::DateRangeTooWide => "DATE_RANGE_TOO_WIDE",
+                Self::DateRangeTooNarrow => "DATE_RANGE_TOO_NARROW",
+                Self::ExpectedAnd => "EXPECTED_AND",
+                Self::ExpectedBy => "EXPECTED_BY",
+                Self::ExpectedDimensionFieldInSelectClause => {
                     "EXPECTED_DIMENSION_FIELD_IN_SELECT_CLAUSE"
                 }
-                QueryError::ExpectedFiltersOnDateRange => {
-                    "EXPECTED_FILTERS_ON_DATE_RANGE"
-                }
-                QueryError::ExpectedFrom => "EXPECTED_FROM",
-                QueryError::ExpectedList => "EXPECTED_LIST",
-                QueryError::ExpectedReferencedFieldInSelectClause => {
+                Self::ExpectedFiltersOnDateRange => "EXPECTED_FILTERS_ON_DATE_RANGE",
+                Self::ExpectedFrom => "EXPECTED_FROM",
+                Self::ExpectedList => "EXPECTED_LIST",
+                Self::ExpectedReferencedFieldInSelectClause => {
                     "EXPECTED_REFERENCED_FIELD_IN_SELECT_CLAUSE"
                 }
-                QueryError::ExpectedSelect => "EXPECTED_SELECT",
-                QueryError::ExpectedSingleValue => "EXPECTED_SINGLE_VALUE",
-                QueryError::ExpectedValueWithBetweenOperator => {
+                Self::ExpectedSelect => "EXPECTED_SELECT",
+                Self::ExpectedSingleValue => "EXPECTED_SINGLE_VALUE",
+                Self::ExpectedValueWithBetweenOperator => {
                     "EXPECTED_VALUE_WITH_BETWEEN_OPERATOR"
                 }
-                QueryError::InvalidDateFormat => "INVALID_DATE_FORMAT",
-                QueryError::MisalignedDateForFilter => "MISALIGNED_DATE_FOR_FILTER",
-                QueryError::InvalidStringValue => "INVALID_STRING_VALUE",
-                QueryError::InvalidValueWithBetweenOperator => {
+                Self::InvalidDateFormat => "INVALID_DATE_FORMAT",
+                Self::MisalignedDateForFilter => "MISALIGNED_DATE_FOR_FILTER",
+                Self::InvalidStringValue => "INVALID_STRING_VALUE",
+                Self::InvalidValueWithBetweenOperator => {
                     "INVALID_VALUE_WITH_BETWEEN_OPERATOR"
                 }
-                QueryError::InvalidValueWithDuringOperator => {
+                Self::InvalidValueWithDuringOperator => {
                     "INVALID_VALUE_WITH_DURING_OPERATOR"
                 }
-                QueryError::InvalidValueWithLikeOperator => {
-                    "INVALID_VALUE_WITH_LIKE_OPERATOR"
-                }
-                QueryError::OperatorFieldMismatch => "OPERATOR_FIELD_MISMATCH",
-                QueryError::ProhibitedEmptyListInCondition => {
+                Self::InvalidValueWithLikeOperator => "INVALID_VALUE_WITH_LIKE_OPERATOR",
+                Self::OperatorFieldMismatch => "OPERATOR_FIELD_MISMATCH",
+                Self::ProhibitedEmptyListInCondition => {
                     "PROHIBITED_EMPTY_LIST_IN_CONDITION"
                 }
-                QueryError::ProhibitedEnumConstant => "PROHIBITED_ENUM_CONSTANT",
-                QueryError::ProhibitedFieldCombinationInSelectClause => {
+                Self::ProhibitedEnumConstant => "PROHIBITED_ENUM_CONSTANT",
+                Self::ProhibitedFieldCombinationInSelectClause => {
                     "PROHIBITED_FIELD_COMBINATION_IN_SELECT_CLAUSE"
                 }
-                QueryError::ProhibitedFieldInOrderByClause => {
+                Self::ProhibitedFieldInOrderByClause => {
                     "PROHIBITED_FIELD_IN_ORDER_BY_CLAUSE"
                 }
-                QueryError::ProhibitedFieldInSelectClause => {
+                Self::ProhibitedFieldInSelectClause => {
                     "PROHIBITED_FIELD_IN_SELECT_CLAUSE"
                 }
-                QueryError::ProhibitedFieldInWhereClause => {
-                    "PROHIBITED_FIELD_IN_WHERE_CLAUSE"
-                }
-                QueryError::ProhibitedResourceTypeInFromClause => {
+                Self::ProhibitedFieldInWhereClause => "PROHIBITED_FIELD_IN_WHERE_CLAUSE",
+                Self::ProhibitedResourceTypeInFromClause => {
                     "PROHIBITED_RESOURCE_TYPE_IN_FROM_CLAUSE"
                 }
-                QueryError::ProhibitedResourceTypeInSelectClause => {
+                Self::ProhibitedResourceTypeInSelectClause => {
                     "PROHIBITED_RESOURCE_TYPE_IN_SELECT_CLAUSE"
                 }
-                QueryError::ProhibitedResourceTypeInWhereClause => {
+                Self::ProhibitedResourceTypeInWhereClause => {
                     "PROHIBITED_RESOURCE_TYPE_IN_WHERE_CLAUSE"
                 }
-                QueryError::ProhibitedMetricInSelectOrWhereClause => {
+                Self::ProhibitedMetricInSelectOrWhereClause => {
                     "PROHIBITED_METRIC_IN_SELECT_OR_WHERE_CLAUSE"
                 }
-                QueryError::ProhibitedSegmentInSelectOrWhereClause => {
+                Self::ProhibitedSegmentInSelectOrWhereClause => {
                     "PROHIBITED_SEGMENT_IN_SELECT_OR_WHERE_CLAUSE"
                 }
-                QueryError::ProhibitedSegmentWithMetricInSelectOrWhereClause => {
+                Self::ProhibitedSegmentWithMetricInSelectOrWhereClause => {
                     "PROHIBITED_SEGMENT_WITH_METRIC_IN_SELECT_OR_WHERE_CLAUSE"
                 }
-                QueryError::LimitValueTooLow => "LIMIT_VALUE_TOO_LOW",
-                QueryError::ProhibitedNewlineInString => "PROHIBITED_NEWLINE_IN_STRING",
-                QueryError::ProhibitedValueCombinationInList => {
+                Self::LimitValueTooLow => "LIMIT_VALUE_TOO_LOW",
+                Self::ProhibitedNewlineInString => "PROHIBITED_NEWLINE_IN_STRING",
+                Self::ProhibitedValueCombinationInList => {
                     "PROHIBITED_VALUE_COMBINATION_IN_LIST"
                 }
-                QueryError::ProhibitedValueCombinationWithBetweenOperator => {
+                Self::ProhibitedValueCombinationWithBetweenOperator => {
                     "PROHIBITED_VALUE_COMBINATION_WITH_BETWEEN_OPERATOR"
                 }
-                QueryError::StringNotTerminated => "STRING_NOT_TERMINATED",
-                QueryError::TooManySegments => "TOO_MANY_SEGMENTS",
-                QueryError::UnexpectedEndOfQuery => "UNEXPECTED_END_OF_QUERY",
-                QueryError::UnexpectedFromClause => "UNEXPECTED_FROM_CLAUSE",
-                QueryError::UnrecognizedField => "UNRECOGNIZED_FIELD",
-                QueryError::UnexpectedInput => "UNEXPECTED_INPUT",
-                QueryError::RequestedMetricsForManager => "REQUESTED_METRICS_FOR_MANAGER",
-                QueryError::FilterHasTooManyValues => "FILTER_HAS_TOO_MANY_VALUES",
+                Self::StringNotTerminated => "STRING_NOT_TERMINATED",
+                Self::TooManySegments => "TOO_MANY_SEGMENTS",
+                Self::UnexpectedEndOfQuery => "UNEXPECTED_END_OF_QUERY",
+                Self::UnexpectedFromClause => "UNEXPECTED_FROM_CLAUSE",
+                Self::UnrecognizedField => "UNRECOGNIZED_FIELD",
+                Self::UnexpectedInput => "UNEXPECTED_INPUT",
+                Self::RequestedMetricsForManager => "REQUESTED_METRICS_FOR_MANAGER",
+                Self::FilterHasTooManyValues => "FILTER_HAS_TOO_MANY_VALUES",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -17062,13 +16330,11 @@ pub mod quota_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                QuotaError::Unspecified => "UNSPECIFIED",
-                QuotaError::Unknown => "UNKNOWN",
-                QuotaError::ResourceExhausted => "RESOURCE_EXHAUSTED",
-                QuotaError::AccessProhibited => "ACCESS_PROHIBITED",
-                QuotaError::ResourceTemporarilyExhausted => {
-                    "RESOURCE_TEMPORARILY_EXHAUSTED"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ResourceExhausted => "RESOURCE_EXHAUSTED",
+                Self::AccessProhibited => "ACCESS_PROHIBITED",
+                Self::ResourceTemporarilyExhausted => "RESOURCE_TEMPORARILY_EXHAUSTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -17121,10 +16387,10 @@ pub mod range_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RangeError::Unspecified => "UNSPECIFIED",
-                RangeError::Unknown => "UNKNOWN",
-                RangeError::TooLow => "TOO_LOW",
-                RangeError::TooHigh => "TOO_HIGH",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::TooLow => "TOO_LOW",
+                Self::TooHigh => "TOO_HIGH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -17177,15 +16443,13 @@ pub mod reach_plan_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReachPlanError::Unspecified => "UNSPECIFIED",
-                ReachPlanError::Unknown => "UNKNOWN",
-                ReachPlanError::NotForecastableMissingRate => {
-                    "NOT_FORECASTABLE_MISSING_RATE"
-                }
-                ReachPlanError::NotForecastableNotEnoughInventory => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::NotForecastableMissingRate => "NOT_FORECASTABLE_MISSING_RATE",
+                Self::NotForecastableNotEnoughInventory => {
                     "NOT_FORECASTABLE_NOT_ENOUGH_INVENTORY"
                 }
-                ReachPlanError::NotForecastableAccountNotEnabled => {
+                Self::NotForecastableAccountNotEnabled => {
                     "NOT_FORECASTABLE_ACCOUNT_NOT_ENABLED"
                 }
             }
@@ -17281,41 +16545,35 @@ pub mod recommendation_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RecommendationError::Unspecified => "UNSPECIFIED",
-                RecommendationError::Unknown => "UNKNOWN",
-                RecommendationError::BudgetAmountTooSmall => "BUDGET_AMOUNT_TOO_SMALL",
-                RecommendationError::BudgetAmountTooLarge => "BUDGET_AMOUNT_TOO_LARGE",
-                RecommendationError::InvalidBudgetAmount => "INVALID_BUDGET_AMOUNT",
-                RecommendationError::PolicyError => "POLICY_ERROR",
-                RecommendationError::InvalidBidAmount => "INVALID_BID_AMOUNT",
-                RecommendationError::AdgroupKeywordLimit => "ADGROUP_KEYWORD_LIMIT",
-                RecommendationError::RecommendationAlreadyApplied => {
-                    "RECOMMENDATION_ALREADY_APPLIED"
-                }
-                RecommendationError::RecommendationInvalidated => {
-                    "RECOMMENDATION_INVALIDATED"
-                }
-                RecommendationError::TooManyOperations => "TOO_MANY_OPERATIONS",
-                RecommendationError::NoOperations => "NO_OPERATIONS",
-                RecommendationError::DifferentTypesNotSupported => {
-                    "DIFFERENT_TYPES_NOT_SUPPORTED"
-                }
-                RecommendationError::DuplicateResourceName => "DUPLICATE_RESOURCE_NAME",
-                RecommendationError::RecommendationAlreadyDismissed => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::BudgetAmountTooSmall => "BUDGET_AMOUNT_TOO_SMALL",
+                Self::BudgetAmountTooLarge => "BUDGET_AMOUNT_TOO_LARGE",
+                Self::InvalidBudgetAmount => "INVALID_BUDGET_AMOUNT",
+                Self::PolicyError => "POLICY_ERROR",
+                Self::InvalidBidAmount => "INVALID_BID_AMOUNT",
+                Self::AdgroupKeywordLimit => "ADGROUP_KEYWORD_LIMIT",
+                Self::RecommendationAlreadyApplied => "RECOMMENDATION_ALREADY_APPLIED",
+                Self::RecommendationInvalidated => "RECOMMENDATION_INVALIDATED",
+                Self::TooManyOperations => "TOO_MANY_OPERATIONS",
+                Self::NoOperations => "NO_OPERATIONS",
+                Self::DifferentTypesNotSupported => "DIFFERENT_TYPES_NOT_SUPPORTED",
+                Self::DuplicateResourceName => "DUPLICATE_RESOURCE_NAME",
+                Self::RecommendationAlreadyDismissed => {
                     "RECOMMENDATION_ALREADY_DISMISSED"
                 }
-                RecommendationError::InvalidApplyRequest => "INVALID_APPLY_REQUEST",
-                RecommendationError::RecommendationTypeApplyNotSupported => {
+                Self::InvalidApplyRequest => "INVALID_APPLY_REQUEST",
+                Self::RecommendationTypeApplyNotSupported => {
                     "RECOMMENDATION_TYPE_APPLY_NOT_SUPPORTED"
                 }
-                RecommendationError::InvalidMultiplier => "INVALID_MULTIPLIER",
-                RecommendationError::AdvertisingChannelTypeGenerateNotSupported => {
+                Self::InvalidMultiplier => "INVALID_MULTIPLIER",
+                Self::AdvertisingChannelTypeGenerateNotSupported => {
                     "ADVERTISING_CHANNEL_TYPE_GENERATE_NOT_SUPPORTED"
                 }
-                RecommendationError::RecommendationTypeGenerateNotSupported => {
+                Self::RecommendationTypeGenerateNotSupported => {
                     "RECOMMENDATION_TYPE_GENERATE_NOT_SUPPORTED"
                 }
-                RecommendationError::RecommendationTypesCannotBeEmpty => {
+                Self::RecommendationTypesCannotBeEmpty => {
                     "RECOMMENDATION_TYPES_CANNOT_BE_EMPTY"
                 }
             }
@@ -17392,8 +16650,8 @@ pub mod recommendation_subscription_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RecommendationSubscriptionError::Unspecified => "UNSPECIFIED",
-                RecommendationSubscriptionError::Unknown => "UNKNOWN",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -17439,9 +16697,9 @@ pub mod region_code_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RegionCodeError::Unspecified => "UNSPECIFIED",
-                RegionCodeError::Unknown => "UNKNOWN",
-                RegionCodeError::InvalidRegionCode => "INVALID_REGION_CODE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidRegionCode => "INVALID_REGION_CODE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -17545,50 +16803,50 @@ pub mod request_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RequestError::Unspecified => "UNSPECIFIED",
-                RequestError::Unknown => "UNKNOWN",
-                RequestError::ResourceNameMissing => "RESOURCE_NAME_MISSING",
-                RequestError::ResourceNameMalformed => "RESOURCE_NAME_MALFORMED",
-                RequestError::BadResourceId => "BAD_RESOURCE_ID",
-                RequestError::InvalidCustomerId => "INVALID_CUSTOMER_ID",
-                RequestError::OperationRequired => "OPERATION_REQUIRED",
-                RequestError::ResourceNotFound => "RESOURCE_NOT_FOUND",
-                RequestError::InvalidPageToken => "INVALID_PAGE_TOKEN",
-                RequestError::ExpiredPageToken => "EXPIRED_PAGE_TOKEN",
-                RequestError::InvalidPageSize => "INVALID_PAGE_SIZE",
-                RequestError::PageSizeNotSupported => "PAGE_SIZE_NOT_SUPPORTED",
-                RequestError::RequiredFieldMissing => "REQUIRED_FIELD_MISSING",
-                RequestError::ImmutableField => "IMMUTABLE_FIELD",
-                RequestError::TooManyMutateOperations => "TOO_MANY_MUTATE_OPERATIONS",
-                RequestError::CannotBeExecutedByManagerAccount => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ResourceNameMissing => "RESOURCE_NAME_MISSING",
+                Self::ResourceNameMalformed => "RESOURCE_NAME_MALFORMED",
+                Self::BadResourceId => "BAD_RESOURCE_ID",
+                Self::InvalidCustomerId => "INVALID_CUSTOMER_ID",
+                Self::OperationRequired => "OPERATION_REQUIRED",
+                Self::ResourceNotFound => "RESOURCE_NOT_FOUND",
+                Self::InvalidPageToken => "INVALID_PAGE_TOKEN",
+                Self::ExpiredPageToken => "EXPIRED_PAGE_TOKEN",
+                Self::InvalidPageSize => "INVALID_PAGE_SIZE",
+                Self::PageSizeNotSupported => "PAGE_SIZE_NOT_SUPPORTED",
+                Self::RequiredFieldMissing => "REQUIRED_FIELD_MISSING",
+                Self::ImmutableField => "IMMUTABLE_FIELD",
+                Self::TooManyMutateOperations => "TOO_MANY_MUTATE_OPERATIONS",
+                Self::CannotBeExecutedByManagerAccount => {
                     "CANNOT_BE_EXECUTED_BY_MANAGER_ACCOUNT"
                 }
-                RequestError::CannotModifyForeignField => "CANNOT_MODIFY_FOREIGN_FIELD",
-                RequestError::InvalidEnumValue => "INVALID_ENUM_VALUE",
-                RequestError::DeveloperTokenParameterMissing => {
+                Self::CannotModifyForeignField => "CANNOT_MODIFY_FOREIGN_FIELD",
+                Self::InvalidEnumValue => "INVALID_ENUM_VALUE",
+                Self::DeveloperTokenParameterMissing => {
                     "DEVELOPER_TOKEN_PARAMETER_MISSING"
                 }
-                RequestError::LoginCustomerIdParameterMissing => {
+                Self::LoginCustomerIdParameterMissing => {
                     "LOGIN_CUSTOMER_ID_PARAMETER_MISSING"
                 }
-                RequestError::ValidateOnlyRequestHasPageToken => {
+                Self::ValidateOnlyRequestHasPageToken => {
                     "VALIDATE_ONLY_REQUEST_HAS_PAGE_TOKEN"
                 }
-                RequestError::CannotReturnSummaryRowForRequestWithoutMetrics => {
+                Self::CannotReturnSummaryRowForRequestWithoutMetrics => {
                     "CANNOT_RETURN_SUMMARY_ROW_FOR_REQUEST_WITHOUT_METRICS"
                 }
-                RequestError::CannotReturnSummaryRowForValidateOnlyRequests => {
+                Self::CannotReturnSummaryRowForValidateOnlyRequests => {
                     "CANNOT_RETURN_SUMMARY_ROW_FOR_VALIDATE_ONLY_REQUESTS"
                 }
-                RequestError::InconsistentReturnSummaryRowValue => {
+                Self::InconsistentReturnSummaryRowValue => {
                     "INCONSISTENT_RETURN_SUMMARY_ROW_VALUE"
                 }
-                RequestError::TotalResultsCountNotOriginallyRequested => {
+                Self::TotalResultsCountNotOriginallyRequested => {
                     "TOTAL_RESULTS_COUNT_NOT_ORIGINALLY_REQUESTED"
                 }
-                RequestError::RpcDeadlineTooShort => "RPC_DEADLINE_TOO_SHORT",
-                RequestError::UnsupportedVersion => "UNSUPPORTED_VERSION",
-                RequestError::CloudProjectNotFound => "CLOUD_PROJECT_NOT_FOUND",
+                Self::RpcDeadlineTooShort => "RPC_DEADLINE_TOO_SHORT",
+                Self::UnsupportedVersion => "UNSUPPORTED_VERSION",
+                Self::CloudProjectNotFound => "CLOUD_PROJECT_NOT_FOUND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -17676,9 +16934,9 @@ pub mod resource_access_denied_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ResourceAccessDeniedError::Unspecified => "UNSPECIFIED",
-                ResourceAccessDeniedError::Unknown => "UNKNOWN",
-                ResourceAccessDeniedError::WriteAccessDenied => "WRITE_ACCESS_DENIED",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::WriteAccessDenied => "WRITE_ACCESS_DENIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -17763,23 +17021,17 @@ pub mod resource_count_limit_exceeded_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ResourceCountLimitExceededError::Unspecified => "UNSPECIFIED",
-                ResourceCountLimitExceededError::Unknown => "UNKNOWN",
-                ResourceCountLimitExceededError::AccountLimit => "ACCOUNT_LIMIT",
-                ResourceCountLimitExceededError::CampaignLimit => "CAMPAIGN_LIMIT",
-                ResourceCountLimitExceededError::AdgroupLimit => "ADGROUP_LIMIT",
-                ResourceCountLimitExceededError::AdGroupAdLimit => "AD_GROUP_AD_LIMIT",
-                ResourceCountLimitExceededError::AdGroupCriterionLimit => {
-                    "AD_GROUP_CRITERION_LIMIT"
-                }
-                ResourceCountLimitExceededError::SharedSetLimit => "SHARED_SET_LIMIT",
-                ResourceCountLimitExceededError::MatchingFunctionLimit => {
-                    "MATCHING_FUNCTION_LIMIT"
-                }
-                ResourceCountLimitExceededError::ResponseRowLimitExceeded => {
-                    "RESPONSE_ROW_LIMIT_EXCEEDED"
-                }
-                ResourceCountLimitExceededError::ResourceLimit => "RESOURCE_LIMIT",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::AccountLimit => "ACCOUNT_LIMIT",
+                Self::CampaignLimit => "CAMPAIGN_LIMIT",
+                Self::AdgroupLimit => "ADGROUP_LIMIT",
+                Self::AdGroupAdLimit => "AD_GROUP_AD_LIMIT",
+                Self::AdGroupCriterionLimit => "AD_GROUP_CRITERION_LIMIT",
+                Self::SharedSetLimit => "SHARED_SET_LIMIT",
+                Self::MatchingFunctionLimit => "MATCHING_FUNCTION_LIMIT",
+                Self::ResponseRowLimitExceeded => "RESPONSE_ROW_LIMIT_EXCEEDED",
+                Self::ResourceLimit => "RESOURCE_LIMIT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -17844,24 +17096,20 @@ pub mod search_term_insight_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SearchTermInsightError::Unspecified => "UNSPECIFIED",
-                SearchTermInsightError::Unknown => "UNKNOWN",
-                SearchTermInsightError::FilteringNotAllowedWithSegments => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::FilteringNotAllowedWithSegments => {
                     "FILTERING_NOT_ALLOWED_WITH_SEGMENTS"
                 }
-                SearchTermInsightError::LimitNotAllowedWithSegments => {
-                    "LIMIT_NOT_ALLOWED_WITH_SEGMENTS"
-                }
-                SearchTermInsightError::MissingFieldInSelectClause => {
-                    "MISSING_FIELD_IN_SELECT_CLAUSE"
-                }
-                SearchTermInsightError::RequiresFilterBySingleResource => {
+                Self::LimitNotAllowedWithSegments => "LIMIT_NOT_ALLOWED_WITH_SEGMENTS",
+                Self::MissingFieldInSelectClause => "MISSING_FIELD_IN_SELECT_CLAUSE",
+                Self::RequiresFilterBySingleResource => {
                     "REQUIRES_FILTER_BY_SINGLE_RESOURCE"
                 }
-                SearchTermInsightError::SortingNotAllowedWithSegments => {
+                Self::SortingNotAllowedWithSegments => {
                     "SORTING_NOT_ALLOWED_WITH_SEGMENTS"
                 }
-                SearchTermInsightError::SummaryRowNotAllowedWithSegments => {
+                Self::SummaryRowNotAllowedWithSegments => {
                     "SUMMARY_ROW_NOT_ALLOWED_WITH_SEGMENTS"
                 }
             }
@@ -17959,42 +17207,40 @@ pub mod setting_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SettingError::Unspecified => "UNSPECIFIED",
-                SettingError::Unknown => "UNKNOWN",
-                SettingError::SettingTypeIsNotAvailable => {
-                    "SETTING_TYPE_IS_NOT_AVAILABLE"
-                }
-                SettingError::SettingTypeIsNotCompatibleWithCampaign => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::SettingTypeIsNotAvailable => "SETTING_TYPE_IS_NOT_AVAILABLE",
+                Self::SettingTypeIsNotCompatibleWithCampaign => {
                     "SETTING_TYPE_IS_NOT_COMPATIBLE_WITH_CAMPAIGN"
                 }
-                SettingError::TargetingSettingContainsInvalidCriterionTypeGroup => {
+                Self::TargetingSettingContainsInvalidCriterionTypeGroup => {
                     "TARGETING_SETTING_CONTAINS_INVALID_CRITERION_TYPE_GROUP"
                 }
-                SettingError::TargetingSettingDemographicCriterionTypeGroupsMustBeSetToTargetAll => {
+                Self::TargetingSettingDemographicCriterionTypeGroupsMustBeSetToTargetAll => {
                     "TARGETING_SETTING_DEMOGRAPHIC_CRITERION_TYPE_GROUPS_MUST_BE_SET_TO_TARGET_ALL"
                 }
-                SettingError::TargetingSettingCannotChangeTargetAllToFalseForDemographicCriterionTypeGroup => {
+                Self::TargetingSettingCannotChangeTargetAllToFalseForDemographicCriterionTypeGroup => {
                     "TARGETING_SETTING_CANNOT_CHANGE_TARGET_ALL_TO_FALSE_FOR_DEMOGRAPHIC_CRITERION_TYPE_GROUP"
                 }
-                SettingError::DynamicSearchAdsSettingAtLeastOneFeedIdMustBePresent => {
+                Self::DynamicSearchAdsSettingAtLeastOneFeedIdMustBePresent => {
                     "DYNAMIC_SEARCH_ADS_SETTING_AT_LEAST_ONE_FEED_ID_MUST_BE_PRESENT"
                 }
-                SettingError::DynamicSearchAdsSettingContainsInvalidDomainName => {
+                Self::DynamicSearchAdsSettingContainsInvalidDomainName => {
                     "DYNAMIC_SEARCH_ADS_SETTING_CONTAINS_INVALID_DOMAIN_NAME"
                 }
-                SettingError::DynamicSearchAdsSettingContainsSubdomainName => {
+                Self::DynamicSearchAdsSettingContainsSubdomainName => {
                     "DYNAMIC_SEARCH_ADS_SETTING_CONTAINS_SUBDOMAIN_NAME"
                 }
-                SettingError::DynamicSearchAdsSettingContainsInvalidLanguageCode => {
+                Self::DynamicSearchAdsSettingContainsInvalidLanguageCode => {
                     "DYNAMIC_SEARCH_ADS_SETTING_CONTAINS_INVALID_LANGUAGE_CODE"
                 }
-                SettingError::TargetAllIsNotAllowedForPlacementInSearchCampaign => {
+                Self::TargetAllIsNotAllowedForPlacementInSearchCampaign => {
                     "TARGET_ALL_IS_NOT_ALLOWED_FOR_PLACEMENT_IN_SEARCH_CAMPAIGN"
                 }
-                SettingError::SettingValueNotCompatibleWithCampaign => {
+                Self::SettingValueNotCompatibleWithCampaign => {
                     "SETTING_VALUE_NOT_COMPATIBLE_WITH_CAMPAIGN"
                 }
-                SettingError::BidOnlyIsNotAllowedToBeModifiedWithCustomerMatchTargeting => {
+                Self::BidOnlyIsNotAllowedToBeModifiedWithCustomerMatchTargeting => {
                     "BID_ONLY_IS_NOT_ALLOWED_TO_BE_MODIFIED_WITH_CUSTOMER_MATCH_TARGETING"
                 }
             }
@@ -18080,9 +17326,9 @@ pub mod shared_criterion_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SharedCriterionError::Unspecified => "UNSPECIFIED",
-                SharedCriterionError::Unknown => "UNKNOWN",
-                SharedCriterionError::CriterionTypeNotAllowedForSharedSetType => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CriterionTypeNotAllowedForSharedSetType => {
                     "CRITERION_TYPE_NOT_ALLOWED_FOR_SHARED_SET_TYPE"
                 }
             }
@@ -18139,14 +17385,14 @@ pub mod shared_set_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SharedSetError::Unspecified => "UNSPECIFIED",
-                SharedSetError::Unknown => "UNKNOWN",
-                SharedSetError::CustomerCannotCreateSharedSetOfThisType => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CustomerCannotCreateSharedSetOfThisType => {
                     "CUSTOMER_CANNOT_CREATE_SHARED_SET_OF_THIS_TYPE"
                 }
-                SharedSetError::DuplicateName => "DUPLICATE_NAME",
-                SharedSetError::SharedSetRemoved => "SHARED_SET_REMOVED",
-                SharedSetError::SharedSetInUse => "SHARED_SET_IN_USE",
+                Self::DuplicateName => "DUPLICATE_NAME",
+                Self::SharedSetRemoved => "SHARED_SET_REMOVED",
+                Self::SharedSetInUse => "SHARED_SET_IN_USE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -18202,12 +17448,10 @@ pub mod size_limit_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SizeLimitError::Unspecified => "UNSPECIFIED",
-                SizeLimitError::Unknown => "UNKNOWN",
-                SizeLimitError::RequestSizeLimitExceeded => "REQUEST_SIZE_LIMIT_EXCEEDED",
-                SizeLimitError::ResponseSizeLimitExceeded => {
-                    "RESPONSE_SIZE_LIMIT_EXCEEDED"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::RequestSizeLimitExceeded => "REQUEST_SIZE_LIMIT_EXCEEDED",
+                Self::ResponseSizeLimitExceeded => "RESPONSE_SIZE_LIMIT_EXCEEDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -18268,23 +17512,21 @@ pub mod smart_campaign_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SmartCampaignError::Unspecified => "UNSPECIFIED",
-                SmartCampaignError::Unknown => "UNKNOWN",
-                SmartCampaignError::InvalidBusinessLocationId => {
-                    "INVALID_BUSINESS_LOCATION_ID"
-                }
-                SmartCampaignError::InvalidCampaign => "INVALID_CAMPAIGN",
-                SmartCampaignError::BusinessNameOrBusinessLocationIdMissing => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidBusinessLocationId => "INVALID_BUSINESS_LOCATION_ID",
+                Self::InvalidCampaign => "INVALID_CAMPAIGN",
+                Self::BusinessNameOrBusinessLocationIdMissing => {
                     "BUSINESS_NAME_OR_BUSINESS_LOCATION_ID_MISSING"
                 }
-                SmartCampaignError::RequiredSuggestionFieldMissing => {
+                Self::RequiredSuggestionFieldMissing => {
                     "REQUIRED_SUGGESTION_FIELD_MISSING"
                 }
-                SmartCampaignError::GeoTargetsRequired => "GEO_TARGETS_REQUIRED",
-                SmartCampaignError::CannotDetermineSuggestionLocale => {
+                Self::GeoTargetsRequired => "GEO_TARGETS_REQUIRED",
+                Self::CannotDetermineSuggestionLocale => {
                     "CANNOT_DETERMINE_SUGGESTION_LOCALE"
                 }
-                SmartCampaignError::FinalUrlNotCrawlable => "FINAL_URL_NOT_CRAWLABLE",
+                Self::FinalUrlNotCrawlable => "FINAL_URL_NOT_CRAWLABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -18345,10 +17587,10 @@ pub mod string_format_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                StringFormatError::Unspecified => "UNSPECIFIED",
-                StringFormatError::Unknown => "UNKNOWN",
-                StringFormatError::IllegalChars => "ILLEGAL_CHARS",
-                StringFormatError::InvalidFormat => "INVALID_FORMAT",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::IllegalChars => "ILLEGAL_CHARS",
+                Self::InvalidFormat => "INVALID_FORMAT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -18401,11 +17643,11 @@ pub mod string_length_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                StringLengthError::Unspecified => "UNSPECIFIED",
-                StringLengthError::Unknown => "UNKNOWN",
-                StringLengthError::Empty => "EMPTY",
-                StringLengthError::TooShort => "TOO_SHORT",
-                StringLengthError::TooLong => "TOO_LONG",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::Empty => "EMPTY",
+                Self::TooShort => "TOO_SHORT",
+                Self::TooLong => "TOO_LONG",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -18461,18 +17703,12 @@ pub mod third_party_app_analytics_link_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ThirdPartyAppAnalyticsLinkError::Unspecified => "UNSPECIFIED",
-                ThirdPartyAppAnalyticsLinkError::Unknown => "UNKNOWN",
-                ThirdPartyAppAnalyticsLinkError::InvalidAnalyticsProviderId => {
-                    "INVALID_ANALYTICS_PROVIDER_ID"
-                }
-                ThirdPartyAppAnalyticsLinkError::InvalidMobileAppId => {
-                    "INVALID_MOBILE_APP_ID"
-                }
-                ThirdPartyAppAnalyticsLinkError::MobileAppIsNotEnabled => {
-                    "MOBILE_APP_IS_NOT_ENABLED"
-                }
-                ThirdPartyAppAnalyticsLinkError::CannotRegenerateShareableLinkIdForRemovedLink => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidAnalyticsProviderId => "INVALID_ANALYTICS_PROVIDER_ID",
+                Self::InvalidMobileAppId => "INVALID_MOBILE_APP_ID",
+                Self::MobileAppIsNotEnabled => "MOBILE_APP_IS_NOT_ENABLED",
+                Self::CannotRegenerateShareableLinkIdForRemovedLink => {
                     "CANNOT_REGENERATE_SHAREABLE_LINK_ID_FOR_REMOVED_LINK"
                 }
             }
@@ -18526,9 +17762,9 @@ pub mod time_zone_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TimeZoneError::Unspecified => "UNSPECIFIED",
-                TimeZoneError::Unknown => "UNKNOWN",
-                TimeZoneError::InvalidTimeZone => "INVALID_TIME_ZONE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidTimeZone => "INVALID_TIME_ZONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -18694,113 +17930,93 @@ pub mod url_field_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                UrlFieldError::Unspecified => "UNSPECIFIED",
-                UrlFieldError::Unknown => "UNKNOWN",
-                UrlFieldError::InvalidTrackingUrlTemplate => {
-                    "INVALID_TRACKING_URL_TEMPLATE"
-                }
-                UrlFieldError::InvalidTagInTrackingUrlTemplate => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidTrackingUrlTemplate => "INVALID_TRACKING_URL_TEMPLATE",
+                Self::InvalidTagInTrackingUrlTemplate => {
                     "INVALID_TAG_IN_TRACKING_URL_TEMPLATE"
                 }
-                UrlFieldError::MissingTrackingUrlTemplateTag => {
+                Self::MissingTrackingUrlTemplateTag => {
                     "MISSING_TRACKING_URL_TEMPLATE_TAG"
                 }
-                UrlFieldError::MissingProtocolInTrackingUrlTemplate => {
+                Self::MissingProtocolInTrackingUrlTemplate => {
                     "MISSING_PROTOCOL_IN_TRACKING_URL_TEMPLATE"
                 }
-                UrlFieldError::InvalidProtocolInTrackingUrlTemplate => {
+                Self::InvalidProtocolInTrackingUrlTemplate => {
                     "INVALID_PROTOCOL_IN_TRACKING_URL_TEMPLATE"
                 }
-                UrlFieldError::MalformedTrackingUrlTemplate => {
-                    "MALFORMED_TRACKING_URL_TEMPLATE"
-                }
-                UrlFieldError::MissingHostInTrackingUrlTemplate => {
+                Self::MalformedTrackingUrlTemplate => "MALFORMED_TRACKING_URL_TEMPLATE",
+                Self::MissingHostInTrackingUrlTemplate => {
                     "MISSING_HOST_IN_TRACKING_URL_TEMPLATE"
                 }
-                UrlFieldError::InvalidTldInTrackingUrlTemplate => {
+                Self::InvalidTldInTrackingUrlTemplate => {
                     "INVALID_TLD_IN_TRACKING_URL_TEMPLATE"
                 }
-                UrlFieldError::RedundantNestedTrackingUrlTemplateTag => {
+                Self::RedundantNestedTrackingUrlTemplateTag => {
                     "REDUNDANT_NESTED_TRACKING_URL_TEMPLATE_TAG"
                 }
-                UrlFieldError::InvalidFinalUrl => "INVALID_FINAL_URL",
-                UrlFieldError::InvalidTagInFinalUrl => "INVALID_TAG_IN_FINAL_URL",
-                UrlFieldError::RedundantNestedFinalUrlTag => {
-                    "REDUNDANT_NESTED_FINAL_URL_TAG"
-                }
-                UrlFieldError::MissingProtocolInFinalUrl => {
-                    "MISSING_PROTOCOL_IN_FINAL_URL"
-                }
-                UrlFieldError::InvalidProtocolInFinalUrl => {
-                    "INVALID_PROTOCOL_IN_FINAL_URL"
-                }
-                UrlFieldError::MalformedFinalUrl => "MALFORMED_FINAL_URL",
-                UrlFieldError::MissingHostInFinalUrl => "MISSING_HOST_IN_FINAL_URL",
-                UrlFieldError::InvalidTldInFinalUrl => "INVALID_TLD_IN_FINAL_URL",
-                UrlFieldError::InvalidFinalMobileUrl => "INVALID_FINAL_MOBILE_URL",
-                UrlFieldError::InvalidTagInFinalMobileUrl => {
-                    "INVALID_TAG_IN_FINAL_MOBILE_URL"
-                }
-                UrlFieldError::RedundantNestedFinalMobileUrlTag => {
+                Self::InvalidFinalUrl => "INVALID_FINAL_URL",
+                Self::InvalidTagInFinalUrl => "INVALID_TAG_IN_FINAL_URL",
+                Self::RedundantNestedFinalUrlTag => "REDUNDANT_NESTED_FINAL_URL_TAG",
+                Self::MissingProtocolInFinalUrl => "MISSING_PROTOCOL_IN_FINAL_URL",
+                Self::InvalidProtocolInFinalUrl => "INVALID_PROTOCOL_IN_FINAL_URL",
+                Self::MalformedFinalUrl => "MALFORMED_FINAL_URL",
+                Self::MissingHostInFinalUrl => "MISSING_HOST_IN_FINAL_URL",
+                Self::InvalidTldInFinalUrl => "INVALID_TLD_IN_FINAL_URL",
+                Self::InvalidFinalMobileUrl => "INVALID_FINAL_MOBILE_URL",
+                Self::InvalidTagInFinalMobileUrl => "INVALID_TAG_IN_FINAL_MOBILE_URL",
+                Self::RedundantNestedFinalMobileUrlTag => {
                     "REDUNDANT_NESTED_FINAL_MOBILE_URL_TAG"
                 }
-                UrlFieldError::MissingProtocolInFinalMobileUrl => {
+                Self::MissingProtocolInFinalMobileUrl => {
                     "MISSING_PROTOCOL_IN_FINAL_MOBILE_URL"
                 }
-                UrlFieldError::InvalidProtocolInFinalMobileUrl => {
+                Self::InvalidProtocolInFinalMobileUrl => {
                     "INVALID_PROTOCOL_IN_FINAL_MOBILE_URL"
                 }
-                UrlFieldError::MalformedFinalMobileUrl => "MALFORMED_FINAL_MOBILE_URL",
-                UrlFieldError::MissingHostInFinalMobileUrl => {
-                    "MISSING_HOST_IN_FINAL_MOBILE_URL"
-                }
-                UrlFieldError::InvalidTldInFinalMobileUrl => {
-                    "INVALID_TLD_IN_FINAL_MOBILE_URL"
-                }
-                UrlFieldError::InvalidFinalAppUrl => "INVALID_FINAL_APP_URL",
-                UrlFieldError::InvalidTagInFinalAppUrl => "INVALID_TAG_IN_FINAL_APP_URL",
-                UrlFieldError::RedundantNestedFinalAppUrlTag => {
+                Self::MalformedFinalMobileUrl => "MALFORMED_FINAL_MOBILE_URL",
+                Self::MissingHostInFinalMobileUrl => "MISSING_HOST_IN_FINAL_MOBILE_URL",
+                Self::InvalidTldInFinalMobileUrl => "INVALID_TLD_IN_FINAL_MOBILE_URL",
+                Self::InvalidFinalAppUrl => "INVALID_FINAL_APP_URL",
+                Self::InvalidTagInFinalAppUrl => "INVALID_TAG_IN_FINAL_APP_URL",
+                Self::RedundantNestedFinalAppUrlTag => {
                     "REDUNDANT_NESTED_FINAL_APP_URL_TAG"
                 }
-                UrlFieldError::MultipleAppUrlsForOstype => "MULTIPLE_APP_URLS_FOR_OSTYPE",
-                UrlFieldError::InvalidOstype => "INVALID_OSTYPE",
-                UrlFieldError::InvalidProtocolForAppUrl => "INVALID_PROTOCOL_FOR_APP_URL",
-                UrlFieldError::InvalidPackageIdForAppUrl => {
-                    "INVALID_PACKAGE_ID_FOR_APP_URL"
-                }
-                UrlFieldError::UrlCustomParametersCountExceedsLimit => {
+                Self::MultipleAppUrlsForOstype => "MULTIPLE_APP_URLS_FOR_OSTYPE",
+                Self::InvalidOstype => "INVALID_OSTYPE",
+                Self::InvalidProtocolForAppUrl => "INVALID_PROTOCOL_FOR_APP_URL",
+                Self::InvalidPackageIdForAppUrl => "INVALID_PACKAGE_ID_FOR_APP_URL",
+                Self::UrlCustomParametersCountExceedsLimit => {
                     "URL_CUSTOM_PARAMETERS_COUNT_EXCEEDS_LIMIT"
                 }
-                UrlFieldError::InvalidCharactersInUrlCustomParameterKey => {
+                Self::InvalidCharactersInUrlCustomParameterKey => {
                     "INVALID_CHARACTERS_IN_URL_CUSTOM_PARAMETER_KEY"
                 }
-                UrlFieldError::InvalidCharactersInUrlCustomParameterValue => {
+                Self::InvalidCharactersInUrlCustomParameterValue => {
                     "INVALID_CHARACTERS_IN_URL_CUSTOM_PARAMETER_VALUE"
                 }
-                UrlFieldError::InvalidTagInUrlCustomParameterValue => {
+                Self::InvalidTagInUrlCustomParameterValue => {
                     "INVALID_TAG_IN_URL_CUSTOM_PARAMETER_VALUE"
                 }
-                UrlFieldError::RedundantNestedUrlCustomParameterTag => {
+                Self::RedundantNestedUrlCustomParameterTag => {
                     "REDUNDANT_NESTED_URL_CUSTOM_PARAMETER_TAG"
                 }
-                UrlFieldError::MissingProtocol => "MISSING_PROTOCOL",
-                UrlFieldError::InvalidProtocol => "INVALID_PROTOCOL",
-                UrlFieldError::InvalidUrl => "INVALID_URL",
-                UrlFieldError::DestinationUrlDeprecated => "DESTINATION_URL_DEPRECATED",
-                UrlFieldError::InvalidTagInUrl => "INVALID_TAG_IN_URL",
-                UrlFieldError::MissingUrlTag => "MISSING_URL_TAG",
-                UrlFieldError::DuplicateUrlId => "DUPLICATE_URL_ID",
-                UrlFieldError::InvalidUrlId => "INVALID_URL_ID",
-                UrlFieldError::FinalUrlSuffixMalformed => "FINAL_URL_SUFFIX_MALFORMED",
-                UrlFieldError::InvalidTagInFinalUrlSuffix => {
-                    "INVALID_TAG_IN_FINAL_URL_SUFFIX"
-                }
-                UrlFieldError::InvalidTopLevelDomain => "INVALID_TOP_LEVEL_DOMAIN",
-                UrlFieldError::MalformedTopLevelDomain => "MALFORMED_TOP_LEVEL_DOMAIN",
-                UrlFieldError::MalformedUrl => "MALFORMED_URL",
-                UrlFieldError::MissingHost => "MISSING_HOST",
-                UrlFieldError::NullCustomParameterValue => "NULL_CUSTOM_PARAMETER_VALUE",
-                UrlFieldError::ValueTrackParameterNotSupported => {
+                Self::MissingProtocol => "MISSING_PROTOCOL",
+                Self::InvalidProtocol => "INVALID_PROTOCOL",
+                Self::InvalidUrl => "INVALID_URL",
+                Self::DestinationUrlDeprecated => "DESTINATION_URL_DEPRECATED",
+                Self::InvalidTagInUrl => "INVALID_TAG_IN_URL",
+                Self::MissingUrlTag => "MISSING_URL_TAG",
+                Self::DuplicateUrlId => "DUPLICATE_URL_ID",
+                Self::InvalidUrlId => "INVALID_URL_ID",
+                Self::FinalUrlSuffixMalformed => "FINAL_URL_SUFFIX_MALFORMED",
+                Self::InvalidTagInFinalUrlSuffix => "INVALID_TAG_IN_FINAL_URL_SUFFIX",
+                Self::InvalidTopLevelDomain => "INVALID_TOP_LEVEL_DOMAIN",
+                Self::MalformedTopLevelDomain => "MALFORMED_TOP_LEVEL_DOMAIN",
+                Self::MalformedUrl => "MALFORMED_URL",
+                Self::MissingHost => "MISSING_HOST",
+                Self::NullCustomParameterValue => "NULL_CUSTOM_PARAMETER_VALUE",
+                Self::ValueTrackParameterNotSupported => {
                     "VALUE_TRACK_PARAMETER_NOT_SUPPORTED"
                 }
             }
@@ -18952,13 +18168,13 @@ pub mod user_data_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                UserDataError::Unspecified => "UNSPECIFIED",
-                UserDataError::Unknown => "UNKNOWN",
-                UserDataError::OperationsForCustomerMatchNotAllowed => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::OperationsForCustomerMatchNotAllowed => {
                     "OPERATIONS_FOR_CUSTOMER_MATCH_NOT_ALLOWED"
                 }
-                UserDataError::TooManyUserIdentifiers => "TOO_MANY_USER_IDENTIFIERS",
-                UserDataError::UserListNotApplicable => "USER_LIST_NOT_APPLICABLE",
+                Self::TooManyUserIdentifiers => "TOO_MANY_USER_IDENTIFIERS",
+                Self::UserListNotApplicable => "USER_LIST_NOT_APPLICABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -19081,67 +18297,63 @@ pub mod user_list_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                UserListError::Unspecified => "UNSPECIFIED",
-                UserListError::Unknown => "UNKNOWN",
-                UserListError::ExternalRemarketingUserListMutateNotSupported => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ExternalRemarketingUserListMutateNotSupported => {
                     "EXTERNAL_REMARKETING_USER_LIST_MUTATE_NOT_SUPPORTED"
                 }
-                UserListError::ConcreteTypeRequired => "CONCRETE_TYPE_REQUIRED",
-                UserListError::ConversionTypeIdRequired => "CONVERSION_TYPE_ID_REQUIRED",
-                UserListError::DuplicateConversionTypes => "DUPLICATE_CONVERSION_TYPES",
-                UserListError::InvalidConversionType => "INVALID_CONVERSION_TYPE",
-                UserListError::InvalidDescription => "INVALID_DESCRIPTION",
-                UserListError::InvalidName => "INVALID_NAME",
-                UserListError::InvalidType => "INVALID_TYPE",
-                UserListError::CanNotAddLogicalListAsLogicalListOperand => {
+                Self::ConcreteTypeRequired => "CONCRETE_TYPE_REQUIRED",
+                Self::ConversionTypeIdRequired => "CONVERSION_TYPE_ID_REQUIRED",
+                Self::DuplicateConversionTypes => "DUPLICATE_CONVERSION_TYPES",
+                Self::InvalidConversionType => "INVALID_CONVERSION_TYPE",
+                Self::InvalidDescription => "INVALID_DESCRIPTION",
+                Self::InvalidName => "INVALID_NAME",
+                Self::InvalidType => "INVALID_TYPE",
+                Self::CanNotAddLogicalListAsLogicalListOperand => {
                     "CAN_NOT_ADD_LOGICAL_LIST_AS_LOGICAL_LIST_OPERAND"
                 }
-                UserListError::InvalidUserListLogicalRuleOperand => {
+                Self::InvalidUserListLogicalRuleOperand => {
                     "INVALID_USER_LIST_LOGICAL_RULE_OPERAND"
                 }
-                UserListError::NameAlreadyUsed => "NAME_ALREADY_USED",
-                UserListError::NewConversionTypeNameRequired => {
+                Self::NameAlreadyUsed => "NAME_ALREADY_USED",
+                Self::NewConversionTypeNameRequired => {
                     "NEW_CONVERSION_TYPE_NAME_REQUIRED"
                 }
-                UserListError::ConversionTypeNameAlreadyUsed => {
+                Self::ConversionTypeNameAlreadyUsed => {
                     "CONVERSION_TYPE_NAME_ALREADY_USED"
                 }
-                UserListError::OwnershipRequiredForSet => "OWNERSHIP_REQUIRED_FOR_SET",
-                UserListError::UserListMutateNotSupported => {
-                    "USER_LIST_MUTATE_NOT_SUPPORTED"
-                }
-                UserListError::InvalidRule => "INVALID_RULE",
-                UserListError::InvalidDateRange => "INVALID_DATE_RANGE",
-                UserListError::CanNotMutateSensitiveUserlist => {
+                Self::OwnershipRequiredForSet => "OWNERSHIP_REQUIRED_FOR_SET",
+                Self::UserListMutateNotSupported => "USER_LIST_MUTATE_NOT_SUPPORTED",
+                Self::InvalidRule => "INVALID_RULE",
+                Self::InvalidDateRange => "INVALID_DATE_RANGE",
+                Self::CanNotMutateSensitiveUserlist => {
                     "CAN_NOT_MUTATE_SENSITIVE_USERLIST"
                 }
-                UserListError::MaxNumRulebasedUserlists => "MAX_NUM_RULEBASED_USERLISTS",
-                UserListError::CannotModifyBillableRecordCount => {
+                Self::MaxNumRulebasedUserlists => "MAX_NUM_RULEBASED_USERLISTS",
+                Self::CannotModifyBillableRecordCount => {
                     "CANNOT_MODIFY_BILLABLE_RECORD_COUNT"
                 }
-                UserListError::AppIdNotSet => "APP_ID_NOT_SET",
-                UserListError::UserlistNameIsReservedForSystemList => {
+                Self::AppIdNotSet => "APP_ID_NOT_SET",
+                Self::UserlistNameIsReservedForSystemList => {
                     "USERLIST_NAME_IS_RESERVED_FOR_SYSTEM_LIST"
                 }
-                UserListError::AdvertiserNotOnAllowlistForUsingUploadedData => {
+                Self::AdvertiserNotOnAllowlistForUsingUploadedData => {
                     "ADVERTISER_NOT_ON_ALLOWLIST_FOR_USING_UPLOADED_DATA"
                 }
-                UserListError::RuleTypeIsNotSupported => "RULE_TYPE_IS_NOT_SUPPORTED",
-                UserListError::CanNotAddASimilarUserlistAsLogicalListOperand => {
+                Self::RuleTypeIsNotSupported => "RULE_TYPE_IS_NOT_SUPPORTED",
+                Self::CanNotAddASimilarUserlistAsLogicalListOperand => {
                     "CAN_NOT_ADD_A_SIMILAR_USERLIST_AS_LOGICAL_LIST_OPERAND"
                 }
-                UserListError::CanNotMixCrmBasedInLogicalListWithOtherLists => {
+                Self::CanNotMixCrmBasedInLogicalListWithOtherLists => {
                     "CAN_NOT_MIX_CRM_BASED_IN_LOGICAL_LIST_WITH_OTHER_LISTS"
                 }
-                UserListError::AppIdNotAllowed => "APP_ID_NOT_ALLOWED",
-                UserListError::CannotMutateSystemList => "CANNOT_MUTATE_SYSTEM_LIST",
-                UserListError::MobileAppIsSensitive => "MOBILE_APP_IS_SENSITIVE",
-                UserListError::SeedListDoesNotExist => "SEED_LIST_DOES_NOT_EXIST",
-                UserListError::InvalidSeedListAccessReason => {
-                    "INVALID_SEED_LIST_ACCESS_REASON"
-                }
-                UserListError::InvalidSeedListType => "INVALID_SEED_LIST_TYPE",
-                UserListError::InvalidCountryCodes => "INVALID_COUNTRY_CODES",
+                Self::AppIdNotAllowed => "APP_ID_NOT_ALLOWED",
+                Self::CannotMutateSystemList => "CANNOT_MUTATE_SYSTEM_LIST",
+                Self::MobileAppIsSensitive => "MOBILE_APP_IS_SENSITIVE",
+                Self::SeedListDoesNotExist => "SEED_LIST_DOES_NOT_EXIST",
+                Self::InvalidSeedListAccessReason => "INVALID_SEED_LIST_ACCESS_REASON",
+                Self::InvalidSeedListType => "INVALID_SEED_LIST_TYPE",
+                Self::InvalidCountryCodes => "INVALID_COUNTRY_CODES",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -19247,11 +18459,9 @@ pub mod video_campaign_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                VideoCampaignError::Unspecified => "UNSPECIFIED",
-                VideoCampaignError::Unknown => "UNKNOWN",
-                VideoCampaignError::MutateRequiresReservation => {
-                    "MUTATE_REQUIRES_RESERVATION"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::MutateRequiresReservation => "MUTATE_REQUIRES_RESERVATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -19302,13 +18512,11 @@ pub mod youtube_video_registration_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                YoutubeVideoRegistrationError::Unspecified => "UNSPECIFIED",
-                YoutubeVideoRegistrationError::Unknown => "UNKNOWN",
-                YoutubeVideoRegistrationError::VideoNotFound => "VIDEO_NOT_FOUND",
-                YoutubeVideoRegistrationError::VideoNotAccessible => {
-                    "VIDEO_NOT_ACCESSIBLE"
-                }
-                YoutubeVideoRegistrationError::VideoNotEligible => "VIDEO_NOT_ELIGIBLE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::VideoNotFound => "VIDEO_NOT_FOUND",
+                Self::VideoNotAccessible => "VIDEO_NOT_ACCESSIBLE",
+                Self::VideoNotEligible => "VIDEO_NOT_ELIGIBLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -20278,10 +19486,10 @@ pub mod quota_error_details {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                QuotaRateScope::Unspecified => "UNSPECIFIED",
-                QuotaRateScope::Unknown => "UNKNOWN",
-                QuotaRateScope::Account => "ACCOUNT",
-                QuotaRateScope::Developer => "DEVELOPER",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::Account => "ACCOUNT",
+                Self::Developer => "DEVELOPER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

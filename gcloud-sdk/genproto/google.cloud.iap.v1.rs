@@ -245,11 +245,11 @@ pub mod reauth_settings {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Method::Unspecified => "METHOD_UNSPECIFIED",
-                Method::Login => "LOGIN",
-                Method::Password => "PASSWORD",
-                Method::SecureKey => "SECURE_KEY",
-                Method::EnrolledSecondFactors => "ENROLLED_SECOND_FACTORS",
+                Self::Unspecified => "METHOD_UNSPECIFIED",
+                Self::Login => "LOGIN",
+                Self::Password => "PASSWORD",
+                Self::SecureKey => "SECURE_KEY",
+                Self::EnrolledSecondFactors => "ENROLLED_SECOND_FACTORS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -293,9 +293,9 @@ pub mod reauth_settings {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PolicyType::Unspecified => "POLICY_TYPE_UNSPECIFIED",
-                PolicyType::Minimum => "MINIMUM",
-                PolicyType::Default => "DEFAULT",
+                Self::Unspecified => "POLICY_TYPE_UNSPECIFIED",
+                Self::Minimum => "MINIMUM",
+                Self::Default => "DEFAULT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -453,10 +453,10 @@ pub mod attribute_propagation_settings {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OutputCredentials::Unspecified => "OUTPUT_CREDENTIALS_UNSPECIFIED",
-                OutputCredentials::Header => "HEADER",
-                OutputCredentials::Jwt => "JWT",
-                OutputCredentials::Rctoken => "RCTOKEN",
+                Self::Unspecified => "OUTPUT_CREDENTIALS_UNSPECIFIED",
+                Self::Header => "HEADER",
+                Self::Jwt => "JWT",
+                Self::Rctoken => "RCTOKEN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -613,7 +613,13 @@ pub struct IdentityAwareProxyClient {
 }
 /// Generated client implementations.
 pub mod identity_aware_proxy_admin_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// APIs for Identity-Aware Proxy Admin configurations.
@@ -716,8 +722,7 @@ pub mod identity_aware_proxy_admin_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -752,8 +757,7 @@ pub mod identity_aware_proxy_admin_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -790,8 +794,7 @@ pub mod identity_aware_proxy_admin_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -818,8 +821,7 @@ pub mod identity_aware_proxy_admin_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -847,8 +849,7 @@ pub mod identity_aware_proxy_admin_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -880,8 +881,7 @@ pub mod identity_aware_proxy_admin_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -911,8 +911,7 @@ pub mod identity_aware_proxy_admin_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -942,8 +941,7 @@ pub mod identity_aware_proxy_admin_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -970,8 +968,7 @@ pub mod identity_aware_proxy_admin_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1001,8 +998,7 @@ pub mod identity_aware_proxy_admin_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1024,7 +1020,13 @@ pub mod identity_aware_proxy_admin_service_client {
 }
 /// Generated client implementations.
 pub mod identity_aware_proxy_o_auth_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// API to programmatically create, list and retrieve Identity Aware Proxy (IAP)
@@ -1124,8 +1126,7 @@ pub mod identity_aware_proxy_o_auth_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1159,8 +1160,7 @@ pub mod identity_aware_proxy_o_auth_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1187,8 +1187,7 @@ pub mod identity_aware_proxy_o_auth_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1222,8 +1221,7 @@ pub mod identity_aware_proxy_o_auth_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1253,8 +1251,7 @@ pub mod identity_aware_proxy_o_auth_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1285,8 +1282,7 @@ pub mod identity_aware_proxy_o_auth_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1319,8 +1315,7 @@ pub mod identity_aware_proxy_o_auth_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1351,8 +1346,7 @@ pub mod identity_aware_proxy_o_auth_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

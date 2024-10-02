@@ -262,11 +262,11 @@ pub mod document {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        Orientation::Unspecified => "ORIENTATION_UNSPECIFIED",
-                        Orientation::PageUp => "PAGE_UP",
-                        Orientation::PageRight => "PAGE_RIGHT",
-                        Orientation::PageDown => "PAGE_DOWN",
-                        Orientation::PageLeft => "PAGE_LEFT",
+                        Self::Unspecified => "ORIENTATION_UNSPECIFIED",
+                        Self::PageUp => "PAGE_UP",
+                        Self::PageRight => "PAGE_RIGHT",
+                        Self::PageDown => "PAGE_DOWN",
+                        Self::PageLeft => "PAGE_LEFT",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -374,10 +374,10 @@ pub mod document {
                     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                     pub fn as_str_name(&self) -> &'static str {
                         match self {
-                            Type::Unspecified => "TYPE_UNSPECIFIED",
-                            Type::Space => "SPACE",
-                            Type::WideSpace => "WIDE_SPACE",
-                            Type::Hyphen => "HYPHEN",
+                            Self::Unspecified => "TYPE_UNSPECIFIED",
+                            Self::Space => "SPACE",
+                            Self::WideSpace => "WIDE_SPACE",
+                            Self::Hyphen => "HYPHEN",
                         }
                     }
                     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -852,13 +852,13 @@ pub mod operation_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Accepted => "ACCEPTED",
-                State::Waiting => "WAITING",
-                State::Running => "RUNNING",
-                State::Succeeded => "SUCCEEDED",
-                State::Cancelled => "CANCELLED",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Accepted => "ACCEPTED",
+                Self::Waiting => "WAITING",
+                Self::Running => "RUNNING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Cancelled => "CANCELLED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -878,7 +878,13 @@ pub mod operation_metadata {
 }
 /// Generated client implementations.
 pub mod document_understanding_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service to parse structured information from unstructured or semi-structured
@@ -978,8 +984,7 @@ pub mod document_understanding_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -51,10 +51,10 @@ pub mod cloud_logging_details {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CloudLoggingSeverity::Unspecified => "CLOUD_LOGGING_SEVERITY_UNSPECIFIED",
-                CloudLoggingSeverity::Info => "INFO",
-                CloudLoggingSeverity::Error => "ERROR",
-                CloudLoggingSeverity::Warning => "WARNING",
+                Self::Unspecified => "CLOUD_LOGGING_SEVERITY_UNSPECIFIED",
+                Self::Info => "INFO",
+                Self::Error => "ERROR",
+                Self::Warning => "WARNING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -186,11 +186,11 @@ impl IntegrationState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            IntegrationState::Unspecified => "INTEGRATION_STATE_UNSPECIFIED",
-            IntegrationState::Draft => "DRAFT",
-            IntegrationState::Active => "ACTIVE",
-            IntegrationState::Archived => "ARCHIVED",
-            IntegrationState::Snapshot => "SNAPSHOT",
+            Self::Unspecified => "INTEGRATION_STATE_UNSPECIFIED",
+            Self::Draft => "DRAFT",
+            Self::Active => "ACTIVE",
+            Self::Archived => "ARCHIVED",
+            Self::Snapshot => "SNAPSHOT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -230,11 +230,11 @@ impl JsonValidationOption {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            JsonValidationOption::Unspecified => "JSON_VALIDATION_OPTION_UNSPECIFIED",
-            JsonValidationOption::Skip => "SKIP",
-            JsonValidationOption::PreExecution => "PRE_EXECUTION",
-            JsonValidationOption::PostExecution => "POST_EXECUTION",
-            JsonValidationOption::PrePostExecution => "PRE_POST_EXECUTION",
+            Self::Unspecified => "JSON_VALIDATION_OPTION_UNSPECIFIED",
+            Self::Skip => "SKIP",
+            Self::PreExecution => "PRE_EXECUTION",
+            Self::PostExecution => "POST_EXECUTION",
+            Self::PrePostExecution => "PRE_POST_EXECUTION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -354,11 +354,9 @@ pub mod task_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                NextTasksExecutionPolicy::Unspecified => {
-                    "NEXT_TASKS_EXECUTION_POLICY_UNSPECIFIED"
-                }
-                NextTasksExecutionPolicy::RunAllMatch => "RUN_ALL_MATCH",
-                NextTasksExecutionPolicy::RunFirstMatch => "RUN_FIRST_MATCH",
+                Self::Unspecified => "NEXT_TASKS_EXECUTION_POLICY_UNSPECIFIED",
+                Self::RunAllMatch => "RUN_ALL_MATCH",
+                Self::RunFirstMatch => "RUN_FIRST_MATCH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -407,12 +405,10 @@ pub mod task_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TaskExecutionStrategy::Unspecified => {
-                    "TASK_EXECUTION_STRATEGY_UNSPECIFIED"
-                }
-                TaskExecutionStrategy::WhenAllSucceed => "WHEN_ALL_SUCCEED",
-                TaskExecutionStrategy::WhenAnySucceed => "WHEN_ANY_SUCCEED",
-                TaskExecutionStrategy::WhenAllTasksAndConditionsSucceed => {
+                Self::Unspecified => "TASK_EXECUTION_STRATEGY_UNSPECIFIED",
+                Self::WhenAllSucceed => "WHEN_ALL_SUCCEED",
+                Self::WhenAnySucceed => "WHEN_ANY_SUCCEED",
+                Self::WhenAllTasksAndConditionsSucceed => {
                     "WHEN_ALL_TASKS_AND_CONDITIONS_SUCCEED"
                 }
             }
@@ -458,9 +454,9 @@ pub mod task_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ExternalTaskType::Unspecified => "EXTERNAL_TASK_TYPE_UNSPECIFIED",
-                ExternalTaskType::NormalTask => "NORMAL_TASK",
-                ExternalTaskType::ErrorTask => "ERROR_TASK",
+                Self::Unspecified => "EXTERNAL_TASK_TYPE_UNSPECIFIED",
+                Self::NormalTask => "NORMAL_TASK",
+                Self::ErrorTask => "ERROR_TASK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -515,9 +511,9 @@ pub mod success_policy {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FinalState::Unspecified => "FINAL_STATE_UNSPECIFIED",
-                FinalState::Succeeded => "SUCCEEDED",
-                FinalState::Suspended => "SUSPENDED",
+                Self::Unspecified => "FINAL_STATE_UNSPECIFIED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Suspended => "SUSPENDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -614,16 +610,14 @@ pub mod failure_policy {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RetryStrategy::Unspecified => "RETRY_STRATEGY_UNSPECIFIED",
-                RetryStrategy::Ignore => "IGNORE",
-                RetryStrategy::None => "NONE",
-                RetryStrategy::Fatal => "FATAL",
-                RetryStrategy::FixedInterval => "FIXED_INTERVAL",
-                RetryStrategy::LinearBackoff => "LINEAR_BACKOFF",
-                RetryStrategy::ExponentialBackoff => "EXPONENTIAL_BACKOFF",
-                RetryStrategy::RestartIntegrationWithBackoff => {
-                    "RESTART_INTEGRATION_WITH_BACKOFF"
-                }
+                Self::Unspecified => "RETRY_STRATEGY_UNSPECIFIED",
+                Self::Ignore => "IGNORE",
+                Self::None => "NONE",
+                Self::Fatal => "FATAL",
+                Self::FixedInterval => "FIXED_INTERVAL",
+                Self::LinearBackoff => "LINEAR_BACKOFF",
+                Self::ExponentialBackoff => "EXPONENTIAL_BACKOFF",
+                Self::RestartIntegrationWithBackoff => "RESTART_INTEGRATION_WITH_BACKOFF",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -765,10 +759,10 @@ pub mod execution_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ExecutionMethod::Unspecified => "EXECUTION_METHOD_UNSPECIFIED",
-                ExecutionMethod::Post => "POST",
-                ExecutionMethod::Schedule => "SCHEDULE",
-                ExecutionMethod::PostToQueue => "POST_TO_QUEUE",
+                Self::Unspecified => "EXECUTION_METHOD_UNSPECIFIED",
+                Self::Post => "POST",
+                Self::Schedule => "SCHEDULE",
+                Self::PostToQueue => "POST_TO_QUEUE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -853,16 +847,14 @@ pub mod integration_execution_details {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                IntegrationExecutionState::Unspecified => {
-                    "INTEGRATION_EXECUTION_STATE_UNSPECIFIED"
-                }
-                IntegrationExecutionState::OnHold => "ON_HOLD",
-                IntegrationExecutionState::InProcess => "IN_PROCESS",
-                IntegrationExecutionState::Succeeded => "SUCCEEDED",
-                IntegrationExecutionState::Failed => "FAILED",
-                IntegrationExecutionState::Cancelled => "CANCELLED",
-                IntegrationExecutionState::RetryOnHold => "RETRY_ON_HOLD",
-                IntegrationExecutionState::Suspended => "SUSPENDED",
+                Self::Unspecified => "INTEGRATION_EXECUTION_STATE_UNSPECIFIED",
+                Self::OnHold => "ON_HOLD",
+                Self::InProcess => "IN_PROCESS",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Cancelled => "CANCELLED",
+                Self::RetryOnHold => "RETRY_ON_HOLD",
+                Self::Suspended => "SUSPENDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1018,19 +1010,19 @@ pub mod task_execution_details {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TaskExecutionState::Unspecified => "TASK_EXECUTION_STATE_UNSPECIFIED",
-                TaskExecutionState::PendingExecution => "PENDING_EXECUTION",
-                TaskExecutionState::InProcess => "IN_PROCESS",
-                TaskExecutionState::Succeed => "SUCCEED",
-                TaskExecutionState::Failed => "FAILED",
-                TaskExecutionState::Fatal => "FATAL",
-                TaskExecutionState::RetryOnHold => "RETRY_ON_HOLD",
-                TaskExecutionState::Skipped => "SKIPPED",
-                TaskExecutionState::Cancelled => "CANCELLED",
-                TaskExecutionState::PendingRollback => "PENDING_ROLLBACK",
-                TaskExecutionState::RollbackInProcess => "ROLLBACK_IN_PROCESS",
-                TaskExecutionState::Rolledback => "ROLLEDBACK",
-                TaskExecutionState::Suspended => "SUSPENDED",
+                Self::Unspecified => "TASK_EXECUTION_STATE_UNSPECIFIED",
+                Self::PendingExecution => "PENDING_EXECUTION",
+                Self::InProcess => "IN_PROCESS",
+                Self::Succeed => "SUCCEED",
+                Self::Failed => "FAILED",
+                Self::Fatal => "FATAL",
+                Self::RetryOnHold => "RETRY_ON_HOLD",
+                Self::Skipped => "SKIPPED",
+                Self::Cancelled => "CANCELLED",
+                Self::PendingRollback => "PENDING_ROLLBACK",
+                Self::RollbackInProcess => "ROLLBACK_IN_PROCESS",
+                Self::Rolledback => "ROLLEDBACK",
+                Self::Suspended => "SUSPENDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1110,9 +1102,9 @@ impl ExecutionType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ExecutionType::Unspecified => "EXECUTION_TYPE_UNSPECIFIED",
-            ExecutionType::IntegrationVersion => "INTEGRATION_VERSION",
-            ExecutionType::TestCase => "TEST_CASE",
+            Self::Unspecified => "EXECUTION_TYPE_UNSPECIFIED",
+            Self::IntegrationVersion => "INTEGRATION_VERSION",
+            Self::TestCase => "TEST_CASE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1145,10 +1137,10 @@ impl Product {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Product::Unspecified => "PRODUCT_UNSPECIFIED",
-            Product::Ip => "IP",
-            Product::Apigee => "APIGEE",
-            Product::Security => "SECURITY",
+            Self::Unspecified => "PRODUCT_UNSPECIFIED",
+            Self::Ip => "IP",
+            Self::Apigee => "APIGEE",
+            Self::Security => "SECURITY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.

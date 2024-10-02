@@ -33,9 +33,9 @@ impl StorageType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            StorageType::Unspecified => "STORAGE_TYPE_UNSPECIFIED",
-            StorageType::Ssd => "SSD",
-            StorageType::Hdd => "HDD",
+            Self::Unspecified => "STORAGE_TYPE_UNSPECIFIED",
+            Self::Ssd => "SSD",
+            Self::Hdd => "HDD",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -127,9 +127,9 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::NotKnown => "STATE_NOT_KNOWN",
-                State::Ready => "READY",
-                State::Creating => "CREATING",
+                Self::NotKnown => "STATE_NOT_KNOWN",
+                Self::Ready => "READY",
+                Self::Creating => "CREATING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -174,9 +174,9 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Production => "PRODUCTION",
-                Type::Development => "DEVELOPMENT",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Production => "PRODUCTION",
+                Self::Development => "DEVELOPMENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -240,6 +240,9 @@ pub struct Cluster {
     /// throughput and more consistent performance.
     #[prost(int32, tag = "4")]
     pub serve_nodes: i32,
+    /// Immutable. The node scaling factor of this cluster.
+    #[prost(enumeration = "cluster::NodeScalingFactor", tag = "9")]
+    pub node_scaling_factor: i32,
     /// Immutable. The type of storage used by this cluster to serve its
     /// parent instance's tables, unless explicitly overridden.
     #[prost(enumeration = "StorageType", tag = "5")]
@@ -325,11 +328,11 @@ pub mod cluster {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::NotKnown => "STATE_NOT_KNOWN",
-                State::Ready => "READY",
-                State::Creating => "CREATING",
-                State::Resizing => "RESIZING",
-                State::Disabled => "DISABLED",
+                Self::NotKnown => "STATE_NOT_KNOWN",
+                Self::Ready => "READY",
+                Self::Creating => "CREATING",
+                Self::Resizing => "RESIZING",
+                Self::Disabled => "DISABLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -340,6 +343,52 @@ pub mod cluster {
                 "CREATING" => Some(Self::Creating),
                 "RESIZING" => Some(Self::Resizing),
                 "DISABLED" => Some(Self::Disabled),
+                _ => None,
+            }
+        }
+    }
+    /// Possible node scaling factors of the clusters. Node scaling delivers better
+    /// latency and more throughput by removing node boundaries.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum NodeScalingFactor {
+        /// No node scaling specified. Defaults to NODE_SCALING_FACTOR_1X.
+        Unspecified = 0,
+        /// The cluster is running with a scaling factor of 1.
+        NodeScalingFactor1x = 1,
+        /// The cluster is running with a scaling factor of 2.
+        /// All node count values must be in increments of 2 with this scaling factor
+        /// enabled, otherwise an INVALID_ARGUMENT error will be returned.
+        NodeScalingFactor2x = 2,
+    }
+    impl NodeScalingFactor {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "NODE_SCALING_FACTOR_UNSPECIFIED",
+                Self::NodeScalingFactor1x => "NODE_SCALING_FACTOR_1X",
+                Self::NodeScalingFactor2x => "NODE_SCALING_FACTOR_2X",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NODE_SCALING_FACTOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "NODE_SCALING_FACTOR_1X" => Some(Self::NodeScalingFactor1x),
+                "NODE_SCALING_FACTOR_2X" => Some(Self::NodeScalingFactor2x),
                 _ => None,
             }
         }
@@ -393,6 +442,45 @@ pub mod app_profile {
         /// tried in order of distance. If left empty, all clusters are eligible.
         #[prost(string, repeated, tag = "1")]
         pub cluster_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Possible algorithms for routing affinity. If enabled, Bigtable will
+        /// route between equidistant clusters in a deterministic order rather than
+        /// choosing randomly.
+        ///
+        /// This mechanism gives read-your-writes consistency for *most* requests
+        /// under *most* circumstances, without sacrificing availability. Consistency
+        /// is *not* guaranteed, as requests might still fail over between clusters
+        /// in the event of errors or latency.
+        #[prost(oneof = "multi_cluster_routing_use_any::Affinity", tags = "3")]
+        pub affinity: ::core::option::Option<multi_cluster_routing_use_any::Affinity>,
+    }
+    /// Nested message and enum types in `MultiClusterRoutingUseAny`.
+    pub mod multi_cluster_routing_use_any {
+        /// If enabled, Bigtable will route the request based on the row key of the
+        /// request, rather than randomly. Instead, each row key will be assigned
+        /// to a cluster, and will stick to that cluster. If clusters are added or
+        /// removed, then this may affect which row keys stick to which clusters.
+        /// To avoid this, users can use a cluster group to specify which clusters
+        /// are to be used. In this case, new clusters that are not a part of the
+        /// cluster group will not be routed to, and routing will be unaffected by
+        /// the new cluster. Moreover, clusters specified in the cluster group cannot
+        /// be deleted unless removed from the cluster group.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct RowAffinity {}
+        /// Possible algorithms for routing affinity. If enabled, Bigtable will
+        /// route between equidistant clusters in a deterministic order rather than
+        /// choosing randomly.
+        ///
+        /// This mechanism gives read-your-writes consistency for *most* requests
+        /// under *most* circumstances, without sacrificing availability. Consistency
+        /// is *not* guaranteed, as requests might still fail over between clusters
+        /// in the event of errors or latency.
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum Affinity {
+            /// Row affinity sticky routing based on the row key of the request.
+            /// Requests that span multiple rows are routed non-deterministically.
+            #[prost(message, tag = "3")]
+            RowAffinity(RowAffinity),
+        }
     }
     /// Unconditionally routes all read/write requests to a specific cluster.
     /// This option preserves read-your-writes consistency but does not improve
@@ -469,10 +557,8 @@ pub mod app_profile {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ComputeBillingOwner::Unspecified => {
-                        "COMPUTE_BILLING_OWNER_UNSPECIFIED"
-                    }
-                    ComputeBillingOwner::HostPays => "HOST_PAYS",
+                    Self::Unspecified => "COMPUTE_BILLING_OWNER_UNSPECIFIED",
+                    Self::HostPays => "HOST_PAYS",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -514,10 +600,10 @@ pub mod app_profile {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Priority::Unspecified => "PRIORITY_UNSPECIFIED",
-                Priority::Low => "PRIORITY_LOW",
-                Priority::Medium => "PRIORITY_MEDIUM",
-                Priority::High => "PRIORITY_HIGH",
+                Self::Unspecified => "PRIORITY_UNSPECIFIED",
+                Self::Low => "PRIORITY_LOW",
+                Self::Medium => "PRIORITY_MEDIUM",
+                Self::High => "PRIORITY_HIGH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -841,11 +927,11 @@ pub mod create_cluster_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    State::Unspecified => "STATE_UNSPECIFIED",
-                    State::Pending => "PENDING",
-                    State::Copying => "COPYING",
-                    State::Completed => "COMPLETED",
-                    State::Cancelled => "CANCELLED",
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::Pending => "PENDING",
+                    Self::Copying => "COPYING",
+                    Self::Completed => "COMPLETED",
+                    Self::Cancelled => "CANCELLED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1051,7 +1137,13 @@ pub struct ListHotTabletsResponse {
 }
 /// Generated client implementations.
 pub mod bigtable_instance_admin_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for creating, configuring, and deleting Cloud Bigtable Instances and
@@ -1155,8 +1247,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1183,8 +1274,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1214,8 +1304,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1244,8 +1333,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1276,8 +1364,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1304,8 +1391,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1341,8 +1427,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1369,8 +1454,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1400,8 +1484,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1435,8 +1518,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1477,8 +1559,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1505,8 +1586,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1533,8 +1613,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1561,8 +1640,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1592,8 +1670,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1623,8 +1700,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1651,8 +1727,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1685,8 +1760,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1719,8 +1793,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1754,8 +1827,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1786,8 +1858,7 @@ pub mod bigtable_instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2280,12 +2351,12 @@ pub mod table {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ReplicationState::StateNotKnown => "STATE_NOT_KNOWN",
-                    ReplicationState::Initializing => "INITIALIZING",
-                    ReplicationState::PlannedMaintenance => "PLANNED_MAINTENANCE",
-                    ReplicationState::UnplannedMaintenance => "UNPLANNED_MAINTENANCE",
-                    ReplicationState::Ready => "READY",
-                    ReplicationState::ReadyOptimizing => "READY_OPTIMIZING",
+                    Self::StateNotKnown => "STATE_NOT_KNOWN",
+                    Self::Initializing => "INITIALIZING",
+                    Self::PlannedMaintenance => "PLANNED_MAINTENANCE",
+                    Self::UnplannedMaintenance => "UNPLANNED_MAINTENANCE",
+                    Self::Ready => "READY",
+                    Self::ReadyOptimizing => "READY_OPTIMIZING",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2342,8 +2413,8 @@ pub mod table {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TimestampGranularity::Unspecified => "TIMESTAMP_GRANULARITY_UNSPECIFIED",
-                TimestampGranularity::Millis => "MILLIS",
+                Self::Unspecified => "TIMESTAMP_GRANULARITY_UNSPECIFIED",
+                Self::Millis => "MILLIS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2390,12 +2461,12 @@ pub mod table {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                View::Unspecified => "VIEW_UNSPECIFIED",
-                View::NameOnly => "NAME_ONLY",
-                View::SchemaView => "SCHEMA_VIEW",
-                View::ReplicationView => "REPLICATION_VIEW",
-                View::EncryptionView => "ENCRYPTION_VIEW",
-                View::Full => "FULL",
+                Self::Unspecified => "VIEW_UNSPECIFIED",
+                Self::NameOnly => "NAME_ONLY",
+                Self::SchemaView => "SCHEMA_VIEW",
+                Self::ReplicationView => "REPLICATION_VIEW",
+                Self::EncryptionView => "ENCRYPTION_VIEW",
+                Self::Full => "FULL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2505,10 +2576,10 @@ pub mod authorized_view {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ResponseView::Unspecified => "RESPONSE_VIEW_UNSPECIFIED",
-                ResponseView::NameOnly => "NAME_ONLY",
-                ResponseView::Basic => "BASIC",
-                ResponseView::Full => "FULL",
+                Self::Unspecified => "RESPONSE_VIEW_UNSPECIFIED",
+                Self::NameOnly => "NAME_ONLY",
+                Self::Basic => "BASIC",
+                Self::Full => "FULL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2653,11 +2724,9 @@ pub mod encryption_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EncryptionType::Unspecified => "ENCRYPTION_TYPE_UNSPECIFIED",
-                EncryptionType::GoogleDefaultEncryption => "GOOGLE_DEFAULT_ENCRYPTION",
-                EncryptionType::CustomerManagedEncryption => {
-                    "CUSTOMER_MANAGED_ENCRYPTION"
-                }
+                Self::Unspecified => "ENCRYPTION_TYPE_UNSPECIFIED",
+                Self::GoogleDefaultEncryption => "GOOGLE_DEFAULT_ENCRYPTION",
+                Self::CustomerManagedEncryption => "CUSTOMER_MANAGED_ENCRYPTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2741,9 +2810,9 @@ pub mod snapshot {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::NotKnown => "STATE_NOT_KNOWN",
-                State::Ready => "READY",
-                State::Creating => "CREATING",
+                Self::NotKnown => "STATE_NOT_KNOWN",
+                Self::Ready => "READY",
+                Self::Creating => "CREATING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2857,9 +2926,9 @@ pub mod backup {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2905,9 +2974,9 @@ pub mod backup {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BackupType::Unspecified => "BACKUP_TYPE_UNSPECIFIED",
-                BackupType::Standard => "STANDARD",
-                BackupType::Hot => "HOT",
+                Self::Unspecified => "BACKUP_TYPE_UNSPECIFIED",
+                Self::Standard => "STANDARD",
+                Self::Hot => "HOT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2961,8 +3030,8 @@ impl RestoreSourceType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            RestoreSourceType::Unspecified => "RESTORE_SOURCE_TYPE_UNSPECIFIED",
-            RestoreSourceType::Backup => "BACKUP",
+            Self::Unspecified => "RESTORE_SOURCE_TYPE_UNSPECIFIED",
+            Self::Backup => "BACKUP",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3919,7 +3988,13 @@ pub struct DeleteAuthorizedViewRequest {
 }
 /// Generated client implementations.
 pub mod bigtable_table_admin_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for creating, configuring, and deleting Cloud Bigtable tables.
@@ -4018,8 +4093,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4056,8 +4130,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4087,8 +4160,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4115,8 +4187,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4146,8 +4217,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4174,8 +4244,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4205,8 +4274,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4236,8 +4304,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4267,8 +4334,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4295,8 +4361,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4326,8 +4391,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4354,8 +4418,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4385,8 +4448,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4415,8 +4477,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4449,8 +4510,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4482,8 +4542,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4520,8 +4579,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4554,8 +4612,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4591,8 +4648,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4625,8 +4681,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4663,8 +4718,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4691,8 +4745,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4719,8 +4772,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4747,8 +4799,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4779,8 +4830,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4816,8 +4866,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4848,8 +4897,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4883,8 +4931,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4917,8 +4964,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4953,8 +4999,7 @@ pub mod bigtable_table_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

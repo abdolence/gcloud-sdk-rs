@@ -45,11 +45,9 @@ pub mod membership_spec {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ControlPlaneManagement::Unspecified => {
-                    "CONTROL_PLANE_MANAGEMENT_UNSPECIFIED"
-                }
-                ControlPlaneManagement::Automatic => "AUTOMATIC",
-                ControlPlaneManagement::Manual => "MANUAL",
+                Self::Unspecified => "CONTROL_PLANE_MANAGEMENT_UNSPECIFIED",
+                Self::Automatic => "AUTOMATIC",
+                Self::Manual => "MANUAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -90,9 +88,9 @@ pub mod membership_spec {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Management::Unspecified => "MANAGEMENT_UNSPECIFIED",
-                Management::Automatic => "MANAGEMENT_AUTOMATIC",
-                Management::Manual => "MANAGEMENT_MANUAL",
+                Self::Unspecified => "MANAGEMENT_UNSPECIFIED",
+                Self::Automatic => "MANAGEMENT_AUTOMATIC",
+                Self::Manual => "MANAGEMENT_MANUAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -171,10 +169,10 @@ pub mod membership_state {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Implementation::Unspecified => "IMPLEMENTATION_UNSPECIFIED",
-                    Implementation::Istiod => "ISTIOD",
-                    Implementation::TrafficDirector => "TRAFFIC_DIRECTOR",
-                    Implementation::Updating => "UPDATING",
+                    Self::Unspecified => "IMPLEMENTATION_UNSPECIFIED",
+                    Self::Istiod => "ISTIOD",
+                    Self::TrafficDirector => "TRAFFIC_DIRECTOR",
+                    Self::Updating => "UPDATING",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -297,49 +295,49 @@ pub mod membership_state {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Code::Unspecified => "CODE_UNSPECIFIED",
-                    Code::MeshIamPermissionDenied => "MESH_IAM_PERMISSION_DENIED",
-                    Code::CniConfigUnsupported => "CNI_CONFIG_UNSUPPORTED",
-                    Code::GkeSandboxUnsupported => "GKE_SANDBOX_UNSUPPORTED",
-                    Code::NodepoolWorkloadIdentityFederationRequired => {
+                    Self::Unspecified => "CODE_UNSPECIFIED",
+                    Self::MeshIamPermissionDenied => "MESH_IAM_PERMISSION_DENIED",
+                    Self::CniConfigUnsupported => "CNI_CONFIG_UNSUPPORTED",
+                    Self::GkeSandboxUnsupported => "GKE_SANDBOX_UNSUPPORTED",
+                    Self::NodepoolWorkloadIdentityFederationRequired => {
                         "NODEPOOL_WORKLOAD_IDENTITY_FEDERATION_REQUIRED"
                     }
-                    Code::CniInstallationFailed => "CNI_INSTALLATION_FAILED",
-                    Code::CniPodUnschedulable => "CNI_POD_UNSCHEDULABLE",
-                    Code::UnsupportedMultipleControlPlanes => {
+                    Self::CniInstallationFailed => "CNI_INSTALLATION_FAILED",
+                    Self::CniPodUnschedulable => "CNI_POD_UNSCHEDULABLE",
+                    Self::UnsupportedMultipleControlPlanes => {
                         "UNSUPPORTED_MULTIPLE_CONTROL_PLANES"
                     }
-                    Code::VpcscGaSupported => "VPCSC_GA_SUPPORTED",
-                    Code::ConfigApplyInternalError => "CONFIG_APPLY_INTERNAL_ERROR",
-                    Code::ConfigValidationError => "CONFIG_VALIDATION_ERROR",
-                    Code::ConfigValidationWarning => "CONFIG_VALIDATION_WARNING",
-                    Code::QuotaExceededBackendServices => {
+                    Self::VpcscGaSupported => "VPCSC_GA_SUPPORTED",
+                    Self::ConfigApplyInternalError => "CONFIG_APPLY_INTERNAL_ERROR",
+                    Self::ConfigValidationError => "CONFIG_VALIDATION_ERROR",
+                    Self::ConfigValidationWarning => "CONFIG_VALIDATION_WARNING",
+                    Self::QuotaExceededBackendServices => {
                         "QUOTA_EXCEEDED_BACKEND_SERVICES"
                     }
-                    Code::QuotaExceededHealthChecks => "QUOTA_EXCEEDED_HEALTH_CHECKS",
-                    Code::QuotaExceededHttpRoutes => "QUOTA_EXCEEDED_HTTP_ROUTES",
-                    Code::QuotaExceededTcpRoutes => "QUOTA_EXCEEDED_TCP_ROUTES",
-                    Code::QuotaExceededTlsRoutes => "QUOTA_EXCEEDED_TLS_ROUTES",
-                    Code::QuotaExceededTrafficPolicies => {
+                    Self::QuotaExceededHealthChecks => "QUOTA_EXCEEDED_HEALTH_CHECKS",
+                    Self::QuotaExceededHttpRoutes => "QUOTA_EXCEEDED_HTTP_ROUTES",
+                    Self::QuotaExceededTcpRoutes => "QUOTA_EXCEEDED_TCP_ROUTES",
+                    Self::QuotaExceededTlsRoutes => "QUOTA_EXCEEDED_TLS_ROUTES",
+                    Self::QuotaExceededTrafficPolicies => {
                         "QUOTA_EXCEEDED_TRAFFIC_POLICIES"
                     }
-                    Code::QuotaExceededEndpointPolicies => {
+                    Self::QuotaExceededEndpointPolicies => {
                         "QUOTA_EXCEEDED_ENDPOINT_POLICIES"
                     }
-                    Code::QuotaExceededGateways => "QUOTA_EXCEEDED_GATEWAYS",
-                    Code::QuotaExceededMeshes => "QUOTA_EXCEEDED_MESHES",
-                    Code::QuotaExceededServerTlsPolicies => {
+                    Self::QuotaExceededGateways => "QUOTA_EXCEEDED_GATEWAYS",
+                    Self::QuotaExceededMeshes => "QUOTA_EXCEEDED_MESHES",
+                    Self::QuotaExceededServerTlsPolicies => {
                         "QUOTA_EXCEEDED_SERVER_TLS_POLICIES"
                     }
-                    Code::QuotaExceededClientTlsPolicies => {
+                    Self::QuotaExceededClientTlsPolicies => {
                         "QUOTA_EXCEEDED_CLIENT_TLS_POLICIES"
                     }
-                    Code::QuotaExceededServiceLbPolicies => {
+                    Self::QuotaExceededServiceLbPolicies => {
                         "QUOTA_EXCEEDED_SERVICE_LB_POLICIES"
                     }
-                    Code::QuotaExceededHttpFilters => "QUOTA_EXCEEDED_HTTP_FILTERS",
-                    Code::QuotaExceededTcpFilters => "QUOTA_EXCEEDED_TCP_FILTERS",
-                    Code::QuotaExceededNetworkEndpointGroups => {
+                    Self::QuotaExceededHttpFilters => "QUOTA_EXCEEDED_HTTP_FILTERS",
+                    Self::QuotaExceededTcpFilters => "QUOTA_EXCEEDED_TCP_FILTERS",
+                    Self::QuotaExceededNetworkEndpointGroups => {
                         "QUOTA_EXCEEDED_NETWORK_ENDPOINT_GROUPS"
                     }
                 }
@@ -429,10 +427,10 @@ pub mod membership_state {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Severity::Unspecified => "SEVERITY_UNSPECIFIED",
-                    Severity::Error => "ERROR",
-                    Severity::Warning => "WARNING",
-                    Severity::Info => "INFO",
+                    Self::Unspecified => "SEVERITY_UNSPECIFIED",
+                    Self::Error => "ERROR",
+                    Self::Warning => "WARNING",
+                    Self::Info => "INFO",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -489,14 +487,14 @@ pub mod membership_state {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LifecycleState::Unspecified => "LIFECYCLE_STATE_UNSPECIFIED",
-                LifecycleState::Disabled => "DISABLED",
-                LifecycleState::FailedPrecondition => "FAILED_PRECONDITION",
-                LifecycleState::Provisioning => "PROVISIONING",
-                LifecycleState::Active => "ACTIVE",
-                LifecycleState::Stalled => "STALLED",
-                LifecycleState::NeedsAttention => "NEEDS_ATTENTION",
-                LifecycleState::Degraded => "DEGRADED",
+                Self::Unspecified => "LIFECYCLE_STATE_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::FailedPrecondition => "FAILED_PRECONDITION",
+                Self::Provisioning => "PROVISIONING",
+                Self::Active => "ACTIVE",
+                Self::Stalled => "STALLED",
+                Self::NeedsAttention => "NEEDS_ATTENTION",
+                Self::Degraded => "DEGRADED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

@@ -64,11 +64,11 @@ pub mod orchestration_cluster {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Active => "ACTIVE",
-                State::Deleting => "DELETING",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::Deleting => "DELETING",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -156,11 +156,11 @@ pub mod edge_slm {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Active => "ACTIVE",
-                State::Deleting => "DELETING",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::Deleting => "DELETING",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -204,9 +204,9 @@ pub mod edge_slm {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                WorkloadClusterType::Unspecified => "WORKLOAD_CLUSTER_TYPE_UNSPECIFIED",
-                WorkloadClusterType::Gdce => "GDCE",
-                WorkloadClusterType::Gke => "GKE",
+                Self::Unspecified => "WORKLOAD_CLUSTER_TYPE_UNSPECIFIED",
+                Self::Gdce => "GDCE",
+                Self::Gke => "GKE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -325,10 +325,10 @@ pub mod blueprint {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ApprovalState::Unspecified => "APPROVAL_STATE_UNSPECIFIED",
-                ApprovalState::Draft => "DRAFT",
-                ApprovalState::Proposed => "PROPOSED",
-                ApprovalState::Approved => "APPROVED",
+                Self::Unspecified => "APPROVAL_STATE_UNSPECIFIED",
+                Self::Draft => "DRAFT",
+                Self::Proposed => "PROPOSED",
+                Self::Approved => "APPROVED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -479,10 +479,10 @@ pub mod deployment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Draft => "DRAFT",
-                State::Applied => "APPLIED",
-                State::Deleting => "DELETING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Draft => "DRAFT",
+                Self::Applied => "APPLIED",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -550,9 +550,9 @@ pub mod hydrated_deployment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Draft => "DRAFT",
-                State::Applied => "APPLIED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Draft => "DRAFT",
+                Self::Applied => "APPLIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1508,9 +1508,9 @@ impl BlueprintView {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            BlueprintView::Unspecified => "BLUEPRINT_VIEW_UNSPECIFIED",
-            BlueprintView::Basic => "BLUEPRINT_VIEW_BASIC",
-            BlueprintView::Full => "BLUEPRINT_VIEW_FULL",
+            Self::Unspecified => "BLUEPRINT_VIEW_UNSPECIFIED",
+            Self::Basic => "BLUEPRINT_VIEW_BASIC",
+            Self::Full => "BLUEPRINT_VIEW_FULL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1541,9 +1541,9 @@ impl DeploymentView {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DeploymentView::Unspecified => "DEPLOYMENT_VIEW_UNSPECIFIED",
-            DeploymentView::Basic => "DEPLOYMENT_VIEW_BASIC",
-            DeploymentView::Full => "DEPLOYMENT_VIEW_FULL",
+            Self::Unspecified => "DEPLOYMENT_VIEW_UNSPECIFIED",
+            Self::Basic => "DEPLOYMENT_VIEW_BASIC",
+            Self::Full => "DEPLOYMENT_VIEW_FULL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1574,9 +1574,9 @@ impl ResourceType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ResourceType::Unspecified => "RESOURCE_TYPE_UNSPECIFIED",
-            ResourceType::NfDeployResource => "NF_DEPLOY_RESOURCE",
-            ResourceType::DeploymentResource => "DEPLOYMENT_RESOURCE",
+            Self::Unspecified => "RESOURCE_TYPE_UNSPECIFIED",
+            Self::NfDeployResource => "NF_DEPLOY_RESOURCE",
+            Self::DeploymentResource => "DEPLOYMENT_RESOURCE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1618,14 +1618,14 @@ impl Status {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Status::Unspecified => "STATUS_UNSPECIFIED",
-            Status::InProgress => "STATUS_IN_PROGRESS",
-            Status::Active => "STATUS_ACTIVE",
-            Status::Failed => "STATUS_FAILED",
-            Status::Deleting => "STATUS_DELETING",
-            Status::Deleted => "STATUS_DELETED",
-            Status::Peering => "STATUS_PEERING",
-            Status::NotApplicable => "STATUS_NOT_APPLICABLE",
+            Self::Unspecified => "STATUS_UNSPECIFIED",
+            Self::InProgress => "STATUS_IN_PROGRESS",
+            Self::Active => "STATUS_ACTIVE",
+            Self::Failed => "STATUS_FAILED",
+            Self::Deleting => "STATUS_DELETING",
+            Self::Deleted => "STATUS_DELETED",
+            Self::Peering => "STATUS_PEERING",
+            Self::NotApplicable => "STATUS_NOT_APPLICABLE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1679,11 +1679,11 @@ impl DeploymentLevel {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DeploymentLevel::Unspecified => "DEPLOYMENT_LEVEL_UNSPECIFIED",
-            DeploymentLevel::Hydration => "HYDRATION",
-            DeploymentLevel::SingleDeployment => "SINGLE_DEPLOYMENT",
-            DeploymentLevel::MultiDeployment => "MULTI_DEPLOYMENT",
-            DeploymentLevel::WorkloadClusterDeployment => "WORKLOAD_CLUSTER_DEPLOYMENT",
+            Self::Unspecified => "DEPLOYMENT_LEVEL_UNSPECIFIED",
+            Self::Hydration => "HYDRATION",
+            Self::SingleDeployment => "SINGLE_DEPLOYMENT",
+            Self::MultiDeployment => "MULTI_DEPLOYMENT",
+            Self::WorkloadClusterDeployment => "WORKLOAD_CLUSTER_DEPLOYMENT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1700,7 +1700,13 @@ impl DeploymentLevel {
 }
 /// Generated client implementations.
 pub mod telco_automation_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// TelcoAutomation Service manages the control plane cluster a.k.a.
@@ -1800,8 +1806,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1831,8 +1836,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1862,8 +1866,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1893,8 +1896,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1924,8 +1926,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1952,8 +1953,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1983,8 +1983,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2014,8 +2013,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2042,8 +2040,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2070,8 +2067,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2098,8 +2094,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2126,8 +2121,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2157,8 +2151,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2185,8 +2178,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2213,8 +2205,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2241,8 +2232,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2272,8 +2262,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2303,8 +2292,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2334,8 +2322,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2367,8 +2354,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2399,8 +2385,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2430,8 +2415,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2458,8 +2442,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2486,8 +2469,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2514,8 +2496,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2543,8 +2524,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2574,8 +2554,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2605,8 +2584,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2638,8 +2616,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2666,8 +2643,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2697,8 +2673,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2726,8 +2701,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2757,8 +2731,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2788,8 +2761,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2819,8 +2791,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2850,8 +2821,7 @@ pub mod telco_automation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

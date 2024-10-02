@@ -105,9 +105,9 @@ pub mod finding {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::Remediated => "REMEDIATED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Remediated => "REMEDIATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -146,9 +146,9 @@ impl FindingType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            FindingType::Unspecified => "FINDING_TYPE_UNSPECIFIED",
-            FindingType::Misconfig => "FINDING_TYPE_MISCONFIG",
-            FindingType::Vulnerability => "FINDING_TYPE_VULNERABILITY",
+            Self::Unspecified => "FINDING_TYPE_UNSPECIFIED",
+            Self::Misconfig => "FINDING_TYPE_MISCONFIG",
+            Self::Vulnerability => "FINDING_TYPE_VULNERABILITY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -183,11 +183,11 @@ impl Severity {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Severity::Unspecified => "SEVERITY_UNSPECIFIED",
-            Severity::Critical => "SEVERITY_CRITICAL",
-            Severity::High => "SEVERITY_HIGH",
-            Severity::Medium => "SEVERITY_MEDIUM",
-            Severity::Low => "SEVERITY_LOW",
+            Self::Unspecified => "SEVERITY_UNSPECIFIED",
+            Self::Critical => "SEVERITY_CRITICAL",
+            Self::High => "SEVERITY_HIGH",
+            Self::Medium => "SEVERITY_MEDIUM",
+            Self::Low => "SEVERITY_LOW",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.

@@ -38,8 +38,8 @@ pub mod bundled_query {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LimitType::First => "FIRST",
-                LimitType::Last => "LAST",
+                Self::First => "FIRST",
+                Self::Last => "LAST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

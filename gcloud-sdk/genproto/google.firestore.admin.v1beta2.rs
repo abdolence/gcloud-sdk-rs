@@ -81,9 +81,9 @@ pub mod index {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Order::Unspecified => "ORDER_UNSPECIFIED",
-                    Order::Ascending => "ASCENDING",
-                    Order::Descending => "DESCENDING",
+                    Self::Unspecified => "ORDER_UNSPECIFIED",
+                    Self::Ascending => "ASCENDING",
+                    Self::Descending => "DESCENDING",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -122,8 +122,8 @@ pub mod index {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ArrayConfig::Unspecified => "ARRAY_CONFIG_UNSPECIFIED",
-                    ArrayConfig::Contains => "CONTAINS",
+                    Self::Unspecified => "ARRAY_CONFIG_UNSPECIFIED",
+                    Self::Contains => "CONTAINS",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -180,9 +180,9 @@ pub mod index {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                QueryScope::Unspecified => "QUERY_SCOPE_UNSPECIFIED",
-                QueryScope::Collection => "COLLECTION",
-                QueryScope::CollectionGroup => "COLLECTION_GROUP",
+                Self::Unspecified => "QUERY_SCOPE_UNSPECIFIED",
+                Self::Collection => "COLLECTION",
+                Self::CollectionGroup => "COLLECTION_GROUP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -240,10 +240,10 @@ pub mod index {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
-                State::NeedsRepair => "NEEDS_REPAIR",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
+                Self::NeedsRepair => "NEEDS_REPAIR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -479,7 +479,13 @@ pub struct ImportDocumentsRequest {
 }
 /// Generated client implementations.
 pub mod firestore_admin_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Operations are created by service `FirestoreAdmin`, but are accessed via
@@ -578,8 +584,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -609,8 +614,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -637,8 +641,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -665,8 +668,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -693,8 +695,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -736,8 +737,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -772,8 +772,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -810,8 +809,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -845,8 +843,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -964,9 +961,9 @@ pub mod field_operation_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ChangeType::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
-                    ChangeType::Add => "ADD",
-                    ChangeType::Remove => "REMOVE",
+                    Self::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
+                    Self::Add => "ADD",
+                    Self::Remove => "REMOVE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1086,14 +1083,14 @@ impl OperationState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            OperationState::Unspecified => "OPERATION_STATE_UNSPECIFIED",
-            OperationState::Initializing => "INITIALIZING",
-            OperationState::Processing => "PROCESSING",
-            OperationState::Cancelling => "CANCELLING",
-            OperationState::Finalizing => "FINALIZING",
-            OperationState::Successful => "SUCCESSFUL",
-            OperationState::Failed => "FAILED",
-            OperationState::Cancelled => "CANCELLED",
+            Self::Unspecified => "OPERATION_STATE_UNSPECIFIED",
+            Self::Initializing => "INITIALIZING",
+            Self::Processing => "PROCESSING",
+            Self::Cancelling => "CANCELLING",
+            Self::Finalizing => "FINALIZING",
+            Self::Successful => "SUCCESSFUL",
+            Self::Failed => "FAILED",
+            Self::Cancelled => "CANCELLED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.

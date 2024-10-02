@@ -860,16 +860,16 @@ impl Feature {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Feature::Unspecified => "FEATURE_UNSPECIFIED",
-            Feature::LabelDetection => "LABEL_DETECTION",
-            Feature::ShotChangeDetection => "SHOT_CHANGE_DETECTION",
-            Feature::ExplicitContentDetection => "EXPLICIT_CONTENT_DETECTION",
-            Feature::FaceDetection => "FACE_DETECTION",
-            Feature::SpeechTranscription => "SPEECH_TRANSCRIPTION",
-            Feature::TextDetection => "TEXT_DETECTION",
-            Feature::ObjectTracking => "OBJECT_TRACKING",
-            Feature::LogoRecognition => "LOGO_RECOGNITION",
-            Feature::PersonDetection => "PERSON_DETECTION",
+            Self::Unspecified => "FEATURE_UNSPECIFIED",
+            Self::LabelDetection => "LABEL_DETECTION",
+            Self::ShotChangeDetection => "SHOT_CHANGE_DETECTION",
+            Self::ExplicitContentDetection => "EXPLICIT_CONTENT_DETECTION",
+            Self::FaceDetection => "FACE_DETECTION",
+            Self::SpeechTranscription => "SPEECH_TRANSCRIPTION",
+            Self::TextDetection => "TEXT_DETECTION",
+            Self::ObjectTracking => "OBJECT_TRACKING",
+            Self::LogoRecognition => "LOGO_RECOGNITION",
+            Self::PersonDetection => "PERSON_DETECTION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -909,10 +909,10 @@ impl LabelDetectionMode {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            LabelDetectionMode::Unspecified => "LABEL_DETECTION_MODE_UNSPECIFIED",
-            LabelDetectionMode::ShotMode => "SHOT_MODE",
-            LabelDetectionMode::FrameMode => "FRAME_MODE",
-            LabelDetectionMode::ShotAndFrameMode => "SHOT_AND_FRAME_MODE",
+            Self::Unspecified => "LABEL_DETECTION_MODE_UNSPECIFIED",
+            Self::ShotMode => "SHOT_MODE",
+            Self::FrameMode => "FRAME_MODE",
+            Self::ShotAndFrameMode => "SHOT_AND_FRAME_MODE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -950,12 +950,12 @@ impl Likelihood {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Likelihood::Unspecified => "LIKELIHOOD_UNSPECIFIED",
-            Likelihood::VeryUnlikely => "VERY_UNLIKELY",
-            Likelihood::Unlikely => "UNLIKELY",
-            Likelihood::Possible => "POSSIBLE",
-            Likelihood::Likely => "LIKELY",
-            Likelihood::VeryLikely => "VERY_LIKELY",
+            Self::Unspecified => "LIKELIHOOD_UNSPECIFIED",
+            Self::VeryUnlikely => "VERY_UNLIKELY",
+            Self::Unlikely => "UNLIKELY",
+            Self::Possible => "POSSIBLE",
+            Self::Likely => "LIKELY",
+            Self::VeryLikely => "VERY_LIKELY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -973,7 +973,13 @@ impl Likelihood {
 }
 /// Generated client implementations.
 pub mod video_intelligence_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service that implements the Video Intelligence API.
@@ -1074,8 +1080,7 @@ pub mod video_intelligence_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

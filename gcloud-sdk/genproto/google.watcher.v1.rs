@@ -131,10 +131,10 @@ pub mod change {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Exists => "EXISTS",
-                State::DoesNotExist => "DOES_NOT_EXIST",
-                State::InitialStateSkipped => "INITIAL_STATE_SKIPPED",
-                State::Error => "ERROR",
+                Self::Exists => "EXISTS",
+                Self::DoesNotExist => "DOES_NOT_EXIST",
+                Self::InitialStateSkipped => "INITIAL_STATE_SKIPPED",
+                Self::Error => "ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -151,7 +151,13 @@ pub mod change {
 }
 /// Generated client implementations.
 pub mod watcher_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The service that a client uses to connect to the watcher system.
@@ -249,8 +255,7 @@ pub mod watcher_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

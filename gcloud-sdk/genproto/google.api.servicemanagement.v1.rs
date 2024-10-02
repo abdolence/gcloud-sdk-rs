@@ -76,12 +76,12 @@ pub mod operation_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::Unspecified => "STATUS_UNSPECIFIED",
-                Status::Done => "DONE",
-                Status::NotStarted => "NOT_STARTED",
-                Status::InProgress => "IN_PROGRESS",
-                Status::Failed => "FAILED",
-                Status::Cancelled => "CANCELLED",
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::Done => "DONE",
+                Self::NotStarted => "NOT_STARTED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Failed => "FAILED",
+                Self::Cancelled => "CANCELLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -139,8 +139,8 @@ pub mod diagnostic {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Kind::Warning => "WARNING",
-                Kind::Error => "ERROR",
+                Self::Warning => "WARNING",
+                Self::Error => "ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -225,12 +225,12 @@ pub mod config_file {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FileType::Unspecified => "FILE_TYPE_UNSPECIFIED",
-                FileType::ServiceConfigYaml => "SERVICE_CONFIG_YAML",
-                FileType::OpenApiJson => "OPEN_API_JSON",
-                FileType::OpenApiYaml => "OPEN_API_YAML",
-                FileType::FileDescriptorSetProto => "FILE_DESCRIPTOR_SET_PROTO",
-                FileType::ProtoFile => "PROTO_FILE",
+                Self::Unspecified => "FILE_TYPE_UNSPECIFIED",
+                Self::ServiceConfigYaml => "SERVICE_CONFIG_YAML",
+                Self::OpenApiJson => "OPEN_API_JSON",
+                Self::OpenApiYaml => "OPEN_API_YAML",
+                Self::FileDescriptorSetProto => "FILE_DESCRIPTOR_SET_PROTO",
+                Self::ProtoFile => "PROTO_FILE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -390,13 +390,13 @@ pub mod rollout {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RolloutStatus::Unspecified => "ROLLOUT_STATUS_UNSPECIFIED",
-                RolloutStatus::InProgress => "IN_PROGRESS",
-                RolloutStatus::Success => "SUCCESS",
-                RolloutStatus::Cancelled => "CANCELLED",
-                RolloutStatus::Failed => "FAILED",
-                RolloutStatus::Pending => "PENDING",
-                RolloutStatus::FailedRolledBack => "FAILED_ROLLED_BACK",
+                Self::Unspecified => "ROLLOUT_STATUS_UNSPECIFIED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Success => "SUCCESS",
+                Self::Cancelled => "CANCELLED",
+                Self::Failed => "FAILED",
+                Self::Pending => "PENDING",
+                Self::FailedRolledBack => "FAILED_ROLLED_BACK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -550,8 +550,8 @@ pub mod get_service_config_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConfigView::Basic => "BASIC",
-                ConfigView::Full => "FULL",
+                Self::Basic => "BASIC",
+                Self::Full => "FULL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -731,7 +731,13 @@ pub struct GenerateConfigReportResponse {
 }
 /// Generated client implementations.
 pub mod service_manager_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// [Google Service Management
@@ -832,8 +838,7 @@ pub mod service_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -861,8 +866,7 @@ pub mod service_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -902,8 +906,7 @@ pub mod service_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -940,8 +943,7 @@ pub mod service_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -976,8 +978,7 @@ pub mod service_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1008,8 +1009,7 @@ pub mod service_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1039,8 +1039,7 @@ pub mod service_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1077,8 +1076,7 @@ pub mod service_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1121,8 +1119,7 @@ pub mod service_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1153,8 +1150,7 @@ pub mod service_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1182,8 +1178,7 @@ pub mod service_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1226,8 +1221,7 @@ pub mod service_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1267,8 +1261,7 @@ pub mod service_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

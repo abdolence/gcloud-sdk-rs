@@ -164,37 +164,37 @@ pub mod step {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::StartFromInstance => "START_FROM_INSTANCE",
-                State::StartFromInternet => "START_FROM_INTERNET",
-                State::StartFromGoogleService => "START_FROM_GOOGLE_SERVICE",
-                State::StartFromPrivateNetwork => "START_FROM_PRIVATE_NETWORK",
-                State::StartFromGkeMaster => "START_FROM_GKE_MASTER",
-                State::StartFromCloudSqlInstance => "START_FROM_CLOUD_SQL_INSTANCE",
-                State::StartFromCloudFunction => "START_FROM_CLOUD_FUNCTION",
-                State::StartFromAppEngineVersion => "START_FROM_APP_ENGINE_VERSION",
-                State::StartFromCloudRunRevision => "START_FROM_CLOUD_RUN_REVISION",
-                State::StartFromStorageBucket => "START_FROM_STORAGE_BUCKET",
-                State::StartFromPscPublishedService => "START_FROM_PSC_PUBLISHED_SERVICE",
-                State::ApplyIngressFirewallRule => "APPLY_INGRESS_FIREWALL_RULE",
-                State::ApplyEgressFirewallRule => "APPLY_EGRESS_FIREWALL_RULE",
-                State::ApplyRoute => "APPLY_ROUTE",
-                State::ApplyForwardingRule => "APPLY_FORWARDING_RULE",
-                State::AnalyzeLoadBalancerBackend => "ANALYZE_LOAD_BALANCER_BACKEND",
-                State::SpoofingApproved => "SPOOFING_APPROVED",
-                State::ArriveAtInstance => "ARRIVE_AT_INSTANCE",
-                State::ArriveAtInternalLoadBalancer => "ARRIVE_AT_INTERNAL_LOAD_BALANCER",
-                State::ArriveAtExternalLoadBalancer => "ARRIVE_AT_EXTERNAL_LOAD_BALANCER",
-                State::ArriveAtVpnGateway => "ARRIVE_AT_VPN_GATEWAY",
-                State::ArriveAtVpnTunnel => "ARRIVE_AT_VPN_TUNNEL",
-                State::ArriveAtVpcConnector => "ARRIVE_AT_VPC_CONNECTOR",
-                State::Nat => "NAT",
-                State::ProxyConnection => "PROXY_CONNECTION",
-                State::Deliver => "DELIVER",
-                State::Drop => "DROP",
-                State::Forward => "FORWARD",
-                State::Abort => "ABORT",
-                State::ViewerPermissionMissing => "VIEWER_PERMISSION_MISSING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::StartFromInstance => "START_FROM_INSTANCE",
+                Self::StartFromInternet => "START_FROM_INTERNET",
+                Self::StartFromGoogleService => "START_FROM_GOOGLE_SERVICE",
+                Self::StartFromPrivateNetwork => "START_FROM_PRIVATE_NETWORK",
+                Self::StartFromGkeMaster => "START_FROM_GKE_MASTER",
+                Self::StartFromCloudSqlInstance => "START_FROM_CLOUD_SQL_INSTANCE",
+                Self::StartFromCloudFunction => "START_FROM_CLOUD_FUNCTION",
+                Self::StartFromAppEngineVersion => "START_FROM_APP_ENGINE_VERSION",
+                Self::StartFromCloudRunRevision => "START_FROM_CLOUD_RUN_REVISION",
+                Self::StartFromStorageBucket => "START_FROM_STORAGE_BUCKET",
+                Self::StartFromPscPublishedService => "START_FROM_PSC_PUBLISHED_SERVICE",
+                Self::ApplyIngressFirewallRule => "APPLY_INGRESS_FIREWALL_RULE",
+                Self::ApplyEgressFirewallRule => "APPLY_EGRESS_FIREWALL_RULE",
+                Self::ApplyRoute => "APPLY_ROUTE",
+                Self::ApplyForwardingRule => "APPLY_FORWARDING_RULE",
+                Self::AnalyzeLoadBalancerBackend => "ANALYZE_LOAD_BALANCER_BACKEND",
+                Self::SpoofingApproved => "SPOOFING_APPROVED",
+                Self::ArriveAtInstance => "ARRIVE_AT_INSTANCE",
+                Self::ArriveAtInternalLoadBalancer => "ARRIVE_AT_INTERNAL_LOAD_BALANCER",
+                Self::ArriveAtExternalLoadBalancer => "ARRIVE_AT_EXTERNAL_LOAD_BALANCER",
+                Self::ArriveAtVpnGateway => "ARRIVE_AT_VPN_GATEWAY",
+                Self::ArriveAtVpnTunnel => "ARRIVE_AT_VPN_TUNNEL",
+                Self::ArriveAtVpcConnector => "ARRIVE_AT_VPC_CONNECTOR",
+                Self::Nat => "NAT",
+                Self::ProxyConnection => "PROXY_CONNECTION",
+                Self::Deliver => "DELIVER",
+                Self::Drop => "DROP",
+                Self::Forward => "FORWARD",
+                Self::Abort => "ABORT",
+                Self::ViewerPermissionMissing => "VIEWER_PERMISSION_MISSING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -471,25 +471,21 @@ pub mod firewall_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FirewallRuleType::Unspecified => "FIREWALL_RULE_TYPE_UNSPECIFIED",
-                FirewallRuleType::HierarchicalFirewallPolicyRule => {
+                Self::Unspecified => "FIREWALL_RULE_TYPE_UNSPECIFIED",
+                Self::HierarchicalFirewallPolicyRule => {
                     "HIERARCHICAL_FIREWALL_POLICY_RULE"
                 }
-                FirewallRuleType::VpcFirewallRule => "VPC_FIREWALL_RULE",
-                FirewallRuleType::ImpliedVpcFirewallRule => "IMPLIED_VPC_FIREWALL_RULE",
-                FirewallRuleType::ServerlessVpcAccessManagedFirewallRule => {
+                Self::VpcFirewallRule => "VPC_FIREWALL_RULE",
+                Self::ImpliedVpcFirewallRule => "IMPLIED_VPC_FIREWALL_RULE",
+                Self::ServerlessVpcAccessManagedFirewallRule => {
                     "SERVERLESS_VPC_ACCESS_MANAGED_FIREWALL_RULE"
                 }
-                FirewallRuleType::NetworkFirewallPolicyRule => {
-                    "NETWORK_FIREWALL_POLICY_RULE"
-                }
-                FirewallRuleType::NetworkRegionalFirewallPolicyRule => {
+                Self::NetworkFirewallPolicyRule => "NETWORK_FIREWALL_POLICY_RULE",
+                Self::NetworkRegionalFirewallPolicyRule => {
                     "NETWORK_REGIONAL_FIREWALL_POLICY_RULE"
                 }
-                FirewallRuleType::UnsupportedFirewallPolicyRule => {
-                    "UNSUPPORTED_FIREWALL_POLICY_RULE"
-                }
-                FirewallRuleType::TrackingState => "TRACKING_STATE",
+                Self::UnsupportedFirewallPolicyRule => "UNSUPPORTED_FIREWALL_POLICY_RULE",
+                Self::TrackingState => "TRACKING_STATE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -613,14 +609,14 @@ pub mod route_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RouteType::Unspecified => "ROUTE_TYPE_UNSPECIFIED",
-                RouteType::Subnet => "SUBNET",
-                RouteType::Static => "STATIC",
-                RouteType::Dynamic => "DYNAMIC",
-                RouteType::PeeringSubnet => "PEERING_SUBNET",
-                RouteType::PeeringStatic => "PEERING_STATIC",
-                RouteType::PeeringDynamic => "PEERING_DYNAMIC",
-                RouteType::PolicyBased => "POLICY_BASED",
+                Self::Unspecified => "ROUTE_TYPE_UNSPECIFIED",
+                Self::Subnet => "SUBNET",
+                Self::Static => "STATIC",
+                Self::Dynamic => "DYNAMIC",
+                Self::PeeringSubnet => "PEERING_SUBNET",
+                Self::PeeringStatic => "PEERING_STATIC",
+                Self::PeeringDynamic => "PEERING_DYNAMIC",
+                Self::PolicyBased => "POLICY_BASED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -692,19 +688,19 @@ pub mod route_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                NextHopType::Unspecified => "NEXT_HOP_TYPE_UNSPECIFIED",
-                NextHopType::NextHopIp => "NEXT_HOP_IP",
-                NextHopType::NextHopInstance => "NEXT_HOP_INSTANCE",
-                NextHopType::NextHopNetwork => "NEXT_HOP_NETWORK",
-                NextHopType::NextHopPeering => "NEXT_HOP_PEERING",
-                NextHopType::NextHopInterconnect => "NEXT_HOP_INTERCONNECT",
-                NextHopType::NextHopVpnTunnel => "NEXT_HOP_VPN_TUNNEL",
-                NextHopType::NextHopVpnGateway => "NEXT_HOP_VPN_GATEWAY",
-                NextHopType::NextHopInternetGateway => "NEXT_HOP_INTERNET_GATEWAY",
-                NextHopType::NextHopBlackhole => "NEXT_HOP_BLACKHOLE",
-                NextHopType::NextHopIlb => "NEXT_HOP_ILB",
-                NextHopType::NextHopRouterAppliance => "NEXT_HOP_ROUTER_APPLIANCE",
-                NextHopType::NextHopNccHub => "NEXT_HOP_NCC_HUB",
+                Self::Unspecified => "NEXT_HOP_TYPE_UNSPECIFIED",
+                Self::NextHopIp => "NEXT_HOP_IP",
+                Self::NextHopInstance => "NEXT_HOP_INSTANCE",
+                Self::NextHopNetwork => "NEXT_HOP_NETWORK",
+                Self::NextHopPeering => "NEXT_HOP_PEERING",
+                Self::NextHopInterconnect => "NEXT_HOP_INTERCONNECT",
+                Self::NextHopVpnTunnel => "NEXT_HOP_VPN_TUNNEL",
+                Self::NextHopVpnGateway => "NEXT_HOP_VPN_GATEWAY",
+                Self::NextHopInternetGateway => "NEXT_HOP_INTERNET_GATEWAY",
+                Self::NextHopBlackhole => "NEXT_HOP_BLACKHOLE",
+                Self::NextHopIlb => "NEXT_HOP_ILB",
+                Self::NextHopRouterAppliance => "NEXT_HOP_ROUTER_APPLIANCE",
+                Self::NextHopNccHub => "NEXT_HOP_NCC_HUB",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -755,9 +751,9 @@ pub mod route_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RouteScope::Unspecified => "ROUTE_SCOPE_UNSPECIFIED",
-                RouteScope::Network => "NETWORK",
-                RouteScope::NccHub => "NCC_HUB",
+                Self::Unspecified => "ROUTE_SCOPE_UNSPECIFIED",
+                Self::Network => "NETWORK",
+                Self::NccHub => "NCC_HUB",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -832,15 +828,13 @@ pub mod google_service_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                GoogleServiceType::Unspecified => "GOOGLE_SERVICE_TYPE_UNSPECIFIED",
-                GoogleServiceType::Iap => "IAP",
-                GoogleServiceType::GfeProxyOrHealthCheckProber => {
-                    "GFE_PROXY_OR_HEALTH_CHECK_PROBER"
-                }
-                GoogleServiceType::CloudDns => "CLOUD_DNS",
-                GoogleServiceType::GoogleApi => "GOOGLE_API",
-                GoogleServiceType::GoogleApiPsc => "GOOGLE_API_PSC",
-                GoogleServiceType::GoogleApiVpcSc => "GOOGLE_API_VPC_SC",
+                Self::Unspecified => "GOOGLE_SERVICE_TYPE_UNSPECIFIED",
+                Self::Iap => "IAP",
+                Self::GfeProxyOrHealthCheckProber => "GFE_PROXY_OR_HEALTH_CHECK_PROBER",
+                Self::CloudDns => "CLOUD_DNS",
+                Self::GoogleApi => "GOOGLE_API",
+                Self::GoogleApiPsc => "GOOGLE_API_PSC",
+                Self::GoogleApiVpcSc => "GOOGLE_API_VPC_SC",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -943,12 +937,12 @@ pub mod load_balancer_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LoadBalancerType::Unspecified => "LOAD_BALANCER_TYPE_UNSPECIFIED",
-                LoadBalancerType::InternalTcpUdp => "INTERNAL_TCP_UDP",
-                LoadBalancerType::NetworkTcpUdp => "NETWORK_TCP_UDP",
-                LoadBalancerType::HttpProxy => "HTTP_PROXY",
-                LoadBalancerType::TcpProxy => "TCP_PROXY",
-                LoadBalancerType::SslProxy => "SSL_PROXY",
+                Self::Unspecified => "LOAD_BALANCER_TYPE_UNSPECIFIED",
+                Self::InternalTcpUdp => "INTERNAL_TCP_UDP",
+                Self::NetworkTcpUdp => "NETWORK_TCP_UDP",
+                Self::HttpProxy => "HTTP_PROXY",
+                Self::TcpProxy => "TCP_PROXY",
+                Self::SslProxy => "SSL_PROXY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -994,10 +988,10 @@ pub mod load_balancer_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BackendType::Unspecified => "BACKEND_TYPE_UNSPECIFIED",
-                BackendType::BackendService => "BACKEND_SERVICE",
-                BackendType::TargetPool => "TARGET_POOL",
-                BackendType::TargetInstance => "TARGET_INSTANCE",
+                Self::Unspecified => "BACKEND_TYPE_UNSPECIFIED",
+                Self::BackendService => "BACKEND_SERVICE",
+                Self::TargetPool => "TARGET_POOL",
+                Self::TargetInstance => "TARGET_INSTANCE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1070,11 +1064,9 @@ pub mod load_balancer_backend {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                HealthCheckFirewallState::Unspecified => {
-                    "HEALTH_CHECK_FIREWALL_STATE_UNSPECIFIED"
-                }
-                HealthCheckFirewallState::Configured => "CONFIGURED",
-                HealthCheckFirewallState::Misconfigured => "MISCONFIGURED",
+                Self::Unspecified => "HEALTH_CHECK_FIREWALL_STATE_UNSPECIFIED",
+                Self::Configured => "CONFIGURED",
+                Self::Misconfigured => "MISCONFIGURED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1176,10 +1168,10 @@ pub mod vpn_tunnel_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RoutingType::Unspecified => "ROUTING_TYPE_UNSPECIFIED",
-                RoutingType::RouteBased => "ROUTE_BASED",
-                RoutingType::PolicyBased => "POLICY_BASED",
-                RoutingType::Dynamic => "DYNAMIC",
+                Self::Unspecified => "ROUTING_TYPE_UNSPECIFIED",
+                Self::RouteBased => "ROUTE_BASED",
+                Self::PolicyBased => "POLICY_BASED",
+                Self::Dynamic => "DYNAMIC",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1294,21 +1286,21 @@ pub mod deliver_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Target::Unspecified => "TARGET_UNSPECIFIED",
-                Target::Instance => "INSTANCE",
-                Target::Internet => "INTERNET",
-                Target::GoogleApi => "GOOGLE_API",
-                Target::GkeMaster => "GKE_MASTER",
-                Target::CloudSqlInstance => "CLOUD_SQL_INSTANCE",
-                Target::PscPublishedService => "PSC_PUBLISHED_SERVICE",
-                Target::PscGoogleApi => "PSC_GOOGLE_API",
-                Target::PscVpcSc => "PSC_VPC_SC",
-                Target::ServerlessNeg => "SERVERLESS_NEG",
-                Target::StorageBucket => "STORAGE_BUCKET",
-                Target::PrivateNetwork => "PRIVATE_NETWORK",
-                Target::CloudFunction => "CLOUD_FUNCTION",
-                Target::AppEngineVersion => "APP_ENGINE_VERSION",
-                Target::CloudRunRevision => "CLOUD_RUN_REVISION",
+                Self::Unspecified => "TARGET_UNSPECIFIED",
+                Self::Instance => "INSTANCE",
+                Self::Internet => "INTERNET",
+                Self::GoogleApi => "GOOGLE_API",
+                Self::GkeMaster => "GKE_MASTER",
+                Self::CloudSqlInstance => "CLOUD_SQL_INSTANCE",
+                Self::PscPublishedService => "PSC_PUBLISHED_SERVICE",
+                Self::PscGoogleApi => "PSC_GOOGLE_API",
+                Self::PscVpcSc => "PSC_VPC_SC",
+                Self::ServerlessNeg => "SERVERLESS_NEG",
+                Self::StorageBucket => "STORAGE_BUCKET",
+                Self::PrivateNetwork => "PRIVATE_NETWORK",
+                Self::CloudFunction => "CLOUD_FUNCTION",
+                Self::AppEngineVersion => "APP_ENGINE_VERSION",
+                Self::CloudRunRevision => "CLOUD_RUN_REVISION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1391,16 +1383,16 @@ pub mod forward_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Target::Unspecified => "TARGET_UNSPECIFIED",
-                Target::PeeringVpc => "PEERING_VPC",
-                Target::VpnGateway => "VPN_GATEWAY",
-                Target::Interconnect => "INTERCONNECT",
-                Target::GkeMaster => "GKE_MASTER",
-                Target::ImportedCustomRouteNextHop => "IMPORTED_CUSTOM_ROUTE_NEXT_HOP",
-                Target::CloudSqlInstance => "CLOUD_SQL_INSTANCE",
-                Target::AnotherProject => "ANOTHER_PROJECT",
-                Target::NccHub => "NCC_HUB",
-                Target::RouterAppliance => "ROUTER_APPLIANCE",
+                Self::Unspecified => "TARGET_UNSPECIFIED",
+                Self::PeeringVpc => "PEERING_VPC",
+                Self::VpnGateway => "VPN_GATEWAY",
+                Self::Interconnect => "INTERCONNECT",
+                Self::GkeMaster => "GKE_MASTER",
+                Self::ImportedCustomRouteNextHop => "IMPORTED_CUSTOM_ROUTE_NEXT_HOP",
+                Self::CloudSqlInstance => "CLOUD_SQL_INSTANCE",
+                Self::AnotherProject => "ANOTHER_PROJECT",
+                Self::NccHub => "NCC_HUB",
+                Self::RouterAppliance => "ROUTER_APPLIANCE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1559,52 +1551,52 @@ pub mod abort_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Cause::Unspecified => "CAUSE_UNSPECIFIED",
-                Cause::UnknownNetwork => "UNKNOWN_NETWORK",
-                Cause::UnknownProject => "UNKNOWN_PROJECT",
-                Cause::NoExternalIp => "NO_EXTERNAL_IP",
-                Cause::UnintendedDestination => "UNINTENDED_DESTINATION",
-                Cause::SourceEndpointNotFound => "SOURCE_ENDPOINT_NOT_FOUND",
-                Cause::MismatchedSourceNetwork => "MISMATCHED_SOURCE_NETWORK",
-                Cause::DestinationEndpointNotFound => "DESTINATION_ENDPOINT_NOT_FOUND",
-                Cause::MismatchedDestinationNetwork => "MISMATCHED_DESTINATION_NETWORK",
-                Cause::UnknownIp => "UNKNOWN_IP",
-                Cause::SourceIpAddressNotInSourceNetwork => {
+                Self::Unspecified => "CAUSE_UNSPECIFIED",
+                Self::UnknownNetwork => "UNKNOWN_NETWORK",
+                Self::UnknownProject => "UNKNOWN_PROJECT",
+                Self::NoExternalIp => "NO_EXTERNAL_IP",
+                Self::UnintendedDestination => "UNINTENDED_DESTINATION",
+                Self::SourceEndpointNotFound => "SOURCE_ENDPOINT_NOT_FOUND",
+                Self::MismatchedSourceNetwork => "MISMATCHED_SOURCE_NETWORK",
+                Self::DestinationEndpointNotFound => "DESTINATION_ENDPOINT_NOT_FOUND",
+                Self::MismatchedDestinationNetwork => "MISMATCHED_DESTINATION_NETWORK",
+                Self::UnknownIp => "UNKNOWN_IP",
+                Self::SourceIpAddressNotInSourceNetwork => {
                     "SOURCE_IP_ADDRESS_NOT_IN_SOURCE_NETWORK"
                 }
-                Cause::PermissionDenied => "PERMISSION_DENIED",
-                Cause::PermissionDeniedNoCloudNatConfigs => {
+                Self::PermissionDenied => "PERMISSION_DENIED",
+                Self::PermissionDeniedNoCloudNatConfigs => {
                     "PERMISSION_DENIED_NO_CLOUD_NAT_CONFIGS"
                 }
-                Cause::PermissionDeniedNoNegEndpointConfigs => {
+                Self::PermissionDeniedNoNegEndpointConfigs => {
                     "PERMISSION_DENIED_NO_NEG_ENDPOINT_CONFIGS"
                 }
-                Cause::NoSourceLocation => "NO_SOURCE_LOCATION",
-                Cause::InvalidArgument => "INVALID_ARGUMENT",
-                Cause::TraceTooLong => "TRACE_TOO_LONG",
-                Cause::InternalError => "INTERNAL_ERROR",
-                Cause::Unsupported => "UNSUPPORTED",
-                Cause::MismatchedIpVersion => "MISMATCHED_IP_VERSION",
-                Cause::GkeKonnectivityProxyUnsupported => {
+                Self::NoSourceLocation => "NO_SOURCE_LOCATION",
+                Self::InvalidArgument => "INVALID_ARGUMENT",
+                Self::TraceTooLong => "TRACE_TOO_LONG",
+                Self::InternalError => "INTERNAL_ERROR",
+                Self::Unsupported => "UNSUPPORTED",
+                Self::MismatchedIpVersion => "MISMATCHED_IP_VERSION",
+                Self::GkeKonnectivityProxyUnsupported => {
                     "GKE_KONNECTIVITY_PROXY_UNSUPPORTED"
                 }
-                Cause::ResourceConfigNotFound => "RESOURCE_CONFIG_NOT_FOUND",
-                Cause::VmInstanceConfigNotFound => "VM_INSTANCE_CONFIG_NOT_FOUND",
-                Cause::NetworkConfigNotFound => "NETWORK_CONFIG_NOT_FOUND",
-                Cause::FirewallConfigNotFound => "FIREWALL_CONFIG_NOT_FOUND",
-                Cause::RouteConfigNotFound => "ROUTE_CONFIG_NOT_FOUND",
-                Cause::GoogleManagedServiceAmbiguousPscEndpoint => {
+                Self::ResourceConfigNotFound => "RESOURCE_CONFIG_NOT_FOUND",
+                Self::VmInstanceConfigNotFound => "VM_INSTANCE_CONFIG_NOT_FOUND",
+                Self::NetworkConfigNotFound => "NETWORK_CONFIG_NOT_FOUND",
+                Self::FirewallConfigNotFound => "FIREWALL_CONFIG_NOT_FOUND",
+                Self::RouteConfigNotFound => "ROUTE_CONFIG_NOT_FOUND",
+                Self::GoogleManagedServiceAmbiguousPscEndpoint => {
                     "GOOGLE_MANAGED_SERVICE_AMBIGUOUS_PSC_ENDPOINT"
                 }
-                Cause::SourcePscCloudSqlUnsupported => "SOURCE_PSC_CLOUD_SQL_UNSUPPORTED",
-                Cause::SourceForwardingRuleUnsupported => {
+                Self::SourcePscCloudSqlUnsupported => "SOURCE_PSC_CLOUD_SQL_UNSUPPORTED",
+                Self::SourceForwardingRuleUnsupported => {
                     "SOURCE_FORWARDING_RULE_UNSUPPORTED"
                 }
-                Cause::NonRoutableIpAddress => "NON_ROUTABLE_IP_ADDRESS",
-                Cause::UnknownIssueInGoogleManagedProject => {
+                Self::NonRoutableIpAddress => "NON_ROUTABLE_IP_ADDRESS",
+                Self::UnknownIssueInGoogleManagedProject => {
                     "UNKNOWN_ISSUE_IN_GOOGLE_MANAGED_PROJECT"
                 }
-                Cause::UnsupportedGoogleManagedProjectConfig => {
+                Self::UnsupportedGoogleManagedProjectConfig => {
                     "UNSUPPORTED_GOOGLE_MANAGED_PROJECT_CONFIG"
                 }
             }
@@ -1890,122 +1882,116 @@ pub mod drop_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Cause::Unspecified => "CAUSE_UNSPECIFIED",
-                Cause::UnknownExternalAddress => "UNKNOWN_EXTERNAL_ADDRESS",
-                Cause::ForeignIpDisallowed => "FOREIGN_IP_DISALLOWED",
-                Cause::FirewallRule => "FIREWALL_RULE",
-                Cause::NoRoute => "NO_ROUTE",
-                Cause::RouteBlackhole => "ROUTE_BLACKHOLE",
-                Cause::RouteWrongNetwork => "ROUTE_WRONG_NETWORK",
-                Cause::RouteNextHopIpAddressNotResolved => {
+                Self::Unspecified => "CAUSE_UNSPECIFIED",
+                Self::UnknownExternalAddress => "UNKNOWN_EXTERNAL_ADDRESS",
+                Self::ForeignIpDisallowed => "FOREIGN_IP_DISALLOWED",
+                Self::FirewallRule => "FIREWALL_RULE",
+                Self::NoRoute => "NO_ROUTE",
+                Self::RouteBlackhole => "ROUTE_BLACKHOLE",
+                Self::RouteWrongNetwork => "ROUTE_WRONG_NETWORK",
+                Self::RouteNextHopIpAddressNotResolved => {
                     "ROUTE_NEXT_HOP_IP_ADDRESS_NOT_RESOLVED"
                 }
-                Cause::RouteNextHopResourceNotFound => {
-                    "ROUTE_NEXT_HOP_RESOURCE_NOT_FOUND"
-                }
-                Cause::RouteNextHopInstanceWrongNetwork => {
+                Self::RouteNextHopResourceNotFound => "ROUTE_NEXT_HOP_RESOURCE_NOT_FOUND",
+                Self::RouteNextHopInstanceWrongNetwork => {
                     "ROUTE_NEXT_HOP_INSTANCE_WRONG_NETWORK"
                 }
-                Cause::RouteNextHopInstanceNonPrimaryIp => {
+                Self::RouteNextHopInstanceNonPrimaryIp => {
                     "ROUTE_NEXT_HOP_INSTANCE_NON_PRIMARY_IP"
                 }
-                Cause::RouteNextHopForwardingRuleIpMismatch => {
+                Self::RouteNextHopForwardingRuleIpMismatch => {
                     "ROUTE_NEXT_HOP_FORWARDING_RULE_IP_MISMATCH"
                 }
-                Cause::RouteNextHopVpnTunnelNotEstablished => {
+                Self::RouteNextHopVpnTunnelNotEstablished => {
                     "ROUTE_NEXT_HOP_VPN_TUNNEL_NOT_ESTABLISHED"
                 }
-                Cause::RouteNextHopForwardingRuleTypeInvalid => {
+                Self::RouteNextHopForwardingRuleTypeInvalid => {
                     "ROUTE_NEXT_HOP_FORWARDING_RULE_TYPE_INVALID"
                 }
-                Cause::NoRouteFromInternetToPrivateIpv6Address => {
+                Self::NoRouteFromInternetToPrivateIpv6Address => {
                     "NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV6_ADDRESS"
                 }
-                Cause::VpnTunnelLocalSelectorMismatch => {
+                Self::VpnTunnelLocalSelectorMismatch => {
                     "VPN_TUNNEL_LOCAL_SELECTOR_MISMATCH"
                 }
-                Cause::VpnTunnelRemoteSelectorMismatch => {
+                Self::VpnTunnelRemoteSelectorMismatch => {
                     "VPN_TUNNEL_REMOTE_SELECTOR_MISMATCH"
                 }
-                Cause::PrivateTrafficToInternet => "PRIVATE_TRAFFIC_TO_INTERNET",
-                Cause::PrivateGoogleAccessDisallowed => {
-                    "PRIVATE_GOOGLE_ACCESS_DISALLOWED"
-                }
-                Cause::PrivateGoogleAccessViaVpnTunnelUnsupported => {
+                Self::PrivateTrafficToInternet => "PRIVATE_TRAFFIC_TO_INTERNET",
+                Self::PrivateGoogleAccessDisallowed => "PRIVATE_GOOGLE_ACCESS_DISALLOWED",
+                Self::PrivateGoogleAccessViaVpnTunnelUnsupported => {
                     "PRIVATE_GOOGLE_ACCESS_VIA_VPN_TUNNEL_UNSUPPORTED"
                 }
-                Cause::NoExternalAddress => "NO_EXTERNAL_ADDRESS",
-                Cause::UnknownInternalAddress => "UNKNOWN_INTERNAL_ADDRESS",
-                Cause::ForwardingRuleMismatch => "FORWARDING_RULE_MISMATCH",
-                Cause::ForwardingRuleNoInstances => "FORWARDING_RULE_NO_INSTANCES",
-                Cause::FirewallBlockingLoadBalancerBackendHealthCheck => {
+                Self::NoExternalAddress => "NO_EXTERNAL_ADDRESS",
+                Self::UnknownInternalAddress => "UNKNOWN_INTERNAL_ADDRESS",
+                Self::ForwardingRuleMismatch => "FORWARDING_RULE_MISMATCH",
+                Self::ForwardingRuleNoInstances => "FORWARDING_RULE_NO_INSTANCES",
+                Self::FirewallBlockingLoadBalancerBackendHealthCheck => {
                     "FIREWALL_BLOCKING_LOAD_BALANCER_BACKEND_HEALTH_CHECK"
                 }
-                Cause::InstanceNotRunning => "INSTANCE_NOT_RUNNING",
-                Cause::GkeClusterNotRunning => "GKE_CLUSTER_NOT_RUNNING",
-                Cause::CloudSqlInstanceNotRunning => "CLOUD_SQL_INSTANCE_NOT_RUNNING",
-                Cause::TrafficTypeBlocked => "TRAFFIC_TYPE_BLOCKED",
-                Cause::GkeMasterUnauthorizedAccess => "GKE_MASTER_UNAUTHORIZED_ACCESS",
-                Cause::CloudSqlInstanceUnauthorizedAccess => {
+                Self::InstanceNotRunning => "INSTANCE_NOT_RUNNING",
+                Self::GkeClusterNotRunning => "GKE_CLUSTER_NOT_RUNNING",
+                Self::CloudSqlInstanceNotRunning => "CLOUD_SQL_INSTANCE_NOT_RUNNING",
+                Self::TrafficTypeBlocked => "TRAFFIC_TYPE_BLOCKED",
+                Self::GkeMasterUnauthorizedAccess => "GKE_MASTER_UNAUTHORIZED_ACCESS",
+                Self::CloudSqlInstanceUnauthorizedAccess => {
                     "CLOUD_SQL_INSTANCE_UNAUTHORIZED_ACCESS"
                 }
-                Cause::DroppedInsideGkeService => "DROPPED_INSIDE_GKE_SERVICE",
-                Cause::DroppedInsideCloudSqlService => "DROPPED_INSIDE_CLOUD_SQL_SERVICE",
-                Cause::GoogleManagedServiceNoPeering => {
+                Self::DroppedInsideGkeService => "DROPPED_INSIDE_GKE_SERVICE",
+                Self::DroppedInsideCloudSqlService => "DROPPED_INSIDE_CLOUD_SQL_SERVICE",
+                Self::GoogleManagedServiceNoPeering => {
                     "GOOGLE_MANAGED_SERVICE_NO_PEERING"
                 }
-                Cause::GoogleManagedServiceNoPscEndpoint => {
+                Self::GoogleManagedServiceNoPscEndpoint => {
                     "GOOGLE_MANAGED_SERVICE_NO_PSC_ENDPOINT"
                 }
-                Cause::GkePscEndpointMissing => "GKE_PSC_ENDPOINT_MISSING",
-                Cause::CloudSqlInstanceNoIpAddress => "CLOUD_SQL_INSTANCE_NO_IP_ADDRESS",
-                Cause::GkeControlPlaneRegionMismatch => {
+                Self::GkePscEndpointMissing => "GKE_PSC_ENDPOINT_MISSING",
+                Self::CloudSqlInstanceNoIpAddress => "CLOUD_SQL_INSTANCE_NO_IP_ADDRESS",
+                Self::GkeControlPlaneRegionMismatch => {
                     "GKE_CONTROL_PLANE_REGION_MISMATCH"
                 }
-                Cause::PublicGkeControlPlaneToPrivateDestination => {
+                Self::PublicGkeControlPlaneToPrivateDestination => {
                     "PUBLIC_GKE_CONTROL_PLANE_TO_PRIVATE_DESTINATION"
                 }
-                Cause::GkeControlPlaneNoRoute => "GKE_CONTROL_PLANE_NO_ROUTE",
-                Cause::CloudSqlInstanceNotConfiguredForExternalTraffic => {
+                Self::GkeControlPlaneNoRoute => "GKE_CONTROL_PLANE_NO_ROUTE",
+                Self::CloudSqlInstanceNotConfiguredForExternalTraffic => {
                     "CLOUD_SQL_INSTANCE_NOT_CONFIGURED_FOR_EXTERNAL_TRAFFIC"
                 }
-                Cause::PublicCloudSqlInstanceToPrivateDestination => {
+                Self::PublicCloudSqlInstanceToPrivateDestination => {
                     "PUBLIC_CLOUD_SQL_INSTANCE_TO_PRIVATE_DESTINATION"
                 }
-                Cause::CloudSqlInstanceNoRoute => "CLOUD_SQL_INSTANCE_NO_ROUTE",
-                Cause::CloudFunctionNotActive => "CLOUD_FUNCTION_NOT_ACTIVE",
-                Cause::VpcConnectorNotSet => "VPC_CONNECTOR_NOT_SET",
-                Cause::VpcConnectorNotRunning => "VPC_CONNECTOR_NOT_RUNNING",
-                Cause::ForwardingRuleRegionMismatch => "FORWARDING_RULE_REGION_MISMATCH",
-                Cause::PscConnectionNotAccepted => "PSC_CONNECTION_NOT_ACCEPTED",
-                Cause::PscEndpointAccessedFromPeeredNetwork => {
+                Self::CloudSqlInstanceNoRoute => "CLOUD_SQL_INSTANCE_NO_ROUTE",
+                Self::CloudFunctionNotActive => "CLOUD_FUNCTION_NOT_ACTIVE",
+                Self::VpcConnectorNotSet => "VPC_CONNECTOR_NOT_SET",
+                Self::VpcConnectorNotRunning => "VPC_CONNECTOR_NOT_RUNNING",
+                Self::ForwardingRuleRegionMismatch => "FORWARDING_RULE_REGION_MISMATCH",
+                Self::PscConnectionNotAccepted => "PSC_CONNECTION_NOT_ACCEPTED",
+                Self::PscEndpointAccessedFromPeeredNetwork => {
                     "PSC_ENDPOINT_ACCESSED_FROM_PEERED_NETWORK"
                 }
-                Cause::PscNegProducerEndpointNoGlobalAccess => {
+                Self::PscNegProducerEndpointNoGlobalAccess => {
                     "PSC_NEG_PRODUCER_ENDPOINT_NO_GLOBAL_ACCESS"
                 }
-                Cause::PscNegProducerForwardingRuleMultiplePorts => {
+                Self::PscNegProducerForwardingRuleMultiplePorts => {
                     "PSC_NEG_PRODUCER_FORWARDING_RULE_MULTIPLE_PORTS"
                 }
-                Cause::CloudSqlPscNegUnsupported => "CLOUD_SQL_PSC_NEG_UNSUPPORTED",
-                Cause::NoNatSubnetsForPscServiceAttachment => {
+                Self::CloudSqlPscNegUnsupported => "CLOUD_SQL_PSC_NEG_UNSUPPORTED",
+                Self::NoNatSubnetsForPscServiceAttachment => {
                     "NO_NAT_SUBNETS_FOR_PSC_SERVICE_ATTACHMENT"
                 }
-                Cause::HybridNegNonDynamicRouteMatched => {
+                Self::HybridNegNonDynamicRouteMatched => {
                     "HYBRID_NEG_NON_DYNAMIC_ROUTE_MATCHED"
                 }
-                Cause::HybridNegNonLocalDynamicRouteMatched => {
+                Self::HybridNegNonLocalDynamicRouteMatched => {
                     "HYBRID_NEG_NON_LOCAL_DYNAMIC_ROUTE_MATCHED"
                 }
-                Cause::CloudRunRevisionNotReady => "CLOUD_RUN_REVISION_NOT_READY",
-                Cause::DroppedInsidePscServiceProducer => {
+                Self::CloudRunRevisionNotReady => "CLOUD_RUN_REVISION_NOT_READY",
+                Self::DroppedInsidePscServiceProducer => {
                     "DROPPED_INSIDE_PSC_SERVICE_PRODUCER"
                 }
-                Cause::LoadBalancerHasNoProxySubnet => {
-                    "LOAD_BALANCER_HAS_NO_PROXY_SUBNET"
-                }
-                Cause::CloudNatNoAddresses => "CLOUD_NAT_NO_ADDRESSES",
-                Cause::RoutingLoop => "ROUTING_LOOP",
+                Self::LoadBalancerHasNoProxySubnet => "LOAD_BALANCER_HAS_NO_PROXY_SUBNET",
+                Self::CloudNatNoAddresses => "CLOUD_NAT_NO_ADDRESSES",
+                Self::RoutingLoop => "ROUTING_LOOP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2322,11 +2308,11 @@ pub mod nat_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::InternalToExternal => "INTERNAL_TO_EXTERNAL",
-                Type::ExternalToInternal => "EXTERNAL_TO_INTERNAL",
-                Type::CloudNat => "CLOUD_NAT",
-                Type::PrivateServiceConnect => "PRIVATE_SERVICE_CONNECT",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::InternalToExternal => "INTERNAL_TO_EXTERNAL",
+                Self::ExternalToInternal => "EXTERNAL_TO_INTERNAL",
+                Self::CloudNat => "CLOUD_NAT",
+                Self::PrivateServiceConnect => "PRIVATE_SERVICE_CONNECT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2470,21 +2456,11 @@ pub mod load_balancer_backend_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                HealthCheckFirewallsConfigState::Unspecified => {
-                    "HEALTH_CHECK_FIREWALLS_CONFIG_STATE_UNSPECIFIED"
-                }
-                HealthCheckFirewallsConfigState::FirewallsConfigured => {
-                    "FIREWALLS_CONFIGURED"
-                }
-                HealthCheckFirewallsConfigState::FirewallsPartiallyConfigured => {
-                    "FIREWALLS_PARTIALLY_CONFIGURED"
-                }
-                HealthCheckFirewallsConfigState::FirewallsNotConfigured => {
-                    "FIREWALLS_NOT_CONFIGURED"
-                }
-                HealthCheckFirewallsConfigState::FirewallsUnsupported => {
-                    "FIREWALLS_UNSUPPORTED"
-                }
+                Self::Unspecified => "HEALTH_CHECK_FIREWALLS_CONFIG_STATE_UNSPECIFIED",
+                Self::FirewallsConfigured => "FIREWALLS_CONFIGURED",
+                Self::FirewallsPartiallyConfigured => "FIREWALLS_PARTIALLY_CONFIGURED",
+                Self::FirewallsNotConfigured => "FIREWALLS_NOT_CONFIGURED",
+                Self::FirewallsUnsupported => "FIREWALLS_UNSUPPORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2548,21 +2524,17 @@ impl LoadBalancerType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            LoadBalancerType::Unspecified => "LOAD_BALANCER_TYPE_UNSPECIFIED",
-            LoadBalancerType::HttpsAdvancedLoadBalancer => "HTTPS_ADVANCED_LOAD_BALANCER",
-            LoadBalancerType::HttpsLoadBalancer => "HTTPS_LOAD_BALANCER",
-            LoadBalancerType::RegionalHttpsLoadBalancer => "REGIONAL_HTTPS_LOAD_BALANCER",
-            LoadBalancerType::InternalHttpsLoadBalancer => "INTERNAL_HTTPS_LOAD_BALANCER",
-            LoadBalancerType::SslProxyLoadBalancer => "SSL_PROXY_LOAD_BALANCER",
-            LoadBalancerType::TcpProxyLoadBalancer => "TCP_PROXY_LOAD_BALANCER",
-            LoadBalancerType::InternalTcpProxyLoadBalancer => {
-                "INTERNAL_TCP_PROXY_LOAD_BALANCER"
-            }
-            LoadBalancerType::NetworkLoadBalancer => "NETWORK_LOAD_BALANCER",
-            LoadBalancerType::LegacyNetworkLoadBalancer => "LEGACY_NETWORK_LOAD_BALANCER",
-            LoadBalancerType::TcpUdpInternalLoadBalancer => {
-                "TCP_UDP_INTERNAL_LOAD_BALANCER"
-            }
+            Self::Unspecified => "LOAD_BALANCER_TYPE_UNSPECIFIED",
+            Self::HttpsAdvancedLoadBalancer => "HTTPS_ADVANCED_LOAD_BALANCER",
+            Self::HttpsLoadBalancer => "HTTPS_LOAD_BALANCER",
+            Self::RegionalHttpsLoadBalancer => "REGIONAL_HTTPS_LOAD_BALANCER",
+            Self::InternalHttpsLoadBalancer => "INTERNAL_HTTPS_LOAD_BALANCER",
+            Self::SslProxyLoadBalancer => "SSL_PROXY_LOAD_BALANCER",
+            Self::TcpProxyLoadBalancer => "TCP_PROXY_LOAD_BALANCER",
+            Self::InternalTcpProxyLoadBalancer => "INTERNAL_TCP_PROXY_LOAD_BALANCER",
+            Self::NetworkLoadBalancer => "NETWORK_LOAD_BALANCER",
+            Self::LegacyNetworkLoadBalancer => "LEGACY_NETWORK_LOAD_BALANCER",
+            Self::TcpUdpInternalLoadBalancer => "TCP_UDP_INTERNAL_LOAD_BALANCER",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2808,9 +2780,9 @@ pub mod endpoint {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                NetworkType::Unspecified => "NETWORK_TYPE_UNSPECIFIED",
-                NetworkType::GcpNetwork => "GCP_NETWORK",
-                NetworkType::NonGcpNetwork => "NON_GCP_NETWORK",
+                Self::Unspecified => "NETWORK_TYPE_UNSPECIFIED",
+                Self::GcpNetwork => "GCP_NETWORK",
+                Self::NonGcpNetwork => "NON_GCP_NETWORK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2856,11 +2828,11 @@ pub mod endpoint {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ForwardingRuleTarget::Unspecified => "FORWARDING_RULE_TARGET_UNSPECIFIED",
-                ForwardingRuleTarget::Instance => "INSTANCE",
-                ForwardingRuleTarget::LoadBalancer => "LOAD_BALANCER",
-                ForwardingRuleTarget::VpnGateway => "VPN_GATEWAY",
-                ForwardingRuleTarget::Psc => "PSC",
+                Self::Unspecified => "FORWARDING_RULE_TARGET_UNSPECIFIED",
+                Self::Instance => "INSTANCE",
+                Self::LoadBalancer => "LOAD_BALANCER",
+                Self::VpnGateway => "VPN_GATEWAY",
+                Self::Psc => "PSC",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2946,11 +2918,11 @@ pub mod reachability_details {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Result::Unspecified => "RESULT_UNSPECIFIED",
-                Result::Reachable => "REACHABLE",
-                Result::Unreachable => "UNREACHABLE",
-                Result::Ambiguous => "AMBIGUOUS",
-                Result::Undetermined => "UNDETERMINED",
+                Self::Unspecified => "RESULT_UNSPECIFIED",
+                Self::Reachable => "REACHABLE",
+                Self::Unreachable => "UNREACHABLE",
+                Self::Ambiguous => "AMBIGUOUS",
+                Self::Undetermined => "UNDETERMINED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3071,11 +3043,11 @@ pub mod probing_details {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ProbingResult::Unspecified => "PROBING_RESULT_UNSPECIFIED",
-                ProbingResult::Reachable => "REACHABLE",
-                ProbingResult::Unreachable => "UNREACHABLE",
-                ProbingResult::ReachabilityInconsistent => "REACHABILITY_INCONSISTENT",
-                ProbingResult::Undetermined => "UNDETERMINED",
+                Self::Unspecified => "PROBING_RESULT_UNSPECIFIED",
+                Self::Reachable => "REACHABLE",
+                Self::Unreachable => "UNREACHABLE",
+                Self::ReachabilityInconsistent => "REACHABILITY_INCONSISTENT",
+                Self::Undetermined => "UNDETERMINED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3119,9 +3091,9 @@ pub mod probing_details {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ProbingAbortCause::Unspecified => "PROBING_ABORT_CAUSE_UNSPECIFIED",
-                ProbingAbortCause::PermissionDenied => "PERMISSION_DENIED",
-                ProbingAbortCause::NoSourceLocation => "NO_SOURCE_LOCATION",
+                Self::Unspecified => "PROBING_ABORT_CAUSE_UNSPECIFIED",
+                Self::PermissionDenied => "PERMISSION_DENIED",
+                Self::NoSourceLocation => "NO_SOURCE_LOCATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3269,7 +3241,13 @@ pub struct OperationMetadata {
 }
 /// Generated client implementations.
 pub mod reachability_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The Reachability service in the Google Cloud Network Management API provides
@@ -3372,8 +3350,7 @@ pub mod reachability_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3403,8 +3380,7 @@ pub mod reachability_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3446,8 +3422,7 @@ pub mod reachability_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3490,8 +3465,7 @@ pub mod reachability_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3532,8 +3506,7 @@ pub mod reachability_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3563,8 +3536,7 @@ pub mod reachability_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

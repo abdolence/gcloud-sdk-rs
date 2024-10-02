@@ -95,12 +95,12 @@ pub mod access_reason {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::CustomerInitiatedSupport => "CUSTOMER_INITIATED_SUPPORT",
-                Type::GoogleInitiatedService => "GOOGLE_INITIATED_SERVICE",
-                Type::GoogleInitiatedReview => "GOOGLE_INITIATED_REVIEW",
-                Type::ThirdPartyDataRequest => "THIRD_PARTY_DATA_REQUEST",
-                Type::GoogleResponseToProductionAlert => {
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::CustomerInitiatedSupport => "CUSTOMER_INITIATED_SUPPORT",
+                Self::GoogleInitiatedService => "GOOGLE_INITIATED_SERVICE",
+                Self::GoogleInitiatedReview => "GOOGLE_INITIATED_REVIEW",
+                Self::ThirdPartyDataRequest => "THIRD_PARTY_DATA_REQUEST",
+                Self::GoogleResponseToProductionAlert => {
                     "GOOGLE_RESPONSE_TO_PRODUCTION_ALERT"
                 }
             }
@@ -505,8 +505,8 @@ impl EnrollmentLevel {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            EnrollmentLevel::Unspecified => "ENROLLMENT_LEVEL_UNSPECIFIED",
-            EnrollmentLevel::BlockAll => "BLOCK_ALL",
+            Self::Unspecified => "ENROLLMENT_LEVEL_UNSPECIFIED",
+            Self::BlockAll => "BLOCK_ALL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -520,7 +520,13 @@ impl EnrollmentLevel {
 }
 /// Generated client implementations.
 pub mod access_approval_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// This API allows a customer to manage accesses to cloud resources by
@@ -650,8 +656,7 @@ pub mod access_approval_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -681,8 +686,7 @@ pub mod access_approval_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -715,8 +719,7 @@ pub mod access_approval_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -755,8 +758,7 @@ pub mod access_approval_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -793,8 +795,7 @@ pub mod access_approval_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -824,8 +825,7 @@ pub mod access_approval_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -856,8 +856,7 @@ pub mod access_approval_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -889,8 +888,7 @@ pub mod access_approval_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -923,8 +921,7 @@ pub mod access_approval_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

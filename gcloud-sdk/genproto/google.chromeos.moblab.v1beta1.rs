@@ -95,11 +95,11 @@ pub mod build {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BuildStatus::Unspecified => "BUILD_STATUS_UNSPECIFIED",
-                BuildStatus::Pass => "PASS",
-                BuildStatus::Fail => "FAIL",
-                BuildStatus::Running => "RUNNING",
-                BuildStatus::Aborted => "ABORTED",
+                Self::Unspecified => "BUILD_STATUS_UNSPECIFIED",
+                Self::Pass => "PASS",
+                Self::Fail => "FAIL",
+                Self::Running => "RUNNING",
+                Self::Aborted => "ABORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -142,9 +142,9 @@ pub mod build {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BuildType::Unspecified => "BUILD_TYPE_UNSPECIFIED",
-                BuildType::Release => "RELEASE",
-                BuildType::Firmware => "FIRMWARE",
+                Self::Unspecified => "BUILD_TYPE_UNSPECIFIED",
+                Self::Release => "RELEASE",
+                Self::Firmware => "FIRMWARE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -378,7 +378,13 @@ pub struct StageBuildMetadata {
 }
 /// Generated client implementations.
 pub mod build_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Manages Chrome OS build services.
@@ -474,8 +480,7 @@ pub mod build_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -505,8 +510,7 @@ pub mod build_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -537,8 +541,7 @@ pub mod build_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -569,8 +572,7 @@ pub mod build_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -606,8 +608,7 @@ pub mod build_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -648,8 +649,7 @@ pub mod build_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

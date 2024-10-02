@@ -126,11 +126,9 @@ pub mod data_policy {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DataPolicyType::Unspecified => "DATA_POLICY_TYPE_UNSPECIFIED",
-                DataPolicyType::ColumnLevelSecurityPolicy => {
-                    "COLUMN_LEVEL_SECURITY_POLICY"
-                }
-                DataPolicyType::DataMaskingPolicy => "DATA_MASKING_POLICY",
+                Self::Unspecified => "DATA_POLICY_TYPE_UNSPECIFIED",
+                Self::ColumnLevelSecurityPolicy => "COLUMN_LEVEL_SECURITY_POLICY",
+                Self::DataMaskingPolicy => "DATA_MASKING_POLICY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -219,10 +217,10 @@ pub mod data_masking_policy {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PredefinedExpression::Unspecified => "PREDEFINED_EXPRESSION_UNSPECIFIED",
-                PredefinedExpression::Sha256 => "SHA256",
-                PredefinedExpression::AlwaysNull => "ALWAYS_NULL",
-                PredefinedExpression::DefaultMaskingValue => "DEFAULT_MASKING_VALUE",
+                Self::Unspecified => "PREDEFINED_EXPRESSION_UNSPECIFIED",
+                Self::Sha256 => "SHA256",
+                Self::AlwaysNull => "ALWAYS_NULL",
+                Self::DefaultMaskingValue => "DEFAULT_MASKING_VALUE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -246,7 +244,13 @@ pub mod data_masking_policy {
 }
 /// Generated client implementations.
 pub mod data_policy_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Data Policy Service provides APIs for managing the label-policy bindings.
@@ -340,8 +344,7 @@ pub mod data_policy_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -369,8 +372,7 @@ pub mod data_policy_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -397,8 +399,7 @@ pub mod data_policy_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -425,8 +426,7 @@ pub mod data_policy_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -456,8 +456,7 @@ pub mod data_policy_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -489,8 +488,7 @@ pub mod data_policy_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -522,8 +520,7 @@ pub mod data_policy_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -557,8 +554,7 @@ pub mod data_policy_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

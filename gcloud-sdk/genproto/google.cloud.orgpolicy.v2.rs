@@ -107,9 +107,9 @@ pub mod constraint {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConstraintDefault::Unspecified => "CONSTRAINT_DEFAULT_UNSPECIFIED",
-                ConstraintDefault::Allow => "ALLOW",
-                ConstraintDefault::Deny => "DENY",
+                Self::Unspecified => "CONSTRAINT_DEFAULT_UNSPECIFIED",
+                Self::Allow => "ALLOW",
+                Self::Deny => "DENY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -218,6 +218,10 @@ pub mod custom_constraint {
         /// Constraint applied when deleting the resource.
         /// Not supported yet.
         Delete = 3,
+        /// Constraint applied when removing an IAM grant.
+        RemoveGrant = 4,
+        /// Constraint applied when enforcing forced tagging.
+        GovernTags = 5,
     }
     impl MethodType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -226,10 +230,12 @@ pub mod custom_constraint {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MethodType::Unspecified => "METHOD_TYPE_UNSPECIFIED",
-                MethodType::Create => "CREATE",
-                MethodType::Update => "UPDATE",
-                MethodType::Delete => "DELETE",
+                Self::Unspecified => "METHOD_TYPE_UNSPECIFIED",
+                Self::Create => "CREATE",
+                Self::Update => "UPDATE",
+                Self::Delete => "DELETE",
+                Self::RemoveGrant => "REMOVE_GRANT",
+                Self::GovernTags => "GOVERN_TAGS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -239,6 +245,8 @@ pub mod custom_constraint {
                 "CREATE" => Some(Self::Create),
                 "UPDATE" => Some(Self::Update),
                 "DELETE" => Some(Self::Delete),
+                "REMOVE_GRANT" => Some(Self::RemoveGrant),
+                "GOVERN_TAGS" => Some(Self::GovernTags),
                 _ => None,
             }
         }
@@ -271,9 +279,9 @@ pub mod custom_constraint {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ActionType::Unspecified => "ACTION_TYPE_UNSPECIFIED",
-                ActionType::Allow => "ALLOW",
-                ActionType::Deny => "DENY",
+                Self::Unspecified => "ACTION_TYPE_UNSPECIFIED",
+                Self::Allow => "ALLOW",
+                Self::Deny => "DENY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -669,7 +677,13 @@ pub struct DeleteCustomConstraintRequest {
 }
 /// Generated client implementations.
 pub mod org_policy_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// An interface for managing organization policies.
@@ -784,8 +798,7 @@ pub mod org_policy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -815,8 +828,7 @@ pub mod org_policy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -847,8 +859,7 @@ pub mod org_policy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -877,8 +888,7 @@ pub mod org_policy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -910,8 +920,7 @@ pub mod org_policy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -946,8 +955,7 @@ pub mod org_policy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -977,8 +985,7 @@ pub mod org_policy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1013,8 +1020,7 @@ pub mod org_policy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1050,8 +1056,7 @@ pub mod org_policy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1084,8 +1089,7 @@ pub mod org_policy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1116,8 +1120,7 @@ pub mod org_policy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1147,8 +1150,7 @@ pub mod org_policy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

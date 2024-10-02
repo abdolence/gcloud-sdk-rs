@@ -133,9 +133,9 @@ pub mod spacing_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PointType::Unspecified => "POINT_TYPE_UNSPECIFIED",
-                PointType::CenterPoint => "CENTER_POINT",
-                PointType::SnappedPoint => "SNAPPED_POINT",
+                Self::Unspecified => "POINT_TYPE_UNSPECIFIED",
+                Self::CenterPoint => "CENTER_POINT",
+                Self::SnappedPoint => "SNAPPED_POINT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

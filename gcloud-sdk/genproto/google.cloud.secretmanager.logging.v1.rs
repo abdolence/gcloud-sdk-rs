@@ -58,15 +58,15 @@ pub mod secret_event {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EventType::Unspecified => "EVENT_TYPE_UNSPECIFIED",
-                EventType::ExpiresIn30Days => "EXPIRES_IN_30_DAYS",
-                EventType::ExpiresIn7Days => "EXPIRES_IN_7_DAYS",
-                EventType::ExpiresIn1Day => "EXPIRES_IN_1_DAY",
-                EventType::ExpiresIn6Hours => "EXPIRES_IN_6_HOURS",
-                EventType::ExpiresIn1Hour => "EXPIRES_IN_1_HOUR",
-                EventType::Expired => "EXPIRED",
-                EventType::TopicNotFound => "TOPIC_NOT_FOUND",
-                EventType::TopicPermissionDenied => "TOPIC_PERMISSION_DENIED",
+                Self::Unspecified => "EVENT_TYPE_UNSPECIFIED",
+                Self::ExpiresIn30Days => "EXPIRES_IN_30_DAYS",
+                Self::ExpiresIn7Days => "EXPIRES_IN_7_DAYS",
+                Self::ExpiresIn1Day => "EXPIRES_IN_1_DAY",
+                Self::ExpiresIn6Hours => "EXPIRES_IN_6_HOURS",
+                Self::ExpiresIn1Hour => "EXPIRES_IN_1_HOUR",
+                Self::Expired => "EXPIRED",
+                Self::TopicNotFound => "TOPIC_NOT_FOUND",
+                Self::TopicPermissionDenied => "TOPIC_PERMISSION_DENIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

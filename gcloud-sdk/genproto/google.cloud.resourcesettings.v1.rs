@@ -107,11 +107,11 @@ pub mod setting_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DataType::Unspecified => "DATA_TYPE_UNSPECIFIED",
-                DataType::Boolean => "BOOLEAN",
-                DataType::String => "STRING",
-                DataType::StringSet => "STRING_SET",
-                DataType::EnumValue => "ENUM_VALUE",
+                Self::Unspecified => "DATA_TYPE_UNSPECIFIED",
+                Self::Boolean => "BOOLEAN",
+                Self::String => "STRING",
+                Self::StringSet => "STRING_SET",
+                Self::EnumValue => "ENUM_VALUE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -251,10 +251,10 @@ impl SettingView {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SettingView::Unspecified => "SETTING_VIEW_UNSPECIFIED",
-            SettingView::Basic => "SETTING_VIEW_BASIC",
-            SettingView::EffectiveValue => "SETTING_VIEW_EFFECTIVE_VALUE",
-            SettingView::LocalValue => "SETTING_VIEW_LOCAL_VALUE",
+            Self::Unspecified => "SETTING_VIEW_UNSPECIFIED",
+            Self::Basic => "SETTING_VIEW_BASIC",
+            Self::EffectiveValue => "SETTING_VIEW_EFFECTIVE_VALUE",
+            Self::LocalValue => "SETTING_VIEW_LOCAL_VALUE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -270,7 +270,13 @@ impl SettingView {
 }
 /// Generated client implementations.
 pub mod resource_settings_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// An interface to interact with resource settings and setting values throughout
@@ -382,8 +388,7 @@ pub mod resource_settings_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -413,8 +418,7 @@ pub mod resource_settings_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -456,8 +460,7 @@ pub mod resource_settings_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -160,10 +160,10 @@ pub mod custom_constraint {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MethodType::Unspecified => "METHOD_TYPE_UNSPECIFIED",
-                MethodType::Create => "CREATE",
-                MethodType::Update => "UPDATE",
-                MethodType::Delete => "DELETE",
+                Self::Unspecified => "METHOD_TYPE_UNSPECIFIED",
+                Self::Create => "CREATE",
+                Self::Update => "UPDATE",
+                Self::Delete => "DELETE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -205,9 +205,9 @@ pub mod custom_constraint {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ActionType::Unspecified => "ACTION_TYPE_UNSPECIFIED",
-                ActionType::Allow => "ALLOW",
-                ActionType::Deny => "DENY",
+                Self::Unspecified => "ACTION_TYPE_UNSPECIFIED",
+                Self::Allow => "ALLOW",
+                Self::Deny => "DENY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -341,11 +341,11 @@ pub mod custom_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Severity::Unspecified => "SEVERITY_UNSPECIFIED",
-                Severity::Critical => "CRITICAL",
-                Severity::High => "HIGH",
-                Severity::Medium => "MEDIUM",
-                Severity::Low => "LOW",
+                Self::Unspecified => "SEVERITY_UNSPECIFIED",
+                Self::Critical => "CRITICAL",
+                Self::High => "HIGH",
+                Self::Medium => "MEDIUM",
+                Self::Low => "LOW",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -413,9 +413,9 @@ impl EnablementState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            EnablementState::Unspecified => "ENABLEMENT_STATE_UNSPECIFIED",
-            EnablementState::Enabled => "ENABLED",
-            EnablementState::Disabled => "DISABLED",
+            Self::Unspecified => "ENABLEMENT_STATE_UNSPECIFIED",
+            Self::Enabled => "ENABLED",
+            Self::Disabled => "DISABLED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -547,10 +547,10 @@ pub mod posture {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Deprecated => "DEPRECATED",
-                State::Draft => "DRAFT",
-                State::Active => "ACTIVE",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Deprecated => "DEPRECATED",
+                Self::Draft => "DRAFT",
+                Self::Active => "ACTIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -869,14 +869,14 @@ pub mod posture_deployment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Deleting => "DELETING",
-                State::Updating => "UPDATING",
-                State::Active => "ACTIVE",
-                State::CreateFailed => "CREATE_FAILED",
-                State::UpdateFailed => "UPDATE_FAILED",
-                State::DeleteFailed => "DELETE_FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Deleting => "DELETING",
+                Self::Updating => "UPDATING",
+                Self::Active => "ACTIVE",
+                Self::CreateFailed => "CREATE_FAILED",
+                Self::UpdateFailed => "UPDATE_FAILED",
+                Self::DeleteFailed => "DELETE_FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1025,9 +1025,9 @@ pub mod posture_template {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::Deprecated => "DEPRECATED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Deprecated => "DEPRECATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1082,7 +1082,13 @@ pub struct GetPostureTemplateRequest {
 }
 /// Generated client implementations.
 pub mod security_posture_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service describing handlers for resources.
@@ -1184,8 +1190,7 @@ pub mod security_posture_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1215,8 +1220,7 @@ pub mod security_posture_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1248,8 +1252,7 @@ pub mod security_posture_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1282,8 +1285,7 @@ pub mod security_posture_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1324,8 +1326,7 @@ pub mod security_posture_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1357,8 +1358,7 @@ pub mod security_posture_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1390,8 +1390,7 @@ pub mod security_posture_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1422,8 +1421,7 @@ pub mod security_posture_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1453,8 +1451,7 @@ pub mod security_posture_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1484,8 +1481,7 @@ pub mod security_posture_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1515,8 +1511,7 @@ pub mod security_posture_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1546,8 +1541,7 @@ pub mod security_posture_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1578,8 +1572,7 @@ pub mod security_posture_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1614,8 +1607,7 @@ pub mod security_posture_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

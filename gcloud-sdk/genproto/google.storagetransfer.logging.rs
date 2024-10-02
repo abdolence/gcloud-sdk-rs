@@ -273,10 +273,10 @@ pub mod transfer_activity_log {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Action::Unspecified => "ACTION_UNSPECIFIED",
-                Action::Find => "FIND",
-                Action::Copy => "COPY",
-                Action::Delete => "DELETE",
+                Self::Unspecified => "ACTION_UNSPECIFIED",
+                Self::Find => "FIND",
+                Self::Copy => "COPY",
+                Self::Delete => "DELETE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -315,12 +315,12 @@ impl StorageSystemType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            StorageSystemType::Unspecified => "STORAGE_SYSTEM_TYPE_UNSPECIFIED",
-            StorageSystemType::AwsS3 => "AWS_S3",
-            StorageSystemType::AzureBlob => "AZURE_BLOB",
-            StorageSystemType::Gcs => "GCS",
-            StorageSystemType::PosixFs => "POSIX_FS",
-            StorageSystemType::Http => "HTTP",
+            Self::Unspecified => "STORAGE_SYSTEM_TYPE_UNSPECIFIED",
+            Self::AwsS3 => "AWS_S3",
+            Self::AzureBlob => "AZURE_BLOB",
+            Self::Gcs => "GCS",
+            Self::PosixFs => "POSIX_FS",
+            Self::Http => "HTTP",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.

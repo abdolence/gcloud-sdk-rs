@@ -89,14 +89,14 @@ impl NoteKind {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            NoteKind::Unspecified => "NOTE_KIND_UNSPECIFIED",
-            NoteKind::Vulnerability => "VULNERABILITY",
-            NoteKind::Build => "BUILD",
-            NoteKind::Image => "IMAGE",
-            NoteKind::Package => "PACKAGE",
-            NoteKind::Deployment => "DEPLOYMENT",
-            NoteKind::Discovery => "DISCOVERY",
-            NoteKind::Attestation => "ATTESTATION",
+            Self::Unspecified => "NOTE_KIND_UNSPECIFIED",
+            Self::Vulnerability => "VULNERABILITY",
+            Self::Build => "BUILD",
+            Self::Image => "IMAGE",
+            Self::Package => "PACKAGE",
+            Self::Deployment => "DEPLOYMENT",
+            Self::Discovery => "DISCOVERY",
+            Self::Attestation => "ATTESTATION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -515,7 +515,13 @@ pub mod vulnerability_occurrences_summary {
 }
 /// Generated client implementations.
 pub mod grafeas_v1_beta1_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// [Grafeas](grafeas.io) API.
@@ -621,8 +627,7 @@ pub mod grafeas_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -649,8 +654,7 @@ pub mod grafeas_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -676,8 +680,7 @@ pub mod grafeas_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -701,8 +704,7 @@ pub mod grafeas_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -729,8 +731,7 @@ pub mod grafeas_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -757,8 +758,7 @@ pub mod grafeas_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -783,8 +783,7 @@ pub mod grafeas_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -811,8 +810,7 @@ pub mod grafeas_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -837,8 +835,7 @@ pub mod grafeas_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -860,8 +857,7 @@ pub mod grafeas_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -883,8 +879,7 @@ pub mod grafeas_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -909,8 +904,7 @@ pub mod grafeas_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -934,8 +928,7 @@ pub mod grafeas_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -962,8 +955,7 @@ pub mod grafeas_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -995,8 +987,7 @@ pub mod grafeas_v1_beta1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

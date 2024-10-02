@@ -62,10 +62,10 @@ pub mod conversion_source {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::Archived => "ARCHIVED",
-                State::Pending => "PENDING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Archived => "ARCHIVED",
+                Self::Pending => "PENDING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -107,9 +107,9 @@ pub mod conversion_source {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Controller::Unspecified => "CONTROLLER_UNSPECIFIED",
-                Controller::Merchant => "MERCHANT",
-                Controller::YoutubeAffiliates => "YOUTUBE_AFFILIATES",
+                Self::Unspecified => "CONTROLLER_UNSPECIFIED",
+                Self::Merchant => "MERCHANT",
+                Self::YoutubeAffiliates => "YOUTUBE_AFFILIATES",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -204,16 +204,14 @@ pub mod attribution_settings {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AttributionModel::Unspecified => "ATTRIBUTION_MODEL_UNSPECIFIED",
-                AttributionModel::CrossChannelLastClick => "CROSS_CHANNEL_LAST_CLICK",
-                AttributionModel::AdsPreferredLastClick => "ADS_PREFERRED_LAST_CLICK",
-                AttributionModel::CrossChannelDataDriven => "CROSS_CHANNEL_DATA_DRIVEN",
-                AttributionModel::CrossChannelFirstClick => "CROSS_CHANNEL_FIRST_CLICK",
-                AttributionModel::CrossChannelLinear => "CROSS_CHANNEL_LINEAR",
-                AttributionModel::CrossChannelPositionBased => {
-                    "CROSS_CHANNEL_POSITION_BASED"
-                }
-                AttributionModel::CrossChannelTimeDecay => "CROSS_CHANNEL_TIME_DECAY",
+                Self::Unspecified => "ATTRIBUTION_MODEL_UNSPECIFIED",
+                Self::CrossChannelLastClick => "CROSS_CHANNEL_LAST_CLICK",
+                Self::AdsPreferredLastClick => "ADS_PREFERRED_LAST_CLICK",
+                Self::CrossChannelDataDriven => "CROSS_CHANNEL_DATA_DRIVEN",
+                Self::CrossChannelFirstClick => "CROSS_CHANNEL_FIRST_CLICK",
+                Self::CrossChannelLinear => "CROSS_CHANNEL_LINEAR",
+                Self::CrossChannelPositionBased => "CROSS_CHANNEL_POSITION_BASED",
+                Self::CrossChannelTimeDecay => "CROSS_CHANNEL_TIME_DECAY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -351,7 +349,13 @@ pub struct ListConversionSourcesResponse {
 }
 /// Generated client implementations.
 pub mod conversion_sources_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for managing conversion sources for a merchant account.
@@ -449,8 +453,7 @@ pub mod conversion_sources_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -481,8 +484,7 @@ pub mod conversion_sources_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -512,8 +514,7 @@ pub mod conversion_sources_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -544,8 +545,7 @@ pub mod conversion_sources_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -575,8 +575,7 @@ pub mod conversion_sources_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -606,8 +605,7 @@ pub mod conversion_sources_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

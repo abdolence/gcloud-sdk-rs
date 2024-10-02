@@ -173,11 +173,11 @@ pub mod installation_state {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Stage::Unspecified => "STAGE_UNSPECIFIED",
-                Stage::PendingCreateApp => "PENDING_CREATE_APP",
-                Stage::PendingUserOauth => "PENDING_USER_OAUTH",
-                Stage::PendingInstallApp => "PENDING_INSTALL_APP",
-                Stage::Complete => "COMPLETE",
+                Self::Unspecified => "STAGE_UNSPECIFIED",
+                Self::PendingCreateApp => "PENDING_CREATE_APP",
+                Self::PendingUserOauth => "PENDING_USER_OAUTH",
+                Self::PendingInstallApp => "PENDING_INSTALL_APP",
+                Self::Complete => "COMPLETE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -697,9 +697,9 @@ pub mod fetch_git_refs_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RefType::Unspecified => "REF_TYPE_UNSPECIFIED",
-                RefType::Tag => "TAG",
-                RefType::Branch => "BRANCH",
+                Self::Unspecified => "REF_TYPE_UNSPECIFIED",
+                Self::Tag => "TAG",
+                Self::Branch => "BRANCH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -722,7 +722,13 @@ pub struct FetchGitRefsResponse {
 }
 /// Generated client implementations.
 pub mod repository_manager_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Manages connections to source code repositories.
@@ -818,8 +824,7 @@ pub mod repository_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -846,8 +851,7 @@ pub mod repository_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -877,8 +881,7 @@ pub mod repository_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -908,8 +911,7 @@ pub mod repository_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -939,8 +941,7 @@ pub mod repository_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -970,8 +971,7 @@ pub mod repository_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1001,8 +1001,7 @@ pub mod repository_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1029,8 +1028,7 @@ pub mod repository_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1060,8 +1058,7 @@ pub mod repository_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1091,8 +1088,7 @@ pub mod repository_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1122,8 +1118,7 @@ pub mod repository_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1153,8 +1148,7 @@ pub mod repository_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1185,8 +1179,7 @@ pub mod repository_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1216,8 +1209,7 @@ pub mod repository_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

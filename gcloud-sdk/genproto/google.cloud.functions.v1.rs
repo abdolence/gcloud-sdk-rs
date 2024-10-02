@@ -53,10 +53,10 @@ impl OperationType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            OperationType::OperationUnspecified => "OPERATION_UNSPECIFIED",
-            OperationType::CreateFunction => "CREATE_FUNCTION",
-            OperationType::UpdateFunction => "UPDATE_FUNCTION",
-            OperationType::DeleteFunction => "DELETE_FUNCTION",
+            Self::OperationUnspecified => "OPERATION_UNSPECIFIED",
+            Self::CreateFunction => "CREATE_FUNCTION",
+            Self::UpdateFunction => "UPDATE_FUNCTION",
+            Self::DeleteFunction => "DELETE_FUNCTION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -324,11 +324,9 @@ pub mod cloud_function {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                VpcConnectorEgressSettings::Unspecified => {
-                    "VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED"
-                }
-                VpcConnectorEgressSettings::PrivateRangesOnly => "PRIVATE_RANGES_ONLY",
-                VpcConnectorEgressSettings::AllTraffic => "ALL_TRAFFIC",
+                Self::Unspecified => "VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED",
+                Self::PrivateRangesOnly => "PRIVATE_RANGES_ONLY",
+                Self::AllTraffic => "ALL_TRAFFIC",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -375,10 +373,10 @@ pub mod cloud_function {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                IngressSettings::Unspecified => "INGRESS_SETTINGS_UNSPECIFIED",
-                IngressSettings::AllowAll => "ALLOW_ALL",
-                IngressSettings::AllowInternalOnly => "ALLOW_INTERNAL_ONLY",
-                IngressSettings::AllowInternalAndGclb => "ALLOW_INTERNAL_AND_GCLB",
+                Self::Unspecified => "INGRESS_SETTINGS_UNSPECIFIED",
+                Self::AllowAll => "ALLOW_ALL",
+                Self::AllowInternalOnly => "ALLOW_INTERNAL_ONLY",
+                Self::AllowInternalAndGclb => "ALLOW_INTERNAL_AND_GCLB",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -425,9 +423,9 @@ pub mod cloud_function {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DockerRegistry::Unspecified => "DOCKER_REGISTRY_UNSPECIFIED",
-                DockerRegistry::ContainerRegistry => "CONTAINER_REGISTRY",
-                DockerRegistry::ArtifactRegistry => "ARTIFACT_REGISTRY",
+                Self::Unspecified => "DOCKER_REGISTRY_UNSPECIFIED",
+                Self::ContainerRegistry => "CONTAINER_REGISTRY",
+                Self::ArtifactRegistry => "ARTIFACT_REGISTRY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -554,9 +552,9 @@ pub mod https_trigger {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SecurityLevel::Unspecified => "SECURITY_LEVEL_UNSPECIFIED",
-                SecurityLevel::SecureAlways => "SECURE_ALWAYS",
-                SecurityLevel::SecureOptional => "SECURE_OPTIONAL",
+                Self::Unspecified => "SECURITY_LEVEL_UNSPECIFIED",
+                Self::SecureAlways => "SECURE_ALWAYS",
+                Self::SecureOptional => "SECURE_OPTIONAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -906,12 +904,12 @@ impl CloudFunctionStatus {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            CloudFunctionStatus::Unspecified => "CLOUD_FUNCTION_STATUS_UNSPECIFIED",
-            CloudFunctionStatus::Active => "ACTIVE",
-            CloudFunctionStatus::Offline => "OFFLINE",
-            CloudFunctionStatus::DeployInProgress => "DEPLOY_IN_PROGRESS",
-            CloudFunctionStatus::DeleteInProgress => "DELETE_IN_PROGRESS",
-            CloudFunctionStatus::Unknown => "UNKNOWN",
+            Self::Unspecified => "CLOUD_FUNCTION_STATUS_UNSPECIFIED",
+            Self::Active => "ACTIVE",
+            Self::Offline => "OFFLINE",
+            Self::DeployInProgress => "DEPLOY_IN_PROGRESS",
+            Self::DeleteInProgress => "DELETE_IN_PROGRESS",
+            Self::Unknown => "UNKNOWN",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -929,7 +927,13 @@ impl CloudFunctionStatus {
 }
 /// Generated client implementations.
 pub mod cloud_functions_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// A service that application uses to manipulate triggers and functions.
@@ -1025,8 +1029,7 @@ pub mod cloud_functions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1053,8 +1056,7 @@ pub mod cloud_functions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1086,8 +1088,7 @@ pub mod cloud_functions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1117,8 +1118,7 @@ pub mod cloud_functions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1150,8 +1150,7 @@ pub mod cloud_functions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1184,8 +1183,7 @@ pub mod cloud_functions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1239,8 +1237,7 @@ pub mod cloud_functions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1274,8 +1271,7 @@ pub mod cloud_functions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1308,8 +1304,7 @@ pub mod cloud_functions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1343,8 +1338,7 @@ pub mod cloud_functions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1381,8 +1375,7 @@ pub mod cloud_functions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

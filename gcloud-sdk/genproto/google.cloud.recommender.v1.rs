@@ -93,13 +93,13 @@ pub mod insight {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Category::Unspecified => "CATEGORY_UNSPECIFIED",
-                Category::Cost => "COST",
-                Category::Security => "SECURITY",
-                Category::Performance => "PERFORMANCE",
-                Category::Manageability => "MANAGEABILITY",
-                Category::Sustainability => "SUSTAINABILITY",
-                Category::Reliability => "RELIABILITY",
+                Self::Unspecified => "CATEGORY_UNSPECIFIED",
+                Self::Cost => "COST",
+                Self::Security => "SECURITY",
+                Self::Performance => "PERFORMANCE",
+                Self::Manageability => "MANAGEABILITY",
+                Self::Sustainability => "SUSTAINABILITY",
+                Self::Reliability => "RELIABILITY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -148,11 +148,11 @@ pub mod insight {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Severity::Unspecified => "SEVERITY_UNSPECIFIED",
-                Severity::Low => "LOW",
-                Severity::Medium => "MEDIUM",
-                Severity::High => "HIGH",
-                Severity::Critical => "CRITICAL",
+                Self::Unspecified => "SEVERITY_UNSPECIFIED",
+                Self::Low => "LOW",
+                Self::Medium => "MEDIUM",
+                Self::High => "HIGH",
+                Self::Critical => "CRITICAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -219,10 +219,10 @@ pub mod insight_state_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::Accepted => "ACCEPTED",
-                State::Dismissed => "DISMISSED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Accepted => "ACCEPTED",
+                Self::Dismissed => "DISMISSED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -337,11 +337,11 @@ pub mod recommendation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Priority::Unspecified => "PRIORITY_UNSPECIFIED",
-                Priority::P4 => "P4",
-                Priority::P3 => "P3",
-                Priority::P2 => "P2",
-                Priority::P1 => "P1",
+                Self::Unspecified => "PRIORITY_UNSPECIFIED",
+                Self::P4 => "P4",
+                Self::P3 => "P3",
+                Self::P2 => "P2",
+                Self::P1 => "P1",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -582,10 +582,10 @@ pub mod reliability_projection {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RiskType::Unspecified => "RISK_TYPE_UNSPECIFIED",
-                RiskType::ServiceDisruption => "SERVICE_DISRUPTION",
-                RiskType::DataLoss => "DATA_LOSS",
-                RiskType::AccessDeny => "ACCESS_DENY",
+                Self::Unspecified => "RISK_TYPE_UNSPECIFIED",
+                Self::ServiceDisruption => "SERVICE_DISRUPTION",
+                Self::DataLoss => "DATA_LOSS",
+                Self::AccessDeny => "ACCESS_DENY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -648,13 +648,13 @@ pub mod impact {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Category::Unspecified => "CATEGORY_UNSPECIFIED",
-                Category::Cost => "COST",
-                Category::Security => "SECURITY",
-                Category::Performance => "PERFORMANCE",
-                Category::Manageability => "MANAGEABILITY",
-                Category::Sustainability => "SUSTAINABILITY",
-                Category::Reliability => "RELIABILITY",
+                Self::Unspecified => "CATEGORY_UNSPECIFIED",
+                Self::Cost => "COST",
+                Self::Security => "SECURITY",
+                Self::Performance => "PERFORMANCE",
+                Self::Manageability => "MANAGEABILITY",
+                Self::Sustainability => "SUSTAINABILITY",
+                Self::Reliability => "RELIABILITY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -752,12 +752,12 @@ pub mod recommendation_state_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::Claimed => "CLAIMED",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Dismissed => "DISMISSED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Claimed => "CLAIMED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Dismissed => "DISMISSED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1194,7 +1194,13 @@ pub struct UpdateInsightTypeConfigRequest {
 }
 /// Generated client implementations.
 pub mod recommender_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Provides insights and recommendations for cloud customers for various
@@ -1294,8 +1300,7 @@ pub mod recommender_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1323,8 +1328,7 @@ pub mod recommender_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1356,8 +1360,7 @@ pub mod recommender_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1388,8 +1391,7 @@ pub mod recommender_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1417,8 +1419,7 @@ pub mod recommender_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1453,8 +1454,7 @@ pub mod recommender_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1490,8 +1490,7 @@ pub mod recommender_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1528,8 +1527,7 @@ pub mod recommender_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1566,8 +1564,7 @@ pub mod recommender_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1598,8 +1595,7 @@ pub mod recommender_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1630,8 +1626,7 @@ pub mod recommender_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1662,8 +1657,7 @@ pub mod recommender_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1694,8 +1688,7 @@ pub mod recommender_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

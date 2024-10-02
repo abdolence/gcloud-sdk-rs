@@ -103,19 +103,13 @@ impl UpdateType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            UpdateType::Unspecified => "UPDATE_TYPE_UNSPECIFIED",
-            UpdateType::Replace => "UPDATE_TYPE_REPLACE",
-            UpdateType::Merge => "UPDATE_TYPE_MERGE",
-            UpdateType::InsertPropertiesByNames => {
-                "UPDATE_TYPE_INSERT_PROPERTIES_BY_NAMES"
-            }
-            UpdateType::ReplacePropertiesByNames => {
-                "UPDATE_TYPE_REPLACE_PROPERTIES_BY_NAMES"
-            }
-            UpdateType::DeletePropertiesByNames => {
-                "UPDATE_TYPE_DELETE_PROPERTIES_BY_NAMES"
-            }
-            UpdateType::MergeAndReplaceOrInsertPropertiesByNames => {
+            Self::Unspecified => "UPDATE_TYPE_UNSPECIFIED",
+            Self::Replace => "UPDATE_TYPE_REPLACE",
+            Self::Merge => "UPDATE_TYPE_MERGE",
+            Self::InsertPropertiesByNames => "UPDATE_TYPE_INSERT_PROPERTIES_BY_NAMES",
+            Self::ReplacePropertiesByNames => "UPDATE_TYPE_REPLACE_PROPERTIES_BY_NAMES",
+            Self::DeletePropertiesByNames => "UPDATE_TYPE_DELETE_PROPERTIES_BY_NAMES",
+            Self::MergeAndReplaceOrInsertPropertiesByNames => {
                 "UPDATE_TYPE_MERGE_AND_REPLACE_OR_INSERT_PROPERTIES_BY_NAMES"
             }
         }
@@ -160,9 +154,9 @@ impl DatabaseType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DatabaseType::DbUnknown => "DB_UNKNOWN",
-            DatabaseType::DbInfraSpanner => "DB_INFRA_SPANNER",
-            DatabaseType::DbCloudSqlPostgres => "DB_CLOUD_SQL_POSTGRES",
+            Self::DbUnknown => "DB_UNKNOWN",
+            Self::DbInfraSpanner => "DB_INFRA_SPANNER",
+            Self::DbCloudSqlPostgres => "DB_CLOUD_SQL_POSTGRES",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -195,12 +189,12 @@ impl AccessControlMode {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AccessControlMode::AclModeUnknown => "ACL_MODE_UNKNOWN",
-            AccessControlMode::AclModeUniversalAccess => "ACL_MODE_UNIVERSAL_ACCESS",
-            AccessControlMode::AclModeDocumentLevelAccessControlByoid => {
+            Self::AclModeUnknown => "ACL_MODE_UNKNOWN",
+            Self::AclModeUniversalAccess => "ACL_MODE_UNIVERSAL_ACCESS",
+            Self::AclModeDocumentLevelAccessControlByoid => {
                 "ACL_MODE_DOCUMENT_LEVEL_ACCESS_CONTROL_BYOID"
             }
-            AccessControlMode::AclModeDocumentLevelAccessControlGci => {
+            Self::AclModeDocumentLevelAccessControlGci => {
                 "ACL_MODE_DOCUMENT_LEVEL_ACCESS_CONTROL_GCI"
             }
         }
@@ -240,12 +234,10 @@ impl DocumentCreatorDefaultRole {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DocumentCreatorDefaultRole::Unspecified => {
-                "DOCUMENT_CREATOR_DEFAULT_ROLE_UNSPECIFIED"
-            }
-            DocumentCreatorDefaultRole::DocumentAdmin => "DOCUMENT_ADMIN",
-            DocumentCreatorDefaultRole::DocumentEditor => "DOCUMENT_EDITOR",
-            DocumentCreatorDefaultRole::DocumentViewer => "DOCUMENT_VIEWER",
+            Self::Unspecified => "DOCUMENT_CREATOR_DEFAULT_ROLE_UNSPECIFIED",
+            Self::DocumentAdmin => "DOCUMENT_ADMIN",
+            Self::DocumentEditor => "DOCUMENT_EDITOR",
+            Self::DocumentViewer => "DOCUMENT_VIEWER",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -602,13 +594,13 @@ impl RawDocumentFileType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            RawDocumentFileType::Unspecified => "RAW_DOCUMENT_FILE_TYPE_UNSPECIFIED",
-            RawDocumentFileType::Pdf => "RAW_DOCUMENT_FILE_TYPE_PDF",
-            RawDocumentFileType::Docx => "RAW_DOCUMENT_FILE_TYPE_DOCX",
-            RawDocumentFileType::Xlsx => "RAW_DOCUMENT_FILE_TYPE_XLSX",
-            RawDocumentFileType::Pptx => "RAW_DOCUMENT_FILE_TYPE_PPTX",
-            RawDocumentFileType::Text => "RAW_DOCUMENT_FILE_TYPE_TEXT",
-            RawDocumentFileType::Tiff => "RAW_DOCUMENT_FILE_TYPE_TIFF",
+            Self::Unspecified => "RAW_DOCUMENT_FILE_TYPE_UNSPECIFIED",
+            Self::Pdf => "RAW_DOCUMENT_FILE_TYPE_PDF",
+            Self::Docx => "RAW_DOCUMENT_FILE_TYPE_DOCX",
+            Self::Xlsx => "RAW_DOCUMENT_FILE_TYPE_XLSX",
+            Self::Pptx => "RAW_DOCUMENT_FILE_TYPE_PPTX",
+            Self::Text => "RAW_DOCUMENT_FILE_TYPE_TEXT",
+            Self::Tiff => "RAW_DOCUMENT_FILE_TYPE_TIFF",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -646,10 +638,10 @@ impl ContentCategory {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ContentCategory::Unspecified => "CONTENT_CATEGORY_UNSPECIFIED",
-            ContentCategory::Image => "CONTENT_CATEGORY_IMAGE",
-            ContentCategory::Audio => "CONTENT_CATEGORY_AUDIO",
-            ContentCategory::Video => "CONTENT_CATEGORY_VIDEO",
+            Self::Unspecified => "CONTENT_CATEGORY_UNSPECIFIED",
+            Self::Image => "CONTENT_CATEGORY_IMAGE",
+            Self::Audio => "CONTENT_CATEGORY_AUDIO",
+            Self::Video => "CONTENT_CATEGORY_VIDEO",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -786,9 +778,9 @@ pub mod document_link {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::SoftDeleted => "SOFT_DELETED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::SoftDeleted => "SOFT_DELETED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -835,7 +827,13 @@ pub struct DeleteDocumentLinkRequest {
 }
 /// Generated client implementations.
 pub mod document_link_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// This service lets you manage document-links.
@@ -932,8 +930,7 @@ pub mod document_link_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -963,8 +960,7 @@ pub mod document_link_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -991,8 +987,7 @@ pub mod document_link_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1019,8 +1014,7 @@ pub mod document_link_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1166,13 +1160,13 @@ pub mod property_definition {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RetrievalImportance::Unspecified => "RETRIEVAL_IMPORTANCE_UNSPECIFIED",
-                RetrievalImportance::Highest => "HIGHEST",
-                RetrievalImportance::Higher => "HIGHER",
-                RetrievalImportance::High => "HIGH",
-                RetrievalImportance::Medium => "MEDIUM",
-                RetrievalImportance::Low => "LOW",
-                RetrievalImportance::Lowest => "LOWEST",
+                Self::Unspecified => "RETRIEVAL_IMPORTANCE_UNSPECIFIED",
+                Self::Highest => "HIGHEST",
+                Self::Higher => "HIGHER",
+                Self::High => "HIGH",
+                Self::Medium => "MEDIUM",
+                Self::Low => "LOW",
+                Self::Lowest => "LOWEST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1327,7 +1321,13 @@ pub struct ListDocumentSchemasResponse {
 }
 /// Generated client implementations.
 pub mod document_schema_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// This service lets you manage document schema.
@@ -1420,8 +1420,7 @@ pub mod document_schema_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1454,8 +1453,7 @@ pub mod document_schema_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1483,8 +1481,7 @@ pub mod document_schema_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1513,8 +1510,7 @@ pub mod document_schema_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1544,8 +1540,7 @@ pub mod document_schema_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1753,10 +1748,10 @@ pub mod time_filter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TimeField::Unspecified => "TIME_FIELD_UNSPECIFIED",
-                TimeField::CreateTime => "CREATE_TIME",
-                TimeField::UpdateTime => "UPDATE_TIME",
-                TimeField::DispositionTime => "DISPOSITION_TIME",
+                Self::Unspecified => "TIME_FIELD_UNSPECIFIED",
+                Self::CreateTime => "CREATE_TIME",
+                Self::UpdateTime => "UPDATE_TIME",
+                Self::DispositionTime => "DISPOSITION_TIME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1865,11 +1860,11 @@ pub mod file_type_filter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FileType::Unspecified => "FILE_TYPE_UNSPECIFIED",
-                FileType::All => "ALL",
-                FileType::Folder => "FOLDER",
-                FileType::Document => "DOCUMENT",
-                FileType::RootFolder => "ROOT_FOLDER",
+                Self::Unspecified => "FILE_TYPE_UNSPECIFIED",
+                Self::All => "ALL",
+                Self::Folder => "FOLDER",
+                Self::Document => "DOCUMENT",
+                Self::RootFolder => "ROOT_FOLDER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1989,8 +1984,8 @@ pub mod histogram_query_property_name_filter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                HistogramYAxis::HistogramYaxisDocument => "HISTOGRAM_YAXIS_DOCUMENT",
-                HistogramYAxis::HistogramYaxisProperty => "HISTOGRAM_YAXIS_PROPERTY",
+                Self::HistogramYaxisDocument => "HISTOGRAM_YAXIS_DOCUMENT",
+                Self::HistogramYaxisProperty => "HISTOGRAM_YAXIS_PROPERTY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2265,9 +2260,9 @@ pub mod search_documents_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TotalResultSize::Unspecified => "TOTAL_RESULT_SIZE_UNSPECIFIED",
-                TotalResultSize::EstimatedSize => "ESTIMATED_SIZE",
-                TotalResultSize::ActualSize => "ACTUAL_SIZE",
+                Self::Unspecified => "TOTAL_RESULT_SIZE_UNSPECIFIED",
+                Self::EstimatedSize => "ESTIMATED_SIZE",
+                Self::ActualSize => "ACTUAL_SIZE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2434,11 +2429,11 @@ pub mod rule {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TriggerType::Unknown => "UNKNOWN",
-                TriggerType::OnCreate => "ON_CREATE",
-                TriggerType::OnUpdate => "ON_UPDATE",
-                TriggerType::OnCreateLink => "ON_CREATE_LINK",
-                TriggerType::OnDeleteLink => "ON_DELETE_LINK",
+                Self::Unknown => "UNKNOWN",
+                Self::OnCreate => "ON_CREATE",
+                Self::OnUpdate => "ON_UPDATE",
+                Self::OnCreateLink => "ON_CREATE_LINK",
+                Self::OnDeleteLink => "ON_DELETE_LINK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2535,10 +2530,10 @@ pub mod access_control_action {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OperationType::Unknown => "UNKNOWN",
-                OperationType::AddPolicyBinding => "ADD_POLICY_BINDING",
-                OperationType::RemovePolicyBinding => "REMOVE_POLICY_BINDING",
-                OperationType::ReplacePolicyBinding => "REPLACE_POLICY_BINDING",
+                Self::Unknown => "UNKNOWN",
+                Self::AddPolicyBinding => "ADD_POLICY_BINDING",
+                Self::RemovePolicyBinding => "REMOVE_POLICY_BINDING",
+                Self::ReplacePolicyBinding => "REPLACE_POLICY_BINDING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2723,11 +2718,11 @@ pub mod action_output {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unknown => "UNKNOWN",
-                State::ActionSucceeded => "ACTION_SUCCEEDED",
-                State::ActionFailed => "ACTION_FAILED",
-                State::ActionTimedOut => "ACTION_TIMED_OUT",
-                State::ActionPending => "ACTION_PENDING",
+                Self::Unknown => "UNKNOWN",
+                Self::ActionSucceeded => "ACTION_SUCCEEDED",
+                Self::ActionFailed => "ACTION_FAILED",
+                Self::ActionTimedOut => "ACTION_TIMED_OUT",
+                Self::ActionPending => "ACTION_PENDING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2901,7 +2896,13 @@ pub struct SetAclResponse {
 }
 /// Generated client implementations.
 pub mod document_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// This service lets you manage document.
@@ -2997,8 +2998,7 @@ pub mod document_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3025,8 +3025,7 @@ pub mod document_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3057,8 +3056,7 @@ pub mod document_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3085,8 +3083,7 @@ pub mod document_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3119,8 +3116,7 @@ pub mod document_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3147,8 +3143,7 @@ pub mod document_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3180,8 +3175,7 @@ pub mod document_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3209,8 +3203,7 @@ pub mod document_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3546,7 +3539,13 @@ pub mod run_pipeline_request {
 }
 /// Generated client implementations.
 pub mod pipeline_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// This service lets you manage pipelines.
@@ -3642,8 +3641,7 @@ pub mod pipeline_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3738,7 +3736,13 @@ pub struct ListRuleSetsResponse {
 }
 /// Generated client implementations.
 pub mod rule_set_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service to manage customer specific RuleSets.
@@ -3831,8 +3835,7 @@ pub mod rule_set_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3859,8 +3862,7 @@ pub mod rule_set_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3888,8 +3890,7 @@ pub mod rule_set_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3916,8 +3917,7 @@ pub mod rule_set_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3947,8 +3947,7 @@ pub mod rule_set_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4081,7 +4080,13 @@ pub struct DeleteSynonymSetRequest {
 }
 /// Generated client implementations.
 pub mod synonym_set_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// A Service that manage/custom customer specified SynonymSets.
@@ -4176,8 +4181,7 @@ pub mod synonym_set_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4206,8 +4210,7 @@ pub mod synonym_set_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4236,8 +4239,7 @@ pub mod synonym_set_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4265,8 +4267,7 @@ pub mod synonym_set_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4296,8 +4297,7 @@ pub mod synonym_set_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -133,10 +133,10 @@ pub mod node_taint {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Effect::Unspecified => "EFFECT_UNSPECIFIED",
-                Effect::NoSchedule => "NO_SCHEDULE",
-                Effect::PreferNoSchedule => "PREFER_NO_SCHEDULE",
-                Effect::NoExecute => "NO_EXECUTE",
+                Self::Unspecified => "EFFECT_UNSPECIFIED",
+                Self::NoSchedule => "NO_SCHEDULE",
+                Self::PreferNoSchedule => "PREFER_NO_SCHEDULE",
+                Self::NoExecute => "NO_EXECUTE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -150,6 +150,55 @@ pub mod node_taint {
             }
         }
     }
+}
+/// Configuration for node pool kubelet options.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NodeKubeletConfig {
+    /// Optional. Enable the insecure kubelet read only port.
+    #[prost(bool, tag = "1")]
+    pub insecure_kubelet_readonly_port_enabled: bool,
+    /// Optional. Control the CPU management policy on the node.
+    /// See
+    /// <https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/>
+    ///
+    /// The following values are allowed.
+    /// * "none": the default, which represents the existing scheduling behavior.
+    /// * "static": allows pods with certain resource characteristics to be granted
+    /// increased CPU affinity and exclusivity on the node.
+    /// The default value is 'none' if unspecified.
+    #[prost(string, optional, tag = "2")]
+    pub cpu_manager_policy: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Enable CPU CFS quota enforcement for containers that specify CPU
+    /// limits.
+    ///
+    /// This option is enabled by default which makes kubelet use CFS quota
+    /// (<https://www.kernel.org/doc/Documentation/scheduler/sched-bwc.txt>) to
+    /// enforce container CPU limits. Otherwise, CPU limits will not be enforced at
+    /// all.
+    ///
+    /// Disable this option to mitigate CPU throttling problems while still having
+    /// your pods to be in Guaranteed QoS class by specifying the CPU limits.
+    ///
+    /// The default value is 'true' if unspecified.
+    #[prost(bool, optional, tag = "3")]
+    pub cpu_cfs_quota: ::core::option::Option<bool>,
+    /// Optional. Set the CPU CFS quota period value 'cpu.cfs_period_us'.
+    ///
+    /// The string must be a sequence of decimal numbers, each with optional
+    /// fraction and a unit suffix, such as "300ms".
+    /// Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+    /// The value must be a positive duration.
+    ///
+    /// The default value is '100ms' if unspecified.
+    #[prost(string, optional, tag = "4")]
+    pub cpu_cfs_quota_period: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Set the Pod PID limits. See
+    /// <https://kubernetes.io/docs/concepts/policy/pid-limiting/#pod-pid-limits>
+    ///
+    /// Controls the maximum number of processes allowed to run in a pod. The value
+    /// must be greater than or equal to 1024 and less than 4194304.
+    #[prost(int64, optional, tag = "5")]
+    pub pod_pids_limit: ::core::option::Option<i64>,
 }
 /// Fleet related configuration.
 ///
@@ -221,9 +270,9 @@ pub mod logging_component_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Component::Unspecified => "COMPONENT_UNSPECIFIED",
-                Component::SystemComponents => "SYSTEM_COMPONENTS",
-                Component::Workloads => "WORKLOADS",
+                Self::Unspecified => "COMPONENT_UNSPECIFIED",
+                Self::SystemComponents => "SYSTEM_COMPONENTS",
+                Self::Workloads => "WORKLOADS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -291,11 +340,9 @@ pub mod binary_authorization {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EvaluationMode::Unspecified => "EVALUATION_MODE_UNSPECIFIED",
-                EvaluationMode::Disabled => "DISABLED",
-                EvaluationMode::ProjectSingletonPolicyEnforce => {
-                    "PROJECT_SINGLETON_POLICY_ENFORCE"
-                }
+                Self::Unspecified => "EVALUATION_MODE_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::ProjectSingletonPolicyEnforce => "PROJECT_SINGLETON_POLICY_ENFORCE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -306,6 +353,61 @@ pub mod binary_authorization {
                 "PROJECT_SINGLETON_POLICY_ENFORCE" => {
                     Some(Self::ProjectSingletonPolicyEnforce)
                 }
+                _ => None,
+            }
+        }
+    }
+}
+/// SecurityPostureConfig defines the flags needed to enable/disable features for
+/// the Security Posture API.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct SecurityPostureConfig {
+    /// Sets which mode to use for vulnerability scanning.
+    #[prost(enumeration = "security_posture_config::VulnerabilityMode", tag = "1")]
+    pub vulnerability_mode: i32,
+}
+/// Nested message and enum types in `SecurityPostureConfig`.
+pub mod security_posture_config {
+    /// VulnerabilityMode defines enablement mode for vulnerability scanning.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum VulnerabilityMode {
+        /// Default value not specified.
+        Unspecified = 0,
+        /// Disables vulnerability scanning on the cluster.
+        VulnerabilityDisabled = 1,
+        /// Applies the Security Posture's vulnerability on cluster Enterprise level
+        /// features.
+        VulnerabilityEnterprise = 2,
+    }
+    impl VulnerabilityMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "VULNERABILITY_MODE_UNSPECIFIED",
+                Self::VulnerabilityDisabled => "VULNERABILITY_DISABLED",
+                Self::VulnerabilityEnterprise => "VULNERABILITY_ENTERPRISE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VULNERABILITY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VULNERABILITY_DISABLED" => Some(Self::VulnerabilityDisabled),
+                "VULNERABILITY_ENTERPRISE" => Some(Self::VulnerabilityEnterprise),
                 _ => None,
             }
         }
@@ -411,6 +513,9 @@ pub struct AttachedCluster {
     /// Optional. Binary Authorization configuration for this cluster.
     #[prost(message, optional, tag = "25")]
     pub binary_authorization: ::core::option::Option<BinaryAuthorization>,
+    /// Optional. Security Posture configuration for this cluster.
+    #[prost(message, optional, tag = "26")]
+    pub security_posture_config: ::core::option::Option<SecurityPostureConfig>,
 }
 /// Nested message and enum types in `AttachedCluster`.
 pub mod attached_cluster {
@@ -454,13 +559,13 @@ pub mod attached_cluster {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Provisioning => "PROVISIONING",
-                State::Running => "RUNNING",
-                State::Reconciling => "RECONCILING",
-                State::Stopping => "STOPPING",
-                State::Error => "ERROR",
-                State::Degraded => "DEGRADED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Running => "RUNNING",
+                Self::Reconciling => "RECONCILING",
+                Self::Stopping => "STOPPING",
+                Self::Error => "ERROR",
+                Self::Degraded => "DEGRADED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -693,7 +798,7 @@ pub struct ImportAttachedClusterRequest {
     pub platform_version: ::prost::alloc::string::String,
     /// Required. The Kubernetes distribution of the underlying attached cluster.
     ///
-    /// Supported values: \["eks", "aks"\].
+    /// Supported values: \["eks", "aks", "generic"\].
     #[prost(string, tag = "5")]
     pub distribution: ::prost::alloc::string::String,
     /// Optional. Proxy configuration for outbound HTTP(S) traffic.
@@ -726,6 +831,7 @@ pub struct UpdateAttachedClusterRequest {
     ///   *   `platform_version`.
     ///   *   `proxy_config.kubernetes_secret.name`.
     ///   *   `proxy_config.kubernetes_secret.namespace`.
+    ///   *   `security_posture_config.vulnerability_mode`
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -881,7 +987,13 @@ pub struct GenerateAttachedClusterAgentTokenResponse {
 }
 /// Generated client implementations.
 pub mod attached_clusters_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The AttachedClusters API provides a single centrally managed service
@@ -985,8 +1097,7 @@ pub mod attached_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1017,8 +1128,7 @@ pub mod attached_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1057,8 +1167,7 @@ pub mod attached_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1089,8 +1198,7 @@ pub mod attached_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1121,8 +1229,7 @@ pub mod attached_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1157,8 +1264,7 @@ pub mod attached_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1189,8 +1295,7 @@ pub mod attached_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1222,8 +1327,7 @@ pub mod attached_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1255,8 +1359,7 @@ pub mod attached_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1412,13 +1515,13 @@ pub mod aws_cluster {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Provisioning => "PROVISIONING",
-                State::Running => "RUNNING",
-                State::Reconciling => "RECONCILING",
-                State::Stopping => "STOPPING",
-                State::Error => "ERROR",
-                State::Degraded => "DEGRADED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Running => "RUNNING",
+                Self::Reconciling => "RECONCILING",
+                Self::Stopping => "STOPPING",
+                Self::Error => "ERROR",
+                Self::Degraded => "DEGRADED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1637,9 +1740,9 @@ pub mod aws_volume_template {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                VolumeType::Unspecified => "VOLUME_TYPE_UNSPECIFIED",
-                VolumeType::Gp2 => "GP2",
-                VolumeType::Gp3 => "GP3",
+                Self::Unspecified => "VOLUME_TYPE_UNSPECIFIED",
+                Self::Gp2 => "GP2",
+                Self::Gp3 => "GP3",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1763,6 +1866,9 @@ pub struct AwsNodePool {
     /// Optional. The Management configuration for this node pool.
     #[prost(message, optional, tag = "30")]
     pub management: ::core::option::Option<AwsNodeManagement>,
+    /// Optional. Node kubelet configs.
+    #[prost(message, optional, tag = "31")]
+    pub kubelet_config: ::core::option::Option<NodeKubeletConfig>,
     /// Optional. Update settings control the speed and disruption of the update.
     #[prost(message, optional, tag = "32")]
     pub update_settings: ::core::option::Option<UpdateSettings>,
@@ -1808,13 +1914,13 @@ pub mod aws_node_pool {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Provisioning => "PROVISIONING",
-                State::Running => "RUNNING",
-                State::Reconciling => "RECONCILING",
-                State::Stopping => "STOPPING",
-                State::Error => "ERROR",
-                State::Degraded => "DEGRADED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Running => "RUNNING",
+                Self::Reconciling => "RECONCILING",
+                Self::Stopping => "STOPPING",
+                Self::Error => "ERROR",
+                Self::Degraded => "DEGRADED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2076,7 +2182,7 @@ pub struct AwsProxyConfig {
     ///
     /// The secret must be a JSON encoded proxy configuration
     /// as described in
-    /// <https://cloud.google.com/anthos/clusters/docs/multi-cloud/aws/how-to/use-a-proxy#create_a_proxy_configuration_file>
+    /// <https://cloud.google.com/kubernetes-engine/multi-cloud/docs/aws/how-to/use-a-proxy#create_a_proxy_configuration_file>
     #[prost(string, tag = "1")]
     pub secret_arn: ::prost::alloc::string::String,
     /// The version string of the AWS Secret Manager secret that contains the
@@ -2134,10 +2240,10 @@ pub mod aws_instance_placement {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Tenancy::Unspecified => "TENANCY_UNSPECIFIED",
-                Tenancy::Default => "DEFAULT",
-                Tenancy::Dedicated => "DEDICATED",
-                Tenancy::Host => "HOST",
+                Self::Unspecified => "TENANCY_UNSPECIFIED",
+                Self::Default => "DEFAULT",
+                Self::Dedicated => "DEDICATED",
+                Self::Host => "HOST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2659,7 +2765,13 @@ pub struct GenerateAwsClusterAgentTokenResponse {
 }
 /// Generated client implementations.
 pub mod aws_clusters_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The AwsClusters API provides a single centrally managed service
@@ -2761,8 +2873,7 @@ pub mod aws_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2792,8 +2903,7 @@ pub mod aws_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2821,8 +2931,7 @@ pub mod aws_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2853,8 +2962,7 @@ pub mod aws_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2892,8 +3000,7 @@ pub mod aws_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2923,8 +3030,7 @@ pub mod aws_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2955,8 +3061,7 @@ pub mod aws_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2991,8 +3096,7 @@ pub mod aws_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3022,8 +3126,7 @@ pub mod aws_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3058,8 +3161,7 @@ pub mod aws_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3087,8 +3189,7 @@ pub mod aws_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3120,8 +3221,7 @@ pub mod aws_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3156,8 +3256,7 @@ pub mod aws_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3191,8 +3290,7 @@ pub mod aws_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3220,8 +3318,7 @@ pub mod aws_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3252,8 +3349,7 @@ pub mod aws_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3438,13 +3534,13 @@ pub mod azure_cluster {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Provisioning => "PROVISIONING",
-                State::Running => "RUNNING",
-                State::Reconciling => "RECONCILING",
-                State::Stopping => "STOPPING",
-                State::Error => "ERROR",
-                State::Degraded => "DEGRADED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Running => "RUNNING",
+                Self::Reconciling => "RECONCILING",
+                Self::Stopping => "STOPPING",
+                Self::Error => "ERROR",
+                Self::Degraded => "DEGRADED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3613,7 +3709,7 @@ pub struct AzureProxyConfig {
     ///
     /// The secret must be a JSON encoded proxy configuration
     /// as described in
-    /// <https://cloud.google.com/anthos/clusters/docs/multi-cloud/azure/how-to/use-a-proxy#create_a_proxy_configuration_file>
+    /// <https://cloud.google.com/kubernetes-engine/multi-cloud/docs/azure/how-to/use-a-proxy#create_a_proxy_configuration_file>
     ///
     /// Secret ids are formatted as
     /// `<https://<key-vault-name>.vault.azure.net/secrets/<secret-name>/<secret-version>`.>
@@ -3890,13 +3986,13 @@ pub mod azure_node_pool {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Provisioning => "PROVISIONING",
-                State::Running => "RUNNING",
-                State::Reconciling => "RECONCILING",
-                State::Stopping => "STOPPING",
-                State::Error => "ERROR",
-                State::Degraded => "DEGRADED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Running => "RUNNING",
+                Self::Reconciling => "RECONCILING",
+                Self::Stopping => "STOPPING",
+                Self::Error => "ERROR",
+                Self::Degraded => "DEGRADED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4656,7 +4752,13 @@ pub struct GenerateAzureClusterAgentTokenResponse {
 }
 /// Generated client implementations.
 pub mod azure_clusters_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The AzureClusters API provides a single centrally managed service
@@ -4762,8 +4864,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4791,8 +4892,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4823,8 +4923,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4862,8 +4961,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4898,8 +4996,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4929,8 +5026,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4958,8 +5054,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4990,8 +5085,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5029,8 +5123,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5062,8 +5155,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5094,8 +5186,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5131,8 +5222,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5162,8 +5252,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5191,8 +5280,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5224,8 +5312,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5260,8 +5347,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5295,8 +5381,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5327,8 +5412,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5359,8 +5443,7 @@ pub mod azure_clusters_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

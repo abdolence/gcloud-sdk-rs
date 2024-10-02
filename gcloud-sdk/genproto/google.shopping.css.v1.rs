@@ -143,15 +143,15 @@ pub mod account {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AccountType::Unspecified => "ACCOUNT_TYPE_UNSPECIFIED",
-                AccountType::CssGroup => "CSS_GROUP",
-                AccountType::CssDomain => "CSS_DOMAIN",
-                AccountType::McPrimaryCssMca => "MC_PRIMARY_CSS_MCA",
-                AccountType::McCssMca => "MC_CSS_MCA",
-                AccountType::McMarketplaceMca => "MC_MARKETPLACE_MCA",
-                AccountType::McOtherMca => "MC_OTHER_MCA",
-                AccountType::McStandalone => "MC_STANDALONE",
-                AccountType::McMcaSubaccount => "MC_MCA_SUBACCOUNT",
+                Self::Unspecified => "ACCOUNT_TYPE_UNSPECIFIED",
+                Self::CssGroup => "CSS_GROUP",
+                Self::CssDomain => "CSS_DOMAIN",
+                Self::McPrimaryCssMca => "MC_PRIMARY_CSS_MCA",
+                Self::McCssMca => "MC_CSS_MCA",
+                Self::McMarketplaceMca => "MC_MARKETPLACE_MCA",
+                Self::McOtherMca => "MC_OTHER_MCA",
+                Self::McStandalone => "MC_STANDALONE",
+                Self::McMcaSubaccount => "MC_MCA_SUBACCOUNT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -173,7 +173,13 @@ pub mod account {
 }
 /// Generated client implementations.
 pub mod accounts_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for managing CSS/MC account information.
@@ -270,8 +276,7 @@ pub mod accounts_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -298,8 +303,7 @@ pub mod accounts_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -326,8 +330,7 @@ pub mod accounts_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -400,9 +403,9 @@ pub mod account_label {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LabelType::Unspecified => "LABEL_TYPE_UNSPECIFIED",
-                LabelType::Manual => "MANUAL",
-                LabelType::Automatic => "AUTOMATIC",
+                Self::Unspecified => "LABEL_TYPE_UNSPECIFIED",
+                Self::Manual => "MANUAL",
+                Self::Automatic => "AUTOMATIC",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -476,7 +479,13 @@ pub struct DeleteAccountLabelRequest {
 }
 /// Generated client implementations.
 pub mod account_labels_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Manages Merchant Center and CSS accounts labels.
@@ -572,8 +581,7 @@ pub mod account_labels_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -600,8 +608,7 @@ pub mod account_labels_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -628,8 +635,7 @@ pub mod account_labels_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -656,8 +662,7 @@ pub mod account_labels_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1109,7 +1114,13 @@ pub struct DeleteCssProductInputRequest {
 }
 /// Generated client implementations.
 pub mod css_product_inputs_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service to use CssProductInput resource.
@@ -1213,8 +1224,7 @@ pub mod css_product_inputs_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1244,8 +1254,7 @@ pub mod css_product_inputs_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1344,7 +1353,13 @@ pub struct ListCssProductsResponse {
 }
 /// Generated client implementations.
 pub mod css_products_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for doing get and list on Css Products(a.k.a Aggregate Offers
@@ -1440,8 +1455,7 @@ pub mod css_products_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1477,8 +1491,7 @@ pub mod css_products_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

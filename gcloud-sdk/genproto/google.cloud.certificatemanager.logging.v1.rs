@@ -48,9 +48,9 @@ pub mod certificates_expiry {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::CloseToExpiry => "CLOSE_TO_EXPIRY",
-                State::Expired => "EXPIRED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::CloseToExpiry => "CLOSE_TO_EXPIRY",
+                Self::Expired => "EXPIRED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

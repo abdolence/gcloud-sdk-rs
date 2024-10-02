@@ -65,14 +65,14 @@ pub mod common_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Initializing => "INITIALIZING",
-                State::Processing => "PROCESSING",
-                State::Cancelling => "CANCELLING",
-                State::Finalizing => "FINALIZING",
-                State::Successful => "SUCCESSFUL",
-                State::Failed => "FAILED",
-                State::Cancelled => "CANCELLED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Initializing => "INITIALIZING",
+                Self::Processing => "PROCESSING",
+                Self::Cancelling => "CANCELLING",
+                Self::Finalizing => "FINALIZING",
+                Self::Successful => "SUCCESSFUL",
+                Self::Failed => "FAILED",
+                Self::Cancelled => "CANCELLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -283,9 +283,9 @@ impl OperationType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            OperationType::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
-            OperationType::ExportEntities => "EXPORT_ENTITIES",
-            OperationType::ImportEntities => "IMPORT_ENTITIES",
+            Self::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
+            Self::ExportEntities => "EXPORT_ENTITIES",
+            Self::ImportEntities => "IMPORT_ENTITIES",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -300,7 +300,13 @@ impl OperationType {
 }
 /// Generated client implementations.
 pub mod datastore_admin_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Google Cloud Datastore Admin API
@@ -453,8 +459,7 @@ pub mod datastore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -488,8 +493,7 @@ pub mod datastore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

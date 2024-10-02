@@ -103,17 +103,17 @@ pub mod region_identifier {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PlaceType::Unspecified => "PLACE_TYPE_UNSPECIFIED",
-                PlaceType::PostalCode => "POSTAL_CODE",
-                PlaceType::AdministrativeAreaLevel1 => "ADMINISTRATIVE_AREA_LEVEL_1",
-                PlaceType::AdministrativeAreaLevel2 => "ADMINISTRATIVE_AREA_LEVEL_2",
-                PlaceType::Locality => "LOCALITY",
-                PlaceType::Neighborhood => "NEIGHBORHOOD",
-                PlaceType::Country => "COUNTRY",
-                PlaceType::Sublocality => "SUBLOCALITY",
-                PlaceType::AdministrativeAreaLevel3 => "ADMINISTRATIVE_AREA_LEVEL_3",
-                PlaceType::AdministrativeAreaLevel4 => "ADMINISTRATIVE_AREA_LEVEL_4",
-                PlaceType::SchoolDistrict => "SCHOOL_DISTRICT",
+                Self::Unspecified => "PLACE_TYPE_UNSPECIFIED",
+                Self::PostalCode => "POSTAL_CODE",
+                Self::AdministrativeAreaLevel1 => "ADMINISTRATIVE_AREA_LEVEL_1",
+                Self::AdministrativeAreaLevel2 => "ADMINISTRATIVE_AREA_LEVEL_2",
+                Self::Locality => "LOCALITY",
+                Self::Neighborhood => "NEIGHBORHOOD",
+                Self::Country => "COUNTRY",
+                Self::Sublocality => "SUBLOCALITY",
+                Self::AdministrativeAreaLevel3 => "ADMINISTRATIVE_AREA_LEVEL_3",
+                Self::AdministrativeAreaLevel4 => "ADMINISTRATIVE_AREA_LEVEL_4",
+                Self::SchoolDistrict => "SCHOOL_DISTRICT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -298,17 +298,17 @@ pub mod region_search_value {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PlaceType::Unspecified => "PLACE_TYPE_UNSPECIFIED",
-                PlaceType::PostalCode => "POSTAL_CODE",
-                PlaceType::AdministrativeAreaLevel1 => "ADMINISTRATIVE_AREA_LEVEL_1",
-                PlaceType::AdministrativeAreaLevel2 => "ADMINISTRATIVE_AREA_LEVEL_2",
-                PlaceType::Locality => "LOCALITY",
-                PlaceType::Neighborhood => "NEIGHBORHOOD",
-                PlaceType::Country => "COUNTRY",
-                PlaceType::Sublocality => "SUBLOCALITY",
-                PlaceType::AdministrativeAreaLevel3 => "ADMINISTRATIVE_AREA_LEVEL_3",
-                PlaceType::AdministrativeAreaLevel4 => "ADMINISTRATIVE_AREA_LEVEL_4",
-                PlaceType::SchoolDistrict => "SCHOOL_DISTRICT",
+                Self::Unspecified => "PLACE_TYPE_UNSPECIFIED",
+                Self::PostalCode => "POSTAL_CODE",
+                Self::AdministrativeAreaLevel1 => "ADMINISTRATIVE_AREA_LEVEL_1",
+                Self::AdministrativeAreaLevel2 => "ADMINISTRATIVE_AREA_LEVEL_2",
+                Self::Locality => "LOCALITY",
+                Self::Neighborhood => "NEIGHBORHOOD",
+                Self::Country => "COUNTRY",
+                Self::Sublocality => "SUBLOCALITY",
+                Self::AdministrativeAreaLevel3 => "ADMINISTRATIVE_AREA_LEVEL_3",
+                Self::AdministrativeAreaLevel4 => "ADMINISTRATIVE_AREA_LEVEL_4",
+                Self::SchoolDistrict => "SCHOOL_DISTRICT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -423,7 +423,13 @@ pub struct SearchRegionResponse {
 }
 /// Generated client implementations.
 pub mod region_lookup_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service definition for the Region Lookup API.
@@ -529,8 +535,7 @@ pub mod region_lookup_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -573,8 +578,7 @@ pub mod region_lookup_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -89,7 +89,7 @@ pub struct CryptoKey {
     /// [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED]
     /// state before transitioning to
     /// [DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED].
-    /// If not specified at creation time, the default duration is 24 hours.
+    /// If not specified at creation time, the default duration is 30 days.
     #[prost(message, optional, tag = "14")]
     pub destroy_scheduled_duration: ::core::option::Option<::prost_types::Duration>,
     /// Immutable. The resource name of the backend environment where the key
@@ -175,12 +175,12 @@ pub mod crypto_key {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CryptoKeyPurpose::Unspecified => "CRYPTO_KEY_PURPOSE_UNSPECIFIED",
-                CryptoKeyPurpose::EncryptDecrypt => "ENCRYPT_DECRYPT",
-                CryptoKeyPurpose::AsymmetricSign => "ASYMMETRIC_SIGN",
-                CryptoKeyPurpose::AsymmetricDecrypt => "ASYMMETRIC_DECRYPT",
-                CryptoKeyPurpose::RawEncryptDecrypt => "RAW_ENCRYPT_DECRYPT",
-                CryptoKeyPurpose::Mac => "MAC",
+                Self::Unspecified => "CRYPTO_KEY_PURPOSE_UNSPECIFIED",
+                Self::EncryptDecrypt => "ENCRYPT_DECRYPT",
+                Self::AsymmetricSign => "ASYMMETRIC_SIGN",
+                Self::AsymmetricDecrypt => "ASYMMETRIC_DECRYPT",
+                Self::RawEncryptDecrypt => "RAW_ENCRYPT_DECRYPT",
+                Self::Mac => "MAC",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -312,9 +312,9 @@ pub mod key_operation_attestation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AttestationFormat::Unspecified => "ATTESTATION_FORMAT_UNSPECIFIED",
-                AttestationFormat::CaviumV1Compressed => "CAVIUM_V1_COMPRESSED",
-                AttestationFormat::CaviumV2Compressed => "CAVIUM_V2_COMPRESSED",
+                Self::Unspecified => "ATTESTATION_FORMAT_UNSPECIFIED",
+                Self::CaviumV1Compressed => "CAVIUM_V1_COMPRESSED",
+                Self::CaviumV2Compressed => "CAVIUM_V2_COMPRESSED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -580,86 +580,42 @@ pub mod crypto_key_version {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CryptoKeyVersionAlgorithm::Unspecified => {
-                    "CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED"
-                }
-                CryptoKeyVersionAlgorithm::GoogleSymmetricEncryption => {
-                    "GOOGLE_SYMMETRIC_ENCRYPTION"
-                }
-                CryptoKeyVersionAlgorithm::Aes128Gcm => "AES_128_GCM",
-                CryptoKeyVersionAlgorithm::Aes256Gcm => "AES_256_GCM",
-                CryptoKeyVersionAlgorithm::Aes128Cbc => "AES_128_CBC",
-                CryptoKeyVersionAlgorithm::Aes256Cbc => "AES_256_CBC",
-                CryptoKeyVersionAlgorithm::Aes128Ctr => "AES_128_CTR",
-                CryptoKeyVersionAlgorithm::Aes256Ctr => "AES_256_CTR",
-                CryptoKeyVersionAlgorithm::RsaSignPss2048Sha256 => {
-                    "RSA_SIGN_PSS_2048_SHA256"
-                }
-                CryptoKeyVersionAlgorithm::RsaSignPss3072Sha256 => {
-                    "RSA_SIGN_PSS_3072_SHA256"
-                }
-                CryptoKeyVersionAlgorithm::RsaSignPss4096Sha256 => {
-                    "RSA_SIGN_PSS_4096_SHA256"
-                }
-                CryptoKeyVersionAlgorithm::RsaSignPss4096Sha512 => {
-                    "RSA_SIGN_PSS_4096_SHA512"
-                }
-                CryptoKeyVersionAlgorithm::RsaSignPkcs12048Sha256 => {
-                    "RSA_SIGN_PKCS1_2048_SHA256"
-                }
-                CryptoKeyVersionAlgorithm::RsaSignPkcs13072Sha256 => {
-                    "RSA_SIGN_PKCS1_3072_SHA256"
-                }
-                CryptoKeyVersionAlgorithm::RsaSignPkcs14096Sha256 => {
-                    "RSA_SIGN_PKCS1_4096_SHA256"
-                }
-                CryptoKeyVersionAlgorithm::RsaSignPkcs14096Sha512 => {
-                    "RSA_SIGN_PKCS1_4096_SHA512"
-                }
-                CryptoKeyVersionAlgorithm::RsaSignRawPkcs12048 => {
-                    "RSA_SIGN_RAW_PKCS1_2048"
-                }
-                CryptoKeyVersionAlgorithm::RsaSignRawPkcs13072 => {
-                    "RSA_SIGN_RAW_PKCS1_3072"
-                }
-                CryptoKeyVersionAlgorithm::RsaSignRawPkcs14096 => {
-                    "RSA_SIGN_RAW_PKCS1_4096"
-                }
-                CryptoKeyVersionAlgorithm::RsaDecryptOaep2048Sha256 => {
-                    "RSA_DECRYPT_OAEP_2048_SHA256"
-                }
-                CryptoKeyVersionAlgorithm::RsaDecryptOaep3072Sha256 => {
-                    "RSA_DECRYPT_OAEP_3072_SHA256"
-                }
-                CryptoKeyVersionAlgorithm::RsaDecryptOaep4096Sha256 => {
-                    "RSA_DECRYPT_OAEP_4096_SHA256"
-                }
-                CryptoKeyVersionAlgorithm::RsaDecryptOaep4096Sha512 => {
-                    "RSA_DECRYPT_OAEP_4096_SHA512"
-                }
-                CryptoKeyVersionAlgorithm::RsaDecryptOaep2048Sha1 => {
-                    "RSA_DECRYPT_OAEP_2048_SHA1"
-                }
-                CryptoKeyVersionAlgorithm::RsaDecryptOaep3072Sha1 => {
-                    "RSA_DECRYPT_OAEP_3072_SHA1"
-                }
-                CryptoKeyVersionAlgorithm::RsaDecryptOaep4096Sha1 => {
-                    "RSA_DECRYPT_OAEP_4096_SHA1"
-                }
-                CryptoKeyVersionAlgorithm::EcSignP256Sha256 => "EC_SIGN_P256_SHA256",
-                CryptoKeyVersionAlgorithm::EcSignP384Sha384 => "EC_SIGN_P384_SHA384",
-                CryptoKeyVersionAlgorithm::EcSignSecp256k1Sha256 => {
-                    "EC_SIGN_SECP256K1_SHA256"
-                }
-                CryptoKeyVersionAlgorithm::EcSignEd25519 => "EC_SIGN_ED25519",
-                CryptoKeyVersionAlgorithm::HmacSha256 => "HMAC_SHA256",
-                CryptoKeyVersionAlgorithm::HmacSha1 => "HMAC_SHA1",
-                CryptoKeyVersionAlgorithm::HmacSha384 => "HMAC_SHA384",
-                CryptoKeyVersionAlgorithm::HmacSha512 => "HMAC_SHA512",
-                CryptoKeyVersionAlgorithm::HmacSha224 => "HMAC_SHA224",
-                CryptoKeyVersionAlgorithm::ExternalSymmetricEncryption => {
-                    "EXTERNAL_SYMMETRIC_ENCRYPTION"
-                }
+                Self::Unspecified => "CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED",
+                Self::GoogleSymmetricEncryption => "GOOGLE_SYMMETRIC_ENCRYPTION",
+                Self::Aes128Gcm => "AES_128_GCM",
+                Self::Aes256Gcm => "AES_256_GCM",
+                Self::Aes128Cbc => "AES_128_CBC",
+                Self::Aes256Cbc => "AES_256_CBC",
+                Self::Aes128Ctr => "AES_128_CTR",
+                Self::Aes256Ctr => "AES_256_CTR",
+                Self::RsaSignPss2048Sha256 => "RSA_SIGN_PSS_2048_SHA256",
+                Self::RsaSignPss3072Sha256 => "RSA_SIGN_PSS_3072_SHA256",
+                Self::RsaSignPss4096Sha256 => "RSA_SIGN_PSS_4096_SHA256",
+                Self::RsaSignPss4096Sha512 => "RSA_SIGN_PSS_4096_SHA512",
+                Self::RsaSignPkcs12048Sha256 => "RSA_SIGN_PKCS1_2048_SHA256",
+                Self::RsaSignPkcs13072Sha256 => "RSA_SIGN_PKCS1_3072_SHA256",
+                Self::RsaSignPkcs14096Sha256 => "RSA_SIGN_PKCS1_4096_SHA256",
+                Self::RsaSignPkcs14096Sha512 => "RSA_SIGN_PKCS1_4096_SHA512",
+                Self::RsaSignRawPkcs12048 => "RSA_SIGN_RAW_PKCS1_2048",
+                Self::RsaSignRawPkcs13072 => "RSA_SIGN_RAW_PKCS1_3072",
+                Self::RsaSignRawPkcs14096 => "RSA_SIGN_RAW_PKCS1_4096",
+                Self::RsaDecryptOaep2048Sha256 => "RSA_DECRYPT_OAEP_2048_SHA256",
+                Self::RsaDecryptOaep3072Sha256 => "RSA_DECRYPT_OAEP_3072_SHA256",
+                Self::RsaDecryptOaep4096Sha256 => "RSA_DECRYPT_OAEP_4096_SHA256",
+                Self::RsaDecryptOaep4096Sha512 => "RSA_DECRYPT_OAEP_4096_SHA512",
+                Self::RsaDecryptOaep2048Sha1 => "RSA_DECRYPT_OAEP_2048_SHA1",
+                Self::RsaDecryptOaep3072Sha1 => "RSA_DECRYPT_OAEP_3072_SHA1",
+                Self::RsaDecryptOaep4096Sha1 => "RSA_DECRYPT_OAEP_4096_SHA1",
+                Self::EcSignP256Sha256 => "EC_SIGN_P256_SHA256",
+                Self::EcSignP384Sha384 => "EC_SIGN_P384_SHA384",
+                Self::EcSignSecp256k1Sha256 => "EC_SIGN_SECP256K1_SHA256",
+                Self::EcSignEd25519 => "EC_SIGN_ED25519",
+                Self::HmacSha256 => "HMAC_SHA256",
+                Self::HmacSha1 => "HMAC_SHA1",
+                Self::HmacSha384 => "HMAC_SHA384",
+                Self::HmacSha512 => "HMAC_SHA512",
+                Self::HmacSha224 => "HMAC_SHA224",
+                Self::ExternalSymmetricEncryption => "EXTERNAL_SYMMETRIC_ENCRYPTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -785,23 +741,17 @@ pub mod crypto_key_version {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CryptoKeyVersionState::Unspecified => {
-                    "CRYPTO_KEY_VERSION_STATE_UNSPECIFIED"
-                }
-                CryptoKeyVersionState::PendingGeneration => "PENDING_GENERATION",
-                CryptoKeyVersionState::Enabled => "ENABLED",
-                CryptoKeyVersionState::Disabled => "DISABLED",
-                CryptoKeyVersionState::Destroyed => "DESTROYED",
-                CryptoKeyVersionState::DestroyScheduled => "DESTROY_SCHEDULED",
-                CryptoKeyVersionState::PendingImport => "PENDING_IMPORT",
-                CryptoKeyVersionState::ImportFailed => "IMPORT_FAILED",
-                CryptoKeyVersionState::GenerationFailed => "GENERATION_FAILED",
-                CryptoKeyVersionState::PendingExternalDestruction => {
-                    "PENDING_EXTERNAL_DESTRUCTION"
-                }
-                CryptoKeyVersionState::ExternalDestructionFailed => {
-                    "EXTERNAL_DESTRUCTION_FAILED"
-                }
+                Self::Unspecified => "CRYPTO_KEY_VERSION_STATE_UNSPECIFIED",
+                Self::PendingGeneration => "PENDING_GENERATION",
+                Self::Enabled => "ENABLED",
+                Self::Disabled => "DISABLED",
+                Self::Destroyed => "DESTROYED",
+                Self::DestroyScheduled => "DESTROY_SCHEDULED",
+                Self::PendingImport => "PENDING_IMPORT",
+                Self::ImportFailed => "IMPORT_FAILED",
+                Self::GenerationFailed => "GENERATION_FAILED",
+                Self::PendingExternalDestruction => "PENDING_EXTERNAL_DESTRUCTION",
+                Self::ExternalDestructionFailed => "EXTERNAL_DESTRUCTION_FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -858,10 +808,8 @@ pub mod crypto_key_version {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CryptoKeyVersionView::Unspecified => {
-                    "CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED"
-                }
-                CryptoKeyVersionView::Full => "FULL",
+                Self::Unspecified => "CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED",
+                Self::Full => "FULL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1086,13 +1034,13 @@ pub mod import_job {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ImportMethod::Unspecified => "IMPORT_METHOD_UNSPECIFIED",
-                ImportMethod::RsaOaep3072Sha1Aes256 => "RSA_OAEP_3072_SHA1_AES_256",
-                ImportMethod::RsaOaep4096Sha1Aes256 => "RSA_OAEP_4096_SHA1_AES_256",
-                ImportMethod::RsaOaep3072Sha256Aes256 => "RSA_OAEP_3072_SHA256_AES_256",
-                ImportMethod::RsaOaep4096Sha256Aes256 => "RSA_OAEP_4096_SHA256_AES_256",
-                ImportMethod::RsaOaep3072Sha256 => "RSA_OAEP_3072_SHA256",
-                ImportMethod::RsaOaep4096Sha256 => "RSA_OAEP_4096_SHA256",
+                Self::Unspecified => "IMPORT_METHOD_UNSPECIFIED",
+                Self::RsaOaep3072Sha1Aes256 => "RSA_OAEP_3072_SHA1_AES_256",
+                Self::RsaOaep4096Sha1Aes256 => "RSA_OAEP_4096_SHA1_AES_256",
+                Self::RsaOaep3072Sha256Aes256 => "RSA_OAEP_3072_SHA256_AES_256",
+                Self::RsaOaep4096Sha256Aes256 => "RSA_OAEP_4096_SHA256_AES_256",
+                Self::RsaOaep3072Sha256 => "RSA_OAEP_3072_SHA256",
+                Self::RsaOaep4096Sha256 => "RSA_OAEP_4096_SHA256",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1147,10 +1095,10 @@ pub mod import_job {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ImportJobState::Unspecified => "IMPORT_JOB_STATE_UNSPECIFIED",
-                ImportJobState::PendingGeneration => "PENDING_GENERATION",
-                ImportJobState::Active => "ACTIVE",
-                ImportJobState::Expired => "EXPIRED",
+                Self::Unspecified => "IMPORT_JOB_STATE_UNSPECIFIED",
+                Self::PendingGeneration => "PENDING_GENERATION",
+                Self::Active => "ACTIVE",
+                Self::Expired => "EXPIRED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1223,11 +1171,11 @@ impl ProtectionLevel {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ProtectionLevel::Unspecified => "PROTECTION_LEVEL_UNSPECIFIED",
-            ProtectionLevel::Software => "SOFTWARE",
-            ProtectionLevel::Hsm => "HSM",
-            ProtectionLevel::External => "EXTERNAL",
-            ProtectionLevel::ExternalVpc => "EXTERNAL_VPC",
+            Self::Unspecified => "PROTECTION_LEVEL_UNSPECIFIED",
+            Self::Software => "SOFTWARE",
+            Self::Hsm => "HSM",
+            Self::External => "EXTERNAL",
+            Self::ExternalVpc => "EXTERNAL_VPC",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1306,26 +1254,22 @@ impl AccessReason {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AccessReason::ReasonUnspecified => "REASON_UNSPECIFIED",
-            AccessReason::CustomerInitiatedSupport => "CUSTOMER_INITIATED_SUPPORT",
-            AccessReason::GoogleInitiatedService => "GOOGLE_INITIATED_SERVICE",
-            AccessReason::ThirdPartyDataRequest => "THIRD_PARTY_DATA_REQUEST",
-            AccessReason::GoogleInitiatedReview => "GOOGLE_INITIATED_REVIEW",
-            AccessReason::CustomerInitiatedAccess => "CUSTOMER_INITIATED_ACCESS",
-            AccessReason::GoogleInitiatedSystemOperation => {
-                "GOOGLE_INITIATED_SYSTEM_OPERATION"
-            }
-            AccessReason::ReasonNotExpected => "REASON_NOT_EXPECTED",
-            AccessReason::ModifiedCustomerInitiatedAccess => {
-                "MODIFIED_CUSTOMER_INITIATED_ACCESS"
-            }
-            AccessReason::ModifiedGoogleInitiatedSystemOperation => {
+            Self::ReasonUnspecified => "REASON_UNSPECIFIED",
+            Self::CustomerInitiatedSupport => "CUSTOMER_INITIATED_SUPPORT",
+            Self::GoogleInitiatedService => "GOOGLE_INITIATED_SERVICE",
+            Self::ThirdPartyDataRequest => "THIRD_PARTY_DATA_REQUEST",
+            Self::GoogleInitiatedReview => "GOOGLE_INITIATED_REVIEW",
+            Self::CustomerInitiatedAccess => "CUSTOMER_INITIATED_ACCESS",
+            Self::GoogleInitiatedSystemOperation => "GOOGLE_INITIATED_SYSTEM_OPERATION",
+            Self::ReasonNotExpected => "REASON_NOT_EXPECTED",
+            Self::ModifiedCustomerInitiatedAccess => "MODIFIED_CUSTOMER_INITIATED_ACCESS",
+            Self::ModifiedGoogleInitiatedSystemOperation => {
                 "MODIFIED_GOOGLE_INITIATED_SYSTEM_OPERATION"
             }
-            AccessReason::GoogleResponseToProductionAlert => {
+            Self::GoogleResponseToProductionAlert => {
                 "GOOGLE_RESPONSE_TO_PRODUCTION_ALERT"
             }
-            AccessReason::CustomerAuthorizedWorkflowServicing => {
+            Self::CustomerAuthorizedWorkflowServicing => {
                 "CUSTOMER_AUTHORIZED_WORKFLOW_SERVICING"
             }
         }
@@ -1429,6 +1373,20 @@ pub struct ListKeyHandlesRequest {
     /// `projects/{PROJECT_ID}/locations/{LOCATION}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
+    /// Optional. Optional limit on the number of
+    /// [KeyHandles][google.cloud.kms.v1.KeyHandle] to include in the response. The
+    /// service may return fewer than this value. Further
+    /// [KeyHandles][google.cloud.kms.v1.KeyHandle] can subsequently be obtained by
+    /// including the
+    /// [ListKeyHandlesResponse.next_page_token][google.cloud.kms.v1.ListKeyHandlesResponse.next_page_token]
+    /// in a subsequent request.  If unspecified, at most
+    /// 100 [KeyHandles][google.cloud.kms.v1.KeyHandle] will be returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Optional pagination token, returned earlier via
+    /// [ListKeyHandlesResponse.next_page_token][google.cloud.kms.v1.ListKeyHandlesResponse.next_page_token].
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
     /// Optional. Filter to apply when listing
     /// [KeyHandles][google.cloud.kms.v1.KeyHandle], e.g.
     /// `resource_type_selector="{SERVICE}.googleapis.com/{TYPE}"`.
@@ -1442,13 +1400,25 @@ pub struct ListKeyHandlesResponse {
     /// Resulting [KeyHandles][google.cloud.kms.v1.KeyHandle].
     #[prost(message, repeated, tag = "1")]
     pub key_handles: ::prost::alloc::vec::Vec<KeyHandle>,
+    /// A token to retrieve next page of results. Pass this value in
+    /// [ListKeyHandlesRequest.page_token][google.cloud.kms.v1.ListKeyHandlesRequest.page_token]
+    /// to retrieve the next page of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod autokey_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Provides interfaces for using Cloud KMS Autokey to provision new
+    /// Provides interfaces for using [Cloud KMS
+    /// Autokey](https://cloud.google.com/kms/help/autokey) to provision new
     /// [CryptoKeys][google.cloud.kms.v1.CryptoKey], ready for Customer Managed
     /// Encryption Key (CMEK) use, on-demand. To support certain client tooling, this
     /// feature is modeled around a [KeyHandle][google.cloud.kms.v1.KeyHandle]
@@ -1563,8 +1533,7 @@ pub mod autokey_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1588,8 +1557,7 @@ pub mod autokey_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1614,8 +1582,7 @@ pub mod autokey_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1675,6 +1642,61 @@ pub struct AutokeyConfig {
     /// key project field will clear the configuration.
     #[prost(string, tag = "2")]
     pub key_project: ::prost::alloc::string::String,
+    /// Output only. The state for the AutokeyConfig.
+    #[prost(enumeration = "autokey_config::State", tag = "4")]
+    pub state: i32,
+}
+/// Nested message and enum types in `AutokeyConfig`.
+pub mod autokey_config {
+    /// The states AutokeyConfig can be in.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The state of the AutokeyConfig is unspecified.
+        Unspecified = 0,
+        /// The AutokeyConfig is currently active.
+        Active = 1,
+        /// A previously configured key project has been deleted and the current
+        /// AutokeyConfig is unusable.
+        KeyProjectDeleted = 2,
+        /// The AutokeyConfig is not yet initialized or has been reset to its default
+        /// uninitialized state.
+        Uninitialized = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::KeyProjectDeleted => "KEY_PROJECT_DELETED",
+                Self::Uninitialized => "UNINITIALIZED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "KEY_PROJECT_DELETED" => Some(Self::KeyProjectDeleted),
+                "UNINITIALIZED" => Some(Self::Uninitialized),
+                _ => None,
+            }
+        }
+    }
 }
 /// Request message for
 /// [ShowEffectiveAutokeyConfig][google.cloud.kms.v1.AutokeyAdmin.ShowEffectiveAutokeyConfig].
@@ -1697,10 +1719,17 @@ pub struct ShowEffectiveAutokeyConfigResponse {
 }
 /// Generated client implementations.
 pub mod autokey_admin_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Provides interfaces for managing Cloud KMS Autokey folder-level
+    /// Provides interfaces for managing [Cloud KMS
+    /// Autokey](https://cloud.google.com/kms/help/autokey) folder-level
     /// configurations. A configuration is inherited by all descendent projects. A
     /// configuration at one folder overrides any other configurations in its
     /// ancestry. Setting a configuration on a folder is a prerequisite for Cloud KMS
@@ -1802,8 +1831,7 @@ pub mod autokey_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1831,8 +1859,7 @@ pub mod autokey_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1862,8 +1889,7 @@ pub mod autokey_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2054,7 +2080,7 @@ pub struct EkmConnection {
     /// [EkmConnection][google.cloud.kms.v1.EkmConnection] was created.
     #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// A list of
+    /// Optional. A list of
     /// [ServiceResolvers][google.cloud.kms.v1.EkmConnection.ServiceResolver] where
     /// the EKM can be reached. There should be one ServiceResolver per EKM
     /// replica. Currently, only a single
@@ -2162,9 +2188,9 @@ pub mod ekm_connection {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                KeyManagementMode::Unspecified => "KEY_MANAGEMENT_MODE_UNSPECIFIED",
-                KeyManagementMode::Manual => "MANUAL",
-                KeyManagementMode::CloudKms => "CLOUD_KMS",
+                Self::Unspecified => "KEY_MANAGEMENT_MODE_UNSPECIFIED",
+                Self::Manual => "MANUAL",
+                Self::CloudKms => "CLOUD_KMS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2213,7 +2239,13 @@ pub struct VerifyConnectivityRequest {
 pub struct VerifyConnectivityResponse {}
 /// Generated client implementations.
 pub mod ekm_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Google Cloud Key Management EKM Service
@@ -2313,8 +2345,7 @@ pub mod ekm_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2342,8 +2373,7 @@ pub mod ekm_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2368,8 +2398,7 @@ pub mod ekm_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2396,8 +2425,7 @@ pub mod ekm_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2425,8 +2453,7 @@ pub mod ekm_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2451,8 +2478,7 @@ pub mod ekm_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2483,8 +2509,7 @@ pub mod ekm_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3972,7 +3997,13 @@ pub struct LocationMetadata {
 }
 /// Generated client implementations.
 pub mod key_management_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Google Cloud Key Management Service
@@ -4079,8 +4110,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4110,8 +4140,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4141,8 +4170,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4172,8 +4200,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4200,8 +4227,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4230,8 +4256,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4262,8 +4287,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4295,8 +4319,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4323,8 +4346,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4352,8 +4374,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4385,8 +4406,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4421,8 +4441,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4459,8 +4478,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4491,8 +4509,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4519,8 +4536,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4561,8 +4577,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4594,8 +4609,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4645,8 +4659,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4684,8 +4697,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4718,8 +4730,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4752,8 +4763,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4788,8 +4798,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4822,8 +4831,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4857,8 +4865,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4892,8 +4899,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4925,8 +4931,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4959,8 +4964,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4991,8 +4995,7 @@ pub mod key_management_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

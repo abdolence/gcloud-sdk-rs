@@ -40,8 +40,8 @@ pub mod runtime_event {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EventType::Unspecified => "EVENT_TYPE_UNSPECIFIED",
-                EventType::RuntimeStateChangeEvent => "RUNTIME_STATE_CHANGE_EVENT",
+                Self::Unspecified => "EVENT_TYPE_UNSPECIFIED",
+                Self::RuntimeStateChangeEvent => "RUNTIME_STATE_CHANGE_EVENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

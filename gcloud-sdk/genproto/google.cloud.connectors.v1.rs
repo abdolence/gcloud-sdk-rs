@@ -108,13 +108,13 @@ pub mod config_variable_template {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ValueType::Unspecified => "VALUE_TYPE_UNSPECIFIED",
-                ValueType::String => "STRING",
-                ValueType::Int => "INT",
-                ValueType::Bool => "BOOL",
-                ValueType::Secret => "SECRET",
-                ValueType::Enum => "ENUM",
-                ValueType::AuthorizationCode => "AUTHORIZATION_CODE",
+                Self::Unspecified => "VALUE_TYPE_UNSPECIFIED",
+                Self::String => "STRING",
+                Self::Int => "INT",
+                Self::Bool => "BOOL",
+                Self::Secret => "SECRET",
+                Self::Enum => "ENUM",
+                Self::AuthorizationCode => "AUTHORIZATION_CODE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -159,9 +159,9 @@ pub mod config_variable_template {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::Deprecated => "DEPRECATED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Deprecated => "DEPRECATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -291,11 +291,11 @@ pub mod role_grant {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Type::Unspecified => "TYPE_UNSPECIFIED",
-                    Type::GcpProject => "GCP_PROJECT",
-                    Type::GcpResource => "GCP_RESOURCE",
-                    Type::GcpSecretmanagerSecret => "GCP_SECRETMANAGER_SECRET",
-                    Type::GcpSecretmanagerSecretVersion => {
+                    Self::Unspecified => "TYPE_UNSPECIFIED",
+                    Self::GcpProject => "GCP_PROJECT",
+                    Self::GcpResource => "GCP_RESOURCE",
+                    Self::GcpSecretmanagerSecret => "GCP_SECRETMANAGER_SECRET",
+                    Self::GcpSecretmanagerSecretVersion => {
                         "GCP_SECRETMANAGER_SECRET_VERSION"
                     }
                 }
@@ -343,8 +343,8 @@ pub mod role_grant {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Principal::Unspecified => "PRINCIPAL_UNSPECIFIED",
-                Principal::ConnectorSa => "CONNECTOR_SA",
+                Self::Unspecified => "PRINCIPAL_UNSPECIFIED",
+                Self::ConnectorSa => "CONNECTOR_SA",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -400,11 +400,11 @@ impl LaunchStage {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            LaunchStage::Unspecified => "LAUNCH_STAGE_UNSPECIFIED",
-            LaunchStage::Preview => "PREVIEW",
-            LaunchStage::Ga => "GA",
-            LaunchStage::Deprecated => "DEPRECATED",
-            LaunchStage::PrivatePreview => "PRIVATE_PREVIEW",
+            Self::Unspecified => "LAUNCH_STAGE_UNSPECIFIED",
+            Self::Preview => "PREVIEW",
+            Self::Ga => "GA",
+            Self::Deprecated => "DEPRECATED",
+            Self::PrivatePreview => "PRIVATE_PREVIEW",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -560,12 +560,12 @@ impl AuthType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AuthType::Unspecified => "AUTH_TYPE_UNSPECIFIED",
-            AuthType::UserPassword => "USER_PASSWORD",
-            AuthType::Oauth2JwtBearer => "OAUTH2_JWT_BEARER",
-            AuthType::Oauth2ClientCredentials => "OAUTH2_CLIENT_CREDENTIALS",
-            AuthType::SshPublicKey => "SSH_PUBLIC_KEY",
-            AuthType::Oauth2AuthCodeFlow => "OAUTH2_AUTH_CODE_FLOW",
+            Self::Unspecified => "AUTH_TYPE_UNSPECIFIED",
+            Self::UserPassword => "USER_PASSWORD",
+            Self::Oauth2JwtBearer => "OAUTH2_JWT_BEARER",
+            Self::Oauth2ClientCredentials => "OAUTH2_CLIENT_CREDENTIALS",
+            Self::SshPublicKey => "SSH_PUBLIC_KEY",
+            Self::Oauth2AuthCodeFlow => "OAUTH2_AUTH_CODE_FLOW",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -696,9 +696,9 @@ pub mod ssl_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TrustModel::Public => "PUBLIC",
-                TrustModel::Private => "PRIVATE",
-                TrustModel::Insecure => "INSECURE",
+                Self::Public => "PUBLIC",
+                Self::Private => "PRIVATE",
+                Self::Insecure => "INSECURE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -730,9 +730,9 @@ impl SslType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SslType::Unspecified => "SSL_TYPE_UNSPECIFIED",
-            SslType::Tls => "TLS",
-            SslType::Mtls => "MTLS",
+            Self::Unspecified => "SSL_TYPE_UNSPECIFIED",
+            Self::Tls => "TLS",
+            Self::Mtls => "MTLS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -761,8 +761,8 @@ impl CertType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            CertType::Unspecified => "CERT_TYPE_UNSPECIFIED",
-            CertType::Pem => "PEM",
+            Self::Unspecified => "CERT_TYPE_UNSPECIFIED",
+            Self::Pem => "PEM",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -917,9 +917,9 @@ pub mod connection_schema_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Refreshing => "REFRESHING",
-                State::Updated => "UPDATED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Refreshing => "REFRESHING",
+                Self::Updated => "UPDATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1281,14 +1281,14 @@ pub mod connection_status {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Active => "ACTIVE",
-                State::Inactive => "INACTIVE",
-                State::Deleting => "DELETING",
-                State::Updating => "UPDATING",
-                State::Error => "ERROR",
-                State::AuthorizationRequired => "AUTHORIZATION_REQUIRED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::Inactive => "INACTIVE",
+                Self::Deleting => "DELETING",
+                Self::Updating => "UPDATING",
+                Self::Error => "ERROR",
+                Self::AuthorizationRequired => "AUTHORIZATION_REQUIRED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1409,51 +1409,51 @@ impl DataType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DataType::Unspecified => "DATA_TYPE_UNSPECIFIED",
-            DataType::Int => "DATA_TYPE_INT",
-            DataType::Smallint => "DATA_TYPE_SMALLINT",
-            DataType::Double => "DATA_TYPE_DOUBLE",
-            DataType::Date => "DATA_TYPE_DATE",
-            DataType::Datetime => "DATA_TYPE_DATETIME",
-            DataType::Time => "DATA_TYPE_TIME",
-            DataType::String => "DATA_TYPE_STRING",
-            DataType::Long => "DATA_TYPE_LONG",
-            DataType::Boolean => "DATA_TYPE_BOOLEAN",
-            DataType::Decimal => "DATA_TYPE_DECIMAL",
-            DataType::Uuid => "DATA_TYPE_UUID",
-            DataType::Blob => "DATA_TYPE_BLOB",
-            DataType::Bit => "DATA_TYPE_BIT",
-            DataType::Tinyint => "DATA_TYPE_TINYINT",
-            DataType::Integer => "DATA_TYPE_INTEGER",
-            DataType::Bigint => "DATA_TYPE_BIGINT",
-            DataType::Float => "DATA_TYPE_FLOAT",
-            DataType::Real => "DATA_TYPE_REAL",
-            DataType::Numeric => "DATA_TYPE_NUMERIC",
-            DataType::Char => "DATA_TYPE_CHAR",
-            DataType::Varchar => "DATA_TYPE_VARCHAR",
-            DataType::Longvarchar => "DATA_TYPE_LONGVARCHAR",
-            DataType::Timestamp => "DATA_TYPE_TIMESTAMP",
-            DataType::Nchar => "DATA_TYPE_NCHAR",
-            DataType::Nvarchar => "DATA_TYPE_NVARCHAR",
-            DataType::Longnvarchar => "DATA_TYPE_LONGNVARCHAR",
-            DataType::Null => "DATA_TYPE_NULL",
-            DataType::Other => "DATA_TYPE_OTHER",
-            DataType::JavaObject => "DATA_TYPE_JAVA_OBJECT",
-            DataType::Distinct => "DATA_TYPE_DISTINCT",
-            DataType::Struct => "DATA_TYPE_STRUCT",
-            DataType::Array => "DATA_TYPE_ARRAY",
-            DataType::Clob => "DATA_TYPE_CLOB",
-            DataType::Ref => "DATA_TYPE_REF",
-            DataType::Datalink => "DATA_TYPE_DATALINK",
-            DataType::Rowid => "DATA_TYPE_ROWID",
-            DataType::Binary => "DATA_TYPE_BINARY",
-            DataType::Varbinary => "DATA_TYPE_VARBINARY",
-            DataType::Longvarbinary => "DATA_TYPE_LONGVARBINARY",
-            DataType::Nclob => "DATA_TYPE_NCLOB",
-            DataType::Sqlxml => "DATA_TYPE_SQLXML",
-            DataType::RefCursor => "DATA_TYPE_REF_CURSOR",
-            DataType::TimeWithTimezone => "DATA_TYPE_TIME_WITH_TIMEZONE",
-            DataType::TimestampWithTimezone => "DATA_TYPE_TIMESTAMP_WITH_TIMEZONE",
+            Self::Unspecified => "DATA_TYPE_UNSPECIFIED",
+            Self::Int => "DATA_TYPE_INT",
+            Self::Smallint => "DATA_TYPE_SMALLINT",
+            Self::Double => "DATA_TYPE_DOUBLE",
+            Self::Date => "DATA_TYPE_DATE",
+            Self::Datetime => "DATA_TYPE_DATETIME",
+            Self::Time => "DATA_TYPE_TIME",
+            Self::String => "DATA_TYPE_STRING",
+            Self::Long => "DATA_TYPE_LONG",
+            Self::Boolean => "DATA_TYPE_BOOLEAN",
+            Self::Decimal => "DATA_TYPE_DECIMAL",
+            Self::Uuid => "DATA_TYPE_UUID",
+            Self::Blob => "DATA_TYPE_BLOB",
+            Self::Bit => "DATA_TYPE_BIT",
+            Self::Tinyint => "DATA_TYPE_TINYINT",
+            Self::Integer => "DATA_TYPE_INTEGER",
+            Self::Bigint => "DATA_TYPE_BIGINT",
+            Self::Float => "DATA_TYPE_FLOAT",
+            Self::Real => "DATA_TYPE_REAL",
+            Self::Numeric => "DATA_TYPE_NUMERIC",
+            Self::Char => "DATA_TYPE_CHAR",
+            Self::Varchar => "DATA_TYPE_VARCHAR",
+            Self::Longvarchar => "DATA_TYPE_LONGVARCHAR",
+            Self::Timestamp => "DATA_TYPE_TIMESTAMP",
+            Self::Nchar => "DATA_TYPE_NCHAR",
+            Self::Nvarchar => "DATA_TYPE_NVARCHAR",
+            Self::Longnvarchar => "DATA_TYPE_LONGNVARCHAR",
+            Self::Null => "DATA_TYPE_NULL",
+            Self::Other => "DATA_TYPE_OTHER",
+            Self::JavaObject => "DATA_TYPE_JAVA_OBJECT",
+            Self::Distinct => "DATA_TYPE_DISTINCT",
+            Self::Struct => "DATA_TYPE_STRUCT",
+            Self::Array => "DATA_TYPE_ARRAY",
+            Self::Clob => "DATA_TYPE_CLOB",
+            Self::Ref => "DATA_TYPE_REF",
+            Self::Datalink => "DATA_TYPE_DATALINK",
+            Self::Rowid => "DATA_TYPE_ROWID",
+            Self::Binary => "DATA_TYPE_BINARY",
+            Self::Varbinary => "DATA_TYPE_VARBINARY",
+            Self::Longvarbinary => "DATA_TYPE_LONGVARBINARY",
+            Self::Nclob => "DATA_TYPE_NCLOB",
+            Self::Sqlxml => "DATA_TYPE_SQLXML",
+            Self::RefCursor => "DATA_TYPE_REF_CURSOR",
+            Self::TimeWithTimezone => "DATA_TYPE_TIME_WITH_TIMEZONE",
+            Self::TimestampWithTimezone => "DATA_TYPE_TIMESTAMP_WITH_TIMEZONE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1526,9 +1526,9 @@ impl ConnectionView {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ConnectionView::Unspecified => "CONNECTION_VIEW_UNSPECIFIED",
-            ConnectionView::Basic => "BASIC",
-            ConnectionView::Full => "FULL",
+            Self::Unspecified => "CONNECTION_VIEW_UNSPECIFIED",
+            Self::Basic => "BASIC",
+            Self::Full => "FULL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1819,8 +1819,8 @@ pub mod extraction_rule {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SourceType::Unspecified => "SOURCE_TYPE_UNSPECIFIED",
-                SourceType::ConfigVariable => "CONFIG_VARIABLE",
+                Self::Unspecified => "SOURCE_TYPE_UNSPECIFIED",
+                Self::ConfigVariable => "CONFIG_VARIABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1851,9 +1851,9 @@ impl ConnectorVersionView {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ConnectorVersionView::Unspecified => "CONNECTOR_VERSION_VIEW_UNSPECIFIED",
-            ConnectorVersionView::Basic => "CONNECTOR_VERSION_VIEW_BASIC",
-            ConnectorVersionView::Full => "CONNECTOR_VERSION_VIEW_FULL",
+            Self::Unspecified => "CONNECTOR_VERSION_VIEW_UNSPECIFIED",
+            Self::Basic => "CONNECTOR_VERSION_VIEW_BASIC",
+            Self::Full => "CONNECTOR_VERSION_VIEW_FULL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2034,13 +2034,13 @@ pub mod runtime_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Inactive => "INACTIVE",
-                State::Activating => "ACTIVATING",
-                State::Active => "ACTIVE",
-                State::Creating => "CREATING",
-                State::Deleting => "DELETING",
-                State::Updating => "UPDATING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Inactive => "INACTIVE",
+                Self::Activating => "ACTIVATING",
+                Self::Active => "ACTIVE",
+                Self::Creating => "CREATING",
+                Self::Deleting => "DELETING",
+                Self::Updating => "UPDATING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2081,7 +2081,13 @@ pub struct Settings {
 }
 /// Generated client implementations.
 pub mod connectors_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Connectors is the interface for managing Connectors.
@@ -2177,8 +2183,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2205,8 +2210,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2236,8 +2240,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2267,8 +2270,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2298,8 +2300,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2329,8 +2330,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2357,8 +2357,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2388,8 +2387,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2416,8 +2414,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2447,8 +2444,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2478,8 +2474,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2510,8 +2505,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2543,8 +2537,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2574,8 +2567,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2605,8 +2597,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2634,8 +2625,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2663,8 +2653,7 @@ pub mod connectors_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

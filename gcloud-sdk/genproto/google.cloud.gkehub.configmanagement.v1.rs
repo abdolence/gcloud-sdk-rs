@@ -83,9 +83,9 @@ pub mod membership_spec {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Management::Unspecified => "MANAGEMENT_UNSPECIFIED",
-                Management::Automatic => "MANAGEMENT_AUTOMATIC",
-                Management::Manual => "MANAGEMENT_MANUAL",
+                Self::Unspecified => "MANAGEMENT_UNSPECIFIED",
+                Self::Automatic => "MANAGEMENT_AUTOMATIC",
+                Self::Manual => "MANAGEMENT_MANUAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -340,11 +340,11 @@ pub mod config_sync_state {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CrdState::Unspecified => "CRD_STATE_UNSPECIFIED",
-                CrdState::NotInstalled => "NOT_INSTALLED",
-                CrdState::Installed => "INSTALLED",
-                CrdState::Terminating => "TERMINATING",
-                CrdState::Installing => "INSTALLING",
+                Self::Unspecified => "CRD_STATE_UNSPECIFIED",
+                Self::NotInstalled => "NOT_INSTALLED",
+                Self::Installed => "INSTALLED",
+                Self::Terminating => "TERMINATING",
+                Self::Installing => "INSTALLING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -390,11 +390,11 @@ pub mod config_sync_state {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::ConfigSyncNotInstalled => "CONFIG_SYNC_NOT_INSTALLED",
-                State::ConfigSyncInstalled => "CONFIG_SYNC_INSTALLED",
-                State::ConfigSyncError => "CONFIG_SYNC_ERROR",
-                State::ConfigSyncPending => "CONFIG_SYNC_PENDING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::ConfigSyncNotInstalled => "CONFIG_SYNC_NOT_INSTALLED",
+                Self::ConfigSyncInstalled => "CONFIG_SYNC_INSTALLED",
+                Self::ConfigSyncError => "CONFIG_SYNC_ERROR",
+                Self::ConfigSyncPending => "CONFIG_SYNC_PENDING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -537,14 +537,14 @@ pub mod sync_state {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SyncCode::Unspecified => "SYNC_CODE_UNSPECIFIED",
-                SyncCode::Synced => "SYNCED",
-                SyncCode::Pending => "PENDING",
-                SyncCode::Error => "ERROR",
-                SyncCode::NotConfigured => "NOT_CONFIGURED",
-                SyncCode::NotInstalled => "NOT_INSTALLED",
-                SyncCode::Unauthorized => "UNAUTHORIZED",
-                SyncCode::Unreachable => "UNREACHABLE",
+                Self::Unspecified => "SYNC_CODE_UNSPECIFIED",
+                Self::Synced => "SYNCED",
+                Self::Pending => "PENDING",
+                Self::Error => "ERROR",
+                Self::NotConfigured => "NOT_CONFIGURED",
+                Self::NotInstalled => "NOT_INSTALLED",
+                Self::Unauthorized => "UNAUTHORIZED",
+                Self::Unreachable => "UNREACHABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -655,11 +655,11 @@ impl DeploymentState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DeploymentState::Unspecified => "DEPLOYMENT_STATE_UNSPECIFIED",
-            DeploymentState::NotInstalled => "NOT_INSTALLED",
-            DeploymentState::Installed => "INSTALLED",
-            DeploymentState::Error => "ERROR",
-            DeploymentState::Pending => "PENDING",
+            Self::Unspecified => "DEPLOYMENT_STATE_UNSPECIFIED",
+            Self::NotInstalled => "NOT_INSTALLED",
+            Self::Installed => "INSTALLED",
+            Self::Error => "ERROR",
+            Self::Pending => "PENDING",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.

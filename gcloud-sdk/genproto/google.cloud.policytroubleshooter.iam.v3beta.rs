@@ -70,11 +70,11 @@ pub mod troubleshoot_iam_policy_response {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OverallAccessState::Unspecified => "OVERALL_ACCESS_STATE_UNSPECIFIED",
-                OverallAccessState::CanAccess => "CAN_ACCESS",
-                OverallAccessState::CannotAccess => "CANNOT_ACCESS",
-                OverallAccessState::UnknownInfo => "UNKNOWN_INFO",
-                OverallAccessState::UnknownConditional => "UNKNOWN_CONDITIONAL",
+                Self::Unspecified => "OVERALL_ACCESS_STATE_UNSPECIFIED",
+                Self::CanAccess => "CAN_ACCESS",
+                Self::CannotAccess => "CANNOT_ACCESS",
+                Self::UnknownInfo => "UNKNOWN_INFO",
+                Self::UnknownConditional => "UNKNOWN_CONDITIONAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -705,13 +705,11 @@ impl AllowAccessState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AllowAccessState::Unspecified => "ALLOW_ACCESS_STATE_UNSPECIFIED",
-            AllowAccessState::Granted => "ALLOW_ACCESS_STATE_GRANTED",
-            AllowAccessState::NotGranted => "ALLOW_ACCESS_STATE_NOT_GRANTED",
-            AllowAccessState::UnknownConditional => {
-                "ALLOW_ACCESS_STATE_UNKNOWN_CONDITIONAL"
-            }
-            AllowAccessState::UnknownInfo => "ALLOW_ACCESS_STATE_UNKNOWN_INFO",
+            Self::Unspecified => "ALLOW_ACCESS_STATE_UNSPECIFIED",
+            Self::Granted => "ALLOW_ACCESS_STATE_GRANTED",
+            Self::NotGranted => "ALLOW_ACCESS_STATE_NOT_GRANTED",
+            Self::UnknownConditional => "ALLOW_ACCESS_STATE_UNKNOWN_CONDITIONAL",
+            Self::UnknownInfo => "ALLOW_ACCESS_STATE_UNKNOWN_INFO",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -752,13 +750,11 @@ impl DenyAccessState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DenyAccessState::Unspecified => "DENY_ACCESS_STATE_UNSPECIFIED",
-            DenyAccessState::Denied => "DENY_ACCESS_STATE_DENIED",
-            DenyAccessState::NotDenied => "DENY_ACCESS_STATE_NOT_DENIED",
-            DenyAccessState::UnknownConditional => {
-                "DENY_ACCESS_STATE_UNKNOWN_CONDITIONAL"
-            }
-            DenyAccessState::UnknownInfo => "DENY_ACCESS_STATE_UNKNOWN_INFO",
+            Self::Unspecified => "DENY_ACCESS_STATE_UNSPECIFIED",
+            Self::Denied => "DENY_ACCESS_STATE_DENIED",
+            Self::NotDenied => "DENY_ACCESS_STATE_NOT_DENIED",
+            Self::UnknownConditional => "DENY_ACCESS_STATE_UNKNOWN_CONDITIONAL",
+            Self::UnknownInfo => "DENY_ACCESS_STATE_UNKNOWN_INFO",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -793,18 +789,10 @@ impl RolePermissionInclusionState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            RolePermissionInclusionState::Unspecified => {
-                "ROLE_PERMISSION_INCLUSION_STATE_UNSPECIFIED"
-            }
-            RolePermissionInclusionState::RolePermissionIncluded => {
-                "ROLE_PERMISSION_INCLUDED"
-            }
-            RolePermissionInclusionState::RolePermissionNotIncluded => {
-                "ROLE_PERMISSION_NOT_INCLUDED"
-            }
-            RolePermissionInclusionState::RolePermissionUnknownInfo => {
-                "ROLE_PERMISSION_UNKNOWN_INFO"
-            }
+            Self::Unspecified => "ROLE_PERMISSION_INCLUSION_STATE_UNSPECIFIED",
+            Self::RolePermissionIncluded => "ROLE_PERMISSION_INCLUDED",
+            Self::RolePermissionNotIncluded => "ROLE_PERMISSION_NOT_INCLUDED",
+            Self::RolePermissionUnknownInfo => "ROLE_PERMISSION_UNKNOWN_INFO",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -836,15 +824,9 @@ impl PermissionPatternMatchingState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            PermissionPatternMatchingState::Unspecified => {
-                "PERMISSION_PATTERN_MATCHING_STATE_UNSPECIFIED"
-            }
-            PermissionPatternMatchingState::PermissionPatternMatched => {
-                "PERMISSION_PATTERN_MATCHED"
-            }
-            PermissionPatternMatchingState::PermissionPatternNotMatched => {
-                "PERMISSION_PATTERN_NOT_MATCHED"
-            }
+            Self::Unspecified => "PERMISSION_PATTERN_MATCHING_STATE_UNSPECIFIED",
+            Self::PermissionPatternMatched => "PERMISSION_PATTERN_MATCHED",
+            Self::PermissionPatternNotMatched => "PERMISSION_PATTERN_NOT_MATCHED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -888,15 +870,11 @@ impl MembershipMatchingState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            MembershipMatchingState::Unspecified => {
-                "MEMBERSHIP_MATCHING_STATE_UNSPECIFIED"
-            }
-            MembershipMatchingState::MembershipMatched => "MEMBERSHIP_MATCHED",
-            MembershipMatchingState::MembershipNotMatched => "MEMBERSHIP_NOT_MATCHED",
-            MembershipMatchingState::MembershipUnknownInfo => "MEMBERSHIP_UNKNOWN_INFO",
-            MembershipMatchingState::MembershipUnknownUnsupported => {
-                "MEMBERSHIP_UNKNOWN_UNSUPPORTED"
-            }
+            Self::Unspecified => "MEMBERSHIP_MATCHING_STATE_UNSPECIFIED",
+            Self::MembershipMatched => "MEMBERSHIP_MATCHED",
+            Self::MembershipNotMatched => "MEMBERSHIP_NOT_MATCHED",
+            Self::MembershipUnknownInfo => "MEMBERSHIP_UNKNOWN_INFO",
+            Self::MembershipUnknownUnsupported => "MEMBERSHIP_UNKNOWN_UNSUPPORTED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -932,9 +910,9 @@ impl HeuristicRelevance {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            HeuristicRelevance::Unspecified => "HEURISTIC_RELEVANCE_UNSPECIFIED",
-            HeuristicRelevance::Normal => "HEURISTIC_RELEVANCE_NORMAL",
-            HeuristicRelevance::High => "HEURISTIC_RELEVANCE_HIGH",
+            Self::Unspecified => "HEURISTIC_RELEVANCE_UNSPECIFIED",
+            Self::Normal => "HEURISTIC_RELEVANCE_NORMAL",
+            Self::High => "HEURISTIC_RELEVANCE_HIGH",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -949,7 +927,13 @@ impl HeuristicRelevance {
 }
 /// Generated client implementations.
 pub mod policy_troubleshooter_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// IAM Policy Troubleshooter service.
@@ -1049,8 +1033,7 @@ pub mod policy_troubleshooter_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

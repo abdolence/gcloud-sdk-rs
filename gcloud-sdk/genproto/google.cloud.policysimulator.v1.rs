@@ -189,12 +189,10 @@ pub mod binding_explanation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RolePermission::Unspecified => "ROLE_PERMISSION_UNSPECIFIED",
-                RolePermission::Included => "ROLE_PERMISSION_INCLUDED",
-                RolePermission::NotIncluded => "ROLE_PERMISSION_NOT_INCLUDED",
-                RolePermission::UnknownInfoDenied => {
-                    "ROLE_PERMISSION_UNKNOWN_INFO_DENIED"
-                }
+                Self::Unspecified => "ROLE_PERMISSION_UNSPECIFIED",
+                Self::Included => "ROLE_PERMISSION_INCLUDED",
+                Self::NotIncluded => "ROLE_PERMISSION_NOT_INCLUDED",
+                Self::UnknownInfoDenied => "ROLE_PERMISSION_UNKNOWN_INFO_DENIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -249,11 +247,11 @@ pub mod binding_explanation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Membership::Unspecified => "MEMBERSHIP_UNSPECIFIED",
-                Membership::Included => "MEMBERSHIP_INCLUDED",
-                Membership::NotIncluded => "MEMBERSHIP_NOT_INCLUDED",
-                Membership::UnknownInfoDenied => "MEMBERSHIP_UNKNOWN_INFO_DENIED",
-                Membership::UnknownUnsupported => "MEMBERSHIP_UNKNOWN_UNSUPPORTED",
+                Self::Unspecified => "MEMBERSHIP_UNSPECIFIED",
+                Self::Included => "MEMBERSHIP_INCLUDED",
+                Self::NotIncluded => "MEMBERSHIP_NOT_INCLUDED",
+                Self::UnknownInfoDenied => "MEMBERSHIP_UNKNOWN_INFO_DENIED",
+                Self::UnknownUnsupported => "MEMBERSHIP_UNKNOWN_UNSUPPORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -294,11 +292,11 @@ impl AccessState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AccessState::Unspecified => "ACCESS_STATE_UNSPECIFIED",
-            AccessState::Granted => "GRANTED",
-            AccessState::NotGranted => "NOT_GRANTED",
-            AccessState::UnknownConditional => "UNKNOWN_CONDITIONAL",
-            AccessState::UnknownInfoDenied => "UNKNOWN_INFO_DENIED",
+            Self::Unspecified => "ACCESS_STATE_UNSPECIFIED",
+            Self::Granted => "GRANTED",
+            Self::NotGranted => "NOT_GRANTED",
+            Self::UnknownConditional => "UNKNOWN_CONDITIONAL",
+            Self::UnknownInfoDenied => "UNKNOWN_INFO_DENIED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -335,9 +333,9 @@ impl HeuristicRelevance {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            HeuristicRelevance::Unspecified => "HEURISTIC_RELEVANCE_UNSPECIFIED",
-            HeuristicRelevance::Normal => "NORMAL",
-            HeuristicRelevance::High => "HIGH",
+            Self::Unspecified => "HEURISTIC_RELEVANCE_UNSPECIFIED",
+            Self::Normal => "NORMAL",
+            Self::High => "HIGH",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -436,11 +434,11 @@ pub mod replay {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Pending => "PENDING",
-                State::Running => "RUNNING",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Running => "RUNNING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -650,8 +648,8 @@ pub mod replay_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LogSource::Unspecified => "LOG_SOURCE_UNSPECIFIED",
-                LogSource::RecentAccesses => "RECENT_ACCESSES",
+                Self::Unspecified => "LOG_SOURCE_UNSPECIFIED",
+                Self::RecentAccesses => "RECENT_ACCESSES",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -761,13 +759,13 @@ pub mod access_state_diff {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AccessChangeType::Unspecified => "ACCESS_CHANGE_TYPE_UNSPECIFIED",
-                AccessChangeType::NoChange => "NO_CHANGE",
-                AccessChangeType::UnknownChange => "UNKNOWN_CHANGE",
-                AccessChangeType::AccessRevoked => "ACCESS_REVOKED",
-                AccessChangeType::AccessGained => "ACCESS_GAINED",
-                AccessChangeType::AccessMaybeRevoked => "ACCESS_MAYBE_REVOKED",
-                AccessChangeType::AccessMaybeGained => "ACCESS_MAYBE_GAINED",
+                Self::Unspecified => "ACCESS_CHANGE_TYPE_UNSPECIFIED",
+                Self::NoChange => "NO_CHANGE",
+                Self::UnknownChange => "UNKNOWN_CHANGE",
+                Self::AccessRevoked => "ACCESS_REVOKED",
+                Self::AccessGained => "ACCESS_GAINED",
+                Self::AccessMaybeRevoked => "ACCESS_MAYBE_REVOKED",
+                Self::AccessMaybeGained => "ACCESS_MAYBE_GAINED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -813,7 +811,13 @@ pub struct ExplainedAccess {
 }
 /// Generated client implementations.
 pub mod simulator_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Policy Simulator API service.
@@ -918,8 +922,7 @@ pub mod simulator_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -950,8 +953,7 @@ pub mod simulator_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -982,8 +984,7 @@ pub mod simulator_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

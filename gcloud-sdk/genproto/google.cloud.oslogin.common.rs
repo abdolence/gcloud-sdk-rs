@@ -74,9 +74,9 @@ impl OperatingSystemType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            OperatingSystemType::Unspecified => "OPERATING_SYSTEM_TYPE_UNSPECIFIED",
-            OperatingSystemType::Linux => "LINUX",
-            OperatingSystemType::Windows => "WINDOWS",
+            Self::Unspecified => "OPERATING_SYSTEM_TYPE_UNSPECIFIED",
+            Self::Linux => "LINUX",
+            Self::Windows => "WINDOWS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.

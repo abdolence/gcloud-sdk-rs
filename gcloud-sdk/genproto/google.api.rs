@@ -62,15 +62,15 @@ impl FieldBehavior {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            FieldBehavior::Unspecified => "FIELD_BEHAVIOR_UNSPECIFIED",
-            FieldBehavior::Optional => "OPTIONAL",
-            FieldBehavior::Required => "REQUIRED",
-            FieldBehavior::OutputOnly => "OUTPUT_ONLY",
-            FieldBehavior::InputOnly => "INPUT_ONLY",
-            FieldBehavior::Immutable => "IMMUTABLE",
-            FieldBehavior::UnorderedList => "UNORDERED_LIST",
-            FieldBehavior::NonEmptyDefault => "NON_EMPTY_DEFAULT",
-            FieldBehavior::Identifier => "IDENTIFIER",
+            Self::Unspecified => "FIELD_BEHAVIOR_UNSPECIFIED",
+            Self::Optional => "OPTIONAL",
+            Self::Required => "REQUIRED",
+            Self::OutputOnly => "OUTPUT_ONLY",
+            Self::InputOnly => "INPUT_ONLY",
+            Self::Immutable => "IMMUTABLE",
+            Self::UnorderedList => "UNORDERED_LIST",
+            Self::NonEmptyDefault => "NON_EMPTY_DEFAULT",
+            Self::Identifier => "IDENTIFIER",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -252,9 +252,9 @@ pub mod resource_descriptor {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                History::Unspecified => "HISTORY_UNSPECIFIED",
-                History::OriginallySinglePattern => "ORIGINALLY_SINGLE_PATTERN",
-                History::FutureMultiPattern => "FUTURE_MULTI_PATTERN",
+                Self::Unspecified => "HISTORY_UNSPECIFIED",
+                Self::OriginallySinglePattern => "ORIGINALLY_SINGLE_PATTERN",
+                Self::FutureMultiPattern => "FUTURE_MULTI_PATTERN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -300,8 +300,8 @@ pub mod resource_descriptor {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Style::Unspecified => "STYLE_UNSPECIFIED",
-                Style::DeclarativeFriendly => "DECLARATIVE_FRIENDLY",
+                Self::Unspecified => "STYLE_UNSPECIFIED",
+                Self::DeclarativeFriendly => "DECLARATIVE_FRIENDLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -763,14 +763,14 @@ impl LaunchStage {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            LaunchStage::Unspecified => "LAUNCH_STAGE_UNSPECIFIED",
-            LaunchStage::Unimplemented => "UNIMPLEMENTED",
-            LaunchStage::Prelaunch => "PRELAUNCH",
-            LaunchStage::EarlyAccess => "EARLY_ACCESS",
-            LaunchStage::Alpha => "ALPHA",
-            LaunchStage::Beta => "BETA",
-            LaunchStage::Ga => "GA",
-            LaunchStage::Deprecated => "DEPRECATED",
+            Self::Unspecified => "LAUNCH_STAGE_UNSPECIFIED",
+            Self::Unimplemented => "UNIMPLEMENTED",
+            Self::Prelaunch => "PRELAUNCH",
+            Self::EarlyAccess => "EARLY_ACCESS",
+            Self::Alpha => "ALPHA",
+            Self::Beta => "BETA",
+            Self::Ga => "GA",
+            Self::Deprecated => "DEPRECATED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1137,16 +1137,14 @@ impl ClientLibraryOrganization {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ClientLibraryOrganization::Unspecified => {
-                "CLIENT_LIBRARY_ORGANIZATION_UNSPECIFIED"
-            }
-            ClientLibraryOrganization::Cloud => "CLOUD",
-            ClientLibraryOrganization::Ads => "ADS",
-            ClientLibraryOrganization::Photos => "PHOTOS",
-            ClientLibraryOrganization::StreetView => "STREET_VIEW",
-            ClientLibraryOrganization::Shopping => "SHOPPING",
-            ClientLibraryOrganization::Geo => "GEO",
-            ClientLibraryOrganization::GenerativeAi => "GENERATIVE_AI",
+            Self::Unspecified => "CLIENT_LIBRARY_ORGANIZATION_UNSPECIFIED",
+            Self::Cloud => "CLOUD",
+            Self::Ads => "ADS",
+            Self::Photos => "PHOTOS",
+            Self::StreetView => "STREET_VIEW",
+            Self::Shopping => "SHOPPING",
+            Self::Geo => "GEO",
+            Self::GenerativeAi => "GENERATIVE_AI",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1184,11 +1182,9 @@ impl ClientLibraryDestination {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ClientLibraryDestination::Unspecified => {
-                "CLIENT_LIBRARY_DESTINATION_UNSPECIFIED"
-            }
-            ClientLibraryDestination::Github => "GITHUB",
-            ClientLibraryDestination::PackageManager => "PACKAGE_MANAGER",
+            Self::Unspecified => "CLIENT_LIBRARY_DESTINATION_UNSPECIFIED",
+            Self::Github => "GITHUB",
+            Self::PackageManager => "PACKAGE_MANAGER",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1602,9 +1598,9 @@ pub mod backend_rule {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PathTranslation::Unspecified => "PATH_TRANSLATION_UNSPECIFIED",
-                PathTranslation::ConstantAddress => "CONSTANT_ADDRESS",
-                PathTranslation::AppendPathToAddress => "APPEND_PATH_TO_ADDRESS",
+                Self::Unspecified => "PATH_TRANSLATION_UNSPECIFIED",
+                Self::ConstantAddress => "CONSTANT_ADDRESS",
+                Self::AppendPathToAddress => "APPEND_PATH_TO_ADDRESS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1773,10 +1769,10 @@ impl ChangeType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ChangeType::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
-            ChangeType::Added => "ADDED",
-            ChangeType::Removed => "REMOVED",
-            ChangeType::Modified => "MODIFIED",
+            Self::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
+            Self::Added => "ADDED",
+            Self::Removed => "REMOVED",
+            Self::Modified => "MODIFIED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1868,11 +1864,11 @@ pub mod property {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PropertyType::Unspecified => "UNSPECIFIED",
-                PropertyType::Int64 => "INT64",
-                PropertyType::Bool => "BOOL",
-                PropertyType::String => "STRING",
-                PropertyType::Double => "DOUBLE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Int64 => "INT64",
+                Self::Bool => "BOOL",
+                Self::String => "STRING",
+                Self::Double => "DOUBLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2972,41 +2968,39 @@ impl ErrorReason {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ErrorReason::Unspecified => "ERROR_REASON_UNSPECIFIED",
-            ErrorReason::ServiceDisabled => "SERVICE_DISABLED",
-            ErrorReason::BillingDisabled => "BILLING_DISABLED",
-            ErrorReason::ApiKeyInvalid => "API_KEY_INVALID",
-            ErrorReason::ApiKeyServiceBlocked => "API_KEY_SERVICE_BLOCKED",
-            ErrorReason::ApiKeyHttpReferrerBlocked => "API_KEY_HTTP_REFERRER_BLOCKED",
-            ErrorReason::ApiKeyIpAddressBlocked => "API_KEY_IP_ADDRESS_BLOCKED",
-            ErrorReason::ApiKeyAndroidAppBlocked => "API_KEY_ANDROID_APP_BLOCKED",
-            ErrorReason::ApiKeyIosAppBlocked => "API_KEY_IOS_APP_BLOCKED",
-            ErrorReason::RateLimitExceeded => "RATE_LIMIT_EXCEEDED",
-            ErrorReason::ResourceQuotaExceeded => "RESOURCE_QUOTA_EXCEEDED",
-            ErrorReason::LocationTaxPolicyViolated => "LOCATION_TAX_POLICY_VIOLATED",
-            ErrorReason::UserProjectDenied => "USER_PROJECT_DENIED",
-            ErrorReason::ConsumerSuspended => "CONSUMER_SUSPENDED",
-            ErrorReason::ConsumerInvalid => "CONSUMER_INVALID",
-            ErrorReason::SecurityPolicyViolated => "SECURITY_POLICY_VIOLATED",
-            ErrorReason::AccessTokenExpired => "ACCESS_TOKEN_EXPIRED",
-            ErrorReason::AccessTokenScopeInsufficient => {
-                "ACCESS_TOKEN_SCOPE_INSUFFICIENT"
-            }
-            ErrorReason::AccountStateInvalid => "ACCOUNT_STATE_INVALID",
-            ErrorReason::AccessTokenTypeUnsupported => "ACCESS_TOKEN_TYPE_UNSUPPORTED",
-            ErrorReason::CredentialsMissing => "CREDENTIALS_MISSING",
-            ErrorReason::ResourceProjectInvalid => "RESOURCE_PROJECT_INVALID",
-            ErrorReason::SessionCookieInvalid => "SESSION_COOKIE_INVALID",
-            ErrorReason::UserBlockedByAdmin => "USER_BLOCKED_BY_ADMIN",
-            ErrorReason::ResourceUsageRestrictionViolated => {
+            Self::Unspecified => "ERROR_REASON_UNSPECIFIED",
+            Self::ServiceDisabled => "SERVICE_DISABLED",
+            Self::BillingDisabled => "BILLING_DISABLED",
+            Self::ApiKeyInvalid => "API_KEY_INVALID",
+            Self::ApiKeyServiceBlocked => "API_KEY_SERVICE_BLOCKED",
+            Self::ApiKeyHttpReferrerBlocked => "API_KEY_HTTP_REFERRER_BLOCKED",
+            Self::ApiKeyIpAddressBlocked => "API_KEY_IP_ADDRESS_BLOCKED",
+            Self::ApiKeyAndroidAppBlocked => "API_KEY_ANDROID_APP_BLOCKED",
+            Self::ApiKeyIosAppBlocked => "API_KEY_IOS_APP_BLOCKED",
+            Self::RateLimitExceeded => "RATE_LIMIT_EXCEEDED",
+            Self::ResourceQuotaExceeded => "RESOURCE_QUOTA_EXCEEDED",
+            Self::LocationTaxPolicyViolated => "LOCATION_TAX_POLICY_VIOLATED",
+            Self::UserProjectDenied => "USER_PROJECT_DENIED",
+            Self::ConsumerSuspended => "CONSUMER_SUSPENDED",
+            Self::ConsumerInvalid => "CONSUMER_INVALID",
+            Self::SecurityPolicyViolated => "SECURITY_POLICY_VIOLATED",
+            Self::AccessTokenExpired => "ACCESS_TOKEN_EXPIRED",
+            Self::AccessTokenScopeInsufficient => "ACCESS_TOKEN_SCOPE_INSUFFICIENT",
+            Self::AccountStateInvalid => "ACCOUNT_STATE_INVALID",
+            Self::AccessTokenTypeUnsupported => "ACCESS_TOKEN_TYPE_UNSUPPORTED",
+            Self::CredentialsMissing => "CREDENTIALS_MISSING",
+            Self::ResourceProjectInvalid => "RESOURCE_PROJECT_INVALID",
+            Self::SessionCookieInvalid => "SESSION_COOKIE_INVALID",
+            Self::UserBlockedByAdmin => "USER_BLOCKED_BY_ADMIN",
+            Self::ResourceUsageRestrictionViolated => {
                 "RESOURCE_USAGE_RESTRICTION_VIOLATED"
             }
-            ErrorReason::SystemParameterUnsupported => "SYSTEM_PARAMETER_UNSUPPORTED",
-            ErrorReason::OrgRestrictionViolation => "ORG_RESTRICTION_VIOLATION",
-            ErrorReason::OrgRestrictionHeaderInvalid => "ORG_RESTRICTION_HEADER_INVALID",
-            ErrorReason::ServiceNotVisible => "SERVICE_NOT_VISIBLE",
-            ErrorReason::GcpSuspended => "GCP_SUSPENDED",
-            ErrorReason::LocationPolicyViolated => "LOCATION_POLICY_VIOLATED",
+            Self::SystemParameterUnsupported => "SYSTEM_PARAMETER_UNSUPPORTED",
+            Self::OrgRestrictionViolation => "ORG_RESTRICTION_VIOLATION",
+            Self::OrgRestrictionHeaderInvalid => "ORG_RESTRICTION_HEADER_INVALID",
+            Self::ServiceNotVisible => "SERVICE_NOT_VISIBLE",
+            Self::GcpSuspended => "GCP_SUSPENDED",
+            Self::LocationPolicyViolated => "LOCATION_POLICY_VIOLATED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3112,11 +3106,11 @@ pub mod field_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Format::Unspecified => "FORMAT_UNSPECIFIED",
-                Format::Uuid4 => "UUID4",
-                Format::Ipv4 => "IPV4",
-                Format::Ipv6 => "IPV6",
-                Format::Ipv4OrIpv6 => "IPV4_OR_IPV6",
+                Self::Unspecified => "FORMAT_UNSPECIFIED",
+                Self::Uuid4 => "UUID4",
+                Self::Ipv4 => "IPV4",
+                Self::Ipv6 => "IPV6",
+                Self::Ipv4OrIpv6 => "IPV4_OR_IPV6",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3246,9 +3240,9 @@ pub mod label_descriptor {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ValueType::String => "STRING",
-                ValueType::Bool => "BOOL",
-                ValueType::Int64 => "INT64",
+                Self::String => "STRING",
+                Self::Bool => "BOOL",
+                Self::Int64 => "INT64",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3579,10 +3573,10 @@ pub mod metric_descriptor {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MetricKind::Unspecified => "METRIC_KIND_UNSPECIFIED",
-                MetricKind::Gauge => "GAUGE",
-                MetricKind::Delta => "DELTA",
-                MetricKind::Cumulative => "CUMULATIVE",
+                Self::Unspecified => "METRIC_KIND_UNSPECIFIED",
+                Self::Gauge => "GAUGE",
+                Self::Delta => "DELTA",
+                Self::Cumulative => "CUMULATIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3634,13 +3628,13 @@ pub mod metric_descriptor {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ValueType::Unspecified => "VALUE_TYPE_UNSPECIFIED",
-                ValueType::Bool => "BOOL",
-                ValueType::Int64 => "INT64",
-                ValueType::Double => "DOUBLE",
-                ValueType::String => "STRING",
-                ValueType::Distribution => "DISTRIBUTION",
-                ValueType::Money => "MONEY",
+                Self::Unspecified => "VALUE_TYPE_UNSPECIFIED",
+                Self::Bool => "BOOL",
+                Self::Int64 => "INT64",
+                Self::Double => "DOUBLE",
+                Self::String => "STRING",
+                Self::Distribution => "DISTRIBUTION",
+                Self::Money => "MONEY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

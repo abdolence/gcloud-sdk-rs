@@ -454,9 +454,9 @@ impl JobType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            JobType::Unknown => "JOB_TYPE_UNKNOWN",
-            JobType::Batch => "JOB_TYPE_BATCH",
-            JobType::Streaming => "JOB_TYPE_STREAMING",
+            Self::Unknown => "JOB_TYPE_UNKNOWN",
+            Self::Batch => "JOB_TYPE_BATCH",
+            Self::Streaming => "JOB_TYPE_STREAMING",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -487,9 +487,9 @@ impl FlexResourceSchedulingGoal {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            FlexResourceSchedulingGoal::FlexrsUnspecified => "FLEXRS_UNSPECIFIED",
-            FlexResourceSchedulingGoal::FlexrsSpeedOptimized => "FLEXRS_SPEED_OPTIMIZED",
-            FlexResourceSchedulingGoal::FlexrsCostOptimized => "FLEXRS_COST_OPTIMIZED",
+            Self::FlexrsUnspecified => "FLEXRS_UNSPECIFIED",
+            Self::FlexrsSpeedOptimized => "FLEXRS_SPEED_OPTIMIZED",
+            Self::FlexrsCostOptimized => "FLEXRS_COST_OPTIMIZED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -525,10 +525,10 @@ impl TeardownPolicy {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TeardownPolicy::Unknown => "TEARDOWN_POLICY_UNKNOWN",
-            TeardownPolicy::TeardownAlways => "TEARDOWN_ALWAYS",
-            TeardownPolicy::TeardownOnSuccess => "TEARDOWN_ON_SUCCESS",
-            TeardownPolicy::TeardownNever => "TEARDOWN_NEVER",
+            Self::Unknown => "TEARDOWN_POLICY_UNKNOWN",
+            Self::TeardownAlways => "TEARDOWN_ALWAYS",
+            Self::TeardownOnSuccess => "TEARDOWN_ON_SUCCESS",
+            Self::TeardownNever => "TEARDOWN_NEVER",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -563,10 +563,10 @@ impl DefaultPackageSet {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DefaultPackageSet::Unknown => "DEFAULT_PACKAGE_SET_UNKNOWN",
-            DefaultPackageSet::None => "DEFAULT_PACKAGE_SET_NONE",
-            DefaultPackageSet::Java => "DEFAULT_PACKAGE_SET_JAVA",
-            DefaultPackageSet::Python => "DEFAULT_PACKAGE_SET_PYTHON",
+            Self::Unknown => "DEFAULT_PACKAGE_SET_UNKNOWN",
+            Self::None => "DEFAULT_PACKAGE_SET_NONE",
+            Self::Java => "DEFAULT_PACKAGE_SET_JAVA",
+            Self::Python => "DEFAULT_PACKAGE_SET_PYTHON",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -601,9 +601,9 @@ impl AutoscalingAlgorithm {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AutoscalingAlgorithm::Unknown => "AUTOSCALING_ALGORITHM_UNKNOWN",
-            AutoscalingAlgorithm::None => "AUTOSCALING_ALGORITHM_NONE",
-            AutoscalingAlgorithm::Basic => "AUTOSCALING_ALGORITHM_BASIC",
+            Self::Unknown => "AUTOSCALING_ALGORITHM_UNKNOWN",
+            Self::None => "AUTOSCALING_ALGORITHM_NONE",
+            Self::Basic => "AUTOSCALING_ALGORITHM_BASIC",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -634,9 +634,9 @@ impl WorkerIpAddressConfiguration {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            WorkerIpAddressConfiguration::WorkerIpUnspecified => "WORKER_IP_UNSPECIFIED",
-            WorkerIpAddressConfiguration::WorkerIpPublic => "WORKER_IP_PUBLIC",
-            WorkerIpAddressConfiguration::WorkerIpPrivate => "WORKER_IP_PRIVATE",
+            Self::WorkerIpUnspecified => "WORKER_IP_UNSPECIFIED",
+            Self::WorkerIpPublic => "WORKER_IP_PUBLIC",
+            Self::WorkerIpPrivate => "WORKER_IP_PRIVATE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -670,9 +670,9 @@ impl ShuffleMode {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ShuffleMode::Unspecified => "SHUFFLE_MODE_UNSPECIFIED",
-            ShuffleMode::VmBased => "VM_BASED",
-            ShuffleMode::ServiceBased => "SERVICE_BASED",
+            Self::Unspecified => "SHUFFLE_MODE_UNSPECIFIED",
+            Self::VmBased => "VM_BASED",
+            Self::ServiceBased => "SERVICE_BASED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -807,12 +807,12 @@ impl SnapshotState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SnapshotState::UnknownSnapshotState => "UNKNOWN_SNAPSHOT_STATE",
-            SnapshotState::Pending => "PENDING",
-            SnapshotState::Running => "RUNNING",
-            SnapshotState::Ready => "READY",
-            SnapshotState::Failed => "FAILED",
-            SnapshotState::Deleted => "DELETED",
+            Self::UnknownSnapshotState => "UNKNOWN_SNAPSHOT_STATE",
+            Self::Pending => "PENDING",
+            Self::Running => "RUNNING",
+            Self::Ready => "READY",
+            Self::Failed => "FAILED",
+            Self::Deleted => "DELETED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -830,7 +830,13 @@ impl SnapshotState {
 }
 /// Generated client implementations.
 pub mod snapshots_v1_beta3_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Provides methods to manage snapshots of Google Cloud Dataflow jobs.
@@ -923,8 +929,7 @@ pub mod snapshots_v1_beta3_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -954,8 +959,7 @@ pub mod snapshots_v1_beta3_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -985,8 +989,7 @@ pub mod snapshots_v1_beta3_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1286,11 +1289,11 @@ pub mod sdk_version {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SdkSupportStatus::Unknown => "UNKNOWN",
-                SdkSupportStatus::Supported => "SUPPORTED",
-                SdkSupportStatus::Stale => "STALE",
-                SdkSupportStatus::Deprecated => "DEPRECATED",
-                SdkSupportStatus::Unsupported => "UNSUPPORTED",
+                Self::Unknown => "UNKNOWN",
+                Self::Supported => "SUPPORTED",
+                Self::Stale => "STALE",
+                Self::Deprecated => "DEPRECATED",
+                Self::Unsupported => "UNSUPPORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1713,10 +1716,10 @@ pub mod list_jobs_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Filter::Unknown => "UNKNOWN",
-                Filter::All => "ALL",
-                Filter::Terminated => "TERMINATED",
-                Filter::Active => "ACTIVE",
+                Self::Unknown => "UNKNOWN",
+                Self::All => "ALL",
+                Self::Terminated => "TERMINATED",
+                Self::Active => "ACTIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1827,15 +1830,15 @@ impl KindType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            KindType::UnknownKind => "UNKNOWN_KIND",
-            KindType::ParDoKind => "PAR_DO_KIND",
-            KindType::GroupByKeyKind => "GROUP_BY_KEY_KIND",
-            KindType::FlattenKind => "FLATTEN_KIND",
-            KindType::ReadKind => "READ_KIND",
-            KindType::WriteKind => "WRITE_KIND",
-            KindType::ConstantKind => "CONSTANT_KIND",
-            KindType::SingletonKind => "SINGLETON_KIND",
-            KindType::ShuffleKind => "SHUFFLE_KIND",
+            Self::UnknownKind => "UNKNOWN_KIND",
+            Self::ParDoKind => "PAR_DO_KIND",
+            Self::GroupByKeyKind => "GROUP_BY_KEY_KIND",
+            Self::FlattenKind => "FLATTEN_KIND",
+            Self::ReadKind => "READ_KIND",
+            Self::WriteKind => "WRITE_KIND",
+            Self::ConstantKind => "CONSTANT_KIND",
+            Self::SingletonKind => "SINGLETON_KIND",
+            Self::ShuffleKind => "SHUFFLE_KIND",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1924,19 +1927,19 @@ impl JobState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            JobState::Unknown => "JOB_STATE_UNKNOWN",
-            JobState::Stopped => "JOB_STATE_STOPPED",
-            JobState::Running => "JOB_STATE_RUNNING",
-            JobState::Done => "JOB_STATE_DONE",
-            JobState::Failed => "JOB_STATE_FAILED",
-            JobState::Cancelled => "JOB_STATE_CANCELLED",
-            JobState::Updated => "JOB_STATE_UPDATED",
-            JobState::Draining => "JOB_STATE_DRAINING",
-            JobState::Drained => "JOB_STATE_DRAINED",
-            JobState::Pending => "JOB_STATE_PENDING",
-            JobState::Cancelling => "JOB_STATE_CANCELLING",
-            JobState::Queued => "JOB_STATE_QUEUED",
-            JobState::ResourceCleaningUp => "JOB_STATE_RESOURCE_CLEANING_UP",
+            Self::Unknown => "JOB_STATE_UNKNOWN",
+            Self::Stopped => "JOB_STATE_STOPPED",
+            Self::Running => "JOB_STATE_RUNNING",
+            Self::Done => "JOB_STATE_DONE",
+            Self::Failed => "JOB_STATE_FAILED",
+            Self::Cancelled => "JOB_STATE_CANCELLED",
+            Self::Updated => "JOB_STATE_UPDATED",
+            Self::Draining => "JOB_STATE_DRAINING",
+            Self::Drained => "JOB_STATE_DRAINED",
+            Self::Pending => "JOB_STATE_PENDING",
+            Self::Cancelling => "JOB_STATE_CANCELLING",
+            Self::Queued => "JOB_STATE_QUEUED",
+            Self::ResourceCleaningUp => "JOB_STATE_RESOURCE_CLEANING_UP",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1984,10 +1987,10 @@ impl JobView {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            JobView::Unknown => "JOB_VIEW_UNKNOWN",
-            JobView::Summary => "JOB_VIEW_SUMMARY",
-            JobView::All => "JOB_VIEW_ALL",
-            JobView::Description => "JOB_VIEW_DESCRIPTION",
+            Self::Unknown => "JOB_VIEW_UNKNOWN",
+            Self::Summary => "JOB_VIEW_SUMMARY",
+            Self::All => "JOB_VIEW_ALL",
+            Self::Description => "JOB_VIEW_DESCRIPTION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2003,7 +2006,13 @@ impl JobView {
 }
 /// Generated client implementations.
 pub mod jobs_v1_beta3_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Provides a method to create and modify Google Cloud Dataflow jobs.
@@ -2103,8 +2112,7 @@ pub mod jobs_v1_beta3_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2134,8 +2142,7 @@ pub mod jobs_v1_beta3_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2165,8 +2172,7 @@ pub mod jobs_v1_beta3_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2200,8 +2206,7 @@ pub mod jobs_v1_beta3_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2228,8 +2233,7 @@ pub mod jobs_v1_beta3_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2259,8 +2263,7 @@ pub mod jobs_v1_beta3_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2287,8 +2290,7 @@ pub mod jobs_v1_beta3_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2420,15 +2422,11 @@ pub mod autoscaling_event {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AutoscalingEventType::TypeUnknown => "TYPE_UNKNOWN",
-                AutoscalingEventType::TargetNumWorkersChanged => {
-                    "TARGET_NUM_WORKERS_CHANGED"
-                }
-                AutoscalingEventType::CurrentNumWorkersChanged => {
-                    "CURRENT_NUM_WORKERS_CHANGED"
-                }
-                AutoscalingEventType::ActuationFailure => "ACTUATION_FAILURE",
-                AutoscalingEventType::NoChange => "NO_CHANGE",
+                Self::TypeUnknown => "TYPE_UNKNOWN",
+                Self::TargetNumWorkersChanged => "TARGET_NUM_WORKERS_CHANGED",
+                Self::CurrentNumWorkersChanged => "CURRENT_NUM_WORKERS_CHANGED",
+                Self::ActuationFailure => "ACTUATION_FAILURE",
+                Self::NoChange => "NO_CHANGE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2538,12 +2536,12 @@ impl JobMessageImportance {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            JobMessageImportance::Unknown => "JOB_MESSAGE_IMPORTANCE_UNKNOWN",
-            JobMessageImportance::JobMessageDebug => "JOB_MESSAGE_DEBUG",
-            JobMessageImportance::JobMessageDetailed => "JOB_MESSAGE_DETAILED",
-            JobMessageImportance::JobMessageBasic => "JOB_MESSAGE_BASIC",
-            JobMessageImportance::JobMessageWarning => "JOB_MESSAGE_WARNING",
-            JobMessageImportance::JobMessageError => "JOB_MESSAGE_ERROR",
+            Self::Unknown => "JOB_MESSAGE_IMPORTANCE_UNKNOWN",
+            Self::JobMessageDebug => "JOB_MESSAGE_DEBUG",
+            Self::JobMessageDetailed => "JOB_MESSAGE_DETAILED",
+            Self::JobMessageBasic => "JOB_MESSAGE_BASIC",
+            Self::JobMessageWarning => "JOB_MESSAGE_WARNING",
+            Self::JobMessageError => "JOB_MESSAGE_ERROR",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2561,7 +2559,13 @@ impl JobMessageImportance {
 }
 /// Generated client implementations.
 pub mod messages_v1_beta3_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The Dataflow Messages API is used for monitoring the progress of
@@ -2664,8 +2668,7 @@ pub mod messages_v1_beta3_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3000,12 +3003,12 @@ impl ExecutionState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ExecutionState::Unknown => "EXECUTION_STATE_UNKNOWN",
-            ExecutionState::NotStarted => "EXECUTION_STATE_NOT_STARTED",
-            ExecutionState::Running => "EXECUTION_STATE_RUNNING",
-            ExecutionState::Succeeded => "EXECUTION_STATE_SUCCEEDED",
-            ExecutionState::Failed => "EXECUTION_STATE_FAILED",
-            ExecutionState::Cancelled => "EXECUTION_STATE_CANCELLED",
+            Self::Unknown => "EXECUTION_STATE_UNKNOWN",
+            Self::NotStarted => "EXECUTION_STATE_NOT_STARTED",
+            Self::Running => "EXECUTION_STATE_RUNNING",
+            Self::Succeeded => "EXECUTION_STATE_SUCCEEDED",
+            Self::Failed => "EXECUTION_STATE_FAILED",
+            Self::Cancelled => "EXECUTION_STATE_CANCELLED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3023,7 +3026,13 @@ impl ExecutionState {
 }
 /// Generated client implementations.
 pub mod metrics_v1_beta3_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The Dataflow Metrics API lets you monitor the progress of Dataflow
@@ -3123,8 +3132,7 @@ pub mod metrics_v1_beta3_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3156,8 +3164,7 @@ pub mod metrics_v1_beta3_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3190,8 +3197,7 @@ pub mod metrics_v1_beta3_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3821,9 +3827,9 @@ pub mod sdk_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Language::Unknown => "UNKNOWN",
-                Language::Java => "JAVA",
-                Language::Python => "PYTHON",
+                Self::Unknown => "UNKNOWN",
+                Self::Java => "JAVA",
+                Self::Python => "PYTHON",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3931,7 +3937,7 @@ pub mod get_template_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TemplateView::MetadataOnly => "METADATA_ONLY",
+                Self::MetadataOnly => "METADATA_ONLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4000,9 +4006,9 @@ pub mod get_template_response {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TemplateType::Unknown => "UNKNOWN",
-                TemplateType::Legacy => "LEGACY",
-                TemplateType::Flex => "FLEX",
+                Self::Unknown => "UNKNOWN",
+                Self::Legacy => "LEGACY",
+                Self::Flex => "FLEX",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4156,16 +4162,16 @@ impl ParameterType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ParameterType::Default => "DEFAULT",
-            ParameterType::Text => "TEXT",
-            ParameterType::GcsReadBucket => "GCS_READ_BUCKET",
-            ParameterType::GcsWriteBucket => "GCS_WRITE_BUCKET",
-            ParameterType::GcsReadFile => "GCS_READ_FILE",
-            ParameterType::GcsWriteFile => "GCS_WRITE_FILE",
-            ParameterType::GcsReadFolder => "GCS_READ_FOLDER",
-            ParameterType::GcsWriteFolder => "GCS_WRITE_FOLDER",
-            ParameterType::PubsubTopic => "PUBSUB_TOPIC",
-            ParameterType::PubsubSubscription => "PUBSUB_SUBSCRIPTION",
+            Self::Default => "DEFAULT",
+            Self::Text => "TEXT",
+            Self::GcsReadBucket => "GCS_READ_BUCKET",
+            Self::GcsWriteBucket => "GCS_WRITE_BUCKET",
+            Self::GcsReadFile => "GCS_READ_FILE",
+            Self::GcsWriteFile => "GCS_WRITE_FILE",
+            Self::GcsReadFolder => "GCS_READ_FOLDER",
+            Self::GcsWriteFolder => "GCS_WRITE_FOLDER",
+            Self::PubsubTopic => "PUBSUB_TOPIC",
+            Self::PubsubSubscription => "PUBSUB_SUBSCRIPTION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4187,7 +4193,13 @@ impl ParameterType {
 }
 /// Generated client implementations.
 pub mod templates_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Provides a method to create Cloud Dataflow jobs from templates.
@@ -4280,8 +4292,7 @@ pub mod templates_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4311,8 +4322,7 @@ pub mod templates_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4342,8 +4352,7 @@ pub mod templates_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4365,7 +4374,13 @@ pub mod templates_service_client {
 }
 /// Generated client implementations.
 pub mod flex_templates_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Provides a service for Flex templates. This feature is not ready yet.
@@ -4461,8 +4476,7 @@ pub mod flex_templates_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

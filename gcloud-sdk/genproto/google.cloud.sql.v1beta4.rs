@@ -67,11 +67,11 @@ pub mod api_warning {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SqlApiWarningCode::Unspecified => "SQL_API_WARNING_CODE_UNSPECIFIED",
-                SqlApiWarningCode::RegionUnreachable => "REGION_UNREACHABLE",
-                SqlApiWarningCode::MaxResultsExceedsLimit => "MAX_RESULTS_EXCEEDS_LIMIT",
-                SqlApiWarningCode::CompromisedCredentials => "COMPROMISED_CREDENTIALS",
-                SqlApiWarningCode::InternalStateFailure => "INTERNAL_STATE_FAILURE",
+                Self::Unspecified => "SQL_API_WARNING_CODE_UNSPECIFIED",
+                Self::RegionUnreachable => "REGION_UNREACHABLE",
+                Self::MaxResultsExceedsLimit => "MAX_RESULTS_EXCEEDS_LIMIT",
+                Self::CompromisedCredentials => "COMPROMISED_CREDENTIALS",
+                Self::InternalStateFailure => "INTERNAL_STATE_FAILURE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -128,8 +128,8 @@ pub mod backup_retention_settings {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RetentionUnit::Unspecified => "RETENTION_UNIT_UNSPECIFIED",
-                RetentionUnit::Count => "COUNT",
+                Self::Unspecified => "RETENTION_UNIT_UNSPECIFIED",
+                Self::Count => "COUNT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -225,17 +225,11 @@ pub mod backup_configuration {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TransactionalLogStorageState::Unspecified => {
-                    "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
-                }
-                TransactionalLogStorageState::Disk => "DISK",
-                TransactionalLogStorageState::SwitchingToCloudStorage => {
-                    "SWITCHING_TO_CLOUD_STORAGE"
-                }
-                TransactionalLogStorageState::SwitchedToCloudStorage => {
-                    "SWITCHED_TO_CLOUD_STORAGE"
-                }
-                TransactionalLogStorageState::CloudStorage => "CLOUD_STORAGE",
+                Self::Unspecified => "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED",
+                Self::Disk => "DISK",
+                Self::SwitchingToCloudStorage => "SWITCHING_TO_CLOUD_STORAGE",
+                Self::SwitchedToCloudStorage => "SWITCHED_TO_CLOUD_STORAGE",
+                Self::CloudStorage => "CLOUD_STORAGE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -781,9 +775,9 @@ pub mod database_instance {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    SqlOutOfDiskState::Unspecified => "SQL_OUT_OF_DISK_STATE_UNSPECIFIED",
-                    SqlOutOfDiskState::Normal => "NORMAL",
-                    SqlOutOfDiskState::SoftShutdown => "SOFT_SHUTDOWN",
+                    Self::Unspecified => "SQL_OUT_OF_DISK_STATE_UNSPECIFIED",
+                    Self::Normal => "NORMAL",
+                    Self::SoftShutdown => "SOFT_SHUTDOWN",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -836,14 +830,14 @@ pub mod database_instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SqlInstanceState::Unspecified => "SQL_INSTANCE_STATE_UNSPECIFIED",
-                SqlInstanceState::Runnable => "RUNNABLE",
-                SqlInstanceState::Suspended => "SUSPENDED",
-                SqlInstanceState::PendingDelete => "PENDING_DELETE",
-                SqlInstanceState::PendingCreate => "PENDING_CREATE",
-                SqlInstanceState::Maintenance => "MAINTENANCE",
-                SqlInstanceState::Failed => "FAILED",
-                SqlInstanceState::OnlineMaintenance => "ONLINE_MAINTENANCE",
+                Self::Unspecified => "SQL_INSTANCE_STATE_UNSPECIFIED",
+                Self::Runnable => "RUNNABLE",
+                Self::Suspended => "SUSPENDED",
+                Self::PendingDelete => "PENDING_DELETE",
+                Self::PendingCreate => "PENDING_CREATE",
+                Self::Maintenance => "MAINTENANCE",
+                Self::Failed => "FAILED",
+                Self::OnlineMaintenance => "ONLINE_MAINTENANCE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -888,15 +882,9 @@ pub mod database_instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SqlNetworkArchitecture::Unspecified => {
-                    "SQL_NETWORK_ARCHITECTURE_UNSPECIFIED"
-                }
-                SqlNetworkArchitecture::NewNetworkArchitecture => {
-                    "NEW_NETWORK_ARCHITECTURE"
-                }
-                SqlNetworkArchitecture::OldNetworkArchitecture => {
-                    "OLD_NETWORK_ARCHITECTURE"
-                }
+                Self::Unspecified => "SQL_NETWORK_ARCHITECTURE_UNSPECIFIED",
+                Self::NewNetworkArchitecture => "NEW_NETWORK_ARCHITECTURE",
+                Self::OldNetworkArchitecture => "OLD_NETWORK_ARCHITECTURE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1684,141 +1672,65 @@ pub mod sql_external_sync_setting_error {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SqlExternalSyncSettingErrorType::Unspecified => {
-                    "SQL_EXTERNAL_SYNC_SETTING_ERROR_TYPE_UNSPECIFIED"
-                }
-                SqlExternalSyncSettingErrorType::ConnectionFailure => {
-                    "CONNECTION_FAILURE"
-                }
-                SqlExternalSyncSettingErrorType::BinlogNotEnabled => "BINLOG_NOT_ENABLED",
-                SqlExternalSyncSettingErrorType::IncompatibleDatabaseVersion => {
-                    "INCOMPATIBLE_DATABASE_VERSION"
-                }
-                SqlExternalSyncSettingErrorType::ReplicaAlreadySetup => {
-                    "REPLICA_ALREADY_SETUP"
-                }
-                SqlExternalSyncSettingErrorType::InsufficientPrivilege => {
-                    "INSUFFICIENT_PRIVILEGE"
-                }
-                SqlExternalSyncSettingErrorType::UnsupportedMigrationType => {
-                    "UNSUPPORTED_MIGRATION_TYPE"
-                }
-                SqlExternalSyncSettingErrorType::NoPglogicalInstalled => {
-                    "NO_PGLOGICAL_INSTALLED"
-                }
-                SqlExternalSyncSettingErrorType::PglogicalNodeAlreadyExists => {
-                    "PGLOGICAL_NODE_ALREADY_EXISTS"
-                }
-                SqlExternalSyncSettingErrorType::InvalidWalLevel => "INVALID_WAL_LEVEL",
-                SqlExternalSyncSettingErrorType::InvalidSharedPreloadLibrary => {
-                    "INVALID_SHARED_PRELOAD_LIBRARY"
-                }
-                SqlExternalSyncSettingErrorType::InsufficientMaxReplicationSlots => {
+                Self::Unspecified => "SQL_EXTERNAL_SYNC_SETTING_ERROR_TYPE_UNSPECIFIED",
+                Self::ConnectionFailure => "CONNECTION_FAILURE",
+                Self::BinlogNotEnabled => "BINLOG_NOT_ENABLED",
+                Self::IncompatibleDatabaseVersion => "INCOMPATIBLE_DATABASE_VERSION",
+                Self::ReplicaAlreadySetup => "REPLICA_ALREADY_SETUP",
+                Self::InsufficientPrivilege => "INSUFFICIENT_PRIVILEGE",
+                Self::UnsupportedMigrationType => "UNSUPPORTED_MIGRATION_TYPE",
+                Self::NoPglogicalInstalled => "NO_PGLOGICAL_INSTALLED",
+                Self::PglogicalNodeAlreadyExists => "PGLOGICAL_NODE_ALREADY_EXISTS",
+                Self::InvalidWalLevel => "INVALID_WAL_LEVEL",
+                Self::InvalidSharedPreloadLibrary => "INVALID_SHARED_PRELOAD_LIBRARY",
+                Self::InsufficientMaxReplicationSlots => {
                     "INSUFFICIENT_MAX_REPLICATION_SLOTS"
                 }
-                SqlExternalSyncSettingErrorType::InsufficientMaxWalSenders => {
-                    "INSUFFICIENT_MAX_WAL_SENDERS"
-                }
-                SqlExternalSyncSettingErrorType::InsufficientMaxWorkerProcesses => {
+                Self::InsufficientMaxWalSenders => "INSUFFICIENT_MAX_WAL_SENDERS",
+                Self::InsufficientMaxWorkerProcesses => {
                     "INSUFFICIENT_MAX_WORKER_PROCESSES"
                 }
-                SqlExternalSyncSettingErrorType::UnsupportedExtensions => {
-                    "UNSUPPORTED_EXTENSIONS"
-                }
-                SqlExternalSyncSettingErrorType::InvalidRdsLogicalReplication => {
-                    "INVALID_RDS_LOGICAL_REPLICATION"
-                }
-                SqlExternalSyncSettingErrorType::InvalidLoggingSetup => {
-                    "INVALID_LOGGING_SETUP"
-                }
-                SqlExternalSyncSettingErrorType::InvalidDbParam => "INVALID_DB_PARAM",
-                SqlExternalSyncSettingErrorType::UnsupportedGtidMode => {
-                    "UNSUPPORTED_GTID_MODE"
-                }
-                SqlExternalSyncSettingErrorType::SqlserverAgentNotRunning => {
-                    "SQLSERVER_AGENT_NOT_RUNNING"
-                }
-                SqlExternalSyncSettingErrorType::UnsupportedTableDefinition => {
-                    "UNSUPPORTED_TABLE_DEFINITION"
-                }
-                SqlExternalSyncSettingErrorType::UnsupportedDefiner => {
-                    "UNSUPPORTED_DEFINER"
-                }
-                SqlExternalSyncSettingErrorType::SqlserverServernameMismatch => {
-                    "SQLSERVER_SERVERNAME_MISMATCH"
-                }
-                SqlExternalSyncSettingErrorType::PrimaryAlreadySetup => {
-                    "PRIMARY_ALREADY_SETUP"
-                }
-                SqlExternalSyncSettingErrorType::UnsupportedBinlogFormat => {
-                    "UNSUPPORTED_BINLOG_FORMAT"
-                }
-                SqlExternalSyncSettingErrorType::BinlogRetentionSetting => {
-                    "BINLOG_RETENTION_SETTING"
-                }
-                SqlExternalSyncSettingErrorType::UnsupportedStorageEngine => {
-                    "UNSUPPORTED_STORAGE_ENGINE"
-                }
-                SqlExternalSyncSettingErrorType::LimitedSupportTables => {
-                    "LIMITED_SUPPORT_TABLES"
-                }
-                SqlExternalSyncSettingErrorType::ExistingDataInReplica => {
-                    "EXISTING_DATA_IN_REPLICA"
-                }
-                SqlExternalSyncSettingErrorType::MissingOptionalPrivileges => {
-                    "MISSING_OPTIONAL_PRIVILEGES"
-                }
-                SqlExternalSyncSettingErrorType::RiskyBackupAdminPrivilege => {
-                    "RISKY_BACKUP_ADMIN_PRIVILEGE"
-                }
-                SqlExternalSyncSettingErrorType::InsufficientGcsPermissions => {
-                    "INSUFFICIENT_GCS_PERMISSIONS"
-                }
-                SqlExternalSyncSettingErrorType::InvalidFileInfo => "INVALID_FILE_INFO",
-                SqlExternalSyncSettingErrorType::UnsupportedDatabaseSettings => {
-                    "UNSUPPORTED_DATABASE_SETTINGS"
-                }
-                SqlExternalSyncSettingErrorType::MysqlParallelImportInsufficientPrivilege => {
+                Self::UnsupportedExtensions => "UNSUPPORTED_EXTENSIONS",
+                Self::InvalidRdsLogicalReplication => "INVALID_RDS_LOGICAL_REPLICATION",
+                Self::InvalidLoggingSetup => "INVALID_LOGGING_SETUP",
+                Self::InvalidDbParam => "INVALID_DB_PARAM",
+                Self::UnsupportedGtidMode => "UNSUPPORTED_GTID_MODE",
+                Self::SqlserverAgentNotRunning => "SQLSERVER_AGENT_NOT_RUNNING",
+                Self::UnsupportedTableDefinition => "UNSUPPORTED_TABLE_DEFINITION",
+                Self::UnsupportedDefiner => "UNSUPPORTED_DEFINER",
+                Self::SqlserverServernameMismatch => "SQLSERVER_SERVERNAME_MISMATCH",
+                Self::PrimaryAlreadySetup => "PRIMARY_ALREADY_SETUP",
+                Self::UnsupportedBinlogFormat => "UNSUPPORTED_BINLOG_FORMAT",
+                Self::BinlogRetentionSetting => "BINLOG_RETENTION_SETTING",
+                Self::UnsupportedStorageEngine => "UNSUPPORTED_STORAGE_ENGINE",
+                Self::LimitedSupportTables => "LIMITED_SUPPORT_TABLES",
+                Self::ExistingDataInReplica => "EXISTING_DATA_IN_REPLICA",
+                Self::MissingOptionalPrivileges => "MISSING_OPTIONAL_PRIVILEGES",
+                Self::RiskyBackupAdminPrivilege => "RISKY_BACKUP_ADMIN_PRIVILEGE",
+                Self::InsufficientGcsPermissions => "INSUFFICIENT_GCS_PERMISSIONS",
+                Self::InvalidFileInfo => "INVALID_FILE_INFO",
+                Self::UnsupportedDatabaseSettings => "UNSUPPORTED_DATABASE_SETTINGS",
+                Self::MysqlParallelImportInsufficientPrivilege => {
                     "MYSQL_PARALLEL_IMPORT_INSUFFICIENT_PRIVILEGE"
                 }
-                SqlExternalSyncSettingErrorType::LocalInfileOff => "LOCAL_INFILE_OFF",
-                SqlExternalSyncSettingErrorType::TurnOnPitrAfterPromote => {
-                    "TURN_ON_PITR_AFTER_PROMOTE"
-                }
-                SqlExternalSyncSettingErrorType::IncompatibleDatabaseMinorVersion => {
+                Self::LocalInfileOff => "LOCAL_INFILE_OFF",
+                Self::TurnOnPitrAfterPromote => "TURN_ON_PITR_AFTER_PROMOTE",
+                Self::IncompatibleDatabaseMinorVersion => {
                     "INCOMPATIBLE_DATABASE_MINOR_VERSION"
                 }
-                SqlExternalSyncSettingErrorType::SourceMaxSubscriptions => {
-                    "SOURCE_MAX_SUBSCRIPTIONS"
-                }
-                SqlExternalSyncSettingErrorType::UnableToVerifyDefiners => {
-                    "UNABLE_TO_VERIFY_DEFINERS"
-                }
-                SqlExternalSyncSettingErrorType::SubscriptionCalculationStatus => {
-                    "SUBSCRIPTION_CALCULATION_STATUS"
-                }
-                SqlExternalSyncSettingErrorType::PgSubscriptionCount => {
-                    "PG_SUBSCRIPTION_COUNT"
-                }
-                SqlExternalSyncSettingErrorType::PgSyncParallelLevel => {
-                    "PG_SYNC_PARALLEL_LEVEL"
-                }
-                SqlExternalSyncSettingErrorType::InsufficientDiskSize => {
-                    "INSUFFICIENT_DISK_SIZE"
-                }
-                SqlExternalSyncSettingErrorType::InsufficientMachineTier => {
-                    "INSUFFICIENT_MACHINE_TIER"
-                }
-                SqlExternalSyncSettingErrorType::UnsupportedExtensionsNotMigrated => {
+                Self::SourceMaxSubscriptions => "SOURCE_MAX_SUBSCRIPTIONS",
+                Self::UnableToVerifyDefiners => "UNABLE_TO_VERIFY_DEFINERS",
+                Self::SubscriptionCalculationStatus => "SUBSCRIPTION_CALCULATION_STATUS",
+                Self::PgSubscriptionCount => "PG_SUBSCRIPTION_COUNT",
+                Self::PgSyncParallelLevel => "PG_SYNC_PARALLEL_LEVEL",
+                Self::InsufficientDiskSize => "INSUFFICIENT_DISK_SIZE",
+                Self::InsufficientMachineTier => "INSUFFICIENT_MACHINE_TIER",
+                Self::UnsupportedExtensionsNotMigrated => {
                     "UNSUPPORTED_EXTENSIONS_NOT_MIGRATED"
                 }
-                SqlExternalSyncSettingErrorType::ExtensionsNotMigrated => {
-                    "EXTENSIONS_NOT_MIGRATED"
-                }
-                SqlExternalSyncSettingErrorType::PgCronFlagEnabledInReplica => {
-                    "PG_CRON_FLAG_ENABLED_IN_REPLICA"
-                }
-                SqlExternalSyncSettingErrorType::ExtensionsNotEnabledInReplica => {
+                Self::ExtensionsNotMigrated => "EXTENSIONS_NOT_MIGRATED",
+                Self::PgCronFlagEnabledInReplica => "PG_CRON_FLAG_ENABLED_IN_REPLICA",
+                Self::ExtensionsNotEnabledInReplica => {
                     "EXTENSIONS_NOT_ENABLED_IN_REPLICA"
                 }
             }
@@ -2031,12 +1943,10 @@ pub mod ip_configuration {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SslMode::Unspecified => "SSL_MODE_UNSPECIFIED",
-                SslMode::AllowUnencryptedAndEncrypted => {
-                    "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
-                }
-                SslMode::EncryptedOnly => "ENCRYPTED_ONLY",
-                SslMode::TrustedClientCertificateRequired => {
+                Self::Unspecified => "SSL_MODE_UNSPECIFIED",
+                Self::AllowUnencryptedAndEncrypted => "ALLOW_UNENCRYPTED_AND_ENCRYPTED",
+                Self::EncryptedOnly => "ENCRYPTED_ONLY",
+                Self::TrustedClientCertificateRequired => {
                     "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
                 }
             }
@@ -2486,51 +2396,51 @@ pub mod operation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SqlOperationType::Unspecified => "SQL_OPERATION_TYPE_UNSPECIFIED",
-                SqlOperationType::Import => "IMPORT",
-                SqlOperationType::Export => "EXPORT",
-                SqlOperationType::Create => "CREATE",
-                SqlOperationType::Update => "UPDATE",
-                SqlOperationType::Delete => "DELETE",
-                SqlOperationType::Restart => "RESTART",
-                SqlOperationType::Backup => "BACKUP",
-                SqlOperationType::Snapshot => "SNAPSHOT",
-                SqlOperationType::BackupVolume => "BACKUP_VOLUME",
-                SqlOperationType::DeleteVolume => "DELETE_VOLUME",
-                SqlOperationType::RestoreVolume => "RESTORE_VOLUME",
-                SqlOperationType::InjectUser => "INJECT_USER",
-                SqlOperationType::Clone => "CLONE",
-                SqlOperationType::StopReplica => "STOP_REPLICA",
-                SqlOperationType::StartReplica => "START_REPLICA",
-                SqlOperationType::PromoteReplica => "PROMOTE_REPLICA",
-                SqlOperationType::CreateReplica => "CREATE_REPLICA",
-                SqlOperationType::CreateUser => "CREATE_USER",
-                SqlOperationType::DeleteUser => "DELETE_USER",
-                SqlOperationType::UpdateUser => "UPDATE_USER",
-                SqlOperationType::CreateDatabase => "CREATE_DATABASE",
-                SqlOperationType::DeleteDatabase => "DELETE_DATABASE",
-                SqlOperationType::UpdateDatabase => "UPDATE_DATABASE",
-                SqlOperationType::Failover => "FAILOVER",
-                SqlOperationType::DeleteBackup => "DELETE_BACKUP",
-                SqlOperationType::RecreateReplica => "RECREATE_REPLICA",
-                SqlOperationType::TruncateLog => "TRUNCATE_LOG",
-                SqlOperationType::DemoteMaster => "DEMOTE_MASTER",
-                SqlOperationType::Maintenance => "MAINTENANCE",
-                SqlOperationType::EnablePrivateIp => "ENABLE_PRIVATE_IP",
-                SqlOperationType::DeferMaintenance => "DEFER_MAINTENANCE",
-                SqlOperationType::CreateClone => "CREATE_CLONE",
-                SqlOperationType::RescheduleMaintenance => "RESCHEDULE_MAINTENANCE",
-                SqlOperationType::StartExternalSync => "START_EXTERNAL_SYNC",
-                SqlOperationType::LogCleanup => "LOG_CLEANUP",
-                SqlOperationType::AutoRestart => "AUTO_RESTART",
-                SqlOperationType::Reencrypt => "REENCRYPT",
-                SqlOperationType::Switchover => "SWITCHOVER",
-                SqlOperationType::AcquireSsrsLease => "ACQUIRE_SSRS_LEASE",
-                SqlOperationType::ReleaseSsrsLease => "RELEASE_SSRS_LEASE",
-                SqlOperationType::ReconfigureOldPrimary => "RECONFIGURE_OLD_PRIMARY",
-                SqlOperationType::ClusterMaintenance => "CLUSTER_MAINTENANCE",
-                SqlOperationType::SelfServiceMaintenance => "SELF_SERVICE_MAINTENANCE",
-                SqlOperationType::SwitchoverToReplica => "SWITCHOVER_TO_REPLICA",
+                Self::Unspecified => "SQL_OPERATION_TYPE_UNSPECIFIED",
+                Self::Import => "IMPORT",
+                Self::Export => "EXPORT",
+                Self::Create => "CREATE",
+                Self::Update => "UPDATE",
+                Self::Delete => "DELETE",
+                Self::Restart => "RESTART",
+                Self::Backup => "BACKUP",
+                Self::Snapshot => "SNAPSHOT",
+                Self::BackupVolume => "BACKUP_VOLUME",
+                Self::DeleteVolume => "DELETE_VOLUME",
+                Self::RestoreVolume => "RESTORE_VOLUME",
+                Self::InjectUser => "INJECT_USER",
+                Self::Clone => "CLONE",
+                Self::StopReplica => "STOP_REPLICA",
+                Self::StartReplica => "START_REPLICA",
+                Self::PromoteReplica => "PROMOTE_REPLICA",
+                Self::CreateReplica => "CREATE_REPLICA",
+                Self::CreateUser => "CREATE_USER",
+                Self::DeleteUser => "DELETE_USER",
+                Self::UpdateUser => "UPDATE_USER",
+                Self::CreateDatabase => "CREATE_DATABASE",
+                Self::DeleteDatabase => "DELETE_DATABASE",
+                Self::UpdateDatabase => "UPDATE_DATABASE",
+                Self::Failover => "FAILOVER",
+                Self::DeleteBackup => "DELETE_BACKUP",
+                Self::RecreateReplica => "RECREATE_REPLICA",
+                Self::TruncateLog => "TRUNCATE_LOG",
+                Self::DemoteMaster => "DEMOTE_MASTER",
+                Self::Maintenance => "MAINTENANCE",
+                Self::EnablePrivateIp => "ENABLE_PRIVATE_IP",
+                Self::DeferMaintenance => "DEFER_MAINTENANCE",
+                Self::CreateClone => "CREATE_CLONE",
+                Self::RescheduleMaintenance => "RESCHEDULE_MAINTENANCE",
+                Self::StartExternalSync => "START_EXTERNAL_SYNC",
+                Self::LogCleanup => "LOG_CLEANUP",
+                Self::AutoRestart => "AUTO_RESTART",
+                Self::Reencrypt => "REENCRYPT",
+                Self::Switchover => "SWITCHOVER",
+                Self::AcquireSsrsLease => "ACQUIRE_SSRS_LEASE",
+                Self::ReleaseSsrsLease => "RELEASE_SSRS_LEASE",
+                Self::ReconfigureOldPrimary => "RECONFIGURE_OLD_PRIMARY",
+                Self::ClusterMaintenance => "CLUSTER_MAINTENANCE",
+                Self::SelfServiceMaintenance => "SELF_SERVICE_MAINTENANCE",
+                Self::SwitchoverToReplica => "SWITCHOVER_TO_REPLICA",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2615,10 +2525,10 @@ pub mod operation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SqlOperationStatus::Unspecified => "SQL_OPERATION_STATUS_UNSPECIFIED",
-                SqlOperationStatus::Pending => "PENDING",
-                SqlOperationStatus::Running => "RUNNING",
-                SqlOperationStatus::Done => "DONE",
+                Self::Unspecified => "SQL_OPERATION_STATUS_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Running => "RUNNING",
+                Self::Done => "DONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2713,8 +2623,8 @@ pub mod password_validation_policy {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Complexity::Unspecified => "COMPLEXITY_UNSPECIFIED",
-                Complexity::Default => "COMPLEXITY_DEFAULT",
+                Self::Unspecified => "COMPLEXITY_UNSPECIFIED",
+                Self::Default => "COMPLEXITY_DEFAULT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2998,10 +2908,10 @@ pub mod settings {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SqlActivationPolicy::Unspecified => "SQL_ACTIVATION_POLICY_UNSPECIFIED",
-                SqlActivationPolicy::Always => "ALWAYS",
-                SqlActivationPolicy::Never => "NEVER",
-                SqlActivationPolicy::OnDemand => "ON_DEMAND",
+                Self::Unspecified => "SQL_ACTIVATION_POLICY_UNSPECIFIED",
+                Self::Always => "ALWAYS",
+                Self::Never => "NEVER",
+                Self::OnDemand => "ON_DEMAND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3043,9 +2953,9 @@ pub mod settings {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Edition::Unspecified => "EDITION_UNSPECIFIED",
-                Edition::Enterprise => "ENTERPRISE",
-                Edition::EnterprisePlus => "ENTERPRISE_PLUS",
+                Self::Unspecified => "EDITION_UNSPECIFIED",
+                Self::Enterprise => "ENTERPRISE",
+                Self::EnterprisePlus => "ENTERPRISE_PLUS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3088,9 +2998,9 @@ pub mod settings {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConnectorEnforcement::Unspecified => "CONNECTOR_ENFORCEMENT_UNSPECIFIED",
-                ConnectorEnforcement::NotRequired => "NOT_REQUIRED",
-                ConnectorEnforcement::Required => "REQUIRED",
+                Self::Unspecified => "CONNECTOR_ENFORCEMENT_UNSPECIFIED",
+                Self::NotRequired => "NOT_REQUIRED",
+                Self::Required => "REQUIRED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3227,10 +3137,10 @@ pub mod sql_instances_reschedule_maintenance_request_body {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RescheduleType::Unspecified => "RESCHEDULE_TYPE_UNSPECIFIED",
-                RescheduleType::Immediate => "IMMEDIATE",
-                RescheduleType::NextAvailableWindow => "NEXT_AVAILABLE_WINDOW",
-                RescheduleType::SpecificTime => "SPECIFIC_TIME",
+                Self::Unspecified => "RESCHEDULE_TYPE_UNSPECIFIED",
+                Self::Immediate => "IMMEDIATE",
+                Self::NextAvailableWindow => "NEXT_AVAILABLE_WINDOW",
+                Self::SpecificTime => "SPECIFIC_TIME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3346,10 +3256,10 @@ impl SqlFileType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SqlFileType::Unspecified => "SQL_FILE_TYPE_UNSPECIFIED",
-            SqlFileType::Sql => "SQL",
-            SqlFileType::Csv => "CSV",
-            SqlFileType::Bak => "BAK",
+            Self::Unspecified => "SQL_FILE_TYPE_UNSPECIFIED",
+            Self::Sql => "SQL",
+            Self::Csv => "CSV",
+            Self::Bak => "BAK",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3382,10 +3292,10 @@ impl BakType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            BakType::Unspecified => "BAK_TYPE_UNSPECIFIED",
-            BakType::Full => "FULL",
-            BakType::Diff => "DIFF",
-            BakType::Tlog => "TLOG",
+            Self::Unspecified => "BAK_TYPE_UNSPECIFIED",
+            Self::Full => "FULL",
+            Self::Diff => "DIFF",
+            Self::Tlog => "TLOG",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3434,16 +3344,16 @@ impl SqlBackupRunStatus {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SqlBackupRunStatus::Unspecified => "SQL_BACKUP_RUN_STATUS_UNSPECIFIED",
-            SqlBackupRunStatus::Enqueued => "ENQUEUED",
-            SqlBackupRunStatus::Overdue => "OVERDUE",
-            SqlBackupRunStatus::Running => "RUNNING",
-            SqlBackupRunStatus::Failed => "FAILED",
-            SqlBackupRunStatus::Successful => "SUCCESSFUL",
-            SqlBackupRunStatus::Skipped => "SKIPPED",
-            SqlBackupRunStatus::DeletionPending => "DELETION_PENDING",
-            SqlBackupRunStatus::DeletionFailed => "DELETION_FAILED",
-            SqlBackupRunStatus::Deleted => "DELETED",
+            Self::Unspecified => "SQL_BACKUP_RUN_STATUS_UNSPECIFIED",
+            Self::Enqueued => "ENQUEUED",
+            Self::Overdue => "OVERDUE",
+            Self::Running => "RUNNING",
+            Self::Failed => "FAILED",
+            Self::Successful => "SUCCESSFUL",
+            Self::Skipped => "SKIPPED",
+            Self::DeletionPending => "DELETION_PENDING",
+            Self::DeletionFailed => "DELETION_FAILED",
+            Self::Deleted => "DELETED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3480,9 +3390,9 @@ impl SqlBackupRunType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SqlBackupRunType::Unspecified => "SQL_BACKUP_RUN_TYPE_UNSPECIFIED",
-            SqlBackupRunType::Automated => "AUTOMATED",
-            SqlBackupRunType::OnDemand => "ON_DEMAND",
+            Self::Unspecified => "SQL_BACKUP_RUN_TYPE_UNSPECIFIED",
+            Self::Automated => "AUTOMATED",
+            Self::OnDemand => "ON_DEMAND",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3513,9 +3423,9 @@ impl SqlBackupKind {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SqlBackupKind::Unspecified => "SQL_BACKUP_KIND_UNSPECIFIED",
-            SqlBackupKind::Snapshot => "SNAPSHOT",
-            SqlBackupKind::Physical => "PHYSICAL",
+            Self::Unspecified => "SQL_BACKUP_KIND_UNSPECIFIED",
+            Self::Snapshot => "SNAPSHOT",
+            Self::Physical => "PHYSICAL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3547,10 +3457,10 @@ impl SqlBackendType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SqlBackendType::Unspecified => "SQL_BACKEND_TYPE_UNSPECIFIED",
-            SqlBackendType::FirstGen => "FIRST_GEN",
-            SqlBackendType::SecondGen => "SECOND_GEN",
-            SqlBackendType::External => "EXTERNAL",
+            Self::Unspecified => "SQL_BACKEND_TYPE_UNSPECIFIED",
+            Self::FirstGen => "FIRST_GEN",
+            Self::SecondGen => "SECOND_GEN",
+            Self::External => "EXTERNAL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3591,11 +3501,11 @@ impl SqlIpAddressType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SqlIpAddressType::Unspecified => "SQL_IP_ADDRESS_TYPE_UNSPECIFIED",
-            SqlIpAddressType::Primary => "PRIMARY",
-            SqlIpAddressType::Outgoing => "OUTGOING",
-            SqlIpAddressType::Private => "PRIVATE",
-            SqlIpAddressType::Migrated1stGen => "MIGRATED_1ST_GEN",
+            Self::Unspecified => "SQL_IP_ADDRESS_TYPE_UNSPECIFIED",
+            Self::Primary => "PRIMARY",
+            Self::Outgoing => "OUTGOING",
+            Self::Private => "PRIVATE",
+            Self::Migrated1stGen => "MIGRATED_1ST_GEN",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3631,10 +3541,10 @@ impl SqlInstanceType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SqlInstanceType::Unspecified => "SQL_INSTANCE_TYPE_UNSPECIFIED",
-            SqlInstanceType::CloudSqlInstance => "CLOUD_SQL_INSTANCE",
-            SqlInstanceType::OnPremisesInstance => "ON_PREMISES_INSTANCE",
-            SqlInstanceType::ReadReplicaInstance => "READ_REPLICA_INSTANCE",
+            Self::Unspecified => "SQL_INSTANCE_TYPE_UNSPECIFIED",
+            Self::CloudSqlInstance => "CLOUD_SQL_INSTANCE",
+            Self::OnPremisesInstance => "ON_PREMISES_INSTANCE",
+            Self::ReadReplicaInstance => "READ_REPLICA_INSTANCE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3748,50 +3658,50 @@ impl SqlDatabaseVersion {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SqlDatabaseVersion::Unspecified => "SQL_DATABASE_VERSION_UNSPECIFIED",
-            SqlDatabaseVersion::Mysql51 => "MYSQL_5_1",
-            SqlDatabaseVersion::Mysql55 => "MYSQL_5_5",
-            SqlDatabaseVersion::Mysql56 => "MYSQL_5_6",
-            SqlDatabaseVersion::Mysql57 => "MYSQL_5_7",
-            SqlDatabaseVersion::Sqlserver2017Standard => "SQLSERVER_2017_STANDARD",
-            SqlDatabaseVersion::Sqlserver2017Enterprise => "SQLSERVER_2017_ENTERPRISE",
-            SqlDatabaseVersion::Sqlserver2017Express => "SQLSERVER_2017_EXPRESS",
-            SqlDatabaseVersion::Sqlserver2017Web => "SQLSERVER_2017_WEB",
-            SqlDatabaseVersion::Postgres96 => "POSTGRES_9_6",
-            SqlDatabaseVersion::Postgres10 => "POSTGRES_10",
-            SqlDatabaseVersion::Postgres11 => "POSTGRES_11",
-            SqlDatabaseVersion::Postgres12 => "POSTGRES_12",
-            SqlDatabaseVersion::Postgres13 => "POSTGRES_13",
-            SqlDatabaseVersion::Postgres14 => "POSTGRES_14",
-            SqlDatabaseVersion::Postgres15 => "POSTGRES_15",
-            SqlDatabaseVersion::Postgres16 => "POSTGRES_16",
-            SqlDatabaseVersion::Mysql80 => "MYSQL_8_0",
-            SqlDatabaseVersion::Mysql8018 => "MYSQL_8_0_18",
-            SqlDatabaseVersion::Mysql8026 => "MYSQL_8_0_26",
-            SqlDatabaseVersion::Mysql8027 => "MYSQL_8_0_27",
-            SqlDatabaseVersion::Mysql8028 => "MYSQL_8_0_28",
-            SqlDatabaseVersion::Mysql8029 => "MYSQL_8_0_29",
-            SqlDatabaseVersion::Mysql8030 => "MYSQL_8_0_30",
-            SqlDatabaseVersion::Mysql8031 => "MYSQL_8_0_31",
-            SqlDatabaseVersion::Mysql8032 => "MYSQL_8_0_32",
-            SqlDatabaseVersion::Mysql8033 => "MYSQL_8_0_33",
-            SqlDatabaseVersion::Mysql8034 => "MYSQL_8_0_34",
-            SqlDatabaseVersion::Mysql8035 => "MYSQL_8_0_35",
-            SqlDatabaseVersion::Mysql8036 => "MYSQL_8_0_36",
-            SqlDatabaseVersion::Mysql8037 => "MYSQL_8_0_37",
-            SqlDatabaseVersion::Mysql8038 => "MYSQL_8_0_38",
-            SqlDatabaseVersion::Mysql8039 => "MYSQL_8_0_39",
-            SqlDatabaseVersion::Mysql8040 => "MYSQL_8_0_40",
-            SqlDatabaseVersion::Mysql84 => "MYSQL_8_4",
-            SqlDatabaseVersion::Mysql840 => "MYSQL_8_4_0",
-            SqlDatabaseVersion::Sqlserver2019Standard => "SQLSERVER_2019_STANDARD",
-            SqlDatabaseVersion::Sqlserver2019Enterprise => "SQLSERVER_2019_ENTERPRISE",
-            SqlDatabaseVersion::Sqlserver2019Express => "SQLSERVER_2019_EXPRESS",
-            SqlDatabaseVersion::Sqlserver2019Web => "SQLSERVER_2019_WEB",
-            SqlDatabaseVersion::Sqlserver2022Standard => "SQLSERVER_2022_STANDARD",
-            SqlDatabaseVersion::Sqlserver2022Enterprise => "SQLSERVER_2022_ENTERPRISE",
-            SqlDatabaseVersion::Sqlserver2022Express => "SQLSERVER_2022_EXPRESS",
-            SqlDatabaseVersion::Sqlserver2022Web => "SQLSERVER_2022_WEB",
+            Self::Unspecified => "SQL_DATABASE_VERSION_UNSPECIFIED",
+            Self::Mysql51 => "MYSQL_5_1",
+            Self::Mysql55 => "MYSQL_5_5",
+            Self::Mysql56 => "MYSQL_5_6",
+            Self::Mysql57 => "MYSQL_5_7",
+            Self::Sqlserver2017Standard => "SQLSERVER_2017_STANDARD",
+            Self::Sqlserver2017Enterprise => "SQLSERVER_2017_ENTERPRISE",
+            Self::Sqlserver2017Express => "SQLSERVER_2017_EXPRESS",
+            Self::Sqlserver2017Web => "SQLSERVER_2017_WEB",
+            Self::Postgres96 => "POSTGRES_9_6",
+            Self::Postgres10 => "POSTGRES_10",
+            Self::Postgres11 => "POSTGRES_11",
+            Self::Postgres12 => "POSTGRES_12",
+            Self::Postgres13 => "POSTGRES_13",
+            Self::Postgres14 => "POSTGRES_14",
+            Self::Postgres15 => "POSTGRES_15",
+            Self::Postgres16 => "POSTGRES_16",
+            Self::Mysql80 => "MYSQL_8_0",
+            Self::Mysql8018 => "MYSQL_8_0_18",
+            Self::Mysql8026 => "MYSQL_8_0_26",
+            Self::Mysql8027 => "MYSQL_8_0_27",
+            Self::Mysql8028 => "MYSQL_8_0_28",
+            Self::Mysql8029 => "MYSQL_8_0_29",
+            Self::Mysql8030 => "MYSQL_8_0_30",
+            Self::Mysql8031 => "MYSQL_8_0_31",
+            Self::Mysql8032 => "MYSQL_8_0_32",
+            Self::Mysql8033 => "MYSQL_8_0_33",
+            Self::Mysql8034 => "MYSQL_8_0_34",
+            Self::Mysql8035 => "MYSQL_8_0_35",
+            Self::Mysql8036 => "MYSQL_8_0_36",
+            Self::Mysql8037 => "MYSQL_8_0_37",
+            Self::Mysql8038 => "MYSQL_8_0_38",
+            Self::Mysql8039 => "MYSQL_8_0_39",
+            Self::Mysql8040 => "MYSQL_8_0_40",
+            Self::Mysql84 => "MYSQL_8_4",
+            Self::Mysql840 => "MYSQL_8_4_0",
+            Self::Sqlserver2019Standard => "SQLSERVER_2019_STANDARD",
+            Self::Sqlserver2019Enterprise => "SQLSERVER_2019_ENTERPRISE",
+            Self::Sqlserver2019Express => "SQLSERVER_2019_EXPRESS",
+            Self::Sqlserver2019Web => "SQLSERVER_2019_WEB",
+            Self::Sqlserver2022Standard => "SQLSERVER_2022_STANDARD",
+            Self::Sqlserver2022Enterprise => "SQLSERVER_2022_ENTERPRISE",
+            Self::Sqlserver2022Express => "SQLSERVER_2022_EXPRESS",
+            Self::Sqlserver2022Web => "SQLSERVER_2022_WEB",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3870,11 +3780,11 @@ impl SqlSuspensionReason {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SqlSuspensionReason::Unspecified => "SQL_SUSPENSION_REASON_UNSPECIFIED",
-            SqlSuspensionReason::BillingIssue => "BILLING_ISSUE",
-            SqlSuspensionReason::LegalIssue => "LEGAL_ISSUE",
-            SqlSuspensionReason::OperationalIssue => "OPERATIONAL_ISSUE",
-            SqlSuspensionReason::KmsKeyIssue => "KMS_KEY_ISSUE",
+            Self::Unspecified => "SQL_SUSPENSION_REASON_UNSPECIFIED",
+            Self::BillingIssue => "BILLING_ISSUE",
+            Self::LegalIssue => "LEGAL_ISSUE",
+            Self::OperationalIssue => "OPERATIONAL_ISSUE",
+            Self::KmsKeyIssue => "KMS_KEY_ISSUE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3907,9 +3817,9 @@ impl SqlPricingPlan {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SqlPricingPlan::Unspecified => "SQL_PRICING_PLAN_UNSPECIFIED",
-            SqlPricingPlan::Package => "PACKAGE",
-            SqlPricingPlan::PerUse => "PER_USE",
+            Self::Unspecified => "SQL_PRICING_PLAN_UNSPECIFIED",
+            Self::Package => "PACKAGE",
+            Self::PerUse => "PER_USE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3943,9 +3853,9 @@ impl SqlReplicationType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SqlReplicationType::Unspecified => "SQL_REPLICATION_TYPE_UNSPECIFIED",
-            SqlReplicationType::Synchronous => "SYNCHRONOUS",
-            SqlReplicationType::Asynchronous => "ASYNCHRONOUS",
+            Self::Unspecified => "SQL_REPLICATION_TYPE_UNSPECIFIED",
+            Self::Synchronous => "SYNCHRONOUS",
+            Self::Asynchronous => "ASYNCHRONOUS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3979,10 +3889,10 @@ impl SqlDataDiskType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SqlDataDiskType::Unspecified => "SQL_DATA_DISK_TYPE_UNSPECIFIED",
-            SqlDataDiskType::PdSsd => "PD_SSD",
-            SqlDataDiskType::PdHdd => "PD_HDD",
-            SqlDataDiskType::ObsoleteLocalSsd => "OBSOLETE_LOCAL_SSD",
+            Self::Unspecified => "SQL_DATA_DISK_TYPE_UNSPECIFIED",
+            Self::PdSsd => "PD_SSD",
+            Self::PdHdd => "PD_HDD",
+            Self::ObsoleteLocalSsd => "OBSOLETE_LOCAL_SSD",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4014,9 +3924,9 @@ impl SqlAvailabilityType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SqlAvailabilityType::Unspecified => "SQL_AVAILABILITY_TYPE_UNSPECIFIED",
-            SqlAvailabilityType::Zonal => "ZONAL",
-            SqlAvailabilityType::Regional => "REGIONAL",
+            Self::Unspecified => "SQL_AVAILABILITY_TYPE_UNSPECIFIED",
+            Self::Zonal => "ZONAL",
+            Self::Regional => "REGIONAL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4055,10 +3965,10 @@ impl SqlUpdateTrack {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SqlUpdateTrack::Unspecified => "SQL_UPDATE_TRACK_UNSPECIFIED",
-            SqlUpdateTrack::Canary => "canary",
-            SqlUpdateTrack::Stable => "stable",
-            SqlUpdateTrack::Week5 => "week5",
+            Self::Unspecified => "SQL_UPDATE_TRACK_UNSPECIFIED",
+            Self::Canary => "canary",
+            Self::Stable => "stable",
+            Self::Week5 => "week5",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4100,14 +4010,14 @@ impl SqlFlagType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SqlFlagType::Unspecified => "SQL_FLAG_TYPE_UNSPECIFIED",
-            SqlFlagType::Boolean => "BOOLEAN",
-            SqlFlagType::String => "STRING",
-            SqlFlagType::Integer => "INTEGER",
-            SqlFlagType::None => "NONE",
-            SqlFlagType::MysqlTimezoneOffset => "MYSQL_TIMEZONE_OFFSET",
-            SqlFlagType::Float => "FLOAT",
-            SqlFlagType::RepeatedString => "REPEATED_STRING",
+            Self::Unspecified => "SQL_FLAG_TYPE_UNSPECIFIED",
+            Self::Boolean => "BOOLEAN",
+            Self::String => "STRING",
+            Self::Integer => "INTEGER",
+            Self::None => "NONE",
+            Self::MysqlTimezoneOffset => "MYSQL_TIMEZONE_OFFSET",
+            Self::Float => "FLOAT",
+            Self::RepeatedString => "REPEATED_STRING",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4569,9 +4479,9 @@ pub mod backup_reencryption_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BackupType::Unspecified => "BACKUP_TYPE_UNSPECIFIED",
-                BackupType::Automated => "AUTOMATED",
-                BackupType::OnDemand => "ON_DEMAND",
+                Self::Unspecified => "BACKUP_TYPE_UNSPECIFIED",
+                Self::Automated => "AUTOMATED",
+                Self::OnDemand => "ON_DEMAND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4680,9 +4590,9 @@ pub mod sql_instances_verify_external_sync_settings_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ExternalSyncMode::Unspecified => "EXTERNAL_SYNC_MODE_UNSPECIFIED",
-                ExternalSyncMode::Online => "ONLINE",
-                ExternalSyncMode::Offline => "OFFLINE",
+                Self::Unspecified => "EXTERNAL_SYNC_MODE_UNSPECIFIED",
+                Self::Online => "ONLINE",
+                Self::Offline => "OFFLINE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4724,9 +4634,9 @@ pub mod sql_instances_verify_external_sync_settings_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MigrationType::Unspecified => "MIGRATION_TYPE_UNSPECIFIED",
-                MigrationType::Logical => "LOGICAL",
-                MigrationType::Physical => "PHYSICAL",
+                Self::Unspecified => "MIGRATION_TYPE_UNSPECIFIED",
+                Self::Logical => "LOGICAL",
+                Self::Physical => "PHYSICAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4984,12 +4894,10 @@ impl ExternalSyncParallelLevel {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ExternalSyncParallelLevel::Unspecified => {
-                "EXTERNAL_SYNC_PARALLEL_LEVEL_UNSPECIFIED"
-            }
-            ExternalSyncParallelLevel::Min => "MIN",
-            ExternalSyncParallelLevel::Optimal => "OPTIMAL",
-            ExternalSyncParallelLevel::Max => "MAX",
+            Self::Unspecified => "EXTERNAL_SYNC_PARALLEL_LEVEL_UNSPECIFIED",
+            Self::Min => "MIN",
+            Self::Optimal => "OPTIMAL",
+            Self::Max => "MAX",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5005,7 +4913,13 @@ impl ExternalSyncParallelLevel {
 }
 /// Generated client implementations.
 pub mod sql_backup_runs_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     #[derive(Debug, Clone)]
@@ -5097,8 +5011,7 @@ pub mod sql_backup_runs_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5125,8 +5038,7 @@ pub mod sql_backup_runs_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5153,8 +5065,7 @@ pub mod sql_backup_runs_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5186,8 +5097,7 @@ pub mod sql_backup_runs_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5209,7 +5119,13 @@ pub mod sql_backup_runs_service_client {
 }
 /// Generated client implementations.
 pub mod sql_databases_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     #[derive(Debug, Clone)]
@@ -5301,8 +5217,7 @@ pub mod sql_databases_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5330,8 +5245,7 @@ pub mod sql_databases_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5361,8 +5275,7 @@ pub mod sql_databases_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5392,8 +5305,7 @@ pub mod sql_databases_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5421,8 +5333,7 @@ pub mod sql_databases_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5450,8 +5361,7 @@ pub mod sql_databases_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5473,7 +5383,13 @@ pub mod sql_databases_service_client {
 }
 /// Generated client implementations.
 pub mod sql_flags_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     #[derive(Debug, Clone)]
@@ -5568,8 +5484,7 @@ pub mod sql_flags_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5588,7 +5503,13 @@ pub mod sql_flags_service_client {
 }
 /// Generated client implementations.
 pub mod sql_instances_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     #[derive(Debug, Clone)]
@@ -5684,8 +5605,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5713,8 +5633,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5741,8 +5660,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5770,8 +5688,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5799,8 +5716,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5828,8 +5744,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5863,8 +5778,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5891,8 +5805,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5922,8 +5835,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5951,8 +5863,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5979,8 +5890,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6010,8 +5920,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6045,8 +5954,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6074,8 +5982,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6104,8 +6011,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6133,8 +6039,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6162,8 +6067,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6190,8 +6094,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6219,8 +6122,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6248,8 +6150,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6276,8 +6177,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6304,8 +6204,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6333,8 +6232,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6362,8 +6260,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6395,8 +6292,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6425,8 +6321,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6458,8 +6353,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6486,8 +6380,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6514,8 +6407,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6547,8 +6439,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6575,8 +6466,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6608,8 +6498,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6639,8 +6528,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6670,8 +6558,7 @@ pub mod sql_instances_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6693,7 +6580,13 @@ pub mod sql_instances_service_client {
 }
 /// Generated client implementations.
 pub mod sql_operations_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     #[derive(Debug, Clone)]
@@ -6785,8 +6678,7 @@ pub mod sql_operations_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6817,8 +6709,7 @@ pub mod sql_operations_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6845,8 +6736,7 @@ pub mod sql_operations_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6868,7 +6758,13 @@ pub mod sql_operations_service_client {
 }
 /// Generated client implementations.
 pub mod sql_ssl_certs_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     #[derive(Debug, Clone)]
@@ -6961,8 +6857,7 @@ pub mod sql_ssl_certs_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6991,8 +6886,7 @@ pub mod sql_ssl_certs_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7021,8 +6915,7 @@ pub mod sql_ssl_certs_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7052,8 +6945,7 @@ pub mod sql_ssl_certs_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7161,7 +7053,13 @@ pub struct GenerateEphemeralCertResponse {
 }
 /// Generated client implementations.
 pub mod sql_connect_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Cloud SQL connect service.
@@ -7257,8 +7155,7 @@ pub mod sql_connect_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7291,8 +7188,7 @@ pub mod sql_connect_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7314,7 +7210,13 @@ pub mod sql_connect_service_client {
 }
 /// Generated client implementations.
 pub mod sql_iam_policies_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for providing IAM Meta APIs for Cloud SQL.
@@ -7438,7 +7340,13 @@ pub struct Tier {
 }
 /// Generated client implementations.
 pub mod sql_tiers_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for providing machine types (tiers) for Cloud SQL.
@@ -7535,8 +7443,7 @@ pub mod sql_tiers_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7735,14 +7642,12 @@ pub mod user {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SqlUserType::BuiltIn => "BUILT_IN",
-                SqlUserType::CloudIamUser => "CLOUD_IAM_USER",
-                SqlUserType::CloudIamServiceAccount => "CLOUD_IAM_SERVICE_ACCOUNT",
-                SqlUserType::CloudIamGroup => "CLOUD_IAM_GROUP",
-                SqlUserType::CloudIamGroupUser => "CLOUD_IAM_GROUP_USER",
-                SqlUserType::CloudIamGroupServiceAccount => {
-                    "CLOUD_IAM_GROUP_SERVICE_ACCOUNT"
-                }
+                Self::BuiltIn => "BUILT_IN",
+                Self::CloudIamUser => "CLOUD_IAM_USER",
+                Self::CloudIamServiceAccount => "CLOUD_IAM_SERVICE_ACCOUNT",
+                Self::CloudIamGroup => "CLOUD_IAM_GROUP",
+                Self::CloudIamGroupUser => "CLOUD_IAM_GROUP_USER",
+                Self::CloudIamGroupServiceAccount => "CLOUD_IAM_GROUP_SERVICE_ACCOUNT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7790,10 +7695,10 @@ pub mod user {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DualPasswordType::Unspecified => "DUAL_PASSWORD_TYPE_UNSPECIFIED",
-                DualPasswordType::NoModifyDualPassword => "NO_MODIFY_DUAL_PASSWORD",
-                DualPasswordType::NoDualPassword => "NO_DUAL_PASSWORD",
-                DualPasswordType::DualPassword => "DUAL_PASSWORD",
+                Self::Unspecified => "DUAL_PASSWORD_TYPE_UNSPECIFIED",
+                Self::NoModifyDualPassword => "NO_MODIFY_DUAL_PASSWORD",
+                Self::NoDualPassword => "NO_DUAL_PASSWORD",
+                Self::DualPassword => "DUAL_PASSWORD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7840,7 +7745,13 @@ pub struct UsersListResponse {
 }
 /// Generated client implementations.
 pub mod sql_users_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     #[derive(Debug, Clone)]
@@ -7932,8 +7843,7 @@ pub mod sql_users_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7957,8 +7867,7 @@ pub mod sql_users_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7982,8 +7891,7 @@ pub mod sql_users_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8010,8 +7918,7 @@ pub mod sql_users_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8035,8 +7942,7 @@ pub mod sql_users_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

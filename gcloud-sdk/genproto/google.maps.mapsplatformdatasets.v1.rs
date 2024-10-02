@@ -40,10 +40,10 @@ impl FileFormat {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            FileFormat::Unspecified => "FILE_FORMAT_UNSPECIFIED",
-            FileFormat::Geojson => "FILE_FORMAT_GEOJSON",
-            FileFormat::Kml => "FILE_FORMAT_KML",
-            FileFormat::Csv => "FILE_FORMAT_CSV",
+            Self::Unspecified => "FILE_FORMAT_UNSPECIFIED",
+            Self::Geojson => "FILE_FORMAT_GEOJSON",
+            Self::Kml => "FILE_FORMAT_KML",
+            Self::Csv => "FILE_FORMAT_CSV",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -175,18 +175,18 @@ pub mod status {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Importing => "STATE_IMPORTING",
-                State::ImportSucceeded => "STATE_IMPORT_SUCCEEDED",
-                State::ImportFailed => "STATE_IMPORT_FAILED",
-                State::Deleting => "STATE_DELETING",
-                State::DeletionFailed => "STATE_DELETION_FAILED",
-                State::Processing => "STATE_PROCESSING",
-                State::ProcessingFailed => "STATE_PROCESSING_FAILED",
-                State::NeedsReview => "STATE_NEEDS_REVIEW",
-                State::Publishing => "STATE_PUBLISHING",
-                State::PublishingFailed => "STATE_PUBLISHING_FAILED",
-                State::Completed => "STATE_COMPLETED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Importing => "STATE_IMPORTING",
+                Self::ImportSucceeded => "STATE_IMPORT_SUCCEEDED",
+                Self::ImportFailed => "STATE_IMPORT_FAILED",
+                Self::Deleting => "STATE_DELETING",
+                Self::DeletionFailed => "STATE_DELETION_FAILED",
+                Self::Processing => "STATE_PROCESSING",
+                Self::ProcessingFailed => "STATE_PROCESSING_FAILED",
+                Self::NeedsReview => "STATE_NEEDS_REVIEW",
+                Self::Publishing => "STATE_PUBLISHING",
+                Self::PublishingFailed => "STATE_PUBLISHING_FAILED",
+                Self::Completed => "STATE_COMPLETED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -226,8 +226,8 @@ impl Usage {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Usage::Unspecified => "USAGE_UNSPECIFIED",
-            Usage::DataDrivenStyling => "USAGE_DATA_DRIVEN_STYLING",
+            Self::Unspecified => "USAGE_UNSPECIFIED",
+            Self::DataDrivenStyling => "USAGE_DATA_DRIVEN_STYLING",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -359,7 +359,13 @@ pub struct DeleteDatasetRequest {
 }
 /// Generated client implementations.
 pub mod maps_platform_datasets_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service definition for the Maps Platform Datasets API.
@@ -452,8 +458,7 @@ pub mod maps_platform_datasets_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -480,8 +485,7 @@ pub mod maps_platform_datasets_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -508,8 +512,7 @@ pub mod maps_platform_datasets_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -539,8 +542,7 @@ pub mod maps_platform_datasets_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -570,8 +572,7 @@ pub mod maps_platform_datasets_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -598,8 +599,7 @@ pub mod maps_platform_datasets_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

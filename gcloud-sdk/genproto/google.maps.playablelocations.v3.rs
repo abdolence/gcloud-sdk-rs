@@ -65,12 +65,12 @@ pub mod player_report {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BadLocationReason::Unspecified => "BAD_LOCATION_REASON_UNSPECIFIED",
-                BadLocationReason::Other => "OTHER",
-                BadLocationReason::NotPedestrianAccessible => "NOT_PEDESTRIAN_ACCESSIBLE",
-                BadLocationReason::NotOpenToPublic => "NOT_OPEN_TO_PUBLIC",
-                BadLocationReason::PermanentlyClosed => "PERMANENTLY_CLOSED",
-                BadLocationReason::TemporarilyInaccessible => "TEMPORARILY_INACCESSIBLE",
+                Self::Unspecified => "BAD_LOCATION_REASON_UNSPECIFIED",
+                Self::Other => "OTHER",
+                Self::NotPedestrianAccessible => "NOT_PEDESTRIAN_ACCESSIBLE",
+                Self::NotOpenToPublic => "NOT_OPEN_TO_PUBLIC",
+                Self::PermanentlyClosed => "PERMANENTLY_CLOSED",
+                Self::TemporarilyInaccessible => "TEMPORARILY_INACCESSIBLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -139,9 +139,9 @@ pub mod impression {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ImpressionType::Unspecified => "IMPRESSION_TYPE_UNSPECIFIED",
-                ImpressionType::Presented => "PRESENTED",
-                ImpressionType::Interacted => "INTERACTED",
+                Self::Unspecified => "IMPRESSION_TYPE_UNSPECIFIED",
+                Self::Presented => "PRESENTED",
+                Self::Interacted => "INTERACTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -269,7 +269,13 @@ pub struct LogImpressionsRequest {
 pub struct LogImpressionsResponse {}
 /// Generated client implementations.
 pub mod playable_locations_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The Playable Locations API for v3.
@@ -369,8 +375,7 @@ pub mod playable_locations_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -403,8 +408,7 @@ pub mod playable_locations_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -438,8 +442,7 @@ pub mod playable_locations_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

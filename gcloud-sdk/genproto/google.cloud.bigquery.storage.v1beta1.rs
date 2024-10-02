@@ -415,9 +415,9 @@ impl DataFormat {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DataFormat::Unspecified => "DATA_FORMAT_UNSPECIFIED",
-            DataFormat::Avro => "AVRO",
-            DataFormat::Arrow => "ARROW",
+            Self::Unspecified => "DATA_FORMAT_UNSPECIFIED",
+            Self::Avro => "AVRO",
+            Self::Arrow => "ARROW",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -456,9 +456,9 @@ impl ShardingStrategy {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ShardingStrategy::Unspecified => "SHARDING_STRATEGY_UNSPECIFIED",
-            ShardingStrategy::Liquid => "LIQUID",
-            ShardingStrategy::Balanced => "BALANCED",
+            Self::Unspecified => "SHARDING_STRATEGY_UNSPECIFIED",
+            Self::Liquid => "LIQUID",
+            Self::Balanced => "BALANCED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -473,7 +473,13 @@ impl ShardingStrategy {
 }
 /// Generated client implementations.
 pub mod big_query_storage_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// BigQuery storage API.
@@ -584,8 +590,7 @@ pub mod big_query_storage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -623,8 +628,7 @@ pub mod big_query_storage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -656,8 +660,7 @@ pub mod big_query_storage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -697,8 +700,7 @@ pub mod big_query_storage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -740,8 +742,7 @@ pub mod big_query_storage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

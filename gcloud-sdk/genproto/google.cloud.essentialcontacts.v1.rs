@@ -39,15 +39,15 @@ impl NotificationCategory {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            NotificationCategory::Unspecified => "NOTIFICATION_CATEGORY_UNSPECIFIED",
-            NotificationCategory::All => "ALL",
-            NotificationCategory::Suspension => "SUSPENSION",
-            NotificationCategory::Security => "SECURITY",
-            NotificationCategory::Technical => "TECHNICAL",
-            NotificationCategory::Billing => "BILLING",
-            NotificationCategory::Legal => "LEGAL",
-            NotificationCategory::ProductUpdates => "PRODUCT_UPDATES",
-            NotificationCategory::TechnicalIncidents => "TECHNICAL_INCIDENTS",
+            Self::Unspecified => "NOTIFICATION_CATEGORY_UNSPECIFIED",
+            Self::All => "ALL",
+            Self::Suspension => "SUSPENSION",
+            Self::Security => "SECURITY",
+            Self::Technical => "TECHNICAL",
+            Self::Billing => "BILLING",
+            Self::Legal => "LEGAL",
+            Self::ProductUpdates => "PRODUCT_UPDATES",
+            Self::TechnicalIncidents => "TECHNICAL_INCIDENTS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -87,9 +87,9 @@ impl ValidationState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ValidationState::Unspecified => "VALIDATION_STATE_UNSPECIFIED",
-            ValidationState::Valid => "VALID",
-            ValidationState::Invalid => "INVALID",
+            Self::Unspecified => "VALIDATION_STATE_UNSPECIFIED",
+            Self::Valid => "VALID",
+            Self::Invalid => "INVALID",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -277,7 +277,13 @@ pub struct SendTestMessageRequest {
 }
 /// Generated client implementations.
 pub mod essential_contacts_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Manages contacts for important Google Cloud notifications.
@@ -372,8 +378,7 @@ pub mod essential_contacts_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -401,8 +406,7 @@ pub mod essential_contacts_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -432,8 +436,7 @@ pub mod essential_contacts_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -460,8 +463,7 @@ pub mod essential_contacts_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -488,8 +490,7 @@ pub mod essential_contacts_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -521,8 +522,7 @@ pub mod essential_contacts_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -550,8 +550,7 @@ pub mod essential_contacts_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
